@@ -1,37 +1,24 @@
-
 import { Invoice, LineItem } from "@/types/invoice";
-import { 
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { FileText } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 interface FinancialDataProps {
   invoice: Invoice;
   lineItems: LineItem[];
 }
-
-export function FinancialData({ invoice, lineItems }: FinancialDataProps) {
-  return (
-    <div className="bg-white rounded-lg shadow p-6 mb-6 space-y-6">
+export function FinancialData({
+  invoice,
+  lineItems
+}: FinancialDataProps) {
+  return <div className="bg-white rounded-lg shadow p-6 mb-6 space-y-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-medium">Financial Data</h2>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger className="text-sm text-blue-600 hover:text-blue-800">
-              RTP Data
-            </TooltipTrigger>
+            
             <TooltipContent className="max-w-sm">
               View the full payment request (RTP) data, including Smart Connection details, PO information, and payable/receivable fields, enriched by Monto for accurate processing in the portal.
             </TooltipContent>
@@ -39,12 +26,7 @@ export function FinancialData({ invoice, lineItems }: FinancialDataProps) {
         </TooltipProvider>
       </div>
 
-      <Alert>
-        <FileText className="h-4 w-4" />
-        <AlertDescription>
-          This invoice has been automatically processed and validated by our system. All line items and calculations have been verified for accuracy.
-        </AlertDescription>
-      </Alert>
+      
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="space-y-2">
@@ -130,23 +112,24 @@ export function FinancialData({ invoice, lineItems }: FinancialDataProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {lineItems.map((item) => (
-                  <TableRow key={item.id}>
+                {lineItems.map(item => <TableRow key={item.id}>
                     <TableCell>{item.description}</TableCell>
                     <TableCell className="text-right">{item.quantity}</TableCell>
                     <TableCell className="text-right">
-                      ${item.unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      ${item.unitPrice.toLocaleString('en-US', {
+                    minimumFractionDigits: 2
+                  })}
                     </TableCell>
                     <TableCell className="text-right">
-                      ${item.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      ${item.total.toLocaleString('en-US', {
+                    minimumFractionDigits: 2
+                  })}
                     </TableCell>
-                  </TableRow>
-                ))}
+                  </TableRow>)}
               </TableBody>
             </Table>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-    </div>
-  );
+    </div>;
 }
