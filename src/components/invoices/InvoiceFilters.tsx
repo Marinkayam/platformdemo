@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Search } from "lucide-react";
 
@@ -13,7 +12,6 @@ function FilterDropdown({ label, value, options, onSelect }: FilterDropdownProps
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -118,13 +116,13 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
         />
       </div>
       
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
         <div className="relative">
           <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input 
             type="text" 
             placeholder="Search invoices..." 
-            className="pl-9 pr-4 py-2 border rounded-md w-64 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+            className="pl-9 pr-4 py-1.5 border rounded-md w-64 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[14px]"
             value={filters.search}
             onChange={(e) => handleFilterChange("search", e.target.value)}
           />

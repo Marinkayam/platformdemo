@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, UserCircle2 } from "lucide-react";
 import { Invoice } from "@/types/invoice";
 
 interface InvoiceTableProps {
@@ -26,72 +26,57 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
 
   const sortedInvoices = [...invoices].sort((a, b) => {
     if (!sortField) return 0;
-    
     const fieldA = a[sortField];
     const fieldB = b[sortField];
-    
     if (fieldA === fieldB) return 0;
-    
-    if (sortDirection === 'asc') {
-      return fieldA < fieldB ? -1 : 1;
-    } else {
-      return fieldA > fieldB ? -1 : 1;
-    }
+    return sortDirection === 'asc' ? (fieldA < fieldB ? -1 : 1) : (fieldA > fieldB ? -1 : 1);
   });
 
   const totalAmount = sortedInvoices.reduce((sum, invoice) => sum + invoice.total, 0);
   const pendingCount = sortedInvoices.filter(invoice => invoice.status === "Pending Action").length;
-  
+
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow className="h-14 bg-gray-50">
-            <TableHead 
-              className="w-[180px] cursor-pointer text-[14px] font-medium text-gray-600"
-              onClick={() => handleSort('number')}
-            >
+            <TableHead className="w-[180px] cursor-pointer text-[14px] font-medium text-gray-600"
+              onClick={() => handleSort('number')}>
               Invoice Number
               {sortField === 'number' && (
                 <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
               )}
             </TableHead>
-            <TableHead 
-              className="cursor-pointer text-[14px] font-medium text-gray-600"
-              onClick={() => handleSort('buyer')}
-            >
+            <TableHead className="cursor-pointer text-[14px] font-medium text-gray-600"
+              onClick={() => handleSort('buyer')}>
               Buyer
               {sortField === 'buyer' && (
                 <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
               )}
             </TableHead>
-            <TableHead 
-              className="cursor-pointer text-[14px] font-medium text-gray-600"
-              onClick={() => handleSort('dueDate')}
-            >
+            <TableHead className="cursor-pointer text-[14px] font-medium text-gray-600"
+              onClick={() => handleSort('dueDate')}>
               Due Date
               {sortField === 'dueDate' && (
                 <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
               )}
             </TableHead>
-            <TableHead className="text-[14px] font-medium text-gray-600">Status</TableHead>
-            <TableHead 
-              className="cursor-pointer text-[14px] font-medium text-gray-600"
-              onClick={() => handleSort('total')}
-            >
+            <TableHead className="cursor-pointer text-[14px] font-medium text-gray-600"
+              onClick={() => handleSort('creationDate')}>
+              Creation Date
+              {sortField === 'creationDate' && (
+                <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+              )}
+            </TableHead>
+            <TableHead className="cursor-pointer text-[14px] font-medium text-gray-600 text-left"
+              onClick={() => handleSort('total')}>
               Total
               {sortField === 'total' && (
                 <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
               )}
             </TableHead>
-            <TableHead 
-              className="cursor-pointer text-[14px] font-medium text-gray-600"
-              onClick={() => handleSort('owner')}
-            >
-              Owner
-              {sortField === 'owner' && (
-                <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
-              )}
+            <TableHead className="text-[14px] font-medium text-gray-600">
+              Assigned To
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -105,6 +90,9 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
           ) : (
             sortedInvoices.map((invoice) => {
               const isPending = invoice.status === "Pending Action";
+              const isRejectedByMonto = invoice.status === "Rejected by Monto";
+              const isRejectedByBuyer = invoice.status === "Rejected by Buyer";
+              
               return (
                 <TableRow 
                   key={invoice.id}
@@ -119,15 +107,35 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                       {invoice.number}
                     </span>
                   </TableCell>
-                  <TableCell className="text-[14px] text-gray-900">{invoice.buyer}</TableCell>
-                  <TableCell className="text-[14px] text-gray-900">{invoice.dueDate}</TableCell>
-                  <TableCell className="py-3">
-                    <StatusBadge status={invoice.status} />
+                  <TableCell className="text-[14px] text-gray-900">
+                    <div className="flex items-center gap-2">
+                      {invoice.buyer}
+                      {(isRejectedByMonto || isRejectedByBuyer) && (
+                        <span className={`text-[12px] px-2 py-0.5 rounded-full ${
+                          isRejectedByMonto ? 'bg-primary/10 text-primary' : 'bg-red-50 text-red-600'
+                        }`}>
+                          {isRejectedByMonto ? '(By Monto)' : '(By Buyer)'}
+                        </span>
+                      )}
+                    </div>
                   </TableCell>
+                  <TableCell className="text-[14px] text-gray-900">{invoice.dueDate}</TableCell>
+                  <TableCell className="text-[14px] text-gray-900">{invoice.creationDate}</TableCell>
                   <TableCell className="text-[14px] text-gray-900">
                     ${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </TableCell>
-                  <TableCell className="text-[14px] text-gray-900">{invoice.owner}</TableCell>
+                  <TableCell className="text-[14px] text-gray-900">
+                    {invoice.owner ? (
+                      <div className="flex items-center gap-2">
+                        <UserCircle2 className="h-4 w-4 text-gray-400" />
+                        <span>{invoice.owner}</span>
+                      </div>
+                    ) : (
+                      <button className="text-primary hover:text-primary/80 font-medium">
+                        Assign
+                      </button>
+                    )}
+                  </TableCell>
                 </TableRow>
               );
             })

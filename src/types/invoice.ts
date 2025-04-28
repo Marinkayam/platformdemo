@@ -1,4 +1,3 @@
-
 export interface Invoice {
   id: string;
   number: string;
@@ -44,4 +43,6 @@ export type InvoiceStatus =
   | 'External Submission'
   | 'Settled'
   | 'Awaiting SC'
-  | 'Excluded';
+  | 'Excluded'
+  | 'Rejected by Monto'
+  | 'Rejected by Buyer';
