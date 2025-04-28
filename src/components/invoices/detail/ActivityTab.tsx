@@ -1,6 +1,5 @@
 
 import React from "react";
-import { useParams } from "react-router-dom";
 import { 
   ResizablePanelGroup,
   ResizablePanel, 
@@ -10,8 +9,6 @@ import { ActivityTimeline } from "./ActivityTimeline";
 import { NotesThread } from "./NotesThread";
 
 export function ActivityTab() {
-  const { id } = useParams();
-
   return (
     <div className="bg-white rounded-lg">
       <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-lg border">

@@ -4,6 +4,7 @@ import { Paperclip, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FilePreview, FileAttachment } from "./FilePreview";
+import { useFileAttachments } from "@/hooks/useFileAttachments";
 
 interface NoteComposerProps {
   onAddNote: (content: string, attachments: FileAttachment[]) => void;
@@ -11,25 +12,14 @@ interface NoteComposerProps {
 
 export function NoteComposer({ onAddNote }: NoteComposerProps) {
   const [newNote, setNewNote] = useState("");
-  const [attachments, setAttachments] = useState<FileAttachment[]>([]);
+  const { attachments, addAttachment, removeAttachment, clearAttachments } = useFileAttachments();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      // Create URL for preview
-      const fileUrl = URL.createObjectURL(file);
-      
-      // Add to attachments
-      const newAttachment: FileAttachment = {
-        id: `file-${Date.now()}`,
-        name: file.name,
-        type: file.type,
-        url: fileUrl
-      };
-      
-      setAttachments([...attachments, newAttachment]);
+      addAttachment(file);
       
       // Reset file input
       if (fileInputRef.current) {
@@ -38,20 +28,23 @@ export function NoteComposer({ onAddNote }: NoteComposerProps) {
     }
   };
 
-  const removeAttachment = (id: string) => {
-    setAttachments(attachments.filter(attachment => attachment.id !== id));
-  };
-
   const submitNote = () => {
     if (!newNote.trim() && attachments.length === 0) return;
     
     onAddNote(newNote, attachments);
     setNewNote("");
-    setAttachments([]);
+    clearAttachments();
     
     // Focus on textarea for next input
     if (textareaRef.current) {
       textareaRef.current.focus();
+    }
+  };
+
+  // Handle keyboard shortcut for submitting
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      submitNote();
     }
   };
 
@@ -62,6 +55,7 @@ export function NoteComposer({ onAddNote }: NoteComposerProps) {
         placeholder="Add a note..."
         value={newNote}
         onChange={(e) => setNewNote(e.target.value)}
+        onKeyDown={handleKeyDown}
         className="min-h-[100px] mb-2"
       />
       
