@@ -1,3 +1,4 @@
+
 import React from "react";
 import { 
   Card, 
@@ -19,6 +20,7 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -94,7 +96,7 @@ const mockPOInformation: POInformationProps = {
   customerName: "Acme Corporation",
   portalInfo: {
     type: "Coupa",
-    reference: "CP-89745"
+    reference: ""
   },
   orderDate: "2025-03-15",
   totalAmount: 15000,
@@ -102,7 +104,7 @@ const mockPOInformation: POInformationProps = {
   amountLeft: 7500,
   paymentTerms: "Net 30",
   currency: "USD",
-  buyerReference: "ACM-REF-001"
+  buyerReference: ""
 };
 
 const mockRelatedInvoices: RelatedInvoiceProps[] = [
@@ -198,7 +200,7 @@ const SmartConnectionCard = ({ connection = mockSmartConnection }: { connection?
         </p>
       </CardContent>
       <CardFooter className="pt-0 flex justify-between items-center">
-        <Button variant="outline" className="text-primary flex items-center gap-2">
+        <Button variant="outline" size="sm" className="text-primary flex items-center gap-2">
           View Full Details <ExternalLink className="h-4 w-4" />
         </Button>
       </CardFooter>
@@ -221,12 +223,97 @@ const SmartConnectionAlert = ({ exceptions }: { exceptions?: string[] }) => {
         </ul>
         <Button 
           variant="secondary" 
+          size="sm"
           className="flex items-center gap-2 mt-2 bg-amber-200 hover:bg-amber-300 text-amber-800 border-amber-300"
         >
           <RefreshCw className="h-4 w-4" /> Update Agent
         </Button>
       </AlertDescription>
     </Alert>
+  );
+};
+
+const ProcessTimeline = () => {
+  const steps = [
+    { id: 1, name: "RTP Prepared", completed: true, current: false, date: "Apr 25, 2025" },
+    { id: 2, name: "Awaiting SC", completed: true, current: false, date: "Apr 26, 2025" },
+    { id: 3, name: "RTP Sent", completed: false, current: true, date: "Apr 28, 2025" },
+    { id: 4, name: "Approved", completed: false, current: false, date: "Pending" },
+    { id: 5, name: "Paid", completed: false, current: false, date: "Pending" }
+  ];
+  
+  // Calculate progress percentage
+  const totalSteps = steps.length;
+  const completedSteps = steps.filter(step => step.completed).length;
+  const progress = (completedSteps / (totalSteps - 1)) * 100; // Exclude the last step for better visual
+
+  return (
+    <Card className="mb-6 overflow-hidden">
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">Process Timeline</CardTitle>
+          <span className="text-sm text-muted-foreground font-medium">
+            {completedSteps}/{totalSteps} Steps
+          </span>
+        </div>
+      </CardHeader>
+      <CardContent className="pb-6">
+        <div className="space-y-2">
+          {/* Progress bar */}
+          <Progress value={progress} className="h-1.5 mb-6" />
+          
+          <div className="relative">
+            <div className="flex justify-between relative">
+              {steps.map((step) => (
+                <div 
+                  key={step.id} 
+                  className={cn(
+                    "flex flex-col items-center group relative z-10 transition-all duration-200",
+                    step.completed || step.current ? "cursor-default" : "opacity-70"
+                  )}
+                >
+                  <div className={cn(
+                    "h-12 w-12 rounded-full flex items-center justify-center transition-all duration-300",
+                    step.completed ? "bg-primary shadow-md shadow-primary/20 text-white" : 
+                    step.current ? "bg-white border-2 border-primary text-primary ring-4 ring-primary/10" : 
+                    "bg-gray-100 text-gray-400"
+                  )}>
+                    {step.completed ? (
+                      <Check className="h-6 w-6 animate-scale-in" />
+                    ) : (
+                      <span className="font-medium text-lg">{step.id}</span>
+                    )}
+                  </div>
+                  <span className={cn(
+                    "text-sm mt-3 font-medium text-center transition-all duration-200",
+                    step.completed ? "text-primary" : 
+                    step.current ? "text-primary font-semibold" : 
+                    "text-gray-500"
+                  )}>
+                    {step.name}
+                  </span>
+                  <span className={cn(
+                    "text-xs mt-1",
+                    step.completed ? "text-gray-600" :
+                    step.current ? "text-primary" :
+                    "text-gray-400"
+                  )}>
+                    {step.date}
+                  </span>
+                  
+                  {/* Hover tooltip for more info */}
+                  <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 -bottom-[4.5rem] bg-gray-800 text-white text-xs rounded py-1 px-2 w-32 text-center transition-all duration-200">
+                    <div className="font-medium mb-1">{step.name}</div>
+                    <div>{step.date}</div>
+                    <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -340,58 +427,10 @@ const POInformationCard = ({ po = mockPOInformation }: { po?: POInformationProps
         </div>
       </CardContent>
       <CardFooter className="pt-0">
-        <Button variant="outline" className="text-primary flex items-center gap-2">
+        <Button variant="outline" size="sm" className="text-primary flex items-center gap-2">
           View Full Details <ExternalLink className="h-4 w-4" />
         </Button>
       </CardFooter>
-    </Card>
-  );
-};
-
-const ProcessTimeline = () => {
-  const steps = [
-    { id: 1, name: "RTP Prepared", completed: true, current: false },
-    { id: 2, name: "Awaiting SC", completed: true, current: false },
-    { id: 3, name: "RTP Sent", completed: false, current: true },
-    { id: 4, name: "Approved", completed: false, current: false },
-    { id: 5, name: "Paid", completed: false, current: false }
-  ];
-
-  return (
-    <Card className="mb-6">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Process Timeline</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="relative">
-          <div className="absolute top-5 left-5 w-[calc(100%-2.5rem)] h-0.5 bg-gray-200"></div>
-          
-          <div className="flex justify-between relative">
-            {steps.map((step) => (
-              <div key={step.id} className="flex flex-col items-center relative z-10">
-                <div className={cn(
-                  "h-10 w-10 rounded-full flex items-center justify-center",
-                  step.completed ? "bg-primary text-white" : 
-                  step.current ? "bg-primary/20 text-primary border-2 border-primary" : 
-                  "bg-gray-100 text-gray-400"
-                )}>
-                  {step.completed ? (
-                    <Check className="h-5 w-5" />
-                  ) : (
-                    <span className="font-medium">{step.id}</span>
-                  )}
-                </div>
-                <span className={cn(
-                  "text-xs mt-2 font-medium text-center",
-                  step.completed || step.current ? "text-primary" : "text-gray-500"
-                )}>
-                  {step.name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </CardContent>
     </Card>
   );
 };
@@ -455,7 +494,7 @@ const RelatedInvoicesTable = ({ invoices = mockRelatedInvoices }: { invoices?: R
         </Table>
       </CardContent>
       <CardFooter className="pt-4">
-        <Button variant="outline" className="text-primary flex items-center gap-2">
+        <Button variant="outline" size="sm" className="text-primary flex items-center gap-2">
           View Full Details <ExternalLink className="h-4 w-4" />
         </Button>
       </CardFooter>
@@ -477,8 +516,8 @@ export function RTPDataTab() {
     <div className="space-y-6">
       <SmartConnectionCard connection={connectionWithIssue} />
       <SmartConnectionAlert exceptions={connectionWithIssue.exceptions} />
-      <POInformationCard />
       <ProcessTimeline />
+      <POInformationCard />
       <RelatedInvoicesTable />
     </div>
   );
