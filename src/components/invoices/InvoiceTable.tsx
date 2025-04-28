@@ -1,8 +1,7 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlertTriangle } from "lucide-react";
 import { Invoice } from "@/types/invoice";
@@ -12,6 +11,7 @@ interface InvoiceTableProps {
 }
 
 export function InvoiceTable({ invoices }: InvoiceTableProps) {
+  const navigate = useNavigate();
   const [sortField, setSortField] = useState<keyof Invoice | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
@@ -71,9 +71,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
               )}
             </TableHead>
-            <TableHead>
-              Status
-            </TableHead>
+            <TableHead>Status</TableHead>
             <TableHead 
               className="text-right cursor-pointer"
               onClick={() => handleSort('total')}
@@ -83,7 +81,15 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
               )}
             </TableHead>
-            <TableHead className="w-[100px]"></TableHead>
+            <TableHead 
+              className="cursor-pointer"
+              onClick={() => handleSort('owner')}
+            >
+              Owner
+              {sortField === 'owner' && (
+                <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
+              )}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -95,7 +101,11 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
             </TableRow>
           ) : (
             sortedInvoices.map((invoice) => (
-              <TableRow key={invoice.id}>
+              <TableRow 
+                key={invoice.id}
+                className="cursor-pointer hover:bg-muted/50"
+                onClick={() => navigate(`/invoices/${invoice.id}`)}
+              >
                 <TableCell className="font-medium flex items-center gap-2">
                   {invoice.hasWarning && (
                     <AlertTriangle className="h-4 w-4 text-amber-500" />
@@ -110,13 +120,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 <TableCell className="text-right">
                   ${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </TableCell>
-                <TableCell>
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link to={`/invoices/${invoice.id}`}>
-                      View
-                    </Link>
-                  </Button>
-                </TableCell>
+                <TableCell>{invoice.owner}</TableCell>
               </TableRow>
             ))
           )}
