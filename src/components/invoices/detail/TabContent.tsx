@@ -1,5 +1,6 @@
 
 import { Activity } from "lucide-react";
+import { ActivityTab } from "./ActivityTab";
 
 interface TabContentProps {
   tab: string;
@@ -26,22 +27,7 @@ export function TabContent({ tab }: TabContentProps) {
         </div>
       );
     case "activity":
-      return (
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 text-sm">
-              <Activity size={16} className="text-muted-foreground" />
-              <span className="text-muted-foreground">Invoice created</span>
-              <span className="text-xs text-muted-foreground">2 days ago</span>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Activity size={16} className="text-muted-foreground" />
-              <span className="text-muted-foreground">Status updated to Pending Action</span>
-              <span className="text-xs text-muted-foreground">1 day ago</span>
-            </div>
-          </div>
-        </div>
-      );
+      return <ActivityTab />;
     default:
       return null;
   }
