@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
 import { InvoiceFilters, InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/InvoiceFilters";
 import { InvoiceTable } from "@/components/invoices/InvoiceTable";
@@ -23,6 +24,7 @@ const tabs = [
 ];
 
 export default function Invoices() {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("all");
   const [filters, setFilters] = useState<InvoiceFiltersType>({
     status: "All",
@@ -32,6 +34,24 @@ export default function Invoices() {
     search: ""
   });
   const [customizeTableOpen, setCustomizeTableOpen] = useState(false);
+  
+  // Set active tab based on URL search params
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const status = searchParams.get("status");
+    
+    if (status === "pending") {
+      setActiveTab("pending");
+    } else if (status === "cleared") {
+      setActiveTab("cleared");
+    } else if (status === "overdue") {
+      // Handle overdue filter separately
+      setActiveTab("all");
+      setFilters(prev => ({ ...prev, dueDate: "Overdue" }));
+    } else {
+      setActiveTab("all");
+    }
+  }, [location.search]);
   
   // Filter invoices based on active tab and filters
   const filteredInvoices = invoiceData.filter((invoice: Invoice) => {
@@ -50,6 +70,9 @@ export default function Invoices() {
       if (filters.total === "$1000-$10000" && (total < 1000 || total > 10000)) return false;
       if (filters.total === "Over $10000" && total <= 10000) return false;
     }
+    
+    // Apply due date filter
+    if (filters.dueDate === "Overdue" && !invoice.isOverdue) return false;
     
     // Apply search filter
     if (filters.search) {

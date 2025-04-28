@@ -1,3 +1,4 @@
+
 export interface Invoice {
   id: string;
   number: string;
@@ -7,6 +8,8 @@ export interface Invoice {
   total: number;
   creationDate: string;
   owner: string;
+  assignee?: string;
+  rejectedBy?: 'Monto' | 'Buyer';
   hasWarning?: boolean;
   subtotal?: number;
   tax?: number;
@@ -46,3 +49,4 @@ export type InvoiceStatus =
   | 'Excluded'
   | 'Rejected by Monto'
   | 'Rejected by Buyer';
+

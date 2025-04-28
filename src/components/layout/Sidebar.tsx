@@ -92,24 +92,14 @@ export function Sidebar({ className }: SidebarProps) {
             />
             <div className="mt-1 space-y-1">
               <SidebarSubItem 
-                href="/invoices?status=overdue" 
-                label="Overdue" 
-                active={pathname === "/invoices" && window.location.search.includes("overdue")} 
-              />
-              <SidebarSubItem 
                 href="/invoices?status=pending" 
                 label="Pending Actions" 
                 active={pathname === "/invoices" && window.location.search.includes("pending")} 
               />
               <SidebarSubItem 
-                href="/invoices?status=rejected-monto" 
-                label="Rejected by Monto" 
-                active={pathname === "/invoices" && window.location.search.includes("rejected-monto")} 
-              />
-              <SidebarSubItem 
-                href="/invoices?status=rejected-buyer" 
-                label="Rejected by Buyer" 
-                active={pathname === "/invoices" && window.location.search.includes("rejected-buyer")} 
+                href="/invoices?status=overdue" 
+                label="Overdue" 
+                active={pathname === "/invoices" && window.location.search.includes("overdue")} 
               />
               <SidebarSubItem 
                 href="/invoices?status=cleared" 
