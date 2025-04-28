@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -108,6 +109,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 <TableRow 
                   key={invoice.id}
                   className={`h-14 cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
+                  onClick={() => navigate(`/invoices/${invoice.id}`)}
                 >
                   <TableCell className="font-medium flex items-center gap-2 text-[14px]">
                     {invoice.hasWarning && (
