@@ -1,4 +1,3 @@
-
 import React from "react";
 import { 
   Card, 
@@ -8,7 +7,7 @@ import {
   CardFooter 
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, Check, Clock, ExternalLink, X } from "lucide-react";
+import { AlertTriangle, Check, Clock, ExternalLink, X, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -22,7 +21,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 type ConnectionStatus = "Live" | "In Process" | "Unavailable" | "Inactive";
 type ValidationStatus = "Valid" | "Invalid" | "Pending";
@@ -72,20 +71,19 @@ interface RelatedInvoiceProps {
   paymentStatus: string;
 }
 
-// Sample mock data
 const mockSmartConnection: SmartConnectionProps = {
   status: "Live",
   buyer: {
     name: "Acme Corporation",
-    id: "BUY-12345"
+    id: ""
   },
   supplier: {
     name: "Global Supplies Ltd",
-    id: "SUP-78901"
+    id: ""
   },
   portal: {
     type: "Coupa",
-    reference: "CP-89745"
+    reference: ""
   },
   lastUpdated: "2025-04-28T15:23:44Z"
 };
@@ -126,7 +124,6 @@ const mockRelatedInvoices: RelatedInvoiceProps[] = [
   }
 ];
 
-// Helper functions
 const getConnectionStatusColor = (status: ConnectionStatus) => {
   switch (status) {
     case "Live": return "bg-green-100 text-green-600";
@@ -145,7 +142,6 @@ const getValidationStatusIcon = (status: ValidationStatus) => {
 };
 
 const getPortalIcon = (type: PortalType) => {
-  // In a real implementation, you could use actual portal logos
   return type.substring(0, 1);
 };
 
@@ -170,12 +166,6 @@ const SmartConnectionCard = ({ connection = mockSmartConnection }: { connection?
               disabled
               className="bg-gray-50"
             />
-            <Input 
-              value={connection.buyer.id}
-              readOnly 
-              disabled
-              className="bg-gray-50 text-sm text-muted-foreground"
-            />
           </div>
           <div className="space-y-2">
             <label className="text-sm text-gray-500">Supplier</label>
@@ -184,12 +174,6 @@ const SmartConnectionCard = ({ connection = mockSmartConnection }: { connection?
               readOnly 
               disabled
               className="bg-gray-50"
-            />
-            <Input 
-              value={connection.supplier.id}
-              readOnly 
-              disabled
-              className="bg-gray-50 text-sm text-muted-foreground"
             />
           </div>
         </div>
@@ -207,12 +191,6 @@ const SmartConnectionCard = ({ connection = mockSmartConnection }: { connection?
               className="bg-gray-50"
             />
           </div>
-          <Input 
-            value={connection.portal.reference}
-            readOnly 
-            disabled
-            className="bg-gray-50 text-sm text-muted-foreground"
-          />
         </div>
 
         <p className="text-xs text-muted-foreground mt-4">
@@ -220,9 +198,8 @@ const SmartConnectionCard = ({ connection = mockSmartConnection }: { connection?
         </p>
       </CardContent>
       <CardFooter className="pt-0 flex justify-between items-center">
-        <Button variant="link" className="p-0 text-primary flex items-center">
-          View Full Details <ExternalLink className="ml-1 h-3 w-3" />
-          <span className="ml-1 text-xs text-muted-foreground">(Coming Soon)</span>
+        <Button variant="outline" className="text-primary flex items-center gap-2">
+          View Full Details <ExternalLink className="h-4 w-4" />
         </Button>
       </CardFooter>
     </Card>
@@ -237,11 +214,17 @@ const SmartConnectionAlert = ({ exceptions }: { exceptions?: string[] }) => {
       <AlertTriangle className="h-4 w-4 text-amber-500" />
       <AlertTitle className="text-amber-800">Connection Issues Detected</AlertTitle>
       <AlertDescription className="text-amber-700">
-        <ul className="list-disc pl-5 mt-2 space-y-1">
+        <ul className="list-disc pl-5 mt-2 space-y-1 mb-4">
           {exceptions.map((exception, i) => (
             <li key={i} className="text-sm">{exception}</li>
           ))}
         </ul>
+        <Button 
+          variant="secondary" 
+          className="flex items-center gap-2 mt-2 bg-amber-200 hover:bg-amber-300 text-amber-800 border-amber-300"
+        >
+          <RefreshCw className="h-4 w-4" /> Update Agent
+        </Button>
       </AlertDescription>
     </Alert>
   );
@@ -357,8 +340,8 @@ const POInformationCard = ({ po = mockPOInformation }: { po?: POInformationProps
         </div>
       </CardContent>
       <CardFooter className="pt-0">
-        <Button variant="outline" className="text-primary">
-          View Full Details
+        <Button variant="outline" className="text-primary flex items-center gap-2">
+          View Full Details <ExternalLink className="h-4 w-4" />
         </Button>
       </CardFooter>
     </Card>
@@ -381,10 +364,8 @@ const ProcessTimeline = () => {
       </CardHeader>
       <CardContent>
         <div className="relative">
-          {/* Timeline bar */}
           <div className="absolute top-5 left-5 w-[calc(100%-2.5rem)] h-0.5 bg-gray-200"></div>
           
-          {/* Timeline steps */}
           <div className="flex justify-between relative">
             {steps.map((step) => (
               <div key={step.id} className="flex flex-col items-center relative z-10">
@@ -473,15 +454,16 @@ const RelatedInvoicesTable = ({ invoices = mockRelatedInvoices }: { invoices?: R
           </TableBody>
         </Table>
       </CardContent>
+      <CardFooter className="pt-4">
+        <Button variant="outline" className="text-primary flex items-center gap-2">
+          View Full Details <ExternalLink className="h-4 w-4" />
+        </Button>
+      </CardFooter>
     </Card>
   );
 };
 
 export function RTPDataTab() {
-  // For demonstration, we're using the mock data
-  // In a real app, this would come from props or API calls
-
-  // We're showing an example of a connection with an issue
   const connectionWithIssue: SmartConnectionProps = {
     ...mockSmartConnection,
     status: "Unavailable" as ConnectionStatus,
