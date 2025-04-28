@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Check, AlertTriangle, MessageSquare, File, RefreshCw } from "lucide-react";
+import { Check, AlertTriangle, MessageSquare, File, RefreshCw, Paperclip } from "lucide-react";
 import { 
   ResizablePanelGroup,
   ResizablePanel, 
@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { Card } from "@/components/ui/card";
 import { useNotifications } from "@/context/NotificationsContext";
 import { formatDistance } from "date-fns";
+import { FilePreview, FileAttachment } from "./FilePreview";
 
 // Mock activity data
 const activityData = [
@@ -59,7 +60,8 @@ const initialNotesData = [
     avatar: "AW",
     content: "I've verified all the vendor details and the documentation looks complete.",
     timestamp: new Date(2024, 3, 24, 9, 45),
-    read: true
+    read: true,
+    attachments: []
   },
   {
     id: "n2",
@@ -67,7 +69,15 @@ const initialNotesData = [
     avatar: "JS",
     content: "This invoice needs approval from finance before we can process the payment. I've flagged it for review.",
     timestamp: new Date(2024, 3, 25, 14, 29),
-    read: false
+    read: false,
+    attachments: [
+      {
+        id: "a1",
+        name: "Financial_Review.pdf",
+        type: "application/pdf",
+        url: "#"
+      }
+    ]
   }
 ];
 
@@ -75,28 +85,52 @@ const initialNotesData = [
 const ActivityIcon = ({ type }: { type: string }) => {
   switch (type) {
     case "system":
-      return <Check className="h-5 w-5 text-green-500" />;
+      return <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100">
+        <Check className="h-4 w-4 text-green-600" />
+      </div>;
     case "status":
-      return <RefreshCw className="h-5 w-5 text-orange-500" />;
+      return <div className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-100">
+        <RefreshCw className="h-4 w-4 text-orange-600" />
+      </div>;
     case "document":
-      return <File className="h-5 w-5 text-purple-500" />;
+      return <div className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-100">
+        <File className="h-4 w-4 text-purple-600" />
+      </div>;
     case "note":
-      return <MessageSquare className="h-5 w-5 text-blue-500" />;
+      return <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100">
+        <MessageSquare className="h-4 w-4 text-blue-600" />
+      </div>;
     case "warning":
-      return <AlertTriangle className="h-5 w-5 text-amber-500" />;
+      return <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100">
+        <AlertTriangle className="h-4 w-4 text-amber-600" />
+      </div>;
     default:
-      return <Check className="h-5 w-5 text-green-500" />;
+      return <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100">
+        <Check className="h-4 w-4 text-gray-600" />
+      </div>;
   }
 };
+
+interface Note {
+  id: string;
+  user: string;
+  avatar: string;
+  content: string;
+  timestamp: Date;
+  read: boolean;
+  attachments: FileAttachment[];
+}
 
 export function ActivityTab() {
   const { id } = useParams();
   const { addNotification } = useNotifications();
-  const [notes, setNotes] = useState(initialNotesData);
+  const [notes, setNotes] = useState<Note[]>(initialNotesData);
   const [newNote, setNewNote] = useState("");
   const [hasUnreadNotes, setHasUnreadNotes] = useState(false);
+  const [attachments, setAttachments] = useState<FileAttachment[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Check for unread notes
   useEffect(() => {
@@ -114,22 +148,63 @@ export function ActivityTab() {
     
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [newNote]);
+  }, [newNote, attachments]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      // Create URL for preview
+      const fileUrl = URL.createObjectURL(file);
+      
+      // Add to attachments
+      const newAttachment: FileAttachment = {
+        id: `file-${Date.now()}`,
+        name: file.name,
+        type: file.type,
+        url: fileUrl
+      };
+      
+      setAttachments([...attachments, newAttachment]);
+      
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const removeAttachment = (id: string) => {
+    setAttachments(attachments.filter(attachment => attachment.id !== id));
+  };
+
+  const removeNoteAttachment = (noteId: string, attachmentId: string) => {
+    setNotes(notes.map(note => {
+      if (note.id === noteId) {
+        return {
+          ...note,
+          attachments: note.attachments.filter(att => att.id !== attachmentId)
+        };
+      }
+      return note;
+    }));
+  };
 
   const addNote = () => {
-    if (!newNote.trim()) return;
+    if (!newNote.trim() && attachments.length === 0) return;
     
-    const newNoteObj = {
+    const newNoteObj: Note = {
       id: `n${Date.now()}`,
       user: "Me",
       avatar: "M",
       content: newNote,
       timestamp: new Date(),
-      read: true
+      read: true,
+      attachments: [...attachments]
     };
     
     setNotes([newNoteObj, ...notes]);
     setNewNote("");
+    setAttachments([]);
     
     // Add notification
     addNotification({
@@ -178,7 +253,7 @@ export function ActivityTab() {
                 {activityData.map((activity) => (
                   <div key={activity.id} className="relative">
                     {/* Timeline icon */}
-                    <div className="absolute -left-6 mt-1 bg-white p-1">
+                    <div className="absolute -left-6 mt-1 bg-white">
                       <ActivityIcon type={activity.type} />
                     </div>
                     
@@ -246,6 +321,19 @@ export function ActivityTab() {
                           <span className="text-xs text-gray-500">{getRelativeTime(note.timestamp)}</span>
                         </div>
                         <p className="text-sm">{note.content}</p>
+                        
+                        {/* Render attachments */}
+                        {note.attachments.length > 0 && (
+                          <div className="mt-2">
+                            {note.attachments.map((attachment) => (
+                              <FilePreview
+                                key={attachment.id}
+                                file={attachment}
+                                onDelete={() => removeNoteAttachment(note.id, attachment.id)}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
                       {!note.read && (
                         <div className="h-2 w-2 bg-purple-500 rounded-full"></div>
@@ -265,11 +353,46 @@ export function ActivityTab() {
                 onChange={(e) => setNewNote(e.target.value)}
                 className="min-h-[100px] mb-2"
               />
+              
+              {/* Display attached files */}
+              {attachments.length > 0 && (
+                <div className="mb-3">
+                  {attachments.map(attachment => (
+                    <FilePreview
+                      key={attachment.id}
+                      file={attachment}
+                      onDelete={() => removeAttachment(attachment.id)}
+                    />
+                  ))}
+                </div>
+              )}
+              
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500">⌘ + Enter to send</span>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                    id="file-upload"
+                  />
+                  <label htmlFor="file-upload">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="gap-1"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <Paperclip className="h-4 w-4" />
+                      Attach
+                    </Button>
+                  </label>
+                  <span className="text-xs text-gray-500">⌘ + Enter to send</span>
+                </div>
                 <Button 
                   onClick={addNote} 
-                  disabled={!newNote.trim()}
+                  disabled={!newNote.trim() && attachments.length === 0}
                   className="gap-2"
                 >
                   <MessageSquare className="h-4 w-4" />
