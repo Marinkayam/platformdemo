@@ -21,6 +21,8 @@ import {
   TableRow 
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 
 type ConnectionStatus = "Live" | "In Process" | "Unavailable" | "Inactive";
 type ValidationStatus = "Valid" | "Invalid" | "Pending";
@@ -160,29 +162,57 @@ const SmartConnectionCard = ({ connection = mockSmartConnection }: { connection?
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Buyer</h4>
-            <p className="font-medium">{connection.buyer.name}</p>
-            <p className="text-sm text-muted-foreground">{connection.buyer.id}</p>
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Buyer</label>
+            <Input 
+              value={connection.buyer.name}
+              readOnly 
+              disabled
+              className="bg-gray-50"
+            />
+            <Input 
+              value={connection.buyer.id}
+              readOnly 
+              disabled
+              className="bg-gray-50 text-sm text-muted-foreground"
+            />
           </div>
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Supplier</h4>
-            <p className="font-medium">{connection.supplier.name}</p>
-            <p className="text-sm text-muted-foreground">{connection.supplier.id}</p>
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Supplier</label>
+            <Input 
+              value={connection.supplier.name}
+              readOnly 
+              disabled
+              className="bg-gray-50"
+            />
+            <Input 
+              value={connection.supplier.id}
+              readOnly 
+              disabled
+              className="bg-gray-50 text-sm text-muted-foreground"
+            />
           </div>
         </div>
         
-        <div className="mt-4">
-          <h4 className="text-sm font-medium text-muted-foreground mb-1">Portal</h4>
+        <div className="mt-4 space-y-2">
+          <label className="text-sm text-gray-500">Portal</label>
           <div className="flex items-center space-x-2">
             <span className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-bold">
               {getPortalIcon(connection.portal.type)}
             </span>
-            <div>
-              <p className="font-medium">{connection.portal.type}</p>
-              <p className="text-sm text-muted-foreground">{connection.portal.reference}</p>
-            </div>
+            <Input 
+              value={connection.portal.type}
+              readOnly 
+              disabled
+              className="bg-gray-50"
+            />
           </div>
+          <Input 
+            value={connection.portal.reference}
+            readOnly 
+            disabled
+            className="bg-gray-50 text-sm text-muted-foreground"
+          />
         </div>
 
         <p className="text-xs text-muted-foreground mt-4">
@@ -218,6 +248,8 @@ const SmartConnectionAlert = ({ exceptions }: { exceptions?: string[] }) => {
 };
 
 const POInformationCard = ({ po = mockPOInformation }: { po?: POInformationProps }) => {
+  const { toast } = useToast();
+
   return (
     <Card className="mb-6">
       <CardHeader className="pb-2">
@@ -272,55 +304,56 @@ const POInformationCard = ({ po = mockPOInformation }: { po?: POInformationProps
           </Tooltip>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Customer</h4>
-            <p>{po.customerName}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Customer</label>
+            <Input value={po.customerName} readOnly disabled className="bg-gray-50" />
           </div>
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Portal/SC</h4>
-            <div className="flex items-center space-x-2">
+          
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Portal/SC</label>
+            <div className="flex items-center gap-2">
               <span className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-bold">
                 {getPortalIcon(po.portalInfo.type)}
               </span>
-              <span>{po.portalInfo.type}</span>
+              <Input value={po.portalInfo.type} readOnly disabled className="bg-gray-50" />
             </div>
           </div>
-        </div>
+          
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Order Date</label>
+            <Input value={new Date(po.orderDate).toLocaleDateString()} readOnly disabled className="bg-gray-50" />
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Order Date</h4>
-            <p>{new Date(po.orderDate).toLocaleDateString()}</p>
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Total Amount</label>
+            <Input value={`$${po.totalAmount.toLocaleString()}`} readOnly disabled className="bg-gray-50" />
           </div>
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Total Amount</h4>
-            <p>${po.totalAmount.toLocaleString()}</p>
+          
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Total Invoiced</label>
+            <Input value={`$${po.totalInvoiced.toLocaleString()}`} readOnly disabled className="bg-gray-50" />
           </div>
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Total Invoiced</h4>
-            <p>${po.totalInvoiced.toLocaleString()}</p>
+          
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Amount Left</label>
+            <Input value={`$${po.amountLeft.toLocaleString()}`} readOnly disabled className="bg-gray-50" />
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Amount Left</h4>
-            <p>${po.amountLeft.toLocaleString()}</p>
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Payment Terms</label>
+            <Input value={po.paymentTerms} readOnly disabled className="bg-gray-50" />
           </div>
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Payment Terms</h4>
-            <p>{po.paymentTerms}</p>
+          
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Currency</label>
+            <Input value={po.currency} readOnly disabled className="bg-gray-50" />
           </div>
-          <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-1">Currency</h4>
-            <p>{po.currency}</p>
+          
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Buyer Reference</label>
+            <Input value={po.buyerReference} readOnly disabled className="bg-gray-50" />
           </div>
-        </div>
-
-        <div className="mt-4">
-          <h4 className="text-sm font-medium text-muted-foreground mb-1">Buyer Reference</h4>
-          <p>{po.buyerReference}</p>
         </div>
       </CardContent>
       <CardFooter className="pt-0">
@@ -449,9 +482,9 @@ export function RTPDataTab() {
   // In a real app, this would come from props or API calls
 
   // We're showing an example of a connection with an issue
-  const connectionWithIssue = {
+  const connectionWithIssue: SmartConnectionProps = {
     ...mockSmartConnection,
-    status: "Unavailable",
+    status: "Unavailable" as ConnectionStatus,
     exceptions: [
       "Authentication token expired on April 27, 2025",
       "Last sync attempt failed at 15:23"
