@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { ArrowLeft, MoreHorizontal } from "lucide-react";
+import { ArrowLeft, MoreHorizontal, FileText, Download, Trash2 } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Invoice } from "@/types/invoice";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FileText, Download, Trash2 } from "lucide-react";
 
 interface InvoiceHeaderProps {
   invoice: Invoice;
@@ -32,7 +31,7 @@ export function InvoiceHeader({ invoice, onViewPdf }: InvoiceHeaderProps) {
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold">{invoice.number}</h1>
+            <h1 className="text-[32px] font-semibold text-gray-900">{invoice.number}</h1>
             <StatusBadge status={invoice.status} />
           </div>
           
@@ -40,7 +39,7 @@ export function InvoiceHeader({ invoice, onViewPdf }: InvoiceHeaderProps) {
             <Button 
               variant="outline" 
               onClick={onViewPdf}
-              className="flex items-center gap-2 bg-white"
+              className="flex items-center gap-2 bg-white text-sm"
             >
               <FileText className="h-4 w-4" />
               View Invoice PDF
@@ -66,7 +65,7 @@ export function InvoiceHeader({ invoice, onViewPdf }: InvoiceHeaderProps) {
           </div>
         </div>
         
-        <div className="flex items-center gap-6 text-gray-600 text-sm">
+        <div className="flex items-center gap-6 text-[14px] text-gray-600">
           <span>Owner: {invoice.owner}</span>
           <span>File type: Invoice</span>
         </div>

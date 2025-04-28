@@ -80,7 +80,7 @@ export default function Invoices() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold mb-6">Invoices</h1>
+      <h1 className="text-[32px] font-semibold text-gray-900 mb-6">Invoices</h1>
       
       <InvoiceTabs
         tabs={tabs}
@@ -93,18 +93,18 @@ export default function Invoices() {
         
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="ml-2">
+            <Button variant="outline" size="icon" className="ml-2 bg-white">
               <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="w-[180px]">
             <DropdownMenuItem onClick={() => setCustomizeTableOpen(true)}>
               <Settings className="mr-2 h-4 w-4" />
-              <span>Customise Table</span>
+              <span className="text-[14px]">Customise Table</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleExportAll}>
               <Download className="mr-2 h-4 w-4" />
-              <span>Export All</span>
+              <span className="text-[14px]">Export All</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

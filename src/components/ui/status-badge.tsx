@@ -11,7 +11,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   const getBadgeStyles = () => {
     switch (status) {
       case "Pending Action":
-        return "bg-[#FFEBEE] text-[#D32F2F]"; // Updated to red styling
+        return "bg-[#FFEBEE] text-[#D32F2F]";
       case "Approved by Buyer":
         return "bg-[#E3F2FD] text-[#1976D2]";
       case "Paid":
@@ -32,7 +32,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   return (
     <span
       className={cn(
-        "px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap",
+        "px-3 py-1 rounded-full text-[12px] font-medium whitespace-nowrap",
         getBadgeStyles(),
         className
       )}

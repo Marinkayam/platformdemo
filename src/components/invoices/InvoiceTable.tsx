@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -46,9 +45,9 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
     <div className="rounded-md border">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="h-14 bg-gray-50">
             <TableHead 
-              className="w-[180px] cursor-pointer"
+              className="w-[180px] cursor-pointer text-[14px] font-medium text-gray-600"
               onClick={() => handleSort('number')}
             >
               Invoice Number
@@ -57,7 +56,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
               )}
             </TableHead>
             <TableHead 
-              className="cursor-pointer"
+              className="cursor-pointer text-[14px] font-medium text-gray-600"
               onClick={() => handleSort('buyer')}
             >
               Buyer
@@ -66,7 +65,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
               )}
             </TableHead>
             <TableHead 
-              className="cursor-pointer"
+              className="cursor-pointer text-[14px] font-medium text-gray-600"
               onClick={() => handleSort('dueDate')}
             >
               Due Date
@@ -74,9 +73,9 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>
               )}
             </TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead className="text-[14px] font-medium text-gray-600">Status</TableHead>
             <TableHead 
-              className="text-right cursor-pointer"
+              className="text-right cursor-pointer text-[14px] font-medium text-gray-600"
               onClick={() => handleSort('total')}
             >
               Total
@@ -85,7 +84,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
               )}
             </TableHead>
             <TableHead 
-              className="cursor-pointer"
+              className="cursor-pointer text-[14px] font-medium text-gray-600"
               onClick={() => handleSort('owner')}
             >
               Owner
@@ -98,7 +97,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
         <TableBody className="divide-y">
           {sortedInvoices.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="h-24 text-center">
+              <TableCell colSpan={6} className="h-24 text-center text-[14px] text-gray-600">
                 No invoices found.
               </TableCell>
             </TableRow>
@@ -108,10 +107,9 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
               return (
                 <TableRow 
                   key={invoice.id}
-                  className={`cursor-pointer hover:bg-muted/50 ${isPending ? 'bg-red-50/30' : ''}`}
-                  onClick={() => navigate(`/invoices/${invoice.id}`)}
+                  className={`h-14 cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
                 >
-                  <TableCell className="font-medium flex items-center gap-2">
+                  <TableCell className="font-medium flex items-center gap-2 text-[14px]">
                     {invoice.hasWarning && (
                       <AlertTriangle className="h-4 w-4 text-amber-500" />
                     )}
@@ -119,26 +117,30 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                       {invoice.number}
                     </span>
                   </TableCell>
-                  <TableCell>{invoice.buyer}</TableCell>
-                  <TableCell>{invoice.dueDate}</TableCell>
+                  <TableCell className="text-[14px] text-gray-900">{invoice.buyer}</TableCell>
+                  <TableCell className="text-[14px] text-gray-900">{invoice.dueDate}</TableCell>
                   <TableCell>
                     <StatusBadge status={invoice.status} />
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right text-[14px] text-gray-900">
                     ${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </TableCell>
-                  <TableCell>{invoice.owner}</TableCell>
+                  <TableCell className="text-[14px] text-gray-900">{invoice.owner}</TableCell>
                 </TableRow>
               );
             })
           )}
         </TableBody>
         <TableFooter>
-          <TableRow>
-            <TableCell>Showing {sortedInvoices.length} invoices</TableCell>
-            <TableCell>{pendingCount} pending</TableCell>
+          <TableRow className="h-14 bg-gray-50">
+            <TableCell className="text-[14px] font-medium text-gray-600">
+              Showing {sortedInvoices.length} invoices
+            </TableCell>
+            <TableCell className="text-[14px] font-medium text-gray-600">
+              {pendingCount} pending
+            </TableCell>
             <TableCell colSpan={2}></TableCell>
-            <TableCell className="text-right font-medium">
+            <TableCell className="text-right font-medium text-[14px] text-gray-900">
               ${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </TableCell>
             <TableCell></TableCell>
