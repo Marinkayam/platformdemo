@@ -11,21 +11,21 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   const getBadgeStyles = () => {
     switch (status) {
       case "Pending Action":
-        return "bg-[#FFF8E1] text-[#FF9800]";
+        return "bg-red-100 text-red-700";
       case "Approved by Buyer":
-        return "bg-[#E3F2FD] text-[#1976D2]";
+        return "bg-blue-100 text-blue-700";
       case "Paid":
-        return "bg-[#E6F4EA] text-[#2E7D32]";
+        return "bg-green-100 text-green-700";
       case "External Submission":
-        return "bg-[#E1F5FE] text-[#0288D1]";
+        return "bg-blue-100 text-blue-700";
       case "Settled":
-        return "bg-[#F1F8E9] text-[#558B2F]";
+        return "bg-green-100 text-green-700";
       case "Awaiting SC":
-        return "bg-[#F3E5F5] text-[#8E24AA]";
+        return "bg-purple-100 text-purple-700";
       case "Excluded":
-        return "bg-[#ECEFF1] text-[#607D8B]";
+        return "bg-gray-100 text-gray-700";
       default:
-        return "bg-[#ECEFF1] text-[#607D8B]";
+        return "bg-gray-100 text-gray-700";
     }
   };
 
