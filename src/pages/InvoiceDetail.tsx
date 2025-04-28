@@ -54,6 +54,7 @@ export default function InvoiceDetail() {
         invoice={invoice} 
         onViewPdf={() => setShowPdfViewer(true)} 
       />
+      
       <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} />
 
       {activeTab === "invoice-data" ? (

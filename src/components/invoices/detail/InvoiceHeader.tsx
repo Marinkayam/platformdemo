@@ -1,16 +1,16 @@
 
 import { Link } from "react-router-dom";
-import { ArrowLeft, Download, MoreHorizontal, FileText, Trash2 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { ArrowLeft, MoreHorizontal } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Invoice } from "@/types/invoice";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { FileText, Download, Trash2 } from "lucide-react";
 
 interface InvoiceHeaderProps {
   invoice: Invoice;
@@ -20,9 +20,9 @@ interface InvoiceHeaderProps {
 export function InvoiceHeader({ invoice, onViewPdf }: InvoiceHeaderProps) {
   return (
     <div className="mb-8">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center mb-6">
         <Button variant="ghost" size="sm" asChild className="h-9">
-          <Link to="/invoices" className="flex items-center gap-2 text-base">
+          <Link to="/invoices" className="flex items-center gap-2 text-sm font-medium text-gray-700">
             <ArrowLeft className="h-4 w-4" />
             Back to Invoices
           </Link>
@@ -37,14 +37,18 @@ export function InvoiceHeader({ invoice, onViewPdf }: InvoiceHeaderProps) {
           </div>
           
           <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={onViewPdf}>
-              <FileText className="mr-2 h-4 w-4" />
+            <Button 
+              variant="outline" 
+              onClick={onViewPdf}
+              className="flex items-center gap-2 bg-white"
+            >
+              <FileText className="h-4 w-4" />
               View Invoice PDF
             </Button>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
+                <Button variant="outline" size="icon" className="bg-white">
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -62,7 +66,7 @@ export function InvoiceHeader({ invoice, onViewPdf }: InvoiceHeaderProps) {
           </div>
         </div>
         
-        <div className="flex items-center gap-4 text-muted-foreground">
+        <div className="flex items-center gap-6 text-gray-600 text-sm">
           <span>Owner: {invoice.owner}</span>
           <span>File type: Invoice</span>
         </div>

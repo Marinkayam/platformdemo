@@ -1,6 +1,6 @@
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, FileX, Database, Activity } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface InvoiceTabsProps {
   activeTab: string;
@@ -8,45 +8,33 @@ interface InvoiceTabsProps {
 }
 
 export function InvoiceTabsNav({ activeTab, onTabChange }: InvoiceTabsProps) {
+  const tabs = [
+    { id: "invoice-data", icon: <FileText className="h-4 w-4" />, label: "Invoice Data" },
+    { id: "exceptions", icon: <FileX className="h-4 w-4" />, label: "Exceptions" },
+    { id: "rtp-data", icon: <Database className="h-4 w-4" />, label: "RTP Data" },
+    { id: "portal-records", icon: <Database className="h-4 w-4" />, label: "Portal Records" },
+    { id: "activity", icon: <Activity className="h-4 w-4" />, label: "Activity" },
+  ];
+
   return (
-    <Tabs defaultValue={activeTab} className="w-full" onValueChange={onTabChange}>
-      <TabsList className="w-full justify-start bg-transparent border-b rounded-none h-auto p-0 mb-6">
-        <TabsTrigger 
-          value="invoice-data" 
-          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
-        >
-          <FileText className="mr-2 h-4 w-4" />
-          Invoice Data
-        </TabsTrigger>
-        <TabsTrigger 
-          value="exceptions" 
-          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
-        >
-          <FileX className="mr-2 h-4 w-4" />
-          Exceptions
-        </TabsTrigger>
-        <TabsTrigger 
-          value="rtp-data" 
-          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
-        >
-          <Database className="mr-2 h-4 w-4" />
-          RTP Data
-        </TabsTrigger>
-        <TabsTrigger 
-          value="portal-records" 
-          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
-        >
-          <Database className="mr-2 h-4 w-4" />
-          Portal Records
-        </TabsTrigger>
-        <TabsTrigger 
-          value="activity" 
-          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
-        >
-          <Activity className="mr-2 h-4 w-4" />
-          Activity
-        </TabsTrigger>
-      </TabsList>
-    </Tabs>
+    <div className="border-b mb-6">
+      <div className="flex space-x-8">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => onTabChange(tab.id)}
+            className={cn(
+              "py-3 px-1 relative font-medium text-sm flex items-center gap-2",
+              activeTab === tab.id
+                ? "text-primary border-b-2 border-primary"
+                : "text-gray-600 hover:text-gray-900"
+            )}
+          >
+            {tab.icon}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
