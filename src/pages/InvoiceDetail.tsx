@@ -1,19 +1,17 @@
+
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { invoiceData } from "@/data/invoices";
 import { InvoiceHeader } from "@/components/invoices/detail/InvoiceHeader";
 import { InvoiceTabsNav } from "@/components/invoices/detail/InvoiceTabs";
 import { FinancialData } from "@/components/invoices/detail/FinancialData";
-import { LineItems } from "@/components/invoices/detail/LineItems";
 import { AdditionalInfo } from "@/components/invoices/detail/AdditionalInfo";
 import { Attachments } from "@/components/invoices/detail/Attachments";
 import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
 import { TabContent } from "@/components/invoices/detail/TabContent";
-import { LineItem } from "@/types/invoice";
 
 export default function InvoiceDetail() {
   const { id } = useParams();
-  const [showLineItems, setShowLineItems] = useState(false);
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1.0);
   const [activeTab, setActiveTab] = useState("invoice-data");
@@ -38,7 +36,7 @@ export default function InvoiceDetail() {
   };
 
   // Mock data for line items and attachments
-  const lineItems: LineItem[] = [
+  const lineItems = [
     { id: "1", description: "Software License", quantity: 5, unitPrice: 99.99, total: 499.95 },
     { id: "2", description: "Implementation Services", quantity: 10, unitPrice: 150, total: 1500 },
     { id: "3", description: "Support Package", quantity: 1, unitPrice: 350.25, total: 350.25 }
@@ -60,17 +58,9 @@ export default function InvoiceDetail() {
 
       {activeTab === "invoice-data" ? (
         <>
-          <FinancialData invoice={invoice} />
-          <LineItems 
-            lineItems={lineItems}
-            showLineItems={showLineItems}
-            setShowLineItems={setShowLineItems}
-          />
+          <FinancialData invoice={invoice} lineItems={lineItems} />
           <AdditionalInfo invoice={invoice} />
-          <Attachments
-            attachments={attachments}
-            onViewPdf={() => setShowPdfViewer(true)}
-          />
+          <Attachments attachments={attachments} />
         </>
       ) : (
         <TabContent tab={activeTab} />
