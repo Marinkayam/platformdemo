@@ -1,6 +1,7 @@
 
 import { Activity } from "lucide-react";
 import { ActivityTab } from "./ActivityTab";
+import { RTPDataTab } from "./RTPDataTab";
 
 interface TabContentProps {
   tab: string;
@@ -15,11 +16,7 @@ export function TabContent({ tab }: TabContentProps) {
         </div>
       );
     case "rtp-data":
-      return (
-        <div className="bg-white rounded-lg shadow p-6">
-          <p className="text-muted-foreground">No RTP data available.</p>
-        </div>
-      );
+      return <RTPDataTab />;
     case "portal-records":
       return (
         <div className="bg-white rounded-lg shadow p-6">
