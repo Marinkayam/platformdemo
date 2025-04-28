@@ -29,7 +29,7 @@ export function InvoiceTableRow({
 
   return (
     <TableRow 
-      className={`cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
+      className={`h-14 cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
       onClick={() => onNavigate(invoice.id)}
     >
       <InvoiceNumber 

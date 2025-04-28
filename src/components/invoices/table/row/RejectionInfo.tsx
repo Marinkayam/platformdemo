@@ -15,7 +15,6 @@ export function RejectionInfo({ isRejectedByMonto, isRejectedByBuyer }: Rejectio
       <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
         isRejectedByMonto ? 'bg-[#F3E8FF] text-[#9333EA]' : 'bg-red-50 text-red-600'
       }`}>
-        {/* Show UserX icon for both rejection types */}
         <UserX className="h-3.5 w-3.5" />
         {isRejectedByMonto ? 'Monto' : 'Buyer'}
       </div>
