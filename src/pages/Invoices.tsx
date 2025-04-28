@@ -3,8 +3,18 @@ import { useState } from "react";
 import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
 import { InvoiceFilters, InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/InvoiceFilters";
 import { InvoiceTable } from "@/components/invoices/InvoiceTable";
+import { TableCustomizationDialog } from "@/components/invoices/TableCustomizationDialog";
 import { invoiceData } from "@/data/invoices";
 import { Invoice } from "@/types/invoice";
+import { Button } from "@/components/ui/button";
+import { 
+  DropdownMenu, 
+  DropdownMenuTrigger, 
+  DropdownMenuContent, 
+  DropdownMenuItem 
+} from "@/components/ui/dropdown-menu";
+import { MoreVertical, Settings, Download } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const tabs = [
   { id: "all", label: "All Invoices" },
@@ -21,6 +31,7 @@ export default function Invoices() {
     buyer: "All",
     search: ""
   });
+  const [customizeTableOpen, setCustomizeTableOpen] = useState(false);
   
   // Filter invoices based on active tab and filters
   const filteredInvoices = invoiceData.filter((invoice: Invoice) => {
@@ -53,6 +64,20 @@ export default function Invoices() {
     return true;
   });
 
+  const handleCustomizeTable = (columns: any[]) => {
+    toast({
+      title: "Table customized",
+      description: `${columns.filter(c => c.selected).length} columns selected`,
+    });
+  };
+
+  const handleExportAll = () => {
+    toast({
+      title: "Export started",
+      description: "Exporting all invoices to CSV...",
+    });
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-6">Invoices</h1>
@@ -63,9 +88,35 @@ export default function Invoices() {
         onTabChange={setActiveTab}
       />
       
-      <InvoiceFilters onFilterChange={setFilters} />
+      <div className="flex justify-between items-center mb-6">
+        <InvoiceFilters onFilterChange={setFilters} />
+        
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon" className="ml-2">
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setCustomizeTableOpen(true)}>
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Customise Table</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleExportAll}>
+              <Download className="mr-2 h-4 w-4" />
+              <span>Export All</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       
       <InvoiceTable invoices={filteredInvoices} />
+      
+      <TableCustomizationDialog 
+        open={customizeTableOpen}
+        onOpenChange={setCustomizeTableOpen}
+        onApplyChanges={handleCustomizeTable}
+      />
     </div>
   );
 }

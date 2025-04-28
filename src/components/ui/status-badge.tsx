@@ -11,7 +11,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   const getBadgeStyles = () => {
     switch (status) {
       case "Pending Action":
-        return "bg-[#FFF8E1] text-[#FF9800]";
+        return "bg-[#FFEBEE] text-[#D32F2F]"; // Updated to red styling
       case "Approved by Buyer":
         return "bg-[#E3F2FD] text-[#1976D2]";
       case "Paid":

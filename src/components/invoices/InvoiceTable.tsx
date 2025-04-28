@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
 import { AlertTriangle } from "lucide-react";
 import { Invoice } from "@/types/invoice";
 
@@ -39,6 +39,9 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
     }
   });
 
+  const totalAmount = sortedInvoices.reduce((sum, invoice) => sum + invoice.total, 0);
+  const pendingCount = sortedInvoices.filter(invoice => invoice.status === "Pending Action").length;
+  
   return (
     <div className="rounded-md border">
       <Table>
@@ -92,7 +95,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
             </TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody className="divide-y">
           {sortedInvoices.length === 0 ? (
             <TableRow>
               <TableCell colSpan={6} className="h-24 text-center">
@@ -100,31 +103,47 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
               </TableCell>
             </TableRow>
           ) : (
-            sortedInvoices.map((invoice) => (
-              <TableRow 
-                key={invoice.id}
-                className="cursor-pointer hover:bg-muted/50"
-                onClick={() => navigate(`/invoices/${invoice.id}`)}
-              >
-                <TableCell className="font-medium flex items-center gap-2">
-                  {invoice.hasWarning && (
-                    <AlertTriangle className="h-4 w-4 text-amber-500" />
-                  )}
-                  {invoice.number}
-                </TableCell>
-                <TableCell>{invoice.buyer}</TableCell>
-                <TableCell>{invoice.dueDate}</TableCell>
-                <TableCell>
-                  <StatusBadge status={invoice.status} />
-                </TableCell>
-                <TableCell className="text-right">
-                  ${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                </TableCell>
-                <TableCell>{invoice.owner}</TableCell>
-              </TableRow>
-            ))
+            sortedInvoices.map((invoice) => {
+              const isPending = invoice.status === "Pending Action";
+              return (
+                <TableRow 
+                  key={invoice.id}
+                  className={`cursor-pointer hover:bg-muted/50 ${isPending ? 'bg-red-50/30' : ''}`}
+                  onClick={() => navigate(`/invoices/${invoice.id}`)}
+                >
+                  <TableCell className="font-medium flex items-center gap-2">
+                    {invoice.hasWarning && (
+                      <AlertTriangle className="h-4 w-4 text-amber-500" />
+                    )}
+                    <span className={isPending ? "text-red-600 font-medium" : ""}>
+                      {invoice.number}
+                    </span>
+                  </TableCell>
+                  <TableCell>{invoice.buyer}</TableCell>
+                  <TableCell>{invoice.dueDate}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={invoice.status} />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    ${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  </TableCell>
+                  <TableCell>{invoice.owner}</TableCell>
+                </TableRow>
+              );
+            })
           )}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell>Showing {sortedInvoices.length} invoices</TableCell>
+            <TableCell>{pendingCount} pending</TableCell>
+            <TableCell colSpan={2}></TableCell>
+            <TableCell className="text-right font-medium">
+              ${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            </TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableFooter>
       </Table>
     </div>
   );
