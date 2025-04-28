@@ -1,13 +1,13 @@
-
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, ChevronDown, ChevronUp, File, FileImage, Download, ZoomIn, ZoomOut, X } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronUp, File, FileImage, Download, ZoomIn, ZoomOut, FileText, Activity, Database, Portal, FileX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { invoiceData } from "@/data/invoices";
@@ -17,6 +17,7 @@ export default function InvoiceDetail() {
   const [showLineItems, setShowLineItems] = useState(false);
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1.0);
+  const [activeTab, setActiveTab] = useState("invoice-data");
 
   // Find the invoice by id
   const invoice = invoiceData.find(inv => inv.id === id);
@@ -62,6 +63,270 @@ export default function InvoiceDetail() {
     }
   };
 
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "invoice-data":
+        return (
+          <>
+            {/* Financial Data Section */}
+            <div className="bg-white rounded-lg shadow p-6 mb-6">
+              <h2 className="text-lg font-medium mb-4">Financial Information</h2>
+        
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="total" className="text-sm text-muted-foreground">
+                    Total Amount
+                  </label>
+                  <Input 
+                    id="total"
+                    value={`$${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="dueDate" className="text-sm text-muted-foreground">
+                    Due Date
+                  </label>
+                  <Input 
+                    id="dueDate"
+                    value={invoice.dueDate} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="creationDate" className="text-sm text-muted-foreground">
+                    Creation Date
+                  </label>
+                  <Input 
+                    id="creationDate"
+                    value={invoice.creationDate} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="subtotal" className="text-sm text-muted-foreground">
+                    Subtotal
+                  </label>
+                  <Input 
+                    id="subtotal"
+                    value={`$${(invoice.subtotal || invoice.total * 0.9).toLocaleString('en-US', { minimumFractionDigits: 2 })}`} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="tax" className="text-sm text-muted-foreground">
+                    Tax
+                  </label>
+                  <Input 
+                    id="tax"
+                    value={`$${(invoice.tax || invoice.total * 0.1).toLocaleString('en-US', { minimumFractionDigits: 2 })}`} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="currency" className="text-sm text-muted-foreground">
+                    Currency
+                  </label>
+                  <Input 
+                    id="currency"
+                    value={invoice.currency || "USD"} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="paymentTerms" className="text-sm text-muted-foreground">
+                    Payment Terms
+                  </label>
+                  <Input 
+                    id="paymentTerms"
+                    value={invoice.paymentTerms || "Net 30"} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Line Items Accordion */}
+            <div className="bg-white rounded-lg shadow p-6 mb-6">
+              <Collapsible open={showLineItems} onOpenChange={setShowLineItems}>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-medium">Line Items</h2>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" size="sm">
+                      {showLineItems ? <ChevronUp className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+                      {showLineItems ? "Hide" : "Show"} Line Items
+                    </Button>
+                  </CollapsibleTrigger>
+                </div>
+                
+                <CollapsibleContent className="mt-4">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Description</TableHead>
+                        <TableHead className="text-right">Quantity</TableHead>
+                        <TableHead className="text-right">Unit Price</TableHead>
+                        <TableHead className="text-right">Total</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {lineItems.map((item) => (
+                        <TableRow key={item.id}>
+                          <TableCell>{item.description}</TableCell>
+                          <TableCell className="text-right">{item.quantity}</TableCell>
+                          <TableCell className="text-right">
+                            ${item.unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            ${item.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+
+            {/* Additional Information Section */}
+            <div className="bg-white rounded-lg shadow p-6 mb-6">
+              <h2 className="text-lg font-medium mb-4">Additional Information</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="poNumber" className="text-sm text-muted-foreground">
+                    PO Number
+                  </label>
+                  <Input 
+                    id="poNumber"
+                    value={invoice.poNumber || "PO-123456"} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="taxId" className="text-sm text-muted-foreground">
+                    Tax ID
+                  </label>
+                  <Input 
+                    id="taxId"
+                    value={invoice.taxId || "TAX-987654321"} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="buyer" className="text-sm text-muted-foreground">
+                    Buyer
+                  </label>
+                  <Input 
+                    id="buyer"
+                    value={invoice.buyer} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="requesterEmail" className="text-sm text-muted-foreground">
+                    Requester Email
+                  </label>
+                  <Input 
+                    id="requesterEmail"
+                    value={invoice.requesterEmail || "requester@example.com"} 
+                    readOnly 
+                    className="bg-muted/50"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Attachments Section */}
+            <div className="bg-white rounded-lg shadow p-6 mb-6">
+              <h2 className="text-lg font-medium mb-4">Attachments</h2>
+              
+              <div className="space-y-4">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start" 
+                  onClick={() => setShowPdfViewer(true)}
+                >
+                  <File className="mr-2 h-4 w-4" /> 
+                  View Invoice PDF
+                </Button>
+                
+                <Separator />
+                
+                <ul className="space-y-3">
+                  {attachments.map((attachment) => (
+                    <li key={attachment.id} className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        {getFileIcon(attachment.fileType)}
+                        <span>{attachment.fileName}</span>
+                      </div>
+                      <Button size="sm" variant="ghost">
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </>
+        );
+      case "exceptions":
+        return (
+          <div className="bg-white rounded-lg shadow p-6">
+            <p className="text-muted-foreground">No exceptions found for this invoice.</p>
+          </div>
+        );
+      case "rtp-data":
+        return (
+          <div className="bg-white rounded-lg shadow p-6">
+            <p className="text-muted-foreground">No RTP data available.</p>
+          </div>
+        );
+      case "portal-records":
+        return (
+          <div className="bg-white rounded-lg shadow p-6">
+            <p className="text-muted-foreground">No portal records found.</p>
+          </div>
+        );
+      case "activity":
+        return (
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-sm">
+                <Activity size={16} className="text-muted-foreground" />
+                <span className="text-muted-foreground">Invoice created</span>
+                <span className="text-xs text-muted-foreground">2 days ago</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <Activity size={16} className="text-muted-foreground" />
+                <span className="text-muted-foreground">Status updated to Pending Action</span>
+                <span className="text-xs text-muted-foreground">1 day ago</span>
+              </div>
+            </div>
+          </div>
+        );
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-6">
       {/* Header */}
@@ -75,7 +340,7 @@ export default function InvoiceDetail() {
           </Button>
         </div>
         
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl font-bold">{invoice.number}</h1>
             <p className="text-muted-foreground">Owner: {invoice.owner}</p>
@@ -91,227 +356,49 @@ export default function InvoiceDetail() {
             <StatusBadge status={invoice.status} />
           </div>
         </div>
+
+        <Tabs defaultValue="invoice-data" className="w-full" onValueChange={setActiveTab}>
+          <TabsList className="w-full justify-start bg-transparent border-b rounded-none h-auto p-0 mb-6">
+            <TabsTrigger 
+              value="invoice-data" 
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <FileText className="mr-2 h-4 w-4" />
+              Invoice Data
+            </TabsTrigger>
+            <TabsTrigger 
+              value="exceptions" 
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <FileX className="mr-2 h-4 w-4" />
+              Exceptions
+            </TabsTrigger>
+            <TabsTrigger 
+              value="rtp-data" 
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <Database className="mr-2 h-4 w-4" />
+              RTP Data
+            </TabsTrigger>
+            <TabsTrigger 
+              value="portal-records" 
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <Portal className="mr-2 h-4 w-4" />
+              Portal Records
+            </TabsTrigger>
+            <TabsTrigger 
+              value="activity" 
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <Activity className="mr-2 h-4 w-4" />
+              Activity
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
 
-      {/* Financial Data Section */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-lg font-medium mb-4">Financial Information</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <label htmlFor="total" className="text-sm text-muted-foreground">
-              Total Amount
-            </label>
-            <Input 
-              id="total"
-              value={`$${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label htmlFor="dueDate" className="text-sm text-muted-foreground">
-              Due Date
-            </label>
-            <Input 
-              id="dueDate"
-              value={invoice.dueDate} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label htmlFor="creationDate" className="text-sm text-muted-foreground">
-              Creation Date
-            </label>
-            <Input 
-              id="creationDate"
-              value={invoice.creationDate} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label htmlFor="subtotal" className="text-sm text-muted-foreground">
-              Subtotal
-            </label>
-            <Input 
-              id="subtotal"
-              value={`$${(invoice.subtotal || invoice.total * 0.9).toLocaleString('en-US', { minimumFractionDigits: 2 })}`} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label htmlFor="tax" className="text-sm text-muted-foreground">
-              Tax
-            </label>
-            <Input 
-              id="tax"
-              value={`$${(invoice.tax || invoice.total * 0.1).toLocaleString('en-US', { minimumFractionDigits: 2 })}`} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label htmlFor="currency" className="text-sm text-muted-foreground">
-              Currency
-            </label>
-            <Input 
-              id="currency"
-              value={invoice.currency || "USD"} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label htmlFor="paymentTerms" className="text-sm text-muted-foreground">
-              Payment Terms
-            </label>
-            <Input 
-              id="paymentTerms"
-              value={invoice.paymentTerms || "Net 30"} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Line Items Accordion */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <Collapsible open={showLineItems} onOpenChange={setShowLineItems}>
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-medium">Line Items</h2>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm">
-                {showLineItems ? <ChevronUp className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
-                {showLineItems ? "Hide" : "Show"} Line Items
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-          
-          <CollapsibleContent className="mt-4">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Description</TableHead>
-                  <TableHead className="text-right">Quantity</TableHead>
-                  <TableHead className="text-right">Unit Price</TableHead>
-                  <TableHead className="text-right">Total</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {lineItems.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.description}</TableCell>
-                    <TableCell className="text-right">{item.quantity}</TableCell>
-                    <TableCell className="text-right">
-                      ${item.unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      ${item.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CollapsibleContent>
-        </Collapsible>
-      </div>
-
-      {/* Additional Information Section */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-lg font-medium mb-4">Additional Information</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <label htmlFor="poNumber" className="text-sm text-muted-foreground">
-              PO Number
-            </label>
-            <Input 
-              id="poNumber"
-              value={invoice.poNumber || "PO-123456"} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label htmlFor="taxId" className="text-sm text-muted-foreground">
-              Tax ID
-            </label>
-            <Input 
-              id="taxId"
-              value={invoice.taxId || "TAX-987654321"} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label htmlFor="buyer" className="text-sm text-muted-foreground">
-              Buyer
-            </label>
-            <Input 
-              id="buyer"
-              value={invoice.buyer} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label htmlFor="requesterEmail" className="text-sm text-muted-foreground">
-              Requester Email
-            </label>
-            <Input 
-              id="requesterEmail"
-              value={invoice.requesterEmail || "requester@example.com"} 
-              readOnly 
-              className="bg-muted/50"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Attachments Section */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-lg font-medium mb-4">Attachments</h2>
-        
-        <div className="space-y-4">
-          <Button 
-            variant="outline" 
-            className="w-full justify-start" 
-            onClick={() => setShowPdfViewer(true)}
-          >
-            <File className="mr-2 h-4 w-4" /> 
-            View Invoice PDF
-          </Button>
-          
-          <Separator />
-          
-          <ul className="space-y-3">
-            {attachments.map((attachment) => (
-              <li key={attachment.id} className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  {getFileIcon(attachment.fileType)}
-                  <span>{attachment.fileName}</span>
-                </div>
-                <Button size="sm" variant="ghost">
-                  <Download className="h-4 w-4" />
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      {renderTabContent()}
 
       {/* PDF Viewer Modal */}
       <Dialog open={showPdfViewer} onOpenChange={setShowPdfViewer}>
