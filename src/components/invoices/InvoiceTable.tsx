@@ -76,7 +76,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
             </TableHead>
             <TableHead className="text-[14px] font-medium text-gray-600">Status</TableHead>
             <TableHead 
-              className="text-right cursor-pointer text-[14px] font-medium text-gray-600"
+              className="cursor-pointer text-[14px] font-medium text-gray-600"
               onClick={() => handleSort('total')}
             >
               Total
@@ -121,10 +121,10 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                   </TableCell>
                   <TableCell className="text-[14px] text-gray-900">{invoice.buyer}</TableCell>
                   <TableCell className="text-[14px] text-gray-900">{invoice.dueDate}</TableCell>
-                  <TableCell>
+                  <TableCell className="py-3">
                     <StatusBadge status={invoice.status} />
                   </TableCell>
-                  <TableCell className="text-right text-[14px] text-gray-900">
+                  <TableCell className="text-[14px] text-gray-900">
                     ${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </TableCell>
                   <TableCell className="text-[14px] text-gray-900">{invoice.owner}</TableCell>
@@ -142,7 +142,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
               {pendingCount} pending
             </TableCell>
             <TableCell colSpan={2}></TableCell>
-            <TableCell className="text-right font-medium text-[14px] text-gray-900">
+            <TableCell className="text-[14px] font-medium text-gray-900">
               ${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </TableCell>
             <TableCell></TableCell>
