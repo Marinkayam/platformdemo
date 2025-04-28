@@ -20,6 +20,8 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         return "bg-red-100 text-red-600";
       case "Rejected by Buyer":
         return "bg-red-50 text-red-600";
+      case "Rejected by Monto":
+        return "bg-[#D6BCFA] text-[#9b87f5]";
       case "Approved by Buyer":
         return "bg-orange-100 text-orange-600";
       case "External Submission":

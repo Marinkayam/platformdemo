@@ -1,3 +1,4 @@
+
 export interface Invoice {
   id: string;
   number: string;
@@ -29,6 +30,7 @@ export type InvoiceStatus =
   | 'RTP Sent'
   | 'Pending Action'
   | 'Rejected by Buyer'
+  | 'Rejected by Monto'
   | 'Approved by Buyer'
   | 'External Submission'
   | 'Paid'
