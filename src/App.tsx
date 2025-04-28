@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout } from "./components/layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Invoices from "./pages/Invoices";
+import InvoiceDetail from "./pages/InvoiceDetail";
 import NotFoundPage from "./pages/NotFoundPage";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,14 @@ const App = () => (
             element={
               <MainLayout>
                 <Invoices />
+              </MainLayout>
+            } 
+          />
+          <Route 
+            path="/invoices/:id" 
+            element={
+              <MainLayout>
+                <InvoiceDetail />
               </MainLayout>
             } 
           />

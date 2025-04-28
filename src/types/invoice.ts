@@ -9,6 +9,32 @@ export interface Invoice {
   creationDate: string;
   owner: string;
   hasWarning?: boolean;
+  subtotal?: number;
+  tax?: number;
+  paymentTerms?: string;
+  currency?: string;
+  poNumber?: string;
+  taxId?: string;
+  requesterEmail?: string;
+  documentType?: 'Invoice' | 'Credit Memo';
+  isOverdue?: boolean;
+  lineItems?: LineItem[];
+  attachments?: Attachment[];
+}
+
+export interface LineItem {
+  id: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+}
+
+export interface Attachment {
+  id: string;
+  fileName: string;
+  fileType: 'pdf' | 'image' | 'audio' | 'video' | 'document';
+  url: string;
 }
 
 export type InvoiceStatus = 

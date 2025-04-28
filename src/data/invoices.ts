@@ -10,7 +10,23 @@ export const invoiceData: Invoice[] = [
     status: "Pending Action",
     total: 564534.55,
     creationDate: "04/28/2024",
-    owner: "Camila"
+    owner: "Camila",
+    subtotal: 513213.23,
+    tax: 51321.32,
+    currency: "USD",
+    paymentTerms: "Net 30",
+    poNumber: "PO-ADI-2024-001",
+    taxId: "TAX-123456-ADI",
+    requesterEmail: "procurement@adidas.com",
+    documentType: "Invoice",
+    lineItems: [
+      { id: "1-1", description: "Sports Equipment", quantity: 500, unitPrice: 799.99, total: 399995 },
+      { id: "1-2", description: "Marketing Services", quantity: 1, unitPrice: 164539.55, total: 164539.55 }
+    ],
+    attachments: [
+      { id: "1-1", fileName: "Invoice_100123322.pdf", fileType: "pdf", url: "#" },
+      { id: "1-2", fileName: "Contract_ADI2024.pdf", fileType: "pdf", url: "#" }
+    ]
   },
   {
     id: "2",
@@ -20,7 +36,16 @@ export const invoiceData: Invoice[] = [
     status: "Pending Action",
     total: 12423,
     creationDate: "04/26/2024",
-    owner: "Camila"
+    owner: "Camila",
+    subtotal: 11293.64,
+    tax: 1129.36,
+    currency: "USD",
+    paymentTerms: "Net 45",
+    poNumber: "PO-MRV-11215",
+    taxId: "TAX-789012-MRV",
+    requesterEmail: "finance@marvel.com",
+    documentType: "Invoice",
+    isOverdue: true
   },
   {
     id: "3",
@@ -31,7 +56,15 @@ export const invoiceData: Invoice[] = [
     total: 15020.34,
     creationDate: "09/15/2024",
     owner: "Camila",
-    hasWarning: true
+    hasWarning: true,
+    subtotal: 13654.85,
+    tax: 1365.49,
+    currency: "USD",
+    paymentTerms: "Net 15",
+    poNumber: "PO-AMZ-87652",
+    taxId: "TAX-345678-AMZ",
+    requesterEmail: "accounts@amazon.com",
+    documentType: "Invoice"
   },
   {
     id: "4",
@@ -41,7 +74,15 @@ export const invoiceData: Invoice[] = [
     status: "Pending Action",
     total: 5202.15,
     creationDate: "09/15/2024",
-    owner: "Rihana"
+    owner: "Rihana",
+    subtotal: 4729.23,
+    tax: 472.92,
+    currency: "USD",
+    paymentTerms: "Net 30",
+    poNumber: "PO-SHI-43512",
+    taxId: "TAX-901234-SHI",
+    requesterEmail: "ap@shimoni.com",
+    documentType: "Invoice"
   },
   {
     id: "5",
@@ -51,7 +92,15 @@ export const invoiceData: Invoice[] = [
     status: "Approved by Buyer",
     total: 5000,
     creationDate: "09/15/2024",
-    owner: "Madona"
+    owner: "Madona",
+    subtotal: 4545.45,
+    tax: 454.55,
+    currency: "USD",
+    paymentTerms: "Net 15",
+    poNumber: "PO-APL-76123",
+    taxId: "TAX-567890-APL",
+    requesterEmail: "procurement@apple.com",
+    documentType: "Invoice"
   },
   {
     id: "6",
@@ -61,7 +110,15 @@ export const invoiceData: Invoice[] = [
     status: "Approved by Buyer",
     total: 2000,
     creationDate: "09/15/2024",
-    owner: "Lady Gaga"
+    owner: "Lady Gaga",
+    subtotal: 1818.18,
+    tax: 181.82,
+    currency: "USD",
+    paymentTerms: "Net 30",
+    poNumber: "PO-SMS-54321",
+    taxId: "TAX-123789-SMS",
+    requesterEmail: "finance@samsung.com",
+    documentType: "Credit Memo"
   },
   {
     id: "7",
@@ -72,7 +129,15 @@ export const invoiceData: Invoice[] = [
     total: 150,
     creationDate: "09/15/2024",
     owner: "Lady Gaga",
-    hasWarning: true
+    hasWarning: true,
+    subtotal: 136.36,
+    tax: 13.64,
+    currency: "USD",
+    paymentTerms: "Net 30",
+    poNumber: "PO-GLD-12399",
+    taxId: "TAX-456123-GLD",
+    requesterEmail: "ar@golda.com",
+    documentType: "Invoice"
   },
   {
     id: "8",
@@ -82,7 +147,15 @@ export const invoiceData: Invoice[] = [
     status: "Paid",
     total: 1423424.12,
     creationDate: "09/15/2024",
-    owner: "Lady Gaga"
+    owner: "Lady Gaga",
+    subtotal: 1294022.84,
+    tax: 129401.28,
+    currency: "USD",
+    paymentTerms: "Net 60",
+    poNumber: "PO-FGM-86753",
+    taxId: "TAX-789456-FGM",
+    requesterEmail: "payments@figma.com",
+    documentType: "Invoice"
   },
   {
     id: "9",
@@ -92,7 +165,15 @@ export const invoiceData: Invoice[] = [
     status: "External Submission",
     total: 5,
     creationDate: "09/15/2024",
-    owner: "Lady Gaga"
+    owner: "Lady Gaga",
+    subtotal: 4.55,
+    tax: 0.45,
+    currency: "USD",
+    paymentTerms: "Net 15",
+    poNumber: "PO-BMX-00512",
+    taxId: "TAX-321654-BMX",
+    requesterEmail: "ap@bmx.com",
+    documentType: "Credit Memo"
   },
   {
     id: "10",
@@ -102,7 +183,15 @@ export const invoiceData: Invoice[] = [
     status: "Settled",
     total: 513,
     creationDate: "09/15/2024",
-    owner: "Madona"
+    owner: "Madona",
+    subtotal: 466.36,
+    tax: 46.64,
+    currency: "USD",
+    paymentTerms: "Net 30",
+    poNumber: "PO-APL-98765",
+    taxId: "TAX-567890-APL",
+    requesterEmail: "procurement@apple.com",
+    documentType: "Invoice"
   },
   {
     id: "11",
@@ -112,7 +201,15 @@ export const invoiceData: Invoice[] = [
     status: "Awaiting SC",
     total: 5000,
     creationDate: "09/15/2024",
-    owner: "Madona"
+    owner: "Madona",
+    subtotal: 4545.45,
+    tax: 454.55,
+    currency: "USD",
+    paymentTerms: "Net 45",
+    poNumber: "PO-NFL-34567",
+    taxId: "TAX-654987-NFL",
+    requesterEmail: "accounts@netflix.com",
+    documentType: "Invoice"
   },
   {
     id: "12",
@@ -122,6 +219,14 @@ export const invoiceData: Invoice[] = [
     status: "Paid",
     total: 12100,
     creationDate: "09/15/2024",
-    owner: "Madona"
+    owner: "Madona",
+    subtotal: 11000,
+    tax: 1100,
+    currency: "USD",
+    paymentTerms: "Net 30",
+    poNumber: "PO-AMZ-23456",
+    taxId: "TAX-345678-AMZ",
+    requesterEmail: "accounts@amazon.com",
+    documentType: "Invoice"
   }
 ];
