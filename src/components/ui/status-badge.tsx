@@ -40,7 +40,9 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
     }
   };
 
-  const showRejectionIcon = status === "Rejected by Buyer";
+  const isRejectedByBuyer = status === "Rejected by Buyer";
+  const isRejectedByMonto = status === "Rejected by Monto";
+  const showRejectionIcon = isRejectedByBuyer || isRejectedByMonto;
 
   return (
     <span
@@ -51,7 +53,11 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
       )}
     >
       {showRejectionIcon && <UserX className="h-3.5 w-3.5 mr-1.5" />}
-      {status === "Rejected by Monto" ? "Monto" : status === "Rejected by Buyer" ? "Buyer" : status}
+      {isRejectedByMonto 
+        ? "Monto" 
+        : isRejectedByBuyer 
+          ? "Buyer" 
+          : status}
     </span>
   );
 }

@@ -1,3 +1,4 @@
+
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -28,7 +29,7 @@ export function InvoiceTableRow({
 
   return (
     <TableRow 
-      className={`h-14 cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
+      className={`cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
       onClick={() => onNavigate(invoice.id)}
     >
       <InvoiceNumber 

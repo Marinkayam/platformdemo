@@ -23,5 +23,16 @@ export const rejectedInvoices = [
     "09/15/2024",
     "Camila",
     { rejectedBy: "Buyer" }
+  ),
+  getBasicInvoiceData(
+    "18",
+    "INV-100121313",
+    "Microsoft",
+    "09/20/2024",
+    "Rejected by Monto",
+    34560.75,
+    "09/15/2024",
+    "Taylor Swift",
+    { rejectedBy: "Monto" }
   )
 ];
