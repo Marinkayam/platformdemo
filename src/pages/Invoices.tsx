@@ -110,7 +110,10 @@ export default function Invoices() {
         </DropdownMenu>
       </div>
       
-      <InvoiceTable invoices={filteredInvoices} />
+      <InvoiceTable 
+        invoices={filteredInvoices} 
+        isPendingTab={activeTab === "pending"}
+      />
       
       <TableCustomizationDialog 
         open={customizeTableOpen}

@@ -1,16 +1,16 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { StatusBadge } from "@/components/ui/status-badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
 import { AlertTriangle, UserCircle2 } from "lucide-react";
 import { Invoice } from "@/types/invoice";
 
 interface InvoiceTableProps {
   invoices: Invoice[];
+  isPendingTab?: boolean;
 }
 
-export function InvoiceTable({ invoices }: InvoiceTableProps) {
+export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTableProps) {
   const navigate = useNavigate();
   const [sortField, setSortField] = useState<keyof Invoice | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
@@ -110,9 +110,9 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                   <TableCell className="text-[14px] text-gray-900">
                     <div className="flex items-center gap-2">
                       {invoice.buyer}
-                      {(isRejectedByMonto || isRejectedByBuyer) && (
+                      {isPendingTab && (isRejectedByMonto || isRejectedByBuyer) && (
                         <span className={`text-[12px] px-2 py-0.5 rounded-full ${
-                          isRejectedByMonto ? 'bg-primary/10 text-primary' : 'bg-red-50 text-red-600'
+                          isRejectedByMonto ? 'bg-[#D6BCFA] text-[#9b87f5]' : 'bg-red-50 text-[#ea384c]'
                         }`}>
                           {isRejectedByMonto ? '(By Monto)' : '(By Buyer)'}
                         </span>
