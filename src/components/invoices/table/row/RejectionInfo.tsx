@@ -1,5 +1,6 @@
 
 import { TableCell } from "@/components/ui/table";
+import { UserX } from "lucide-react";
 
 interface RejectionInfoProps {
   isRejectedByMonto: boolean;
@@ -11,11 +12,12 @@ export function RejectionInfo({ isRejectedByMonto, isRejectedByBuyer }: Rejectio
 
   return (
     <TableCell className="text-[14px] text-gray-900">
-      <span className={`text-[12px] px-2 py-0.5 rounded-full ${
-        isRejectedByMonto ? 'bg-[#D6BCFA] text-[#9b87f5]' : 'bg-red-50 text-[#ea384c]'
+      <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+        isRejectedByMonto ? 'bg-[#F3E8FF] text-[#9333EA]' : 'bg-red-50 text-red-600'
       }`}>
-        {isRejectedByMonto ? 'By Monto' : 'By Buyer'}
-      </span>
+        {isRejectedByBuyer && <UserX className="h-3.5 w-3.5" />}
+        {isRejectedByMonto ? 'Monto' : 'Buyer'}
+      </div>
     </TableCell>
   );
 }

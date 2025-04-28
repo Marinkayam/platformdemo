@@ -1,6 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import { InvoiceStatus } from "@/types/invoice";
+import { UserX } from "lucide-react";
 
 interface StatusBadgeProps {
   status: InvoiceStatus;
@@ -21,7 +22,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
       case "Rejected by Buyer":
         return "bg-red-50 text-red-600";
       case "Rejected by Monto":
-        return "bg-[#D6BCFA] text-[#9b87f5]";
+        return "bg-[#F3E8FF] text-[#9333EA]";
       case "Approved by Buyer":
         return "bg-orange-100 text-orange-600";
       case "External Submission":
@@ -39,15 +40,18 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
     }
   };
 
+  const showRejectionIcon = status === "Rejected by Buyer";
+
   return (
     <span
       className={cn(
-        "px-3 py-1 rounded-full text-[12px] font-medium whitespace-nowrap",
+        "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap",
         getBadgeStyles(),
         className
       )}
     >
-      {status}
+      {showRejectionIcon && <UserX className="h-3.5 w-3.5 mr-1.5" />}
+      {status === "Rejected by Monto" ? "Monto" : status === "Rejected by Buyer" ? "Buyer" : status}
     </span>
   );
 }
