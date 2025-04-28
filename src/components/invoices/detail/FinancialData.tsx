@@ -1,4 +1,6 @@
 
+import { Invoice } from "@/types/invoice";
+
 export function FinancialData({ invoice }: { invoice: Invoice }) {
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-6">
