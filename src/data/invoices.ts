@@ -2,6 +2,7 @@
 import { Invoice } from "@/types/invoice";
 
 export const invoiceData: Invoice[] = [
+  // 5 Pending Action
   {
     id: "1",
     number: "INV-100123322",
@@ -11,23 +12,9 @@ export const invoiceData: Invoice[] = [
     total: 564534.55,
     creationDate: "04/28/2024",
     owner: "Camila",
-    assignee: "john.doe@example.com",
     subtotal: 513213.23,
     tax: 51321.32,
-    currency: "USD",
-    paymentTerms: "Net 30",
-    poNumber: "PO-ADI-2024-001",
-    taxId: "TAX-123456-ADI",
-    requesterEmail: "procurement@adidas.com",
-    documentType: "Invoice",
-    lineItems: [
-      { id: "1-1", description: "Sports Equipment", quantity: 500, unitPrice: 799.99, total: 399995 },
-      { id: "1-2", description: "Marketing Services", quantity: 1, unitPrice: 164539.55, total: 164539.55 }
-    ],
-    attachments: [
-      { id: "1-1", fileName: "Invoice_100123322.pdf", fileType: "pdf", url: "#" },
-      { id: "1-2", fileName: "Contract_ADI2024.pdf", fileType: "pdf", url: "#" }
-    ]
+    currency: "USD"
   },
   {
     id: "2",
@@ -35,19 +22,10 @@ export const invoiceData: Invoice[] = [
     buyer: "Marvel",
     dueDate: "12/31/2024",
     status: "Pending Action",
-    rejectedBy: "Buyer",
     total: 12423,
     creationDate: "04/26/2024",
     owner: "Camila",
-    subtotal: 11293.64,
-    tax: 1129.36,
-    currency: "USD",
-    paymentTerms: "Net 45",
-    poNumber: "PO-MRV-11215",
-    taxId: "TAX-789012-MRV",
-    requesterEmail: "finance@marvel.com",
-    documentType: "Invoice",
-    isOverdue: true
+    currency: "USD"
   },
   {
     id: "3",
@@ -55,19 +33,10 @@ export const invoiceData: Invoice[] = [
     buyer: "Amazon",
     dueDate: "09/15/2024",
     status: "Pending Action",
-    rejectedBy: "Monto",
     total: 15020.34,
     creationDate: "09/15/2024",
     owner: "Camila",
-    hasWarning: true,
-    subtotal: 13654.85,
-    tax: 1365.49,
-    currency: "USD",
-    paymentTerms: "Net 15",
-    poNumber: "PO-AMZ-87652",
-    taxId: "TAX-345678-AMZ",
-    requesterEmail: "accounts@amazon.com",
-    documentType: "Invoice"
+    currency: "USD"
   },
   {
     id: "4",
@@ -78,158 +47,204 @@ export const invoiceData: Invoice[] = [
     total: 5202.15,
     creationDate: "09/15/2024",
     owner: "Rihana",
-    subtotal: 4729.23,
-    tax: 472.92,
-    currency: "USD",
-    paymentTerms: "Net 30",
-    poNumber: "PO-SHI-43512",
-    taxId: "TAX-901234-SHI",
-    requesterEmail: "ap@shimoni.com",
-    documentType: "Invoice"
+    currency: "USD"
   },
   {
     id: "5",
-    number: "INV-100231298",
-    buyer: "Apple",
+    number: "INV-100121300",
+    buyer: "Nike",
     dueDate: "09/15/2024",
-    status: "Approved by Buyer",
-    total: 5000,
+    status: "Pending Action",
+    total: 8750.90,
     creationDate: "09/15/2024",
     owner: "Madona",
-    subtotal: 4545.45,
-    tax: 454.55,
-    currency: "USD",
-    paymentTerms: "Net 15",
-    poNumber: "PO-APL-76123",
-    taxId: "TAX-567890-APL",
-    requesterEmail: "procurement@apple.com",
-    documentType: "Invoice"
+    currency: "USD"
   },
+  
+  // 3 Paid
   {
     id: "6",
-    number: "INV-100123342",
-    buyer: "Samsung",
+    number: "INV-100121301",
+    buyer: "Google",
     dueDate: "09/15/2024",
-    status: "Approved by Buyer",
-    total: 2000,
+    status: "Paid",
+    total: 45000.00,
     creationDate: "09/15/2024",
     owner: "Lady Gaga",
-    subtotal: 1818.18,
-    tax: 181.82,
-    currency: "USD",
-    paymentTerms: "Net 30",
-    poNumber: "PO-SMS-54321",
-    taxId: "TAX-123789-SMS",
-    requesterEmail: "finance@samsung.com",
-    documentType: "Credit Memo"
+    currency: "USD"
   },
   {
     id: "7",
-    number: "INV-100121298",
-    buyer: "Golda",
+    number: "INV-100121302",
+    buyer: "Microsoft",
     dueDate: "09/15/2024",
     status: "Paid",
-    total: 150,
+    total: 32150.75,
     creationDate: "09/15/2024",
     owner: "Lady Gaga",
-    hasWarning: true,
-    subtotal: 136.36,
-    tax: 13.64,
-    currency: "USD",
-    paymentTerms: "Net 30",
-    poNumber: "PO-GLD-12399",
-    taxId: "TAX-456123-GLD",
-    requesterEmail: "ar@golda.com",
-    documentType: "Invoice"
+    currency: "USD"
   },
   {
     id: "8",
-    number: "INV-100121242",
-    buyer: "Figma",
-    dueDate: "09/15/2024",
-    status: "Paid",
-    total: 1423424.12,
-    creationDate: "09/15/2024",
-    owner: "Lady Gaga",
-    subtotal: 1294022.84,
-    tax: 129401.28,
-    currency: "USD",
-    paymentTerms: "Net 60",
-    poNumber: "PO-FGM-86753",
-    taxId: "TAX-789456-FGM",
-    requesterEmail: "payments@figma.com",
-    documentType: "Invoice"
-  },
-  {
-    id: "9",
-    number: "INV-100121212",
-    buyer: "BMX",
-    dueDate: "09/15/2024",
-    status: "External Submission",
-    total: 5,
-    creationDate: "09/15/2024",
-    owner: "Lady Gaga",
-    subtotal: 4.55,
-    tax: 0.45,
-    currency: "USD",
-    paymentTerms: "Net 15",
-    poNumber: "PO-BMX-00512",
-    taxId: "TAX-321654-BMX",
-    requesterEmail: "ap@bmx.com",
-    documentType: "Credit Memo"
-  },
-  {
-    id: "10",
-    number: "INV-100121211",
+    number: "INV-100121303",
     buyer: "Apple",
     dueDate: "09/15/2024",
-    status: "Settled",
-    total: 513,
+    status: "Paid",
+    total: 28900.45,
     creationDate: "09/15/2024",
     owner: "Madona",
-    subtotal: 466.36,
-    tax: 46.64,
-    currency: "USD",
-    paymentTerms: "Net 30",
-    poNumber: "PO-APL-98765",
-    taxId: "TAX-567890-APL",
-    requesterEmail: "procurement@apple.com",
-    documentType: "Invoice"
+    currency: "USD"
+  },
+  
+  // 1 Settled
+  {
+    id: "9",
+    number: "INV-100121304",
+    buyer: "Facebook",
+    dueDate: "09/15/2024",
+    status: "Settled",
+    total: 67800.25,
+    creationDate: "09/15/2024",
+    owner: "Camila",
+    currency: "USD"
+  },
+  
+  // 3 Awaiting SC
+  {
+    id: "10",
+    number: "INV-100121305",
+    buyer: "Twitter",
+    dueDate: "09/15/2024",
+    status: "Awaiting SC",
+    total: 9400.50,
+    creationDate: "09/15/2024",
+    owner: "Rihana",
+    currency: "USD"
   },
   {
     id: "11",
-    number: "INV-100121291",
-    buyer: "Netflix",
+    number: "INV-100121306",
+    buyer: "LinkedIn",
     dueDate: "09/15/2024",
     status: "Awaiting SC",
-    total: 5000,
+    total: 12600.80,
     creationDate: "09/15/2024",
     owner: "Madona",
-    subtotal: 4545.45,
-    tax: 454.55,
-    currency: "USD",
-    paymentTerms: "Net 45",
-    poNumber: "PO-NFL-34567",
-    taxId: "TAX-654987-NFL",
-    requesterEmail: "accounts@netflix.com",
-    documentType: "Invoice"
+    currency: "USD"
   },
   {
     id: "12",
-    number: "INV-100121281",
-    buyer: "Amazon",
+    number: "INV-100121307",
+    buyer: "Netflix",
     dueDate: "09/15/2024",
-    status: "Paid",
-    total: 12100,
+    status: "Awaiting SC",
+    total: 18900.35,
+    creationDate: "09/15/2024",
+    owner: "Lady Gaga",
+    currency: "USD"
+  },
+  
+  // 1 Excluded
+  {
+    id: "13",
+    number: "INV-100121308",
+    buyer: "Spotify",
+    dueDate: "09/15/2024",
+    status: "Excluded",
+    total: 4500.60,
+    creationDate: "09/15/2024",
+    owner: "Camila",
+    currency: "USD"
+  },
+  
+  // 1 RTP Prepared
+  {
+    id: "14",
+    number: "INV-100121309",
+    buyer: "Adobe",
+    dueDate: "09/15/2024",
+    status: "RTP Prepared",
+    total: 23400.90,
+    creationDate: "09/15/2024",
+    owner: "Rihana",
+    currency: "USD"
+  },
+  
+  // 1 RTP Sent
+  {
+    id: "15",
+    number: "INV-100121310",
+    buyer: "Samsung",
+    dueDate: "09/15/2024",
+    status: "RTP Sent",
+    total: 42600.70,
     creationDate: "09/15/2024",
     owner: "Madona",
-    subtotal: 11000,
-    tax: 1100,
-    currency: "USD",
-    paymentTerms: "Net 30",
-    poNumber: "PO-AMZ-23456",
-    taxId: "TAX-345678-AMZ",
-    requesterEmail: "accounts@amazon.com",
-    documentType: "Invoice"
+    currency: "USD"
+  },
+  
+  // 2 Rejected by Buyer
+  {
+    id: "16",
+    number: "INV-100121311",
+    buyer: "Intel",
+    dueDate: "09/15/2024",
+    status: "Rejected by Buyer",
+    total: 31200.45,
+    creationDate: "09/15/2024",
+    owner: "Lady Gaga",
+    rejectedBy: "Buyer",
+    currency: "USD"
+  },
+  {
+    id: "17",
+    number: "INV-100121312",
+    buyer: "AMD",
+    dueDate: "09/15/2024",
+    status: "Rejected by Buyer",
+    total: 27800.90,
+    creationDate: "09/15/2024",
+    owner: "Camila",
+    rejectedBy: "Buyer",
+    currency: "USD"
+  },
+  
+  // 1 Approved by Buyer
+  {
+    id: "18",
+    number: "INV-100121313",
+    buyer: "Oracle",
+    dueDate: "09/15/2024",
+    status: "Approved by Buyer",
+    total: 54300.25,
+    creationDate: "09/15/2024",
+    owner: "Rihana",
+    currency: "USD"
+  },
+  
+  // 1 External Submission
+  {
+    id: "19",
+    number: "INV-100121314",
+    buyer: "Cisco",
+    dueDate: "09/15/2024",
+    status: "External Submission",
+    total: 37900.60,
+    creationDate: "09/15/2024",
+    owner: "Madona",
+    currency: "USD"
+  },
+  
+  // 1 Partially Settled
+  {
+    id: "20",
+    number: "INV-100121315",
+    buyer: "IBM",
+    dueDate: "09/15/2024",
+    status: "Partially Settled",
+    total: 48600.80,
+    creationDate: "09/15/2024",
+    owner: "Lady Gaga",
+    currency: "USD"
   }
 ];
