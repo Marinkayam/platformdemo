@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { invoiceData } from "@/data/invoices";
@@ -30,6 +29,14 @@ export default function InvoiceDetail() {
     );
   }
 
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + 0.1, 2.0));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
+  };
+
   // Mock data for line items and attachments
   const lineItems: LineItem[] = [
     { id: "1", description: "Software License", quantity: 5, unitPrice: 99.99, total: 499.95 },
@@ -43,17 +50,12 @@ export default function InvoiceDetail() {
     { id: "3", fileName: "Receipt_Image.jpg", fileType: "image" as const, url: "#" }
   ];
 
-  const handleZoomIn = () => {
-    setZoomLevel(prev => Math.min(prev + 0.1, 2.0));
-  };
-
-  const handleZoomOut = () => {
-    setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
-  };
-
   return (
     <div className="container mx-auto px-4 py-6">
-      <InvoiceHeader invoice={invoice} />
+      <InvoiceHeader 
+        invoice={invoice} 
+        onViewPdf={() => setShowPdfViewer(true)} 
+      />
       <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} />
 
       {activeTab === "invoice-data" ? (
