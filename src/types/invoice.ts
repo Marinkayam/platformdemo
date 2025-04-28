@@ -1,4 +1,3 @@
-
 export interface Invoice {
   id: string;
   number: string;
@@ -24,6 +23,19 @@ export interface Invoice {
   attachments?: Attachment[];
 }
 
+export type InvoiceStatus = 
+  | 'RTP Prepared'
+  | 'Awaiting SC'
+  | 'RTP Sent'
+  | 'Pending Action'
+  | 'Rejected by Buyer'
+  | 'Approved by Buyer'
+  | 'External Submission'
+  | 'Paid'
+  | 'Settled'
+  | 'Partially Settled'
+  | 'Excluded';
+
 export interface LineItem {
   id: string;
   description: string;
@@ -38,15 +50,3 @@ export interface Attachment {
   fileType: 'pdf' | 'image' | 'audio' | 'video' | 'document';
   url: string;
 }
-
-export type InvoiceStatus = 
-  | 'Pending Action'
-  | 'Approved by Buyer'
-  | 'Paid'
-  | 'External Submission'
-  | 'Settled'
-  | 'Awaiting SC'
-  | 'Excluded'
-  | 'Rejected by Monto'
-  | 'Rejected by Buyer';
-

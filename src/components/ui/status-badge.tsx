@@ -10,22 +10,30 @@ interface StatusBadgeProps {
 export function StatusBadge({ status, className }: StatusBadgeProps) {
   const getBadgeStyles = () => {
     switch (status) {
-      case "Pending Action":
-        return "bg-[#FFEBEE] text-[#D32F2F]";
-      case "Approved by Buyer":
-        return "bg-[#E3F2FD] text-[#1976D2]";
-      case "Paid":
-        return "bg-[#E6F4EA] text-[#2E7D32]";
-      case "External Submission":
-        return "bg-[#E1F5FE] text-[#0288D1]";
-      case "Settled":
-        return "bg-[#F1F8E9] text-[#558B2F]";
+      case "RTP Prepared":
+        return "bg-violet-100 text-violet-600";
       case "Awaiting SC":
-        return "bg-[#F3E5F5] text-[#8E24AA]";
+        return "bg-violet-100 text-violet-600";
+      case "RTP Sent":
+        return "bg-violet-100 text-violet-600";
+      case "Pending Action":
+        return "bg-red-100 text-red-600";
+      case "Rejected by Buyer":
+        return "bg-red-50 text-red-600";
+      case "Approved by Buyer":
+        return "bg-orange-100 text-orange-600";
+      case "External Submission":
+        return "bg-blue-100 text-blue-600";
+      case "Paid":
+        return "bg-green-100 text-green-600";
+      case "Settled":
+        return "bg-green-100 text-green-600";
+      case "Partially Settled":
+        return "bg-green-100 text-green-600";
       case "Excluded":
-        return "bg-[#ECEFF1] text-[#607D8B]";
+        return "bg-gray-100 text-gray-600";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "bg-gray-100 text-gray-600";
     }
   };
 
