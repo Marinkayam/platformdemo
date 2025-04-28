@@ -1,4 +1,3 @@
-
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -6,6 +5,7 @@ import { AssigneeComponent } from "../AssigneeComponent";
 import { InvoiceNumber } from "./row/InvoiceNumber";
 import { RejectionInfo } from "./row/RejectionInfo";
 import { OwnerInfo } from "./row/OwnerInfo";
+import { formatCurrency } from "@/lib/utils";
 
 interface InvoiceTableRowProps {
   invoice: Invoice;
@@ -63,7 +63,7 @@ export function InvoiceTableRow({
       )}
       
       <TableCell className="text-[14px] text-gray-900">
-        ${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+        {formatCurrency(invoice.total)}
       </TableCell>
       
       <TableCell 

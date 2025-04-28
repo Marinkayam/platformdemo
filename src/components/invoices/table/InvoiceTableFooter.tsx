@@ -1,6 +1,7 @@
 
 import { TableCell, TableFooter, TableRow } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
+import { formatCurrency } from "@/lib/utils";
 
 interface InvoiceTableFooterProps {
   invoices: Invoice[];
@@ -21,7 +22,7 @@ export function InvoiceTableFooter({ invoices }: InvoiceTableFooterProps) {
         </TableCell>
         <TableCell colSpan={2}></TableCell>
         <TableCell className="text-[14px] font-medium text-gray-900">
-          ${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+          {formatCurrency(totalAmount)}
         </TableCell>
         <TableCell></TableCell>
       </TableRow>

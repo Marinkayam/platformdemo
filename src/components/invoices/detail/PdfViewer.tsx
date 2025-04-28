@@ -1,8 +1,8 @@
-
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import { Invoice, LineItem } from "@/types/invoice";
+import { formatCurrency } from "@/lib/utils";
 
 interface PdfViewerProps {
   invoice: Invoice;
@@ -44,7 +44,6 @@ export function PdfViewer({
             className="bg-white mx-auto max-w-2xl transition-all duration-200 ease-in-out"
             style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top center' }}
           >
-            {/* Mock PDF Content */}
             <div className="border border-gray-200 rounded-lg p-8">
               <div className="flex justify-between mb-8">
                 <div>
@@ -107,15 +106,15 @@ export function PdfViewer({
                 <div className="w-64">
                   <div className="flex justify-between py-1">
                     <span>Subtotal</span>
-                    <span>${(invoice.subtotal || invoice.total * 0.9).toFixed(2)}</span>
+                    <span>{formatCurrency(invoice.subtotal || invoice.total * 0.9)}</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-gray-200">
                     <span>Tax</span>
-                    <span>${(invoice.tax || invoice.total * 0.1).toFixed(2)}</span>
+                    <span>{formatCurrency(invoice.tax || invoice.total * 0.1)}</span>
                   </div>
                   <div className="flex justify-between py-1 font-bold">
                     <span>Total</span>
-                    <span>${invoice.total.toFixed(2)}</span>
+                    <span>{formatCurrency(invoice.total)}</span>
                   </div>
                 </div>
               </div>
