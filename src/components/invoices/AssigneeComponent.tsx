@@ -38,9 +38,9 @@ export function AssigneeComponent({ assignee, onAssign, onRemove }: AssigneeComp
     });
   };
   
-  const handleRemove = () => {
+  const handleRemove = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onRemove();
-    setOpen(false);
     
     toast({
       title: "Assignment removed",
@@ -54,7 +54,7 @@ export function AssigneeComponent({ assignee, onAssign, onRemove }: AssigneeComp
         <UserCircle2 className="h-4 w-4 text-gray-400" />
         <span className="text-[14px] text-gray-900">{assignee}</span>
         <button 
-          onClick={onRemove}
+          onClick={handleRemove}
           className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
         >
           <X size={14} />
@@ -87,6 +87,11 @@ export function AssigneeComponent({ assignee, onAssign, onRemove }: AssigneeComp
               className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleAssign();
+                }
+              }}
             />
           </div>
           <div className="flex justify-end gap-2">

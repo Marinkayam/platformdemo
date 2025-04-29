@@ -11,6 +11,12 @@ interface SmartConnectionAlertProps {
 export const SmartConnectionAlert = ({ exceptions }: SmartConnectionAlertProps) => {
   if (!exceptions || exceptions.length === 0) return null;
   
+  const handleNavigateToSmartConnection = () => {
+    // Dispatch custom event to switch to the Smart Connection tab
+    const event = new CustomEvent('switchTab', { detail: { tab: 'rtp-data' } });
+    window.dispatchEvent(event);
+  };
+  
   return (
     <Alert className="mb-6 bg-amber-50 border-amber-200">
       <AlertTriangle className="h-4 w-4 text-amber-500" />
@@ -24,6 +30,7 @@ export const SmartConnectionAlert = ({ exceptions }: SmartConnectionAlertProps) 
         <Button 
           variant="secondary" 
           size="sm"
+          onClick={handleNavigateToSmartConnection}
           className="flex items-center gap-2 bg-amber-200 hover:bg-amber-300 text-amber-800 border-amber-300 mt-2 md:mt-0 ml-auto md:ml-4"
         >
           <RefreshCw className="h-4 w-4" /> Update Agent

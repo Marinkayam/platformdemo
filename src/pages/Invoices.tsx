@@ -116,7 +116,7 @@ export default function Invoices() {
         
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="ml-2 h-9 bg-white">
+            <Button variant="outline" size="sm" className="ml-2 h-9 bg-white flex items-center">
               <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>

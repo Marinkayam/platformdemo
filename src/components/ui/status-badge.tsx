@@ -40,10 +40,6 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
     }
   };
 
-  const isRejectedByBuyer = status === "Rejected by Buyer";
-  const isRejectedByMonto = status === "Rejected by Monto";
-  const showRejectionIcon = isRejectedByBuyer || isRejectedByMonto;
-
   return (
     <span
       className={cn(
@@ -52,12 +48,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         className
       )}
     >
-      {showRejectionIcon && <UserX className="h-3.5 w-3.5 mr-1.5" />}
-      {isRejectedByMonto 
-        ? "Monto" 
-        : isRejectedByBuyer 
-          ? "Buyer" 
-          : status}
+      {status}
     </span>
   );
 }

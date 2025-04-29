@@ -1,9 +1,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ZoomIn, ZoomOut } from "lucide-react";
+import { ZoomIn, ZoomOut, Download } from "lucide-react";
 import { Invoice, LineItem } from "@/types/invoice";
 import { formatCurrency } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 interface PdfViewerProps {
   invoice: Invoice;
@@ -24,19 +25,37 @@ export function PdfViewer({
   onZoomIn, 
   onZoomOut 
 }: PdfViewerProps) {
+  const handleDownload = () => {
+    toast({
+      title: "Download started",
+      description: `Downloading invoice ${invoice.number}.pdf`,
+    });
+    // In a real app, this would trigger an actual download
+  };
+  
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl h-[80vh] flex flex-col p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-medium">Invoice Preview</h2>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" onClick={onZoomOut}>
-              <ZoomOut className="h-4 w-4" />
+            <Button 
+              variant="outline" 
+              className="flex items-center gap-1.5 bg-white"
+              onClick={handleDownload}
+            >
+              <Download className="h-4 w-4" />
+              Download
             </Button>
-            <span className="text-sm">{Math.round(zoomLevel * 100)}%</span>
-            <Button variant="outline" size="icon" onClick={onZoomIn}>
-              <ZoomIn className="h-4 w-4" />
-            </Button>
+            <div className="flex items-center gap-1 ml-2">
+              <Button variant="outline" size="icon" onClick={onZoomOut}>
+                <ZoomOut className="h-4 w-4" />
+              </Button>
+              <span className="text-sm min-w-12 text-center">{Math.round(zoomLevel * 100)}%</span>
+              <Button variant="outline" size="icon" onClick={onZoomIn}>
+                <ZoomIn className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
         

@@ -1,32 +1,27 @@
 
-import React from "react";
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardContent, 
-  CardFooter 
-} from "@/components/ui/card";
+import React, { useState } from "react";
+import { Copy, Check } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Copy, ExternalLink } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useToast } from "@/hooks/use-toast";
-import { POInformationProps, PortalType } from "./types";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-const getPortalIcon = (type: PortalType) => {
-  return type.substring(0, 1);
-};
+interface POInformationProps {
+  po: {
+    number: string;
+    buyer: string;
+    date: string;
+    total: number;
+  };
+}
 
-export const POInformationCard = ({ po }: { po: POInformationProps }) => {
-  const { toast } = useToast();
+export const POInformationCard = ({ po }: POInformationProps) => {
+  const [copied, setCopied] = useState(false);
 
-  const handleCopy = (text: string, label: string) => {
+  const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied to clipboard",
-      description: `${label} has been copied`,
-    });
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -35,83 +30,63 @@ export const POInformationCard = ({ po }: { po: POInformationProps }) => {
         <CardTitle className="text-lg">Purchase Order Information</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <label className="text-sm text-gray-500">PO #</label>
-            <div className="relative">
-              <Input value={po.number} readOnly disabled className="bg-gray-50 pr-10" />
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
-                    onClick={() => handleCopy(po.number, "PO number")}
-                  >
-                    <Copy className="h-4 w-4 text-gray-500" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Copy PO number</TooltipContent>
-              </Tooltip>
+            <div className="flex items-center">
+              <Input 
+                value={po.number} 
+                readOnly 
+                className="bg-gray-50 pr-10"
+              />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-9 w-9 p-0 ml-[-34px] relative z-10"
+                      onClick={() => handleCopy(po.number)}
+                    >
+                      {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Copy to clipboard</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
           
           <div className="space-y-2">
-            <label className="text-sm text-gray-500">Customer</label>
-            <Input value={po.customerName} readOnly disabled className="bg-gray-50" />
+            <label className="text-sm text-gray-500">PO Date</label>
+            <Input 
+              value={po.date} 
+              readOnly 
+              className="bg-gray-50"
+            />
           </div>
           
           <div className="space-y-2">
-            <label className="text-sm text-gray-500">Portal/SC</label>
-            <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-bold">
-                {getPortalIcon(po.portalInfo.type)}
-              </span>
-              <Input value={po.portalInfo.type} readOnly disabled className="bg-gray-50" />
-            </div>
+            <label className="text-sm text-gray-500">Buyer</label>
+            <Input 
+              value={po.buyer} 
+              readOnly 
+              className="bg-gray-50"
+            />
           </div>
           
-          <div className="space-y-2">
-            <label className="text-sm text-gray-500">Order Date</label>
-            <Input value={new Date(po.orderDate).toLocaleDateString()} readOnly disabled className="bg-gray-50" />
-          </div>
-
           <div className="space-y-2">
             <label className="text-sm text-gray-500">Total Amount</label>
-            <Input value={`$${po.totalAmount.toLocaleString()}`} readOnly disabled className="bg-gray-50" />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-sm text-gray-500">Total Invoiced</label>
-            <Input value={`$${po.totalInvoiced.toLocaleString()}`} readOnly disabled className="bg-gray-50" />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-sm text-gray-500">Amount Left</label>
-            <Input value={`$${po.amountLeft.toLocaleString()}`} readOnly disabled className="bg-gray-50" />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm text-gray-500">Payment Terms</label>
-            <Input value={po.paymentTerms} readOnly disabled className="bg-gray-50" />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-sm text-gray-500">Currency</label>
-            <Input value={po.currency} readOnly disabled className="bg-gray-50" />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-sm text-gray-500">Buyer Reference</label>
-            <Input value={po.buyerReference} readOnly disabled className="bg-gray-50" />
+            <Input 
+              value={`$${po.total.toLocaleString()}`} 
+              readOnly 
+              className="bg-gray-50"
+            />
           </div>
         </div>
       </CardContent>
-      <CardFooter className="pt-0">
-        <Button variant="outline" size="sm" className="text-primary flex items-center gap-2">
-          View Full Details <ExternalLink className="h-4 w-4" />
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

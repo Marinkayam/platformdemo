@@ -53,19 +53,19 @@ export const ProcessTimeline = () => {
                   )}
                 >
                   <div className={cn(
-                    "h-5 w-5 rounded-full flex items-center justify-center transition-all duration-300",
+                    "h-6 w-6 rounded-full flex items-center justify-center transition-all duration-300",
                     step.completed ? "bg-primary shadow-sm shadow-primary/20 text-white" : 
                     step.current ? "bg-white border-2 border-primary text-primary" : 
                     "bg-gray-100 text-gray-400"
                   )}>
                     {step.completed ? (
-                      <Check className="h-3 w-3" />
+                      <Check className="h-3.5 w-3.5" />
                     ) : (
                       <span className="font-medium text-xs">{step.id}</span>
                     )}
                   </div>
                   <span className={cn(
-                    "text-xs mt-2 font-medium text-center transition-all duration-200 max-w-[48px]",
+                    "text-xs mt-2 font-medium text-center transition-all duration-200 max-w-[60px]",
                     step.completed ? "text-primary" : 
                     step.current ? "text-primary" : 
                     "text-gray-500"

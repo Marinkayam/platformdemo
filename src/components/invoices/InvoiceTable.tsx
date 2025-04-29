@@ -6,6 +6,7 @@ import { useSortedInvoices } from "@/hooks/useSortedInvoices";
 import { InvoiceTableHeader } from "./table/InvoiceTableHeader";
 import { InvoiceTableRow } from "./table/InvoiceTableRow";
 import { InvoiceTableFooter } from "./table/InvoiceTableFooter";
+import { toast } from "@/hooks/use-toast";
 
 interface InvoiceTableProps {
   invoices: Invoice[];
@@ -20,27 +21,24 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
     sortDirection, 
     handleSort, 
     setLocalInvoices 
-  } = useSortedInvoices(
-    // Filter invoices if we're on the pending tab to only show "Pending Action" status
-    isPendingTab 
-      ? invoices.filter(invoice => invoice.status === "Pending Action")
-      : invoices
-  );
+  } = useSortedInvoices(invoices);
 
   const handleAssign = (invoiceId: string, email: string) => {
-    setLocalInvoices(prev => 
-      prev.map(inv => 
+    setLocalInvoices(prev => {
+      const updated = prev.map(inv => 
         inv.id === invoiceId ? { ...inv, assignee: email } : inv
-      )
-    );
+      );
+      return updated;
+    });
   };
 
   const handleRemoveAssignee = (invoiceId: string) => {
-    setLocalInvoices(prev => 
-      prev.map(inv => 
+    setLocalInvoices(prev => {
+      const updated = prev.map(inv => 
         inv.id === invoiceId ? { ...inv, assignee: undefined } : inv
-      )
-    );
+      );
+      return updated;
+    });
   };
 
   return (

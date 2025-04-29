@@ -9,11 +9,11 @@ interface AdditionalInfoProps {
 export function AdditionalInfo({ invoice }: AdditionalInfoProps) {
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-6">
-      <h2 className="text-lg font-medium mb-4">Additional Information</h2>
+      <h2 className="text-lg font-medium mb-5">Additional Information</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">
+          <label className="text-sm font-medium text-gray-600">
             PO Number
           </label>
           <Input 
@@ -24,7 +24,7 @@ export function AdditionalInfo({ invoice }: AdditionalInfoProps) {
         </div>
         
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">
+          <label className="text-sm font-medium text-gray-600">
             Tax ID
           </label>
           <Input 
@@ -35,7 +35,7 @@ export function AdditionalInfo({ invoice }: AdditionalInfoProps) {
         </div>
         
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">
+          <label className="text-sm font-medium text-gray-600">
             Buyer
           </label>
           <Input 
@@ -46,7 +46,7 @@ export function AdditionalInfo({ invoice }: AdditionalInfoProps) {
         </div>
         
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">
+          <label className="text-sm font-medium text-gray-600">
             Requester Email
           </label>
           <Input 
