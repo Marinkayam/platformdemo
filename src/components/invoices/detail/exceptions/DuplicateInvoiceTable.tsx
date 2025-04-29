@@ -13,6 +13,7 @@ interface DuplicateInvoiceTableProps {
   invoices: Invoice[];
   onSelect: (selected: Invoice[]) => void;
   onSelectSingle: (invoice: Invoice) => void;
+  onExcludeAll: () => void;
   currentInvoice: Invoice;
   selectedInvoices?: Invoice[];
   defaultSelectedInvoice?: Invoice;
@@ -22,6 +23,7 @@ export function DuplicateInvoiceTable({
   invoices, 
   onSelect, 
   onSelectSingle, 
+  onExcludeAll,
   currentInvoice, 
   selectedInvoices = [],
   defaultSelectedInvoice
@@ -90,13 +92,6 @@ export function DuplicateInvoiceTable({
     onSelect([]);
   };
   
-  const handleExcludeAll = () => {
-    toast({
-      title: "Excluding all invoices",
-      description: "All duplicate invoices would be marked as excluded.",
-    });
-  };
-
   // Sort invoices by creation date (newest first)
   const sortedInvoices = [...invoices].sort((a, b) => {
     return new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime();
@@ -116,7 +111,7 @@ export function DuplicateInvoiceTable({
         </div>
       </div>
       
-      <div className="border rounded-md overflow-hidden">
+      <div className="border rounded-lg overflow-hidden">
         <Table>
           <TableHeader className="bg-gray-50">
             <TableRow>
@@ -130,11 +125,11 @@ export function DuplicateInvoiceTable({
           </TableHeader>
           <TableBody>
             {sortedInvoices.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="h-24 text-center text-[14px] text-gray-600">
+              <TableRow>
+                <TableCell colSpan={6} className="h-24 text-center text-[14px] text-gray-600">
                   No invoices found.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : (
               sortedInvoices.map((invoice) => {
                 const isSelected = !!selected[invoice.id];
@@ -202,7 +197,7 @@ export function DuplicateInvoiceTable({
         
         <div className="flex gap-2">
           <Button 
-            onClick={handleExcludeAll}
+            onClick={onExcludeAll}
             variant="outline"
             className="border-red-300 text-red-700 hover:bg-red-50"
           >

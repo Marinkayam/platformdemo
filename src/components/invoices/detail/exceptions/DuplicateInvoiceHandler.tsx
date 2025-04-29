@@ -7,7 +7,10 @@ import { DuplicateInvoiceTable } from "./DuplicateInvoiceTable";
 import { InvoiceComparisonView } from "./InvoiceComparisonView";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
-import { Check, ArrowRight } from "lucide-react";
+import { ArrowRight, AlertTriangle } from "lucide-react";
+import { ExcludeAllModal } from "./ExcludeAllModal";
+import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 interface DuplicateInvoiceHandlerProps {
   invoice: Invoice;
@@ -19,6 +22,8 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   const [step, setStep] = useState<'select' | 'compare' | 'confirm'>('select');
   const [selectedInvoices, setSelectedInvoices] = useState<Invoice[]>([]);
   const [keepInvoice, setKeepInvoice] = useState<Invoice | null>(null);
+  const [isExcludeModalOpen, setIsExcludeModalOpen] = useState(false);
+  const navigate = useNavigate();
   
   // Get the duplicate exception
   const duplicateException = exceptions.find(e => e.type === 'DUPLICATE_INVOICE');
@@ -48,6 +53,22 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   const handleConfirmInvoice = () => {
     if (duplicateException && keepInvoice) {
       onResolveException(duplicateException.id, 'EXCLUDED');
+    }
+  };
+
+  const handleExcludeAll = () => {
+    if (duplicateException) {
+      onResolveException(duplicateException.id, 'EXCLUDED');
+      
+      toast({
+        title: "Duplicates excluded",
+        description: "All duplicate invoices have been marked as excluded"
+      });
+      
+      // Navigate back to invoices list after a short delay
+      setTimeout(() => {
+        navigate("/invoices");
+      }, 1500);
     }
   };
   
@@ -91,6 +112,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
               invoices={duplicateInvoices} 
               onSelect={handleSelectInvoices}
               onSelectSingle={handleSelectInvoice}
+              onExcludeAll={() => setIsExcludeModalOpen(true)}
               currentInvoice={invoice}
               selectedInvoices={selectedInvoices}
               defaultSelectedInvoice={newestInvoice}
@@ -102,6 +124,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
               invoices={selectedInvoices}
               onSelect={handleComparisonSelect}
               onBack={handleBack}
+              onExcludeAll={() => setIsExcludeModalOpen(true)}
             />
           )}
           
@@ -110,10 +133,17 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
               invoice={keepInvoice}
               onConfirm={handleConfirmInvoice}
               onBack={handleBack}
+              onExcludeAll={() => setIsExcludeModalOpen(true)}
             />
           )}
         </div>
       </CardContent>
+      
+      <ExcludeAllModal 
+        isOpen={isExcludeModalOpen} 
+        onClose={() => setIsExcludeModalOpen(false)}
+        onConfirm={handleExcludeAll}
+      />
     </Card>
   );
 }

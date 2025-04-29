@@ -9,9 +9,10 @@ interface ConfirmationStepProps {
   invoice: Invoice;
   onConfirm: () => void;
   onBack: () => void;
+  onExcludeAll: () => void;
 }
 
-export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationStepProps) {
+export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: ConfirmationStepProps) {
   const fields = [
     { key: 'number' as keyof Invoice, label: 'Invoice Number' },
     { key: 'buyer' as keyof Invoice, label: 'Buyer' },
@@ -59,12 +60,14 @@ export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationSte
         </CardContent>
       </Card>
       
-      <div className="bg-amber-50 p-4 rounded-md border border-amber-200">
-        <h4 className="text-sm font-medium text-amber-700 mb-1">What happens next?</h4>
-        <p className="text-sm text-amber-800">
-          After confirmation, this invoice will be kept as the valid record and processing will continue.
-          Other invoices with the same number will be marked as excluded and won't be tracked.
-        </p>
+      <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
+        <h4 className="text-sm font-medium text-blue-700 mb-1">What happens next?</h4>
+        <ul className="space-y-2 text-sm text-blue-800 list-disc pl-5 mt-2">
+          <li>This invoice will be kept as the valid record</li>
+          <li>Other invoices with the same number will be excluded</li>
+          <li>The system will run validations on the selected invoice</li>
+          <li>You'll need to address any other exceptions</li>
+        </ul>
       </div>
       
       <div className="flex justify-between">
@@ -72,12 +75,23 @@ export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationSte
           <ArrowLeft className="h-4 w-4" />
           Back
         </Button>
-        <Button 
-          onClick={onConfirm} 
-          className="bg-primary hover:bg-primary-700"
-        >
-          Confirm and Resolve Exception
-        </Button>
+        
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={onExcludeAll}
+            className="border-red-300 text-red-700 hover:bg-red-50"
+          >
+            Exclude All
+          </Button>
+          
+          <Button 
+            onClick={onConfirm}
+            className="bg-primary hover:bg-primary-700"
+          >
+            Confirm and Resolve Exception
+          </Button>
+        </div>
       </div>
     </div>
   );

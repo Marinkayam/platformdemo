@@ -4,14 +4,16 @@ import { Invoice } from "@/types/invoice";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowLeft, AlertTriangle } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface InvoiceComparisonViewProps {
   invoices: Invoice[];
   onSelect: (invoice: Invoice) => void;
   onBack: () => void;
+  onExcludeAll: () => void;
 }
 
-export function InvoiceComparisonView({ invoices, onSelect, onBack }: InvoiceComparisonViewProps) {
+export function InvoiceComparisonView({ invoices, onSelect, onBack, onExcludeAll }: InvoiceComparisonViewProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   
   // Auto-select the newest invoice
@@ -63,8 +65,8 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack }: InvoiceCom
     return result;
   }, [invoices, fields]);
   
-  const handleSelect = (invoice: Invoice) => {
-    setSelectedId(invoice.id);
+  const handleRadioChange = (id: string) => {
+    setSelectedId(id);
   };
   
   const handleContinue = () => {
@@ -98,94 +100,102 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack }: InvoiceCom
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="col-span-1">
-          <div className="h-14 flex items-center font-medium text-sm">Field</div>
-          {fields.map((field) => (
-            <div key={field.key} className={`h-12 flex items-center font-medium text-sm ${differences[field.key as string] ? 'text-primary-700' : ''}`}>
-              {field.label}
-              {differences[field.key as string] && (
-                <AlertTriangle className="h-4 w-4 text-amber-500 ml-2" />
-              )}
-            </div>
-          ))}
-        </div>
-        
-        {invoices.map((invoice) => {
-          const isNewer = invoice.id === newerInvoice.id;
-          const isSelected = selectedId === invoice.id;
+      <RadioGroup value={selectedId || ""} onValueChange={handleRadioChange}>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="col-span-1">
+            <div className="h-14 flex items-center font-medium text-sm">Field</div>
+            {fields.map((field) => (
+              <div key={field.key} className={`h-12 flex items-center font-medium text-sm ${differences[field.key as string] ? 'text-primary-700' : ''}`}>
+                {field.label}
+                {differences[field.key as string] && (
+                  <AlertTriangle className="h-4 w-4 text-amber-500 ml-2" />
+                )}
+              </div>
+            ))}
+          </div>
           
-          return (
-            <div 
-              key={invoice.id} 
-              className={`col-span-1 rounded-lg border ${
-                isSelected ? 'border-primary-400 ring-1 ring-primary-400 bg-primary-50/50' : 'border-border'
-              }`}
-            >
-              <div className="h-14 flex items-center justify-center bg-muted/30 rounded-t-lg border-b">
-                <div className="h-full w-full flex flex-col justify-center px-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      {isNewer && (
-                        <span className="text-green-700 text-xs flex items-center gap-1 mr-2">
-                          <Check className="h-3.5 w-3.5" />
-                          Newest
+          {invoices.map((invoice) => {
+            const isNewer = invoice.id === newerInvoice.id;
+            const isSelected = selectedId === invoice.id;
+            
+            return (
+              <div 
+                key={invoice.id} 
+                className={`col-span-1 rounded-lg border ${
+                  isSelected ? 'border-primary-400 ring-1 ring-primary-400 bg-primary-50/50' : 'border-border'
+                }`}
+              >
+                <div className="h-14 flex items-center justify-center bg-muted/30 rounded-t-lg border-b">
+                  <div className="h-full w-full flex flex-col justify-center px-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        {isNewer && (
+                          <span className="text-green-700 text-xs flex items-center gap-1 mr-2">
+                            <Check className="h-3.5 w-3.5" />
+                            Newest
+                          </span>
+                        )}
+                        <span className="text-sm font-medium">
+                          Created: {invoice.creationDate}
                         </span>
-                      )}
-                      <span className="text-sm font-medium">
-                        Created: {invoice.creationDate}
-                      </span>
+                      </div>
+                      <div className="flex items-center">
+                        <RadioGroupItem value={invoice.id} id={`invoice-${invoice.id}`} />
+                      </div>
                     </div>
-                    <Button 
-                      variant={isSelected ? "default" : "outline"} 
-                      size="sm" 
-                      onClick={() => handleSelect(invoice)}
-                      className={`h-8 ${isSelected ? 'bg-primary text-white' : ''}`}
-                    >
-                      {isSelected ? "Selected" : "Select"}
-                    </Button>
                   </div>
                 </div>
+                
+                {fields.map((field) => {
+                  const value = invoice[field.key];
+                  const hasDifference = differences[field.key as string];
+                  
+                  // Format specific fields
+                  let displayValue = value !== undefined ? String(value) : '-';
+                  if (field.key === 'total' && typeof value === 'number') {
+                    displayValue = formatCurrency(value, invoice.currency || 'USD');
+                  }
+                  
+                  return (
+                    <div 
+                      key={field.key} 
+                      className={`h-12 flex items-center px-3 text-sm border-b last:border-b-0 ${
+                        hasDifference ? 'bg-amber-50 font-medium' : ''
+                      }`}
+                    >
+                      {displayValue}
+                    </div>
+                  );
+                })}
               </div>
-              
-              {fields.map((field) => {
-                const value = invoice[field.key];
-                const hasDifference = differences[field.key as string];
-                
-                // Format specific fields
-                let displayValue = value !== undefined ? String(value) : '-';
-                if (field.key === 'total' && typeof value === 'number') {
-                  displayValue = formatCurrency(value, invoice.currency || 'USD');
-                }
-                
-                return (
-                  <div 
-                    key={field.key} 
-                    className={`h-12 flex items-center px-3 text-sm border-b last:border-b-0 ${
-                      hasDifference ? 'bg-amber-50 font-medium' : ''
-                    }`}
-                  >
-                    {displayValue}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </RadioGroup>
       
       <div className="flex justify-between mt-6">
         <Button variant="outline" size="sm" onClick={onBack} className="flex items-center gap-2">
           <ArrowLeft className="h-4 w-4" />
           Back
         </Button>
-        <Button 
-          onClick={handleContinue} 
-          disabled={!selectedId}
-          className="bg-primary hover:bg-primary-700"
-        >
-          Continue
-        </Button>
+        
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={onExcludeAll}
+            className="border-red-300 text-red-700 hover:bg-red-50"
+          >
+            Exclude All
+          </Button>
+          
+          <Button 
+            onClick={handleContinue} 
+            disabled={!selectedId}
+            className="bg-primary hover:bg-primary-700"
+          >
+            Continue
+          </Button>
+        </div>
       </div>
     </div>
   );
