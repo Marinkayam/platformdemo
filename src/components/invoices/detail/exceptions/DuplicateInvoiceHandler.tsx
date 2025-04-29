@@ -13,7 +13,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 interface DuplicateInvoiceHandlerProps {
   invoice: Invoice;
   exceptions: Exception[];
-  onResolveException: (exceptionId: string, resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT') => void;
+  onResolveException: (exceptionId: string, resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT' | 'EXCLUDED') => void;
 }
 
 export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveException }: DuplicateInvoiceHandlerProps) {
@@ -23,20 +23,10 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   
   // Get the duplicate exception
   const duplicateException = exceptions.find(e => e.type === 'DUPLICATE_INVOICE');
-
-  // Auto-select the most recent invoice
-  useEffect(() => {
-    if (duplicateInvoices.length > 0 && selectedInvoices.length === 0) {
-      const sorted = [...duplicateInvoices].sort((a, b) => 
-        new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
-      );
-      setSelectedInvoices([sorted[0]]);
-    }
-  }, []);
   
   const handleSelectInvoices = (selected: Invoice[]) => {
     setSelectedInvoices(selected);
-    if (selected.length === 2) {
+    if (selected.length > 0) {
       setStep('compare');
     }
   };
@@ -61,7 +51,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
     if (step === 'compare') {
       setStep('select');
     } else if (step === 'confirm') {
-      if (selectedInvoices.length === 2) {
+      if (selectedInvoices.length > 0) {
         setStep('compare');
       } else {
         setStep('select');
@@ -115,7 +105,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
             />
           )}
           
-          {step === 'compare' && selectedInvoices.length === 2 && (
+          {step === 'compare' && selectedInvoices.length > 0 && (
             <InvoiceComparisonView 
               invoices={selectedInvoices}
               onSelect={handleComparisonSelect}

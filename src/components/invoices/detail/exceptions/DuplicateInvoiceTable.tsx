@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
 import { formatCurrency } from "@/lib/utils";
-import { Check, Clock, AlertCircle, XCircle } from "lucide-react";
+import { Check, AlertTriangle, MoreVertical } from "lucide-react";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 interface DuplicateInvoiceTableProps {
   invoices: Invoice[];
@@ -32,13 +33,8 @@ export function DuplicateInvoiceTable({
       initialSelection[inv.id] = true;
     });
     
-    // If nothing is pre-selected, select the current invoice by default
-    if (Object.keys(initialSelection).length === 0) {
-      initialSelection[currentInvoice.id] = true;
-    }
-    
     setSelected(initialSelection);
-  }, [selectedInvoices, currentInvoice.id]);
+  }, [selectedInvoices]);
   
   const handleToggle = (id: string) => {
     const newSelected = { ...selected };
@@ -47,15 +43,6 @@ export function DuplicateInvoiceTable({
     if (newSelected[id]) {
       delete newSelected[id];
     } else {
-      // Check if we already have 2 selected
-      if (Object.keys(newSelected).length >= 2) {
-        toast({
-          title: "Selection limit reached",
-          description: "You can only select 2 invoices to compare.",
-          variant: "destructive",
-        });
-        return;
-      }
       newSelected[id] = true;
     }
     
@@ -67,11 +54,11 @@ export function DuplicateInvoiceTable({
   };
   
   const handleCompare = () => {
-    // Need exactly 2 selections for comparison
-    if (Object.keys(selected).length !== 2) {
+    const selectedIds = Object.keys(selected);
+    if (selectedIds.length === 0) {
       toast({
         title: "Selection required",
-        description: "Please select exactly 2 invoices to compare.",
+        description: "Please select at least one invoice to compare.",
         variant: "destructive",
       });
       return;
@@ -79,6 +66,11 @@ export function DuplicateInvoiceTable({
     
     const selectedInvoices = invoices.filter(inv => selected[inv.id]);
     onSelect(selectedInvoices);
+  };
+  
+  const handleClearSelection = () => {
+    setSelected({});
+    onSelect([]);
   };
   
   const handleExcludeAll = () => {
@@ -97,101 +89,101 @@ export function DuplicateInvoiceTable({
     <div className="space-y-6">
       <div className="bg-primary-50 p-4 rounded-md border border-primary-200">
         <div className="flex items-start gap-2">
-          <AlertCircle className="h-5 w-5 text-primary-600 mt-0.5 flex-shrink-0" />
+          <AlertTriangle className="h-5 w-5 text-primary-600 mt-0.5 flex-shrink-0" />
           <div>
             <h4 className="text-sm font-medium text-primary-700">About duplicate invoices</h4>
             <p className="text-sm text-primary-800 mt-1">
-              We've detected multiple invoices with the same invoice number. Compare the invoices to determine which one is valid.
+              We've detected multiple invoices with the same invoice number. Resolution Steps: Review and select which invoice is valid. The others will be marked as excluded and won't be tracked.
             </p>
           </div>
         </div>
       </div>
       
-      <Table className="border">
-        <TableHeader className="bg-gray-50">
-          <TableRow>
-            <TableHead className="w-12 text-center">Select</TableHead>
-            <TableHead>Invoice #</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sortedInvoices.map((invoice) => {
-            const isNewest = invoice.creationDate === sortedInvoices[0].creationDate;
-            const isCurrent = invoice.id === currentInvoice.id;
-            
-            return (
-              <TableRow key={invoice.id} className="hover:bg-gray-50">
-                <TableCell className="text-center">
-                  <Checkbox
-                    id={`invoice-${invoice.id}`}
-                    checked={!!selected[invoice.id]}
-                    onCheckedChange={() => handleToggle(invoice.id)}
-                    className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                  />
-                </TableCell>
-                <TableCell>
-                  <div className="font-medium">{invoice.number}</div>
-                  {isNewest && (
-                    <span className="text-green-700 text-xs flex items-center gap-1 mt-1">
-                      <Clock className="h-3 w-3" />
-                      Newest
-                    </span>
-                  )}
-                  {isCurrent && !isNewest && (
-                    <span className="text-primary-700 text-xs flex items-center gap-1 mt-1">
-                      <AlertCircle className="h-3 w-3" />
-                      Current
-                    </span>
-                  )}
-                </TableCell>
-                <TableCell>{invoice.creationDate}</TableCell>
-                <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
-                <TableCell>
-                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
-                    ${invoice.status === 'Pending Action' ? 'bg-amber-100 text-amber-800' : 
-                      invoice.status === 'External Submission' ? 'bg-blue-100 text-blue-800' : 
-                      'bg-gray-100 text-gray-800'}`}>
-                    {invoice.status}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onSelectSingle(invoice)}
-                    className="text-primary hover:text-primary-700 hover:bg-primary-100 p-0 h-8 px-2"
-                  >
-                    Choose this invoice
-                  </Button>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <div className="border rounded-md overflow-hidden">
+        <Table>
+          <TableHeader className="bg-gray-50">
+            <TableRow>
+              <TableHead className="w-12 text-center"></TableHead>
+              <TableHead>Issue Date</TableHead>
+              <TableHead>Total</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Exceptions</TableHead>
+              <TableHead className="w-10"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sortedInvoices.map((invoice) => {
+              const isSelected = !!selected[invoice.id];
+              const hasExceptions = invoice.exceptions?.length > 0;
+              
+              return (
+                <TableRow key={invoice.id} className="hover:bg-gray-50">
+                  <TableCell className="text-center">
+                    <Checkbox
+                      id={`invoice-${invoice.id}`}
+                      checked={isSelected}
+                      onCheckedChange={() => handleToggle(invoice.id)}
+                      className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <div className="font-medium">{invoice.creationDate}</div>
+                  </TableCell>
+                  <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={invoice.status} />
+                  </TableCell>
+                  <TableCell>
+                    {hasExceptions ? (
+                      <div className="flex items-center text-amber-700">
+                        <AlertTriangle className="h-4 w-4 mr-1 text-amber-500" />
+                        <span>{invoice.exceptions?.length} Exceptions</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center text-green-700">
+                        <Check className="h-4 w-4 mr-1 text-green-600" />
+                        <span>None</span>
+                      </div>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="ghost" size="icon">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
       
       <div className="flex justify-between">
         <Button
           variant="outline"
-          onClick={handleExcludeAll}
-          className="border-red-300 text-red-700 hover:bg-red-50"
+          onClick={handleClearSelection}
+          className="text-gray-700"
         >
-          <XCircle className="mr-2 h-4 w-4" />
-          Exclude All
+          Clear Selection
         </Button>
         
-        <Button 
-          onClick={handleCompare}
-          variant="default"
-          className="bg-primary hover:bg-primary-600"
-          disabled={Object.keys(selected).length !== 2}
-        >
-          Compare Selected
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={handleExcludeAll}
+            variant="outline"
+            className="border-red-300 text-red-700 hover:bg-red-50"
+          >
+            Exclude All
+          </Button>
+          
+          <Button 
+            onClick={handleCompare}
+            variant="default"
+            className="bg-primary hover:bg-primary-600"
+          >
+            Compare Selected
+          </Button>
+        </div>
       </div>
     </div>
   );

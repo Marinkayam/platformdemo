@@ -16,7 +16,7 @@ export function TabContent({ tab, invoice }: TabContentProps) {
   const [localInvoice, setLocalInvoice] = useState<Invoice | undefined>(invoice);
   const navigate = useNavigate();
   
-  const handleResolveException = (exceptionId: string, resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT') => {
+  const handleResolveException = (exceptionId: string, resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT' | 'EXCLUDED') => {
     if (!localInvoice) return;
     
     // Create a copy of the invoice with resolved exceptions
@@ -52,6 +52,9 @@ export function TabContent({ tab, invoice }: TabContentProps) {
       } else if (resolution === 'FORCE_SUBMIT') {
         toastMessage = "Invoice force submitted";
         toastDescription = "Invoice has been submitted despite exceptions";
+      } else if (resolution === 'EXCLUDED') {
+        toastMessage = "Invoices excluded";
+        toastDescription = "Selected invoices have been excluded from processing";
       }
       
       setTimeout(() => {
