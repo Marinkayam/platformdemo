@@ -1,4 +1,3 @@
-
 import React from "react";
 import { 
   Card, 
@@ -91,7 +90,7 @@ const mockSmartConnection: SmartConnectionProps = {
 };
 
 const mockPOInformation: POInformationProps = {
-  number: "PO-29876",
+  number: "",
   status: "Valid",
   customerName: "Acme Corporation",
   portalInfo: {
