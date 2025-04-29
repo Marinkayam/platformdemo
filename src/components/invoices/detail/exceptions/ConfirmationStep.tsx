@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { Invoice } from "@/types/invoice";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowLeft } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Check, ArrowLeft, AlertTriangle } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import { StatusBadge } from "@/components/ui/status-badge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,6 +16,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ConfirmationStepProps {
   invoice: Invoice;
@@ -26,18 +33,6 @@ interface ConfirmationStepProps {
 export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: ConfirmationStepProps) {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   
-  const fields = [
-    { key: 'number' as keyof Invoice, label: 'Invoice Number' },
-    { key: 'buyer' as keyof Invoice, label: 'Buyer' },
-    { key: 'creationDate' as keyof Invoice, label: 'Creation Date' },
-    { key: 'dueDate' as keyof Invoice, label: 'Due Date' },
-    { key: 'total' as keyof Invoice, label: 'Total' },
-    { key: 'status' as keyof Invoice, label: 'Status' },
-    { key: 'owner' as keyof Invoice, label: 'Owner' },
-    { key: 'poNumber' as keyof Invoice, label: 'PO Number' },
-    { key: 'paymentTerms' as keyof Invoice, label: 'Payment Terms' },
-  ];
-
   // Format date to "Jan 16, 2025 12:05" format
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -60,44 +55,80 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
     onConfirm();
   };
   
+  const exceptionCount = invoice.exceptions?.length || 0;
+  const hasExceptions = exceptionCount > 0;
+  
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="text-center py-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4">
-          <Check className="h-8 w-8 text-primary-600" />
-        </div>
-        <h3 className="text-xl font-medium text-primary-700">Confirm your selection</h3>
+      <div className="text-center py-2 mb-2">
+        <h3 className="text-lg font-medium text-primary-700">Selected Invoice</h3>
         <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-          You've selected the following invoice to keep. All other duplicates will be marked as excluded and won't be tracked.
+          You have selected this invoice to keep. All other duplicate invoices will be excluded.
         </p>
       </div>
       
-      <Card className="border-primary-200 bg-primary-50/50 shadow-sm">
-        <CardContent className="pt-6 px-6">
-          <div className="space-y-3">
-            {fields.map((field) => {
-              const value = invoice[field.key];
-              
-              // Format values appropriately
-              let displayValue;
-              if (field.key === 'total' && typeof value === 'number') {
-                displayValue = formatCurrency(value, invoice.currency || 'USD');
-              } else if ((field.key === 'creationDate' || field.key === 'dueDate') && typeof value === 'string') {
-                displayValue = formatDate(value);
-              } else {
-                displayValue = value !== undefined ? String(value) : '-';
-              }
-                  
-              return (
-                <div key={field.key} className="grid grid-cols-2 gap-2 py-2 border-b border-primary-100 last:border-b-0">
-                  <div className="text-sm font-medium text-primary-800">{field.label}</div>
-                  <div className="text-sm">{displayValue}</div>
+      <div className="border rounded-lg overflow-hidden">
+        <Table>
+          <TableHeader className="bg-gray-50">
+            <TableRow>
+              <TableHead className="w-12 text-center"></TableHead>
+              <TableHead>Issue Date</TableHead>
+              <TableHead>Total</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Exceptions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="bg-primary-50">
+              <TableCell className="text-center">
+                <div className="flex justify-center">
+                  <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
+                    <Check className="h-3 w-3 text-white" />
+                  </div>
                 </div>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
+              </TableCell>
+              <TableCell>
+                <div className="font-medium">
+                  {formatDate(invoice.creationDate)}
+                </div>
+              </TableCell>
+              <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
+              <TableCell>
+                <StatusBadge status={invoice.status} />
+              </TableCell>
+              <TableCell>
+                {hasExceptions ? (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="flex items-center text-amber-700 cursor-help">
+                          <AlertTriangle className="h-4 w-4 mr-1 text-amber-500" />
+                          <span>{exceptionCount} Exceptions</span>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent className="w-80 p-3">
+                        <h4 className="font-semibold mb-1">Exception Details:</h4>
+                        <ul className="list-disc pl-4 space-y-1">
+                          {invoice.exceptions?.map(exception => (
+                            <li key={exception.id} className="text-sm">
+                              {exception.message}
+                            </li>
+                          )) || <li>No exception details available</li>}
+                        </ul>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <div className="flex items-center text-green-700">
+                    <Check className="h-4 w-4 mr-1 text-green-600" />
+                    <span>None</span>
+                  </div>
+                )}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
       
       <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
         <h4 className="text-sm font-medium text-blue-700 mb-1">What happens next?</h4>

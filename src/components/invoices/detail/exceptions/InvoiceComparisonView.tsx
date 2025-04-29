@@ -135,7 +135,7 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack, onExcludeAll
               <div 
                 key={invoice.id} 
                 className={`col-span-1 rounded-lg border ${
-                  isSelected ? 'border-primary-400 ring-1 ring-primary-400 bg-primary-50/50' : 'border-border'
+                  isSelected ? 'border-primary-500 ring-2 ring-primary-200 bg-primary-50/70' : 'border-border'
                 }`}
               >
                 <div className="h-14 flex items-center justify-center bg-muted/30 rounded-t-lg border-b">
@@ -153,7 +153,7 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack, onExcludeAll
                         </span>
                       </div>
                       <div className="flex items-center">
-                        <RadioGroupItem value={invoice.id} id={`invoice-${invoice.id}`} />
+                        <RadioGroupItem value={invoice.id} id={`invoice-${invoice.id}`} className="h-5 w-5" />
                       </div>
                     </div>
                   </div>

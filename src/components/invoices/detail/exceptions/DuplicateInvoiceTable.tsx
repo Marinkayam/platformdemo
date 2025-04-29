@@ -30,6 +30,7 @@ interface DuplicateInvoiceTableProps {
   selectedInvoices?: Invoice[];
   defaultSelectedInvoice?: Invoice;
   onContactSupport?: (invoice: Invoice) => void;
+  preventAutoAdvance?: boolean;
 }
 
 export function DuplicateInvoiceTable({ 
@@ -40,7 +41,8 @@ export function DuplicateInvoiceTable({
   currentInvoice, 
   selectedInvoices = [],
   defaultSelectedInvoice,
-  onContactSupport
+  onContactSupport,
+  preventAutoAdvance = false
 }: DuplicateInvoiceTableProps) {
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   
@@ -57,17 +59,19 @@ export function DuplicateInvoiceTable({
     if (defaultSelectedInvoice && selectedInvoices.length === 0) {
       initialSelection[defaultSelectedInvoice.id] = true;
       
-      // Notify parent of default selection
-      setTimeout(() => {
-        const defaultSelected = invoices.filter(inv => initialSelection[inv.id]);
-        if (defaultSelected.length > 0) {
-          onSelect(defaultSelected);
-        }
-      }, 0);
+      // Only notify parent of default selection if not preventing auto-advance
+      if (!preventAutoAdvance) {
+        setTimeout(() => {
+          const defaultSelected = invoices.filter(inv => initialSelection[inv.id]);
+          if (defaultSelected.length > 0) {
+            onSelect(defaultSelected);
+          }
+        }, 0);
+      }
     }
     
     setSelected(initialSelection);
-  }, [selectedInvoices, defaultSelectedInvoice, invoices, onSelect]);
+  }, [selectedInvoices, defaultSelectedInvoice, invoices, onSelect, preventAutoAdvance]);
   
   const handleToggle = (id: string) => {
     const newSelected = { ...selected };
@@ -81,9 +85,8 @@ export function DuplicateInvoiceTable({
     
     setSelected(newSelected);
     
-    // Update parent component with selected invoices
-    const selectedInvoices = invoices.filter(inv => newSelected[inv.id]);
-    onSelect(selectedInvoices);
+    // Don't auto-advance, just update the selection
+    // The parent will be notified when Compare button is clicked
   };
   
   const handleCompare = () => {
@@ -99,6 +102,15 @@ export function DuplicateInvoiceTable({
     
     const selectedInvoices = invoices.filter(inv => selected[inv.id]);
     onSelect(selectedInvoices);
+  };
+
+  const handleSelectSingle = (invoice: Invoice) => {
+    // Clear any existing selections first
+    const newSelected = { [invoice.id]: true };
+    setSelected(newSelected);
+    
+    // Notify parent of single selection
+    onSelectSingle(invoice);
   };
   
   const handleClearSelection = () => {
@@ -212,26 +224,38 @@ export function DuplicateInvoiceTable({
                       )}
                     </TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Download className="h-4 w-4 mr-2" />
-                            Download Invoice
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            className="cursor-pointer" 
-                            onClick={() => handleContactSupport(invoice)}
-                          >
-                            <MessageSquare className="h-4 w-4 mr-2" />
-                            Contact Support
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="flex items-center gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-primary border-primary hover:bg-primary-50 text-xs"
+                          onClick={() => handleSelectSingle(invoice)}
+                        >
+                          <Check className="h-3.5 w-3.5 mr-1" />
+                          Select
+                        </Button>
+                        
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download Invoice
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="cursor-pointer" 
+                              onClick={() => handleContactSupport(invoice)}
+                            >
+                              <MessageSquare className="h-4 w-4 mr-2" />
+                              Contact Support
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );

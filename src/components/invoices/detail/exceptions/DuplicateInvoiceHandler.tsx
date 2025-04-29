@@ -7,7 +7,6 @@ import { DuplicateInvoiceTable } from "./DuplicateInvoiceTable";
 import { InvoiceComparisonView } from "./InvoiceComparisonView";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
-import { ArrowRight } from "lucide-react";
 import { ExcludeAllModal } from "./ExcludeAllModal";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
@@ -32,7 +31,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   // Get the duplicate exception
   const duplicateException = exceptions.find(e => e.type === 'DUPLICATE_INVOICE');
   
-  // Find the newest invoice to pre-select
+  // Find the newest invoice to pre-select, but don't auto-advance to step 2
   const newestInvoice = [...duplicateInvoices].sort((a, b) => 
     new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
   )[0];
@@ -148,6 +147,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
               selectedInvoices={selectedInvoices}
               defaultSelectedInvoice={newestInvoice}
               onContactSupport={handleContactSupport}
+              preventAutoAdvance={true}
             />
           )}
           
