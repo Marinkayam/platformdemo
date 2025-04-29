@@ -8,6 +8,7 @@ import { DuplicateInvoiceTable } from "./DuplicateInvoiceTable";
 import { InvoiceComparisonView } from "./InvoiceComparisonView";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
+import { ArrowRight } from "lucide-react";
 
 interface DuplicateInvoiceHandlerProps {
   invoice: Invoice;
@@ -16,7 +17,7 @@ interface DuplicateInvoiceHandlerProps {
 }
 
 export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveException }: DuplicateInvoiceHandlerProps) {
-  const [step, setStep] = useState<'select' | 'compare' | 'confirm'>('select');
+  const [step, setStep] = useState<'select' | 'confirm'>('select');
   const [selectedInvoices, setSelectedInvoices] = useState<Invoice[]>([]);
   const [keepInvoice, setKeepInvoice] = useState<Invoice | null>(null);
   
@@ -25,10 +26,13 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   
   const handleSelectInvoices = (selected: Invoice[]) => {
     setSelectedInvoices(selected);
-    setStep('compare');
+    if (selected.length === 1) {
+      setKeepInvoice(selected[0]);
+      setStep('confirm');
+    }
   };
   
-  const handleCompareComplete = (selected: Invoice) => {
+  const handleSelectInvoice = (selected: Invoice) => {
     setKeepInvoice(selected);
     setStep('confirm');
   };
@@ -40,30 +44,28 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   };
   
   const handleBack = () => {
-    if (step === 'compare') {
+    if (step === 'confirm') {
       setStep('select');
-    } else if (step === 'confirm') {
-      setStep('compare');
+      setKeepInvoice(null);
     }
   };
   
   return (
-    <Card>
+    <Card className="border-amber-200 shadow-md">
       <CardContent className="pt-6">
-        <div className="mb-4">
+        <div>
           <div className="flex justify-between items-center mb-6">
             <div className="space-y-1">
-              <h3 className="text-lg font-medium">Duplicate Invoice Resolution</h3>
+              <h3 className="text-lg font-medium text-amber-700">Duplicate Invoice Resolution</h3>
               <p className="text-sm text-muted-foreground">
-                {step === 'select' && 'Step 1: Select invoices to compare'}
-                {step === 'compare' && 'Step 2: Compare invoices and select one to keep'}
-                {step === 'confirm' && 'Step 3: Confirm your selection'}
+                {step === 'select' && 'Step 1: Select the invoice to keep'}
+                {step === 'confirm' && 'Step 2: Confirm your selection'}
               </p>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className={`w-2.5 h-2.5 rounded-full ${step === 'select' ? 'bg-primary' : 'bg-gray-300'}`}></div>
-              <div className={`w-2.5 h-2.5 rounded-full ${step === 'compare' ? 'bg-primary' : 'bg-gray-300'}`}></div>
-              <div className={`w-2.5 h-2.5 rounded-full ${step === 'confirm' ? 'bg-primary' : 'bg-gray-300'}`}></div>
+            <div className="flex items-center space-x-3">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'select' ? 'bg-amber-500 text-white' : 'bg-gray-200'}`}>1</div>
+              <ArrowRight className="h-4 w-4 text-gray-400" />
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'confirm' ? 'bg-amber-500 text-white' : 'bg-gray-200'}`}>2</div>
             </div>
           </div>
           
@@ -71,21 +73,14 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
             <DuplicateInvoiceTable 
               invoices={duplicateInvoices} 
               onSelect={handleSelectInvoices}
+              onSelectSingle={handleSelectInvoice}
               currentInvoice={invoice}
             />
           )}
           
-          {step === 'compare' && (
-            <InvoiceComparisonView 
-              invoices={selectedInvoices}
-              onSelect={handleCompareComplete}
-              onBack={handleBack}
-            />
-          )}
-          
-          {step === 'confirm' && (
+          {step === 'confirm' && keepInvoice && (
             <ConfirmationStep 
-              invoice={keepInvoice!}
+              invoice={keepInvoice}
               onConfirm={handleConfirmInvoice}
               onBack={handleBack}
             />

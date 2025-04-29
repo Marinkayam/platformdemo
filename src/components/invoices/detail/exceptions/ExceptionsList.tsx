@@ -28,11 +28,12 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
   const headerColor = hasDuplicateException ? "bg-amber-50" : "bg-red-50";
   const textColor = hasDuplicateException ? "text-amber-700" : "text-red-700";
   const iconColor = hasDuplicateException ? "text-amber-600" : "text-red-600";
+  const borderColor = hasDuplicateException ? "border-amber-200" : "border-red-200";
 
   return (
     <>
-      <Card>
-        <CardHeader className={`${headerColor} border-b`}>
+      <Card className={`border ${borderColor} shadow-md`}>
+        <CardHeader className={`${headerColor} border-b ${borderColor}`}>
           <div className="flex items-start gap-3">
             <AlertCircle className={`h-5 w-5 ${iconColor} mt-0.5`} />
             <div>
@@ -44,18 +45,29 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
         </CardHeader>
         <CardContent className="pt-4">
           <div>
-            <div className="text-sm bg-gray-50 p-4 rounded-md border">
-              <p>The following errors need to be resolved:</p>
+            <div className={`text-sm rounded-md border p-4 ${hasDuplicateException ? "bg-amber-50/50 border-amber-200" : "bg-red-50/50 border-red-200"}`}>
+              <p className={hasDuplicateException ? "text-amber-800" : "text-red-800"}>
+                {hasDuplicateException ? 
+                  "We've detected multiple invoices with the same invoice number:" : 
+                  "The following errors need to be resolved:"}
+              </p>
               <ul className="list-disc ml-5 mt-2 space-y-1">
                 {exceptions.map(exception => (
-                  <li key={exception.id}>{exception.message}</li>
+                  <li key={exception.id} className={hasDuplicateException ? "text-amber-800" : "text-red-800"}>
+                    {exception.message}
+                    {exception.type === 'DUPLICATE_INVOICE' && (
+                      <span className="block text-sm mt-1 text-amber-700">
+                        {exception.details}
+                      </span>
+                    )}
+                  </li>
                 ))}
               </ul>
               
               <div className="mt-4 pt-3 border-t border-gray-200">
                 {hasDuplicateException ? (
                   <p className="text-sm text-gray-700">
-                    <strong>Resolution Steps:</strong> Select the correct invoice from the duplicates and mark the others as invalid.
+                    <strong>Resolution Steps:</strong> Review and select which invoice is valid from the options below. The others will be marked as duplicates.
                   </p>
                 ) : (
                   <p className="text-sm text-gray-700">

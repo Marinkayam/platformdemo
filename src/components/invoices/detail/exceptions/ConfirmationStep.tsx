@@ -3,6 +3,7 @@ import { Invoice } from "@/types/invoice";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
 
 interface ConfirmationStepProps {
   invoice: Invoice;
@@ -19,29 +20,38 @@ export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationSte
     { key: 'total' as keyof Invoice, label: 'Total' },
     { key: 'status' as keyof Invoice, label: 'Status' },
     { key: 'owner' as keyof Invoice, label: 'Owner' },
+    { key: 'poNumber' as keyof Invoice, label: 'PO Number' },
+    { key: 'paymentTerms' as keyof Invoice, label: 'Payment Terms' },
   ];
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="text-center py-6">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
-          <Check className="h-6 w-6 text-green-600" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
+          <Check className="h-8 w-8 text-green-600" />
         </div>
-        <h3 className="text-lg font-medium">Confirm your selection</h3>
-        <p className="text-sm text-muted-foreground mt-1">
+        <h3 className="text-xl font-medium">Confirm your selection</h3>
+        <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
           You've selected the following invoice to keep. All other duplicates will be marked as invalid.
         </p>
       </div>
       
-      <Card className="border-primary/30 bg-primary/5">
-        <CardContent className="pt-4 px-4">
-          <div className="space-y-2">
+      <Card className="border-green-200 bg-green-50/50 shadow-sm">
+        <CardContent className="pt-6 px-6">
+          <div className="space-y-3">
             {fields.map((field) => {
               const value = invoice[field.key];
+              
+              // Format the total field as currency
+              const displayValue = 
+                field.key === 'total' && typeof value === 'number'
+                  ? formatCurrency(value, invoice.currency || 'USD')
+                  : value !== undefined ? String(value) : '-';
+                  
               return (
-                <div key={field.key} className="grid grid-cols-2 gap-2 py-1 border-b border-primary/10 last:border-b-0">
-                  <div className="text-sm font-medium">{field.label}</div>
-                  <div className="text-sm">{value !== undefined ? String(value) : '-'}</div>
+                <div key={field.key} className="grid grid-cols-2 gap-2 py-2 border-b border-green-100 last:border-b-0">
+                  <div className="text-sm font-medium text-green-800">{field.label}</div>
+                  <div className="text-sm">{displayValue}</div>
                 </div>
               );
             })}
@@ -49,12 +59,23 @@ export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationSte
         </CardContent>
       </Card>
       
+      <div className="bg-amber-50 p-4 rounded-md border border-amber-200">
+        <h4 className="text-sm font-medium text-amber-700 mb-1">What happens next?</h4>
+        <p className="text-sm text-amber-800">
+          After confirmation, this invoice will be kept as the valid record and processing will continue.
+          Other invoices with the same number will be marked as duplicates and excluded from processing.
+        </p>
+      </div>
+      
       <div className="flex justify-between">
         <Button variant="outline" size="sm" onClick={onBack} className="flex items-center gap-2">
           <ArrowLeft className="h-4 w-4" />
           Back
         </Button>
-        <Button onClick={onConfirm}>
+        <Button 
+          onClick={onConfirm} 
+          className="bg-green-600 hover:bg-green-700"
+        >
           Confirm and Resolve Exception
         </Button>
       </div>
