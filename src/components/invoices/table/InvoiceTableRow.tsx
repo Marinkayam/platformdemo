@@ -31,6 +31,7 @@ export function InvoiceTableRow({
     <TableRow 
       className={`h-14 cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
       onClick={() => onNavigate(invoice.id)}
+      style={{ height: '56px' }} // Add explicit height to ensure consistency
     >
       <InvoiceNumber 
         number={invoice.number}
