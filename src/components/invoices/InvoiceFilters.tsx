@@ -1,6 +1,8 @@
 
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, Search, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 
 interface FilterDropdownProps {
   label: string;
@@ -68,19 +70,30 @@ export interface InvoiceFilters {
   search: string;
 }
 
+const defaultFilters: InvoiceFilters = {
+  status: "All",
+  total: "All",
+  dueDate: "All",
+  buyer: "All",
+  search: ""
+};
+
 export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
-  const [filters, setFilters] = useState<InvoiceFilters>({
-    status: "All",
-    total: "All",
-    dueDate: "All",
-    buyer: "All",
-    search: ""
-  });
+  const [filters, setFilters] = useState<InvoiceFilters>(defaultFilters);
 
   const handleFilterChange = (key: keyof InvoiceFilters, value: string) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);
+  };
+
+  const handleResetFilters = () => {
+    setFilters(defaultFilters);
+    onFilterChange(defaultFilters);
+    toast({
+      title: "Filters reset",
+      description: "All filters have been reset to default values",
+    });
   };
 
   const statusOptions = ["All", "Pending Action", "Approved by Buyer", "Paid", "External Submission", "Settled", "Awaiting SC", "Excluded"];
@@ -128,6 +141,15 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
             onChange={(e) => handleFilterChange("search", e.target.value)}
           />
         </div>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="h-9 bg-white flex items-center gap-1"
+          onClick={handleResetFilters}
+        >
+          <RefreshCw className="h-3 w-3" />
+          <span className="text-[14px]">Reset All</span>
+        </Button>
       </div>
     </div>
   );

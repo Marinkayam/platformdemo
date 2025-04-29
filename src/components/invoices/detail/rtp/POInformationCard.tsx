@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { POInformationProps } from "./types";
+import { Badge } from "@/components/ui/badge";
 
 interface POCardProps {
   po: POInformationProps;
@@ -18,6 +19,15 @@ export const POInformationCard = ({ po }: POCardProps) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Valid": return "bg-green-500 hover:bg-green-600";
+      case "Invalid": return "bg-red-500 hover:bg-red-600";
+      case "Pending": return "bg-amber-500 hover:bg-amber-600";
+      default: return "bg-gray-500 hover:bg-gray-600";
+    }
   };
 
   return (
@@ -56,12 +66,12 @@ export const POInformationCard = ({ po }: POCardProps) => {
           </div>
           
           <div className="space-y-2">
-            <label className="text-sm text-gray-500">PO Date</label>
-            <Input 
-              value={po.orderDate} 
-              readOnly 
-              className="bg-gray-50"
-            />
+            <label className="text-sm text-gray-500">Status</label>
+            <div>
+              <Badge className={`${getStatusColor(po.status)}`}>
+                {po.status}
+              </Badge>
+            </div>
           </div>
           
           <div className="space-y-2">
@@ -74,9 +84,72 @@ export const POInformationCard = ({ po }: POCardProps) => {
           </div>
           
           <div className="space-y-2">
+            <label className="text-sm text-gray-500">Portal / SC</label>
+            <Input 
+              value={`${po.portalInfo.type} - ${po.portalInfo.reference}`} 
+              readOnly 
+              className="bg-gray-50"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">PO Date</label>
+            <Input 
+              value={po.orderDate} 
+              readOnly 
+              className="bg-gray-50"
+            />
+          </div>
+          
+          <div className="space-y-2">
             <label className="text-sm text-gray-500">Total Amount</label>
             <Input 
-              value={`$${po.totalAmount.toLocaleString()}`} 
+              value={`${po.currency} ${po.totalAmount.toLocaleString()}`} 
+              readOnly 
+              className="bg-gray-50"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Total Invoiced</label>
+            <Input 
+              value={`${po.currency} ${po.totalInvoiced.toLocaleString()}`} 
+              readOnly 
+              className="bg-gray-50"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Amount Left</label>
+            <Input 
+              value={`${po.currency} ${po.amountLeft.toLocaleString()}`} 
+              readOnly 
+              className="bg-gray-50"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Payment Terms</label>
+            <Input 
+              value={po.paymentTerms} 
+              readOnly 
+              className="bg-gray-50"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Currency</label>
+            <Input 
+              value={po.currency} 
+              readOnly 
+              className="bg-gray-50"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">Buyer Reference</label>
+            <Input 
+              value={po.buyerReference} 
               readOnly 
               className="bg-gray-50"
             />
