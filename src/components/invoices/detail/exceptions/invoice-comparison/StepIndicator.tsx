@@ -8,8 +8,8 @@ interface StepIndicatorProps {
 
 export function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
   return (
-    <div className="mb-10">
-      <div className="flex items-center justify-center mb-4">
+    <div className="mb-8">
+      <div className="flex items-center justify-center">
         {steps.map((label, index) => {
           const stepNumber = index + 1;
           const isActive = stepNumber === currentStep;
@@ -21,19 +21,19 @@ export function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
               <div className="flex flex-col items-center">
                 <div
                   className={cn(
-                    "h-12 w-12 rounded-full flex items-center justify-center text-lg font-medium mb-2",
+                    "h-10 w-10 rounded-full flex items-center justify-center text-sm font-medium border",
                     isActive
-                      ? "bg-primary text-white"
+                      ? "bg-primary text-white border-primary"
                       : isPast
-                      ? "bg-gray-200 text-gray-600"
-                      : "bg-gray-200 text-gray-400"
+                      ? "bg-white border-gray-300 text-gray-500"
+                      : "bg-gray-50 border-gray-300 text-gray-400"
                   )}
                 >
                   {stepNumber}
                 </div>
                 <span
                   className={cn(
-                    "text-sm",
+                    "text-xs mt-2",
                     isActive ? "text-primary font-medium" : "text-gray-500"
                   )}
                 >
@@ -43,8 +43,8 @@ export function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
               {!isLast && (
                 <div
                   className={cn(
-                    "h-1 w-24 mx-2",
-                    isPast ? "bg-gray-300" : "bg-gray-200"
+                    "h-[1px] w-16 mx-1",
+                    isPast ? "bg-primary" : "bg-gray-300"
                   )}
                 />
               )}

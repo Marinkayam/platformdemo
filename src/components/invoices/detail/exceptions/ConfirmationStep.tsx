@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Check, ArrowLeft, AlertTriangle } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { StatusBadge } from "@/components/ui/status-badge";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,12 +15,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 interface ConfirmationStepProps {
   invoice: Invoice;
@@ -90,7 +82,7 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
             </TableCell>
             <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
             <TableCell>
-              <span className={`px-2.5 py-0.5 rounded-full text-sm ${
+              <span className={`px-2.5 py-0.5 rounded-full text-xs ${
                 invoice.status === 'Approved by Buyer' 
                   ? 'bg-green-100 text-green-800' 
                   : 'bg-red-100 text-red-800'
@@ -113,7 +105,7 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
             </TableCell>
             <TableCell>
               {isRecommended && (
-                <span className="bg-primary-100 text-primary px-2 py-0.5 rounded-full text-sm">
+                <span className="bg-primary-100 text-primary px-2 py-0.5 rounded-full text-xs">
                   Recommended
                 </span>
               )}
@@ -138,12 +130,23 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
           Back
         </Button>
         
-        <Button 
-          onClick={handleConfirmClick}
-          className="bg-primary hover:bg-primary-700"
-        >
-          Confirm Selection
-        </Button>
+        <div className="flex gap-3">
+          <Button 
+            variant="outline"
+            onClick={onExcludeAll}
+            className="border-red-300 text-red-700 hover:bg-red-50"
+          >
+            Exclude All
+          </Button>
+          
+          <Button 
+            onClick={handleConfirmClick}
+            className="bg-primary hover:bg-primary-700"
+          >
+            <Check className="h-4 w-4 mr-1" />
+            Confirm Selection
+          </Button>
+        </div>
       </div>
 
       <AlertDialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
@@ -186,6 +189,7 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
               onClick={handleFinalConfirm}
               className="bg-primary hover:bg-primary-700"
             >
+              <Check className="h-4 w-4 mr-1" />
               Confirm Selected Invoice
             </AlertDialogAction>
           </AlertDialogFooter>

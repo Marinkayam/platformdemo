@@ -10,7 +10,7 @@ export function InvoiceTableHeader() {
         <TableHead>Total</TableHead>
         <TableHead>Status</TableHead>
         <TableHead>Exceptions</TableHead>
-        <TableHead className="w-10"></TableHead>
+        <TableHead className="w-32 text-right">Recommendation</TableHead>
       </TableRow>
     </TableHeader>
   );

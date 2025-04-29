@@ -1,17 +1,9 @@
 
 import { Invoice } from "@/types/invoice";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { Check, MoreVertical, Download, MessageSquare, AlertTriangle } from "lucide-react";
-import { StatusBadge } from "@/components/ui/status-badge";
+import { RadioGroupItem } from "@/components/ui/radio-group";
+import { Check, AlertTriangle, MessageSquare } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Tooltip,
   TooltipContent,
@@ -23,20 +15,16 @@ interface InvoiceTableRowProps {
   invoice: Invoice;
   isSelected: boolean;
   isNewest: boolean;
-  onToggle: (id: string) => void;
-  onSelectSingle: (invoice: Invoice) => void;
-  onContactSupport?: (invoice: Invoice) => void;
   formatDate: (dateString: string) => string;
+  onContactSupport?: (invoice: Invoice) => void;
 }
 
 export function InvoiceTableRow({ 
   invoice, 
   isSelected, 
   isNewest, 
-  onToggle, 
-  onSelectSingle,
-  onContactSupport,
-  formatDate 
+  formatDate,
+  onContactSupport
 }: InvoiceTableRowProps) {
   const exceptionCount = invoice.exceptions?.length || 0;
   const hasExceptions = exceptionCount > 0;
@@ -51,11 +39,10 @@ export function InvoiceTableRow({
   return (
     <TableRow className={`hover:bg-gray-50 ${isSelected ? 'bg-primary-50' : ''}`}>
       <TableCell className="text-center">
-        <Checkbox
+        <RadioGroupItem 
+          value={invoice.id} 
           id={`invoice-${invoice.id}`}
-          checked={isSelected}
-          onCheckedChange={() => onToggle(invoice.id)}
-          className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+          className="data-[state=checked]:bg-primary data-[state=checked]:border-primary h-5 w-5"
         />
       </TableCell>
       <TableCell>
@@ -70,7 +57,7 @@ export function InvoiceTableRow({
       </TableCell>
       <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
       <TableCell>
-        <span className={`px-2.5 py-0.5 rounded-full text-sm ${
+        <span className={`px-2.5 py-0.5 rounded-full text-xs ${
           invoice.status === 'Approved by Buyer' 
             ? 'bg-green-100 text-green-800' 
             : 'bg-red-100 text-red-800'
@@ -107,46 +94,12 @@ export function InvoiceTableRow({
           </div>
         )}
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         {isRecommended && (
-          <span className="bg-primary-100 text-primary px-2 py-0.5 rounded-full text-sm whitespace-nowrap">
+          <span className="bg-primary-100 text-primary px-2 py-0.5 rounded-full text-xs whitespace-nowrap">
             Recommended
           </span>
         )}
-      </TableCell>
-      <TableCell onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center gap-2">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="text-primary border-primary hover:bg-primary-50 text-xs"
-            onClick={() => onSelectSingle(invoice)}
-          >
-            <Check className="h-3.5 w-3.5 mr-1" />
-            Select
-          </Button>
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem className="cursor-pointer">
-                <Download className="h-4 w-4 mr-2" />
-                Download Invoice
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="cursor-pointer" 
-                onClick={handleContactSupport}
-              >
-                <MessageSquare className="h-4 w-4 mr-2" />
-                Contact Support
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
       </TableCell>
     </TableRow>
   );

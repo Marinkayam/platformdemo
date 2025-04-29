@@ -1,25 +1,20 @@
 
-import { useState, useEffect } from "react";
-import { TableBody as UITableBody, TableRow, TableCell } from "@/components/ui/table";
+import { TableBody as UITableBody } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
 import { InvoiceTableRow } from "./InvoiceTableRow";
 
 interface InvoiceTableBodyProps {
   invoices: Invoice[];
-  selected: Record<string, boolean>;
-  onToggle: (id: string) => void;
-  onSelectSingle: (invoice: Invoice) => void;
-  onContactSupport?: (invoice: Invoice) => void;
+  selectedId: string | null;
   formatDate: (dateString: string) => string;
+  onContactSupport?: (invoice: Invoice) => void;
 }
 
 export function InvoiceTableBody({ 
   invoices,
-  selected,
-  onToggle,
-  onSelectSingle,
+  selectedId,
+  formatDate,
   onContactSupport,
-  formatDate
 }: InvoiceTableBodyProps) {
   // Sort invoices by creation date (newest first)
   const sortedInvoices = [...invoices].sort((a, b) => {
@@ -31,26 +26,16 @@ export function InvoiceTableBody({
 
   return (
     <UITableBody>
-      {sortedInvoices.length === 0 ? (
-        <TableRow>
-          <TableCell colSpan={6} className="h-24 text-center text-[14px] text-gray-600">
-            No invoices found.
-          </TableCell>
-        </TableRow>
-      ) : (
-        sortedInvoices.map((invoice) => (
-          <InvoiceTableRow
-            key={invoice.id}
-            invoice={invoice}
-            isSelected={!!selected[invoice.id]}
-            isNewest={invoice.id === newestInvoiceId}
-            onToggle={onToggle}
-            onSelectSingle={onSelectSingle}
-            onContactSupport={onContactSupport}
-            formatDate={formatDate}
-          />
-        ))
-      )}
+      {sortedInvoices.map((invoice) => (
+        <InvoiceTableRow
+          key={invoice.id}
+          invoice={invoice}
+          isSelected={invoice.id === selectedId}
+          isNewest={invoice.id === newestInvoiceId}
+          formatDate={formatDate}
+          onContactSupport={onContactSupport}
+        />
+      ))}
     </UITableBody>
   );
 }

@@ -3,22 +3,24 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
-import { DuplicateInvoiceTable } from "./duplicate-table";
-import { InvoiceComparisonView, StepIndicator, SelectionAlert } from "./invoice-comparison";
-import { ConfirmationStep } from "./confirmation";
+import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { ExceptionsList } from "./ExceptionsList";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
 import { ExcludeAllModal } from "./ExcludeAllModal";
-import { useNavigate } from "react-router-dom";
-import { toast } from "@/hooks/use-toast";
-import { Progress } from "@/components/ui/progress";
 import { ContactCustomerModal } from "./ContactCustomerModal";
-import { STEP_LABELS } from "./invoice-comparison/constants";
+import { StepIndicator } from "./invoice-comparison/StepIndicator";
+import { DuplicateInvoiceTable } from "./duplicate-table";
+import { InvoiceComparisonView } from "./invoice-comparison";
+import { ConfirmationStep } from "./ConfirmationStep";
 
 interface DuplicateInvoiceHandlerProps {
   invoice: Invoice;
   exceptions: Exception[];
   onResolveException: (exceptionId: string, resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT' | 'EXCLUDED') => void;
 }
+
+const STEP_LABELS = ["Select invoices", "Compare details", "Confirm choice"];
 
 export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveException }: DuplicateInvoiceHandlerProps) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -99,9 +101,9 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
     <Card className="border border-gray-200 shadow-sm">
       <CardContent className="pt-6">
         <div>
-          <div className="pb-4">
+          <div className="pb-6">
             <h2 className="text-xl font-semibold text-primary mb-2">
-              Monto detected multiple invoices with the same number
+              Duplication Exceptions - Monto detected multiple invoices with the same number
             </h2>
             <p className="text-gray-600">
               Please compare and select the invoice you'd like to proceed with. Our system will help you identify the differences and make an informed decision.
@@ -111,23 +113,17 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
           <StepIndicator currentStep={step} steps={STEP_LABELS} />
           
           {step === 1 && (
-            <>
-              {selectedInvoices.length > 0 && (
-                <SelectionAlert count={selectedInvoices.length} />
-              )}
-              
-              <DuplicateInvoiceTable 
-                invoices={duplicateInvoices} 
-                onSelect={handleSelectInvoices}
-                onSelectSingle={handleSelectInvoice}
-                onExcludeAll={() => setIsExcludeModalOpen(true)}
-                currentInvoice={invoice}
-                selectedInvoices={selectedInvoices}
-                defaultSelectedInvoice={newestInvoice}
-                onContactSupport={handleContactSupport}
-                preventAutoAdvance={true}
-              />
-            </>
+            <DuplicateInvoiceTable 
+              invoices={duplicateInvoices} 
+              onSelect={handleSelectInvoices}
+              onSelectSingle={handleSelectInvoice}
+              onExcludeAll={() => setIsExcludeModalOpen(true)}
+              currentInvoice={invoice}
+              selectedInvoices={selectedInvoices}
+              defaultSelectedInvoice={newestInvoice}
+              onContactSupport={handleContactSupport}
+              preventAutoAdvance={true}
+            />
           )}
           
           {step === 2 && selectedInvoices.length > 0 && (

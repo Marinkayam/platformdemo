@@ -24,29 +24,32 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
 
   // Determine alert header based on exception types
   const hasDuplicateException = exceptions.some(e => e.type === 'DUPLICATE_INVOICE');
-  const headerTitle = hasDuplicateException ? "Duplicate Invoice Exception" : "Exception Detected";
-  const headerColor = hasDuplicateException ? "bg-primary-50" : "bg-red-50";
-  const textColor = hasDuplicateException ? "text-primary-700" : "text-red-700";
-  const iconColor = hasDuplicateException ? "text-primary-600" : "text-red-600";
-  const borderColor = hasDuplicateException ? "border-primary-200" : "border-red-200";
+  
+  // Update styles to match the image for duplicate exceptions
+  const headerColor = "bg-red-50/70";
+  const textColor = "text-red-800";
+  const iconColor = "text-red-600";
+  const borderColor = "border-red-200";
 
   return (
     <>
-      <Card className={`border ${borderColor} shadow-md`}>
-        <CardHeader className={`${headerColor} border-b ${borderColor}`}>
+      <Card className={`border ${borderColor} shadow-sm`}>
+        <CardHeader className={`${headerColor} border-b ${borderColor} px-6 py-4`}>
           <div className="flex items-start gap-3">
             <AlertCircle className={`h-5 w-5 ${iconColor} mt-0.5`} />
             <div>
               <CardTitle className={`text-lg font-medium ${textColor}`}>
-                {headerTitle}
+                {hasDuplicateException 
+                  ? "Duplication Exception - Monto detected multiple invoices with the same number" 
+                  : "Exception Detected"}
               </CardTitle>
             </div>
           </div>
         </CardHeader>
         <CardContent className="pt-4">
           <div>
-            <div className={`text-sm rounded-md border p-4 ${hasDuplicateException ? "bg-primary-50/50 border-primary-200" : "bg-red-50/50 border-red-200"}`}>
-              <p className={hasDuplicateException ? "text-gray-800" : "text-red-800"}>
+            <div className={`text-sm rounded-md border p-4 ${hasDuplicateException ? "bg-red-50/50 border-red-200" : "bg-red-50/50 border-red-200"}`}>
+              <p className="text-gray-800">
                 {hasDuplicateException ? 
                   "We've detected multiple invoices with the same invoice number." : 
                   "The following errors need to be resolved:"}
