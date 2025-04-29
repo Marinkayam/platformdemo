@@ -1,4 +1,3 @@
-
 export interface Invoice {
   id: string;
   number: string;
@@ -22,6 +21,8 @@ export interface Invoice {
   isOverdue?: boolean;
   lineItems?: LineItem[];
   attachments?: Attachment[];
+  exceptions?: Exception[];
+  hasExceptions?: boolean;
 }
 
 export type InvoiceStatus = 

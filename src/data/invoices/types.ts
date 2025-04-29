@@ -1,5 +1,6 @@
 
 import { Invoice } from "@/types/invoice";
+import { Exception } from "@/types/exception";
 
 export const getBasicInvoiceData = (
   id: string,
@@ -21,5 +22,6 @@ export const getBasicInvoiceData = (
   creationDate,
   owner,
   currency: "USD",
+  hasExceptions: extras.hasExceptions || false,
   ...extras
 });

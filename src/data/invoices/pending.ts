@@ -1,5 +1,24 @@
-
 import { getBasicInvoiceData } from "./types";
+import { Exception } from "@/types/exception";
+
+const poExceptions: Exception[] = [
+  {
+    id: "exc1",
+    type: "PO_CLOSED",
+    message: "PO is closed for invoicing",
+    details: "The purchase order referenced in this invoice is marked as closed and cannot accept new invoices.",
+    createdAt: "2024-04-27T10:15:30Z",
+    resolved: false
+  },
+  {
+    id: "exc2",
+    type: "PO_INSUFFICIENT_FUNDS",
+    message: "PO funds insufficient",
+    details: "The remaining funds in the referenced purchase order are insufficient for this invoice amount.",
+    createdAt: "2024-04-27T10:15:30Z",
+    resolved: false
+  }
+];
 
 export const pendingInvoices = [
   getBasicInvoiceData(
@@ -14,7 +33,10 @@ export const pendingInvoices = [
     {
       subtotal: 513213.23,
       tax: 51321.32,
-      rejectedBy: "Monto"
+      rejectedBy: "Monto",
+      exceptions: poExceptions,
+      hasExceptions: true,
+      poNumber: "PO-987654"
     }
   ),
   getBasicInvoiceData(

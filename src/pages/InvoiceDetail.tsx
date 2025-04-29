@@ -45,6 +45,13 @@ export default function InvoiceDetail() {
   // Find the invoice by id
   const invoice = invoiceData.find(inv => inv.id === id);
 
+  // Set default tab to exceptions if invoice has exceptions
+  useEffect(() => {
+    if (invoice?.hasExceptions && activeTab === "invoice-data") {
+      setActiveTab("exceptions");
+    }
+  }, [invoice, activeTab]);
+
   if (!invoice) {
     return (
       <div className="p-8 text-center">
@@ -90,7 +97,7 @@ export default function InvoiceDetail() {
           <Attachments attachments={attachments} />
         </>
       ) : (
-        <TabContent tab={activeTab} />
+        <TabContent tab={activeTab} invoice={invoice} />
       )}
 
       <PdfViewer 
