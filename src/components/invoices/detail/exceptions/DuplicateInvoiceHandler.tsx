@@ -5,7 +5,7 @@ import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 import { DuplicateInvoiceTable } from "./duplicate-table";
 import { InvoiceComparisonView, StepIndicator, SelectionAlert } from "./invoice-comparison";
-import { ConfirmationStep } from "./ConfirmationStep";
+import { ConfirmationStep } from "./confirmation";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
 import { ExcludeAllModal } from "./ExcludeAllModal";
 import { useNavigate } from "react-router-dom";
