@@ -6,6 +6,7 @@ import { Check, ArrowLeft, AlertTriangle } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -57,78 +58,69 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
   
   const exceptionCount = invoice.exceptions?.length || 0;
   const hasExceptions = exceptionCount > 0;
+  const isRecommended = !hasExceptions && invoice.status === "APPROVED";
   
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="text-center py-2 mb-2">
-        <h3 className="text-lg font-medium text-primary-700">Selected Invoice</h3>
-        <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-          You have selected this invoice to keep. All other duplicate invoices will be excluded.
-        </p>
+      <div className="flex items-center space-x-2 mb-6">
+        <Button 
+          variant="ghost" 
+          className="pl-0 text-primary hover:text-primary-600 hover:bg-primary-50"
+          onClick={onBack}
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Selection
+        </Button>
       </div>
       
-      <div className="border rounded-lg overflow-hidden">
-        <Table>
-          <TableHeader className="bg-gray-50">
-            <TableRow>
-              <TableHead className="w-12 text-center"></TableHead>
-              <TableHead>Issue Date</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Exceptions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow className="bg-primary-50">
-              <TableCell className="text-center">
-                <div className="flex justify-center">
-                  <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
-                    <Check className="h-3 w-3 text-white" />
-                  </div>
+      <Table>
+        <TableHeader className="bg-gray-50">
+          <TableRow>
+            <TableHead>Issue Date</TableHead>
+            <TableHead>Total</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Exceptions</TableHead>
+            <TableHead>Recommendation</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow className="bg-primary-50/40">
+            <TableCell className="font-medium">
+              {formatDate(invoice.creationDate)}
+            </TableCell>
+            <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
+            <TableCell>
+              <span className={`px-2.5 py-0.5 rounded-full text-sm ${
+                invoice.status === 'APPROVED' 
+                  ? 'bg-green-100 text-green-800' 
+                  : 'bg-red-100 text-red-800'
+              }`}>
+                {invoice.status === 'APPROVED' ? 'Approved by Buyer' : 'Pending Action'}
+              </span>
+            </TableCell>
+            <TableCell>
+              {hasExceptions ? (
+                <div className="flex items-center text-amber-700">
+                  <AlertTriangle className="h-4 w-4 mr-1 text-amber-500" />
+                  <span>{exceptionCount} Exceptions</span>
                 </div>
-              </TableCell>
-              <TableCell>
-                <div className="font-medium">
-                  {formatDate(invoice.creationDate)}
+              ) : (
+                <div className="flex items-center text-green-700">
+                  <Check className="h-4 w-4 mr-1 text-green-600" />
+                  <span>None</span>
                 </div>
-              </TableCell>
-              <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
-              <TableCell>
-                <StatusBadge status={invoice.status} />
-              </TableCell>
-              <TableCell>
-                {hasExceptions ? (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="flex items-center text-amber-700 cursor-help">
-                          <AlertTriangle className="h-4 w-4 mr-1 text-amber-500" />
-                          <span>{exceptionCount} Exceptions</span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent className="w-80 p-3">
-                        <h4 className="font-semibold mb-1">Exception Details:</h4>
-                        <ul className="list-disc pl-4 space-y-1">
-                          {invoice.exceptions?.map(exception => (
-                            <li key={exception.id} className="text-sm">
-                              {exception.message}
-                            </li>
-                          )) || <li>No exception details available</li>}
-                        </ul>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ) : (
-                  <div className="flex items-center text-green-700">
-                    <Check className="h-4 w-4 mr-1 text-green-600" />
-                    <span>None</span>
-                  </div>
-                )}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </div>
+              )}
+            </TableCell>
+            <TableCell>
+              {isRecommended && (
+                <span className="bg-primary-100 text-primary px-2 py-0.5 rounded-full text-sm">
+                  Recommended
+                </span>
+              )}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
       
       <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
         <h4 className="text-sm font-medium text-blue-700 mb-1">What happens next?</h4>
@@ -141,27 +133,17 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
       </div>
       
       <div className="flex justify-between">
-        <Button variant="outline" size="sm" onClick={onBack} className="flex items-center gap-2">
+        <Button variant="outline" onClick={onBack} className="flex items-center gap-2">
           <ArrowLeft className="h-4 w-4" />
           Back
         </Button>
         
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={onExcludeAll}
-            className="border-red-300 text-red-700 hover:bg-red-50"
-          >
-            Exclude All
-          </Button>
-          
-          <Button 
-            onClick={handleConfirmClick}
-            className="bg-primary hover:bg-primary-700"
-          >
-            Confirm Selected Invoice
-          </Button>
-        </div>
+        <Button 
+          onClick={handleConfirmClick}
+          className="bg-primary hover:bg-primary-700"
+        >
+          Confirm Selection
+        </Button>
       </div>
 
       <AlertDialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
@@ -175,9 +157,17 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
           <div className="py-2">
             <p className="mb-4">You've selected:</p>
             <div className="bg-gray-50 p-4 rounded-md border mb-4">
-              <p className="font-medium">Record {invoice.id.slice(-1)} (#{invoice.number}) {formatDate(invoice.creationDate)}</p>
-              <p className="text-sm mt-1">Status: {invoice.status}</p>
-              <p className="text-sm">{invoice.exceptions?.length || 0} Exceptions</p>
+              <p className="font-medium">Invoice #{invoice.number} ({formatDate(invoice.creationDate)})</p>
+              <p className="text-sm mt-1">
+                <span className={`px-2 py-0.5 rounded-full text-xs ${
+                  invoice.status === 'APPROVED' 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-red-100 text-red-800'
+                }`}>
+                  {invoice.status === 'APPROVED' ? 'Approved by Buyer' : 'Pending Action'}
+                </span>
+              </p>
+              <p className="text-sm mt-1">{invoice.exceptions?.length || 0} Exceptions</p>
             </div>
             
             <div className="mb-4">

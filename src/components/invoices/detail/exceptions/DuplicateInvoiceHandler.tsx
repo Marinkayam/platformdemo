@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 import { DuplicateInvoiceTable } from "./duplicate-table";
-import { InvoiceComparisonView } from "./invoice-comparison";
+import { InvoiceComparisonView, StepIndicator, SelectionAlert } from "./invoice-comparison";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
 import { ExcludeAllModal } from "./ExcludeAllModal";
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { ContactCustomerModal } from "./ContactCustomerModal";
+import { STEP_LABELS } from "./invoice-comparison/constants";
 
 interface DuplicateInvoiceHandlerProps {
   invoice: Invoice;
@@ -20,7 +21,7 @@ interface DuplicateInvoiceHandlerProps {
 }
 
 export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveException }: DuplicateInvoiceHandlerProps) {
-  const [step, setStep] = useState<'select' | 'compare' | 'confirm'>('select');
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedInvoices, setSelectedInvoices] = useState<Invoice[]>([]);
   const [keepInvoice, setKeepInvoice] = useState<Invoice | null>(null);
   const [isExcludeModalOpen, setIsExcludeModalOpen] = useState(false);
@@ -39,23 +40,28 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   const handleSelectInvoices = (selected: Invoice[]) => {
     setSelectedInvoices(selected);
     if (selected.length > 0) {
-      setStep('compare');
+      setStep(2);
     }
   };
   
   const handleSelectInvoice = (selected: Invoice) => {
     setKeepInvoice(selected);
-    setStep('confirm');
+    setStep(3);
   };
   
   const handleComparisonSelect = (selected: Invoice) => {
     setKeepInvoice(selected);
-    setStep('confirm');
+    setStep(3);
   };
   
   const handleConfirmInvoice = () => {
     if (duplicateException && keepInvoice) {
       onResolveException(duplicateException.id, 'EXCLUDED');
+      
+      toast({
+        title: "Invoice selected",
+        description: "Your selection has been saved and duplicates excluded"
+      });
     }
   };
 
@@ -81,77 +87,50 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   };
   
   const handleBack = () => {
-    if (step === 'compare') {
-      setStep('select');
-    } else if (step === 'confirm') {
-      if (selectedInvoices.length > 0) {
-        setStep('compare');
-      } else {
-        setStep('select');
-      }
+    if (step === 2) {
+      setStep(1);
+    } else if (step === 3) {
+      setStep(2);
       setKeepInvoice(null);
     }
   };
 
-  // Calculate progress percentage based on current step
-  const getProgressValue = () => {
-    switch(step) {
-      case 'select': return 33;
-      case 'compare': return 66;
-      case 'confirm': return 100;
-      default: return 33;
-    }
-  };
-
-  // Get step label
-  const getStepLabel = () => {
-    switch(step) {
-      case 'select': return 'Step 1: Select invoices to compare';
-      case 'compare': return 'Step 2: Compare and choose invoice to keep';
-      case 'confirm': return 'Step 3: Confirm your selection';
-      default: return '';
-    }
-  };
-  
   return (
-    <Card className="border-primary-200 shadow-md">
+    <Card className="border border-gray-200 shadow-sm">
       <CardContent className="pt-6">
         <div>
-          <div className="mb-6">
-            <p className="text-sm text-muted-foreground mb-2">
-              {getStepLabel()}
+          <div className="pb-4">
+            <h2 className="text-xl font-semibold text-primary mb-2">
+              Monto detected multiple invoices with the same number
+            </h2>
+            <p className="text-gray-600">
+              Please compare and select the invoice you'd like to proceed with. Our system will help you identify the differences and make an informed decision.
             </p>
-            
-            <Progress value={getProgressValue()} className="h-2 mb-4" />
-            
-            <div className="flex items-center justify-between text-xs text-gray-500">
-              <div className={`${step === 'select' ? 'text-primary font-medium' : ''}`}>
-                Select
-              </div>
-              <div className={`${step === 'compare' ? 'text-primary font-medium' : ''}`}>
-                Compare
-              </div>
-              <div className={`${step === 'confirm' ? 'text-primary font-medium' : ''}`}>
-                Confirm
-              </div>
-            </div>
           </div>
+
+          <StepIndicator currentStep={step} steps={STEP_LABELS} />
           
-          {step === 'select' && (
-            <DuplicateInvoiceTable 
-              invoices={duplicateInvoices} 
-              onSelect={handleSelectInvoices}
-              onSelectSingle={handleSelectInvoice}
-              onExcludeAll={() => setIsExcludeModalOpen(true)}
-              currentInvoice={invoice}
-              selectedInvoices={selectedInvoices}
-              defaultSelectedInvoice={newestInvoice}
-              onContactSupport={handleContactSupport}
-              preventAutoAdvance={true}
-            />
+          {step === 1 && (
+            <>
+              {selectedInvoices.length > 0 && (
+                <SelectionAlert count={selectedInvoices.length} />
+              )}
+              
+              <DuplicateInvoiceTable 
+                invoices={duplicateInvoices} 
+                onSelect={handleSelectInvoices}
+                onSelectSingle={handleSelectInvoice}
+                onExcludeAll={() => setIsExcludeModalOpen(true)}
+                currentInvoice={invoice}
+                selectedInvoices={selectedInvoices}
+                defaultSelectedInvoice={newestInvoice}
+                onContactSupport={handleContactSupport}
+                preventAutoAdvance={true}
+              />
+            </>
           )}
           
-          {step === 'compare' && selectedInvoices.length > 0 && (
+          {step === 2 && selectedInvoices.length > 0 && (
             <InvoiceComparisonView 
               invoices={selectedInvoices}
               onSelect={handleComparisonSelect}
@@ -160,7 +139,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
             />
           )}
           
-          {step === 'confirm' && keepInvoice && (
+          {step === 3 && keepInvoice && (
             <ConfirmationStep 
               invoice={keepInvoice}
               onConfirm={handleConfirmInvoice}

@@ -40,6 +40,7 @@ export function InvoiceTableRow({
 }: InvoiceTableRowProps) {
   const exceptionCount = invoice.exceptions?.length || 0;
   const hasExceptions = exceptionCount > 0;
+  const isRecommended = !hasExceptions && invoice.status === "APPROVED";
 
   const handleContactSupport = () => {
     if (onContactSupport) {
@@ -69,7 +70,13 @@ export function InvoiceTableRow({
       </TableCell>
       <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
       <TableCell>
-        <StatusBadge status={invoice.status} />
+        <span className={`px-2.5 py-0.5 rounded-full text-sm ${
+          invoice.status === 'APPROVED' 
+            ? 'bg-green-100 text-green-800' 
+            : 'bg-red-100 text-red-800'
+        }`}>
+          {invoice.status === 'APPROVED' ? 'Approved by Buyer' : 'Pending Action'}
+        </span>
       </TableCell>
       <TableCell>
         {hasExceptions ? (
@@ -98,6 +105,13 @@ export function InvoiceTableRow({
             <Check className="h-4 w-4 mr-1 text-green-600" />
             <span>None</span>
           </div>
+        )}
+      </TableCell>
+      <TableCell>
+        {isRecommended && (
+          <span className="bg-primary-100 text-primary px-2 py-0.5 rounded-full text-sm whitespace-nowrap">
+            Recommended
+          </span>
         )}
       </TableCell>
       <TableCell onClick={(e) => e.stopPropagation()}>
