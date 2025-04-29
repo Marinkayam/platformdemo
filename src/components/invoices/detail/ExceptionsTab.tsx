@@ -1,11 +1,12 @@
 
-import { useState } from "react";
-import { AlertCircle, Upload, RefreshCw } from "lucide-react";
+import { useState, useEffect } from "react";
+import { AlertCircle, Upload } from "lucide-react";
 import { Exception } from "@/types/exception";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFileAttachments } from "@/hooks/useFileAttachments";
 import { FilePreview } from "@/components/invoices/detail/FilePreview";
+import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
 
 interface ExceptionsTabProps {
@@ -16,6 +17,8 @@ interface ExceptionsTabProps {
 export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabProps) {
   const { attachments, addAttachment, removeAttachment, clearAttachments } = useFileAttachments();
   const [dragActive, setDragActive] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
   
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -40,6 +43,23 @@ export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabP
     }
   };
   
+  const simulateUploadProgress = () => {
+    setIsUploading(true);
+    setUploadProgress(0);
+    
+    const timer = setInterval(() => {
+      setUploadProgress(prev => {
+        const newProgress = prev + 5;
+        if (newProgress >= 100) {
+          clearInterval(timer);
+          setIsUploading(false);
+          return 100;
+        }
+        return newProgress;
+      });
+    }, 100);
+  };
+  
   const handleFileUpload = (file: File) => {
     if (file.type !== 'application/pdf') {
       toast({
@@ -51,11 +71,16 @@ export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabP
     }
     
     clearAttachments();
-    addAttachment(file);
-    toast({
-      title: "File uploaded",
-      description: "Your PDF has been uploaded successfully"
-    });
+    simulateUploadProgress();
+    
+    // Simulate network delay for upload
+    setTimeout(() => {
+      addAttachment(file);
+      toast({
+        title: "File uploaded",
+        description: "Your PDF has been uploaded successfully"
+      });
+    }, 2000);
   };
   
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +88,14 @@ export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabP
       const file = e.target.files[0];
       handleFileUpload(file);
     }
+  };
+  
+  const handleDelete = (id: string) => {
+    removeAttachment(id);
+    toast({
+      title: "File removed",
+      description: "The PDF has been removed"
+    });
   };
   
   const handleMarkAsResolved = () => {
@@ -116,9 +149,6 @@ export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabP
               <CardTitle className="text-lg font-medium text-red-700">
                 Exception Detected
               </CardTitle>
-              <p className="text-sm text-red-600 mt-1">
-                Context: Supplier submitted invoice via Monto. It failed due to a PO issue. Monto flagged the invoice for action.
-              </p>
             </div>
           </div>
         </CardHeader>
@@ -133,20 +163,6 @@ export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabP
                     <li key={exception.id}>{exception.message}</li>
                   ))}
                 </ul>
-              </div>
-            </div>
-            
-            <div className="pt-2">
-              <h3 className="font-medium mb-2">Resolution:</h3>
-              <div className="flex flex-col sm:flex-row gap-4 text-sm">
-                <div className="flex-1 flex items-center gap-2 p-3 bg-violet-50 rounded-md border border-violet-100">
-                  <RefreshCw className="h-5 w-5 text-violet-600" />
-                  <span>Upload a new PDF with a new PO number</span>
-                </div>
-                <div className="flex-1 flex items-center gap-2 p-3 bg-blue-50 rounded-md border border-blue-100">
-                  <Upload className="h-5 w-5 text-blue-600" />
-                  <span>Contact the customer to resolve the issue</span>
-                </div>
               </div>
             </div>
             
@@ -179,15 +195,25 @@ export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabP
               </div>
             </div>
             
+            {isUploading && (
+              <div className="mt-2">
+                <p className="text-sm mb-1">Uploading PDF...</p>
+                <Progress value={uploadProgress} className="h-2" />
+                <p className="text-xs text-right mt-1 text-gray-500">{uploadProgress}%</p>
+              </div>
+            )}
+            
             {attachments.length > 0 && (
               <div className="mt-4">
                 <h4 className="text-sm font-medium mb-2">Uploaded File:</h4>
                 {attachments.map(file => (
-                  <FilePreview 
-                    key={file.id} 
-                    file={file} 
-                    onDelete={() => removeAttachment(file.id)} 
-                  />
+                  <div key={file.id} className="border rounded-md p-3 bg-gray-50">
+                    <FilePreview 
+                      file={file} 
+                      onDelete={() => handleDelete(file.id)}
+                      showDeleteButton={true}
+                    />
+                  </div>
                 ))}
               </div>
             )}
