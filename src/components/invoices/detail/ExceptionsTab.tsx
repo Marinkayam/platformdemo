@@ -14,7 +14,7 @@ import { DuplicateInvoiceHandler } from "./exceptions/DuplicateInvoiceHandler";
 
 interface ExceptionsTabProps {
   exceptions: Exception[];
-  onResolveException: (exceptionId: string, resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT') => void;
+  onResolveException: (exceptionId: string, resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT' | 'EXCLUDED') => void;
   invoice?: Invoice;
 }
 

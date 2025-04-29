@@ -53,8 +53,8 @@ export function TabContent({ tab, invoice }: TabContentProps) {
         toastMessage = "Invoice force submitted";
         toastDescription = "Invoice has been submitted despite exceptions";
       } else if (resolution === 'EXCLUDED') {
-        toastMessage = "Invoices excluded";
-        toastDescription = "Selected invoices have been excluded from processing";
+        toastMessage = "Duplicate invoices resolved";
+        toastDescription = "Selected invoice will be kept, others marked as excluded";
       }
       
       setTimeout(() => {
@@ -66,8 +66,8 @@ export function TabContent({ tab, invoice }: TabContentProps) {
         // Navigate back to invoices list
         setTimeout(() => {
           navigate("/invoices");
-        }, 1000);
-      }, 1000);
+        }, 1500);
+      }, 500);
     }
   };
 

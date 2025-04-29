@@ -14,9 +14,16 @@ interface InvoiceComparisonViewProps {
 export function InvoiceComparisonView({ invoices, onSelect, onBack }: InvoiceComparisonViewProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   
-  if (invoices.length !== 2) {
-    return <div>Please select exactly 2 invoices to compare.</div>;
-  }
+  // Auto-select the newest invoice
+  useMemo(() => {
+    if (invoices.length > 0 && !selectedId) {
+      // Find newest invoice by creation date
+      const newest = [...invoices].sort((a, b) => 
+        new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
+      )[0];
+      setSelectedId(newest.id);
+    }
+  }, [invoices, selectedId]);
   
   const fields = [
     { key: 'number' as keyof Invoice, label: 'Invoice Number' },
@@ -34,18 +41,27 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack }: InvoiceCom
   const differences = useMemo(() => {
     const result: Record<string, boolean> = {};
     
+    if (invoices.length < 2) return result;
+    
+    // Compare all invoices against the first one
+    const first = invoices[0];
+    
     fields.forEach(field => {
-      const value1 = invoices[0][field.key];
-      const value2 = invoices[1][field.key];
+      const firstValue = first[field.key];
       
-      // Check if the values are different
-      if (value1 !== value2) {
+      // Check if any invoice has a different value for this field
+      const hasDifference = invoices.slice(1).some(invoice => {
+        const value = invoice[field.key];
+        return firstValue !== value;
+      });
+      
+      if (hasDifference) {
         result[field.key as string] = true;
       }
     });
     
     return result;
-  }, [invoices]);
+  }, [invoices, fields]);
   
   const handleSelect = (invoice: Invoice) => {
     setSelectedId(invoice.id);
@@ -61,7 +77,12 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack }: InvoiceCom
   };
 
   // Show which invoice is newer
-  const newerInvoice = invoices[0].creationDate > invoices[1].creationDate ? invoices[0] : invoices[1];
+  const newerInvoice = useMemo(() => {
+    if (invoices.length < 2) return invoices[0];
+    return invoices.reduce((newest, current) => 
+      new Date(current.creationDate) > new Date(newest.creationDate) ? current : newest
+    , invoices[0]);
+  }, [invoices]);
   
   return (
     <div className="space-y-6">
@@ -92,12 +113,13 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack }: InvoiceCom
         
         {invoices.map((invoice) => {
           const isNewer = invoice.id === newerInvoice.id;
+          const isSelected = selectedId === invoice.id;
           
           return (
             <div 
               key={invoice.id} 
               className={`col-span-1 rounded-lg border ${
-                selectedId === invoice.id ? 'border-primary ring-1 ring-primary' : 'border-border'
+                isSelected ? 'border-primary-400 ring-1 ring-primary-400 bg-primary-50/50' : 'border-border'
               }`}
             >
               <div className="h-14 flex items-center justify-center bg-muted/30 rounded-t-lg border-b">
@@ -115,12 +137,12 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack }: InvoiceCom
                       </span>
                     </div>
                     <Button 
-                      variant={selectedId === invoice.id ? "default" : "outline"} 
+                      variant={isSelected ? "default" : "outline"} 
                       size="sm" 
                       onClick={() => handleSelect(invoice)}
-                      className={`h-8 ${selectedId === invoice.id ? 'bg-primary text-white' : ''}`}
+                      className={`h-8 ${isSelected ? 'bg-primary text-white' : ''}`}
                     >
-                      {selectedId === invoice.id ? "Selected" : "Select"}
+                      {isSelected ? "Selected" : "Select"}
                     </Button>
                   </div>
                 </div>

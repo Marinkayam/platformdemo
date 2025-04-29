@@ -30,7 +30,7 @@ export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationSte
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4">
           <Check className="h-8 w-8 text-primary-600" />
         </div>
-        <h3 className="text-xl font-medium">Confirm your selection</h3>
+        <h3 className="text-xl font-medium text-primary-700">Confirm your selection</h3>
         <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
           You've selected the following invoice to keep. All other duplicates will be marked as excluded and won't be tracked.
         </p>

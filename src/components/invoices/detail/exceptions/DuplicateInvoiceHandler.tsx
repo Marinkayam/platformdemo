@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
@@ -8,7 +8,6 @@ import { InvoiceComparisonView } from "./InvoiceComparisonView";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
 import { Check, ArrowRight } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface DuplicateInvoiceHandlerProps {
   invoice: Invoice;
@@ -23,6 +22,11 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   
   // Get the duplicate exception
   const duplicateException = exceptions.find(e => e.type === 'DUPLICATE_INVOICE');
+  
+  // Find the newest invoice to pre-select
+  const newestInvoice = [...duplicateInvoices].sort((a, b) => 
+    new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
+  )[0];
   
   const handleSelectInvoices = (selected: Invoice[]) => {
     setSelectedInvoices(selected);
@@ -43,7 +47,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   
   const handleConfirmInvoice = () => {
     if (duplicateException && keepInvoice) {
-      onResolveException(duplicateException.id, 'MARK_RESOLVED');
+      onResolveException(duplicateException.id, 'EXCLUDED');
     }
   };
   
@@ -59,19 +63,6 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
       setKeepInvoice(null);
     }
   };
-
-  // Function to dispatch a custom event to switch to invoice-data tab
-  const switchToInvoiceData = () => {
-    const event = new CustomEvent('switchTab', { 
-      detail: { tab: 'invoice-data' } 
-    });
-    window.dispatchEvent(event);
-  };
-
-  // Switch to invoice data tab on component mount
-  useEffect(() => {
-    switchToInvoiceData();
-  }, []);
   
   return (
     <Card className="border-primary-200 shadow-md">
@@ -102,6 +93,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
               onSelectSingle={handleSelectInvoice}
               currentInvoice={invoice}
               selectedInvoices={selectedInvoices}
+              defaultSelectedInvoice={newestInvoice}
             />
           )}
           

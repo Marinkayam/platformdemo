@@ -15,6 +15,7 @@ interface DuplicateInvoiceTableProps {
   onSelectSingle: (invoice: Invoice) => void;
   currentInvoice: Invoice;
   selectedInvoices?: Invoice[];
+  defaultSelectedInvoice?: Invoice;
 }
 
 export function DuplicateInvoiceTable({ 
@@ -22,19 +23,35 @@ export function DuplicateInvoiceTable({
   onSelect, 
   onSelectSingle, 
   currentInvoice, 
-  selectedInvoices = [] 
+  selectedInvoices = [],
+  defaultSelectedInvoice
 }: DuplicateInvoiceTableProps) {
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   
-  // Initialize selections based on props
+  // Initialize selections based on props and default selection
   useEffect(() => {
     const initialSelection: Record<string, boolean> = {};
+    
+    // Add pre-selections from props
     selectedInvoices.forEach(inv => {
       initialSelection[inv.id] = true;
     });
     
+    // Add default selection if provided and not already selected
+    if (defaultSelectedInvoice && selectedInvoices.length === 0) {
+      initialSelection[defaultSelectedInvoice.id] = true;
+      
+      // Notify parent of default selection
+      setTimeout(() => {
+        const defaultSelected = invoices.filter(inv => initialSelection[inv.id]);
+        if (defaultSelected.length > 0) {
+          onSelect(defaultSelected);
+        }
+      }, 0);
+    }
+    
     setSelected(initialSelection);
-  }, [selectedInvoices]);
+  }, [selectedInvoices, defaultSelectedInvoice, invoices, onSelect]);
   
   const handleToggle = (id: string) => {
     const newSelected = { ...selected };
@@ -75,8 +92,8 @@ export function DuplicateInvoiceTable({
   
   const handleExcludeAll = () => {
     toast({
-      title: "Not implemented",
-      description: "This feature is not yet implemented.",
+      title: "Excluding all invoices",
+      description: "All duplicate invoices would be marked as excluded.",
     });
   };
 
@@ -112,48 +129,64 @@ export function DuplicateInvoiceTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sortedInvoices.map((invoice) => {
-              const isSelected = !!selected[invoice.id];
-              const hasExceptions = invoice.exceptions?.length > 0;
-              
-              return (
-                <TableRow key={invoice.id} className="hover:bg-gray-50">
-                  <TableCell className="text-center">
-                    <Checkbox
-                      id={`invoice-${invoice.id}`}
-                      checked={isSelected}
-                      onCheckedChange={() => handleToggle(invoice.id)}
-                      className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <div className="font-medium">{invoice.creationDate}</div>
-                  </TableCell>
-                  <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
-                  <TableCell>
-                    <StatusBadge status={invoice.status} />
-                  </TableCell>
-                  <TableCell>
-                    {hasExceptions ? (
-                      <div className="flex items-center text-amber-700">
-                        <AlertTriangle className="h-4 w-4 mr-1 text-amber-500" />
-                        <span>{invoice.exceptions?.length} Exceptions</span>
+            {sortedInvoices.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="h-24 text-center text-[14px] text-gray-600">
+                  No invoices found.
+                </td>
+              </tr>
+            ) : (
+              sortedInvoices.map((invoice) => {
+                const isSelected = !!selected[invoice.id];
+                const hasExceptions = invoice.exceptions?.length > 0;
+                const isNewest = invoice.id === sortedInvoices[0].id;
+                
+                return (
+                  <TableRow key={invoice.id} className={`hover:bg-gray-50 ${isSelected ? 'bg-primary-50' : ''}`}>
+                    <TableCell className="text-center">
+                      <Checkbox
+                        id={`invoice-${invoice.id}`}
+                        checked={isSelected}
+                        onCheckedChange={() => handleToggle(invoice.id)}
+                        className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-medium flex items-center">
+                        {invoice.creationDate}
+                        {isNewest && (
+                          <span className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+                            Newest
+                          </span>
+                        )}
                       </div>
-                    ) : (
-                      <div className="flex items-center text-green-700">
-                        <Check className="h-4 w-4 mr-1 text-green-600" />
-                        <span>None</span>
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="icon">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                    </TableCell>
+                    <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
+                    <TableCell>
+                      <StatusBadge status={invoice.status} />
+                    </TableCell>
+                    <TableCell>
+                      {hasExceptions ? (
+                        <div className="flex items-center text-amber-700">
+                          <AlertTriangle className="h-4 w-4 mr-1 text-amber-500" />
+                          <span>{invoice.exceptions?.length} Exceptions</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center text-green-700">
+                          <Check className="h-4 w-4 mr-1 text-green-600" />
+                          <span>None</span>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="ghost" size="icon">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </div>
