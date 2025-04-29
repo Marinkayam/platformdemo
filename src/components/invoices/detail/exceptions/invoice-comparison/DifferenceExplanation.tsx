@@ -1,21 +1,37 @@
 
+import { Invoice } from "@/types/invoice";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangle } from "lucide-react";
 
-export function DifferenceExplanation() {
+interface DifferenceExplanationProps {
+  count: number;
+  fields: Array<{ key: keyof Invoice, label: string }>;
+}
+
+export function DifferenceExplanation({ count, fields }: DifferenceExplanationProps) {
+  // Get top 3 most important differing fields
+  const importantFields = ['total', 'status', 'dueDate', 'buyer', 'number'];
+  const highlightedFields = fields
+    .filter(f => importantFields.includes(f.key as string))
+    .slice(0, 3);
+
   return (
-    <div className="bg-amber-50 p-4 rounded-md border border-amber-200 mt-6">
-      <h4 className="text-lg font-medium text-amber-800 mb-2">Why these differences matter:</h4>
-      
-      <ul className="space-y-2">
-        <li className="flex items-start gap-2 text-amber-800">
-          <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
-          <span><strong>Different statuses</strong> can affect how the invoice is processed and may require additional verification.</span>
-        </li>
-        <li className="flex items-start gap-2 text-amber-800">
-          <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
-          <span><strong>Invoices with fewer exceptions</strong> generally process faster and have a lower risk of delays.</span>
-        </li>
-      </ul>
-    </div>
+    <Alert className="bg-amber-50 border-amber-200">
+      <AlertTriangle className="h-4 w-4 text-amber-500" />
+      <AlertDescription className="text-amber-800">
+        <span className="font-medium">Found {count} differences</span> between these invoices
+        {highlightedFields.length > 0 && (
+          <>
+            , including: <span className="font-medium">
+              {highlightedFields.map((f, i) => (
+                <span key={f.key as string}>
+                  {f.label}{i < highlightedFields.length - 1 ? ', ' : ''}
+                </span>
+              ))}
+            </span>
+          </>
+        )}
+      </AlertDescription>
+    </Alert>
   );
 }

@@ -44,6 +44,12 @@ export function findDifferences(invoices: Invoice[], fields: Array<{ key: keyof 
     // Check if any invoice has a different value for this field
     const hasDifference = invoices.slice(1).some(invoice => {
       const value = invoice[field.key];
+      
+      // For number fields, check if the difference is significant (more than 0.01)
+      if (typeof firstValue === 'number' && typeof value === 'number') {
+        return Math.abs(firstValue - value) > 0.01;
+      }
+      
       return firstValue !== value;
     });
     
@@ -53,4 +59,51 @@ export function findDifferences(invoices: Invoice[], fields: Array<{ key: keyof 
   });
   
   return result;
+}
+
+/**
+ * Categorize fields by importance and if they have differences
+ */
+export function categorizeFields(
+  fields: Array<{ key: keyof Invoice, label: string }>, 
+  differences: Record<string, boolean>
+) {
+  // Define critical fields that should be prioritized
+  const criticalFields = ['number', 'total', 'buyer', 'status', 'dueDate'];
+  
+  return {
+    // Fields that have differences and are critical
+    criticalDifferences: fields.filter(f => 
+      differences[f.key as string] && criticalFields.includes(f.key as string)
+    ),
+    // Fields that have differences but are not critical
+    otherDifferences: fields.filter(f => 
+      differences[f.key as string] && !criticalFields.includes(f.key as string)
+    ),
+    // Fields that don't have differences
+    identical: fields.filter(f => !differences[f.key as string])
+  };
+}
+
+/**
+ * Returns a recommendation based on the invoice properties
+ * Higher score is better
+ */
+export function scoreInvoice(invoice: Invoice): number {
+  let score = 0;
+  
+  // Prefer newer invoices
+  score += new Date(invoice.creationDate).getTime() / 1000000;
+  
+  // Prefer approved invoices
+  if (invoice.status === 'Approved by Buyer') {
+    score += 100;
+  }
+  
+  // Penalize invoices with exceptions
+  if (invoice.exceptions?.length) {
+    score -= invoice.exceptions.length * 10;
+  }
+  
+  return score;
 }
