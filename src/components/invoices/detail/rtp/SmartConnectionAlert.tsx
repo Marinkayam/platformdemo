@@ -13,7 +13,7 @@ export const SmartConnectionAlert = ({ exceptions }: SmartConnectionAlertProps) 
   
   const handleNavigateToSmartConnection = () => {
     // Dispatch custom event to switch to the Smart Connection tab
-    const event = new CustomEvent('switchTab', { detail: { tab: 'rtp-data' } });
+    const event = new CustomEvent('switchTab', { detail: { tab: 'smart-connection' } });
     window.dispatchEvent(event);
   };
   

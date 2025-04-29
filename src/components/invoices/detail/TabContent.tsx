@@ -15,7 +15,7 @@ export function TabContent({ tab }: TabContentProps) {
   
   // Dots animation for loading effect
   useEffect(() => {
-    if (tab !== "rtp-data") return;
+    if (tab !== "smart-connection") return;
     
     const interval = setInterval(() => {
       setDotCount((prev) => (prev < 3 ? prev + 1 : 1));
@@ -26,7 +26,7 @@ export function TabContent({ tab }: TabContentProps) {
   
   // Moving element animation
   useEffect(() => {
-    if (tab !== "rtp-data") return;
+    if (tab !== "smart-connection") return;
     
     const interval = setInterval(() => {
       setPosition({
@@ -50,6 +50,8 @@ export function TabContent({ tab }: TabContentProps) {
         </div>
       );
     case "rtp-data":
+      return <RTPDataTab />;
+    case "smart-connection":
       return (
         <div className="bg-white rounded-lg shadow p-8 text-center">
           <div className="relative h-52 mb-8 overflow-hidden border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">

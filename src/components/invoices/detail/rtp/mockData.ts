@@ -28,7 +28,7 @@ export const mockConnectionWithIssue: SmartConnectionProps = {
 };
 
 export const mockPOInformation: POInformationProps = {
-  number: "",
+  number: "PO-12345-ACME",
   status: "Valid",
   customerName: "Acme Corporation",
   portalInfo: {
