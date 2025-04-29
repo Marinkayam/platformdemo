@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
-import { DuplicateInvoiceTable } from "./DuplicateInvoiceTable";
+import { DuplicateInvoiceTable } from "./duplicate-table";
 import { InvoiceComparisonView } from "./InvoiceComparisonView";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
