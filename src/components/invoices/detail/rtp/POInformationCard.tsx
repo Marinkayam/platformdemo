@@ -5,17 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { POInformationProps } from "./types";
 
-interface POInformationProps {
-  po: {
-    number: string;
-    buyer: string;
-    date: string;
-    total: number;
-  };
+interface POCardProps {
+  po: POInformationProps;
 }
 
-export const POInformationCard = ({ po }: POInformationProps) => {
+export const POInformationCard = ({ po }: POCardProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (text: string) => {
@@ -62,7 +58,7 @@ export const POInformationCard = ({ po }: POInformationProps) => {
           <div className="space-y-2">
             <label className="text-sm text-gray-500">PO Date</label>
             <Input 
-              value={po.date} 
+              value={po.orderDate} 
               readOnly 
               className="bg-gray-50"
             />
@@ -71,7 +67,7 @@ export const POInformationCard = ({ po }: POInformationProps) => {
           <div className="space-y-2">
             <label className="text-sm text-gray-500">Buyer</label>
             <Input 
-              value={po.buyer} 
+              value={po.customerName} 
               readOnly 
               className="bg-gray-50"
             />
@@ -80,7 +76,7 @@ export const POInformationCard = ({ po }: POInformationProps) => {
           <div className="space-y-2">
             <label className="text-sm text-gray-500">Total Amount</label>
             <Input 
-              value={`$${po.total.toLocaleString()}`} 
+              value={`$${po.totalAmount.toLocaleString()}`} 
               readOnly 
               className="bg-gray-50"
             />
