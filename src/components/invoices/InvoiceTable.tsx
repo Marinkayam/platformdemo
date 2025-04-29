@@ -20,7 +20,12 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
     sortDirection, 
     handleSort, 
     setLocalInvoices 
-  } = useSortedInvoices(invoices);
+  } = useSortedInvoices(
+    // Filter invoices if we're on the pending tab to only show "Pending Action" status
+    isPendingTab 
+      ? invoices.filter(invoice => invoice.status === "Pending Action")
+      : invoices
+  );
 
   const handleAssign = (invoiceId: string, email: string) => {
     setLocalInvoices(prev => 

@@ -1,4 +1,3 @@
-
 import * as React from "react"
 
 import type {
@@ -7,7 +6,7 @@ import type {
 } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 5
-const TOAST_REMOVE_DELAY = 3000 // 3 seconds for auto-dismiss
+export const TOAST_REMOVE_DELAY = 3000 // 3 seconds
 
 type ToasterToast = ToastProps & {
   id: string
@@ -26,7 +25,7 @@ const actionTypes = {
 let count = 0
 
 function genId() {
-  count = (count + 1) % Number.MAX_SAFE_INTEGER
+  count = (count + 1) % Number.MAX_VALUE
   return count.toString()
 }
 
@@ -35,7 +34,7 @@ type ActionType = typeof actionTypes
 type Action =
   | {
       type: ActionType["ADD_TOAST"]
-      toast: Omit<ToasterToast, "id">
+      toast: ToasterToast
     }
   | {
       type: ActionType["UPDATE_TOAST"]
@@ -75,15 +74,24 @@ const addToRemoveQueue = (toastId: string) => {
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case actionTypes.ADD_TOAST:
+      // Enforce auto-dismiss of toasts by adding them to the remove queue
+      if (!action.toast.id) {
+        const id = genId()
+        action.toast.id = id
+      }
+      addToRemoveQueue(action.toast.id)
+      
       return {
         ...state,
-        toasts: [
-          { ...action.toast, id: genId() },
-          ...state.toasts,
-        ].slice(0, TOAST_LIMIT),
+        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
       }
 
     case actionTypes.UPDATE_TOAST:
+      // Update toast and reset auto-dismiss timer
+      if (action.toast.id) {
+        addToRemoveQueue(action.toast.id)
+      }
+      
       return {
         ...state,
         toasts: state.toasts.map((t) =>
@@ -143,7 +151,7 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, "id">
 
-function toast(props: Toast) {
+function toast({ ...props }: Toast) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -151,18 +159,13 @@ function toast(props: Toast) {
       type: actionTypes.UPDATE_TOAST,
       toast: { ...props, id },
     })
-    
   const dismiss = () => dispatch({ type: actionTypes.DISMISS_TOAST, toastId: id })
-
-  // Automatically dismiss toast after the delay time
-  setTimeout(() => {
-    dismiss()
-  }, TOAST_REMOVE_DELAY)
 
   dispatch({
     type: actionTypes.ADD_TOAST,
     toast: {
       ...props,
+      id,
       open: true,
       onOpenChange: (open) => {
         if (!open) dismiss()
@@ -171,7 +174,7 @@ function toast(props: Toast) {
   })
 
   return {
-    id,
+    id: id,
     dismiss,
     update,
   }

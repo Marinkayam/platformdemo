@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ZoomIn, ZoomOut } from "lucide-react";
@@ -25,7 +26,7 @@ export function PdfViewer({
 }: PdfViewerProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+      <DialogContent className="max-w-4xl h-[80vh] flex flex-col p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-medium">Invoice Preview</h2>
           <div className="flex items-center gap-2">
@@ -39,9 +40,9 @@ export function PdfViewer({
           </div>
         </div>
         
-        <div className="bg-white border rounded-md flex-1 overflow-auto p-8">
+        <div className="bg-white border rounded-md flex-1 overflow-auto p-6">
           <div 
-            className="bg-white mx-auto max-w-2xl transition-all duration-200 ease-in-out"
+            className="bg-white mx-auto w-[21cm] transition-all duration-200 ease-in-out shadow-md"
             style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top center' }}
           >
             <div className="border border-gray-200 rounded-lg p-8">
@@ -81,22 +82,22 @@ export function PdfViewer({
                 </div>
               </div>
               
-              <table className="w-full mb-6">
+              <table className="w-full mb-6 border-collapse">
                 <thead>
                   <tr className="border-b border-gray-300 text-left">
-                    <th className="py-2">Description</th>
-                    <th className="py-2 text-right">Quantity</th>
-                    <th className="py-2 text-right">Unit Price</th>
-                    <th className="py-2 text-right">Total</th>
+                    <th className="py-2 px-2">Description</th>
+                    <th className="py-2 px-2 text-right">Quantity</th>
+                    <th className="py-2 px-2 text-right">Unit Price</th>
+                    <th className="py-2 px-2 text-right">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   {lineItems.map((item) => (
                     <tr key={item.id} className="border-b border-gray-200">
-                      <td className="py-3">{item.description}</td>
-                      <td className="py-3 text-right">{item.quantity}</td>
-                      <td className="py-3 text-right">${item.unitPrice.toFixed(2)}</td>
-                      <td className="py-3 text-right">${item.total.toFixed(2)}</td>
+                      <td className="py-3 px-2">{item.description}</td>
+                      <td className="py-3 px-2 text-right">{item.quantity}</td>
+                      <td className="py-3 px-2 text-right">${item.unitPrice.toFixed(2)}</td>
+                      <td className="py-3 px-2 text-right">${item.total.toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -112,7 +113,7 @@ export function PdfViewer({
                     <span>Tax</span>
                     <span>{formatCurrency(invoice.tax || invoice.total * 0.1)}</span>
                   </div>
-                  <div className="flex justify-between py-1 font-bold">
+                  <div className="flex justify-between py-2 font-bold">
                     <span>Total</span>
                     <span>{formatCurrency(invoice.total)}</span>
                   </div>

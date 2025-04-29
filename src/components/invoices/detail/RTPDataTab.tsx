@@ -1,4 +1,3 @@
-
 import React from "react";
 import { 
   Card, 
@@ -251,7 +250,7 @@ const ProcessTimeline = () => {
     <Card className="mb-6">
       <CardHeader className="pb-1 pt-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xs font-medium">Process Timeline</CardTitle>
+          <CardTitle className="text-xs font-medium text-gray-700">Process Timeline</CardTitle>
           <span className="text-xs text-muted-foreground">
             {completedSteps}/{totalSteps}
           </span>
@@ -273,19 +272,19 @@ const ProcessTimeline = () => {
                   )}
                 >
                   <div className={cn(
-                    "h-5 w-5 rounded-full flex items-center justify-center transition-all duration-300",
+                    "h-4 w-4 rounded-full flex items-center justify-center transition-all duration-300",
                     step.completed ? "bg-primary shadow-sm shadow-primary/20 text-white" : 
                     step.current ? "bg-white border-2 border-primary text-primary" : 
                     "bg-gray-100 text-gray-400"
                   )}>
                     {step.completed ? (
-                      <Check className="h-2.5 w-2.5" />
+                      <Check className="h-2 w-2" />
                     ) : (
-                      <span className="font-medium text-[10px]">{step.id}</span>
+                      <span className="font-medium text-[9px]">{step.id}</span>
                     )}
                   </div>
                   <span className={cn(
-                    "text-[10px] mt-1 font-medium text-center transition-all duration-200",
+                    "text-[9px] mt-1 font-medium text-center transition-all duration-200 max-w-[40px]",
                     step.completed ? "text-primary" : 
                     step.current ? "text-primary" : 
                     "text-gray-500"
@@ -473,7 +472,6 @@ const RelatedInvoicesTable = ({ invoices = mockRelatedInvoices }: { invoices?: R
           </TableBody>
         </Table>
       </CardContent>
-      {/* Removed CardFooter with "View Full Details" button */}
     </Card>
   );
 };
