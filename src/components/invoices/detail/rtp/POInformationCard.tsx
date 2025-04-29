@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ExternalLink } from "lucide-react";
+import { Copy, ExternalLink } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { POInformationProps, PortalType } from "./types";
@@ -21,53 +21,41 @@ const getPortalIcon = (type: PortalType) => {
 export const POInformationCard = ({ po }: { po: POInformationProps }) => {
   const { toast } = useToast();
 
+  const handleCopy = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "Copied to clipboard",
+      description: `${label} has been copied`,
+    });
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg">Purchase Order Information</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="mb-4 flex items-center">
-          <h3 className="text-base font-medium">
-            PO #
-          </h3>
-          
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="h-6 w-6 p-0 ml-2" 
-                onClick={() => {
-                  navigator.clipboard.writeText(po.number);
-                  toast({
-                    title: "Copied to clipboard",
-                    description: `PO number ${po.number} has been copied`,
-                  });
-                }}
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                  className="text-gray-500"
-                >
-                  <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                </svg>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Copy PO number</TooltipContent>
-          </Tooltip>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <label className="text-sm text-gray-500">PO #</label>
+            <div className="relative">
+              <Input value={po.number} readOnly disabled className="bg-gray-50 pr-10" />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
+                    onClick={() => handleCopy(po.number, "PO number")}
+                  >
+                    <Copy className="h-4 w-4 text-gray-500" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Copy PO number</TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
+          
           <div className="space-y-2">
             <label className="text-sm text-gray-500">Customer</label>
             <Input value={po.customerName} readOnly disabled className="bg-gray-50" />

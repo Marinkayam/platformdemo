@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Search } from "lucide-react";
 
@@ -28,7 +29,7 @@ function FilterDropdown({ label, value, options, onSelect }: FilterDropdownProps
     <div className="relative" ref={dropdownRef}>
       <div 
         onClick={() => setIsOpen(!isOpen)} 
-        className="flex items-center gap-2 border rounded-md px-3 py-1.5 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+        className="flex items-center gap-2 border rounded-md px-3 h-9 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
       >
         <span className="text-sm text-gray-500 whitespace-nowrap">{label}:</span>
         <span className="text-sm font-medium">{value}</span>
@@ -88,7 +89,7 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
   const buyerOptions = ["All", "Adidas", "Marvel", "Amazon", "Apple", "Samsung", "Golda", "Figma", "BMX", "Netflix"];
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <div className="flex flex-wrap items-center gap-3 mb-4">
       <div className="flex flex-wrap items-center gap-2">
         <FilterDropdown 
           label="Invoice Status" 
@@ -122,7 +123,7 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
           <input 
             type="text" 
             placeholder="Search invoices..." 
-            className="pl-9 pr-4 py-1.5 border rounded-md w-64 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[14px]"
+            className="pl-9 pr-4 h-9 border rounded-md w-64 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[14px]"
             value={filters.search}
             onChange={(e) => handleFilterChange("search", e.target.value)}
           />

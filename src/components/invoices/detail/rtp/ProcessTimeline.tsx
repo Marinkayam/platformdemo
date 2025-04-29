@@ -29,18 +29,18 @@ export const ProcessTimeline = () => {
 
   return (
     <Card className="mb-6">
-      <CardHeader className="pb-1 pt-2">
+      <CardHeader className="pb-1 pt-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xs font-medium text-gray-700">Process Timeline</CardTitle>
-          <span className="text-xs text-muted-foreground">
+          <CardTitle className="text-sm font-medium text-gray-700">Process Timeline</CardTitle>
+          <span className="text-sm text-muted-foreground">
             {completedSteps}/{totalSteps}
           </span>
         </div>
       </CardHeader>
-      <CardContent className="py-1">
+      <CardContent className="py-3 pb-4">
         <div>
           {/* Progress bar */}
-          <Progress value={progress} className="h-1 mb-2" />
+          <Progress value={progress} className="h-1.5 mb-4" />
           
           <div className="relative">
             <div className="flex justify-between">
@@ -53,19 +53,19 @@ export const ProcessTimeline = () => {
                   )}
                 >
                   <div className={cn(
-                    "h-4 w-4 rounded-full flex items-center justify-center transition-all duration-300",
+                    "h-5 w-5 rounded-full flex items-center justify-center transition-all duration-300",
                     step.completed ? "bg-primary shadow-sm shadow-primary/20 text-white" : 
                     step.current ? "bg-white border-2 border-primary text-primary" : 
                     "bg-gray-100 text-gray-400"
                   )}>
                     {step.completed ? (
-                      <Check className="h-2 w-2" />
+                      <Check className="h-3 w-3" />
                     ) : (
-                      <span className="font-medium text-[9px]">{step.id}</span>
+                      <span className="font-medium text-xs">{step.id}</span>
                     )}
                   </div>
                   <span className={cn(
-                    "text-[10px] mt-1 font-medium text-center transition-all duration-200 max-w-[40px]",
+                    "text-xs mt-2 font-medium text-center transition-all duration-200 max-w-[48px]",
                     step.completed ? "text-primary" : 
                     step.current ? "text-primary" : 
                     "text-gray-500"
@@ -73,7 +73,7 @@ export const ProcessTimeline = () => {
                     {step.name}
                   </span>
                   {step.date && (
-                    <span className="text-[9px] mt-0.5 text-gray-500">{step.date}</span>
+                    <span className="text-xs mt-0.5 text-gray-500">{step.date}</span>
                   )}
                 </div>
               ))}

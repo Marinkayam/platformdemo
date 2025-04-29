@@ -1,11 +1,16 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Invoice } from '@/types/invoice';
 
 export function useSortedInvoices(invoices: Invoice[]) {
   const [sortField, setSortField] = useState<keyof Invoice | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [localInvoices, setLocalInvoices] = useState<Invoice[]>(invoices);
+
+  // Update localInvoices when invoices prop changes
+  useEffect(() => {
+    setLocalInvoices(invoices);
+  }, [invoices]);
 
   const handleSort = (field: keyof Invoice) => {
     if (sortField === field) {
@@ -18,8 +23,10 @@ export function useSortedInvoices(invoices: Invoice[]) {
 
   const sortedInvoices = [...localInvoices].sort((a, b) => {
     if (!sortField) return 0;
+    
     const fieldA = a[sortField];
     const fieldB = b[sortField];
+    
     if (fieldA === fieldB) return 0;
     return sortDirection === 'asc' ? (fieldA < fieldB ? -1 : 1) : (fieldA > fieldB ? -1 : 1);
   });

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
@@ -115,7 +116,7 @@ export default function Invoices() {
         
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="ml-2 bg-white">
+            <Button variant="outline" size="sm" className="ml-2 h-9 bg-white">
               <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
