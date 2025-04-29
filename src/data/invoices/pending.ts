@@ -13,7 +13,8 @@ export const pendingInvoices = [
     "Camila",
     {
       subtotal: 513213.23,
-      tax: 51321.32
+      tax: 51321.32,
+      rejectedBy: "Monto"
     }
   ),
   getBasicInvoiceData(
@@ -24,7 +25,10 @@ export const pendingInvoices = [
     "Pending Action",
     12423,
     "04/26/2024",
-    "Camila"
+    "Camila",
+    {
+      rejectedBy: "Monto"
+    }
   ),
   getBasicInvoiceData(
     "3",
@@ -34,7 +38,10 @@ export const pendingInvoices = [
     "Pending Action",
     15020.34,
     "09/15/2024",
-    "Camila"
+    "Camila",
+    {
+      rejectedBy: "Monto"
+    }
   ),
   getBasicInvoiceData(
     "4",
@@ -44,7 +51,10 @@ export const pendingInvoices = [
     "Pending Action",
     5202.15,
     "09/15/2024",
-    "Rihana"
+    "Rihana",
+    {
+      rejectedBy: "Monto"
+    }
   ),
   getBasicInvoiceData(
     "5",
@@ -54,6 +64,9 @@ export const pendingInvoices = [
     "Pending Action",
     8750.90,
     "09/15/2024",
-    "Madona"
+    "Madona",
+    {
+      rejectedBy: "Buyer"
+    }
   )
 ];

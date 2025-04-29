@@ -24,8 +24,8 @@ export function InvoiceTableRow({
   onRemoveAssignee 
 }: InvoiceTableRowProps) {
   const isPending = invoice.status === "Pending Action";
-  const isRejectedByMonto = invoice.status === "Rejected by Monto";
-  const isRejectedByBuyer = invoice.status === "Rejected by Buyer";
+  const isRejectedByMonto = invoice.rejectedBy === "Monto";
+  const isRejectedByBuyer = invoice.rejectedBy === "Buyer";
 
   return (
     <TableRow 
