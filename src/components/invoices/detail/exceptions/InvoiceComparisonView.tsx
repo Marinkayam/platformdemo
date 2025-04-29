@@ -85,6 +85,19 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack, onExcludeAll
       new Date(current.creationDate) > new Date(newest.creationDate) ? current : newest
     , invoices[0]);
   }, [invoices]);
+
+  // Format date to "Jan 16, 2025 12:05" format
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  };
   
   return (
     <div className="space-y-6">
@@ -136,7 +149,7 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack, onExcludeAll
                           </span>
                         )}
                         <span className="text-sm font-medium">
-                          Created: {invoice.creationDate}
+                          Created: {formatDate(invoice.creationDate)}
                         </span>
                       </div>
                       <div className="flex items-center">
@@ -154,6 +167,10 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack, onExcludeAll
                   let displayValue = value !== undefined ? String(value) : '-';
                   if (field.key === 'total' && typeof value === 'number') {
                     displayValue = formatCurrency(value, invoice.currency || 'USD');
+                  } else if (field.key === 'creationDate' && typeof value === 'string') {
+                    displayValue = formatDate(value);
+                  } else if (field.key === 'dueDate' && typeof value === 'string') {
+                    displayValue = formatDate(value);
                   }
                   
                   return (
@@ -193,7 +210,7 @@ export function InvoiceComparisonView({ invoices, onSelect, onBack, onExcludeAll
             disabled={!selectedId}
             className="bg-primary hover:bg-primary-700"
           >
-            Continue
+            <Check className="mr-1 h-4 w-4" /> Select This Invoice
           </Button>
         </div>
       </div>

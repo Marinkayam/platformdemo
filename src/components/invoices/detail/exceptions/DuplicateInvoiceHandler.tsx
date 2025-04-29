@@ -7,10 +7,12 @@ import { DuplicateInvoiceTable } from "./DuplicateInvoiceTable";
 import { InvoiceComparisonView } from "./InvoiceComparisonView";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
-import { ArrowRight, AlertTriangle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ExcludeAllModal } from "./ExcludeAllModal";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
+import { ContactCustomerModal } from "./ContactCustomerModal";
 
 interface DuplicateInvoiceHandlerProps {
   invoice: Invoice;
@@ -23,6 +25,8 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   const [selectedInvoices, setSelectedInvoices] = useState<Invoice[]>([]);
   const [keepInvoice, setKeepInvoice] = useState<Invoice | null>(null);
   const [isExcludeModalOpen, setIsExcludeModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [selectedInvoiceForContact, setSelectedInvoiceForContact] = useState<Invoice | null>(null);
   const navigate = useNavigate();
   
   // Get the duplicate exception
@@ -71,6 +75,11 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
       }, 1500);
     }
   };
+
+  const handleContactSupport = (invoice: Invoice) => {
+    setSelectedInvoiceForContact(invoice);
+    setIsContactModalOpen(true);
+  };
   
   const handleBack = () => {
     if (step === 'compare') {
@@ -84,26 +93,48 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
       setKeepInvoice(null);
     }
   };
+
+  // Calculate progress percentage based on current step
+  const getProgressValue = () => {
+    switch(step) {
+      case 'select': return 33;
+      case 'compare': return 66;
+      case 'confirm': return 100;
+      default: return 33;
+    }
+  };
+
+  // Get step label
+  const getStepLabel = () => {
+    switch(step) {
+      case 'select': return 'Step 1: Select invoices to compare';
+      case 'compare': return 'Step 2: Compare and choose invoice to keep';
+      case 'confirm': return 'Step 3: Confirm your selection';
+      default: return '';
+    }
+  };
   
   return (
     <Card className="border-primary-200 shadow-md">
       <CardContent className="pt-6">
         <div>
-          <div className="flex justify-between items-center mb-6">
-            <div className="space-y-1">
-              <h3 className="text-lg font-medium text-primary-700">Duplicate Invoice Exception</h3>
-              <p className="text-sm text-muted-foreground">
-                {step === 'select' && 'Step 1: Select invoices to compare'}
-                {step === 'compare' && 'Step 2: Compare and choose invoice to keep'}
-                {step === 'confirm' && 'Step 3: Confirm your selection'}
-              </p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'select' ? 'bg-primary text-white' : 'bg-gray-200'}`}>1</div>
-              <ArrowRight className="h-4 w-4 text-gray-400" />
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'compare' ? 'bg-primary text-white' : 'bg-gray-200'}`}>2</div>
-              <ArrowRight className="h-4 w-4 text-gray-400" />
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'confirm' ? 'bg-primary text-white' : 'bg-gray-200'}`}>3</div>
+          <div className="mb-6">
+            <p className="text-sm text-muted-foreground mb-2">
+              {getStepLabel()}
+            </p>
+            
+            <Progress value={getProgressValue()} className="h-2 mb-4" />
+            
+            <div className="flex items-center justify-between text-xs text-gray-500">
+              <div className={`${step === 'select' ? 'text-primary font-medium' : ''}`}>
+                Select
+              </div>
+              <div className={`${step === 'compare' ? 'text-primary font-medium' : ''}`}>
+                Compare
+              </div>
+              <div className={`${step === 'confirm' ? 'text-primary font-medium' : ''}`}>
+                Confirm
+              </div>
             </div>
           </div>
           
@@ -116,6 +147,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
               currentInvoice={invoice}
               selectedInvoices={selectedInvoices}
               defaultSelectedInvoice={newestInvoice}
+              onContactSupport={handleContactSupport}
             />
           )}
           
@@ -144,6 +176,15 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
         onClose={() => setIsExcludeModalOpen(false)}
         onConfirm={handleExcludeAll}
       />
+
+      {selectedInvoiceForContact && (
+        <ContactCustomerModal 
+          isOpen={isContactModalOpen} 
+          onClose={() => setIsContactModalOpen(false)}
+          invoice={selectedInvoiceForContact}
+          exceptions={selectedInvoiceForContact.exceptions || []}
+        />
+      )}
     </Card>
   );
 }

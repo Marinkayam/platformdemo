@@ -1,9 +1,20 @@
 
+import { useState } from "react";
 import { Invoice } from "@/types/invoice";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface ConfirmationStepProps {
   invoice: Invoice;
@@ -13,6 +24,8 @@ interface ConfirmationStepProps {
 }
 
 export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: ConfirmationStepProps) {
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  
   const fields = [
     { key: 'number' as keyof Invoice, label: 'Invoice Number' },
     { key: 'buyer' as keyof Invoice, label: 'Buyer' },
@@ -24,6 +37,28 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
     { key: 'poNumber' as keyof Invoice, label: 'PO Number' },
     { key: 'paymentTerms' as keyof Invoice, label: 'Payment Terms' },
   ];
+
+  // Format date to "Jan 16, 2025 12:05" format
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  };
+
+  const handleConfirmClick = () => {
+    setIsConfirmDialogOpen(true);
+  };
+
+  const handleFinalConfirm = () => {
+    setIsConfirmDialogOpen(false);
+    onConfirm();
+  };
   
   return (
     <div className="space-y-6 animate-fade-in">
@@ -43,11 +78,15 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
             {fields.map((field) => {
               const value = invoice[field.key];
               
-              // Format the total field as currency
-              const displayValue = 
-                field.key === 'total' && typeof value === 'number'
-                  ? formatCurrency(value, invoice.currency || 'USD')
-                  : value !== undefined ? String(value) : '-';
+              // Format values appropriately
+              let displayValue;
+              if (field.key === 'total' && typeof value === 'number') {
+                displayValue = formatCurrency(value, invoice.currency || 'USD');
+              } else if ((field.key === 'creationDate' || field.key === 'dueDate') && typeof value === 'string') {
+                displayValue = formatDate(value);
+              } else {
+                displayValue = value !== undefined ? String(value) : '-';
+              }
                   
               return (
                 <div key={field.key} className="grid grid-cols-2 gap-2 py-2 border-b border-primary-100 last:border-b-0">
@@ -86,13 +125,51 @@ export function ConfirmationStep({ invoice, onConfirm, onBack, onExcludeAll }: C
           </Button>
           
           <Button 
-            onClick={onConfirm}
+            onClick={handleConfirmClick}
             className="bg-primary hover:bg-primary-700"
           >
-            Confirm and Resolve Exception
+            Confirm Selected Invoice
           </Button>
         </div>
       </div>
+
+      <AlertDialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-semibold">
+              Resolve Duplication Exception
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          
+          <div className="py-2">
+            <p className="mb-4">You've selected:</p>
+            <div className="bg-gray-50 p-4 rounded-md border mb-4">
+              <p className="font-medium">Record {invoice.id.slice(-1)} (#{invoice.number}) {formatDate(invoice.creationDate)}</p>
+              <p className="text-sm mt-1">Status: {invoice.status}</p>
+              <p className="text-sm">{invoice.exceptions?.length || 0} Exceptions</p>
+            </div>
+            
+            <div className="mb-4">
+              <h4 className="font-medium mb-2">What happens next:</h4>
+              <ul className="list-disc pl-5 space-y-1 text-sm">
+                <li>Run validations on this record</li>
+                <li>Exclude the other version(s) to prevent duplicates</li>
+                <li>Submit this invoice to the buyer portal after all exceptions are solved</li>
+              </ul>
+            </div>
+          </div>
+          
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleFinalConfirm}
+              className="bg-primary hover:bg-primary-700"
+            >
+              Confirm Selected Invoice
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

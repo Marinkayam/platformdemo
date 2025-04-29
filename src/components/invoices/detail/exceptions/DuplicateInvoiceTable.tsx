@@ -6,8 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
 import { formatCurrency } from "@/lib/utils";
-import { Check, AlertTriangle, MoreVertical } from "lucide-react";
+import { Check, AlertTriangle, MoreVertical, Download, MessageSquare } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface DuplicateInvoiceTableProps {
   invoices: Invoice[];
@@ -17,6 +29,7 @@ interface DuplicateInvoiceTableProps {
   currentInvoice: Invoice;
   selectedInvoices?: Invoice[];
   defaultSelectedInvoice?: Invoice;
+  onContactSupport?: (invoice: Invoice) => void;
 }
 
 export function DuplicateInvoiceTable({ 
@@ -26,7 +39,8 @@ export function DuplicateInvoiceTable({
   onExcludeAll,
   currentInvoice, 
   selectedInvoices = [],
-  defaultSelectedInvoice
+  defaultSelectedInvoice,
+  onContactSupport
 }: DuplicateInvoiceTableProps) {
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   
@@ -91,6 +105,25 @@ export function DuplicateInvoiceTable({
     setSelected({});
     onSelect([]);
   };
+
+  const handleContactSupport = (invoice: Invoice) => {
+    if (onContactSupport) {
+      onContactSupport(invoice);
+    }
+  };
+  
+  // Format date to "Jan 16, 2025 12:05" format
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  };
   
   // Sort invoices by creation date (newest first)
   const sortedInvoices = [...invoices].sort((a, b) => {
@@ -99,18 +132,6 @@ export function DuplicateInvoiceTable({
 
   return (
     <div className="space-y-6">
-      <div className="bg-primary-50 p-4 rounded-md border border-primary-200">
-        <div className="flex items-start gap-2">
-          <AlertTriangle className="h-5 w-5 text-primary-600 mt-0.5 flex-shrink-0" />
-          <div>
-            <h4 className="text-sm font-medium text-primary-700">About duplicate invoices</h4>
-            <p className="text-sm text-primary-800 mt-1">
-              We've detected multiple invoices with the same invoice number. Resolution Steps: Review and select which invoice is valid. The others will be marked as excluded and won't be tracked.
-            </p>
-          </div>
-        </div>
-      </div>
-      
       <div className="border rounded-lg overflow-hidden">
         <Table>
           <TableHeader className="bg-gray-50">
@@ -133,7 +154,8 @@ export function DuplicateInvoiceTable({
             ) : (
               sortedInvoices.map((invoice) => {
                 const isSelected = !!selected[invoice.id];
-                const hasExceptions = invoice.exceptions?.length > 0;
+                const exceptionCount = invoice.exceptions?.length || 0;
+                const hasExceptions = exceptionCount > 0;
                 const isNewest = invoice.id === sortedInvoices[0].id;
                 
                 return (
@@ -148,7 +170,7 @@ export function DuplicateInvoiceTable({
                     </TableCell>
                     <TableCell>
                       <div className="font-medium flex items-center">
-                        {invoice.creationDate}
+                        {formatDate(invoice.creationDate)}
                         {isNewest && (
                           <span className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
                             Newest
@@ -162,10 +184,26 @@ export function DuplicateInvoiceTable({
                     </TableCell>
                     <TableCell>
                       {hasExceptions ? (
-                        <div className="flex items-center text-amber-700">
-                          <AlertTriangle className="h-4 w-4 mr-1 text-amber-500" />
-                          <span>{invoice.exceptions?.length} Exceptions</span>
-                        </div>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div className="flex items-center text-amber-700 cursor-help">
+                                <AlertTriangle className="h-4 w-4 mr-1 text-amber-500" />
+                                <span>{exceptionCount} Exceptions</span>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="w-80 p-3">
+                              <h4 className="font-semibold mb-1">Exception Details:</h4>
+                              <ul className="list-disc pl-4 space-y-1">
+                                {invoice.exceptions?.map(exception => (
+                                  <li key={exception.id} className="text-sm">
+                                    {exception.message}
+                                  </li>
+                                )) || <li>No exception details available</li>}
+                              </ul>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       ) : (
                         <div className="flex items-center text-green-700">
                           <Check className="h-4 w-4 mr-1 text-green-600" />
@@ -173,10 +211,27 @@ export function DuplicateInvoiceTable({
                         </div>
                       )}
                     </TableCell>
-                    <TableCell>
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Download className="h-4 w-4 mr-2" />
+                            Download Invoice
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            className="cursor-pointer" 
+                            onClick={() => handleContactSupport(invoice)}
+                          >
+                            <MessageSquare className="h-4 w-4 mr-2" />
+                            Contact Support
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 );
