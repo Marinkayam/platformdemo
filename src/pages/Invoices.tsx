@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
@@ -19,7 +18,7 @@ import { toast } from "@/hooks/use-toast";
 
 const tabs = [
   { id: "all", label: "All Invoices" },
-  { id: "pending", label: "Pending Action", count: 8 },
+  { id: "pending", label: "Pending Action", count: 5 },
   { id: "cleared", label: "Cleared" },
 ];
 
