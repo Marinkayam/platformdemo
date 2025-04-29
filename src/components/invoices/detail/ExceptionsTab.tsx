@@ -213,6 +213,9 @@ export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabP
                       onDelete={() => handleDelete(file.id)}
                       showDeleteButton={true}
                     />
+                    <p className="text-xs text-gray-500 mt-2 italic">
+                      This PDF will replace the previous one — please ensure it fixes all listed exceptions.
+                    </p>
                   </div>
                 ))}
               </div>
