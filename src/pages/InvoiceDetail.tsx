@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { invoiceData } from "@/data/invoices";
 import { InvoiceHeader } from "@/components/invoices/detail/InvoiceHeader";
 import { InvoiceTabsNav } from "@/components/invoices/detail/InvoiceTabs";
@@ -12,9 +12,35 @@ import { TabContent } from "@/components/invoices/detail/TabContent";
 
 export default function InvoiceDetail() {
   const { id } = useParams();
+  const location = useLocation();
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1.0);
   const [activeTab, setActiveTab] = useState("invoice-data");
+
+  // Check for tab parameter in URL
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const tabParam = searchParams.get("tab");
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+  }, [location.search]);
+
+  // Listen for custom tab change event
+  useEffect(() => {
+    const handleTabChange = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (customEvent.detail && customEvent.detail.tab) {
+        setActiveTab(customEvent.detail.tab);
+      }
+    };
+
+    window.addEventListener('switchTab', handleTabChange as EventListener);
+
+    return () => {
+      window.removeEventListener('switchTab', handleTabChange as EventListener);
+    };
+  }, []);
 
   // Find the invoice by id
   const invoice = invoiceData.find(inv => inv.id === id);

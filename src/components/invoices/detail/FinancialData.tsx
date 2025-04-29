@@ -2,10 +2,11 @@
 import { Invoice, LineItem } from "@/types/invoice";
 import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useParams, useNavigate } from "react-router-dom";
 
 interface FinancialDataProps {
   invoice: Invoice;
@@ -18,6 +19,20 @@ export function FinancialData({
 }: FinancialDataProps) {
   const [addressesOpen, setAddressesOpen] = useState(false);
   const [lineItemsOpen, setLineItemsOpen] = useState(false);
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  // Function to navigate to RTP data tab
+  const navigateToRtpTab = () => {
+    // This will preserve the current URL path but update the tab
+    navigate(`/invoices/${id}?tab=rtp-data`);
+    
+    // Dispatch a custom event that the parent component can listen to
+    const rtpTabEvent = new CustomEvent('switchTab', { 
+      detail: { tab: 'rtp-data' } 
+    });
+    window.dispatchEvent(rtpTabEvent);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-6 space-y-6">
@@ -26,9 +41,12 @@ export function FinancialData({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="inline-flex items-center text-sm text-blue-600 cursor-help">
-                RTP Data
-              </div>
+              <button 
+                onClick={navigateToRtpTab}
+                className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 cursor-pointer hover:underline"
+              >
+                RTP Data <ExternalLink className="ml-1 h-3 w-3" />
+              </button>
             </TooltipTrigger>
             <TooltipContent className="max-w-sm">
               View the full payment request (RTP) data, including Smart Connection details, PO information, and payable/receivable fields, enriched by Monto for accurate processing in the portal.

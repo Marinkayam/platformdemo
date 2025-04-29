@@ -55,7 +55,7 @@ export default function Invoices() {
   
   // Filter invoices based on active tab and filters
   const filteredInvoices = invoiceData.filter((invoice: Invoice) => {
-    // First apply tab filter
+    // First apply tab filter - Updated to only show "Pending Action" status in pending tab
     if (activeTab === "pending" && invoice.status !== "Pending Action") return false;
     if (activeTab === "cleared" && !["Paid", "Settled"].includes(invoice.status)) return false;
     

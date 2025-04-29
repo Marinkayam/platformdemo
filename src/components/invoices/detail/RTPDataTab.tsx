@@ -1,3 +1,4 @@
+
 import React from "react";
 import { 
   Card, 
@@ -248,18 +249,18 @@ const ProcessTimeline = () => {
 
   return (
     <Card className="mb-6">
-      <CardHeader className="pb-2 pt-3">
+      <CardHeader className="pb-1 pt-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-medium">Process Timeline</CardTitle>
+          <CardTitle className="text-xs font-medium">Process Timeline</CardTitle>
           <span className="text-xs text-muted-foreground">
             {completedSteps}/{totalSteps}
           </span>
         </div>
       </CardHeader>
-      <CardContent className="py-2">
+      <CardContent className="py-1">
         <div>
           {/* Progress bar */}
-          <Progress value={progress} className="h-1 mb-3" />
+          <Progress value={progress} className="h-1 mb-2" />
           
           <div className="relative">
             <div className="flex justify-between">
@@ -272,19 +273,19 @@ const ProcessTimeline = () => {
                   )}
                 >
                   <div className={cn(
-                    "h-6 w-6 rounded-full flex items-center justify-center transition-all duration-300",
+                    "h-5 w-5 rounded-full flex items-center justify-center transition-all duration-300",
                     step.completed ? "bg-primary shadow-sm shadow-primary/20 text-white" : 
                     step.current ? "bg-white border-2 border-primary text-primary" : 
                     "bg-gray-100 text-gray-400"
                   )}>
                     {step.completed ? (
-                      <Check className="h-3 w-3" />
+                      <Check className="h-2.5 w-2.5" />
                     ) : (
-                      <span className="font-medium text-xs">{step.id}</span>
+                      <span className="font-medium text-[10px]">{step.id}</span>
                     )}
                   </div>
                   <span className={cn(
-                    "text-xs mt-2 font-medium text-center transition-all duration-200",
+                    "text-[10px] mt-1 font-medium text-center transition-all duration-200",
                     step.completed ? "text-primary" : 
                     step.current ? "text-primary" : 
                     "text-gray-500"
@@ -292,14 +293,8 @@ const ProcessTimeline = () => {
                     {step.name}
                   </span>
                   {step.date && (
-                    <span className="text-[10px] mt-0.5 text-gray-500">{step.date}</span>
+                    <span className="text-[8px] mt-0.5 text-gray-500">{step.date}</span>
                   )}
-                  
-                  <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 -bottom-[3rem] bg-gray-800 text-white text-[10px] rounded py-1 px-2 w-24 text-center transition-all duration-200">
-                    <div className="font-medium">{step.name}</div>
-                    <div>{step.date || "Pending"}</div>
-                    <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
-                  </div>
                 </div>
               ))}
             </div>
@@ -320,16 +315,8 @@ const POInformationCard = ({ po = mockPOInformation }: { po?: POInformationProps
       </CardHeader>
       <CardContent>
         <div className="mb-4 flex items-center">
-          <span className="mr-2">{getValidationStatusIcon(po.status)}</span>
           <h3 className="text-base font-medium">
-            PO #{po.number} 
-            <span className={cn(
-              "ml-2 text-sm",
-              po.status === "Valid" ? "text-green-600" : 
-              po.status === "Invalid" ? "text-red-600" : "text-yellow-600"
-            )}>
-              ({po.status})
-            </span>
+            PO #
           </h3>
           
           <Tooltip>
@@ -486,11 +473,7 @@ const RelatedInvoicesTable = ({ invoices = mockRelatedInvoices }: { invoices?: R
           </TableBody>
         </Table>
       </CardContent>
-      <CardFooter className="pt-4">
-        <Button variant="outline" size="sm" className="text-primary flex items-center gap-2">
-          View Full Details <ExternalLink className="h-4 w-4" />
-        </Button>
-      </CardFooter>
+      {/* Removed CardFooter with "View Full Details" button */}
     </Card>
   );
 };

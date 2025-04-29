@@ -55,8 +55,8 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
         <ActivityIcon type={activity.type} />
       </div>
       
-      {/* Content */}
-      <div>
+      {/* Content - Added margin-left for better spacing */}
+      <div className="ml-2">
         <div className="flex flex-col">
           <h3 className="font-medium">{activity.title}</h3>
           <div className="text-sm text-muted-foreground">
