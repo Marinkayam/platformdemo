@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 import { DuplicateInvoiceTable } from "./duplicate-table";
-import { InvoiceComparisonView } from "./InvoiceComparisonView";
+import { InvoiceComparisonView } from "./invoice-comparison";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
 import { ExcludeAllModal } from "./ExcludeAllModal";
