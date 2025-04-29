@@ -40,31 +40,31 @@ export function TabContent({ tab, invoice }: TabContentProps) {
     
     // Handle different resolution types
     if (allResolved) {
-      if (resolution === 'UPLOAD_NEW_PDF' || resolution === 'MARK_RESOLVED') {
-        setTimeout(() => {
-          toast({
-            title: "Exception resolved",
-            description: "User uploaded corrected invoice with new PO"
-          });
-          
-          // Navigate back to invoices list
-          setTimeout(() => {
-            navigate("/invoices");
-          }, 1000);
-        }, 1000);
+      let toastMessage = "";
+      let toastDescription = "";
+      
+      if (resolution === 'UPLOAD_NEW_PDF') {
+        toastMessage = "Exception resolved";
+        toastDescription = "User uploaded corrected invoice with new PO";
+      } else if (resolution === 'MARK_RESOLVED') {
+        toastMessage = "Exception resolved";
+        toastDescription = "Duplicate invoice exception has been resolved";
       } else if (resolution === 'FORCE_SUBMIT') {
-        setTimeout(() => {
-          toast({
-            title: "Invoice force submitted",
-            description: "Invoice has been submitted despite exceptions"
-          });
-          
-          // Navigate back to invoices list
-          setTimeout(() => {
-            navigate("/invoices");
-          }, 1000);
-        }, 1000);
+        toastMessage = "Invoice force submitted";
+        toastDescription = "Invoice has been submitted despite exceptions";
       }
+      
+      setTimeout(() => {
+        toast({
+          title: toastMessage,
+          description: toastDescription
+        });
+        
+        // Navigate back to invoices list
+        setTimeout(() => {
+          navigate("/invoices");
+        }, 1000);
+      }, 1000);
     }
   };
 

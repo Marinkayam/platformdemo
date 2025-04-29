@@ -20,6 +20,17 @@ const poExceptions: Exception[] = [
   }
 ];
 
+const duplicateExceptions: Exception[] = [
+  {
+    id: "exc3",
+    type: "DUPLICATE_INVOICE",
+    message: "Duplicate invoice detected",
+    details: "The system has found 2 other invoices with the same invoice number. Please review and resolve this duplication.",
+    createdAt: "2024-04-28T14:22:45Z",
+    resolved: false
+  }
+];
+
 export const pendingInvoices = [
   getBasicInvoiceData(
     "1",
@@ -49,7 +60,12 @@ export const pendingInvoices = [
     "04/26/2024",
     "Camila",
     {
-      rejectedBy: "Monto"
+      rejectedBy: "Monto",
+      exceptions: duplicateExceptions,
+      hasExceptions: true,
+      subtotal: 11294.55,
+      tax: 1128.45,
+      poNumber: "PO-123456"
     }
   ),
   getBasicInvoiceData(

@@ -22,15 +22,22 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
     );
   }
 
+  // Determine alert header based on exception types
+  const hasDuplicateException = exceptions.some(e => e.type === 'DUPLICATE_INVOICE');
+  const headerTitle = hasDuplicateException ? "Duplicate Invoice Detected" : "Exception Detected";
+  const headerColor = hasDuplicateException ? "bg-amber-50" : "bg-red-50";
+  const textColor = hasDuplicateException ? "text-amber-700" : "text-red-700";
+  const iconColor = hasDuplicateException ? "text-amber-600" : "text-red-600";
+
   return (
     <>
       <Card>
-        <CardHeader className="bg-red-50 border-b">
+        <CardHeader className={`${headerColor} border-b`}>
           <div className="flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
+            <AlertCircle className={`h-5 w-5 ${iconColor} mt-0.5`} />
             <div>
-              <CardTitle className="text-lg font-medium text-red-700">
-                Exception Detected
+              <CardTitle className={`text-lg font-medium ${textColor}`}>
+                {headerTitle}
               </CardTitle>
             </div>
           </div>
@@ -38,7 +45,7 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
         <CardContent className="pt-4">
           <div>
             <div className="text-sm bg-gray-50 p-4 rounded-md border">
-              <p>The following errors need to be resolved to meet the buyer's and portal's requirements:</p>
+              <p>The following errors need to be resolved:</p>
               <ul className="list-disc ml-5 mt-2 space-y-1">
                 {exceptions.map(exception => (
                   <li key={exception.id}>{exception.message}</li>
@@ -46,9 +53,15 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
               </ul>
               
               <div className="mt-4 pt-3 border-t border-gray-200">
-                <p className="text-sm text-gray-700">
-                  <strong>Resolution Steps:</strong> Upload a new PDF with a new PO number or contact the customer to resolve the issue.
-                </p>
+                {hasDuplicateException ? (
+                  <p className="text-sm text-gray-700">
+                    <strong>Resolution Steps:</strong> Select the correct invoice from the duplicates and mark the others as invalid.
+                  </p>
+                ) : (
+                  <p className="text-sm text-gray-700">
+                    <strong>Resolution Steps:</strong> Upload a new PDF with a new PO number or contact the customer to resolve the issue.
+                  </p>
+                )}
               </div>
             </div>
           </div>

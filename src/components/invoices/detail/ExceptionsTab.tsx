@@ -10,6 +10,7 @@ import { FileUploadZone } from "./exceptions/FileUploadZone";
 import { UploadProgress } from "./exceptions/UploadProgress";
 import { FilePreviewList } from "./exceptions/FilePreviewList";
 import { ActionButtons } from "./exceptions/ActionButtons";
+import { DuplicateInvoiceHandler } from "./exceptions/DuplicateInvoiceHandler";
 
 interface ExceptionsTabProps {
   exceptions: Exception[];
@@ -21,6 +22,9 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
   const { attachments, addAttachment, removeAttachment, clearAttachments } = useFileAttachments();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  
+  // Check if we have a duplicate invoice exception
+  const isDuplicateException = exceptions.some(exception => exception.type === 'DUPLICATE_INVOICE');
   
   const simulateUploadProgress = () => {
     setIsUploading(true);
@@ -104,29 +108,37 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         invoice={invoice}
       />
       
-      <Card>
-        <CardContent className="pt-6">
-          <div className="space-y-4">
-            <FileUploadZone onFileUpload={handleFileUpload} />
-            
-            <UploadProgress 
-              uploadProgress={uploadProgress} 
-              isUploading={isUploading} 
-            />
-            
-            <FilePreviewList 
-              attachments={attachments} 
-              onDelete={handleDelete} 
-            />
-            
-            <ActionButtons 
-              attachmentsCount={attachments.length}
-              onForceSubmit={handleForceSubmit}
-              onMarkAsResolved={handleMarkAsResolved}
-            />
-          </div>
-        </CardContent>
-      </Card>
+      {isDuplicateException && invoice ? (
+        <DuplicateInvoiceHandler
+          invoice={invoice}
+          exceptions={exceptions}
+          onResolveException={onResolveException}
+        />
+      ) : (
+        <Card>
+          <CardContent className="pt-6">
+            <div className="space-y-4">
+              <FileUploadZone onFileUpload={handleFileUpload} />
+              
+              <UploadProgress 
+                uploadProgress={uploadProgress} 
+                isUploading={isUploading} 
+              />
+              
+              <FilePreviewList 
+                attachments={attachments} 
+                onDelete={handleDelete} 
+              />
+              
+              <ActionButtons 
+                attachmentsCount={attachments.length}
+                onForceSubmit={handleForceSubmit}
+                onMarkAsResolved={handleMarkAsResolved}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
