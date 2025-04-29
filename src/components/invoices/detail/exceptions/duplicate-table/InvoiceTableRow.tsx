@@ -40,7 +40,7 @@ export function InvoiceTableRow({
 }: InvoiceTableRowProps) {
   const exceptionCount = invoice.exceptions?.length || 0;
   const hasExceptions = exceptionCount > 0;
-  const isRecommended = !hasExceptions && invoice.status === "APPROVED";
+  const isRecommended = !hasExceptions && invoice.status === "Approved by Buyer";
 
   const handleContactSupport = () => {
     if (onContactSupport) {
@@ -71,11 +71,11 @@ export function InvoiceTableRow({
       <TableCell>{formatCurrency(invoice.total, invoice.currency || 'USD')}</TableCell>
       <TableCell>
         <span className={`px-2.5 py-0.5 rounded-full text-sm ${
-          invoice.status === 'APPROVED' 
+          invoice.status === 'Approved by Buyer' 
             ? 'bg-green-100 text-green-800' 
             : 'bg-red-100 text-red-800'
         }`}>
-          {invoice.status === 'APPROVED' ? 'Approved by Buyer' : 'Pending Action'}
+          {invoice.status === 'Approved by Buyer' ? 'Approved by Buyer' : 'Pending Action'}
         </span>
       </TableCell>
       <TableCell>

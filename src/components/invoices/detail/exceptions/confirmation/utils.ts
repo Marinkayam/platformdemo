@@ -1,5 +1,5 @@
 
-import { formatDate } from "../../duplicate-table/utils";
+import { formatDate } from "../duplicate-table/utils";
 
 export { formatDate };
 
@@ -8,4 +8,3 @@ export const isRecommendedInvoice = (invoice: { status: string; exceptions?: any
   const hasExceptions = exceptionCount > 0;
   return !hasExceptions && invoice.status === "Approved by Buyer";
 };
-
