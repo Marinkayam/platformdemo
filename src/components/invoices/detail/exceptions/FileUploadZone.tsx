@@ -61,7 +61,13 @@ export function FileUploadZone({ onFileUpload }: FileUploadZoneProps) {
       onDrop={handleDrop}
     >
       <div className="space-y-3">
-        <Upload className="h-8 w-8 mx-auto text-gray-400" />
+        <div className="flex justify-center">
+          <img 
+            src="/lovable-uploads/ebcce64a-0659-4d7a-a5b0-d49ff4b510e2.png" 
+            alt="Upload illustration" 
+            className="h-24 w-auto mb-2"
+          />
+        </div>
         <h3 className="text-base font-medium">Drag & Drop or Browse to upload your corrected invoice PDF</h3>
         <p className="text-sm text-gray-500">
           This invoice must include the updated PO number required by the buyer.

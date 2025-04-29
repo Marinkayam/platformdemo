@@ -40,7 +40,7 @@ export function TabContent({ tab, invoice }: TabContentProps) {
     
     // Handle different resolution types
     if (allResolved) {
-      if (resolution === 'UPLOAD_NEW_PDF') {
+      if (resolution === 'UPLOAD_NEW_PDF' || resolution === 'MARK_RESOLVED') {
         setTimeout(() => {
           toast({
             title: "Exception resolved",
@@ -53,7 +53,17 @@ export function TabContent({ tab, invoice }: TabContentProps) {
           }, 1000);
         }, 1000);
       } else if (resolution === 'FORCE_SUBMIT') {
-        // Force submit is handled by the ForceSubmitModal component
+        setTimeout(() => {
+          toast({
+            title: "Invoice force submitted",
+            description: "Invoice has been submitted despite exceptions"
+          });
+          
+          // Navigate back to invoices list
+          setTimeout(() => {
+            navigate("/invoices");
+          }, 1000);
+        }, 1000);
       }
     }
   };
@@ -64,6 +74,7 @@ export function TabContent({ tab, invoice }: TabContentProps) {
         <ExceptionsTab 
           exceptions={localInvoice?.exceptions || []}
           onResolveException={handleResolveException}
+          invoice={localInvoice}
         />
       );
     case "rtp-data":

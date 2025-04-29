@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { invoiceData } from "@/data/invoices";
 import { InvoiceHeader } from "@/components/invoices/detail/InvoiceHeader";
 import { InvoiceTabsNav } from "@/components/invoices/detail/InvoiceTabs";
@@ -13,6 +13,7 @@ import { TabContent } from "@/components/invoices/detail/TabContent";
 export default function InvoiceDetail() {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1.0);
   const [activeTab, setActiveTab] = useState("invoice-data");
@@ -47,10 +48,10 @@ export default function InvoiceDetail() {
 
   // Set default tab to exceptions if invoice has exceptions
   useEffect(() => {
-    if (invoice?.hasExceptions && activeTab === "invoice-data") {
+    if (invoice?.hasExceptions && activeTab === "invoice-data" && location.search === '') {
       setActiveTab("exceptions");
     }
-  }, [invoice, activeTab]);
+  }, [invoice, activeTab, location.search]);
 
   if (!invoice) {
     return (
@@ -90,13 +91,15 @@ export default function InvoiceDetail() {
       
       <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {activeTab === "invoice-data" ? (
-        <>
+      {activeTab === "invoice-data" && (
+        <div className="space-y-6">
           <FinancialData invoice={invoice} lineItems={lineItems} />
           <AdditionalInfo invoice={invoice} />
           <Attachments attachments={attachments} />
-        </>
-      ) : (
+        </div>
+      )}
+      
+      {activeTab !== "invoice-data" && (
         <TabContent tab={activeTab} invoice={invoice} />
       )}
 

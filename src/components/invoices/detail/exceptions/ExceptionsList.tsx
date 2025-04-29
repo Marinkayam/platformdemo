@@ -2,7 +2,6 @@
 import { AlertCircle } from "lucide-react";
 import { Exception } from "@/types/exception";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ContactCustomerModal } from "./ContactCustomerModal";
 import { Invoice } from "@/types/invoice";
@@ -38,7 +37,6 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
         </CardHeader>
         <CardContent className="pt-4">
           <div>
-            <h3 className="font-medium mb-2">Exception Message:</h3>
             <div className="text-sm bg-gray-50 p-4 rounded-md border">
               <p>The following errors need to be resolved to meet the buyer's and portal's requirements:</p>
               <ul className="list-disc ml-5 mt-2 space-y-1">
@@ -51,16 +49,6 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
                 <p className="text-sm text-gray-700">
                   <strong>Resolution Steps:</strong> Upload a new PDF with a new PO number or contact the customer to resolve the issue.
                 </p>
-                
-                <div className="mt-3">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsContactModalOpen(true)}
-                  >
-                    Contact customer
-                  </Button>
-                </div>
               </div>
             </div>
           </div>
