@@ -3,6 +3,7 @@ import React from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface SmartConnectionAlertProps {
   exceptions?: string[];
@@ -11,10 +12,10 @@ interface SmartConnectionAlertProps {
 export const SmartConnectionAlert = ({ exceptions }: SmartConnectionAlertProps) => {
   if (!exceptions || exceptions.length === 0) return null;
   
+  const navigate = useNavigate();
+  
   const handleNavigateToSmartConnection = () => {
-    // Dispatch custom event to switch to the Smart Connection tab
-    const event = new CustomEvent('switchTab', { detail: { tab: 'smart-connection' } });
-    window.dispatchEvent(event);
+    navigate('/smart-connections');
   };
   
   return (

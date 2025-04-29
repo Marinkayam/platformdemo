@@ -1,5 +1,5 @@
 
-import { FileText, FileX, Database, Activity, Brain } from "lucide-react";
+import { FileText, FileX, Database, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface InvoiceTabsProps {
@@ -12,7 +12,6 @@ export function InvoiceTabsNav({ activeTab, onTabChange }: InvoiceTabsProps) {
     { id: "invoice-data", icon: <FileText className="h-4 w-4" />, label: "Invoice Data" },
     { id: "exceptions", icon: <FileX className="h-4 w-4" />, label: "Exceptions" },
     { id: "rtp-data", icon: <Database className="h-4 w-4" />, label: "RTP Data" },
-    { id: "smart-connection", icon: <Brain className="h-4 w-4" />, label: "Smart Connection" },
     { id: "portal-records", icon: <Database className="h-4 w-4" />, label: "Portal Records" },
     { id: "activity", icon: <Activity className="h-4 w-4" />, label: "Activity" },
   ];

@@ -8,6 +8,7 @@ import { MainLayout } from "./components/layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Invoices from "./pages/Invoices";
 import InvoiceDetail from "./pages/InvoiceDetail";
+import SmartConnections from "./pages/SmartConnections";
 import NotFoundPage from "./pages/NotFoundPage";
 import { NotificationsProvider } from "./context/NotificationsContext";
 
@@ -43,6 +44,14 @@ const App = () => (
               element={
                 <MainLayout>
                   <InvoiceDetail />
+                </MainLayout>
+              } 
+            />
+            <Route 
+              path="/smart-connections" 
+              element={
+                <MainLayout>
+                  <SmartConnections />
                 </MainLayout>
               } 
             />
