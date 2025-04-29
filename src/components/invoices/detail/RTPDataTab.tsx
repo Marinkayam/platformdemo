@@ -146,6 +146,31 @@ const getPortalIcon = (type: PortalType) => {
   return type.substring(0, 1);
 };
 
+const SmartConnectionAlert = ({ exceptions }: { exceptions?: string[] }) => {
+  if (!exceptions || exceptions.length === 0) return null;
+  
+  return (
+    <Alert className="mb-6 bg-amber-50 border-amber-200">
+      <AlertTriangle className="h-4 w-4 text-amber-500" />
+      <AlertTitle className="text-amber-800">Connection Issues Detected</AlertTitle>
+      <AlertDescription className="text-amber-700 flex flex-col md:flex-row md:justify-between md:items-center">
+        <ul className="list-disc pl-5 mt-2 space-y-1 mb-4 md:mb-0">
+          {exceptions.map((exception, i) => (
+            <li key={i} className="text-sm">{exception}</li>
+          ))}
+        </ul>
+        <Button 
+          variant="secondary" 
+          size="sm"
+          className="flex items-center gap-2 bg-amber-200 hover:bg-amber-300 text-amber-800 border-amber-300 mt-2 md:mt-0 ml-auto md:ml-4"
+        >
+          <RefreshCw className="h-4 w-4" /> Update Agent
+        </Button>
+      </AlertDescription>
+    </Alert>
+  );
+};
+
 const SmartConnectionCard = ({ connection = mockSmartConnection }: { connection?: SmartConnectionProps }) => {
   return (
     <Card className="mb-6">
@@ -207,38 +232,13 @@ const SmartConnectionCard = ({ connection = mockSmartConnection }: { connection?
   );
 };
 
-const SmartConnectionAlert = ({ exceptions }: { exceptions?: string[] }) => {
-  if (!exceptions || exceptions.length === 0) return null;
-  
-  return (
-    <Alert className="mb-6 bg-amber-50 border-amber-200">
-      <AlertTriangle className="h-4 w-4 text-amber-500" />
-      <AlertTitle className="text-amber-800">Connection Issues Detected</AlertTitle>
-      <AlertDescription className="text-amber-700">
-        <ul className="list-disc pl-5 mt-2 space-y-1 mb-4">
-          {exceptions.map((exception, i) => (
-            <li key={i} className="text-sm">{exception}</li>
-          ))}
-        </ul>
-        <Button 
-          variant="secondary" 
-          size="sm"
-          className="flex items-center gap-2 mt-2 bg-amber-200 hover:bg-amber-300 text-amber-800 border-amber-300"
-        >
-          <RefreshCw className="h-4 w-4" /> Update Agent
-        </Button>
-      </AlertDescription>
-    </Alert>
-  );
-};
-
 const ProcessTimeline = () => {
   const steps = [
-    { id: 1, name: "RTP Prepared", completed: true, current: false, date: "Apr 25, 2025" },
-    { id: 2, name: "Awaiting SC", completed: true, current: false, date: "Apr 26, 2025" },
-    { id: 3, name: "RTP Sent", completed: false, current: true, date: "Apr 28, 2025" },
-    { id: 4, name: "Approved", completed: false, current: false, date: "Pending" },
-    { id: 5, name: "Paid", completed: false, current: false, date: "Pending" }
+    { id: 1, name: "RTP Prepared", completed: true, current: false, date: "Apr 25" },
+    { id: 2, name: "Awaiting SC", completed: true, current: false, date: "Apr 26" },
+    { id: 3, name: "RTP Sent", completed: false, current: true, date: "Apr 28" },
+    { id: 4, name: "Approved", completed: false, current: false, date: "" },
+    { id: 5, name: "Paid", completed: false, current: false, date: "" }
   ];
   
   // Calculate progress percentage
@@ -247,22 +247,22 @@ const ProcessTimeline = () => {
   const progress = (completedSteps / (totalSteps - 1)) * 100; // Exclude the last step for better visual
 
   return (
-    <Card className="mb-6 overflow-hidden">
-      <CardHeader className="pb-2">
+    <Card className="mb-6">
+      <CardHeader className="pb-2 pt-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">Process Timeline</CardTitle>
-          <span className="text-sm text-muted-foreground font-medium">
-            {completedSteps}/{totalSteps} Steps
+          <CardTitle className="text-sm font-medium">Process Timeline</CardTitle>
+          <span className="text-xs text-muted-foreground">
+            {completedSteps}/{totalSteps}
           </span>
         </div>
       </CardHeader>
-      <CardContent className="pb-6">
-        <div className="space-y-2">
+      <CardContent className="py-2">
+        <div>
           {/* Progress bar */}
-          <Progress value={progress} className="h-1.5 mb-6" />
+          <Progress value={progress} className="h-1 mb-3" />
           
           <div className="relative">
-            <div className="flex justify-between relative">
+            <div className="flex justify-between">
               {steps.map((step) => (
                 <div 
                   key={step.id} 
@@ -272,38 +272,32 @@ const ProcessTimeline = () => {
                   )}
                 >
                   <div className={cn(
-                    "h-12 w-12 rounded-full flex items-center justify-center transition-all duration-300",
-                    step.completed ? "bg-primary shadow-md shadow-primary/20 text-white" : 
-                    step.current ? "bg-white border-2 border-primary text-primary ring-4 ring-primary/10" : 
+                    "h-6 w-6 rounded-full flex items-center justify-center transition-all duration-300",
+                    step.completed ? "bg-primary shadow-sm shadow-primary/20 text-white" : 
+                    step.current ? "bg-white border-2 border-primary text-primary" : 
                     "bg-gray-100 text-gray-400"
                   )}>
                     {step.completed ? (
-                      <Check className="h-6 w-6 animate-scale-in" />
+                      <Check className="h-3 w-3" />
                     ) : (
-                      <span className="font-medium text-lg">{step.id}</span>
+                      <span className="font-medium text-xs">{step.id}</span>
                     )}
                   </div>
                   <span className={cn(
-                    "text-sm mt-3 font-medium text-center transition-all duration-200",
+                    "text-xs mt-2 font-medium text-center transition-all duration-200",
                     step.completed ? "text-primary" : 
-                    step.current ? "text-primary font-semibold" : 
+                    step.current ? "text-primary" : 
                     "text-gray-500"
                   )}>
                     {step.name}
                   </span>
-                  <span className={cn(
-                    "text-xs mt-1",
-                    step.completed ? "text-gray-600" :
-                    step.current ? "text-primary" :
-                    "text-gray-400"
-                  )}>
-                    {step.date}
-                  </span>
+                  {step.date && (
+                    <span className="text-[10px] mt-0.5 text-gray-500">{step.date}</span>
+                  )}
                   
-                  {/* Hover tooltip for more info */}
-                  <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 -bottom-[4.5rem] bg-gray-800 text-white text-xs rounded py-1 px-2 w-32 text-center transition-all duration-200">
-                    <div className="font-medium mb-1">{step.name}</div>
-                    <div>{step.date}</div>
+                  <div className="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 -bottom-[3rem] bg-gray-800 text-white text-[10px] rounded py-1 px-2 w-24 text-center transition-all duration-200">
+                    <div className="font-medium">{step.name}</div>
+                    <div>{step.date || "Pending"}</div>
                     <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
                   </div>
                 </div>
@@ -506,15 +500,15 @@ export function RTPDataTab() {
     ...mockSmartConnection,
     status: "Unavailable" as ConnectionStatus,
     exceptions: [
-      "Authentication token expired on April 27, 2025",
+      "Portal User Credentials are missing",
       "Last sync attempt failed at 15:23"
     ]
   };
 
   return (
     <div className="space-y-6">
-      <SmartConnectionCard connection={connectionWithIssue} />
       <SmartConnectionAlert exceptions={connectionWithIssue.exceptions} />
+      <SmartConnectionCard connection={connectionWithIssue} />
       <ProcessTimeline />
       <POInformationCard />
       <RelatedInvoicesTable />
