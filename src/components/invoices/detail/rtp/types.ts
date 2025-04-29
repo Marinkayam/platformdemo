@@ -1,0 +1,48 @@
+
+export type ConnectionStatus = "Live" | "In Process" | "Unavailable" | "Inactive";
+export type ValidationStatus = "Valid" | "Invalid" | "Pending";
+export type PortalType = "Coupa" | "Ariba" | "Tipalti" | "SAP" | "Oracle";
+
+export interface SmartConnectionProps {
+  status: ConnectionStatus;
+  buyer: {
+    name: string;
+    id: string;
+  };
+  supplier: {
+    name: string;
+    id: string;
+  };
+  portal: {
+    type: PortalType;
+    reference: string;
+  };
+  lastUpdated: string;
+  exceptions?: string[];
+}
+
+export interface POInformationProps {
+  number: string;
+  status: ValidationStatus;
+  customerName: string;
+  portalInfo: {
+    type: PortalType;
+    reference: string;
+  };
+  orderDate: string;
+  totalAmount: number;
+  totalInvoiced: number;
+  amountLeft: number;
+  paymentTerms: string;
+  currency: string;
+  buyerReference: string;
+}
+
+export interface RelatedInvoiceProps {
+  id: string;
+  number: string;
+  date: string;
+  total: number;
+  status: string;
+  paymentStatus: string;
+}
