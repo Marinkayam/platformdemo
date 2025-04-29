@@ -27,16 +27,16 @@ export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationSte
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="text-center py-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
-          <Check className="h-8 w-8 text-green-600" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4">
+          <Check className="h-8 w-8 text-primary-600" />
         </div>
         <h3 className="text-xl font-medium">Confirm your selection</h3>
         <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-          You've selected the following invoice to keep. All other duplicates will be marked as invalid.
+          You've selected the following invoice to keep. All other duplicates will be marked as excluded and won't be tracked.
         </p>
       </div>
       
-      <Card className="border-green-200 bg-green-50/50 shadow-sm">
+      <Card className="border-primary-200 bg-primary-50/50 shadow-sm">
         <CardContent className="pt-6 px-6">
           <div className="space-y-3">
             {fields.map((field) => {
@@ -49,8 +49,8 @@ export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationSte
                   : value !== undefined ? String(value) : '-';
                   
               return (
-                <div key={field.key} className="grid grid-cols-2 gap-2 py-2 border-b border-green-100 last:border-b-0">
-                  <div className="text-sm font-medium text-green-800">{field.label}</div>
+                <div key={field.key} className="grid grid-cols-2 gap-2 py-2 border-b border-primary-100 last:border-b-0">
+                  <div className="text-sm font-medium text-primary-800">{field.label}</div>
                   <div className="text-sm">{displayValue}</div>
                 </div>
               );
@@ -63,7 +63,7 @@ export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationSte
         <h4 className="text-sm font-medium text-amber-700 mb-1">What happens next?</h4>
         <p className="text-sm text-amber-800">
           After confirmation, this invoice will be kept as the valid record and processing will continue.
-          Other invoices with the same number will be marked as duplicates and excluded from processing.
+          Other invoices with the same number will be marked as excluded and won't be tracked.
         </p>
       </div>
       
@@ -74,7 +74,7 @@ export function ConfirmationStep({ invoice, onConfirm, onBack }: ConfirmationSte
         </Button>
         <Button 
           onClick={onConfirm} 
-          className="bg-green-600 hover:bg-green-700"
+          className="bg-primary hover:bg-primary-700"
         >
           Confirm and Resolve Exception
         </Button>

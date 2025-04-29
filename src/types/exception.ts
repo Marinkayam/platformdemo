@@ -14,7 +14,7 @@ export interface Exception {
 export interface ExceptionResolution {
   id: string;
   exceptionId: string;
-  action: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT';
+  action: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT' | 'EXCLUDED';
   timestamp: string;
   note?: string;
   fileAttachment?: {

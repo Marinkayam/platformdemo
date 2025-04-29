@@ -68,7 +68,11 @@ export function TabContent({ tab, invoice }: TabContentProps) {
     }
   };
 
+  // Always return the appropriate content for each tab
   switch (tab) {
+    case "invoice-data":
+      // This will be handled directly by the InvoiceDetail component
+      return null;
     case "exceptions":
       return (
         <ExceptionsTab 
