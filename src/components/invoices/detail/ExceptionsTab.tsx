@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Exception } from "@/types/exception";
+import { Invoice } from "@/types/invoice";
 import { Card, CardContent } from "@/components/ui/card";
 import { useFileAttachments } from "@/hooks/useFileAttachments";
 import { toast } from "@/hooks/use-toast";
@@ -13,9 +14,10 @@ import { ActionButtons } from "./exceptions/ActionButtons";
 interface ExceptionsTabProps {
   exceptions: Exception[];
   onResolveException: (exceptionId: string, resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT') => void;
+  invoice?: Invoice;
 }
 
-export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabProps) {
+export function ExceptionsTab({ exceptions, onResolveException, invoice }: ExceptionsTabProps) {
   const { attachments, addAttachment, removeAttachment, clearAttachments } = useFileAttachments();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
@@ -85,11 +87,6 @@ export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabP
     exceptions.forEach(exception => {
       onResolveException(exception.id, 'FORCE_SUBMIT');
     });
-    
-    toast({
-      title: "Force submitted",
-      description: "The invoice has been force submitted despite exceptions"
-    });
   };
 
   if (!exceptions || exceptions.length === 0) {
@@ -102,7 +99,10 @@ export function ExceptionsTab({ exceptions, onResolveException }: ExceptionsTabP
 
   return (
     <div className="space-y-6">
-      <ExceptionsList exceptions={exceptions} />
+      <ExceptionsList 
+        exceptions={exceptions} 
+        invoice={invoice}
+      />
       
       <Card>
         <CardContent className="pt-6">

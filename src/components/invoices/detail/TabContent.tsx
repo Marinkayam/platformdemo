@@ -1,9 +1,9 @@
 
 import { useState } from "react";
-import { Activity } from "lucide-react";
-import { ActivityTab } from "./ActivityTab";
-import { RTPDataTab } from "./RTPDataTab";
+import { useNavigate } from "react-router-dom";
 import { ExceptionsTab } from "./ExceptionsTab";
+import { RTPDataTab } from "./RTPDataTab";
+import { ActivityTab } from "./ActivityTab";
 import { Invoice } from "@/types/invoice";
 import { toast } from "@/hooks/use-toast";
 
@@ -14,6 +14,7 @@ interface TabContentProps {
 
 export function TabContent({ tab, invoice }: TabContentProps) {
   const [localInvoice, setLocalInvoice] = useState<Invoice | undefined>(invoice);
+  const navigate = useNavigate();
   
   const handleResolveException = (exceptionId: string, resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT') => {
     if (!localInvoice) return;
@@ -37,19 +38,23 @@ export function TabContent({ tab, invoice }: TabContentProps) {
     
     setLocalInvoice(updatedInvoice);
     
-    // Dispatch custom event for tab change (if needed in the future)
-    if (allResolved && resolution === 'UPLOAD_NEW_PDF') {
-      setTimeout(() => {
-        const event = new CustomEvent('switchTab', { 
-          detail: { tab: 'activity' } 
-        });
-        window.dispatchEvent(event);
-        
-        toast({
-          title: "Exception resolved",
-          description: "User uploaded corrected invoice with new PO"
-        });
-      }, 1000);
+    // Handle different resolution types
+    if (allResolved) {
+      if (resolution === 'UPLOAD_NEW_PDF') {
+        setTimeout(() => {
+          toast({
+            title: "Exception resolved",
+            description: "User uploaded corrected invoice with new PO"
+          });
+          
+          // Navigate back to invoices list
+          setTimeout(() => {
+            navigate("/invoices");
+          }, 1000);
+        }, 1000);
+      } else if (resolution === 'FORCE_SUBMIT') {
+        // Force submit is handled by the ForceSubmitModal component
+      }
     }
   };
 
