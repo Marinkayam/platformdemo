@@ -1,3 +1,6 @@
+
+import { Exception } from "./exception";
+
 export interface Invoice {
   id: string;
   number: string;
