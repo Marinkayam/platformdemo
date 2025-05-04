@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useContext } from "react";
 import { 
   ResizablePanelGroup,
   ResizablePanel, 
@@ -7,8 +7,11 @@ import {
 } from "@/components/ui/resizable";
 import { ActivityTimeline } from "./ActivityTimeline";
 import { NotesThread } from "./NotesThread";
+import { useNotes } from "@/hooks/useNotes";
 
 export function ActivityTab() {
+  const { notes } = useNotes();
+
   return (
     <div className="bg-white rounded-lg">
       <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-lg border">
@@ -22,7 +25,7 @@ export function ActivityTab() {
         
         {/* Notes Panel */}
         <ResizablePanel defaultSize={40} minSize={30}>
-          <NotesThread />
+          <NotesThread notes={notes} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

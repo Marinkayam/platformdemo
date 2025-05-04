@@ -1,13 +1,15 @@
 
 import { FileText, FileX, Database, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 interface InvoiceTabsProps {
   activeTab: string;
   onTabChange: (value: string) => void;
+  activityCount?: number;
 }
 
-export function InvoiceTabsNav({ activeTab, onTabChange }: InvoiceTabsProps) {
+export function InvoiceTabsNav({ activeTab, onTabChange, activityCount = 0 }: InvoiceTabsProps) {
   const tabs = [
     { id: "invoice-data", icon: <FileText className="h-4 w-4" />, label: "Invoice Data" },
     { id: "exceptions", icon: <FileX className="h-4 w-4" />, label: "Exceptions" },
@@ -32,6 +34,11 @@ export function InvoiceTabsNav({ activeTab, onTabChange }: InvoiceTabsProps) {
           >
             {tab.icon}
             {tab.label}
+            {tab.id === "activity" && activityCount > 0 && (
+              <Badge variant="secondary" className="ml-1 text-xs">
+                {activityCount}
+              </Badge>
+            )}
           </button>
         ))}
       </div>

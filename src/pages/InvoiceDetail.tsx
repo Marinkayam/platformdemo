@@ -10,6 +10,7 @@ import { Attachments } from "@/components/invoices/detail/Attachments";
 import { TabContent } from "@/components/invoices/detail/TabContent";
 import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { useNotes } from "@/hooks/useNotes";
 
 export default function InvoiceDetail() {
   const { id } = useParams();
@@ -17,6 +18,10 @@ export default function InvoiceDetail() {
   const navigate = useNavigate();
   const [zoomLevel, setZoomLevel] = useState(1.0);
   const [activeTab, setActiveTab] = useState("invoice-data");
+  const { notes } = useNotes();
+  
+  // Activity count - 4 activity items (hardcoded in ActivityTimeline) + notes count
+  const activityCount = 4 + notes.length;
 
   // Check for tab parameter in URL
   useEffect(() => {
@@ -88,7 +93,11 @@ export default function InvoiceDetail() {
         invoice={invoice}
       />
       
-      <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} />
+      <InvoiceTabsNav 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab} 
+        activityCount={activityCount} 
+      />
 
       {activeTab === "invoice-data" ? (
         <ResizablePanelGroup direction="horizontal" className="min-h-[calc(100vh-200px)]">

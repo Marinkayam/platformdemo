@@ -1,6 +1,7 @@
 
 import { Invoice, LineItem } from "@/types/invoice";
 import { formatCurrency } from "@/lib/utils";
+import { useRef, useEffect, useState } from "react";
 
 interface PdfContentProps {
   invoice: Invoice;
@@ -9,11 +10,36 @@ interface PdfContentProps {
 }
 
 export function PdfContent({ invoice, lineItems, zoomLevel }: PdfContentProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  
+  // Use a ResizeObserver to track container width changes
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    
+    resizeObserver.observe(containerRef.current);
+    return () => resizeObserver.disconnect();
+  }, []);
+  
   return (
-    <div className="bg-white border rounded-md flex-1 overflow-auto p-6">
+    <div 
+      ref={containerRef} 
+      className="bg-white border rounded-md flex-1 overflow-auto p-6"
+    >
       <div 
-        className="bg-white mx-auto w-[21cm] transition-all duration-200 ease-in-out shadow-md"
-        style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top center' }}
+        className="bg-white mx-auto transition-all duration-200 ease-in-out shadow-md"
+        style={{ 
+          transform: `scale(${zoomLevel})`, 
+          transformOrigin: 'top center',
+          width: Math.min(containerWidth * 0.9, 794), // A4 width in pixels at 96 DPI
+          maxWidth: '100%'
+        }}
       >
         <div className="border border-gray-200 rounded-lg p-8">
           <div className="flex justify-between mb-8">

@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { FileAttachment } from "@/components/invoices/detail/FilePreview";
 import { useNotifications } from "@/context/NotificationsContext";
 
@@ -31,7 +31,7 @@ const initialNotesData = [
     avatar: "JS",
     content: "This invoice needs approval from finance before we can process the payment. I've flagged it for review.",
     timestamp: new Date(2024, 3, 25, 14, 29),
-    read: false,
+    read: true,
     attachments: [
       {
         id: "a1",
@@ -46,24 +46,7 @@ const initialNotesData = [
 export function useNotes() {
   const { addNotification } = useNotifications();
   const [notes, setNotes] = useState<Note[]>(initialNotesData);
-  const [hasUnreadNotes, setHasUnreadNotes] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  // Check for unread notes
-  useEffect(() => {
-    const unreadExists = notes.some(note => !note.read);
-    setHasUnreadNotes(unreadExists);
-  }, [notes]);
-
-  const markAllAsRead = () => {
-    setNotes(notes.map(note => ({ ...note, read: true })));
-  };
-
-  const handleNoteHover = (id: string) => {
-    setNotes(notes.map(note => 
-      note.id === id ? { ...note, read: true } : note
-    ));
-  };
 
   const addNote = (content: string, attachments: FileAttachment[]) => {
     const newNoteObj: Note = {
@@ -105,10 +88,7 @@ export function useNotes() {
 
   return {
     notes,
-    hasUnreadNotes,
     scrollRef,
-    markAllAsRead,
-    handleNoteHover,
     addNote,
     removeNoteAttachment
   };
