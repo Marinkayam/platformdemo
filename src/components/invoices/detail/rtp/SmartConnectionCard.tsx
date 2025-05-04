@@ -75,9 +75,7 @@ export const SmartConnectionCard = ({ connection }: { connection: SmartConnectio
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground mt-4">
-          Last updated: {new Date(connection.lastUpdated).toLocaleString()}
-        </p>
+        {/* Last updated line removed as per requirements */}
       </CardContent>
       <CardFooter className="pt-0 flex justify-between items-center">
         <Button variant="outline" size="sm" className="text-primary flex items-center gap-2">

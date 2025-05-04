@@ -18,6 +18,9 @@ export const SmartConnectionAlert = ({ exceptions }: SmartConnectionAlertProps) 
     navigate('/smart-connections');
   };
   
+  // Remove Update Agent button when there are exceptions
+  const hasExceptions = exceptions && exceptions.length > 0;
+  
   return (
     <Alert className="mb-6 bg-amber-50 border-amber-200">
       <AlertTriangle className="h-4 w-4 text-amber-500" />
@@ -28,14 +31,16 @@ export const SmartConnectionAlert = ({ exceptions }: SmartConnectionAlertProps) 
             <li key={i} className="text-sm">{exception}</li>
           ))}
         </ul>
-        <Button 
-          variant="secondary" 
-          size="sm"
-          onClick={handleNavigateToSmartConnection}
-          className="flex items-center gap-2 bg-amber-200 hover:bg-amber-300 text-amber-800 border-amber-300 mt-2 md:mt-0 ml-auto md:ml-4"
-        >
-          <RefreshCw className="h-4 w-4" /> Update Agent
-        </Button>
+        {!hasExceptions && (
+          <Button 
+            variant="secondary" 
+            size="sm"
+            onClick={handleNavigateToSmartConnection}
+            className="flex items-center gap-2 bg-amber-200 hover:bg-amber-300 text-amber-800 border-amber-300 mt-2 md:mt-0 ml-auto md:ml-4"
+          >
+            <RefreshCw className="h-4 w-4" /> Update Agent
+          </Button>
+        )}
       </AlertDescription>
     </Alert>
   );

@@ -20,8 +20,8 @@ export function PdfViewer({
   onZoomOut 
 }: PdfViewerProps) {
   return (
-    <Card className="rounded-xl shadow-sm overflow-hidden">
-      <CardContent className="p-4 h-[calc(100vh-150px)] flex flex-col">
+    <Card className="rounded-xl shadow-sm overflow-hidden h-full">
+      <CardContent className="p-4 h-full flex flex-col">
         <PdfToolbar
           invoice={invoice}
           zoomLevel={zoomLevel}

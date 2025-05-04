@@ -9,6 +9,7 @@ import { AdditionalInfo } from "@/components/invoices/detail/AdditionalInfo";
 import { Attachments } from "@/components/invoices/detail/Attachments";
 import { TabContent } from "@/components/invoices/detail/TabContent";
 import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 export default function InvoiceDetail() {
   const { id } = useParams();
@@ -90,23 +91,27 @@ export default function InvoiceDetail() {
       <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} />
 
       {activeTab === "invoice-data" ? (
-        <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
-          <div className="space-y-6">
-            <FinancialData invoice={invoice} lineItems={lineItems} />
-            <AdditionalInfo invoice={invoice} />
-            <Attachments attachments={attachments} />
-          </div>
-          
-          <div className="lg:sticky lg:top-6 lg:self-start">
-            <PdfViewer
-              invoice={invoice}
-              lineItems={lineItems}
-              zoomLevel={zoomLevel}
-              onZoomIn={handleZoomIn}
-              onZoomOut={handleZoomOut}
-            />
-          </div>
-        </div>
+        <ResizablePanelGroup direction="horizontal" className="min-h-[calc(100vh-200px)]">
+          <ResizablePanel defaultSize={50} minSize={30}>
+            <div className="space-y-6 pr-2">
+              <FinancialData invoice={invoice} lineItems={lineItems} />
+              <AdditionalInfo invoice={invoice} />
+              <Attachments attachments={attachments} />
+            </div>
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel defaultSize={50} minSize={30}>
+            <div className="pl-2">
+              <PdfViewer
+                invoice={invoice}
+                lineItems={lineItems}
+                zoomLevel={zoomLevel}
+                onZoomIn={handleZoomIn}
+                onZoomOut={handleZoomOut}
+              />
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       ) : (
         <TabContent tab={activeTab} invoice={invoice} />
       )}

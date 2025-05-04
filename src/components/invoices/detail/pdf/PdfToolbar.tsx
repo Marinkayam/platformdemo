@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut, Download, Printer } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Invoice } from "@/types/invoice";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface PdfToolbarProps {
   invoice: Invoice;
@@ -37,22 +38,44 @@ export function PdfToolbar({
     <div className="flex items-center justify-between mb-4">
       <h2 className="text-lg font-medium">Invoice Preview</h2>
       <div className="flex items-center gap-2">
-        <Button 
-          variant="outline" 
-          className="flex items-center gap-1.5 bg-white"
-          onClick={handlePrint}
-        >
-          <Printer className="h-4 w-4" />
-          Print
-        </Button>
-        <Button 
-          variant="outline" 
-          className="flex items-center gap-1.5 bg-white"
-          onClick={handleDownload}
-        >
-          <Download className="h-4 w-4" />
-          Download
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="icon"
+                className="bg-white"
+                aria-label="Print Invoice"
+                onClick={handlePrint}
+              >
+                <Printer className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Print</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="icon"
+                className="bg-white"
+                aria-label="Download Invoice"
+                onClick={handleDownload}
+              >
+                <Download className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Download</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
         <div className="flex items-center gap-1 ml-2">
           <Button variant="outline" size="icon" onClick={onZoomOut}>
             <ZoomOut className="h-4 w-4" />
