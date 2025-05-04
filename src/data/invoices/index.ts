@@ -9,6 +9,7 @@ import { rejectedInvoices } from "./rejected";
 import { approvedInvoices } from "./approved";
 import { externalInvoices } from "./external";
 import { partiallySettledInvoices } from "./partially-settled";
+import { testInvoices } from "./types";
 
 export const invoiceData = [
   ...pendingInvoices,
@@ -20,5 +21,6 @@ export const invoiceData = [
   ...rejectedInvoices,
   ...approvedInvoices,
   ...externalInvoices,
-  ...partiallySettledInvoices
+  ...partiallySettledInvoices,
+  ...testInvoices
 ];

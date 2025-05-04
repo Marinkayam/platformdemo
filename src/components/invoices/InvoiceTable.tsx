@@ -5,8 +5,6 @@ import { Invoice } from "@/types/invoice";
 import { useSortedInvoices } from "@/hooks/useSortedInvoices";
 import { InvoiceTableHeader } from "./table/InvoiceTableHeader";
 import { InvoiceTableRow } from "./table/InvoiceTableRow";
-import { InvoiceTableFooter } from "./table/InvoiceTableFooter";
-import { toast } from "@/hooks/use-toast";
 
 interface InvoiceTableProps {
   invoices: Invoice[];
@@ -54,7 +52,7 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
         <TableBody className="divide-y">
           {sortedInvoices.length === 0 ? (
             <tr>
-              <td colSpan={6} className="h-24 text-center text-[14px] text-gray-600">
+              <td colSpan={7} className="h-24 text-center text-[14px] text-gray-600">
                 No invoices found.
               </td>
             </tr>
@@ -71,8 +69,6 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
             ))
           )}
         </TableBody>
-        
-        <InvoiceTableFooter invoices={sortedInvoices} />
       </Table>
     </div>
   );

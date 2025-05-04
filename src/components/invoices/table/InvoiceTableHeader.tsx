@@ -54,19 +54,9 @@ export function InvoiceTableHeader({
           </TableHead>
         )}
 
-        {isPendingTab ? (
-          <TableHead 
-            className="cursor-pointer text-[14px] font-medium text-gray-600"
-            onClick={() => onSort('creationDate')}
-          >
-            Creation Date
-            {renderSortIndicator('creationDate')}
-          </TableHead>
-        ) : (
-          <TableHead className="text-[14px] font-medium text-gray-600">
-            Status
-          </TableHead>
-        )}
+        <TableHead className="text-[14px] font-medium text-gray-600">
+          Status
+        </TableHead>
         
         <TableHead 
           className="cursor-pointer text-[14px] font-medium text-gray-600 text-left"
@@ -77,7 +67,11 @@ export function InvoiceTableHeader({
         </TableHead>
         
         <TableHead className="text-[14px] font-medium text-gray-600">
-          {isPendingTab ? "Assignee" : "Owner"}
+          Portal
+        </TableHead>
+        
+        <TableHead className="text-[14px] font-medium text-gray-600">
+          Owner
         </TableHead>
       </TableRow>
     </TableHeader>

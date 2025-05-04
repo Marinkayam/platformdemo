@@ -21,6 +21,7 @@ export interface Invoice {
   taxId?: string;
   requesterEmail?: string;
   documentType?: 'Invoice' | 'Credit Memo';
+  portal?: 'Ariba' | 'Coupa' | 'Bill' | 'Tipalti';
   isOverdue?: boolean;
   lineItems?: LineItem[];
   attachments?: Attachment[];
