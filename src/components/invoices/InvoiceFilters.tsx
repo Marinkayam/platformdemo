@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Search, RefreshCw, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -407,6 +406,24 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${moreFiltersOpen ? 'rotate-180' : ''}`} />
               </Button>
             </CollapsibleTrigger>
+            <CollapsibleContent className="overflow-hidden">
+              <div className="pt-2 pb-1 border-t flex flex-wrap items-center gap-2">
+                <FilterDropdown 
+                  label="Transaction Type" 
+                  value={filters.transactionType} 
+                  options={transactionOptions}
+                  onSelect={(value) => handleFilterChange("transactionType", value)}
+                />
+                <FilterDropdown 
+                  label="Owner" 
+                  value={filters.owner} 
+                  options={ownerOptions}
+                  onSelect={(value) => handleFilterChange("owner", value)}
+                  multiSelect
+                  searchable
+                />
+              </div>
+            </CollapsibleContent>
           </Collapsible>
         </div>
         
@@ -432,25 +449,6 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
           </Button>
         </div>
       </div>
-      
-      <CollapsibleContent className="overflow-hidden">
-        <div className="pt-2 pb-1 border-t flex flex-wrap items-center gap-2">
-          <FilterDropdown 
-            label="Transaction Type" 
-            value={filters.transactionType} 
-            options={transactionOptions}
-            onSelect={(value) => handleFilterChange("transactionType", value)}
-          />
-          <FilterDropdown 
-            label="Owner" 
-            value={filters.owner} 
-            options={ownerOptions}
-            onSelect={(value) => handleFilterChange("owner", value)}
-            multiSelect
-            searchable
-          />
-        </div>
-      </CollapsibleContent>
       
       {getActiveFilters().length > 0 && (
         <div className="flex flex-wrap gap-2 pt-2">
