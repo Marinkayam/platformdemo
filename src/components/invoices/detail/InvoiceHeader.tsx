@@ -1,25 +1,25 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, MoreHorizontal, FileText, Download, Trash2, UserCircle2 } from "lucide-react";
+import { FileText, Trash2, UserCircle2 } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Invoice } from "@/types/invoice";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { AssigneeComponent } from "../AssigneeComponent";
 import { toast } from "@/hooks/use-toast";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator
+} from "@/components/ui/breadcrumb";
 
 interface InvoiceHeaderProps {
   invoice: Invoice;
-  onViewPdf: () => void;
 }
 
-export function InvoiceHeader({ invoice, onViewPdf }: InvoiceHeaderProps) {
+export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
   const [localInvoice, setLocalInvoice] = useState<Invoice>(invoice);
   const isPendingAction = localInvoice.status === "Pending Action";
 
@@ -34,12 +34,17 @@ export function InvoiceHeader({ invoice, onViewPdf }: InvoiceHeaderProps) {
   return (
     <div className="mb-8">
       <div className="flex items-center mb-6">
-        <Button variant="ghost" size="sm" asChild className="h-9">
-          <Link to="/invoices" className="flex items-center gap-2 text-sm font-medium text-gray-700">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Invoices
-          </Link>
-        </Button>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink as={Link} to="/invoices">Invoices</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{localInvoice.number}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
       
       <div className="flex flex-col gap-4">
@@ -48,40 +53,11 @@ export function InvoiceHeader({ invoice, onViewPdf }: InvoiceHeaderProps) {
             <h1 className="text-[32px] font-semibold text-gray-900">{localInvoice.number}</h1>
             <StatusBadge status={localInvoice.status} />
           </div>
-          
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              onClick={onViewPdf}
-              className="flex items-center gap-2 bg-white text-sm"
-            >
-              <FileText className="h-4 w-4" />
-              View Invoice PDF
-            </Button>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="bg-white">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Download className="mr-2 h-4 w-4" />
-                  Download Invoice
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-red-600">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  Exclude Invoice
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
         </div>
         
         <div className="flex items-center gap-6 text-[14px] text-gray-600">
           <span>Owner: {localInvoice.owner}</span>
-          <span>File type: Invoice</span>
+          <span>Payment Type: Invoice</span>
           
           {isPendingAction && (
             <div className="flex items-center gap-2">

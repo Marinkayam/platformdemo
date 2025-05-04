@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut, Download } from "lucide-react";
+import { ZoomIn, ZoomOut, Download, Printer } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Invoice } from "@/types/invoice";
 
@@ -25,10 +25,26 @@ export function PdfToolbar({
     // In a real app, this would trigger an actual download
   };
   
+  const handlePrint = () => {
+    toast({
+      title: "Print initiated",
+      description: "Preparing invoice for printing",
+    });
+    // In a real app, this would trigger printing functionality
+  };
+  
   return (
     <div className="flex items-center justify-between mb-4">
       <h2 className="text-lg font-medium">Invoice Preview</h2>
       <div className="flex items-center gap-2">
+        <Button 
+          variant="outline" 
+          className="flex items-center gap-1.5 bg-white"
+          onClick={handlePrint}
+        >
+          <Printer className="h-4 w-4" />
+          Print
+        </Button>
         <Button 
           variant="outline" 
           className="flex items-center gap-1.5 bg-white"

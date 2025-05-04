@@ -7,14 +7,13 @@ import { InvoiceTabsNav } from "@/components/invoices/detail/InvoiceTabs";
 import { FinancialData } from "@/components/invoices/detail/FinancialData";
 import { AdditionalInfo } from "@/components/invoices/detail/AdditionalInfo";
 import { Attachments } from "@/components/invoices/detail/Attachments";
-import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
 import { TabContent } from "@/components/invoices/detail/TabContent";
+import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
 
 export default function InvoiceDetail() {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1.0);
   const [activeTab, setActiveTab] = useState("invoice-data");
 
@@ -85,33 +84,32 @@ export default function InvoiceDetail() {
   return (
     <div className="container mx-auto px-4 py-6">
       <InvoiceHeader 
-        invoice={invoice} 
-        onViewPdf={() => setShowPdfViewer(true)} 
+        invoice={invoice}
       />
       
       <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {activeTab === "invoice-data" && (
-        <div className="space-y-6">
-          <FinancialData invoice={invoice} lineItems={lineItems} />
-          <AdditionalInfo invoice={invoice} />
-          <Attachments attachments={attachments} />
+      {activeTab === "invoice-data" ? (
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="w-full lg:w-7/10 space-y-6">
+            <FinancialData invoice={invoice} lineItems={lineItems} />
+            <AdditionalInfo invoice={invoice} />
+            <Attachments attachments={attachments} />
+          </div>
+          
+          <div className="w-full lg:w-3/10 lg:sticky lg:top-6 lg:self-start">
+            <PdfViewer
+              invoice={invoice}
+              lineItems={lineItems}
+              zoomLevel={zoomLevel}
+              onZoomIn={handleZoomIn}
+              onZoomOut={handleZoomOut}
+            />
+          </div>
         </div>
-      )}
-      
-      {activeTab !== "invoice-data" && (
+      ) : (
         <TabContent tab={activeTab} invoice={invoice} />
       )}
-
-      <PdfViewer 
-        invoice={invoice}
-        lineItems={lineItems}
-        isOpen={showPdfViewer}
-        onClose={() => setShowPdfViewer(false)}
-        zoomLevel={zoomLevel}
-        onZoomIn={handleZoomIn}
-        onZoomOut={handleZoomOut}
-      />
     </div>
   );
 }

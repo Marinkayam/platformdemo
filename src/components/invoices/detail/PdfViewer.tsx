@@ -1,14 +1,12 @@
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Invoice, LineItem } from "@/types/invoice";
+import { Card, CardContent } from "@/components/ui/card";
 import { PdfToolbar } from "./pdf/PdfToolbar";
 import { PdfContent } from "./pdf/PdfContent";
 
 interface PdfViewerProps {
   invoice: Invoice;
   lineItems: LineItem[];
-  isOpen: boolean;
-  onClose: () => void;
   zoomLevel: number;
   onZoomIn: () => void;
   onZoomOut: () => void;
@@ -17,15 +15,13 @@ interface PdfViewerProps {
 export function PdfViewer({ 
   invoice, 
   lineItems, 
-  isOpen, 
-  onClose, 
   zoomLevel, 
   onZoomIn, 
   onZoomOut 
 }: PdfViewerProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl h-[80vh] flex flex-col p-6">
+    <Card className="rounded-xl shadow-sm overflow-hidden">
+      <CardContent className="p-4 h-[calc(100vh-150px)] flex flex-col">
         <PdfToolbar
           invoice={invoice}
           zoomLevel={zoomLevel}
@@ -37,7 +33,7 @@ export function PdfViewer({
           lineItems={lineItems}
           zoomLevel={zoomLevel}
         />
-      </DialogContent>
-    </Dialog>
+      </CardContent>
+    </Card>
   );
 }
