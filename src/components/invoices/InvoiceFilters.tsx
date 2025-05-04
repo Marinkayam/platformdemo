@@ -1,184 +1,29 @@
 
-import { useState } from "react";
-import { toast } from "@/hooks/use-toast";
-import { FilterDropdown } from "./filters/FilterDropdown";
-import { DateRangePicker } from "./filters/DateRangePicker";
-import { ActiveFilterBadge } from "./filters/ActiveFilterBadge";
+import { InvoiceFilters as InvoiceFiltersType } from "./filters/types";
+import { FilterControls } from "./filters/FilterControls";
+import { ActiveFiltersList } from "./filters/ActiveFiltersList";
 import { SearchSection } from "./filters/SearchSection";
-import { InvoiceFilters as InvoiceFiltersType, defaultFilters } from "./filters/types";
-import { filterConfig } from "./filters/filterConfig";
-import { AnimatePresence, motion } from "framer-motion";
+import { useInvoiceFiltersState } from "@/hooks/useInvoiceFiltersState";
 
 interface InvoiceFiltersProps {
   onFilterChange: (filters: InvoiceFiltersType) => void;
 }
 
 export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
-  const [filters, setFilters] = useState<InvoiceFiltersType>(defaultFilters);
-  
-  // Get all active filter values (non-default) for displaying as chips
-  const getActiveFilters = () => {
-    const active: { key: string; label: string; value: string }[] = [];
-    
-    if (filters.status.length > 0) {
-      filters.status.forEach(status => {
-        active.push({
-          key: `status-${status}`,
-          label: "Status",
-          value: status
-        });
-      });
-    }
-    
-    if (filters.buyer.length > 0) {
-      filters.buyer.forEach(buyer => {
-        active.push({
-          key: `buyer-${buyer}`,
-          label: "Buyer",
-          value: buyer
-        });
-      });
-    }
-    
-    if (filters.portal.length > 0) {
-      filters.portal.forEach(portal => {
-        active.push({
-          key: `portal-${portal}`,
-          label: "Portal",
-          value: portal
-        });
-      });
-    }
-    
-    if (filters.dueDate.from || filters.dueDate.to) {
-      let dateValue = "";
-      if (filters.dueDate.from && filters.dueDate.to) {
-        dateValue = `${filters.dueDate.from} - ${filters.dueDate.to}`;
-      } else if (filters.dueDate.from) {
-        dateValue = `From ${filters.dueDate.from}`;
-      } else if (filters.dueDate.to) {
-        dateValue = `Until ${filters.dueDate.to}`;
-      }
-      
-      active.push({
-        key: "date-range",
-        label: "Due Date",
-        value: dateValue
-      });
-    }
-    
-    if (filters.transactionType !== "All") {
-      active.push({
-        key: "transaction-type",
-        label: "Transaction Type",
-        value: filters.transactionType
-      });
-    }
-    
-    if (filters.owner.length > 0) {
-      filters.owner.forEach(owner => {
-        active.push({
-          key: `owner-${owner}`,
-          label: "Owner",
-          value: owner
-        });
-      });
-    }
-    
-    return active;
-  };
-
-  const handleFilterChange = (key: keyof InvoiceFiltersType, value: any) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
-  };
-  
-  const handleRemoveFilter = (key: string, value: string) => {
-    const newFilters = { ...filters };
-    
-    if (key.startsWith("status")) {
-      newFilters.status = newFilters.status.filter(s => s !== value);
-    } else if (key.startsWith("buyer")) {
-      newFilters.buyer = newFilters.buyer.filter(b => b !== value);
-    } else if (key.startsWith("portal")) {
-      newFilters.portal = newFilters.portal.filter(p => p !== value);
-    } else if (key === "date-range") {
-      newFilters.dueDate = { from: "", to: "" };
-    } else if (key === "transaction-type") {
-      newFilters.transactionType = "All";
-    } else if (key.startsWith("owner")) {
-      newFilters.owner = newFilters.owner.filter(o => o !== value);
-    }
-    
-    setFilters(newFilters);
-    onFilterChange(newFilters);
-  };
-
-  const handleResetFilters = () => {
-    setFilters(defaultFilters);
-    onFilterChange(defaultFilters);
-    toast({
-      title: "Filters reset",
-      description: "All filters have been reset to default values",
-    });
-  };
-
-  const activeFilters = getActiveFilters();
+  const { 
+    filters, 
+    handleFilterChange,
+    handleRemoveFilter,
+    handleResetFilters
+  } = useInvoiceFiltersState(onFilterChange);
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <motion.div 
-          className="flex flex-wrap items-center gap-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          <FilterDropdown 
-            label="Status" 
-            value={filters.status} 
-            options={filterConfig.statusOptions}
-            onSelect={(value) => handleFilterChange("status", value)}
-            multiSelect
-            searchable
-          />
-          <DateRangePicker
-            fromDate={filters.dueDate.from}
-            toDate={filters.dueDate.to}
-            onDateChange={(from, to) => handleFilterChange("dueDate", { from, to })}
-          />
-          <FilterDropdown 
-            label="Buyer" 
-            value={filters.buyer} 
-            options={filterConfig.buyerOptions}
-            onSelect={(value) => handleFilterChange("buyer", value)}
-            multiSelect
-            searchable
-          />
-          <FilterDropdown 
-            label="Portal" 
-            value={filters.portal} 
-            options={filterConfig.portalOptions}
-            onSelect={(value) => handleFilterChange("portal", value)}
-            multiSelect
-            searchable
-          />
-          <FilterDropdown 
-            label="Transaction Type" 
-            value={filters.transactionType} 
-            options={filterConfig.transactionOptions}
-            onSelect={(value) => handleFilterChange("transactionType", value as string)}
-          />
-          <FilterDropdown 
-            label="Owner" 
-            value={filters.owner} 
-            options={filterConfig.ownerOptions}
-            onSelect={(value) => handleFilterChange("owner", value)}
-            multiSelect
-            searchable
-          />
-        </motion.div>
+        <FilterControls 
+          filters={filters}
+          onFilterChange={handleFilterChange}
+        />
         
         <SearchSection
           searchTerm={filters.search}
@@ -187,26 +32,10 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
         />
       </div>
       
-      <motion.div 
-        className="flex flex-wrap gap-2 pt-2 filter-transition"
-        initial={{ opacity: 0, height: 0 }}
-        animate={{ 
-          opacity: activeFilters.length > 0 ? 1 : 0,
-          height: activeFilters.length > 0 ? 'auto' : 0 
-        }}
-        transition={{ duration: 0.3 }}
-      >
-        <AnimatePresence>
-          {activeFilters.map((filter) => (
-            <ActiveFilterBadge
-              key={filter.key}
-              label={filter.label}
-              value={filter.value}
-              onRemove={() => handleRemoveFilter(filter.key, filter.value)}
-            />
-          ))}
-        </AnimatePresence>
-      </motion.div>
+      <ActiveFiltersList 
+        filters={filters}
+        onRemoveFilter={handleRemoveFilter}
+      />
     </div>
   );
 }
