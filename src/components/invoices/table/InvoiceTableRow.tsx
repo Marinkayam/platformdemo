@@ -53,9 +53,8 @@ export function InvoiceTableRow({
 
   return (
     <TableRow 
-      className={`cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
+      className={`cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''} h-[56px]`}
       onClick={() => onNavigate(invoice.id)}
-      style={{ height: '56px' }}
     >
       <InvoiceNumber 
         number={invoice.number}
@@ -64,7 +63,7 @@ export function InvoiceTableRow({
         isCreditMemo={isCreditMemo}
       />
       
-      <TableCell className="text-[14px] text-gray-900 align-middle">
+      <TableCell className="text-[14px] text-gray-900 py-2 align-middle truncate max-w-[180px]">
         {invoice.buyer}
       </TableCell>
       
@@ -74,25 +73,25 @@ export function InvoiceTableRow({
           isRejectedByBuyer={isRejectedByBuyer}
         />
       ) : (
-        <TableCell className="text-[14px] text-gray-900 align-middle">
+        <TableCell className="text-[14px] text-gray-900 py-2 align-middle">
           {formatDueDate(invoice.dueDate)}
         </TableCell>
       )}
       
-      <TableCell className="text-[14px] text-gray-900 align-middle">
+      <TableCell className="text-[14px] text-gray-900 py-2 align-middle">
         <StatusBadge status={invoice.status} />
       </TableCell>
       
-      <TableCell className="text-[14px] text-gray-900 align-middle">
+      <TableCell className="text-[14px] text-gray-900 py-2 align-middle">
         {formatCurrency(invoice.total)}
       </TableCell>
       
-      <TableCell className="text-[14px] text-gray-900 align-middle">
+      <TableCell className="text-[14px] text-gray-900 py-2 align-middle truncate max-w-[120px]">
         {getPortalDisplay()}
       </TableCell>
       
       <TableCell 
-        className="text-[14px] text-gray-900 align-middle"
+        className="text-[14px] text-gray-900 py-2 align-middle"
         onClick={(e) => e.stopPropagation()}
       >
         {isPendingTab ? (

@@ -8,11 +8,9 @@ interface OwnerInfoProps {
 
 export function OwnerInfo({ owner }: OwnerInfoProps) {
   return (
-    <TableCell className="text-[14px] text-gray-900">
-      <div className="flex items-center gap-2">
-        <UserCircle2 className="h-4 w-4 text-gray-400" />
-        <span>{owner}</span>
-      </div>
-    </TableCell>
+    <div className="flex items-center gap-2 overflow-hidden">
+      <UserCircle2 className="h-4 w-4 text-gray-400 flex-shrink-0" />
+      <span className="truncate">{owner}</span>
+    </div>
   );
 }
