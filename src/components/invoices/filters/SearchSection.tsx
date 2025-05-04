@@ -20,7 +20,7 @@ export function SearchSection({
         <input 
           type="text" 
           placeholder="Search invoices..." 
-          className="pl-9 pr-4 h-9 border rounded-md w-64 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[14px]"
+          className="pl-9 pr-4 h-9 border rounded-md w-[160px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[220px] transition-all duration-200 ease-in-out text-[14px]"
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
         />

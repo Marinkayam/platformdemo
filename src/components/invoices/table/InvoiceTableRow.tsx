@@ -28,6 +28,7 @@ export function InvoiceTableRow({
   const isRejectedByMonto = invoice.rejectedBy === "Monto";
   const isRejectedByBuyer = invoice.rejectedBy === "Buyer";
   const isCreditMemo = invoice.documentType === "Credit Memo";
+  const isAwaitingSC = invoice.status === "Awaiting SC";
   
   // Format the due date to MM/DD/YYYY if it's a valid date
   const formatDueDate = (dateString: string) => {
@@ -42,9 +43,17 @@ export function InvoiceTableRow({
     }
   };
 
+  // Get portal display value based on the new requirements
+  const getPortalDisplay = () => {
+    if (isAwaitingSC) {
+      return "—"; // Show dash only for "Awaiting SC" status
+    }
+    return invoice.portal || "Unknown Portal"; // For all other statuses, show portal or fallback
+  };
+
   return (
     <TableRow 
-      className={`h-14 cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
+      className={`cursor-pointer hover:bg-gray-50 ${isPending ? 'bg-red-50/30' : ''}`}
       onClick={() => onNavigate(invoice.id)}
       style={{ height: '56px' }}
     >
@@ -79,7 +88,7 @@ export function InvoiceTableRow({
       </TableCell>
       
       <TableCell className="text-[14px] text-gray-900">
-        {invoice.portal || "—"}
+        {getPortalDisplay()}
       </TableCell>
       
       <TableCell 

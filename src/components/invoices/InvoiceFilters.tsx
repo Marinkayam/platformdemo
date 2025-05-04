@@ -5,7 +5,6 @@ import { FilterDropdown } from "./filters/FilterDropdown";
 import { DateRangePicker } from "./filters/DateRangePicker";
 import { ActiveFilterBadge } from "./filters/ActiveFilterBadge";
 import { SearchSection } from "./filters/SearchSection";
-import { MoreFiltersSection } from "./filters/MoreFiltersSection";
 import { InvoiceFilters as InvoiceFiltersType, defaultFilters } from "./filters/types";
 import { filterConfig } from "./filters/filterConfig";
 
@@ -15,7 +14,6 @@ interface InvoiceFiltersProps {
 
 export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
   const [filters, setFilters] = useState<InvoiceFiltersType>(defaultFilters);
-  const [moreFiltersOpen, setMoreFiltersOpen] = useState(false);
   
   // Get all active filter values (non-default) for displaying as chips
   const getActiveFilters = () => {
@@ -158,16 +156,19 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
             multiSelect
             searchable
           />
-          
-          <MoreFiltersSection
-            isOpen={moreFiltersOpen}
-            onOpenChange={setMoreFiltersOpen}
-            transactionType={filters.transactionType}
-            onTransactionTypeChange={(value) => handleFilterChange("transactionType", value)}
-            owner={filters.owner}
-            onOwnerChange={(value) => handleFilterChange("owner", value)}
-            transactionOptions={filterConfig.transactionOptions}
-            ownerOptions={filterConfig.ownerOptions}
+          <FilterDropdown 
+            label="Transaction Type" 
+            value={filters.transactionType} 
+            options={filterConfig.transactionOptions}
+            onSelect={(value) => handleFilterChange("transactionType", value as string)}
+          />
+          <FilterDropdown 
+            label="Owner" 
+            value={filters.owner} 
+            options={filterConfig.ownerOptions}
+            onSelect={(value) => handleFilterChange("owner", value)}
+            multiSelect
+            searchable
           />
         </div>
         
