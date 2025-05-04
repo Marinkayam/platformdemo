@@ -1,6 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface FilterDropdownProps {
   label: string;
@@ -75,44 +76,57 @@ export function FilterDropdown({
         />
       </div>
       
-      {isOpen && (
-        <div 
-          className="absolute top-full left-0 mt-1 w-60 bg-white border rounded-md shadow-lg py-1 z-10 animate-fade-in"
-        >
-          {searchable && (
-            <div className="px-3 py-2 border-b">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full text-sm border rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary transition-shadow duration-200"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onClick={(e) => e.stopPropagation()}
-              />
-            </div>
-          )}
-          
-          <div className="max-h-60 overflow-y-auto">
-            {filteredOptions.map((option) => (
-              <div
-                key={option}
-                className={`px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer transition-colors flex items-center justify-between
-                  ${multiSelect && values.includes(option) ? 'bg-gray-50 font-medium' : ''}
-                  ${!multiSelect && option === value ? 'bg-gray-50 font-medium' : ''}
-                `}
-                onClick={() => handleSelect(option)}
-              >
-                {option}
-                {multiSelect && values.includes(option) && (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                    <path d="M20 6 9 17l-5-5"/>
-                  </svg>
-                )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            className="absolute top-full left-0 mt-1 w-60 bg-white border rounded-md shadow-lg py-1 z-10"
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.2 }}
+          >
+            {searchable && (
+              <div className="px-3 py-2 border-b">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="w-full text-sm border rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary transition-shadow duration-200"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
+                  autoFocus
+                />
               </div>
-            ))}
-          </div>
-        </div>
-      )}
+            )}
+            
+            <div className="max-h-60 overflow-y-auto">
+              {filteredOptions.map((option) => (
+                <div
+                  key={option}
+                  className={`px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer transition-colors flex items-center justify-between
+                    ${multiSelect && values.includes(option) ? 'bg-gray-50 font-medium' : ''}
+                    ${!multiSelect && option === value ? 'bg-gray-50 font-medium' : ''}
+                  `}
+                  onClick={() => handleSelect(option)}
+                >
+                  {option}
+                  {multiSelect && values.includes(option) && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                  )}
+                </div>
+              ))}
+              
+              {filteredOptions.length === 0 && (
+                <div className="px-3 py-2 text-sm text-gray-500 text-center">
+                  No results found
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

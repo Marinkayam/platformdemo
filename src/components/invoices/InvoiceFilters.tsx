@@ -129,7 +129,12 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2 transition-all duration-300">
+        <motion.div 
+          className="flex flex-wrap items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
           <FilterDropdown 
             label="Status" 
             value={filters.status} 
@@ -173,7 +178,7 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
             multiSelect
             searchable
           />
-        </div>
+        </motion.div>
         
         <SearchSection
           searchTerm={filters.search}
@@ -182,8 +187,16 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
         />
       </div>
       
-      {activeFilters.length > 0 && (
-        <div className="flex flex-wrap gap-2 pt-2 transition-all duration-300">
+      <motion.div 
+        className="flex flex-wrap gap-2 pt-2 filter-transition"
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ 
+          opacity: activeFilters.length > 0 ? 1 : 0,
+          height: activeFilters.length > 0 ? 'auto' : 0 
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        <AnimatePresence>
           {activeFilters.map((filter) => (
             <ActiveFilterBadge
               key={filter.key}
@@ -192,8 +205,8 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
               onRemove={() => handleRemoveFilter(filter.key, filter.value)}
             />
           ))}
-        </div>
-      )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 }

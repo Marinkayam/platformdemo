@@ -64,7 +64,7 @@ export function InvoiceTableRow({
         isCreditMemo={isCreditMemo}
       />
       
-      <TableCell className="text-[14px] text-gray-900">
+      <TableCell className="text-[14px] text-gray-900 align-middle">
         {invoice.buyer}
       </TableCell>
       
@@ -74,25 +74,25 @@ export function InvoiceTableRow({
           isRejectedByBuyer={isRejectedByBuyer}
         />
       ) : (
-        <TableCell className="text-[14px] text-gray-900">
+        <TableCell className="text-[14px] text-gray-900 align-middle">
           {formatDueDate(invoice.dueDate)}
         </TableCell>
       )}
       
-      <TableCell className="text-[14px] text-gray-900">
+      <TableCell className="text-[14px] text-gray-900 align-middle">
         <StatusBadge status={invoice.status} />
       </TableCell>
       
-      <TableCell className="text-[14px] text-gray-900">
+      <TableCell className="text-[14px] text-gray-900 align-middle">
         {formatCurrency(invoice.total)}
       </TableCell>
       
-      <TableCell className="text-[14px] text-gray-900">
+      <TableCell className="text-[14px] text-gray-900 align-middle">
         {getPortalDisplay()}
       </TableCell>
       
       <TableCell 
-        className="text-[14px] text-gray-900"
+        className="text-[14px] text-gray-900 align-middle"
         onClick={(e) => e.stopPropagation()}
       >
         {isPendingTab ? (
