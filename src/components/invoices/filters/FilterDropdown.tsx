@@ -69,17 +69,22 @@ export function FilterDropdown({
             : (value === "All" ? "All" : value)
           }
         </span>
-        <ChevronDown size={16} className={`text-gray-400 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
+        <ChevronDown 
+          size={16} 
+          className={`text-gray-400 transition-transform duration-300 ease-in-out ${isOpen ? 'rotate-180' : ''}`} 
+        />
       </div>
       
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-60 bg-white border rounded-md shadow-lg py-1 z-10">
+        <div 
+          className="absolute top-full left-0 mt-1 w-60 bg-white border rounded-md shadow-lg py-1 z-10 animate-fade-in"
+        >
           {searchable && (
             <div className="px-3 py-2 border-b">
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full text-sm border rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-sm border rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary transition-shadow duration-200"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onClick={(e) => e.stopPropagation()}

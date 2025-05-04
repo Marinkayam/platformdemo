@@ -28,7 +28,7 @@ export function SearchSection({
       <Button 
         variant="outline" 
         size="sm" 
-        className="h-9 bg-white flex items-center gap-1"
+        className="h-9 bg-white flex items-center gap-1 hover:bg-gray-50 transition-colors"
         onClick={onResetFilters}
       >
         <RefreshCw className="h-3 w-3" />

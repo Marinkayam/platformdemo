@@ -1,6 +1,7 @@
 
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface ActiveFilterBadgeProps {
   label: string;
@@ -10,11 +11,20 @@ interface ActiveFilterBadgeProps {
 
 export function ActiveFilterBadge({ label, value, onRemove }: ActiveFilterBadgeProps) {
   return (
-    <Badge variant="outline" className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-2 py-1">
-      {label}: {value}
+    <Badge 
+      variant="outline" 
+      className={cn(
+        "bg-primary/10 text-primary border-primary/20 hover:bg-primary/15",
+        "px-2 py-1 gap-1 items-center animate-fade-in transition-all duration-200"
+      )}
+    >
+      <span className="font-medium">{label}:</span> {value}
       <X 
-        className="ml-1 h-3 w-3 cursor-pointer" 
-        onClick={onRemove}
+        className="h-3 w-3 cursor-pointer hover:text-primary/80" 
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove();
+        }}
       />
     </Badge>
   );

@@ -7,6 +7,7 @@ import { ActiveFilterBadge } from "./filters/ActiveFilterBadge";
 import { SearchSection } from "./filters/SearchSection";
 import { InvoiceFilters as InvoiceFiltersType, defaultFilters } from "./filters/types";
 import { filterConfig } from "./filters/filterConfig";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface InvoiceFiltersProps {
   onFilterChange: (filters: InvoiceFiltersType) => void;
@@ -123,10 +124,12 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
     });
   };
 
+  const activeFilters = getActiveFilters();
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 transition-all duration-300">
           <FilterDropdown 
             label="Status" 
             value={filters.status} 
@@ -179,9 +182,9 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
         />
       </div>
       
-      {getActiveFilters().length > 0 && (
-        <div className="flex flex-wrap gap-2 pt-2">
-          {getActiveFilters().map((filter) => (
+      {activeFilters.length > 0 && (
+        <div className="flex flex-wrap gap-2 pt-2 transition-all duration-300">
+          {activeFilters.map((filter) => (
             <ActiveFilterBadge
               key={filter.key}
               label={filter.label}

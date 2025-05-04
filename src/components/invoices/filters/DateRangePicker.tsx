@@ -42,17 +42,20 @@ export function DateRangePicker({ fromDate, toDate, onDateChange }: DateRangePic
       >
         <span className="text-sm text-gray-500 whitespace-nowrap">Due Date:</span>
         <span className="text-sm font-medium truncate max-w-[100px]">{displayValue}</span>
-        <ChevronDown size={16} className={`text-gray-400 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
+        <ChevronDown 
+          size={16} 
+          className={`text-gray-400 transition-transform duration-300 ease-in-out ${isOpen ? 'rotate-180' : ''}`} 
+        />
       </div>
       
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-72 bg-white border rounded-md shadow-lg p-3 z-10">
+        <div className="absolute top-full left-0 mt-1 w-72 bg-white border rounded-md shadow-lg p-3 z-10 animate-fade-in">
           <div className="flex flex-col gap-3">
             <div>
               <label className="text-sm font-medium block mb-1">From</label>
               <input
                 type="date"
-                className="w-full border rounded-md px-2 py-1 text-sm"
+                className="w-full border rounded-md px-2 py-1 text-sm focus:ring-1 focus:ring-primary focus:border-primary transition-shadow duration-200"
                 value={fromDate}
                 onChange={(e) => onDateChange(e.target.value, toDate)}
               />
@@ -61,7 +64,7 @@ export function DateRangePicker({ fromDate, toDate, onDateChange }: DateRangePic
               <label className="text-sm font-medium block mb-1">To</label>
               <input
                 type="date"
-                className="w-full border rounded-md px-2 py-1 text-sm"
+                className="w-full border rounded-md px-2 py-1 text-sm focus:ring-1 focus:ring-primary focus:border-primary transition-shadow duration-200"
                 value={toDate}
                 onChange={(e) => onDateChange(fromDate, e.target.value)}
               />
