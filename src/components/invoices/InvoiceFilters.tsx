@@ -1,244 +1,19 @@
-import { useState, useRef, useEffect } from "react";
-import { ChevronDown, Search, RefreshCw, Filter, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
+import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
-import { Badge } from "@/components/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-
-interface FilterDropdownProps {
-  label: string;
-  value: string | string[];
-  options: string[];
-  onSelect: (value: string | string[]) => void;
-  multiSelect?: boolean;
-  searchable?: boolean;
-}
-
-function FilterDropdown({ 
-  label, 
-  value, 
-  options, 
-  onSelect, 
-  multiSelect = false, 
-  searchable = false 
-}: FilterDropdownProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  
-  const values = Array.isArray(value) ? value : [value];
-  const displayValue = Array.isArray(value) && value.length > 0 
-    ? value.length > 1 ? `${value[0]} +${value.length - 1}` : value[0]
-    : value;
-  
-  const filteredOptions = searchable && search 
-    ? options.filter(option => option.toLowerCase().includes(search.toLowerCase())) 
-    : options;
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const handleSelect = (option: string) => {
-    if (multiSelect) {
-      const newValues = values.includes(option) 
-        ? values.filter(v => v !== option) 
-        : [...values, option];
-      onSelect(newValues);
-    } else {
-      onSelect(option);
-      setIsOpen(false);
-    }
-  };
-
-  return (
-    <div className="relative" ref={dropdownRef}>
-      <div 
-        onClick={() => setIsOpen(!isOpen)} 
-        className="flex items-center gap-2 border rounded-md px-3 h-9 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
-      >
-        <span className="text-sm text-gray-500 whitespace-nowrap">{label}:</span>
-        <span className="text-sm font-medium truncate max-w-[100px]">
-          {Array.isArray(value) 
-            ? (value.length === 0 ? "All" : displayValue) 
-            : (value === "All" ? "All" : value)
-          }
-        </span>
-        <ChevronDown size={16} className={`text-gray-400 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
-      </div>
-      
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-60 bg-white border rounded-md shadow-lg py-1 z-10">
-          {searchable && (
-            <div className="px-3 py-2 border-b">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full text-sm border rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onClick={(e) => e.stopPropagation()}
-              />
-            </div>
-          )}
-          
-          <div className="max-h-60 overflow-y-auto">
-            {filteredOptions.map((option) => (
-              <div
-                key={option}
-                className={`px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer transition-colors flex items-center justify-between
-                  ${multiSelect && values.includes(option) ? 'bg-gray-50 font-medium' : ''}
-                  ${!multiSelect && option === value ? 'bg-gray-50 font-medium' : ''}
-                `}
-                onClick={() => handleSelect(option)}
-              >
-                {option}
-                {multiSelect && values.includes(option) && (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                    <path d="M20 6 9 17l-5-5"/>
-                  </svg>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-interface DateRangePickerProps {
-  fromDate: string;
-  toDate: string;
-  onDateChange: (fromDate: string, toDate: string) => void;
-}
-
-function DateRangePicker({ fromDate, toDate, onDateChange }: DateRangePickerProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  
-  let displayValue = "All";
-  if (fromDate && toDate) {
-    displayValue = `${fromDate} - ${toDate}`;
-  } else if (fromDate) {
-    displayValue = `From ${fromDate}`;
-  } else if (toDate) {
-    displayValue = `Until ${toDate}`;
-  }
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  return (
-    <div className="relative" ref={dropdownRef}>
-      <div 
-        onClick={() => setIsOpen(!isOpen)} 
-        className="flex items-center gap-2 border rounded-md px-3 h-9 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
-      >
-        <span className="text-sm text-gray-500 whitespace-nowrap">Due Date:</span>
-        <span className="text-sm font-medium truncate max-w-[100px]">{displayValue}</span>
-        <ChevronDown size={16} className={`text-gray-400 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
-      </div>
-      
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-72 bg-white border rounded-md shadow-lg p-3 z-10">
-          <div className="flex flex-col gap-3">
-            <div>
-              <label className="text-sm font-medium block mb-1">From</label>
-              <input
-                type="date"
-                className="w-full border rounded-md px-2 py-1 text-sm"
-                value={fromDate}
-                onChange={(e) => onDateChange(e.target.value, toDate)}
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium block mb-1">To</label>
-              <input
-                type="date"
-                className="w-full border rounded-md px-2 py-1 text-sm"
-                value={toDate}
-                onChange={(e) => onDateChange(fromDate, e.target.value)}
-              />
-            </div>
-            <div className="flex gap-2 mt-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-1/2"
-                onClick={() => {
-                  onDateChange("", "");
-                  setIsOpen(false);
-                }}
-              >
-                Clear
-              </Button>
-              <Button 
-                size="sm" 
-                className="w-1/2"
-                onClick={() => setIsOpen(false)}
-              >
-                Apply
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
+import { FilterDropdown } from "./filters/FilterDropdown";
+import { DateRangePicker } from "./filters/DateRangePicker";
+import { ActiveFilterBadge } from "./filters/ActiveFilterBadge";
+import { SearchSection } from "./filters/SearchSection";
+import { MoreFiltersSection } from "./filters/MoreFiltersSection";
+import { InvoiceFilters as InvoiceFiltersType, defaultFilters } from "./filters/types";
 
 interface InvoiceFiltersProps {
-  onFilterChange: (filters: InvoiceFilters) => void;
+  onFilterChange: (filters: InvoiceFiltersType) => void;
 }
-
-export interface InvoiceFilters {
-  status: string[];
-  total: string;
-  dueDate: {
-    from: string;
-    to: string;
-  };
-  buyer: string[];
-  portal: string[];
-  transactionType: string;
-  owner: string[];
-  search: string;
-}
-
-const defaultFilters: InvoiceFilters = {
-  status: [],
-  total: "All",
-  dueDate: {
-    from: "",
-    to: ""
-  },
-  buyer: [],
-  portal: [],
-  transactionType: "All",
-  owner: [],
-  search: ""
-};
 
 export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
-  const [filters, setFilters] = useState<InvoiceFilters>(defaultFilters);
+  const [filters, setFilters] = useState<InvoiceFiltersType>(defaultFilters);
   const [moreFiltersOpen, setMoreFiltersOpen] = useState(false);
   
   // Get all active filter values (non-default) for displaying as chips
@@ -313,7 +88,7 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
     return active;
   };
 
-  const handleFilterChange = (key: keyof InvoiceFilters, value: any) => {
+  const handleFilterChange = (key: keyof InvoiceFiltersType, value: any) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);
@@ -390,79 +165,39 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
             searchable
           />
           
-          <Collapsible 
-            open={moreFiltersOpen} 
+          <MoreFiltersSection
+            isOpen={moreFiltersOpen}
             onOpenChange={setMoreFiltersOpen}
-            className="inline-flex"
-          >
-            <CollapsibleTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="h-9 bg-white flex items-center gap-1"
-              >
-                <Filter className="h-3.5 w-3.5" />
-                <span className="text-[14px]">More Filters</span>
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${moreFiltersOpen ? 'rotate-180' : ''}`} />
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="overflow-hidden">
-              <div className="pt-2 pb-1 border-t flex flex-wrap items-center gap-2">
-                <FilterDropdown 
-                  label="Transaction Type" 
-                  value={filters.transactionType} 
-                  options={transactionOptions}
-                  onSelect={(value) => handleFilterChange("transactionType", value)}
-                />
-                <FilterDropdown 
-                  label="Owner" 
-                  value={filters.owner} 
-                  options={ownerOptions}
-                  onSelect={(value) => handleFilterChange("owner", value)}
-                  multiSelect
-                  searchable
-                />
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
+            transactionType={filters.transactionType}
+            onTransactionTypeChange={(value) => handleFilterChange("transactionType", value)}
+            owner={filters.owner}
+            onOwnerChange={(value) => handleFilterChange("owner", value)}
+            transactionOptions={transactionOptions}
+            ownerOptions={ownerOptions}
+          />
         </div>
         
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search invoices..." 
-              className="pl-9 pr-4 h-9 border rounded-md w-64 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-[14px]"
-              value={filters.search}
-              onChange={(e) => handleFilterChange("search", e.target.value)}
-            />
-          </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="h-9 bg-white flex items-center gap-1"
-            onClick={handleResetFilters}
-          >
-            <RefreshCw className="h-3 w-3" />
-            <span className="text-[14px]">Clear All</span>
-          </Button>
-        </div>
+        <SearchSection
+          searchTerm={filters.search}
+          onSearchChange={(value) => handleFilterChange("search", value)}
+          onResetFilters={handleResetFilters}
+        />
       </div>
       
       {getActiveFilters().length > 0 && (
         <div className="flex flex-wrap gap-2 pt-2">
           {getActiveFilters().map((filter) => (
-            <Badge key={filter.key} variant="outline" className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-2 py-1">
-              {filter.label}: {filter.value}
-              <X 
-                className="ml-1 h-3 w-3 cursor-pointer" 
-                onClick={() => handleRemoveFilter(filter.key, filter.value)}
-              />
-            </Badge>
+            <ActiveFilterBadge
+              key={filter.key}
+              label={filter.label}
+              value={filter.value}
+              onRemove={() => handleRemoveFilter(filter.key, filter.value)}
+            />
           ))}
         </div>
       )}
     </div>
   );
 }
+
+export type { InvoiceFiltersType };

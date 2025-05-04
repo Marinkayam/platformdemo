@@ -1,8 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
-import { InvoiceFilters, InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/InvoiceFilters";
+import { InvoiceFilters } from "@/components/invoices/InvoiceFilters";
+import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";
 import { InvoiceTable } from "@/components/invoices/InvoiceTable";
 import { TableCustomizationDialog } from "@/components/invoices/TableCustomizationDialog";
 import { invoiceData } from "@/data/invoices";
@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical, Settings, Download } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { format } from "date-fns";
 
 const tabs = [
   { id: "all", label: "All Invoices" },
