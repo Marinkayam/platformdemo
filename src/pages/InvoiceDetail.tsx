@@ -90,14 +90,14 @@ export default function InvoiceDetail() {
       <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} />
 
       {activeTab === "invoice-data" ? (
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="w-full lg:w-7/10 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+          <div className="space-y-6">
             <FinancialData invoice={invoice} lineItems={lineItems} />
             <AdditionalInfo invoice={invoice} />
             <Attachments attachments={attachments} />
           </div>
           
-          <div className="w-full lg:w-3/10 lg:sticky lg:top-6 lg:self-start">
+          <div className="lg:sticky lg:top-6 lg:self-start">
             <PdfViewer
               invoice={invoice}
               lineItems={lineItems}

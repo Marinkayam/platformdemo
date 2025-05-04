@@ -53,7 +53,7 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-[32px] font-semibold text-gray-900">{localInvoice.number}</h1>
+            <h1 className="text-xl font-semibold text-gray-900">{localInvoice.number}</h1>
             <StatusBadge status={localInvoice.status} />
           </div>
         </div>

@@ -1,7 +1,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Invoice } from "@/types/invoice";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 interface AdditionalInfoProps {
   invoice: Invoice;
@@ -11,7 +11,7 @@ export function AdditionalInfo({ invoice }: AdditionalInfoProps) {
   return (
     <Card className="rounded-xl shadow-sm overflow-hidden">
       <CardContent className="p-4">
-        <h2 className="text-lg font-medium mb-5">Additional Information</h2>
+        <CardTitle className="text-lg font-medium mb-5">Extra Data</CardTitle>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-2">
