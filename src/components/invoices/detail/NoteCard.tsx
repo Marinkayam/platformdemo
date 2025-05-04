@@ -28,7 +28,7 @@ export function NoteCard({ note, onDeleteAttachment }: NoteCardProps) {
       className="p-3"
     >
       <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-800 flex items-center justify-center font-medium text-sm">
+        <div className="w-8 h-8 rounded-full bg-[#f0ebff] text-[#7B59FF] flex items-center justify-center font-medium text-sm">
           {note.avatar}
         </div>
         <div className="flex-1">

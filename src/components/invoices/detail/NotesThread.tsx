@@ -7,12 +7,12 @@ import { Note, useNotes } from "@/hooks/useNotes";
 
 interface NotesThreadProps {
   notes: Note[];
+  addNote: (content: string, attachments: any[]) => void;
+  removeNoteAttachment: (noteId: string, attachmentId: string) => void;
+  scrollRef: React.RefObject<HTMLDivElement>;
 }
 
-export function NotesThread({ notes }: NotesThreadProps) {
-  // Get useNotes hook to use its methods
-  const { scrollRef, addNote, removeNoteAttachment } = useNotes();
-
+export function NotesThread({ notes, addNote, removeNoteAttachment, scrollRef }: NotesThreadProps) {
   return (
     <div className="flex flex-col h-full">
       <div className="flex justify-between items-center p-6 border-b">

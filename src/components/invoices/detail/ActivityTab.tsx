@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React from "react";
 import { 
   ResizablePanelGroup,
   ResizablePanel, 
@@ -10,7 +10,7 @@ import { NotesThread } from "./NotesThread";
 import { useNotes } from "@/hooks/useNotes";
 
 export function ActivityTab() {
-  const { notes } = useNotes();
+  const { notes, addNote, removeNoteAttachment, scrollRef } = useNotes();
 
   return (
     <div className="bg-white rounded-lg">
@@ -25,7 +25,12 @@ export function ActivityTab() {
         
         {/* Notes Panel */}
         <ResizablePanel defaultSize={40} minSize={30}>
-          <NotesThread notes={notes} />
+          <NotesThread 
+            notes={notes}
+            addNote={addNote}
+            removeNoteAttachment={removeNoteAttachment}
+            scrollRef={scrollRef}
+          />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
