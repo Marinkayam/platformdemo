@@ -37,7 +37,10 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink as={Link} to="/invoices">Invoices</BreadcrumbLink>
+              {/* Fix: Use the Link component directly inside BreadcrumbLink with asChild prop */}
+              <BreadcrumbLink asChild>
+                <Link to="/invoices">Invoices</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
