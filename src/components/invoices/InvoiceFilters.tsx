@@ -7,6 +7,7 @@ import { ActiveFilterBadge } from "./filters/ActiveFilterBadge";
 import { SearchSection } from "./filters/SearchSection";
 import { MoreFiltersSection } from "./filters/MoreFiltersSection";
 import { InvoiceFilters as InvoiceFiltersType, defaultFilters } from "./filters/types";
+import { filterConfig } from "./filters/filterConfig";
 
 interface InvoiceFiltersProps {
   onFilterChange: (filters: InvoiceFiltersType) => void;
@@ -124,13 +125,6 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
     });
   };
 
-  const statusOptions = ["Pending Action", "Approved by Buyer", "Paid", "External Submission", "Settled", "Awaiting SC", "Excluded", "Overdue"];
-  const totalOptions = ["All", "Under $1000", "$1000-$10000", "Over $10000"];
-  const buyerOptions = ["Adidas", "Marvel", "Amazon", "Apple", "Samsung", "Golda", "Figma", "BMX", "Netflix", "Tesla", "Google", "Nike"];
-  const portalOptions = ["Ariba", "Coupa", "Bill", "Tipalti"];
-  const transactionOptions = ["All", "Invoice", "Credit Memo"];
-  const ownerOptions = ["Elon", "Camila", "Lady Gaga", "Madona", "John", "Jane", "Robert", "Sarah"];
-
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -138,7 +132,7 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
           <FilterDropdown 
             label="Status" 
             value={filters.status} 
-            options={statusOptions}
+            options={filterConfig.statusOptions}
             onSelect={(value) => handleFilterChange("status", value)}
             multiSelect
             searchable
@@ -151,7 +145,7 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
           <FilterDropdown 
             label="Buyer" 
             value={filters.buyer} 
-            options={buyerOptions}
+            options={filterConfig.buyerOptions}
             onSelect={(value) => handleFilterChange("buyer", value)}
             multiSelect
             searchable
@@ -159,7 +153,7 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
           <FilterDropdown 
             label="Portal" 
             value={filters.portal} 
-            options={portalOptions}
+            options={filterConfig.portalOptions}
             onSelect={(value) => handleFilterChange("portal", value)}
             multiSelect
             searchable
@@ -172,8 +166,8 @@ export function InvoiceFilters({ onFilterChange }: InvoiceFiltersProps) {
             onTransactionTypeChange={(value) => handleFilterChange("transactionType", value)}
             owner={filters.owner}
             onOwnerChange={(value) => handleFilterChange("owner", value)}
-            transactionOptions={transactionOptions}
-            ownerOptions={ownerOptions}
+            transactionOptions={filterConfig.transactionOptions}
+            ownerOptions={filterConfig.ownerOptions}
           />
         </div>
         
