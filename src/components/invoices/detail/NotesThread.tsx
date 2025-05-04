@@ -3,7 +3,7 @@ import React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { NoteCard } from "./NoteCard";
 import { NoteComposer } from "./NoteComposer";
-import { Note } from "@/hooks/useNotes";
+import { Note, useNotes } from "@/hooks/useNotes";
 
 interface NotesThreadProps {
   notes: Note[];
