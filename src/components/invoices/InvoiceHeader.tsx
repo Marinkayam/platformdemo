@@ -23,7 +23,7 @@ export function InvoiceHeader({
 }: InvoiceHeaderProps) {
   return (
     <>
-      <h1 className="text-[32px] font-semibold text-gray-900 mb-5">Invoices</h1>
+      <h1 className="text-[32px] font-semibold text-gray-900 mb-4">Invoices</h1>
       
       <InvoiceTabs
         tabs={tabs}

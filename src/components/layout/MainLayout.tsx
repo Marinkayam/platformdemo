@@ -36,9 +36,10 @@ export function MainLayout({ children }: MainLayoutProps) {
         <AppSidebar />
         
         <div className="flex-1 flex flex-col overflow-hidden">
-          <header className="h-[64px] border-b px-6 flex items-center justify-between gap-3 bg-white">
-            <NotificationsPopover />
+          <header className="h-[64px] border-b px-6 flex items-center justify-end gap-3 bg-white">
             <div className="flex items-center gap-3">
+              <NotificationsPopover />
+              
               <button className="p-2 rounded-full hover:bg-slate-100">
                 <Settings size={20} />
               </button>
