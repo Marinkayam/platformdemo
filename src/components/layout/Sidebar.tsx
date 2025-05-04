@@ -70,7 +70,7 @@ export function Sidebar({
         </nav>
       </div>
       
-      <div className="p-4 border-t mt-auto">
+      <div className="p-4 border-t mt-auto bg-white">
         <button className="w-full flex items-center justify-center gap-2 py-2 text-sm text-sidebar-foreground hover:text-primary">
           <span>Need Help?</span>
         </button>
