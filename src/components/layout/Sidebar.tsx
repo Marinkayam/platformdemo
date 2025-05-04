@@ -36,7 +36,7 @@ export function Sidebar({
 }: SidebarProps) {
   const pathname = window.location.pathname;
   return <aside className={cn("w-[220px] border-r bg-sidebar flex flex-col h-screen sticky top-0", className)}>
-      <div className="p-4 border-b">
+      <div className="p-4 border-b bg-white">
         <div className="flex items-center gap-2">
           <div className="text-primary">
             <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor">
