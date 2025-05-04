@@ -11,6 +11,7 @@ import { TabContent } from "@/components/invoices/detail/TabContent";
 import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { useNotes } from "@/hooks/useNotes";
+import { Separator } from "@/components/ui/separator";
 
 export default function InvoiceDetail() {
   const { id } = useParams();
@@ -92,6 +93,8 @@ export default function InvoiceDetail() {
       <InvoiceHeader 
         invoice={invoice}
       />
+      
+      <Separator className="my-6 bg-gray-200" />
       
       <InvoiceTabsNav 
         activeTab={activeTab} 
