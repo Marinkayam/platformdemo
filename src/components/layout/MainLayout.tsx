@@ -1,5 +1,4 @@
 
-import { Sidebar } from "./Sidebar";
 import { Settings, LogOut } from "lucide-react";
 import { NotificationsPopover } from "../notifications/NotificationsPopover";
 import {
@@ -11,6 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import { AppSidebar } from "./AppSidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -30,42 +31,46 @@ export function MainLayout({ children }: MainLayoutProps) {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-      
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-16 border-b px-4 flex items-center justify-end gap-3 bg-white">
-          <NotificationsPopover />
-          <button className="p-2 rounded-full hover:bg-slate-100">
-            <Settings size={20} />
-          </button>
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="w-10 h-10 rounded-full bg-purple-100 text-purple-800 flex items-center justify-center font-medium cursor-pointer hover:bg-purple-200">
-                M
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <div className="px-2 py-1.5">
-                <p className="text-sm font-medium">User Profile</p>
-                <p className="text-xs text-muted-foreground">user@example.com</p>
-              </div>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </header>
+    <SidebarProvider>
+      <div className="flex h-screen w-full overflow-hidden">
+        <AppSidebar />
         
-        <main className="flex-1 overflow-y-auto bg-slate-50">
-          <div className="px-8 py-6">
-            {children}
-          </div>
-        </main>
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <header className="h-[64px] border-b px-6 flex items-center justify-between gap-3 bg-white">
+            <NotificationsPopover />
+            <div className="flex items-center gap-3">
+              <button className="p-2 rounded-full hover:bg-slate-100">
+                <Settings size={20} />
+              </button>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="w-10 h-10 rounded-full bg-purple-100 text-purple-800 flex items-center justify-center font-medium cursor-pointer hover:bg-purple-200">
+                    M
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="px-2 py-1.5">
+                    <p className="text-sm font-medium">User Profile</p>
+                    <p className="text-xs text-muted-foreground">user@example.com</p>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </header>
+          
+          <main className="flex-1 overflow-y-auto bg-slate-50">
+            <div className="px-8 py-4">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
