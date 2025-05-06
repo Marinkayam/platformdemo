@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { invoiceData } from "@/data/invoices";
@@ -52,9 +51,12 @@ export default function InvoiceDetail() {
   // Find the invoice by id
   const invoice = invoiceData.find(inv => inv.id === id);
 
-  // Set default tab to exceptions if invoice has exceptions
+  // Set default tab to exceptions if invoice has exceptions and status is "Pending Action"
   useEffect(() => {
-    if (invoice?.hasExceptions && activeTab === "invoice-data" && location.search === '') {
+    if (invoice?.hasExceptions && 
+        invoice?.status === "Pending Action" && 
+        activeTab === "invoice-data" && 
+        location.search === '') {
       setActiveTab("exceptions");
     }
   }, [invoice, activeTab, location.search]);
@@ -99,7 +101,8 @@ export default function InvoiceDetail() {
       <InvoiceTabsNav 
         activeTab={activeTab} 
         onTabChange={setActiveTab} 
-        activityCount={activityCount} 
+        activityCount={activityCount}
+        invoiceStatus={invoice.status}
       />
 
       {activeTab === "invoice-data" ? (

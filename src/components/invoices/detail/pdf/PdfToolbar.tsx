@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut, Download, Printer } from "lucide-react";
+import { ZoomIn, ZoomOut, Download } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Invoice } from "@/types/invoice";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -25,38 +25,11 @@ export function PdfToolbar({
     });
     // In a real app, this would trigger an actual download
   };
-  
-  const handlePrint = () => {
-    toast({
-      title: "Print initiated",
-      description: "Preparing invoice for printing",
-    });
-    // In a real app, this would trigger printing functionality
-  };
-  
+
   return (
     <div className="flex items-center justify-between mb-4">
       <h2 className="text-lg font-medium">Invoice Preview</h2>
       <div className="flex items-center gap-2">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="icon"
-                className="bg-white"
-                aria-label="Print Invoice"
-                onClick={handlePrint}
-              >
-                <Printer className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Print</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

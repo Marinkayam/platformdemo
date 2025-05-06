@@ -37,7 +37,6 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              {/* Fix: Use the Link component directly inside BreadcrumbLink with asChild prop */}
               <BreadcrumbLink asChild>
                 <Link to="/invoices">Invoices</Link>
               </BreadcrumbLink>
@@ -60,7 +59,7 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
         
         <div className="flex items-center gap-6 text-[14px] text-gray-600">
           <span>Owner: {localInvoice.owner}</span>
-          <span>Payment Type: Invoice</span>
+          <span>Transaction Type: Invoice</span>
           
           {isPendingAction && (
             <div className="flex items-center gap-2">

@@ -5,6 +5,7 @@ import { Invoice } from "@/types/invoice";
 import { useSortedInvoices } from "@/hooks/useSortedInvoices";
 import { InvoiceTableHeader } from "./table/InvoiceTableHeader";
 import { InvoiceTableRow } from "./table/InvoiceTableRow";
+import { InvoiceTableFooter } from "./table/InvoiceTableFooter";
 
 interface InvoiceTableProps {
   invoices: Invoice[];
@@ -69,6 +70,8 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
             ))
           )}
         </TableBody>
+        
+        <InvoiceTableFooter invoices={sortedInvoices} />
       </Table>
     </div>
   );

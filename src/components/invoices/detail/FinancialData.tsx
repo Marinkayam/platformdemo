@@ -3,7 +3,6 @@ import { Invoice, LineItem } from "@/types/invoice";
 import { Card, CardContent } from "@/components/ui/card";
 import { FinancialFields } from "./financial/FinancialFields";
 import { AddressesSection } from "./financial/AddressesSection";
-import { RtpDataLink } from "./financial/RtpDataLink";
 
 interface FinancialDataProps {
   invoice: Invoice;
@@ -16,9 +15,8 @@ export function FinancialData({
   return (
     <Card className="rounded-xl shadow-sm overflow-hidden">
       <CardContent className="p-4 space-y-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4">
           <h2 className="text-lg font-medium">Financial Data</h2>
-          <RtpDataLink />
         </div>
 
         <FinancialFields
