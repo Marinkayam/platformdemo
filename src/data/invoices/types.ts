@@ -46,20 +46,6 @@ export const testInvoices = [
       isOverdue: true
     }
   ),
-  getBasicInvoiceData(
-    "test-overdue-2",
-    "INV-10032101",
-    "Apple",
-    "2024-02-15",
-    "Overdue",
-    5200.00,
-    "2024-01-30",
-    "Camila",
-    {
-      portal: "Ariba",
-      isOverdue: true
-    }
-  ),
   
   // Credit Memos
   getBasicInvoiceData(
@@ -81,7 +67,7 @@ export const testInvoices = [
     "CM-00021301",
     "Nike",
     "2024-03-28",
-    "Approved by Buyer",
+    "Paid", // Updated from "Approved by Buyer" to "Paid"
     -450.00,
     "2024-03-10",
     "Madona",

@@ -43,12 +43,19 @@ export function InvoiceTableRow({
     }
   };
 
-  // Get portal display value based on the new requirements
+  // Get portal display value based on buyer name
   const getPortalDisplay = () => {
     if (isAwaitingSC) {
       return "—"; // Show dash only for "Awaiting SC" status
     }
-    return invoice.portal || "Unknown Portal"; // For all other statuses, show portal or fallback
+    
+    if (invoice.portal) {
+      return invoice.portal;
+    }
+    
+    // Generate a portal name based on buyer
+    const companyName = invoice.buyer.split(' ')[0];
+    return `${companyName} Portal`;
   };
 
   return (

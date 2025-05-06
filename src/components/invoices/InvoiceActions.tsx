@@ -26,6 +26,23 @@ export function InvoiceActions() {
       title: "Export started",
       description: "Exporting all invoices to CSV...",
     });
+    
+    // Create a simple CSV string
+    const csvContent = "Invoice Number,Buyer,Due Date,Status,Total\nINV-001,Apple,2025-01-01,Paid,$1000.00\nINV-002,Microsoft,2025-02-01,Pending,$2000.00";
+    
+    // Create a Blob with the CSV content
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+    
+    // Create a download link
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "invoices-export-dummy.csv";
+    
+    // Append to the document, click it, and remove it
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (

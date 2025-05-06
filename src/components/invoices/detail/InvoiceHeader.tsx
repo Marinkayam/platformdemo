@@ -22,6 +22,7 @@ interface InvoiceHeaderProps {
 export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
   const [localInvoice, setLocalInvoice] = useState<Invoice>(invoice);
   const isPendingAction = localInvoice.status === "Pending Action";
+  const isCreditMemo = localInvoice.documentType === "Credit Memo";
 
   const handleAssign = (email: string) => {
     setLocalInvoice({...localInvoice, assignee: email});
@@ -59,7 +60,7 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
         
         <div className="flex items-center gap-6 text-[14px] text-gray-600">
           <span>Owner: {localInvoice.owner}</span>
-          <span>Transaction Type: Invoice</span>
+          <span>Transaction Type: {isCreditMemo ? "Credit Memo" : "Invoice"}</span>
           
           {isPendingAction && (
             <div className="flex items-center gap-2">
