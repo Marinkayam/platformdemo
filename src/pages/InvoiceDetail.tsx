@@ -1,11 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { invoiceData } from "@/data/invoices";
 import { InvoiceHeader } from "@/components/invoices/detail/InvoiceHeader";
 import { InvoiceTabsNav } from "@/components/invoices/detail/InvoiceTabs";
 import { FinancialData } from "@/components/invoices/detail/FinancialData";
-import { AdditionalInfo } from "@/components/invoices/detail/AdditionalInfo";
-import { Attachments } from "@/components/invoices/detail/Attachments";
 import { TabContent } from "@/components/invoices/detail/TabContent";
 import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
@@ -110,8 +109,6 @@ export default function InvoiceDetail() {
           <ResizablePanel defaultSize={50} minSize={30}>
             <div className="space-y-6 pr-2">
               <FinancialData invoice={invoice} lineItems={lineItems} />
-              <AdditionalInfo invoice={invoice} />
-              <Attachments attachments={attachments} />
             </div>
           </ResizablePanel>
           <ResizableHandle withHandle />
@@ -128,7 +125,7 @@ export default function InvoiceDetail() {
           </ResizablePanel>
         </ResizablePanelGroup>
       ) : (
-        <TabContent tab={activeTab} invoice={invoice} />
+        <TabContent tab={activeTab} invoice={invoice} attachments={attachments} />
       )}
     </div>
   );

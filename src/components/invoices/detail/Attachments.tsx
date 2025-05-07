@@ -2,6 +2,7 @@
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Attachment } from "@/types/invoice";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 interface AttachmentsProps {
   attachments: Attachment[];
@@ -23,28 +24,30 @@ export function Attachments({ attachments }: AttachmentsProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6 mb-6">
-      <h2 className="text-lg font-medium mb-4">Attachments</h2>
-      
-      <div className="space-y-4">
-        <ul className="space-y-3">
-          {attachments.map((attachment) => (
-            <li key={attachment.id} className="flex items-center justify-between py-2 border-b last:border-b-0">
-              <div className="flex items-center gap-3">
-                <span className="text-sm">{attachment.fileName}</span>
-              </div>
-              <Button 
-                size="sm" 
-                variant="ghost"
-                onClick={() => handleDownload(attachment)}
-                className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-              >
-                <Download className="h-4 w-4" />
-              </Button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    <Card className="rounded-xl shadow-sm overflow-hidden">
+      <CardContent className="p-4">
+        <CardTitle className="text-lg font-medium mb-4">Attachments</CardTitle>
+        
+        <div className="space-y-4">
+          <ul className="space-y-3">
+            {attachments.map((attachment) => (
+              <li key={attachment.id} className="flex items-center justify-between py-2 border-b last:border-b-0">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm">{attachment.fileName}</span>
+                </div>
+                <Button 
+                  size="sm" 
+                  variant="ghost"
+                  onClick={() => handleDownload(attachment)}
+                  className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

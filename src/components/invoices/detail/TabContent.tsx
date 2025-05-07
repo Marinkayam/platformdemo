@@ -4,15 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { ExceptionsTab } from "./ExceptionsTab";
 import { RTPDataTab } from "./RTPDataTab";
 import { ActivityTab } from "./ActivityTab";
-import { Invoice } from "@/types/invoice";
+import { Invoice, Attachment } from "@/types/invoice";
 import { toast } from "@/hooks/use-toast";
 
 interface TabContentProps {
   tab: string;
   invoice?: Invoice;
+  attachments?: Attachment[];
 }
 
-export function TabContent({ tab, invoice }: TabContentProps) {
+export function TabContent({ tab, invoice, attachments = [] }: TabContentProps) {
   const [localInvoice, setLocalInvoice] = useState<Invoice | undefined>(invoice);
   const navigate = useNavigate();
   
@@ -85,7 +86,7 @@ export function TabContent({ tab, invoice }: TabContentProps) {
         />
       );
     case "rtp-data":
-      return <RTPDataTab />;
+      return <RTPDataTab invoice={localInvoice} attachments={attachments} />;
     case "portal-records":
       return (
         <div className="bg-white rounded-lg shadow p-6">
