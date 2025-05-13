@@ -11,6 +11,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { SmartConnectionProps, PortalType } from "./types";
 
@@ -39,9 +41,11 @@ export const SmartConnectionCard = ({ connection }: { connection: SmartConnectio
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <label className="text-sm text-gray-500">Buyer</label>
+        {/* Main grid layout with consistent spacing */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+          {/* Buyer Field */}
+          <div className="flex flex-col gap-1">
+            <Label className="text-sm text-gray-500">Buyer</Label>
             <Input 
               value={connection.buyer.name}
               readOnly 
@@ -49,8 +53,10 @@ export const SmartConnectionCard = ({ connection }: { connection: SmartConnectio
               className="bg-gray-50"
             />
           </div>
-          <div className="space-y-2">
-            <label className="text-sm text-gray-500">Supplier</label>
+          
+          {/* Supplier Field */}
+          <div className="flex flex-col gap-1">
+            <Label className="text-sm text-gray-500">Supplier</Label>
             <Input 
               value={connection.supplier.name}
               readOnly 
@@ -58,15 +64,16 @@ export const SmartConnectionCard = ({ connection }: { connection: SmartConnectio
               className="bg-gray-50"
             />
           </div>
-        </div>
-        
-        <div className="mt-4 space-y-2">
-          <label className="text-sm text-gray-500">Portal</label>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center space-x-2">
-              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-bold">
-                {getPortalIcon(connection.portal.type)}
-              </span>
+          
+          {/* Portal Field with icon */}
+          <div className="flex flex-col gap-1">
+            <Label className="text-sm text-gray-500">Portal</Label>
+            <div className="flex items-center gap-2">
+              <Avatar className="h-6 w-6 bg-primary/10">
+                <AvatarFallback className="text-xs font-bold text-primary">
+                  {getPortalIcon(connection.portal.type)}
+                </AvatarFallback>
+              </Avatar>
               <Input 
                 value={connection.portal.type}
                 readOnly 
@@ -74,15 +81,17 @@ export const SmartConnectionCard = ({ connection }: { connection: SmartConnectio
                 className="bg-gray-50"
               />
             </div>
-            <div className="space-y-0">
-              <label className="text-sm text-gray-500">Portal User</label>
-              <Input 
-                value={connection.portal.user || "Not assigned"}
-                readOnly 
-                disabled
-                className="bg-gray-50"
-              />
-            </div>
+          </div>
+          
+          {/* Portal User Field */}
+          <div className="flex flex-col gap-1">
+            <Label className="text-sm text-gray-500">Portal User</Label>
+            <Input 
+              value={connection.portal.user || "Not assigned"}
+              readOnly 
+              disabled
+              className="bg-gray-50"
+            />
           </div>
         </div>
       </CardContent>
