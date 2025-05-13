@@ -13,7 +13,8 @@ export const mockSmartConnection: SmartConnectionProps = {
   },
   portal: {
     type: "Coupa",
-    reference: ""
+    reference: "",
+    user: "admin@acmecorp.com" // Added portal user
   },
   lastUpdated: "2025-04-28T15:23:44Z"
 };

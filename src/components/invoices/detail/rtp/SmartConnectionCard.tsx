@@ -62,20 +62,29 @@ export const SmartConnectionCard = ({ connection }: { connection: SmartConnectio
         
         <div className="mt-4 space-y-2">
           <label className="text-sm text-gray-500">Portal</label>
-          <div className="flex items-center space-x-2">
-            <span className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-bold">
-              {getPortalIcon(connection.portal.type)}
-            </span>
-            <Input 
-              value={connection.portal.type}
-              readOnly 
-              disabled
-              className="bg-gray-50"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center space-x-2">
+              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary text-xs font-bold">
+                {getPortalIcon(connection.portal.type)}
+              </span>
+              <Input 
+                value={connection.portal.type}
+                readOnly 
+                disabled
+                className="bg-gray-50"
+              />
+            </div>
+            <div className="space-y-0">
+              <label className="text-sm text-gray-500">Portal User</label>
+              <Input 
+                value={connection.portal.user || "Not assigned"}
+                readOnly 
+                disabled
+                className="bg-gray-50"
+              />
+            </div>
           </div>
         </div>
-
-        {/* Last updated line removed as per requirements */}
       </CardContent>
       <CardFooter className="pt-0 flex justify-between items-center">
         <Button variant="outline" size="sm" className="text-primary flex items-center gap-2">

@@ -16,6 +16,7 @@ export interface SmartConnectionProps {
   portal: {
     type: PortalType;
     reference: string;
+    user?: string; // New field added for portal user
   };
   lastUpdated: string;
   exceptions?: string[];
