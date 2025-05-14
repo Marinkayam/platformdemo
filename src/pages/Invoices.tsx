@@ -60,6 +60,7 @@ export default function Invoices() {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         onFilterChange={setFilters}
+        invoiceCount={filteredInvoices.length}
       />
       
       <InvoiceTable 

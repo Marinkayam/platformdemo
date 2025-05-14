@@ -13,13 +13,15 @@ interface InvoiceHeaderProps {
   activeTab: string;
   onTabChange: (tabId: string) => void;
   onFilterChange: (filters: InvoiceFiltersType) => void;
+  invoiceCount: number;
 }
 
 export function InvoiceHeader({ 
   tabs, 
   activeTab, 
   onTabChange,
-  onFilterChange 
+  onFilterChange,
+  invoiceCount
 }: InvoiceHeaderProps) {
   return (
     <>
@@ -33,7 +35,7 @@ export function InvoiceHeader({
       
       <div className="flex justify-between items-center mb-6">
         <InvoiceFilters onFilterChange={onFilterChange} />
-        <InvoiceActions />
+        <InvoiceActions invoiceCount={invoiceCount} />
       </div>
     </>
   );

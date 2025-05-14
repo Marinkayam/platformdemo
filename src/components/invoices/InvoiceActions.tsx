@@ -10,9 +10,11 @@ import {
 import { MoreVertical, Settings, Download } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { TableCustomizationDialog } from "@/components/invoices/TableCustomizationDialog";
+import { ExportInvoicesModal } from "@/components/invoices/ExportInvoicesModal";
 
-export function InvoiceActions() {
+export function InvoiceActions({ invoiceCount = 0 }) {
   const [customizeTableOpen, setCustomizeTableOpen] = useState(false);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
 
   const handleCustomizeTable = (columns: any[]) => {
     toast({
@@ -21,28 +23,36 @@ export function InvoiceActions() {
     });
   };
 
-  const handleExportAll = () => {
-    toast({
-      title: "Export started",
-      description: "Exporting all invoices to CSV...",
-    });
-    
-    // Create a simple CSV string
+  const handleExport = ({ destination, email }: { destination: string; email?: string }) => {
+    // Generate mock CSV data
     const csvContent = "Invoice Number,Buyer,Due Date,Status,Total\nINV-001,Apple,2025-01-01,Paid,$1000.00\nINV-002,Microsoft,2025-02-01,Pending,$2000.00";
     
-    // Create a Blob with the CSV content
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
-    
-    // Create a download link
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "invoices-export-dummy.csv";
-    
-    // Append to the document, click it, and remove it
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (destination === "download") {
+      // Create a Blob with the CSV content
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+      
+      // Create a download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "invoices-export.csv";
+      
+      // Append to the document, click it, and remove it
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast({
+        title: "Export completed",
+        description: "Your invoices have been downloaded as CSV.",
+      });
+    } else if (destination === "email" && email) {
+      // Simulate email sending
+      toast({
+        title: "Export sent",
+        description: `Your invoices have been sent to ${email}`,
+      });
+    }
   };
 
   return (
@@ -58,7 +68,7 @@ export function InvoiceActions() {
             <Settings className="mr-2 h-4 w-4" />
             <span className="text-[14px]">Customise Table</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleExportAll}>
+          <DropdownMenuItem onClick={() => setExportModalOpen(true)}>
             <Download className="mr-2 h-4 w-4" />
             <span className="text-[14px]">Export All</span>
           </DropdownMenuItem>
@@ -69,6 +79,13 @@ export function InvoiceActions() {
         open={customizeTableOpen}
         onOpenChange={setCustomizeTableOpen}
         onApplyChanges={handleCustomizeTable}
+      />
+      
+      <ExportInvoicesModal
+        open={exportModalOpen}
+        onOpenChange={setExportModalOpen}
+        invoiceCount={invoiceCount}
+        onExport={handleExport}
       />
     </>
   );
