@@ -1,3 +1,4 @@
+
 import { getBasicInvoiceData } from "./types";
 import { Exception } from "@/types/exception";
 
@@ -45,8 +46,7 @@ export const pendingInvoices = [
       subtotal: 513213.23,
       tax: 51321.32,
       rejectedBy: "Monto",
-      exceptions: poExceptions,
-      hasExceptions: true,
+      hasExceptions: false,
       poNumber: "PO-987654"
     }
   ),
