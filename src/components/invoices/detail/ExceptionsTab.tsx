@@ -11,6 +11,7 @@ import { UploadProgress } from "./exceptions/UploadProgress";
 import { FilePreviewList } from "./exceptions/FilePreviewList";
 import { ActionButtons } from "./exceptions/ActionButtons";
 import { DuplicateInvoiceHandler } from "./exceptions/DuplicateInvoiceHandler";
+import { DataExtractionResolver } from "./exceptions/DataExtractionResolver";
 
 interface ExceptionsTabProps {
   exceptions: Exception[];
@@ -23,8 +24,9 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   
-  // Check if we have a duplicate invoice exception
+  // Check if we have a duplicate invoice exception or data extraction exception
   const isDuplicateException = exceptions.some(exception => exception.type === 'DUPLICATE_INVOICE');
+  const isDataExtractionException = exceptions.some(exception => exception.type === 'MISSING_INFORMATION');
   
   const simulateUploadProgress = () => {
     setIsUploading(true);
@@ -112,6 +114,12 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         <DuplicateInvoiceHandler
           invoice={invoice}
           exceptions={exceptions}
+          onResolveException={onResolveException}
+        />
+      ) : isDataExtractionException && invoice ? (
+        <DataExtractionResolver 
+          exceptions={exceptions}
+          invoice={invoice}
           onResolveException={onResolveException}
         />
       ) : (

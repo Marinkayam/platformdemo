@@ -9,6 +9,7 @@ export interface Exception {
   createdAt: string;
   resolved?: boolean;
   resolvedAt?: string;
+  missingFields?: string[]; // Added for MISSING_INFORMATION type
 }
 
 export interface ExceptionResolution {

@@ -32,6 +32,16 @@ const duplicateExceptions: Exception[] = [
   }
 ];
 
+const dataExtractionException: Exception = {
+  id: "exc4",
+  type: "MISSING_INFORMATION",
+  message: "Incorrect Data",
+  details: "The invoice PDF contains invalid required information: Invoice Date, Customer Name",
+  createdAt: "2024-05-20T10:00:00Z",
+  resolved: false,
+  missingFields: ["Invoice Date", "Customer Name"]
+};
+
 export const pendingInvoices = [
   getBasicInvoiceData(
     "1",
@@ -46,7 +56,8 @@ export const pendingInvoices = [
       subtotal: 513213.23,
       tax: 51321.32,
       rejectedBy: "Monto",
-      hasExceptions: false,
+      exceptions: [dataExtractionException],
+      hasExceptions: true,
       poNumber: "PO-987654"
     }
   ),
