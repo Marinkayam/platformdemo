@@ -1,6 +1,5 @@
 
-import React, { useState } from "react";
-import { Upload } from "lucide-react";
+import React from "react";
 import { toast } from "@/hooks/use-toast";
 
 interface FileUploadZoneProps {
@@ -8,7 +7,7 @@ interface FileUploadZoneProps {
 }
 
 export function FileUploadZone({ onFileUpload }: FileUploadZoneProps) {
-  const [dragActive, setDragActive] = useState(false);
+  const [dragActive, setDragActive] = React.useState(false);
   
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -55,37 +54,23 @@ export function FileUploadZone({ onFileUpload }: FileUploadZoneProps) {
   
   return (
     <div 
-      className={`mt-6 border-2 border-dashed rounded-lg ${dragActive ? 'border-primary bg-primary/5' : 'border-gray-300'} p-6 text-center`}
+      className={`border-2 border-dashed rounded-lg ${dragActive ? 'border-primary bg-primary/5' : 'border-gray-300'} p-6 text-center cursor-pointer hover:bg-gray-50 transition-colors`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      onClick={() => document.getElementById('file-upload')?.click()}
     >
-      <div className="space-y-3">
-        <div className="flex justify-center">
-          <img 
-            src="/lovable-uploads/ebcce64a-0659-4d7a-a5b0-d49ff4b510e2.png" 
-            alt="Upload illustration" 
-            className="h-24 w-auto mb-2"
-          />
-        </div>
-        <h3 className="text-base font-medium">Drag & Drop or Browse to upload your corrected invoice PDF</h3>
-        <p className="text-sm text-gray-500">
-          This invoice must include the updated PO number required by the buyer.
+      <div className="space-y-2">
+        <p className="text-sm text-gray-600">
+          Drag & drop a file here or <span className="text-primary underline">click to browse</span>
         </p>
-        <div>
-          <label htmlFor="file-upload" className="cursor-pointer">
-            <div className="bg-primary text-white px-4 py-2 rounded-md inline-block hover:bg-primary/90 transition-colors">
-              Select File
-            </div>
-            <input 
-              type="file" 
-              id="file-upload" 
-              className="hidden" 
-              accept=".pdf" 
-              onChange={handleFileInputChange}
-            />
-          </label>
-        </div>
+        <input 
+          type="file" 
+          id="file-upload" 
+          className="hidden" 
+          accept=".pdf" 
+          onChange={handleFileInputChange}
+        />
       </div>
     </div>
   );

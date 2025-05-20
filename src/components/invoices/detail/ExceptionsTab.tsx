@@ -105,11 +105,6 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
 
   return (
     <div className="space-y-6">
-      <ExceptionsList 
-        exceptions={exceptions} 
-        invoice={invoice}
-      />
-      
       {isDuplicateException && invoice ? (
         <DuplicateInvoiceHandler
           invoice={invoice}

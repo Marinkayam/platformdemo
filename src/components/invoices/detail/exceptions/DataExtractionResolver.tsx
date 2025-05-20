@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { FileUploadZone } from "./FileUploadZone";
 import { useFileAttachments } from "@/hooks/useFileAttachments";
 import { toast } from "@/hooks/use-toast";
 
@@ -108,11 +107,11 @@ export function DataExtractionResolver({ exceptions, invoice, onResolveException
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-semibold">Resolve Exceptions</h2>
-      
-      <div className="flex items-center space-x-2 mb-4">
-        <div className="bg-primary/10 text-primary px-3 py-1 text-sm font-medium rounded-md">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Resolve Exceptions</h2>
+        <div className="bg-primary/10 text-primary flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md">
           Invoice Data
+          <Calendar className="h-4 w-4 text-gray-500" />
         </div>
       </div>
       
@@ -180,14 +179,34 @@ export function DataExtractionResolver({ exceptions, invoice, onResolveException
                 Upload a new PDF with the correct Invoice date and Customer name fields
               </p>
               
-              <FileUploadZone onFileUpload={handleFileUpload} />
+              <div 
+                className="border-2 border-dashed rounded-lg border-gray-300 p-6 text-center cursor-pointer hover:bg-gray-50 transition-colors"
+                onClick={() => document.getElementById('file-upload')?.click()}
+              >
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-600">
+                    Drag & drop a file here or <span className="text-primary underline">click to browse</span>
+                  </p>
+                  <input 
+                    type="file" 
+                    id="file-upload" 
+                    className="hidden" 
+                    accept=".pdf" 
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        handleFileUpload(e.target.files[0]);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
             </div>
             
-            <Collapsible open={isOtherOptionsOpen} onOpenChange={setIsOtherOptionsOpen}>
-              <CollapsibleTrigger asChild>
-                <Button variant="ghost" className="w-full justify-start text-left text-sm p-0 h-auto">
-                  <span className="flex items-center">
-                    {isOtherOptionsOpen ? "Hide" : "Show"} Other Resolution Options
+            <Card className="border rounded-md">
+              <Collapsible open={isOtherOptionsOpen} onOpenChange={setIsOtherOptionsOpen}>
+                <CollapsibleTrigger className="w-full text-left p-3 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Show Other Resolution Options</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -204,28 +223,28 @@ export function DataExtractionResolver({ exceptions, invoice, onResolveException
                     >
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
-                  </span>
-                </Button>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <div className="pt-4 pb-2">
-                  <RadioGroup onValueChange={handleResolutionMethodChange} className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="force" id="force" />
-                      <Label htmlFor="force">Force Submit</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="exclude" id="exclude" />
-                      <Label htmlFor="exclude">Exclude from Submission</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="outside" id="outside" />
-                      <Label htmlFor="outside">Resolve Outside Monto</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="p-3 pt-0 border-t">
+                    <RadioGroup onValueChange={handleResolutionMethodChange} className="space-y-3">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="force" id="force" />
+                        <Label htmlFor="force">Force Submit</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="exclude" id="exclude" />
+                        <Label htmlFor="exclude">Exclude from Submission</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="outside" id="outside" />
+                        <Label htmlFor="outside">Resolve Outside Monto</Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
           </div>
           
           <div className="mt-6 flex justify-end">

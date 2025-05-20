@@ -22,28 +22,31 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
     );
   }
 
+  // We'll hide this component for the DataExtractionResolver as requested
+  const hasDataExtractionException = exceptions.some(e => e.type === 'MISSING_INFORMATION');
+  if (hasDataExtractionException) {
+    return null;
+  }
+
   // Determine alert header based on exception types
   const hasDuplicateException = exceptions.some(e => e.type === 'DUPLICATE_INVOICE');
-  const hasDataExtractionException = exceptions.some(e => e.type === 'MISSING_INFORMATION');
   
   // Update styles based on exception type
-  const headerColor = hasDuplicateException || hasDataExtractionException ? "bg-red-50/70" : "bg-red-50/70";
-  const textColor = hasDuplicateException || hasDataExtractionException ? "text-red-800" : "text-red-800";
-  const iconColor = hasDuplicateException || hasDataExtractionException ? "text-red-600" : "text-red-600";
-  const borderColor = hasDuplicateException || hasDataExtractionException ? "border-red-200" : "border-red-200";
+  const headerColor = hasDuplicateException ? "bg-red-50/70" : "bg-red-50/70";
+  const textColor = hasDuplicateException ? "text-red-800" : "text-red-800";
+  const iconColor = hasDuplicateException ? "text-red-600" : "text-red-600";
+  const borderColor = hasDuplicateException ? "border-red-200" : "border-red-200";
   
   // Get the appropriate title based on exception type
   const getExceptionTitle = () => {
     if (hasDuplicateException) {
       return "Duplication Exception - Monto detected multiple invoices with the same number";
-    } else if (hasDataExtractionException) {
-      return "Data Extraction Exception - Invalid Required Fields";
     }
     return "Exception Detected";
   };
   
   // Get the icon based on exception type
-  const ExceptionIcon = hasDataExtractionException ? Calendar : AlertCircle;
+  const ExceptionIcon = AlertCircle;
 
   return (
     <>
@@ -63,12 +66,10 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
             <div className={`text-sm rounded-md border p-4 ${headerColor} ${borderColor}`}>
               <p className="text-gray-800">
                 {hasDuplicateException ? 
-                  "We've detected multiple invoices with the same invoice number." : 
-                  hasDataExtractionException ?
-                  "The invoice PDF contains invalid required information." :
+                  "We've detected multiple invoices with the same invoice number." :
                   "The following errors need to be resolved:"}
               </p>
-              {!hasDuplicateException && !hasDataExtractionException && (
+              {!hasDuplicateException && (
                 <ul className="list-disc ml-5 mt-2 space-y-1">
                   {exceptions.map(exception => (
                     <li key={exception.id} className="text-red-800">
@@ -78,28 +79,10 @@ export function ExceptionsList({ exceptions, invoice }: ExceptionsListProps) {
                 </ul>
               )}
               
-              {hasDataExtractionException && (
-                <ul className="list-disc ml-5 mt-2 space-y-1">
-                  {exceptions
-                    .filter(e => e.type === 'MISSING_INFORMATION')
-                    .map(exception => (
-                      exception.missingFields?.map((field, index) => (
-                        <li key={`${exception.id}-${index}`} className="text-red-800">
-                          Missing or invalid {field}
-                        </li>
-                      ))
-                    ))}
-                </ul>
-              )}
-              
               <div className="mt-4 pt-3 border-t border-gray-200">
                 {hasDuplicateException ? (
                   <p className="text-sm text-gray-700">
                     <strong>Resolution Steps:</strong> Review and select which invoice is valid. The others will be marked as excluded and won't be tracked.
-                  </p>
-                ) : hasDataExtractionException ? (
-                  <p className="text-sm text-gray-700">
-                    <strong>Resolution Steps:</strong> Update the missing fields manually or upload a new PDF with correct information.
                   </p>
                 ) : (
                   <p className="text-sm text-gray-700">
