@@ -60,7 +60,7 @@ export function FileUploadZone({ onFileUpload }: FileUploadZoneProps) {
       onDrop={handleDrop}
       onClick={() => document.getElementById('file-upload')?.click()}
     >
-      <div className="space-y-2">
+      <div className="space-y-1">
         <p className="text-sm text-gray-600">
           Drag & drop a file here or <span className="text-primary underline">click to browse</span>
         </p>

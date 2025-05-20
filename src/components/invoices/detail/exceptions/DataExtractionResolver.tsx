@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { Calendar } from "lucide-react";
 import { Exception } from "@/types/exception";
 import { Invoice } from "@/types/invoice";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { useFileAttachments } from "@/hooks/useFileAttachments";
 import { toast } from "@/hooks/use-toast";
 
@@ -107,29 +108,25 @@ export function DataExtractionResolver({ exceptions, invoice, onResolveException
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Resolve Exceptions</h2>
-        <div className="bg-primary/10 text-primary flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-md">
-          Invoice Data
-          <Calendar className="h-4 w-4 text-gray-500" />
-        </div>
-      </div>
-      
       <Card className="border border-red-200 shadow-sm">
         <CardContent className="pt-6">
-          <div className="flex items-start gap-3 text-red-800 mb-4">
-            <Calendar className="h-5 w-5 text-red-600 mt-0.5" />
-            <div>
-              <h3 className="font-semibold text-red-800">Incorrect Data</h3>
-              <p className="text-gray-700 mt-1">
-                The invoice PDF contains invalid required information: 
-                <span className="text-red-600 font-medium"> Invoice Date</span>,
-                <span className="text-red-600 font-medium"> Customer Name</span>
-              </p>
-            </div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Resolve Exceptions</h2>
+            <Badge variant="outline" className="bg-primary/10 text-primary px-3 py-1 text-sm font-medium rounded-md">
+              Invoice Data
+            </Badge>
           </div>
           
           <Separator className="my-4" />
+          
+          <Alert variant="destructive" className="mb-6">
+            <AlertTitle>Incorrect Data</AlertTitle>
+            <AlertDescription>
+              The invoice PDF contains invalid required information: 
+              <span className="text-red-600 font-medium"> Invoice Date</span>,
+              <span className="text-red-600 font-medium"> Customer Name</span>
+            </AlertDescription>
+          </Alert>
           
           <div className="space-y-6">
             <div>
@@ -183,22 +180,20 @@ export function DataExtractionResolver({ exceptions, invoice, onResolveException
                 className="border-2 border-dashed rounded-lg border-gray-300 p-6 text-center cursor-pointer hover:bg-gray-50 transition-colors"
                 onClick={() => document.getElementById('file-upload')?.click()}
               >
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600">
-                    Drag & drop a file here or <span className="text-primary underline">click to browse</span>
-                  </p>
-                  <input 
-                    type="file" 
-                    id="file-upload" 
-                    className="hidden" 
-                    accept=".pdf" 
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files[0]) {
-                        handleFileUpload(e.target.files[0]);
-                      }
-                    }}
-                  />
-                </div>
+                <p className="text-sm text-gray-600">
+                  Drag & drop a file here or <span className="text-primary underline">click to browse</span>
+                </p>
+                <input 
+                  type="file" 
+                  id="file-upload" 
+                  className="hidden" 
+                  accept=".pdf" 
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      handleFileUpload(e.target.files[0]);
+                    }
+                  }}
+                />
               </div>
             </div>
             
@@ -226,17 +221,17 @@ export function DataExtractionResolver({ exceptions, invoice, onResolveException
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <div className="p-3 pt-0 border-t">
-                    <RadioGroup onValueChange={handleResolutionMethodChange} className="space-y-3">
-                      <div className="flex items-center space-x-2">
+                  <div className="p-4 pt-3 border-t">
+                    <RadioGroup onValueChange={handleResolutionMethodChange} className="space-y-4">
+                      <div className="flex items-center space-x-3 px-2 py-1">
                         <RadioGroupItem value="force" id="force" />
                         <Label htmlFor="force">Force Submit</Label>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-3 px-2 py-1">
                         <RadioGroupItem value="exclude" id="exclude" />
                         <Label htmlFor="exclude">Exclude from Submission</Label>
                       </div>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-3 px-2 py-1">
                         <RadioGroupItem value="outside" id="outside" />
                         <Label htmlFor="outside">Resolve Outside Monto</Label>
                       </div>
