@@ -59,7 +59,7 @@ export function MainLayout({
             </div>
           </header>
           
-          <main className="flex-1 overflow-y-auto bg-white">
+          <main className="flex-1 overflow-y-auto bg-neutral-50">
             <div className="px-8 py-4 bg-neutral-50">
               {children}
             </div>

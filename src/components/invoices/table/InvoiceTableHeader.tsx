@@ -27,7 +27,7 @@ export function InvoiceTableHeader({
           {renderSortIndicator('buyer')}
         </TableHead>
 
-        {isPendingTab ? <TableHead className="cursor-pointer text-[14px] font-medium text-gray-600">
+        {isPendingTab ? <TableHead className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white">
             Rejected by
           </TableHead> : <TableHead onClick={() => onSort('dueDate')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white">
             Due Date
