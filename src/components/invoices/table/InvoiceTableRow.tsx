@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -42,7 +41,7 @@ export function InvoiceTableRow({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#F04438] rounded-full z-10 pointer-events-none" />
+              <div className="absolute left-0 top-0 h-full w-[2px] bg-[#F04438] rounded-r-sm z-10 pointer-events-none" />
             </TooltipTrigger>
             <TooltipContent>
               <p>This invoice is pending action</p>
