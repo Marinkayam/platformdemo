@@ -1,6 +1,5 @@
 
 import { Invoice, LineItem } from "@/types/invoice";
-import { Card, CardContent } from "@/components/ui/card";
 import { PdfToolbar } from "./pdf/PdfToolbar";
 import { PdfContent } from "./pdf/PdfContent";
 
@@ -20,20 +19,18 @@ export function PdfViewer({
   onZoomOut 
 }: PdfViewerProps) {
   return (
-    <Card className="rounded-xl shadow-sm overflow-hidden h-full">
-      <CardContent className="p-4 h-full flex flex-col">
-        <PdfToolbar
-          invoice={invoice}
-          zoomLevel={zoomLevel}
-          onZoomIn={onZoomIn}
-          onZoomOut={onZoomOut}
-        />
-        <PdfContent
-          invoice={invoice}
-          lineItems={lineItems}
-          zoomLevel={zoomLevel}
-        />
-      </CardContent>
-    </Card>
+    <div className="p-6 h-full flex flex-col">
+      <PdfToolbar
+        invoice={invoice}
+        zoomLevel={zoomLevel}
+        onZoomIn={onZoomIn}
+        onZoomOut={onZoomOut}
+      />
+      <PdfContent
+        invoice={invoice}
+        lineItems={lineItems}
+        zoomLevel={zoomLevel}
+      />
+    </div>
   );
 }

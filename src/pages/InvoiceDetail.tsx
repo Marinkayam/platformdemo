@@ -7,7 +7,6 @@ import { InvoiceTabsNav } from "@/components/invoices/detail/InvoiceTabs";
 import { FinancialData } from "@/components/invoices/detail/FinancialData";
 import { TabContent } from "@/components/invoices/detail/TabContent";
 import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { useNotes } from "@/hooks/useNotes";
 import { Separator } from "@/components/ui/separator";
 
@@ -105,25 +104,21 @@ export default function InvoiceDetail() {
       />
 
       {activeTab === "invoice-data" ? (
-        <ResizablePanelGroup direction="horizontal" className="min-h-[calc(100vh-200px)]">
-          <ResizablePanel defaultSize={50} minSize={30}>
-            <div className="space-y-6 pr-2">
-              <FinancialData invoice={invoice} lineItems={lineItems} />
-            </div>
-          </ResizablePanel>
-          <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={50} minSize={30}>
-            <div className="pl-2">
-              <PdfViewer
-                invoice={invoice}
-                lineItems={lineItems}
-                zoomLevel={zoomLevel}
-                onZoomIn={handleZoomIn}
-                onZoomOut={handleZoomOut}
-              />
-            </div>
-          </ResizablePanel>
-        </ResizablePanelGroup>
+        <div className="flex flex-row w-full items-start gap-8 min-h-[calc(100vh-200px)]">
+          <div className="w-1/2">
+            <FinancialData invoice={invoice} lineItems={lineItems} />
+          </div>
+          <Separator orientation="vertical" className="h-full" />
+          <div className="w-1/2">
+            <PdfViewer
+              invoice={invoice}
+              lineItems={lineItems}
+              zoomLevel={zoomLevel}
+              onZoomIn={handleZoomIn}
+              onZoomOut={handleZoomOut}
+            />
+          </div>
+        </div>
       ) : (
         <TabContent tab={activeTab} invoice={invoice} attachments={attachments} />
       )}
