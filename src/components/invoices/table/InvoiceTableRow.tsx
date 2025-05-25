@@ -1,6 +1,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Invoice } from "@/types/invoice";
 import { formatCurrency } from "@/lib/utils";
 import { AssigneeComponent } from "@/components/invoices/AssigneeComponent";
@@ -34,11 +35,22 @@ export function InvoiceTableRow({
 
   return (
     <TableRow 
-      className={`h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative ${
-        isPendingAction ? 'border-l-4 border-l-red-500' : ''
-      }`}
+      className="h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative"
       onClick={handleClick}
     >
+      {isPendingAction && (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="w-[2px] bg-[#F04438] h-full absolute left-0 top-0" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>This invoice is pending action</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
+      
       <TableCell className="py-3 px-4 text-sm font-bold bg-white">
         {invoice.number}
       </TableCell>
