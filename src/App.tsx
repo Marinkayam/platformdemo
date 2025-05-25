@@ -10,6 +10,7 @@ import Invoices from "./pages/Invoices";
 import InvoiceDetail from "./pages/InvoiceDetail";
 import SmartConnections from "./pages/SmartConnections";
 import NotFoundPage from "./pages/NotFoundPage";
+import Login from "./pages/Login";
 import { NotificationsProvider } from "./context/NotificationsContext";
 
 const queryClient = new QueryClient();
@@ -22,7 +23,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/invoices" replace />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
             <Route 
               path="/dashboard" 
               element={
