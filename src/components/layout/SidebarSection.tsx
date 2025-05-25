@@ -5,16 +5,10 @@ import { useState } from "react";
 import { CustomSettings } from "@/components/icons/CustomSettings";
 import { CustomBell } from "@/components/icons/CustomBell";
 import { CustomHeartHandshake } from "@/components/icons/CustomHeartHandshake";
-
-interface NavigationItem {
-  title: string;
-  url: string;
-  icon?: React.ComponentType<any>;
-  items?: NavigationItem[];
-}
+import { NavItem } from "@/data/navigation";
 
 interface SidebarSectionProps {
-  items: NavigationItem[];
+  items: NavItem[];
 }
 
 export function SidebarSection({ items }: SidebarSectionProps) {
@@ -45,7 +39,7 @@ export function SidebarSection({ items }: SidebarSectionProps) {
   return (
     <nav className="space-y-5">
       {items.map((item) => {
-        const isActive = location.pathname === item.url;
+        const isActive = location.pathname === item.href;
         const isExpanded = expandedItems.includes(item.title);
         const hasSubItems = item.items && item.items.length > 0;
         
@@ -55,7 +49,7 @@ export function SidebarSection({ items }: SidebarSectionProps) {
           <div key={item.title}>
             <div className="flex items-center justify-between">
               <a
-                href={item.url}
+                href={item.href}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors flex-1 ${
                   isActive
                     ? "bg-[#7C3AED] text-white"
@@ -83,11 +77,11 @@ export function SidebarSection({ items }: SidebarSectionProps) {
             {hasSubItems && isExpanded && (
               <div className="ml-6 mt-2 space-y-2">
                 {item.items.map((subItem) => {
-                  const isSubActive = location.pathname === subItem.url;
+                  const isSubActive = location.pathname === subItem.href;
                   return (
                     <a
                       key={subItem.title}
-                      href={subItem.url}
+                      href={subItem.href}
                       className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         isSubActive
                           ? "bg-[#7C3AED] text-white"
