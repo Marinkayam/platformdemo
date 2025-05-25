@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
@@ -40,7 +41,7 @@ export function InvoiceTableRow({
       </TableCell>
       
       <TableCell className="py-3 px-4 text-sm">
-        {invoice.company}
+        {invoice.buyer}
       </TableCell>
       
       <TableCell className="py-3 px-4 text-sm">

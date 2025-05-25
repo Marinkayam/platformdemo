@@ -47,8 +47,6 @@ export function StatusBadge({ status, className, dueDate }: StatusBadgeProps) {
         return "Invoice has been paid in full";
       case "Pending Action":
         return "Invoice requires attention or action";
-      case "Overdue":
-        return dueDate ? `Invoice was due on ${dueDate}` : "Invoice is past its due date";
       case "Settled":
         return "Payment has been settled";
       case "Rejected by Buyer":
