@@ -1,15 +1,14 @@
 
-import { NotificationsTester } from "@/components/notifications/NotificationsTester";
-
 const Dashboard = () => {
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">Welcome to your dashboard!</p>
+    <div className="flex items-center justify-center h-full min-h-[600px]">
+      <div className="max-w-4xl w-full">
+        <img 
+          src="/lovable-uploads/696c8592-7b02-48df-9915-22f0c069c535.png" 
+          alt="Dashboard illustration showing charts, graphs and analytics"
+          className="w-full h-auto"
+        />
       </div>
-      
-      <NotificationsTester />
     </div>
   );
 };
