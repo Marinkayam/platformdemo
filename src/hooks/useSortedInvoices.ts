@@ -22,6 +22,14 @@ export function useSortedInvoices(invoices: Invoice[]) {
   };
 
   const sortedInvoices = [...localInvoices].sort((a, b) => {
+    // Always prioritize "Pending Action" status first
+    const aIsPending = a.status === "Pending Action";
+    const bIsPending = b.status === "Pending Action";
+    
+    if (aIsPending && !bIsPending) return -1;
+    if (!aIsPending && bIsPending) return 1;
+    
+    // If both are pending or both are not pending, apply regular sorting
     if (!sortField) return 0;
     
     const fieldA = a[sortField];

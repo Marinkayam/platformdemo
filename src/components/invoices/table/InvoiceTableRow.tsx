@@ -30,9 +30,13 @@ export function InvoiceTableRow({
     onNavigate(invoice.id);
   };
 
+  const isPendingAction = invoice.status === "Pending Action";
+
   return (
     <TableRow 
-      className="h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white"
+      className={`h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative ${
+        isPendingAction ? 'border-l-4 border-l-red-500' : ''
+      }`}
       onClick={handleClick}
     >
       <TableCell className="py-3 px-4 text-sm font-bold bg-white">
