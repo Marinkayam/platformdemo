@@ -1,17 +1,19 @@
+
 import { Settings, LogOut } from "lucide-react";
 import { NotificationsPopover } from "../notifications/NotificationsPopover";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { AppSidebar } from "./AppSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+
 interface MainLayoutProps {
   children: React.ReactNode;
 }
-export function MainLayout({
-  children
-}: MainLayoutProps) {
+
+export function MainLayout({ children }: MainLayoutProps) {
   const navigate = useNavigate();
+
   const handleLogout = () => {
     // In a real app, you would clear auth tokens/state here
     toast({
@@ -21,14 +23,16 @@ export function MainLayout({
     // Redirect to homepage or login page
     navigate("/");
   };
-  return <SidebarProvider>
+
+  return (
+    <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden">
         <AppSidebar />
         
         <div className="flex-1 flex flex-col overflow-hidden">
           <header className="h-[64px] border-b px-6 flex items-center justify-between gap-3 bg-white">
             <div className="flex items-center gap-2">
-              <SidebarTrigger className="md:hidden" />
+              {/* Removed SidebarTrigger since we no longer need collapse functionality */}
             </div>
             
             <div className="flex items-center gap-3">
@@ -66,5 +70,6 @@ export function MainLayout({
           </main>
         </div>
       </div>
-    </SidebarProvider>;
+    </SidebarProvider>
+  );
 }
