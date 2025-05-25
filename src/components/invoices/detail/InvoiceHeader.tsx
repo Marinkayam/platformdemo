@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { User, File, UserRoundCheck } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { Card } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
 import { AssigneeComponent } from "../AssigneeComponent";
 import { toast } from "@/hooks/use-toast";
@@ -50,40 +51,42 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
         </Breadcrumb>
       </div>
       
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-semibold text-gray-900">{localInvoice.number}</h1>
-            <StatusBadge status={localInvoice.status} />
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-6 text-[14px] text-gray-600">
-          <div className="flex items-center gap-2">
-            <User className="h-4 w-4" style={{ stroke: "#01173E" }} />
-            <span>Owner: {localInvoice.owner}</span>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <File className="h-4 w-4" style={{ stroke: "#01173E" }} />
-            <span>Transaction Type: {isCreditMemo ? "Credit Memo" : "Invoice"}</span>
-          </div>
-          
-          {isPendingAction && (
-            <div className="flex items-center gap-2">
-              <UserRoundCheck className="h-4 w-4" style={{ stroke: "#01173E" }} />
-              <span>Assignee: </span>
-              <div onClick={(e) => e.stopPropagation()} className="inline-block">
-                <AssigneeComponent 
-                  assignee={localInvoice.assignee}
-                  onAssign={handleAssign}
-                  onRemove={handleRemoveAssignee}
-                />
-              </div>
+      <Card className="p-6">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <h1 className="text-xl font-semibold text-gray-900">{localInvoice.number}</h1>
+              <StatusBadge status={localInvoice.status} />
             </div>
-          )}
+          </div>
+          
+          <div className="flex items-center gap-6 text-[14px] text-gray-600">
+            <div className="flex items-center gap-2">
+              <User className="h-4 w-4" style={{ stroke: "#01173E" }} />
+              <span>Owner: {localInvoice.owner}</span>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <File className="h-4 w-4" style={{ stroke: "#01173E" }} />
+              <span>Transaction Type: {isCreditMemo ? "Credit Memo" : "Invoice"}</span>
+            </div>
+            
+            {isPendingAction && (
+              <div className="flex items-center gap-2">
+                <UserRoundCheck className="h-4 w-4" style={{ stroke: "#01173E" }} />
+                <span>Assignee: </span>
+                <div onClick={(e) => e.stopPropagation()} className="inline-block">
+                  <AssigneeComponent 
+                    assignee={localInvoice.assignee}
+                    onAssign={handleAssign}
+                    onRemove={handleRemoveAssignee}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }
