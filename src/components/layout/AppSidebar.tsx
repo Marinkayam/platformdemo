@@ -14,7 +14,7 @@ export function AppSidebar() {
           <div className="flex items-center gap-2">
             {isCollapsed ? <MontoIcon className="w-6 h-6" /> : <MontoLogo className="w-[104px] h-[31px]" />}
           </div>
-          <SidebarTrigger className="ml-auto text-[#7B59FF] hover:bg-[#F0EDFF] transition-colors" />
+          
         </div>
       </SidebarHeader>
       

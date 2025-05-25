@@ -36,13 +36,7 @@ export function SidebarSection({
           const isInvoiceClearedActive = pathname === "/invoices" && search.includes("cleared");
           const isSubmenuActive = pathname.includes("/invoices");
           return <div key={item.title}>
-                <button onClick={() => !isCollapsed && setOpenSubmenu(!openSubmenu)} className={cn("w-full flex items-center justify-between px-3 py-2 text-sm rounded-md transition-colors", "hover:bg-gray-100", isSubmenuActive && "bg-purple-100 text-purple-700 font-semibold")}>
-                  <div className="flex items-center gap-3">
-                    {item.icon && <item.icon size={18} className={isSubmenuActive ? "text-purple-600" : "text-gray-600"} />}
-                    {!isCollapsed && <span>{item.title}</span>}
-                  </div>
-                  {!isCollapsed && hasSubmenu && <ChevronDown className={cn("h-4 w-4 transition-transform", openSubmenu && "rotate-180")} />}
-                </button>
+                
                 
                 {!isCollapsed && <div className={cn("ml-6 mt-1 space-y-1 transition-all duration-300 overflow-hidden", openSubmenu ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0")}>
                     {item.items?.map(subItem => {
