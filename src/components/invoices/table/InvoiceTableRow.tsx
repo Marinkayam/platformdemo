@@ -35,7 +35,7 @@ export function InvoiceTableRow({
   return (
     <TableRow 
       className={`h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative ${
-        isPendingAction ? 'border-l-[1.5px] border-l-red-500' : ''
+        isPendingAction ? 'border-l-4 border-l-red-500' : ''
       }`}
       onClick={handleClick}
     >
@@ -66,7 +66,7 @@ export function InvoiceTableRow({
         {getRandomPortalName()}
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm bg-white text-left">
+      <TableCell className="py-3 px-4 text-sm bg-white">
         {formatCurrency(invoice.total)}
       </TableCell>
       
