@@ -1,10 +1,10 @@
-
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
 import { formatCurrency } from "@/lib/utils";
 import { AssigneeComponent } from "@/components/invoices/AssigneeComponent";
 import { InvoiceActionsMenu } from "./row/InvoiceActionsMenu";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 interface InvoiceTableRowProps {
   invoice: Invoice;
@@ -49,7 +49,7 @@ export function InvoiceTableRow({
       </TableCell>
       
       <TableCell className="py-3 px-4 text-sm">
-        {invoice.status}
+        <StatusBadge status={invoice.status} dueDate={invoice.dueDate} />
       </TableCell>
       
       <TableCell className="py-3 px-4 text-sm">
