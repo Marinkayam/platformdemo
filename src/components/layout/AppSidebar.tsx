@@ -10,7 +10,7 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="bg-[#FAFAFA] overflow-y-auto transition-all duration-300 px-2 py-0">
+      <SidebarContent className="bg-[#FAFAFA] overflow-y-auto transition-all duration-300 px-2 py-[24px]">
         <div className="space-y-6">
           <SidebarSection items={navMain} />
         </div>
