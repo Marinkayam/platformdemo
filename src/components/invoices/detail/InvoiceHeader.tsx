@@ -1,7 +1,7 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { User, File, UserRoundCheck, MoreVertical } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { User, File, UserRoundCheck, MoreVertical, ArrowLeft } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Card } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
@@ -18,6 +18,7 @@ interface InvoiceHeaderProps {
 export function InvoiceHeader({
   invoice
 }: InvoiceHeaderProps) {
+  const navigate = useNavigate();
   const [localInvoice, setLocalInvoice] = useState<Invoice>(invoice);
   const [showConfirm, setShowConfirm] = useState(false);
   const isPendingAction = localInvoice.status === "Pending Action";
@@ -59,9 +60,30 @@ export function InvoiceHeader({
     return "All Invoices";
   };
 
+  const handleBackNavigation = () => {
+    const context = getBreadcrumbContext();
+    let searchParams = "";
+    
+    if (context === "Pending Actions") {
+      searchParams = "?status=pending";
+    } else if (context === "Cleared") {
+      searchParams = "?status=cleared";
+    } else if (context === "Overdue") {
+      searchParams = "?status=overdue";
+    }
+    
+    navigate(`/invoices${searchParams}`);
+  };
+
   return <>
       <div className="mb-8">
         <div className="flex items-center mb-6">
+          <button 
+            onClick={handleBackNavigation}
+            className="mr-3 p-1 hover:bg-gray-100 rounded-md transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4 text-gray-600" />
+          </button>
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
