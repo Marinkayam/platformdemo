@@ -1,14 +1,15 @@
 
 import { cn } from "@/lib/utils";
 import { InvoiceStatus } from "@/types/invoice";
-import { UserX } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface StatusBadgeProps {
   status: InvoiceStatus;
   className?: string;
+  dueDate?: string;
 }
 
-export function StatusBadge({ status, className }: StatusBadgeProps) {
+export function StatusBadge({ status, className, dueDate }: StatusBadgeProps) {
   const getBadgeStyles = () => {
     switch (status) {
       case "RTP Prepared":
@@ -40,15 +41,55 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
     }
   };
 
+  const getTooltipContent = () => {
+    switch (status) {
+      case "Paid":
+        return "Invoice has been paid in full";
+      case "Pending Action":
+        return "Invoice requires attention or action";
+      case "Overdue":
+        return dueDate ? `Invoice was due on ${dueDate}` : "Invoice is past its due date";
+      case "Settled":
+        return "Payment has been settled";
+      case "Rejected by Buyer":
+        return "Invoice was rejected by the buyer";
+      case "Rejected by Monto":
+        return "Invoice was rejected by Monto";
+      case "Approved by Buyer":
+        return "Invoice has been approved by the buyer";
+      case "External Submission":
+        return "Invoice submitted through external system";
+      case "RTP Prepared":
+        return "Real-time payment has been prepared";
+      case "RTP Sent":
+        return "Real-time payment has been sent";
+      case "Awaiting SC":
+        return "Awaiting smart connection";
+      case "Excluded":
+        return "Invoice has been excluded from processing";
+      default:
+        return `Status: ${status}`;
+    }
+  };
+
   return (
-    <span
-      className={cn(
-        "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap",
-        getBadgeStyles(),
-        className
-      )}
-    >
-      {status}
-    </span>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span
+            className={cn(
+              "inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap cursor-help",
+              getBadgeStyles(),
+              className
+            )}
+          >
+            {status}
+          </span>
+        </TooltipTrigger>
+        <TooltipContent className="rounded-md">
+          <p>{getTooltipContent()}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

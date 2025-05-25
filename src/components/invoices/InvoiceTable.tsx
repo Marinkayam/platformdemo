@@ -46,7 +46,7 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
   };
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-xl border">
       <Table>
         <InvoiceTableHeader 
           sortField={sortField}

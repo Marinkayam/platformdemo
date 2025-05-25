@@ -104,14 +104,14 @@ export default function InvoiceDetail() {
     fileType: "image" as const,
     url: "#"
   }];
-  return <div className="container mx-auto px-4 py-6">
+  return (
+    <div className="container mx-auto px-4 py-6">
       <InvoiceHeader invoice={invoice} />
-      
-      
       
       <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} activityCount={activityCount} invoiceStatus={invoice.status} />
 
-      {activeTab === "invoice-data" ? <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
+      {activeTab === "invoice-data" ? (
+        <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
           <ResizablePanel defaultSize={55} className="p-6 bg-white">
             <FinancialData invoice={invoice} lineItems={lineItems} />
           </ResizablePanel>
@@ -121,6 +121,10 @@ export default function InvoiceDetail() {
           <ResizablePanel defaultSize={45} className="p-6 border-l border-[#E4E5E9] bg-white">
             <PdfViewer invoice={invoice} lineItems={lineItems} zoomLevel={zoomLevel} onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
           </ResizablePanel>
-        </ResizablePanelGroup> : <TabContent tab={activeTab} invoice={invoice} attachments={attachments} />}
-    </div>;
+        </ResizablePanelGroup>
+      ) : (
+        <TabContent tab={activeTab} invoice={invoice} attachments={attachments} />
+      )}
+    </div>
+  );
 }
