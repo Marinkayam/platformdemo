@@ -40,6 +40,11 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
     });
   };
 
+  const handleExcludeInvoice = (invoiceId: string) => {
+    console.log('Exclude invoice action triggered for:', invoiceId);
+    // TODO: Implement actual exclude logic when backend is ready
+  };
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -53,7 +58,7 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
         <TableBody className="divide-y">
           {sortedInvoices.length === 0 ? (
             <tr>
-              <td colSpan={7} className="h-[56px] text-center text-[14px] text-gray-600 py-2 align-middle">
+              <td colSpan={8} className="h-[56px] text-center text-[14px] text-gray-600 py-2 align-middle">
                 No invoices found.
               </td>
             </tr>
@@ -66,6 +71,7 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
                 onNavigate={(id) => navigate(`/invoices/${id}`)}
                 onAssign={handleAssign}
                 onRemoveAssignee={handleRemoveAssignee}
+                onExclude={handleExcludeInvoice}
               />
             ))
           )}
