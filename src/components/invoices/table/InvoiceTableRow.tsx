@@ -35,12 +35,8 @@ export function InvoiceTableRow({
       className="h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white"
       onClick={handleClick}
     >
-      <TableCell className="py-3 px-4 text-sm bg-white">
+      <TableCell className="py-3 px-4 text-sm font-bold bg-white">
         {invoice.number}
-      </TableCell>
-      
-      <TableCell className="py-3 px-4 text-sm bg-white">
-        {invoice.owner}
       </TableCell>
       
       <TableCell className="py-3 px-4 text-sm bg-white">
@@ -66,11 +62,11 @@ export function InvoiceTableRow({
         {getRandomPortalName()}
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm text-right bg-white">
+      <TableCell className="py-3 px-4 text-sm bg-white">
         {formatCurrency(invoice.total)}
       </TableCell>
       
-      {isPendingTab && (
+      {isPendingTab ? (
         <TableCell className="py-3 px-4 bg-white">
           <div onClick={(e) => e.stopPropagation()}>
             <AssigneeComponent 
@@ -79,6 +75,10 @@ export function InvoiceTableRow({
               onRemove={() => onRemoveAssignee(invoice.id)}
             />
           </div>
+        </TableCell>
+      ) : (
+        <TableCell className="py-3 px-4 text-sm bg-white">
+          {invoice.owner}
         </TableCell>
       )}
       

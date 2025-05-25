@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { Table, TableBody } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
@@ -58,7 +57,7 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
         <TableBody className="divide-y">
           {sortedInvoices.length === 0 ? (
             <tr>
-              <td colSpan={isPendingTab ? 9 : 8} className="h-[56px] text-center text-[14px] text-gray-600 py-2 align-middle bg-white">
+              <td colSpan={8} className="h-[56px] text-center text-[14px] text-gray-600 py-2 align-middle bg-white">
                 No invoices found.
               </td>
             </tr>

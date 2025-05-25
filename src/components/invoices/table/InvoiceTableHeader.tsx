@@ -27,18 +27,13 @@ export function InvoiceTableHeader({
           {renderSortIndicator('number')}
         </TableHead>
         
-        <TableHead onClick={() => onSort('owner')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
-          Owner
-          {renderSortIndicator('owner')}
-        </TableHead>
-        
         <TableHead onClick={() => onSort('buyer')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
           Buyer
           {renderSortIndicator('buyer')}
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
+          <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
             Rejected by
           </TableHead>
         ) : (
@@ -56,14 +51,19 @@ export function InvoiceTableHeader({
           Portal
         </TableHead>
         
-        <TableHead onClick={() => onSort('total')} className="cursor-pointer text-[14px] font-medium text-gray-600 text-right bg-white px-4">
+        <TableHead onClick={() => onSort('total')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
           Total
           {renderSortIndicator('total')}
         </TableHead>
-        
-        {isPendingTab && (
+
+        {isPendingTab ? (
           <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
             Assignee
+          </TableHead>
+        ) : (
+          <TableHead onClick={() => onSort('owner')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
+            Owner
+            {renderSortIndicator('owner')}
           </TableHead>
         )}
 
