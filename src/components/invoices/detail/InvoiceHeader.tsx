@@ -33,6 +33,22 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
     setLocalInvoice({...localInvoice, assignee: undefined});
   };
 
+  // Determine breadcrumb context based on invoice status
+  const getBreadcrumbContext = () => {
+    if (localInvoice.status === "Pending Action") return "Pending Actions";
+    if (["Paid", "Settled"].includes(localInvoice.status)) return "Cleared";
+    // Check if overdue (simplified logic)
+    try {
+      const dueDate = new Date(localInvoice.dueDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (dueDate < today) return "Overdue";
+    } catch {
+      // fallback
+    }
+    return "All Invoices";
+  };
+
   return (
     <div className="mb-8">
       <div className="flex items-center mb-6">
@@ -45,7 +61,7 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{localInvoice.number}</BreadcrumbPage>
+              <BreadcrumbPage>{getBreadcrumbContext()}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -60,7 +76,10 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
             </div>
           </div>
           
-          <div className="flex items-center gap-6 text-[14px] text-gray-600">
+          {/* Divider between title and metadata */}
+          <div className="border-t border-[#E4E5E9] mt-4 mb-2"></div>
+          
+          <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
             <div className="flex items-center gap-2">
               <User className="h-4 w-4" style={{ stroke: "#01173E" }} />
               <span>Owner: {localInvoice.owner}</span>
