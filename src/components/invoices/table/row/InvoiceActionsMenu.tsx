@@ -1,5 +1,5 @@
 
-import { MoreHorizontal } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,8 +20,8 @@ export function InvoiceActionsMenu({ invoiceId, onExclude }: InvoiceActionsMenuP
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="p-1 hover:bg-gray-100 rounded-md transition-colors">
-          <MoreHorizontal className="text-[#01173E] w-5 h-5" />
+        <button className="hover:bg-muted p-2 rounded-md transition-colors">
+          <MoreVertical className="w-5 h-5 text-[#01173E]" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
