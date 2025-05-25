@@ -78,7 +78,7 @@ export function InvoiceHeader({
                   <h1 className="text-lg font-semibold text-[#01173E]">{localInvoice.number}</h1>
                   <StatusBadge status={localInvoice.status} dueDate={localInvoice.dueDate} />
                 </div>
-                <div className="text-sm text-gray-600 font-normal">
+                <div className="text-sm text-gray-600 font-normal my-0">
                   {mockConnectionWithIssue.buyer.name} → {mockConnectionWithIssue.supplier.name}
                 </div>
               </div>
