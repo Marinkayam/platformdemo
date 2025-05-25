@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { User, File, UserRoundCheck, MoreVertical } from "lucide-react";
@@ -8,39 +7,30 @@ import { Invoice } from "@/types/invoice";
 import { AssigneeComponent } from "../AssigneeComponent";
 import { ExcludeInvoiceDialog } from "../ExcludeInvoiceDialog";
 import { mockConnectionWithIssue } from "./rtp/mockData";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator
-} from "@/components/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 interface InvoiceHeaderProps {
   invoice: Invoice;
 }
-
-export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
+export function InvoiceHeader({
+  invoice
+}: InvoiceHeaderProps) {
   const [localInvoice, setLocalInvoice] = useState<Invoice>(invoice);
   const [showConfirm, setShowConfirm] = useState(false);
   const isPendingAction = localInvoice.status === "Pending Action";
   const isCreditMemo = localInvoice.documentType === "Credit Memo";
-
   const handleAssign = (email: string) => {
-    setLocalInvoice({...localInvoice, assignee: email});
+    setLocalInvoice({
+      ...localInvoice,
+      assignee: email
+    });
   };
-
   const handleRemoveAssignee = () => {
-    setLocalInvoice({...localInvoice, assignee: undefined});
+    setLocalInvoice({
+      ...localInvoice,
+      assignee: undefined
+    });
   };
-
   const handleExcludeInvoice = () => {
     console.log('Exclude invoice action triggered for:', localInvoice.id);
     setShowConfirm(false);
@@ -62,9 +52,7 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
     }
     return "All Invoices";
   };
-
-  return (
-    <>
+  return <>
       <div className="mb-8">
         <div className="flex items-center mb-6">
           <Breadcrumb>
@@ -102,22 +90,8 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48 rounded-md">
-                  <DropdownMenuItem 
-                    className="text-red-600 hover:text-red-700 cursor-pointer rounded-md"
-                    onClick={() => setShowConfirm(true)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#EF4444"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="mr-2"
-                    >
+                  <DropdownMenuItem className="text-red-600 hover:text-red-700 cursor-pointer rounded-md" onClick={() => setShowConfirm(true)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
                       <path d="M3 6h18" />
                       <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
                       <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
@@ -131,45 +105,39 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
             </div>
             
             {/* Divider between title and metadata */}
-            <div className="border-t border-[#E4E5E9] mt-4 mb-2"></div>
+            <div className="border-t border-[#E4E5E9] mt-4 mb-2 my-0"></div>
             
             <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
               <div className="flex items-center gap-2">
-                <User className="h-4 w-4" style={{ stroke: "#01173E" }} />
+                <User className="h-4 w-4" style={{
+                stroke: "#01173E"
+              }} />
                 <span className="font-semibold text-[#01173E]">Owner:</span>
                 <span>{localInvoice.owner}</span>
               </div>
               
               <div className="flex items-center gap-2">
-                <File className="h-4 w-4" style={{ stroke: "#01173E" }} />
+                <File className="h-4 w-4" style={{
+                stroke: "#01173E"
+              }} />
                 <span className="font-semibold text-[#01173E]">Transaction Type:</span>
                 <span>{isCreditMemo ? "Credit Memo" : "Invoice"}</span>
               </div>
               
-              {isPendingAction && (
-                <div className="flex items-center gap-2">
-                  <UserRoundCheck className="h-4 w-4" style={{ stroke: "#01173E" }} />
+              {isPendingAction && <div className="flex items-center gap-2">
+                  <UserRoundCheck className="h-4 w-4" style={{
+                stroke: "#01173E"
+              }} />
                   <span className="font-semibold text-[#01173E]">Assignee:</span>
-                  <div onClick={(e) => e.stopPropagation()} className="inline-block">
-                    <AssigneeComponent 
-                      assignee={localInvoice.assignee}
-                      onAssign={handleAssign}
-                      onRemove={handleRemoveAssignee}
-                    />
+                  <div onClick={e => e.stopPropagation()} className="inline-block">
+                    <AssigneeComponent assignee={localInvoice.assignee} onAssign={handleAssign} onRemove={handleRemoveAssignee} />
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
           </div>
         </Card>
       </div>
 
-      <ExcludeInvoiceDialog
-        open={showConfirm}
-        onOpenChange={setShowConfirm}
-        onConfirm={handleExcludeInvoice}
-        invoiceNumber={localInvoice.number}
-      />
-    </>
-  );
+      <ExcludeInvoiceDialog open={showConfirm} onOpenChange={setShowConfirm} onConfirm={handleExcludeInvoice} invoiceNumber={localInvoice.number} />
+    </>;
 }
