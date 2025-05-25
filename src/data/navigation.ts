@@ -107,19 +107,10 @@ const PurchaseOrderIcon = ({ size = 20, className }: { size?: number; className?
     strokeLinejoin: "round",
     className: className
   },
-  React.createElement('path', { d: "M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" }),
-  React.createElement('path', { d: "M9 13a4.5 4.5 0 0 0 3-4" }),
-  React.createElement('path', { d: "M6.003 5.125A3 3 0 0 0 6.401 6.5" }),
-  React.createElement('path', { d: "M3.477 10.896a4 4 0 0 1 .585-.396" }),
-  React.createElement('path', { d: "M6 18a4 4 0 0 1-1.967-.516" }),
-  React.createElement('path', { d: "M12 13h4" }),
-  React.createElement('path', { d: "M12 18h6a2 2 0 0 1 2 2v1" }),
-  React.createElement('path', { d: "M12 8h8" }),
-  React.createElement('path', { d: "M16 8V5a2 2 0 0 1 2-2" }),
-  React.createElement('circle', { cx: "16", cy: "13", r: ".5" }),
-  React.createElement('circle', { cx: "18", cy: "3", r: ".5" }),
-  React.createElement('circle', { cx: "20", cy: "21", r: ".5" }),
-  React.createElement('circle', { cx: "20", cy: "8", r: ".5" })
+  React.createElement('path', { d: "M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" }),
+  React.createElement('path', { d: "M14 8H8" }),
+  React.createElement('path', { d: "M16 12H8" }),
+  React.createElement('path', { d: "M13 16H8" })
   )
 );
 
@@ -162,6 +153,23 @@ const HelpIcon = ({ size = 20, className }: { size?: number; className?: string 
   React.createElement('circle', { cx: "12", cy: "12", r: "10" }),
   React.createElement('path', { d: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" }),
   React.createElement('point', { x: "12", y: "17" })
+  )
+);
+
+const ChevronDownIcon = ({ size = 16, className }: { size?: number; className?: string }) => (
+  React.createElement('svg', {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    className: className
+  },
+  React.createElement('path', { d: "m6 9 6 6 6-6" })
   )
 );
 
@@ -216,3 +224,5 @@ export const navUser: NavItem[] = [
     icon: HelpIcon,
   },
 ];
+
+export { ChevronDownIcon };
