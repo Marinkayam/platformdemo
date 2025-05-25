@@ -42,7 +42,7 @@ export function InvoiceTableRow({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="absolute left-0 top-2 bottom-2 w-[2px] bg-[#F04438] rounded-full z-10" />
+              <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#F04438] rounded-full z-10 pointer-events-none" />
             </TooltipTrigger>
             <TooltipContent>
               <p>This invoice is pending action</p>
@@ -51,11 +51,11 @@ export function InvoiceTableRow({
         </TooltipProvider>
       )}
       
-      <TableCell className="py-3 px-4 text-sm font-bold bg-white">
+      <TableCell className="py-3 px-4 text-sm font-bold">
         {invoice.number}
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm bg-white">
+      <TableCell className="py-3 px-4 text-sm">
         {invoice.buyer}
       </TableCell>
       
@@ -65,25 +65,25 @@ export function InvoiceTableRow({
           isRejectedByBuyer={invoice.rejectedBy === 'Buyer'}
         />
       ) : (
-        <TableCell className="py-3 px-4 text-sm bg-white">
+        <TableCell className="py-3 px-4 text-sm">
           {invoice.dueDate}
         </TableCell>
       )}
       
-      <TableCell className="py-3 px-4 text-sm bg-white">
+      <TableCell className="py-3 px-4 text-sm">
         <StatusBadge status={invoice.status} dueDate={invoice.dueDate} />
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm bg-white">
+      <TableCell className="py-3 px-4 text-sm">
         {getRandomPortalName()}
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm bg-white">
+      <TableCell className="py-3 px-4 text-sm">
         {formatCurrency(invoice.total)}
       </TableCell>
       
       {isPendingTab ? (
-        <TableCell className="py-3 px-4 bg-white">
+        <TableCell className="py-3 px-4">
           <div onClick={(e) => e.stopPropagation()}>
             <AssigneeComponent 
               assignee={invoice.assignee}
@@ -93,12 +93,12 @@ export function InvoiceTableRow({
           </div>
         </TableCell>
       ) : (
-        <TableCell className="py-3 px-4 text-sm bg-white">
+        <TableCell className="py-3 px-4 text-sm">
           {invoice.owner}
         </TableCell>
       )}
       
-      <TableCell className="py-3 px-4 text-center bg-white">
+      <TableCell className="py-3 px-4 text-center">
         <div onClick={(e) => e.stopPropagation()}>
           <InvoiceActionsMenu 
             invoiceId={invoice.id} 
