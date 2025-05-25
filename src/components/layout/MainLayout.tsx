@@ -60,7 +60,7 @@ export function MainLayout({
           </header>
           
           <main className="flex-1 overflow-y-auto bg-white">
-            <div className="px-8 py-4">
+            <div className="px-8 py-4 bg-gray-50">
               {children}
             </div>
           </main>
