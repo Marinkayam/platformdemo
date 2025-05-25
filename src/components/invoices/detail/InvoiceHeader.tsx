@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FileText, Trash2, UserCircle2 } from "lucide-react";
+import { User, File, UserRoundCheck } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Invoice } from "@/types/invoice";
 import { AssigneeComponent } from "../AssigneeComponent";
@@ -59,11 +59,19 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
         </div>
         
         <div className="flex items-center gap-6 text-[14px] text-gray-600">
-          <span>Owner: {localInvoice.owner}</span>
-          <span>Transaction Type: {isCreditMemo ? "Credit Memo" : "Invoice"}</span>
+          <div className="flex items-center gap-2">
+            <User className="h-4 w-4" style={{ stroke: "#01173E" }} />
+            <span>Owner: {localInvoice.owner}</span>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <File className="h-4 w-4" style={{ stroke: "#01173E" }} />
+            <span>Transaction Type: {isCreditMemo ? "Credit Memo" : "Invoice"}</span>
+          </div>
           
           {isPendingAction && (
             <div className="flex items-center gap-2">
+              <UserRoundCheck className="h-4 w-4" style={{ stroke: "#01173E" }} />
               <span>Assignee: </span>
               <div onClick={(e) => e.stopPropagation()} className="inline-block">
                 <AssigneeComponent 
