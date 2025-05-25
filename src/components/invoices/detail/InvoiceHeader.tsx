@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { User, File, UserRoundCheck, MoreVertical } from "lucide-react";
@@ -9,9 +10,11 @@ import { ExcludeInvoiceDialog } from "../ExcludeInvoiceDialog";
 import { mockConnectionWithIssue } from "./rtp/mockData";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 interface InvoiceHeaderProps {
   invoice: Invoice;
 }
+
 export function InvoiceHeader({
   invoice
 }: InvoiceHeaderProps) {
@@ -19,18 +22,21 @@ export function InvoiceHeader({
   const [showConfirm, setShowConfirm] = useState(false);
   const isPendingAction = localInvoice.status === "Pending Action";
   const isCreditMemo = localInvoice.documentType === "Credit Memo";
+
   const handleAssign = (email: string) => {
     setLocalInvoice({
       ...localInvoice,
       assignee: email
     });
   };
+
   const handleRemoveAssignee = () => {
     setLocalInvoice({
       ...localInvoice,
       assignee: undefined
     });
   };
+
   const handleExcludeInvoice = () => {
     console.log('Exclude invoice action triggered for:', localInvoice.id);
     setShowConfirm(false);
@@ -52,6 +58,7 @@ export function InvoiceHeader({
     }
     return "All Invoices";
   };
+
   return <>
       <div className="mb-8">
         <div className="flex items-center mb-6">
@@ -105,7 +112,7 @@ export function InvoiceHeader({
             </div>
             
             {/* Divider between title and metadata */}
-            <div className="border-t border-[#E4E5E9] mt-4 mb-2 my-0"></div>
+            <div className="border-t border-[#E4E5E9] my-0"></div>
             
             <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
               <div className="flex items-center gap-2">
