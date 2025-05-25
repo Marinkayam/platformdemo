@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Bell } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Notification, useNotifications } from '@/context/NotificationsContext';
@@ -42,7 +41,10 @@ export const NotificationsPopover: React.FC = () => {
     <Popover onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative rounded-full">
-          <Bell size={20} />
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#01173E" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+            <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+          </svg>
           {unreadCount > 0 && (
             <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
           )}
