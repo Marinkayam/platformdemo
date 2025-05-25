@@ -32,12 +32,12 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
+    <div className="grid grid-cols-2 min-h-screen">
       {/* Left Panel - Login Form */}
-      <div className="flex flex-col justify-center px-8 py-16">
+      <div className="flex flex-col justify-center px-12">
         <div className="mx-auto w-full max-w-sm space-y-6">
           {/* Header */}
-          <div className="space-y-2 text-center">
+          <div className="space-y-2">
             <h1 className="text-3xl font-semibold text-[#12141D]">Welcome</h1>
             <p className="text-sm text-muted-foreground">Sign In</p>
           </div>
@@ -92,21 +92,21 @@ const Login = () => {
             {/* Login Button */}
             <Button
               type="submit"
-              className="w-full bg-[#7B59FF] hover:bg-[#6B49EF] text-white font-medium py-2 px-4 rounded-md"
+              className="w-full bg-[#7B59FF] hover:bg-[#6B49EF] text-white rounded-md px-4 py-2 mt-4"
               size="lg"
             >
               Login
             </Button>
           </form>
 
-          {/* Logo */}
+          {/* Logo and Version */}
           <div className="text-center space-y-2">
             <img 
               src="/monto-logo.svg" 
               alt="Monto Logo" 
               className="h-4 mx-auto"
             />
-            <p className="text-xs text-muted-foreground">v.5</p>
+            <p className="text-xs text-muted-foreground">MONTO v.5</p>
           </div>
 
           {/* Footer Links */}
@@ -123,16 +123,12 @@ const Login = () => {
       </div>
 
       {/* Right Panel - Illustration */}
-      <div className="hidden lg:flex flex-col items-center justify-center bg-[#FAFAFA] p-8">
-        <div className="max-w-md text-center space-y-8">
+      <div className="bg-[#FAFAFA] flex flex-col justify-center items-center text-center px-8">
+        <div className="max-w-md space-y-8">
           {/* Tagline */}
-          <div className="space-y-2">
-            <p className="text-2xl text-[#12141D] leading-relaxed">
-              You should get paid on time,
-            </p>
-            <p className="text-2xl font-bold text-[#12141D]">
-              every time.
-            </p>
+          <div className="text-lg text-[#12141D] text-center">
+            You should get paid on time,<br />
+            <strong>every time.</strong>
           </div>
 
           {/* Desk Illustration */}
