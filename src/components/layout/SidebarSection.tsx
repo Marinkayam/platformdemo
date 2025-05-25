@@ -1,144 +1,108 @@
 
-import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { NavItem, ChevronDownIcon } from "@/data/navigation";
+import { useLocation } from "react-router-dom";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { CustomSettings } from "@/components/icons/CustomSettings";
+import { CustomBell } from "@/components/icons/CustomBell";
+import { CustomHeartHandshake } from "@/components/icons/CustomHeartHandshake";
 
-interface SidebarSectionProps {
-  title?: string;
-  items: NavItem[];
-  className?: string;
+interface NavigationItem {
+  title: string;
+  url: string;
+  icon?: React.ComponentType<any>;
+  items?: NavigationItem[];
 }
 
-export function SidebarSection({
-  title,
-  items,
-  className
-}: SidebarSectionProps) {
-  const { pathname, search } = useLocation();
-  const navigate = useNavigate();
-  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+interface SidebarSectionProps {
+  items: NavigationItem[];
+}
 
-  // Initialize Invoices as expanded if user is on invoices page
-  useEffect(() => {
-    if (pathname.includes("/invoices")) {
-      setExpandedItems(prev => new Set(prev).add("Invoices"));
-    }
-  }, [pathname]);
+export function SidebarSection({ items }: SidebarSectionProps) {
+  const location = useLocation();
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
-  const toggleExpanded = (itemTitle: string) => {
-    setExpandedItems(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(itemTitle)) {
-        newSet.delete(itemTitle);
-      } else {
-        newSet.add(itemTitle);
-      }
-      return newSet;
-    });
+  const toggleExpanded = (title: string) => {
+    setExpandedItems(prev => 
+      prev.includes(title) 
+        ? prev.filter(item => item !== title)
+        : [...prev, title]
+    );
   };
 
-  const handleInvoicesClick = () => {
-    toggleExpanded("Invoices");
-    navigate("/invoices");
+  const getCustomIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'Settings':
+        return CustomSettings;
+      case 'Bell':
+        return CustomBell;
+      case 'HeartHandshake':
+        return CustomHeartHandshake;
+      default:
+        return null;
+    }
   };
 
   return (
-    <div className={cn("space-y-2", className)}>
-      {title}
-      
-      <div className="space-y-1">
-        {items.map(item => {
-          const isActive = item.href ? pathname === item.href || pathname.includes(item.href) : false;
-          const hasSubmenu = item.items && item.items.length > 0;
-          const isExpanded = expandedItems.has(item.title);
+    <nav className="space-y-5">
+      {items.map((item) => {
+        const isActive = location.pathname === item.url;
+        const isExpanded = expandedItems.includes(item.title);
+        const hasSubItems = item.items && item.items.length > 0;
+        
+        const CustomIcon = getCustomIcon(item.title) || item.icon;
 
-          if (hasSubmenu) {
-            const isInvoicePendingActive = pathname === "/invoices" && search.includes("pending");
-            const isInvoiceOverdueActive = pathname === "/invoices" && search.includes("overdue");
-            const isInvoiceClearedActive = pathname === "/invoices" && search.includes("cleared");
-            const isSubmenuActive = pathname.includes("/invoices");
-
-            return (
-              <div key={item.title}>
+        return (
+          <div key={item.title}>
+            <div className="flex items-center justify-between">
+              <a
+                href={item.url}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors flex-1 ${
+                  isActive
+                    ? "bg-[#7C3AED] text-white"
+                    : "text-[#01173E] hover:bg-[#F3F4F6]"
+                }`}
+              >
+                {CustomIcon && <CustomIcon size={20} />}
+                <span className="font-medium">{item.title}</span>
+              </a>
+              
+              {hasSubItems && (
                 <button
-                  onClick={item.title === "Invoices" ? handleInvoicesClick : () => toggleExpanded(item.title)}
-                  className={cn(
-                    "flex items-center justify-between gap-3 px-3 py-3 text-sm rounded-md transition-colors w-full",
-                    "text-[#3F4758] hover:bg-[#F4F4F7]",
-                    isSubmenuActive && "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
-                  )}
-                  aria-expanded={isExpanded}
+                  onClick={() => toggleExpanded(item.title)}
+                  className="p-1 rounded hover:bg-[#F3F4F6] transition-colors"
                 >
-                  <div className="flex items-center gap-3">
-                    {item.icon && (
-                      <item.icon 
-                        size={20} 
-                        className={isSubmenuActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
-                      />
-                    )}
-                    <span className="font-medium">{item.title}</span>
-                  </div>
-                  <ChevronDownIcon 
-                    size={16} 
-                    className={cn(
-                      "transition-transform duration-200",
-                      isExpanded ? "rotate-180" : "rotate-0",
-                      isSubmenuActive ? "text-[#7B59FF]" : "text-[#3F4758]"
-                    )}
-                  />
+                  {isExpanded ? (
+                    <ChevronDown size={16} className="text-[#01173E]" />
+                  ) : (
+                    <ChevronRight size={16} className="text-[#01173E]" />
+                  )}
                 </button>
-                
-                {isExpanded && (
-                  <div className="ml-8 mt-1 space-y-1 transition-all duration-200">
-                    {item.items?.map(subItem => {
-                      const isSubActive = pathname === "/invoices" && (
-                        (subItem.href?.includes("pending") && isInvoicePendingActive) ||
-                        (subItem.href?.includes("overdue") && isInvoiceOverdueActive) ||
-                        (subItem.href?.includes("cleared") && isInvoiceClearedActive)
-                      );
-                      
-                      return (
-                        <Link 
-                          key={subItem.title} 
-                          to={subItem.href || "#"} 
-                          className={cn(
-                            "block px-3 py-2 text-sm rounded-md transition-colors",
-                            "text-[#3F4758] hover:bg-[#F4F4F7]",
-                            isSubActive && "text-[#7B59FF] font-semibold bg-[#F0EDFF]"
-                          )}
-                        >
-                          {subItem.title}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
+              )}
+            </div>
+            
+            {hasSubItems && isExpanded && (
+              <div className="ml-6 mt-2 space-y-2">
+                {item.items.map((subItem) => {
+                  const isSubActive = location.pathname === subItem.url;
+                  return (
+                    <a
+                      key={subItem.title}
+                      href={subItem.url}
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                        isSubActive
+                          ? "bg-[#7C3AED] text-white"
+                          : "text-[#01173E] hover:bg-[#F3F4F6]"
+                      }`}
+                    >
+                      {subItem.title}
+                    </a>
+                  );
+                })}
               </div>
-            );
-          }
-
-          return (
-            <Link 
-              key={item.title} 
-              to={item.href || "#"} 
-              className={cn(
-                "flex items-center gap-3 px-3 py-3 text-sm rounded-md transition-colors w-full",
-                "text-[#3F4758] hover:bg-[#F4F4F7]",
-                isActive && "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
-              )}
-            >
-              {item.icon && (
-                <item.icon 
-                  size={20} 
-                  className={isActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
-                />
-              )}
-              <span className="font-medium">{item.title}</span>
-            </Link>
-          );
-        })}
-      </div>
-    </div>
+            )}
+          </div>
+        );
+      })}
+    </nav>
   );
 }

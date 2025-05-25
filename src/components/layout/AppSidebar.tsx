@@ -14,12 +14,12 @@ export function AppSidebar() {
       </SidebarHeader>
       
       <SidebarContent className="bg-[#FAFAFA] overflow-y-auto transition-all duration-300 px-4 py-4">
-        <div className="space-y-6">
+        <div className="space-y-8">
           <SidebarSection items={navMain} />
         </div>
       </SidebarContent>
       
-      <SidebarFooter className="border-t border-[#E4E5E9] px-4 py-4 bg-[#FAFAFA]">
+      <SidebarFooter className="border-t border-[#E4E5E9] px-4 py-6 bg-[#FAFAFA]">
         <SidebarSection items={navUser} />
       </SidebarFooter>
     </Sidebar>
