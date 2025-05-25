@@ -7,6 +7,7 @@ import { InvoiceTabsNav } from "@/components/invoices/detail/InvoiceTabs";
 import { FinancialData } from "@/components/invoices/detail/FinancialData";
 import { TabContent } from "@/components/invoices/detail/TabContent";
 import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { useNotes } from "@/hooks/useNotes";
 import { Separator } from "@/components/ui/separator";
 
@@ -104,12 +105,17 @@ export default function InvoiceDetail() {
       />
 
       {activeTab === "invoice-data" ? (
-        <div className="flex flex-row w-full items-start gap-8 min-h-[calc(100vh-200px)]">
-          <div className="w-1/2">
+        <ResizablePanelGroup 
+          direction="horizontal" 
+          className="min-h-[600px] rounded-xl border border-[#E4E5E9]"
+        >
+          <ResizablePanel defaultSize={55} className="p-6">
             <FinancialData invoice={invoice} lineItems={lineItems} />
-          </div>
-          <Separator orientation="vertical" className="h-full" />
-          <div className="w-1/2">
+          </ResizablePanel>
+
+          <ResizableHandle />
+
+          <ResizablePanel defaultSize={45} className="p-6 border-l border-[#E4E5E9]">
             <PdfViewer
               invoice={invoice}
               lineItems={lineItems}
@@ -117,8 +123,8 @@ export default function InvoiceDetail() {
               onZoomIn={handleZoomIn}
               onZoomOut={handleZoomOut}
             />
-          </div>
-        </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       ) : (
         <TabContent tab={activeTab} invoice={invoice} attachments={attachments} />
       )}

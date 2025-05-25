@@ -19,7 +19,7 @@ export function PdfViewer({
   onZoomOut 
 }: PdfViewerProps) {
   return (
-    <div className="p-6 h-full flex flex-col">
+    <div className="h-full flex flex-col">
       <PdfToolbar
         invoice={invoice}
         zoomLevel={zoomLevel}
