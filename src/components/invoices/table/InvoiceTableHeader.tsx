@@ -27,6 +27,11 @@ export function InvoiceTableHeader({
           {renderSortIndicator('number')}
         </TableHead>
         
+        <TableHead onClick={() => onSort('owner')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
+          Owner
+          {renderSortIndicator('owner')}
+        </TableHead>
+        
         <TableHead onClick={() => onSort('buyer')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
           Buyer
           {renderSortIndicator('buyer')}
@@ -47,18 +52,20 @@ export function InvoiceTableHeader({
           Status
         </TableHead>
         
-        <TableHead onClick={() => onSort('total')} className="cursor-pointer text-[14px] font-medium text-gray-600 text-left bg-white px-4">
-          Total
-          {renderSortIndicator('total')}
-        </TableHead>
-        
         <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
           Portal
         </TableHead>
         
-        <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
-          Owner
+        <TableHead onClick={() => onSort('total')} className="cursor-pointer text-[14px] font-medium text-gray-600 text-right bg-white px-4">
+          Total
+          {renderSortIndicator('total')}
         </TableHead>
+        
+        {isPendingTab && (
+          <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
+            Assignee
+          </TableHead>
+        )}
 
         <TableHead className="w-[60px] text-[14px] font-medium text-gray-600 bg-white px-4 text-center">
           Actions

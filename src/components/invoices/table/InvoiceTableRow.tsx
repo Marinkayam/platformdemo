@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
@@ -5,6 +6,8 @@ import { formatCurrency } from "@/lib/utils";
 import { AssigneeComponent } from "@/components/invoices/AssigneeComponent";
 import { InvoiceActionsMenu } from "./row/InvoiceActionsMenu";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { RejectionInfo } from "./row/RejectionInfo";
+import { getRandomPortalName } from "@/lib/portalUtils";
 
 interface InvoiceTableRowProps {
   invoice: Invoice;
@@ -29,39 +32,46 @@ export function InvoiceTableRow({
 
   return (
     <TableRow 
-      className="h-14 hover:bg-gray-50 cursor-pointer transition-colors"
+      className="h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white"
       onClick={handleClick}
     >
-      <TableCell className="py-3 px-4 text-sm">
+      <TableCell className="py-3 px-4 text-sm bg-white">
         {invoice.number}
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm">
+      <TableCell className="py-3 px-4 text-sm bg-white">
         {invoice.owner}
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm">
+      <TableCell className="py-3 px-4 text-sm bg-white">
         {invoice.buyer}
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm">
-        {invoice.dueDate}
-      </TableCell>
+      {isPendingTab ? (
+        <RejectionInfo 
+          isRejectedByMonto={invoice.rejectedBy === 'Monto'}
+          isRejectedByBuyer={invoice.rejectedBy === 'Buyer'}
+        />
+      ) : (
+        <TableCell className="py-3 px-4 text-sm bg-white">
+          {invoice.dueDate}
+        </TableCell>
+      )}
       
-      <TableCell className="py-3 px-4 text-sm">
+      <TableCell className="py-3 px-4 text-sm bg-white">
         <StatusBadge status={invoice.status} dueDate={invoice.dueDate} />
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm">
-        Monto Portal
+      <TableCell className="py-3 px-4 text-sm bg-white">
+        {getRandomPortalName()}
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm text-right">
+      <TableCell className="py-3 px-4 text-sm text-right bg-white">
         {formatCurrency(invoice.total)}
       </TableCell>
       
       {isPendingTab && (
-        <TableCell className="py-3 px-4">
+        <TableCell className="py-3 px-4 bg-white">
           <div onClick={(e) => e.stopPropagation()}>
             <AssigneeComponent 
               assignee={invoice.assignee}
@@ -72,7 +82,7 @@ export function InvoiceTableRow({
         </TableCell>
       )}
       
-      <TableCell className="py-3 px-4 text-center">
+      <TableCell className="py-3 px-4 text-center bg-white">
         <div onClick={(e) => e.stopPropagation()}>
           <InvoiceActionsMenu 
             invoiceId={invoice.id} 
