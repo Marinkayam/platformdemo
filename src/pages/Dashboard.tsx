@@ -1,11 +1,12 @@
 
+
 const Dashboard = () => {
   return (
     <div className="flex items-center justify-center h-full min-h-[600px]">
       <div className="max-w-2xl w-full">
         <img 
-          src="/lovable-uploads/696c8592-7b02-48df-9915-22f0c069c535.png" 
-          alt="Dashboard illustration showing charts, graphs and analytics"
+          src="/lovable-uploads/bdd759df-31e5-4a2d-a76c-bdfbfdd299ff.png" 
+          alt="Dashboard illustration showing charts, graphs and analytics with text about invoice sorting and time saving"
           className="w-full h-auto animate-fade-in"
         />
       </div>
@@ -14,3 +15,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
