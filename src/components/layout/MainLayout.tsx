@@ -1,4 +1,3 @@
-
 import { Settings, LogOut } from "lucide-react";
 import { NotificationsPopover } from "../notifications/NotificationsPopover";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -6,16 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { AppSidebar } from "./AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-
 interface MainLayoutProps {
   children: React.ReactNode;
 }
-
 export function MainLayout({
   children
 }: MainLayoutProps) {
   const navigate = useNavigate();
-
   const handleLogout = () => {
     // In a real app, you would clear auth tokens/state here
     toast({
@@ -25,9 +21,7 @@ export function MainLayout({
     // Redirect to homepage or login page
     navigate("/");
   };
-
-  return (
-    <SidebarProvider>
+  return <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden">
         <AppSidebar />
         
@@ -65,13 +59,12 @@ export function MainLayout({
             </div>
           </header>
           
-          <main className="flex-1 overflow-y-auto bg-neutral-50">
-            <div className="px-4 py-4 bg-neutral-50">
+          <main className="flex-1 overflow-y-auto bg-white">
+            <div className="px-4 py-4 bg-white">
               {children}
             </div>
           </main>
         </div>
       </div>
-    </SidebarProvider>
-  );
+    </SidebarProvider>;
 }
