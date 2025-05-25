@@ -42,7 +42,7 @@ export function InvoiceTableRow({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="w-[2px] bg-[#F04438] h-full absolute left-0 top-0" />
+              <div className="w-[2px] bg-[#F04438] h-10 absolute left-0 top-2 rounded-full" />
             </TooltipTrigger>
             <TooltipContent>
               <p>This invoice is pending action</p>
