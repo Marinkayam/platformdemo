@@ -31,28 +31,11 @@ export function InvoiceTableRow({
     onNavigate(invoice.id);
   };
 
-  const isPendingAction = invoice.status === "Pending Action";
-
   return (
     <TableRow 
-      className={`h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative ${
-        isPendingAction ? 'border-l-2 border-l-[#F04438]' : ''
-      }`}
+      className="h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative"
       onClick={handleClick}
     >
-      {isPendingAction && (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="absolute left-0 top-0 h-full w-[2px] bg-transparent z-10 pointer-events-auto" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>This invoice is pending action</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )}
-      
       <TableCell className="py-3 px-4 text-sm font-bold">
         {invoice.number}
       </TableCell>

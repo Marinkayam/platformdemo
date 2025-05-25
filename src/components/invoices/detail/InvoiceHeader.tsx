@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
 import { AssigneeComponent } from "../AssigneeComponent";
 import { ExcludeInvoiceDialog } from "../ExcludeInvoiceDialog";
+import { mockConnectionWithIssue } from "./rtp/mockData";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -84,9 +85,14 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
         <Card className="p-6 rounded-xl">
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <h1 className="text-lg font-semibold text-[#01173E]">{localInvoice.number}</h1>
-                <StatusBadge status={localInvoice.status} dueDate={localInvoice.dueDate} />
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-3">
+                  <h1 className="text-lg font-semibold text-[#01173E]">{localInvoice.number}</h1>
+                  <StatusBadge status={localInvoice.status} dueDate={localInvoice.dueDate} />
+                </div>
+                <div className="text-sm text-gray-600 font-normal">
+                  {mockConnectionWithIssue.buyer.name} → {mockConnectionWithIssue.supplier.name}
+                </div>
               </div>
               
               <DropdownMenu>
