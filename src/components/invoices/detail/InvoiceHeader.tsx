@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, File, UserRoundCheck, MoreVertical, ArrowLeft } from "lucide-react";
@@ -103,10 +102,10 @@ export function InvoiceHeader({
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-3">
-                <div className="text-lg font-semibold text-gray-400 px-2 py-1">
-                  {localInvoice.number}
-                </div>
-                <div className="px-2 py-1">
+                <div className="flex items-center gap-3 px-2 py-1">
+                  <div className="text-lg font-semibold text-[#01173E]">
+                    {localInvoice.number}
+                  </div>
                   <StatusBadge status={localInvoice.status} dueDate={localInvoice.dueDate} />
                 </div>
                 <div className="text-sm text-gray-400 font-normal px-2 py-1">
@@ -135,7 +134,6 @@ export function InvoiceHeader({
               </DropdownMenu>
             </div>
             
-            {/* Divider between title and metadata */}
             <div className="border-t border-[#E4E5E9] my-0"></div>
             
             <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
