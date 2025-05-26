@@ -21,7 +21,7 @@ export function UserTypeSelectionStep() {
         <UserTypeCard
           type="existing"
           title="Select Existing User"
-          description="Standard user already available"
+          description="Use one of your organization's existing portal users to connect Monto."
           selected={state.userType?.type === "existing"}
           onSelect={() => handleUserTypeSelect("existing")}
         />
@@ -29,7 +29,7 @@ export function UserTypeSelectionStep() {
         <UserTypeCard
           type="dedicated"
           title="Create a Dedicated Monto User"
-          description="Recommended"
+          description="Set up a separate user in your AP portal exclusively for Monto."
           selected={state.userType?.type === "dedicated"}
           onSelect={() => handleUserTypeSelect("dedicated")}
           recommended={true}

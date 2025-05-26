@@ -33,29 +33,29 @@ export function InstructionalCard({ portalName }: InstructionalCardProps) {
       <CardContent className="space-y-6">
         <div className="space-y-4">
           <div className="flex items-start space-x-4">
-            <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+            <div className="bg-[#7B59FF] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold flex-shrink-0">
               1
             </div>
-            <p className="text-[#38415F] pt-1">
+            <p className="text-[#38415F] pt-0.5">
               Log into your {portalName} portal
             </p>
           </div>
           
           <div className="flex items-start space-x-4">
-            <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+            <div className="bg-[#7B59FF] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold flex-shrink-0">
               2
             </div>
-            <p className="text-[#38415F] pt-1">
+            <p className="text-[#38415F] pt-0.5">
               Navigate to: <span className="font-semibold">Settings → Users → Add New User</span>
             </p>
           </div>
           
           <div className="flex items-start space-x-4">
-            <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+            <div className="bg-[#7B59FF] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold flex-shrink-0">
               3
             </div>
             <div className="space-y-3 flex-1">
-              <p className="text-[#38415F] pt-1">
+              <p className="text-[#38415F] pt-0.5">
                 Use:
               </p>
               <div>
@@ -78,21 +78,21 @@ export function InstructionalCard({ portalName }: InstructionalCardProps) {
           </div>
           
           <div className="flex items-start space-x-4">
-            <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+            <div className="bg-[#7B59FF] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold flex-shrink-0">
               4
             </div>
             <div className="space-y-3 flex-1">
-              <p className="text-[#38415F] pt-1">
+              <p className="text-[#38415F] pt-0.5">
                 Grant Permissions:
               </p>
               <ul className="space-y-2 ml-2">
                 <li className="flex items-center space-x-3 text-[#38415F]">
-                  <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="font-medium">✅ Full access to invoice submission</span>
+                  <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <span className="font-medium">Full access to invoice submission</span>
                 </li>
                 <li className="flex items-center space-x-3 text-[#38415F]">
-                  <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="font-medium">✅ Full access to portal management</span>
+                  <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <span className="font-medium">Full access to portal management</span>
                 </li>
               </ul>
             </div>
