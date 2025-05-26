@@ -13,10 +13,10 @@ interface SmartConnectionsFiltersProps {
 }
 
 const statusOptions = [
-  { label: "Live", value: "Live" },
-  { label: "In Process", value: "In Process" },
-  { label: "Unavailable", value: "Unavailable" },
-  { label: "Disconnected", value: "Disconnected" },
+  { label: "Active", value: "Active" },
+  { label: "Inactive", value: "Inactive" },
+  { label: "Failed", value: "Failed" },
+  { label: "Needs Review", value: "Needs Review" },
 ];
 
 const receivableEntityOptions = [
@@ -24,6 +24,8 @@ const receivableEntityOptions = [
   { label: "Google LLC", value: "Google LLC" },
   { label: "Meta Platforms", value: "Meta Platforms" },
   { label: "Netflix Inc.", value: "Netflix Inc." },
+  { label: "ACME Inc.", value: "ACME Inc." },
+  { label: "TechSoft LLC", value: "TechSoft LLC" },
 ];
 
 const payableOptions = [
@@ -31,15 +33,16 @@ const payableOptions = [
   { label: "Amazon Inc.", value: "Amazon Inc." },
   { label: "Tesla Inc.", value: "Tesla Inc." },
   { label: "Spotify AB", value: "Spotify AB" },
+  { label: "Target Corp", value: "Target Corp" },
+  { label: "Walmart Inc.", value: "Walmart Inc." },
 ];
 
 const portalOptions = [
-  { label: "SAP", value: "SAP" },
-  { label: "NetSuite", value: "NetSuite" },
-  { label: "Oracle", value: "Oracle" },
+  { label: "SAP Ariba", value: "Ariba" },
+  { label: "Coupa", value: "Coupa" },
+  { label: "Oracle Portal", value: "Oracle" },
+  { label: "Tradeshift", value: "Tradeshift" },
   { label: "Workday", value: "Workday" },
-  { label: "Sage", value: "Sage" },
-  { label: "QuickBooks", value: "QuickBooks" },
 ];
 
 export function SmartConnectionsFilters({ 
@@ -150,7 +153,7 @@ export function SmartConnectionsFilters({
             <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input 
               type="text" 
-              placeholder="Search connections..." 
+              placeholder="Search..." 
               className="pl-9 pr-4 h-9 border rounded-md w-[160px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[220px] transition-all duration-300 ease-in-out text-[14px]"
               value={filters.search}
               onChange={(e) => onFilterChange("search", e.target.value)}
@@ -174,11 +177,11 @@ export function SmartConnectionsFilters({
             <Badge
               key={filter.key}
               variant="outline"
-              className="px-2 py-1 text-xs cursor-pointer hover:bg-gray-50"
+              className="px-2 py-1 text-xs cursor-pointer hover:bg-purple-50 bg-purple-50 text-purple-700 border-purple-200"
               onClick={() => handleRemoveFilter(filter.key, filter.type)}
             >
               {filter.label}
-              <span className="ml-1 text-gray-400">×</span>
+              <span className="ml-1 text-purple-400">×</span>
             </Badge>
           ))}
         </div>

@@ -5,7 +5,7 @@ import { SmartConnection } from "@/types/smartConnection";
 const calculateSmartConnectionStatus = (agents: any[]): "Live" | "In Process" | "Unavailable" | "Disconnected" | "Inactive" => {
   if (agents.length === 0) return "Unavailable";
   
-  // Check if any agent is disconnected
+  // Check if any agent is disconnected/error
   if (agents.some(agent => agent.status === "Disconnected" || agent.status === "Error")) {
     return "Unavailable";
   }
@@ -37,7 +37,7 @@ export const mockSmartConnections: SmartConnection[] = [
     agents: [
       {
         id: "a1",
-        portalName: "SAP Portal",
+        portalName: "SAP Ariba",
         type: "Monto",
         status: "Connected",
         portalUser: "john.doe@microsoft.com",
@@ -45,7 +45,7 @@ export const mockSmartConnections: SmartConnection[] = [
       },
       {
         id: "a2",
-        portalName: "NetSuite Portal",
+        portalName: "Coupa",
         type: "Monto",
         status: "Connected",
         portalUser: "jane.smith@apple.com",
@@ -66,7 +66,7 @@ export const mockSmartConnections: SmartConnection[] = [
     agents: [
       {
         id: "a3",
-        portalName: "Workday Portal",
+        portalName: "Oracle Portal",
         type: "External",
         status: "Connected",
         portalUser: "admin@amazon.com",
@@ -74,7 +74,7 @@ export const mockSmartConnections: SmartConnection[] = [
       },
       {
         id: "a4",
-        portalName: "Oracle Portal",
+        portalName: "Tradeshift",
         type: "Monto",
         status: "Validating",
         portalUser: "setup@google.com",
@@ -95,7 +95,7 @@ export const mockSmartConnections: SmartConnection[] = [
     agents: [
       {
         id: "a5",
-        portalName: "QuickBooks Portal",
+        portalName: "SAP Ariba",
         type: "Monto",
         status: "Disconnected",
         portalUser: "finance@tesla.com",
@@ -116,7 +116,7 @@ export const mockSmartConnections: SmartConnection[] = [
     agents: [
       {
         id: "a6",
-        portalName: "FreshBooks Portal",
+        portalName: "Coupa",
         type: "Monto",
         status: "Building",
         portalUser: "support@spotify.com",
@@ -124,11 +124,61 @@ export const mockSmartConnections: SmartConnection[] = [
       },
       {
         id: "a7",
-        portalName: "Xero Portal",
+        portalName: "Oracle Portal",
         type: "Monto",
         status: "Building",
         portalUser: "billing@netflix.com",
         role: "Submit Invoice"
+      }
+    ]
+  },
+  {
+    id: "5",
+    receivableEntity: "ACME Inc.",
+    payableEntity: "Target Corp",
+    receivableErp: "NetSuite",
+    payableErp: "SAP",
+    status: "Unavailable",
+    agentCount: 2,
+    lastUpdated: "2025-05-06",
+    isActive: true,
+    agents: [
+      {
+        id: "a8",
+        portalName: "SAP Ariba",
+        type: "Monto",
+        status: "Connected",
+        portalUser: "procurement@target.com",
+        role: "Submit Invoice"
+      },
+      {
+        id: "a9",
+        portalName: "Coupa",
+        type: "Monto",
+        status: "Disconnected",
+        portalUser: "finance@acme.com",
+        role: "Monitor Invoice"
+      }
+    ]
+  },
+  {
+    id: "6",
+    receivableEntity: "TechSoft LLC",
+    payableEntity: "Walmart Inc.",
+    receivableErp: "Oracle",
+    payableErp: "Workday",
+    status: "Inactive",
+    agentCount: 1,
+    lastUpdated: "2025-05-01",
+    isActive: false,
+    agents: [
+      {
+        id: "a10",
+        portalName: "Tradeshift",
+        type: "Monto",
+        status: "Connected",
+        portalUser: "vendor@walmart.com",
+        role: "Both"
       }
     ]
   }
@@ -136,5 +186,9 @@ export const mockSmartConnections: SmartConnection[] = [
 
 // Update statuses based on agent statuses
 mockSmartConnections.forEach(connection => {
-  connection.status = calculateSmartConnectionStatus(connection.agents);
+  if (connection.isActive) {
+    connection.status = calculateSmartConnectionStatus(connection.agents);
+  } else {
+    connection.status = "Inactive";
+  }
 });

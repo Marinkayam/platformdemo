@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { MoreVertical } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -25,6 +24,10 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
         return "bg-red-50 text-red-700 border-red-200";
       case "Error":
         return "bg-red-50 text-red-700 border-red-200";
+      case "Validating":
+        return "bg-blue-50 text-blue-700 border-blue-200";
+      case "Building":
+        return "bg-blue-50 text-blue-700 border-blue-200";
       default:
         return "bg-gray-50 text-gray-700 border-gray-200";
     }
@@ -37,23 +40,23 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
 
   if (connection.agents.length === 0) {
     return (
-      <Card className="mx-4 mb-4 p-4 bg-white rounded-xl border border-gray-200">
+      <div className="p-4 bg-white border-t border-gray-200">
         <div className="text-center text-gray-600">
           <p className="text-sm">No agents configured for this connection</p>
           <Button variant="outline" size="sm" className="mt-2">
             Add Agent
           </Button>
         </div>
-      </Card>
+      </div>
     );
   }
 
   return (
     <>
-      <Card className="mx-4 mb-4 p-4 bg-white rounded-xl border border-gray-200">
+      <div className="bg-white border-t border-gray-200">
         <Table>
           <TableHeader>
-            <TableRow className="border-b border-gray-200 bg-transparent">
+            <TableRow className="border-b border-gray-200 bg-gray-50">
               <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
                 Portal Name
               </TableHead>
@@ -117,7 +120,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
             ))}
           </TableBody>
         </Table>
-      </Card>
+      </div>
 
       {selectedAgent && (
         <ViewCredentialsModal

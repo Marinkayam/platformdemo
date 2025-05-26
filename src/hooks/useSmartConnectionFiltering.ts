@@ -1,15 +1,18 @@
 
 import { useState, useMemo } from "react";
-import { SmartConnection, SmartConnectionFilters, defaultSmartConnectionFilters } from "@/types/smartConnection";
+import { SmartConnection, SmartConnectionFilters, defaultSmartConnectionFilters, getSmartConnectionStatusCategory } from "@/types/smartConnection";
 
 export function useSmartConnectionFiltering(connections: SmartConnection[]) {
   const [filters, setFilters] = useState<SmartConnectionFilters>(defaultSmartConnectionFilters);
 
   const filteredConnections = useMemo(() => {
     return connections.filter((connection) => {
-      // Status filter
-      if (filters.status.length > 0 && !filters.status.includes(connection.status)) {
-        return false;
+      // Status filter (using categories)
+      if (filters.status.length > 0) {
+        const statusCategory = getSmartConnectionStatusCategory(connection);
+        if (!filters.status.includes(statusCategory)) {
+          return false;
+        }
       }
 
       // Receivable Entity filter
@@ -22,10 +25,10 @@ export function useSmartConnectionFiltering(connections: SmartConnection[]) {
         return false;
       }
 
-      // Portal filter (check both ERP systems)
+      // Portal filter (check agent portal names)
       if (filters.portal.length > 0) {
         const hasPortal = filters.portal.some(portal => 
-          connection.receivableErp.includes(portal) || connection.payableErp.includes(portal)
+          connection.agents.some(agent => agent.portalName.toLowerCase().includes(portal.toLowerCase()))
         );
         if (!hasPortal) return false;
       }
@@ -35,7 +38,7 @@ export function useSmartConnectionFiltering(connections: SmartConnection[]) {
         return false;
       }
 
-      // Search filter
+      // Enhanced search filter
       if (filters.search) {
         const searchTerm = filters.search.toLowerCase();
         const searchFields = [
@@ -43,7 +46,9 @@ export function useSmartConnectionFiltering(connections: SmartConnection[]) {
           connection.payableEntity,
           connection.receivableErp,
           connection.payableErp,
-          connection.status
+          connection.status,
+          ...connection.agents.map(agent => agent.portalName),
+          ...connection.agents.map(agent => agent.portalUser)
         ];
         
         const matchesSearch = searchFields.some(field => 

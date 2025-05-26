@@ -6,11 +6,17 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
 import { ExpandedAgentCard } from "./ExpandedAgentCard";
+import { SmartConnectionsTableFooter } from "./SmartConnectionsTableFooter";
 import { SmartConnection } from "@/types/smartConnection";
 
 interface SmartConnectionsTableProps {
   connections: SmartConnection[];
 }
+
+const getRandomCompanyName = () => {
+  const companies = ["Monto LTD", "Monto INC", "Monto Corp", "Monto LLC"];
+  return companies[Math.floor(Math.random() * companies.length)];
+};
 
 export function SmartConnectionsTable({ connections }: SmartConnectionsTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
@@ -64,6 +70,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
             </TableRow>
           </TableBody>
         </Table>
+        <SmartConnectionsTableFooter totalConnections={0} />
       </div>
     );
   }
@@ -99,7 +106,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                     {connection.receivableEntity}
                   </div>
                   <div className="text-xs text-gray-500 mt-1">
-                    Monto LTD
+                    {getRandomCompanyName()}
                   </div>
                 </TableCell>
                 <TableCell className="px-4 py-3">
@@ -147,6 +154,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
           ))}
         </TableBody>
       </Table>
+      <SmartConnectionsTableFooter totalConnections={connections.length} />
     </div>
   );
 }

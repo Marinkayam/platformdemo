@@ -38,3 +38,27 @@ export const defaultSmartConnectionFilters: SmartConnectionFilters = {
   search: "",
   viewInactive: false,
 };
+
+// Helper function to get user-friendly status categories
+export const getSmartConnectionStatusCategory = (connection: SmartConnection): string => {
+  if (!connection.isActive) return "Inactive";
+  
+  const agentStatuses = connection.agents.map(agent => agent.status);
+  
+  // Failed: All agents are disconnected or in error
+  if (agentStatuses.length > 0 && agentStatuses.every(status => status === "Disconnected" || status === "Error")) {
+    return "Failed";
+  }
+  
+  // Needs Review: Mixed states with at least one disconnected/error
+  if (agentStatuses.some(status => status === "Disconnected" || status === "Error")) {
+    return "Needs Review";
+  }
+  
+  // Active: Live or In Process
+  if (connection.status === "Live" || connection.status === "In Process") {
+    return "Active";
+  }
+  
+  return "Active";
+};
