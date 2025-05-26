@@ -9,22 +9,6 @@ import { UserTypeSelectionStep } from "./steps/UserTypeSelectionStep";
 import { ExistingUserStep } from "./steps/ExistingUserStep";
 import { DedicatedUserStep } from "./steps/DedicatedUserStep";
 
-// Placeholder component for Agent Setup step
-function AgentSetupStep() {
-  return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <p className="text-[#8C92A3] text-lg">
-          Configure your agent settings for this Smart Connection.
-        </p>
-      </div>
-      <div className="text-center py-8">
-        <p className="text-[#8C92A3]">Agent setup configuration will be implemented here.</p>
-      </div>
-    </div>
-  );
-}
-
 export function NewSmartConnectionWizard() {
   const { state } = useAddAgent();
 
@@ -33,12 +17,10 @@ export function NewSmartConnectionWizard() {
       case 1:
         return <ConnectionSetupStep />;
       case 2:
-        return <AgentSetupStep />;
-      case 3:
         return <PortalSelectionStep />;
-      case 4:
+      case 3:
         return <UserTypeSelectionStep />;
-      case 5:
+      case 4:
         if (state.userType?.type === "existing") {
           return <ExistingUserStep />;
         } else {

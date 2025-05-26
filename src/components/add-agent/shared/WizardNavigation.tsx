@@ -20,13 +20,11 @@ export function WizardNavigation() {
         case 1: // Connection Setup
           return state.connectionSetupData.payableName && 
                  state.connectionSetupData.selectedReceivable !== null;
-        case 2: // Agent Setup (placeholder step)
-          return true;
-        case 3: // Select Portal
+        case 2: // Select Portal
           return state.selectedPortal !== null;
-        case 4: // Choose User Type
+        case 3: // Choose User Type
           return state.userType !== null;
-        case 5: // Configure Credentials
+        case 4: // Configure Credentials
           if (state.userType?.type === "existing") {
             return state.existingUserData.email && 
                    state.existingUserData.password && 

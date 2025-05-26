@@ -16,10 +16,9 @@ export function MontoStepper() {
     if (state.flowType === "new-connection") {
       return [
         { number: 1, title: "Connection Setup" },
-        { number: 2, title: "Agent Setup" },
-        { number: 3, title: "Select Portal" },
-        { number: 4, title: "Choose User Type" },
-        { number: 5, title: "Configure Credentials" }
+        { number: 2, title: "Select Portal" },
+        { number: 3, title: "Choose User Type" },
+        { number: 4, title: "Configure Credentials" }
       ];
     } else {
       return [

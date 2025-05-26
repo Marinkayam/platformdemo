@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface PortalOption {
@@ -132,7 +131,7 @@ export function AddAgentProvider({ children }: { children: ReactNode }) {
   };
 
   const getTotalSteps = () => {
-    return state.flowType === "new-connection" ? 5 : 3;
+    return state.flowType === "new-connection" ? 4 : 3;
   };
 
   return (
