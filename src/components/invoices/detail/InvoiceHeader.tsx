@@ -102,12 +102,14 @@ export function InvoiceHeader({
         <Card className="p-6 rounded-xl">
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-3">
-                  <h1 className="text-lg font-semibold text-[#01173E]">{localInvoice.number}</h1>
+              <div className="flex flex-col gap-3">
+                <div className="text-lg font-semibold text-gray-400 px-2 py-1">
+                  {localInvoice.number}
+                </div>
+                <div className="px-2 py-1">
                   <StatusBadge status={localInvoice.status} dueDate={localInvoice.dueDate} />
                 </div>
-                <div className="text-sm text-gray-600 font-normal my-0">
+                <div className="text-sm text-gray-400 font-normal px-2 py-1">
                   {mockConnectionWithIssue.buyer.name} → {mockConnectionWithIssue.supplier.name}
                 </div>
               </div>
