@@ -17,6 +17,7 @@ export function SmartConnectionStatusBadge({ status, className }: SmartConnectio
       case "Unavailable":
         return "bg-yellow-50 text-yellow-700 border-yellow-200";
       case "Disconnected":
+        return "bg-red-50 text-red-700 border-red-200";
       case "Inactive":
         return "bg-gray-50 text-gray-700 border-gray-200";
       default:

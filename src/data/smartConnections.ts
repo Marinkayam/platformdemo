@@ -1,6 +1,28 @@
 
 import { SmartConnection } from "@/types/smartConnection";
 
+// Helper function to calculate Smart Connection status based on agent statuses
+const calculateSmartConnectionStatus = (agents: any[]): "Live" | "In Process" | "Unavailable" | "Disconnected" | "Inactive" => {
+  if (agents.length === 0) return "Unavailable";
+  
+  // Check if any agent is disconnected
+  if (agents.some(agent => agent.status === "Disconnected" || agent.status === "Error")) {
+    return "Unavailable";
+  }
+  
+  // Check if any agent is in process (validating or building)
+  if (agents.some(agent => agent.status === "Validating" || agent.status === "Building")) {
+    return "In Process";
+  }
+  
+  // If all agents are connected
+  if (agents.every(agent => agent.status === "Connected")) {
+    return "Live";
+  }
+  
+  return "Unavailable";
+};
+
 export const mockSmartConnections: SmartConnection[] = [
   {
     id: "1",
@@ -38,7 +60,7 @@ export const mockSmartConnections: SmartConnection[] = [
     receivableErp: "Oracle",
     payableErp: "Workday",
     status: "In Process",
-    agentCount: 1,
+    agentCount: 2,
     lastUpdated: "2025-05-10",
     isActive: true,
     agents: [
@@ -49,6 +71,14 @@ export const mockSmartConnections: SmartConnection[] = [
         status: "Connected",
         portalUser: "admin@amazon.com",
         role: "Both"
+      },
+      {
+        id: "a4",
+        portalName: "Oracle Portal",
+        type: "Monto",
+        status: "Validating",
+        portalUser: "setup@google.com",
+        role: "Submit Invoice"
       }
     ]
   },
@@ -59,10 +89,19 @@ export const mockSmartConnections: SmartConnection[] = [
     receivableErp: "Sage",
     payableErp: "QuickBooks",
     status: "Unavailable",
-    agentCount: 0,
+    agentCount: 1,
     lastUpdated: "2025-05-08",
-    isActive: false,
-    agents: []
+    isActive: true,
+    agents: [
+      {
+        id: "a5",
+        portalName: "QuickBooks Portal",
+        type: "Monto",
+        status: "Disconnected",
+        portalUser: "finance@tesla.com",
+        role: "Monitor Invoice"
+      }
+    ]
   },
   {
     id: "4",
@@ -70,19 +109,32 @@ export const mockSmartConnections: SmartConnection[] = [
     payableEntity: "Spotify AB",
     receivableErp: "Xero",
     payableErp: "FreshBooks",
-    status: "Disconnected",
-    agentCount: 1,
+    status: "In Process",
+    agentCount: 2,
     lastUpdated: "2025-05-05",
     isActive: true,
     agents: [
       {
-        id: "a4",
+        id: "a6",
         portalName: "FreshBooks Portal",
         type: "Monto",
-        status: "Error",
+        status: "Building",
         portalUser: "support@spotify.com",
         role: "Monitor Invoice"
+      },
+      {
+        id: "a7",
+        portalName: "Xero Portal",
+        type: "Monto",
+        status: "Building",
+        portalUser: "billing@netflix.com",
+        role: "Submit Invoice"
       }
     ]
   }
 ];
+
+// Update statuses based on agent statuses
+mockSmartConnections.forEach(connection => {
+  connection.status = calculateSmartConnectionStatus(connection.agents);
+});

@@ -5,7 +5,7 @@ export interface SmartConnection {
   payableEntity: string;
   receivableErp: string;
   payableErp: string;
-  status: "Live" | "In Process" | "Unavailable" | "Disconnected";
+  status: "Live" | "In Process" | "Unavailable" | "Disconnected" | "Inactive";
   agentCount: number;
   lastUpdated: string;
   isActive: boolean;
@@ -16,7 +16,7 @@ export interface Agent {
   id: string;
   portalName: string;
   type: "Monto" | "External";
-  status: "Connected" | "Disconnected" | "Error";
+  status: "Connected" | "Disconnected" | "Error" | "Validating" | "Building";
   portalUser: string;
   role: "Submit Invoice" | "Monitor Invoice" | "Both";
 }

@@ -39,7 +39,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
           <TableHeader>
             <TableRow className="border-b border-gray-200 bg-white">
               <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
-                Receivable
+                SC
               </TableHead>
               <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
                 Connection Status
@@ -74,7 +74,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
         <TableHeader>
           <TableRow className="border-b border-gray-200 bg-white">
             <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
-              Receivable
+              SC
             </TableHead>
             <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
               Connection Status
@@ -97,6 +97,9 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                 <TableCell className="px-4 py-3">
                   <div className="font-medium text-gray-900 text-base">
                     {connection.receivableEntity}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    Monto LTD
                   </div>
                 </TableCell>
                 <TableCell className="px-4 py-3">

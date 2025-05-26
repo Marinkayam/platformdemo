@@ -22,7 +22,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
       case "Connected":
         return "bg-green-50 text-green-700 border-green-200";
       case "Disconnected":
-        return "bg-gray-50 text-gray-700 border-gray-200";
+        return "bg-red-50 text-red-700 border-red-200";
       case "Error":
         return "bg-red-50 text-red-700 border-red-200";
       default:
@@ -37,7 +37,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
 
   if (connection.agents.length === 0) {
     return (
-      <Card className="mx-4 mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+      <Card className="mx-4 mb-4 p-4 bg-white rounded-xl border border-gray-200">
         <div className="text-center text-gray-600">
           <p className="text-sm">No agents configured for this connection</p>
           <Button variant="outline" size="sm" className="mt-2">
@@ -50,7 +50,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
 
   return (
     <>
-      <Card className="mx-4 mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+      <Card className="mx-4 mb-4 p-4 bg-white rounded-xl border border-gray-200">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-gray-200 bg-transparent">
@@ -71,7 +71,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
           </TableHeader>
           <TableBody>
             {connection.agents.map((agent) => (
-              <TableRow key={agent.id} className="hover:bg-white transition-colors">
+              <TableRow key={agent.id} className="hover:bg-gray-50/50 transition-colors">
                 <TableCell className="px-6 py-3">
                   <div className="font-medium text-gray-900 text-base">
                     {agent.portalName}
