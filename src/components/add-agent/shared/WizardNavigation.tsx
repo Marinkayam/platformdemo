@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useAddAgent } from "@/context/AddAgentContext";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export function WizardNavigation() {
   const { state, setCurrentStep } = useAddAgent();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const canGoBack = state.currentStep > 1;
+  
   const canGoNext = () => {
     switch (state.currentStep) {
       case 1:
@@ -17,7 +20,15 @@ export function WizardNavigation() {
       case 2:
         return state.userType !== null;
       case 3:
-        return true; // Will be validated in individual steps
+        if (state.userType?.type === "existing") {
+          return state.existingUserData.email && 
+                 state.existingUserData.password && 
+                 state.existingUserData.confirmPassword &&
+                 state.existingUserData.portalLink &&
+                 state.existingUserData.password === state.existingUserData.confirmPassword;
+        } else {
+          return state.dedicatedUserData.confirmed;
+        }
       default:
         return false;
     }
@@ -39,6 +50,18 @@ export function WizardNavigation() {
     navigate('/smart-connections');
   };
 
+  const handleSubmit = () => {
+    toast({
+      title: "✅ Agent created successfully",
+      description: "Status: Building",
+    });
+    
+    // Auto-close wizard after short delay
+    setTimeout(() => {
+      navigate('/smart-connections');
+    }, 2000);
+  };
+
   const isLastStep = state.currentStep === 3;
 
   return (
@@ -48,7 +71,7 @@ export function WizardNavigation() {
           <Button
             variant="outline"
             onClick={handleCancel}
-            className="text-gray-600"
+            className="text-[#8C92A3]"
           >
             Cancel
           </Button>
@@ -76,7 +99,7 @@ export function WizardNavigation() {
           </Button>
         ) : (
           <Button
-            type="submit"
+            onClick={handleSubmit}
             disabled={!canGoNext()}
             className="min-w-32 bg-[#7B59FF] hover:bg-[#6B4FE6]"
           >

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useAddAgent } from "@/context/AddAgentContext";
-import { StepIndicator } from "./shared/StepIndicator";
+import { MontoStepper } from "./shared/MontoStepper";
 import { WizardNavigation } from "./shared/WizardNavigation";
 import { PortalSelectionStep } from "./steps/PortalSelectionStep";
 import { UserTypeSelectionStep } from "./steps/UserTypeSelectionStep";
@@ -29,10 +29,10 @@ export function AddAgentWizard() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-xl border shadow-sm p-8">
+    <div className="max-w-[1280px] mx-auto px-6">
+      <div className="bg-white rounded-xl border shadow-sm p-6">
         <div className="space-y-8">
-          <StepIndicator />
+          <MontoStepper />
           {renderCurrentStep()}
           <WizardNavigation />
         </div>

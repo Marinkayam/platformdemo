@@ -27,7 +27,7 @@ export function InstructionalCard({ portalName }: InstructionalCardProps) {
     <Card className="bg-[#7B59FF]/5 border-[#7B59FF]/20">
       <CardHeader>
         <CardTitle className="text-xl text-[#7B59FF] font-semibold">
-          Create Dedicated User in {portalName}
+          Instructions
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -36,8 +36,8 @@ export function InstructionalCard({ portalName }: InstructionalCardProps) {
             <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
               1
             </div>
-            <p className="text-gray-700 pt-1">
-              Log in to your portal.
+            <p className="text-[#38415F] pt-1">
+              Log into your {portalName} portal
             </p>
           </div>
           
@@ -45,7 +45,7 @@ export function InstructionalCard({ portalName }: InstructionalCardProps) {
             <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
               2
             </div>
-            <p className="text-gray-700 pt-1">
+            <p className="text-[#38415F] pt-1">
               Navigate to: <span className="font-semibold">Settings → Users → Add New User</span>
             </p>
           </div>
@@ -55,11 +55,11 @@ export function InstructionalCard({ portalName }: InstructionalCardProps) {
               3
             </div>
             <div className="space-y-3 flex-1">
-              <p className="text-gray-700 pt-1">
-                Use the following:
+              <p className="text-[#38415F] pt-1">
+                Use:
               </p>
               <div>
-                <Label className="block text-sm font-semibold text-gray-700 mb-2">
+                <Label className="block text-sm font-semibold text-[#38415F] mb-2">
                   Monto Username:
                 </Label>
                 <div className="flex items-center space-x-3 bg-white border-2 border-[#7B59FF]/20 rounded-lg p-4">
@@ -82,17 +82,17 @@ export function InstructionalCard({ portalName }: InstructionalCardProps) {
               4
             </div>
             <div className="space-y-3 flex-1">
-              <p className="text-gray-700 pt-1">
-                Grant the following permissions:
+              <p className="text-[#38415F] pt-1">
+                Grant Permissions:
               </p>
               <ul className="space-y-2 ml-2">
-                <li className="flex items-center space-x-3 text-gray-700">
+                <li className="flex items-center space-x-3 text-[#38415F]">
                   <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="font-medium">Full access for invoice submission</span>
+                  <span className="font-medium">✅ Full access to invoice submission</span>
                 </li>
-                <li className="flex items-center space-x-3 text-gray-700">
+                <li className="flex items-center space-x-3 text-[#38415F]">
                   <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
-                  <span className="font-medium">Full access for portal management</span>
+                  <span className="font-medium">✅ Full access to portal management</span>
                 </li>
               </ul>
             </div>

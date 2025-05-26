@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useAddAgent } from "@/context/AddAgentContext";
-import { CredentialForm } from "../components/CredentialForm";
+import { EnhancedCredentialForm } from "../components/EnhancedCredentialForm";
 
 export function ExistingUserStep() {
   const { state, updateExistingUserData } = useAddAgent();
@@ -9,12 +9,12 @@ export function ExistingUserStep() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <p className="text-gray-600">
+        <p className="text-[#8C92A3]">
           Enter the credentials for your existing portal user account that Monto will use for automation.
         </p>
       </div>
       
-      <CredentialForm
+      <EnhancedCredentialForm
         data={state.existingUserData}
         onUpdate={updateExistingUserData}
       />
