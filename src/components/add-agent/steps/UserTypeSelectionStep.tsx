@@ -11,56 +11,35 @@ export function UserTypeSelectionStep() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <div className="flex items-start space-x-3">
-          <div className="text-yellow-600 text-lg">💡</div>
-          <div>
-            <h3 className="font-medium text-yellow-800">Pro Tip</h3>
-            <p className="text-sm text-yellow-700 mt-1">
-              For best results, we recommend creating a dedicated user in your portal. This ensures optimal automation performance and security.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
+    <div className="space-y-8">
+      <div className="grid md:grid-cols-2 gap-8">
         <UserTypeCard
           type="existing"
-          title="Use Existing User"
-          description="Connect using an existing portal user account"
+          title="Select Existing User"
+          description="Use one of your organization's existing portal users to connect Monto."
           benefits={[
-            "Quick setup process",
-            "Works with any portal user",
-            "No additional user creation needed"
+            "Quick to set up",
+            "Compatible with most portals"
           ]}
           considerations={[
-            "May affect user activity tracking",
-            "Potential stability issues",
-            "Limited optimization features"
+            "Shared use may affect tracking or stability"
           ]}
           selected={state.userType?.type === "existing"}
           onSelect={() => handleUserTypeSelect("existing")}
-          variant="purple"
         />
 
         <UserTypeCard
           type="dedicated"
-          title="Create Dedicated User"
-          description="Set up a dedicated Monto user for optimal automation"
+          title="Create a Dedicated Monto User"
+          description="Set up a separate user in your AP portal exclusively for Monto."
           benefits={[
             "Optimized for automation",
-            "Enhanced security features",
-            "Advanced monitoring capabilities",
-            "Better error handling"
+            "Secure and stable",
+            "Unlocks advanced features"
           ]}
-          considerations={[
-            "Requires admin access to portal",
-            "Additional setup steps needed"
-          ]}
+          considerations={[]}
           selected={state.userType?.type === "dedicated"}
           onSelect={() => handleUserTypeSelect("dedicated")}
-          variant="green"
           recommended={true}
         />
       </div>

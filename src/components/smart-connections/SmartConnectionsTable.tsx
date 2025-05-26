@@ -8,6 +8,7 @@ import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-sta
 import { ExpandedAgentCard } from "./ExpandedAgentCard";
 import { SmartConnectionsTableFooter } from "./SmartConnectionsTableFooter";
 import { SmartConnection } from "@/types/smartConnection";
+import { useNavigate } from "react-router-dom";
 
 interface SmartConnectionsTableProps {
   connections: SmartConnection[];
@@ -20,6 +21,7 @@ const getRandomCompanyName = () => {
 
 export function SmartConnectionsTable({ connections }: SmartConnectionsTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const navigate = useNavigate();
 
   const toggleRow = (connectionId: string) => {
     const newExpanded = new Set(expandedRows);
@@ -36,6 +38,10 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
       return;
     }
     toggleRow(connectionId);
+  };
+
+  const handleAddAgent = (connectionId: string) => {
+    navigate(`/smart-connections/add-agent?connectionId=${connectionId}`);
   };
 
   if (connections.length === 0) {
@@ -133,7 +139,9 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
                           <DropdownMenuItem>Edit SC</DropdownMenuItem>
-                          <DropdownMenuItem>Add Agent</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleAddAgent(connection.id)}>
+                            Add Agent
+                          </DropdownMenuItem>
                           <DropdownMenuItem className="text-red-600">
                             Deactivate
                           </DropdownMenuItem>

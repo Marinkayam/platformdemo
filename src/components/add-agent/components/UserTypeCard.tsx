@@ -13,7 +13,6 @@ interface UserTypeCardProps {
   considerations: string[];
   selected: boolean;
   onSelect: () => void;
-  variant: "green" | "purple";
   recommended?: boolean;
 }
 
@@ -25,65 +24,53 @@ export function UserTypeCard({
   considerations,
   selected,
   onSelect,
-  variant,
   recommended = false
 }: UserTypeCardProps) {
-  const variantStyles = {
-    green: {
-      border: selected ? "border-green-500" : "border-green-200",
-      header: "bg-green-50",
-      badge: "bg-green-100 text-green-800"
-    },
-    purple: {
-      border: selected ? "border-purple-500" : "border-purple-200",
-      header: "bg-purple-50",
-      badge: "bg-purple-100 text-purple-800"
-    }
-  };
-
   return (
     <Card 
       className={cn(
-        "cursor-pointer transition-all hover:shadow-md",
-        variantStyles[variant].border,
-        selected && "ring-2 ring-offset-2",
-        selected && variant === "green" && "ring-green-500",
-        selected && variant === "purple" && "ring-purple-500"
+        "cursor-pointer transition-all hover:shadow-lg min-h-[400px]",
+        "border-2",
+        selected 
+          ? "border-[#7B59FF] shadow-lg ring-2 ring-[#7B59FF]/20" 
+          : "border-gray-200 hover:border-[#7B59FF]/50"
       )}
       onClick={onSelect}
     >
-      <CardHeader className={cn("pb-4", variantStyles[variant].header)}>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">{title}</CardTitle>
+      <CardHeader className="pb-6">
+        <div className="flex items-center justify-between mb-2">
+          <CardTitle className="text-xl font-semibold">{title}</CardTitle>
           {recommended && (
-            <Badge className={variantStyles[variant].badge}>
+            <Badge className="bg-[#7B59FF] text-white hover:bg-[#6B4FE6]">
               Recommended
             </Badge>
           )}
         </div>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription className="text-base leading-relaxed">
+          {description}
+        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <h4 className="font-medium text-sm text-gray-900">Benefits:</h4>
-          <ul className="space-y-1">
+      <CardContent className="space-y-6">
+        <div className="space-y-3">
+          <h4 className="font-semibold text-gray-900">Benefits:</h4>
+          <ul className="space-y-2">
             {benefits.map((benefit, index) => (
-              <li key={index} className="flex items-start gap-2 text-sm text-gray-600">
-                <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                {benefit}
+              <li key={index} className="flex items-start gap-3 text-gray-700">
+                <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <span className="text-sm leading-relaxed">{benefit}</span>
               </li>
             ))}
           </ul>
         </div>
         
         {considerations.length > 0 && (
-          <div className="space-y-2">
-            <h4 className="font-medium text-sm text-gray-900">Considerations:</h4>
-            <ul className="space-y-1">
+          <div className="space-y-3">
+            <h4 className="font-semibold text-gray-900">Considerations:</h4>
+            <ul className="space-y-2">
               {considerations.map((consideration, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-gray-600">
-                  <AlertTriangle className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
-                  {consideration}
+                <li key={index} className="flex items-start gap-3 text-gray-700">
+                  <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm leading-relaxed">{consideration}</span>
                 </li>
               ))}
             </ul>

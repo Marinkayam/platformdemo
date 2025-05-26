@@ -2,7 +2,7 @@
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { TwoFactorSetup } from "./TwoFactorSetup";
+import { EnhancedTwoFactorSetup } from "./EnhancedTwoFactorSetup";
 import { ExistingUserData } from "@/context/AddAgentContext";
 
 interface CredentialFormProps {
@@ -12,54 +12,60 @@ interface CredentialFormProps {
 
 export function CredentialForm({ data, onUpdate }: CredentialFormProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <Label htmlFor="email">Email Address</Label>
+          <Label htmlFor="email">Username *</Label>
           <Input
             id="email"
-            type="email"
+            type="text"
             value={data.email}
             onChange={(e) => onUpdate({ email: e.target.value })}
-            placeholder="user@company.com"
+            placeholder="Enter the username for the portal"
+            className="h-12"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="portalLink">Portal Link</Label>
+          <Label htmlFor="portalLink">Portal Link *</Label>
           <Input
             id="portalLink"
             type="url"
             value={data.portalLink}
             onChange={(e) => onUpdate({ portalLink: e.target.value })}
-            placeholder="https://portal.example.com"
+            placeholder="Paste portal login link"
+            className="h-12"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Password *</Label>
           <Input
             id="password"
             type="password"
             value={data.password}
             onChange={(e) => onUpdate({ password: e.target.value })}
-            placeholder="Enter password"
+            placeholder="Enter the password for the portal"
+            className="h-12"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Confirm Password</Label>
+          <Label htmlFor="confirmPassword">Confirm Password *</Label>
           <Input
             id="confirmPassword"
             type="password"
             value={data.confirmPassword}
             onChange={(e) => onUpdate({ confirmPassword: e.target.value })}
-            placeholder="Confirm password"
+            placeholder="Enter the password again"
+            className="h-12"
           />
         </div>
       </div>
       
-      <TwoFactorSetup data={data} onUpdate={onUpdate} />
+      <div className="border-t pt-8">
+        <EnhancedTwoFactorSetup data={data} onUpdate={onUpdate} />
+      </div>
     </div>
   );
 }

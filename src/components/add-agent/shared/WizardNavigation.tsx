@@ -3,9 +3,11 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useAddAgent } from "@/context/AddAgentContext";
+import { useNavigate } from "react-router-dom";
 
 export function WizardNavigation() {
   const { state, setCurrentStep } = useAddAgent();
+  const navigate = useNavigate();
 
   const canGoBack = state.currentStep > 1;
   const canGoNext = () => {
@@ -33,11 +35,24 @@ export function WizardNavigation() {
     }
   };
 
+  const handleCancel = () => {
+    navigate('/smart-connections');
+  };
+
   const isLastStep = state.currentStep === 3;
 
   return (
     <div className="flex justify-between items-center pt-6 border-t">
-      <div>
+      <div className="flex gap-3">
+        {state.currentStep === 1 && (
+          <Button
+            variant="outline"
+            onClick={handleCancel}
+            className="text-gray-600"
+          >
+            Cancel
+          </Button>
+        )}
         {canGoBack && (
           <Button
             variant="outline"
@@ -55,7 +70,7 @@ export function WizardNavigation() {
           <Button
             onClick={handleNext}
             disabled={!canGoNext()}
-            className="min-w-24"
+            className="min-w-24 bg-[#7B59FF] hover:bg-[#6B4FE6]"
           >
             Next
           </Button>
@@ -63,9 +78,9 @@ export function WizardNavigation() {
           <Button
             type="submit"
             disabled={!canGoNext()}
-            className="min-w-24"
+            className="min-w-32 bg-[#7B59FF] hover:bg-[#6B4FE6]"
           >
-            Create Agent
+            Submit New Agent
           </Button>
         )}
       </div>

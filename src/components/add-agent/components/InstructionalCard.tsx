@@ -23,74 +23,75 @@ export function InstructionalCard({ portalName }: InstructionalCardProps) {
   };
 
   return (
-    <Card className="bg-blue-50 border-blue-200">
+    <Card className="bg-[#7B59FF]/5 border-[#7B59FF]/20">
       <CardHeader>
-        <CardTitle className="text-lg text-blue-900">
+        <CardTitle className="text-xl text-[#7B59FF] font-semibold">
           Create Dedicated User in {portalName}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-3">
-          <div className="flex items-start space-x-3">
-            <div className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium">
+      <CardContent className="space-y-6">
+        <div className="space-y-4">
+          <div className="flex items-start space-x-4">
+            <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
               1
             </div>
-            <p className="text-sm text-gray-700">
-              Log in to your {portalName} portal with admin privileges
+            <p className="text-gray-700 pt-1">
+              Log in to your portal.
             </p>
           </div>
           
-          <div className="flex items-start space-x-3">
-            <div className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium">
+          <div className="flex items-start space-x-4">
+            <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
               2
             </div>
-            <p className="text-sm text-gray-700">
-              Navigate to <code className="bg-gray-100 px-1 rounded">User Management</code> or <code className="bg-gray-100 px-1 rounded">Administration</code>
+            <p className="text-gray-700 pt-1">
+              Navigate to: <span className="font-semibold">Settings → Users → Add New User</span>
             </p>
           </div>
           
-          <div className="flex items-start space-x-3">
-            <div className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium">
+          <div className="flex items-start space-x-4">
+            <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
               3
             </div>
-            <div className="space-y-2 flex-1">
-              <p className="text-sm text-gray-700">
-                Create a new user with this username:
+            <div className="space-y-3 flex-1">
+              <p className="text-gray-700 pt-1">
+                Use the following:
               </p>
-              <div className="flex items-center space-x-2 bg-white border rounded-lg p-3">
-                <code className="flex-1 text-sm font-mono">{generatedUsername}</code>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={handleCopyUsername}
-                  className="h-8 w-8 p-0"
-                >
-                  <Copy className="h-3 w-3" />
-                </Button>
+              <div>
+                <Label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Monto Username:
+                </Label>
+                <div className="flex items-center space-x-3 bg-white border-2 border-[#7B59FF]/20 rounded-lg p-4">
+                  <code className="flex-1 text-sm font-mono text-[#7B59FF] font-semibold">{generatedUsername}</code>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleCopyUsername}
+                    className="h-8 w-8 p-0 border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
           
-          <div className="flex items-start space-x-3">
-            <div className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium">
+          <div className="flex items-start space-x-4">
+            <div className="bg-[#7B59FF] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">
               4
             </div>
-            <div className="space-y-2">
-              <p className="text-sm text-gray-700">
+            <div className="space-y-3 flex-1">
+              <p className="text-gray-700 pt-1">
                 Grant the following permissions:
               </p>
-              <ul className="space-y-1 ml-4">
-                <li className="flex items-center space-x-2 text-sm text-gray-700">
-                  <Check className="h-4 w-4 text-green-500" />
-                  <span>Submit invoices</span>
+              <ul className="space-y-2 ml-2">
+                <li className="flex items-center space-x-3 text-gray-700">
+                  <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="font-medium">Full access for invoice submission</span>
                 </li>
-                <li className="flex items-center space-x-2 text-sm text-gray-700">
-                  <Check className="h-4 w-4 text-green-500" />
-                  <span>View invoice status</span>
-                </li>
-                <li className="flex items-center space-x-2 text-sm text-gray-700">
-                  <Check className="h-4 w-4 text-green-500" />
-                  <span>Access portal API (if available)</span>
+                <li className="flex items-center space-x-3 text-gray-700">
+                  <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="font-medium">Full access for portal management</span>
                 </li>
               </ul>
             </div>
