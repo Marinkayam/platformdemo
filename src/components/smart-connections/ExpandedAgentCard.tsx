@@ -6,15 +6,18 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ViewCredentialsModal } from "./ViewCredentialsModal";
-import { SmartConnection } from "@/types/smartConnection";
+import { DeactivateAgentModal } from "./DeactivateAgentModal";
+import { SmartConnection, Agent } from "@/types/smartConnection";
 
 interface ExpandedAgentCardProps {
   connection: SmartConnection;
 }
 
 export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
-  const [selectedAgent, setSelectedAgent] = useState<any>(null);
+  const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
   const [isCredentialsModalOpen, setIsCredentialsModalOpen] = useState(false);
+  const [isDeactivateModalOpen, setIsDeactivateModalOpen] = useState(false);
+  const [agentToDeactivate, setAgentToDeactivate] = useState<Agent | null>(null);
 
   const getAgentStatusColor = (status: string) => {
     switch (status) {
@@ -33,9 +36,14 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
     }
   };
 
-  const handleViewCredentials = (agent: any) => {
+  const handleViewCredentials = (agent: Agent) => {
     setSelectedAgent(agent);
     setIsCredentialsModalOpen(true);
+  };
+
+  const handleDeactivateAgent = (agent: Agent) => {
+    setAgentToDeactivate(agent);
+    setIsDeactivateModalOpen(true);
   };
 
   if (connection.agents.length === 0) {
@@ -115,7 +123,12 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
                       <DropdownMenuItem>Edit Agent</DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600">Deactivate Agent</DropdownMenuItem>
+                      <DropdownMenuItem 
+                        className="text-red-600"
+                        onClick={() => handleDeactivateAgent(agent)}
+                      >
+                        Deactivate Agent
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
@@ -139,6 +152,15 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
           }}
         />
       )}
+
+      <DeactivateAgentModal
+        isOpen={isDeactivateModalOpen}
+        onClose={() => {
+          setIsDeactivateModalOpen(false);
+          setAgentToDeactivate(null);
+        }}
+        agent={agentToDeactivate}
+      />
     </>
   );
 }

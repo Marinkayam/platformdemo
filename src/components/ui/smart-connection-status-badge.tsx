@@ -1,6 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface SmartConnectionStatusBadgeProps {
   status: "Live" | "In Process" | "Unavailable" | "Disconnected" | "Inactive";
@@ -25,16 +26,40 @@ export function SmartConnectionStatusBadge({ status, className }: SmartConnectio
     }
   };
 
+  const getTooltipText = () => {
+    switch (status) {
+      case "Live":
+        return "All agents are connected and operating smoothly. No action needed — this connection is working as expected.";
+      case "In Process":
+        return "This connection is still being set up. Agents are building or validating instructions in the background.";
+      case "Unavailable":
+        return "One or more agents are disconnected. Credentials may be outdated or missing — please review to restore connection.";
+      case "Inactive":
+        return "This Smart Connection was manually turned off. No activity will occur until reactivated.";
+      default:
+        return "";
+    }
+  };
+
   return (
-    <Badge
-      variant="outline"
-      className={cn(
-        "px-2.5 py-1 text-xs font-medium rounded-full border",
-        getStatusStyles(),
-        className
-      )}
-    >
-      {status}
-    </Badge>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Badge
+            variant="outline"
+            className={cn(
+              "px-2.5 py-1 text-xs font-medium rounded-full border cursor-help",
+              getStatusStyles(),
+              className
+            )}
+          >
+            {status}
+          </Badge>
+        </TooltipTrigger>
+        <TooltipContent className="max-w-xs bg-white border shadow-lg z-50">
+          <p className="text-sm">{getTooltipText()}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
