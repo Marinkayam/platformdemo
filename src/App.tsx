@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Invoices from "./pages/Invoices";
 import InvoiceDetail from "./pages/InvoiceDetail";
 import SmartConnections from "./pages/SmartConnections";
+import AddAgent from "./pages/AddAgent";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
 import { NotificationsProvider } from "./context/NotificationsContext";
@@ -54,6 +55,14 @@ const App = () => (
               element={
                 <MainLayout>
                   <SmartConnections />
+                </MainLayout>
+              } 
+            />
+            <Route 
+              path="/smart-connections/add-agent" 
+              element={
+                <MainLayout>
+                  <AddAgent />
                 </MainLayout>
               } 
             />

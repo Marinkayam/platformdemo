@@ -1,11 +1,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function SmartConnectionsHeader() {
+  const navigate = useNavigate();
+
   const handleNewConnection = () => {
-    console.log("New connection clicked");
-    // TODO: Implement new connection modal
+    navigate("/smart-connections/add-agent");
   };
 
   return (
