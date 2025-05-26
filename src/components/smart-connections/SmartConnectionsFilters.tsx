@@ -101,7 +101,7 @@ export function SmartConnectionsFilters({
           <FilterDropdown 
             label="SC Status" 
             value={filters.status} 
-            options={statusOptions}
+            options={statusOptions.map(opt => opt.value)}
             onSelect={(value) => onFilterChange("status", value)}
             multiSelect
           />
@@ -109,7 +109,7 @@ export function SmartConnectionsFilters({
           <FilterDropdown 
             label="Receivable Entity" 
             value={filters.receivableEntity} 
-            options={receivableEntityOptions}
+            options={receivableEntityOptions.map(opt => opt.value)}
             onSelect={(value) => onFilterChange("receivableEntity", value)}
             multiSelect
             searchable
@@ -118,7 +118,7 @@ export function SmartConnectionsFilters({
           <FilterDropdown 
             label="Payable" 
             value={filters.payable} 
-            options={payableOptions}
+            options={payableOptions.map(opt => opt.value)}
             onSelect={(value) => onFilterChange("payable", value)}
             multiSelect
             searchable
@@ -127,7 +127,7 @@ export function SmartConnectionsFilters({
           <FilterDropdown 
             label="Portal" 
             value={filters.portal} 
-            options={portalOptions}
+            options={portalOptions.map(opt => opt.value)}
             onSelect={(value) => onFilterChange("portal", value)}
             multiSelect
             searchable
