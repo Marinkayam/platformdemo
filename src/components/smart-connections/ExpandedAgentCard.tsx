@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { MoreVertical } from "lucide-react";
+import { MoreVertical, FileLock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -67,7 +67,6 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
                 Status
               </TableHead>
               <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
-                View Credentials
               </TableHead>
               <TableHead className="w-12"></TableHead>
             </TableRow>
@@ -76,9 +75,12 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
             {connection.agents.map((agent) => (
               <TableRow key={agent.id} className="hover:bg-gray-50/50 transition-colors">
                 <TableCell className="px-6 py-3">
-                  <div className="font-medium text-gray-900 text-base">
+                  <button
+                    onClick={() => handleViewCredentials(agent)}
+                    className="font-medium text-gray-900 text-base hover:text-blue-600 hover:underline transition-colors text-left"
+                  >
                     {agent.portalName}
-                  </div>
+                  </button>
                 </TableCell>
                 <TableCell className="px-6 py-3">
                   <div className="text-gray-600 text-sm">
@@ -97,10 +99,11 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
                   <Button 
                     variant="link" 
                     size="sm" 
-                    className="text-blue-600 p-0 h-auto underline-offset-4 hover:underline text-sm"
+                    className="text-blue-600 p-0 h-auto underline-offset-4 hover:underline text-sm flex items-center gap-2"
                     onClick={() => handleViewCredentials(agent)}
                   >
-                    🔗 View Credentials
+                    <FileLock className="h-4 w-4" color="#01173E" strokeWidth={1} />
+                    View Credentials
                   </Button>
                 </TableCell>
                 <TableCell className="px-6 py-3">
