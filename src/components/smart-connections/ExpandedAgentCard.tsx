@@ -46,6 +46,15 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
     setIsDeactivateModalOpen(true);
   };
 
+  const handleConfirmDeactivation = () => {
+    if (agentToDeactivate) {
+      // TODO: Implement actual agent deactivation logic
+      console.log('Deactivating agent:', agentToDeactivate.id);
+      setIsDeactivateModalOpen(false);
+      setAgentToDeactivate(null);
+    }
+  };
+
   if (connection.agents.length === 0) {
     return (
       <div className="p-4 bg-white border-t border-gray-200">
@@ -159,6 +168,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
           setIsDeactivateModalOpen(false);
           setAgentToDeactivate(null);
         }}
+        onConfirm={handleConfirmDeactivation}
         agent={agentToDeactivate}
       />
     </>

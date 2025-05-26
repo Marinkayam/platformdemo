@@ -16,7 +16,7 @@ interface DeactivateAgentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  agent: Agent;
+  agent: Agent | null;
 }
 
 export function DeactivateAgentModal({
@@ -25,6 +25,10 @@ export function DeactivateAgentModal({
   onConfirm,
   agent
 }: DeactivateAgentModalProps) {
+  if (!agent) {
+    return null;
+  }
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
