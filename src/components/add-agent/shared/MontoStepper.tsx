@@ -35,7 +35,7 @@ export function MontoStepper() {
     <div className="flex items-center justify-center w-full">
       <div className="flex items-center space-x-4">
         {steps.map((step, index) => (
-          <React.Fragment key={step.number}>
+          <div key={step.number}>
             <div className="flex flex-col items-center space-y-2">
               <div
                 className={cn(
@@ -61,7 +61,7 @@ export function MontoStepper() {
             {index < steps.length - 1 && (
               <div className="w-12 h-px bg-gray-200 mt-[-20px]" />
             )}
-          </React.Fragment>
+          </div>
         ))}
       </div>
     </div>

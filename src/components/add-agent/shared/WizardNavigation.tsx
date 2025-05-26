@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
@@ -15,6 +16,8 @@ export function WizardNavigation() {
   const canGoBack = state.currentStep > 1;
   
   const canGoNext = () => {
+    console.log("Checking canGoNext for flow:", state.flowType, "step:", state.currentStep);
+    
     if (state.flowType === "new-connection") {
       switch (state.currentStep) {
         case 1: // Connection Setup
@@ -67,18 +70,38 @@ export function WizardNavigation() {
       // Add Agent flow (3 steps)
       switch (state.currentStep) {
         case 1:
-          return state.selectedPortal !== null;
+          const addAgentStep1Valid = state.selectedPortal !== null;
+          console.log("Add Agent Step 1 validation:", {
+            selectedPortal: state.selectedPortal,
+            isValid: addAgentStep1Valid
+          });
+          return addAgentStep1Valid;
         case 2:
-          return state.userType !== null;
+          const addAgentStep2Valid = state.userType !== null;
+          console.log("Add Agent Step 2 validation:", {
+            userType: state.userType,
+            isValid: addAgentStep2Valid
+          });
+          return addAgentStep2Valid;
         case 3:
           if (state.userType?.type === "existing") {
-            return state.existingUserData.email && 
+            const addAgentStep3ExistingValid = state.existingUserData.email && 
                    state.existingUserData.password && 
                    state.existingUserData.confirmPassword &&
                    state.existingUserData.portalLink &&
                    state.existingUserData.password === state.existingUserData.confirmPassword;
+            console.log("Add Agent Step 3 (existing) validation:", {
+              existingUserData: state.existingUserData,
+              isValid: addAgentStep3ExistingValid
+            });
+            return addAgentStep3ExistingValid;
           } else {
-            return state.dedicatedUserData.confirmed;
+            const addAgentStep3DedicatedValid = state.dedicatedUserData.confirmed;
+            console.log("Add Agent Step 3 (dedicated) validation:", {
+              dedicatedUserData: state.dedicatedUserData,
+              isValid: addAgentStep3DedicatedValid
+            });
+            return addAgentStep3DedicatedValid;
           }
         default:
           return false;
@@ -87,23 +110,32 @@ export function WizardNavigation() {
   };
 
   const handleBack = () => {
+    console.log("Back button clicked");
     if (canGoBack) {
       setCurrentStep(state.currentStep - 1);
     }
   };
 
   const handleNext = () => {
-    console.log("Next button clicked, canGoNext:", canGoNext());
-    if (canGoNext()) {
+    console.log("Next button clicked, current step:", state.currentStep, "canGoNext:", canGoNext());
+    const isValid = canGoNext();
+    console.log("Validation result:", isValid);
+    
+    if (isValid) {
+      console.log("Moving to next step:", state.currentStep + 1);
       setCurrentStep(state.currentStep + 1);
+    } else {
+      console.log("Cannot proceed - validation failed");
     }
   };
 
   const handleCancel = () => {
+    console.log("Cancel button clicked");
     navigate('/smart-connections');
   };
 
   const handleSubmit = () => {
+    console.log("Submit button clicked");
     const successMessage = state.flowType === "new-connection" 
       ? "✅ Smart Connection created successfully"
       : "✅ Agent created successfully";
@@ -127,7 +159,8 @@ export function WizardNavigation() {
     totalSteps,
     isLastStep,
     nextButtonEnabled,
-    flowType: state.flowType
+    flowType: state.flowType,
+    canGoNext: canGoNext()
   });
 
   return (

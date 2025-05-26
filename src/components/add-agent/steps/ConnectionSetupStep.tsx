@@ -35,19 +35,22 @@ export function ConnectionSetupStep() {
   console.log("ConnectionSetupStep state:", {
     payableName: state.connectionSetupData.payableName,
     selectedReceivable: state.connectionSetupData.selectedReceivable,
-    currentStep: state.currentStep
+    currentStep: state.currentStep,
+    flowType: state.flowType
   });
 
   const handlePayableSelect = (payable: string) => {
     console.log("Payable selected:", payable);
     updateConnectionSetupData({ payableName: payable });
     setPayableDropdownOpen(false);
+    console.log("Updated payable state:", payable);
   };
 
   const handleReceivableSelect = (receivable: ReceivableOption) => {
     console.log("Receivable selected:", receivable);
     updateConnectionSetupData({ selectedReceivable: receivable });
     setReceivableDropdownOpen(false);
+    console.log("Updated receivable state:", receivable);
   };
 
   return (
