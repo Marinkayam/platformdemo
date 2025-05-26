@@ -1,30 +1,18 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { AddAgentWizard } from "@/components/add-agent/AddAgentWizard";
 import { AddAgentBreadcrumb } from "@/components/add-agent/AddAgentBreadcrumb";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AddAgentProvider, useAddAgent } from "@/context/AddAgentContext";
-
-function AddAgentContent() {
-  const { setFlowType } = useAddAgent();
-
-  useEffect(() => {
-    setFlowType("add-agent");
-  }, [setFlowType]);
-
-  return (
-    <div className="space-y-6">
-      <AddAgentBreadcrumb />
-      <AddAgentWizard />
-    </div>
-  );
-}
+import { AddAgentProvider } from "@/context/AddAgentContext";
 
 export default function AddAgent() {
   return (
     <TooltipProvider>
       <AddAgentProvider>
-        <AddAgentContent />
+        <div className="space-y-6">
+          <AddAgentBreadcrumb />
+          <AddAgentWizard />
+        </div>
       </AddAgentProvider>
     </TooltipProvider>
   );

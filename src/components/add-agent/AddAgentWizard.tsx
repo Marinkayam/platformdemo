@@ -12,7 +12,6 @@ export function AddAgentWizard() {
   const { state } = useAddAgent();
 
   const renderCurrentStep = () => {
-    // For add-agent flow, map steps 1,2,3 to portal, user type, credentials
     switch (state.currentStep) {
       case 1:
         return <PortalSelectionStep />;

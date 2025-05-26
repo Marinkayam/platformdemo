@@ -8,34 +8,20 @@ interface StepData {
   title: string;
 }
 
+const steps: StepData[] = [
+  { number: 1, title: "Select Portal" },
+  { number: 2, title: "Choose User Type" },
+  { number: 3, title: "Configure Credentials" }
+];
+
 export function MontoStepper() {
-  const { state, getTotalSteps } = useAddAgent();
-  const totalSteps = getTotalSteps();
-
-  const getSteps = (): StepData[] => {
-    if (state.flowType === "new-connection") {
-      return [
-        { number: 1, title: "Connection Setup" },
-        { number: 2, title: "Select Portal" },
-        { number: 3, title: "Choose User Type" },
-        { number: 4, title: "Configure Credentials" }
-      ];
-    } else {
-      return [
-        { number: 1, title: "Select Portal" },
-        { number: 2, title: "Choose User Type" },
-        { number: 3, title: "Configure Credentials" }
-      ];
-    }
-  };
-
-  const steps = getSteps();
+  const { state } = useAddAgent();
 
   return (
     <div className="flex items-center justify-center w-full">
       <div className="flex items-center space-x-4">
         {steps.map((step, index) => (
-          <div key={step.number}>
+          <React.Fragment key={step.number}>
             <div className="flex flex-col items-center space-y-2">
               <div
                 className={cn(
@@ -61,7 +47,7 @@ export function MontoStepper() {
             {index < steps.length - 1 && (
               <div className="w-12 h-px bg-gray-200 mt-[-20px]" />
             )}
-          </div>
+          </React.Fragment>
         ))}
       </div>
     </div>
