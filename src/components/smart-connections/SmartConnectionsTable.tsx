@@ -1,11 +1,11 @@
 
 import { useState } from "react";
-import { MoreVertical } from "lucide-react";
+import { ChevronDown, ChevronRight, MoreVertical } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
-import { AgentDetails } from "./AgentDetails";
+import { ExpandedAgentCard } from "./ExpandedAgentCard";
 import { SmartConnection } from "@/types/smartConnection";
 
 interface SmartConnectionsTableProps {
@@ -25,13 +25,12 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
     setExpandedRows(newExpanded);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
+  const handleRowClick = (connectionId: string, event: React.MouseEvent) => {
+    // Don't expand if clicking on the kebab menu
+    if ((event.target as HTMLElement).closest('.kebab-menu')) {
+      return;
+    }
+    toggleRow(connectionId);
   };
 
   if (connections.length === 0) {
@@ -40,16 +39,14 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Receivable → Payable</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Agents</TableHead>
-              <TableHead>Last Updated</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="font-medium text-gray-900">Receivable</TableHead>
+              <TableHead className="font-medium text-gray-900">Connection Status</TableHead>
+              <TableHead className="font-medium text-gray-900">Agents</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell colSpan={5} className="h-[200px] text-center">
+              <TableCell colSpan={3} className="h-[200px] text-center">
                 <div className="flex flex-col items-center justify-center space-y-3">
                   <div className="text-gray-400 text-lg">📁</div>
                   <div>
@@ -71,60 +68,66 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Receivable → Payable</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Agents</TableHead>
-            <TableHead>Last Updated</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className="font-medium text-gray-900">Receivable</TableHead>
+            <TableHead className="font-medium text-gray-900">Connection Status</TableHead>
+            <TableHead className="font-medium text-gray-900">Agents</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="divide-y">
           {connections.map((connection, index) => (
-            <TableRow 
-              key={connection.id}
-              className={`h-14 hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
-            >
-              <TableCell>
-                <div>
-                  <div className="font-medium text-gray-900">
-                    {connection.receivableEntity} → {connection.payableEntity}
+            <>
+              <TableRow 
+                key={connection.id}
+                className={`h-14 hover:bg-gray-100 cursor-pointer transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
+                onClick={(e) => handleRowClick(connection.id, e)}
+              >
+                <TableCell>
+                  <div className="font-medium text-gray-900 text-base" style={{ fontFamily: 'Inter' }}>
+                    {connection.receivableEntity}
                   </div>
-                  <div className="text-sm text-gray-500">
-                    {connection.receivableErp} → {connection.payableErp}
+                </TableCell>
+                <TableCell>
+                  <SmartConnectionStatusBadge status={connection.status} />
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      {expandedRows.has(connection.id) ? (
+                        <ChevronDown className="h-4 w-4 text-gray-600 transition-transform" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4 text-gray-600 transition-transform" />
+                      )}
+                      <span className="text-gray-600 text-base" style={{ fontFamily: 'Inter' }}>
+                        {connection.agents.length} agent{connection.agents.length !== 1 ? 's' : ''}
+                      </span>
+                    </div>
+                    <div className="kebab-menu">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
+                          <DropdownMenuItem>Edit SC</DropdownMenuItem>
+                          <DropdownMenuItem>Add Agent</DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-600">
+                            Deactivate
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <SmartConnectionStatusBadge status={connection.status} />
-              </TableCell>
-              <TableCell>
-                <AgentDetails
-                  agents={connection.agents}
-                  isExpanded={expandedRows.has(connection.id)}
-                  onToggle={() => toggleRow(connection.id)}
-                />
-              </TableCell>
-              <TableCell className="text-gray-600">
-                {formatDate(connection.lastUpdated)}
-              </TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Hide Agents</DropdownMenuItem>
-                    <DropdownMenuItem>Edit Connection</DropdownMenuItem>
-                    <DropdownMenuItem>View Credentials</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600">
-                      Delete Connection
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
+                </TableCell>
+              </TableRow>
+              {expandedRows.has(connection.id) && (
+                <TableRow>
+                  <TableCell colSpan={3} className="p-0">
+                    <ExpandedAgentCard connection={connection} />
+                  </TableCell>
+                </TableRow>
+              )}
+            </>
           ))}
         </TableBody>
       </Table>
