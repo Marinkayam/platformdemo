@@ -26,7 +26,6 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
   };
 
   const handleRowClick = (connectionId: string, event: React.MouseEvent) => {
-    // Don't expand if clicking on the kebab menu
     if ((event.target as HTMLElement).closest('.kebab-menu')) {
       return;
     }
@@ -35,13 +34,19 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
 
   if (connections.length === 0) {
     return (
-      <div className="rounded-xl border">
+      <div className="rounded-xl border bg-white">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className="font-medium text-gray-900">Receivable</TableHead>
-              <TableHead className="font-medium text-gray-900">Connection Status</TableHead>
-              <TableHead className="font-medium text-gray-900">Agents</TableHead>
+            <TableRow className="border-b border-gray-200 bg-white">
+              <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
+                Receivable
+              </TableHead>
+              <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
+                Connection Status
+              </TableHead>
+              <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
+                Agents
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -64,32 +69,40 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
   }
 
   return (
-    <div className="rounded-xl border overflow-hidden">
+    <div className="rounded-xl border bg-white overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="font-medium text-gray-900">Receivable</TableHead>
-            <TableHead className="font-medium text-gray-900">Connection Status</TableHead>
-            <TableHead className="font-medium text-gray-900">Agents</TableHead>
+          <TableRow className="border-b border-gray-200 bg-white">
+            <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
+              Receivable
+            </TableHead>
+            <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
+              Connection Status
+            </TableHead>
+            <TableHead className="h-12 px-4 text-left align-middle font-medium text-gray-600 text-sm">
+              Agents
+            </TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody className="divide-y">
+        <TableBody className="divide-y divide-gray-200">
           {connections.map((connection, index) => (
             <>
               <TableRow 
                 key={connection.id}
-                className={`h-14 hover:bg-gray-100 cursor-pointer transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
+                className={`h-14 hover:bg-gray-50 cursor-pointer transition-colors ${
+                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
+                }`}
                 onClick={(e) => handleRowClick(connection.id, e)}
               >
-                <TableCell>
-                  <div className="font-medium text-gray-900 text-base" style={{ fontFamily: 'Inter' }}>
+                <TableCell className="px-4 py-3">
+                  <div className="font-medium text-gray-900 text-base">
                     {connection.receivableEntity}
                   </div>
                 </TableCell>
-                <TableCell>
+                <TableCell className="px-4 py-3">
                   <SmartConnectionStatusBadge status={connection.status} />
                 </TableCell>
-                <TableCell>
+                <TableCell className="px-4 py-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {expandedRows.has(connection.id) ? (
@@ -97,7 +110,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                       ) : (
                         <ChevronRight className="h-4 w-4 text-gray-600 transition-transform" />
                       )}
-                      <span className="text-gray-600 text-base" style={{ fontFamily: 'Inter' }}>
+                      <span className="text-gray-600 text-base">
                         {connection.agents.length} agent{connection.agents.length !== 1 ? 's' : ''}
                       </span>
                     </div>
