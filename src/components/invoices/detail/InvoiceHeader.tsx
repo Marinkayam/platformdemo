@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, File, UserRoundCheck, MoreVertical, ArrowLeft } from "lucide-react";
@@ -100,38 +101,39 @@ export function InvoiceHeader({
         
         <Card className="p-6 rounded-xl">
           <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3 px-2 py-1">
                   <div className="text-lg font-semibold text-[#01173E]">
                     {localInvoice.number}
                   </div>
                   <StatusBadge status={localInvoice.status} dueDate={localInvoice.dueDate} />
                 </div>
-                <div className="text-sm text-gray-400 font-normal px-2 py-1">
-                  {mockConnectionWithIssue.buyer.name} → {mockConnectionWithIssue.supplier.name}
-                </div>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="hover:bg-muted p-1.5 rounded-md transition-colors">
+                      <MoreVertical className="w-4 h-4 text-[#01173E]" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 rounded-md">
+                    <DropdownMenuItem className="text-red-600 hover:text-red-700 cursor-pointer rounded-md" onClick={() => setShowConfirm(true)}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                        <path d="M3 6h18" />
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                        <line x1="10" x2="10" y1="11" y2="17" />
+                        <line x1="14" x2="14" y1="11" y2="17" />
+                      </svg>
+                      Exclude Invoice
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="hover:bg-muted p-1.5 rounded-md transition-colors">
-                    <MoreVertical className="w-4 h-4 text-[#01173E]" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 rounded-md">
-                  <DropdownMenuItem className="text-red-600 hover:text-red-700 cursor-pointer rounded-md" onClick={() => setShowConfirm(true)}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                      <path d="M3 6h18" />
-                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                      <line x1="10" x2="10" y1="11" y2="17" />
-                      <line x1="14" x2="14" y1="11" y2="17" />
-                    </svg>
-                    Exclude Invoice
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="text-sm text-gray-400 font-normal px-2 py-1">
+                {mockConnectionWithIssue.buyer.name} → {mockConnectionWithIssue.supplier.name}
+              </div>
             </div>
             
             <div className="border-t border-[#E4E5E9] my-0"></div>
