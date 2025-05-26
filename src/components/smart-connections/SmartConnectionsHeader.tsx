@@ -7,7 +7,7 @@ export function SmartConnectionsHeader() {
   const navigate = useNavigate();
 
   const handleNewConnection = () => {
-    navigate("/smart-connections/add-agent");
+    navigate("/smart-connections/new-connection");
   };
 
   return (
@@ -19,7 +19,7 @@ export function SmartConnectionsHeader() {
         className="flex items-center gap-2"
       >
         <Plus className="h-4 w-4" />
-        New Connection
+        New Smart Connection
       </Button>
     </div>
   );
