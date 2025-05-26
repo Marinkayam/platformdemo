@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PortalOption } from "@/context/AddAgentContext";
-import { getPortalsByCategory, searchPortals } from "@/data/portals";
+import { getAllPortals, searchPortals } from "@/data/portals";
 
 interface PortalDropdownProps {
   selectedPortal: PortalOption | null;
@@ -19,7 +19,7 @@ export function PortalDropdown({ selectedPortal, onPortalSelect }: PortalDropdow
 
   const portalsToShow = searchValue 
     ? searchPortals(searchValue)
-    : getPortalsByCategory();
+    : getAllPortals();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -28,13 +28,13 @@ export function PortalDropdown({ selectedPortal, onPortalSelect }: PortalDropdow
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="w-full max-w-md justify-between"
         >
           {selectedPortal ? selectedPortal.name : "Select a portal..."}
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0" align="start">
+      <PopoverContent className="w-full max-w-md p-0" align="start">
         <Command>
           <CommandInput 
             placeholder="Search portals..." 
@@ -43,54 +43,26 @@ export function PortalDropdown({ selectedPortal, onPortalSelect }: PortalDropdow
           />
           <CommandList>
             <CommandEmpty>No portal found.</CommandEmpty>
-            {searchValue ? (
-              <CommandGroup>
-                {portalsToShow.map((portal) => (
-                  <CommandItem
-                    key={portal.id}
-                    value={portal.name}
-                    onSelect={() => {
-                      onPortalSelect(portal);
-                      setOpen(false);
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        selectedPortal?.id === portal.id ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    <div className="flex flex-col">
-                      <span>{portal.name}</span>
-                      <span className="text-xs text-gray-500">{portal.category}</span>
-                    </div>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ) : (
-              portalsToShow.map((categoryGroup) => (
-                <CommandGroup key={categoryGroup.category} heading={categoryGroup.category}>
-                  {categoryGroup.portals.map((portal) => (
-                    <CommandItem
-                      key={portal.id}
-                      value={portal.name}
-                      onSelect={() => {
-                        onPortalSelect(portal);
-                        setOpen(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          selectedPortal?.id === portal.id ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {portal.name}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              ))
-            )}
+            <CommandGroup>
+              {portalsToShow.map((portal) => (
+                <CommandItem
+                  key={portal.id}
+                  value={portal.name}
+                  onSelect={() => {
+                    onPortalSelect(portal);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      selectedPortal?.id === portal.id ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {portal.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>

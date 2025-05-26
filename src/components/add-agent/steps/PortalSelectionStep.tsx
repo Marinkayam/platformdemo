@@ -14,7 +14,7 @@ export function PortalSelectionStep() {
         </p>
       </div>
       
-      <div className="max-w-md mx-auto">
+      <div className="flex justify-center">
         <PortalDropdown
           selectedPortal={state.selectedPortal}
           onPortalSelect={setSelectedPortal}
