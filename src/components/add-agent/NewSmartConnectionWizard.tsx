@@ -3,29 +3,49 @@ import React from "react";
 import { useAddAgent } from "@/context/AddAgentContext";
 import { MontoStepper } from "./shared/MontoStepper";
 import { WizardNavigation } from "./shared/WizardNavigation";
+import { ConnectionSetupStep } from "./steps/ConnectionSetupStep";
 import { PortalSelectionStep } from "./steps/PortalSelectionStep";
 import { UserTypeSelectionStep } from "./steps/UserTypeSelectionStep";
 import { ExistingUserStep } from "./steps/ExistingUserStep";
 import { DedicatedUserStep } from "./steps/DedicatedUserStep";
 
-export function AddAgentWizard() {
+// Placeholder component for Agent Setup step
+function AgentSetupStep() {
+  return (
+    <div className="space-y-6">
+      <div className="text-center space-y-2">
+        <p className="text-[#8C92A3] text-lg">
+          Configure your agent settings for this Smart Connection.
+        </p>
+      </div>
+      <div className="text-center py-8">
+        <p className="text-[#8C92A3]">Agent setup configuration will be implemented here.</p>
+      </div>
+    </div>
+  );
+}
+
+export function NewSmartConnectionWizard() {
   const { state } = useAddAgent();
 
   const renderCurrentStep = () => {
-    // For add-agent flow, map steps 1,2,3 to portal, user type, credentials
     switch (state.currentStep) {
       case 1:
-        return <PortalSelectionStep />;
+        return <ConnectionSetupStep />;
       case 2:
-        return <UserTypeSelectionStep />;
+        return <AgentSetupStep />;
       case 3:
+        return <PortalSelectionStep />;
+      case 4:
+        return <UserTypeSelectionStep />;
+      case 5:
         if (state.userType?.type === "existing") {
           return <ExistingUserStep />;
         } else {
           return <DedicatedUserStep />;
         }
       default:
-        return <PortalSelectionStep />;
+        return <ConnectionSetupStep />;
     }
   };
 

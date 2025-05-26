@@ -7,30 +7,58 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 export function WizardNavigation() {
-  const { state, setCurrentStep } = useAddAgent();
+  const { state, setCurrentStep, getTotalSteps } = useAddAgent();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const totalSteps = getTotalSteps();
 
   const canGoBack = state.currentStep > 1;
   
   const canGoNext = () => {
-    switch (state.currentStep) {
-      case 1:
-        return state.selectedPortal !== null;
-      case 2:
-        return state.userType !== null;
-      case 3:
-        if (state.userType?.type === "existing") {
-          return state.existingUserData.email && 
-                 state.existingUserData.password && 
-                 state.existingUserData.confirmPassword &&
-                 state.existingUserData.portalLink &&
-                 state.existingUserData.password === state.existingUserData.confirmPassword;
-        } else {
-          return state.dedicatedUserData.confirmed;
-        }
-      default:
-        return false;
+    if (state.flowType === "new-connection") {
+      switch (state.currentStep) {
+        case 1: // Connection Setup
+          return state.connectionSetupData.payableName && 
+                 state.connectionSetupData.selectedReceivable !== null;
+        case 2: // Agent Setup (placeholder step)
+          return true;
+        case 3: // Select Portal
+          return state.selectedPortal !== null;
+        case 4: // Choose User Type
+          return state.userType !== null;
+        case 5: // Configure Credentials
+          if (state.userType?.type === "existing") {
+            return state.existingUserData.email && 
+                   state.existingUserData.password && 
+                   state.existingUserData.confirmPassword &&
+                   state.existingUserData.portalLink &&
+                   state.existingUserData.password === state.existingUserData.confirmPassword;
+          } else {
+            return state.dedicatedUserData.confirmed;
+          }
+        default:
+          return false;
+      }
+    } else {
+      // Add Agent flow (3 steps)
+      switch (state.currentStep) {
+        case 1:
+          return state.selectedPortal !== null;
+        case 2:
+          return state.userType !== null;
+        case 3:
+          if (state.userType?.type === "existing") {
+            return state.existingUserData.email && 
+                   state.existingUserData.password && 
+                   state.existingUserData.confirmPassword &&
+                   state.existingUserData.portalLink &&
+                   state.existingUserData.password === state.existingUserData.confirmPassword;
+          } else {
+            return state.dedicatedUserData.confirmed;
+          }
+        default:
+          return false;
+      }
     }
   };
 
@@ -51,8 +79,12 @@ export function WizardNavigation() {
   };
 
   const handleSubmit = () => {
+    const successMessage = state.flowType === "new-connection" 
+      ? "✅ Smart Connection created successfully"
+      : "✅ Agent created successfully";
+    
     toast({
-      title: "✅ Agent created successfully",
+      title: successMessage,
       description: "Status: Building",
     });
     
@@ -62,7 +94,7 @@ export function WizardNavigation() {
     }, 2000);
   };
 
-  const isLastStep = state.currentStep === 3;
+  const isLastStep = state.currentStep === totalSteps;
 
   return (
     <div className="flex justify-between items-center pt-6 border-t">
@@ -103,7 +135,7 @@ export function WizardNavigation() {
             disabled={!canGoNext()}
             className="min-w-32 bg-[#7B59FF] hover:bg-[#6B4FE6]"
           >
-            Submit New Agent
+            {state.flowType === "new-connection" ? "Create Smart Connection" : "Submit New Agent"}
           </Button>
         )}
       </div>

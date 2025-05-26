@@ -1,0 +1,149 @@
+
+import React, { useState } from "react";
+import { useAddAgent, ReceivableOption } from "@/context/AddAgentContext";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Check, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+// Mock receivables data
+const mockReceivables: ReceivableOption[] = [
+  { id: "1", name: "ACME Corporation", companyName: "ACME Corp" },
+  { id: "2", name: "TechFlow Solutions", companyName: "TechFlow Inc" },
+  { id: "3", name: "Global Dynamics", companyName: "Global Dynamics LLC" },
+  { id: "4", name: "NextGen Industries", companyName: "NextGen Inc" },
+  { id: "5", name: "Premier Holdings", companyName: "Premier Holdings Corp" },
+];
+
+export function ConnectionSetupStep() {
+  const { state, updateConnectionSetupData } = useAddAgent();
+  const [receivableDropdownOpen, setReceivableDropdownOpen] = useState(false);
+  const [payableDropdownOpen, setPayableDropdownOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+  const filteredReceivables = searchValue 
+    ? mockReceivables.filter(receivable => 
+        receivable.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        receivable.companyName.toLowerCase().includes(searchValue.toLowerCase())
+      )
+    : mockReceivables;
+
+  return (
+    <div className="space-y-8">
+      <div className="text-center space-y-2">
+        <p className="text-[#8C92A3] text-lg">
+          Set up the connection details for your new Smart Connection.
+        </p>
+      </div>
+      
+      <div className="space-y-6 max-w-md mx-auto">
+        <div className="space-y-2">
+          <Label htmlFor="payableName" className="text-[#38415F] font-medium">
+            Payable Name on the ERP *
+          </Label>
+          <Popover open={payableDropdownOpen} onOpenChange={setPayableDropdownOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={payableDropdownOpen}
+                className="w-full justify-between h-12"
+              >
+                {state.connectionSetupData.payableName || "Select payable name..."}
+                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+              <Command>
+                <CommandInput placeholder="Search payable names..." />
+                <CommandList>
+                  <CommandEmpty>No payable name found.</CommandEmpty>
+                  <CommandGroup>
+                    {["ACME Corporation", "TechFlow Solutions", "Global Dynamics", "NextGen Industries"].map((payable) => (
+                      <CommandItem
+                        key={payable}
+                        value={payable}
+                        onSelect={() => {
+                          updateConnectionSetupData({ payableName: payable });
+                          setPayableDropdownOpen(false);
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            state.connectionSetupData.payableName === payable ? "opacity-100" : "opacity-0"
+                          )}
+                        />
+                        {payable}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="receivable" className="text-[#38415F] font-medium">
+            Select Existing Receivable *
+          </Label>
+          <Popover open={receivableDropdownOpen} onOpenChange={setReceivableDropdownOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={receivableDropdownOpen}
+                className="w-full justify-between h-12"
+              >
+                {state.connectionSetupData.selectedReceivable 
+                  ? state.connectionSetupData.selectedReceivable.name
+                  : "Choose a receivable from the list available in Monto"
+                }
+                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+              <Command>
+                <CommandInput 
+                  placeholder="Search receivables..." 
+                  value={searchValue}
+                  onValueChange={setSearchValue}
+                />
+                <CommandList>
+                  <CommandEmpty>No receivable found.</CommandEmpty>
+                  <CommandGroup>
+                    {filteredReceivables.map((receivable) => (
+                      <CommandItem
+                        key={receivable.id}
+                        value={receivable.name}
+                        onSelect={() => {
+                          updateConnectionSetupData({ selectedReceivable: receivable });
+                          setReceivableDropdownOpen(false);
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            state.connectionSetupData.selectedReceivable?.id === receivable.id ? "opacity-100" : "opacity-0"
+                          )}
+                        />
+                        <div>
+                          <div className="font-medium">{receivable.name}</div>
+                          <div className="text-sm text-gray-500">{receivable.companyName}</div>
+                        </div>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,30 +1,30 @@
 
 import React, { useEffect } from "react";
-import { AddAgentWizard } from "@/components/add-agent/AddAgentWizard";
-import { AddAgentBreadcrumb } from "@/components/add-agent/AddAgentBreadcrumb";
+import { NewSmartConnectionWizard } from "@/components/add-agent/NewSmartConnectionWizard";
+import { NewSmartConnectionBreadcrumb } from "@/components/add-agent/NewSmartConnectionBreadcrumb";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AddAgentProvider, useAddAgent } from "@/context/AddAgentContext";
 
-function AddAgentContent() {
+function NewSmartConnectionContent() {
   const { setFlowType } = useAddAgent();
 
   useEffect(() => {
-    setFlowType("add-agent");
+    setFlowType("new-connection");
   }, [setFlowType]);
 
   return (
     <div className="space-y-6">
-      <AddAgentBreadcrumb />
-      <AddAgentWizard />
+      <NewSmartConnectionBreadcrumb />
+      <NewSmartConnectionWizard />
     </div>
   );
 }
 
-export default function AddAgent() {
+export default function NewSmartConnection() {
   return (
     <TooltipProvider>
       <AddAgentProvider>
-        <AddAgentContent />
+        <NewSmartConnectionContent />
       </AddAgentProvider>
     </TooltipProvider>
   );
