@@ -31,6 +31,25 @@ export function ConnectionSetupStep() {
       )
     : mockReceivables;
 
+  // Debug logging
+  console.log("ConnectionSetupStep state:", {
+    payableName: state.connectionSetupData.payableName,
+    selectedReceivable: state.connectionSetupData.selectedReceivable,
+    currentStep: state.currentStep
+  });
+
+  const handlePayableSelect = (payable: string) => {
+    console.log("Payable selected:", payable);
+    updateConnectionSetupData({ payableName: payable });
+    setPayableDropdownOpen(false);
+  };
+
+  const handleReceivableSelect = (receivable: ReceivableOption) => {
+    console.log("Receivable selected:", receivable);
+    updateConnectionSetupData({ selectedReceivable: receivable });
+    setReceivableDropdownOpen(false);
+  };
+
   return (
     <div className="space-y-8">
       <div className="text-center space-y-2">
@@ -39,7 +58,7 @@ export function ConnectionSetupStep() {
         </p>
       </div>
       
-      <div className="space-y-6 max-w-md mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
         <div className="space-y-2">
           <Label htmlFor="payableName" className="text-[#38415F] font-medium">
             Payable Name on the ERP *
@@ -66,10 +85,7 @@ export function ConnectionSetupStep() {
                       <CommandItem
                         key={payable}
                         value={payable}
-                        onSelect={() => {
-                          updateConnectionSetupData({ payableName: payable });
-                          setPayableDropdownOpen(false);
-                        }}
+                        onSelect={() => handlePayableSelect(payable)}
                       >
                         <Check
                           className={cn(
@@ -120,10 +136,7 @@ export function ConnectionSetupStep() {
                       <CommandItem
                         key={receivable.id}
                         value={receivable.name}
-                        onSelect={() => {
-                          updateConnectionSetupData({ selectedReceivable: receivable });
-                          setReceivableDropdownOpen(false);
-                        }}
+                        onSelect={() => handleReceivableSelect(receivable)}
                       >
                         <Check
                           className={cn(

@@ -1,10 +1,10 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useAddAgent } from "@/context/AddAgentContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 export function WizardNavigation() {
   const { state, setCurrentStep, getTotalSteps } = useAddAgent();
@@ -18,21 +18,47 @@ export function WizardNavigation() {
     if (state.flowType === "new-connection") {
       switch (state.currentStep) {
         case 1: // Connection Setup
-          return state.connectionSetupData.payableName && 
-                 state.connectionSetupData.selectedReceivable !== null;
+          const step1Valid = state.connectionSetupData.payableName && 
+                            state.connectionSetupData.selectedReceivable !== null;
+          console.log("Step 1 validation:", {
+            payableName: state.connectionSetupData.payableName,
+            selectedReceivable: state.connectionSetupData.selectedReceivable,
+            isValid: step1Valid
+          });
+          return step1Valid;
         case 2: // Select Portal
-          return state.selectedPortal !== null;
+          const step2Valid = state.selectedPortal !== null;
+          console.log("Step 2 validation:", {
+            selectedPortal: state.selectedPortal,
+            isValid: step2Valid
+          });
+          return step2Valid;
         case 3: // Choose User Type
-          return state.userType !== null;
+          const step3Valid = state.userType !== null;
+          console.log("Step 3 validation:", {
+            userType: state.userType,
+            isValid: step3Valid
+          });
+          return step3Valid;
         case 4: // Configure Credentials
           if (state.userType?.type === "existing") {
-            return state.existingUserData.email && 
+            const step4ExistingValid = state.existingUserData.email && 
                    state.existingUserData.password && 
                    state.existingUserData.confirmPassword &&
                    state.existingUserData.portalLink &&
                    state.existingUserData.password === state.existingUserData.confirmPassword;
+            console.log("Step 4 (existing) validation:", {
+              existingUserData: state.existingUserData,
+              isValid: step4ExistingValid
+            });
+            return step4ExistingValid;
           } else {
-            return state.dedicatedUserData.confirmed;
+            const step4DedicatedValid = state.dedicatedUserData.confirmed;
+            console.log("Step 4 (dedicated) validation:", {
+              dedicatedUserData: state.dedicatedUserData,
+              isValid: step4DedicatedValid
+            });
+            return step4DedicatedValid;
           }
         default:
           return false;
@@ -67,6 +93,7 @@ export function WizardNavigation() {
   };
 
   const handleNext = () => {
+    console.log("Next button clicked, canGoNext:", canGoNext());
     if (canGoNext()) {
       setCurrentStep(state.currentStep + 1);
     }
@@ -93,6 +120,15 @@ export function WizardNavigation() {
   };
 
   const isLastStep = state.currentStep === totalSteps;
+  const nextButtonEnabled = canGoNext();
+
+  console.log("WizardNavigation render:", {
+    currentStep: state.currentStep,
+    totalSteps,
+    isLastStep,
+    nextButtonEnabled,
+    flowType: state.flowType
+  });
 
   return (
     <div className="flex justify-between items-center pt-6 border-t">
@@ -122,16 +158,26 @@ export function WizardNavigation() {
         {!isLastStep ? (
           <Button
             onClick={handleNext}
-            disabled={!canGoNext()}
-            className="min-w-24 bg-[#7B59FF] hover:bg-[#6B4FE6]"
+            disabled={!nextButtonEnabled}
+            className={cn(
+              "min-w-24",
+              nextButtonEnabled 
+                ? "bg-[#7B59FF] hover:bg-[#6B4FE6]" 
+                : "bg-gray-300 cursor-not-allowed"
+            )}
           >
             Next
           </Button>
         ) : (
           <Button
             onClick={handleSubmit}
-            disabled={!canGoNext()}
-            className="min-w-32 bg-[#7B59FF] hover:bg-[#6B4FE6]"
+            disabled={!nextButtonEnabled}
+            className={cn(
+              "min-w-32",
+              nextButtonEnabled 
+                ? "bg-[#7B59FF] hover:bg-[#6B4FE6]" 
+                : "bg-gray-300 cursor-not-allowed"
+            )}
           >
             {state.flowType === "new-connection" ? "Create Smart Connection" : "Submit New Agent"}
           </Button>
