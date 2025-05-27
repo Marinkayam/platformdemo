@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { FileText, ExternalLink, Unlink } from "lucide-react";
+import { FileText, ExternalLink } from "lucide-react";
 
 interface PurchaseOrderRelatedInvoicesProps {
   invoiceIds: string[];
@@ -15,16 +15,11 @@ export function PurchaseOrderRelatedInvoices({ invoiceIds }: PurchaseOrderRelate
     navigate(`/invoices/${invoiceId}`);
   };
 
-  const handleUnlinkInvoice = (invoiceId: string) => {
-    // TODO: Implement unlink functionality
-    console.log(`Unlinking invoice ${invoiceId} from PO`);
-  };
-
   if (invoiceIds.length === 0) {
     return (
-      <Card>
+      <Card className="border-0 shadow-none">
         <CardHeader>
-          <CardTitle>Related Invoices</CardTitle>
+          <CardTitle className="text-lg font-semibold">Related Invoices</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-gray-600">No related invoices yet</p>
@@ -34,9 +29,9 @@ export function PurchaseOrderRelatedInvoices({ invoiceIds }: PurchaseOrderRelate
   }
 
   return (
-    <Card>
+    <Card className="border-0 shadow-none">
       <CardHeader>
-        <CardTitle>Related Invoices</CardTitle>
+        <CardTitle className="text-lg font-semibold">Related Invoices</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
@@ -46,26 +41,15 @@ export function PurchaseOrderRelatedInvoices({ invoiceIds }: PurchaseOrderRelate
                 <FileText className="h-4 w-4 text-gray-500" />
                 <span className="text-sm font-medium">{invoiceId}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => handleViewInvoice(invoiceId)}
-                  className="h-8 px-3"
-                >
-                  <ExternalLink className="h-3 w-3 mr-1" />
-                  View Invoice
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => handleUnlinkInvoice(invoiceId)}
-                  className="h-8 px-3 text-red-600 hover:text-red-700 hover:bg-red-50"
-                >
-                  <Unlink className="h-3 w-3 mr-1" />
-                  Unlink from PO
-                </Button>
-              </div>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => handleViewInvoice(invoiceId)}
+                className="h-8 px-3"
+              >
+                <ExternalLink className="h-3 w-3 mr-1" />
+                View Invoice
+              </Button>
             </div>
           ))}
         </div>

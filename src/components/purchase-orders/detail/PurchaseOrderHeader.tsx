@@ -1,11 +1,16 @@
 
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { User, File, ArrowLeft } from "lucide-react";
-import { PurchaseOrderStatusBadge } from "@/components/ui/purchase-order-status-badge";
-import { Card } from "@/components/ui/card";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { PurchaseOrder } from "@/types/purchaseOrder";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 interface PurchaseOrderHeaderProps {
   purchaseOrder: PurchaseOrder;
@@ -13,81 +18,51 @@ interface PurchaseOrderHeaderProps {
 
 export function PurchaseOrderHeader({ purchaseOrder }: PurchaseOrderHeaderProps) {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(amount);
+  // Determine the tab context based on URL search params or state
+  const getTabContext = () => {
+    const searchParams = new URLSearchParams(location.search);
+    const status = searchParams.get("status");
+    
+    if (status === "new") return "New POs";
+    if (status === "low-funds") return "Low Funds";
+    return "Found by Monto";
   };
 
-  const handleBackNavigation = () => {
-    navigate('/purchase-orders');
+  const handleBackClick = () => {
+    // Navigate back to purchase orders with the same tab context
+    const searchParams = new URLSearchParams(location.search);
+    const status = searchParams.get("status");
+    const backUrl = status ? `/purchase-orders?status=${status}` : "/purchase-orders";
+    navigate(backUrl);
   };
 
   return (
-    <div className="mb-8">
-      <div className="flex items-center mb-6">
-        <button 
-          onClick={handleBackNavigation}
-          className="mr-3 p-1 hover:bg-gray-100 rounded-md transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4 text-gray-600" />
-        </button>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/purchase-orders">Purchase Orders</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{purchaseOrder.poNumber}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+    <div className="mb-6">
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink 
+              onClick={handleBackClick}
+              className="flex items-center gap-2 cursor-pointer hover:text-gray-900"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Purchase Orders
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{getTabContext()}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       
-      <Card className="p-6 rounded-xl">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 px-2 py-1">
-                <div className="text-2xl font-bold text-[#38415F]">
-                  {purchaseOrder.poNumber}
-                </div>
-                <PurchaseOrderStatusBadge status={purchaseOrder.status} />
-              </div>
-            </div>
-            
-            <div className="text-sm text-gray-400 font-normal px-2 py-1">
-              Purchase Order Details
-            </div>
-          </div>
-          
-          <div className="border-t border-[#E4E5E9] my-0"></div>
-          
-          <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
-            <div className="flex items-center gap-2">
-              <User className="h-4 w-4" style={{ stroke: "#01173E" }} />
-              <span className="font-semibold text-[#01173E]">Buyer:</span>
-              <span>{purchaseOrder.buyerName}</span>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <File className="h-4 w-4" style={{ stroke: "#01173E" }} />
-              <span className="font-semibold text-[#01173E]">Portal:</span>
-              <span>{purchaseOrder.portal}</span>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-[#01173E]">Total:</span>
-              <span>{formatCurrency(purchaseOrder.total)}</span>
-            </div>
-          </div>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-[#38415F]">
+          {purchaseOrder.poNumber}
+        </h1>
+      </div>
     </div>
   );
 }

@@ -21,10 +21,10 @@ export function PurchaseOrderPdfViewer({ purchaseOrder }: PurchaseOrderPdfViewer
   };
 
   return (
-    <Card className="h-full">
+    <Card className="h-full border-0 shadow-none">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>Purchase Order Document</CardTitle>
+          <CardTitle className="text-lg font-semibold">Purchase Order Document</CardTitle>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={handleZoomOut}>
               <ChevronDown className="h-4 w-4" />

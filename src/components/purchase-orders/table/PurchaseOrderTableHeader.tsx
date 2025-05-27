@@ -43,7 +43,7 @@ export function PurchaseOrderTableHeader({
   return (
     <TableHeader className={cn("border-b", className)}>
       <TableRow className="bg-gray-50 hover:bg-gray-50">
-        <TableHead className="py-3 px-4 text-left">
+        <TableHead className="py-3 px-4 text-left sticky left-0 z-10 bg-gray-50">
           <SortButton field="poNumber">PO Number</SortButton>
         </TableHead>
         <TableHead className="py-3 px-4">
@@ -67,7 +67,6 @@ export function PurchaseOrderTableHeader({
         <TableHead className="py-3 px-4">
           <SortButton field="paymentTerms">Payment Terms</SortButton>
         </TableHead>
-        <TableHead className="py-3 px-4 text-center">Actions</TableHead>
       </TableRow>
     </TableHeader>
   );

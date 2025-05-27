@@ -12,10 +12,10 @@ export function PurchaseOrderShipToAddress({ purchaseOrder }: PurchaseOrderShipT
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-white rounded-lg p-6">
+    <div className="bg-white rounded-lg p-6 border-0 shadow-none">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger className="flex items-center justify-between w-full">
-          <h3 className="text-lg font-medium mb-0">Ship To Address</h3>
+          <h3 className="text-lg font-semibold mb-0">Ship To Address</h3>
           {isOpen ? (
             <ChevronDown className="h-4 w-4" />
           ) : (

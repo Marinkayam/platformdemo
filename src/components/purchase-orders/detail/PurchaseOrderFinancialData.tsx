@@ -13,10 +13,10 @@ export function PurchaseOrderFinancialData({
   return (
     <div className="space-y-6">
       <div className="mb-4">
-        <h2 className="text-lg font-medium">Purchase Order Information</h2>
+        <h2 className="text-lg font-semibold">Purchase Order Information</h2>
       </div>
 
-      <div className="bg-white rounded-lg p-6">
+      <div className="bg-white rounded-lg p-6 border-0 shadow-none">
         <PurchaseOrderFinancialFields purchaseOrder={purchaseOrder} />
       </div>
 
