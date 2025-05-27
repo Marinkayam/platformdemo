@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,6 @@ import { useState } from "react";
 import { Agent } from "@/types/smartConnection";
 import { AgentStatusBadge } from "@/components/ui/agent-status-badge";
 import { AgentUserTypeBadge } from "@/components/ui/agent-user-type-badge";
-
 interface ViewDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -18,7 +16,6 @@ interface ViewDetailsModalProps {
     payable: string;
   };
 }
-
 export function ViewDetailsModal({
   isOpen,
   onClose,
@@ -32,21 +29,18 @@ export function ViewDetailsModal({
     username: agent.portalUser,
     password: "••••••••",
     twoFA: "Enabled",
-    twoFAMethod: "Google Authenticator", // Mock 2FA method
+    twoFAMethod: "Google Authenticator",
+    // Mock 2FA method
     portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`
   };
-
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
   };
-
   const handleEdit = () => {
     // Placeholder for edit functionality
     console.log("Edit agent:", agent.id);
   };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+  return <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           {/* Title and status badges in the same row */}
@@ -59,12 +53,12 @@ export function ViewDetailsModal({
           </div>
           
           {/* Subtitle with improved spacing */}
-          <div className="text-sm text-gray-600 mt-6 text-left">
+          <div className="text-sm text-gray-600 mt-6 text-left my-[21px]">
             {connectionInfo.receivable} → {connectionInfo.payable}
           </div>
           
           {/* Separator with balanced spacing */}
-          <Separator className="mt-8" />
+          <Separator className="mt-8 my-[25px]" />
         </DialogHeader>
         
         <div className="space-y-8 mt-8">
@@ -81,11 +75,7 @@ export function ViewDetailsModal({
                   <div className="flex-1 p-2 bg-gray-50 border rounded text-sm text-blue-600">
                     {credentials.portalLink}
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.open(credentials.portalLink, '_blank')}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => window.open(credentials.portalLink, '_blank')}>
                     <ExternalLink className="h-4 w-4" />
                   </Button>
                 </div>
@@ -99,11 +89,7 @@ export function ViewDetailsModal({
                   <div className="flex-1 p-2 bg-gray-50 border rounded text-sm">
                     {credentials.username}
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => copyToClipboard(credentials.username)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => copyToClipboard(credentials.username)}>
                     <Copy className="h-4 w-4" />
                   </Button>
                 </div>
@@ -117,18 +103,10 @@ export function ViewDetailsModal({
                   <div className="flex-1 p-2 bg-gray-50 border rounded text-sm font-mono">
                     {showPassword ? "demo_password_123" : credentials.password}
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => copyToClipboard("demo_password_123")}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => copyToClipboard("demo_password_123")}>
                     <Copy className="h-4 w-4" />
                   </Button>
                 </div>
@@ -162,6 +140,5 @@ export function ViewDetailsModal({
           </div>
         </div>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>;
 }
