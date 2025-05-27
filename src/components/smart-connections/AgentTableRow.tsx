@@ -42,10 +42,6 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
     }
   };
 
-  const getAccountTypeDisplay = (type: string) => {
-    return type === "Monto" ? "Monto" : "Customer";
-  };
-
   return (
     <TableRow className="hover:bg-gray-100/50 transition-colors bg-white">
       <TableCell className="px-6 py-3">
@@ -75,11 +71,6 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
         >
           {agent.type === "Monto" ? "Monto User" : "Customer User"}
         </Badge>
-      </TableCell>
-      <TableCell className="px-6 py-3">
-        <span className="text-sm text-gray-600">
-          {getAccountTypeDisplay(agent.type)}
-        </span>
       </TableCell>
       <TableCell className="px-6 py-3">
         <Button 

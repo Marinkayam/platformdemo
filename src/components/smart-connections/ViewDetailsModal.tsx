@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Agent } from "@/types/smartConnection";
 import { EditAgentModal } from "./EditAgentModal";
 import { ViewDetailsHeader } from "./ViewDetailsHeader";
@@ -53,9 +54,15 @@ export function ViewDetailsModal({
     onClose();
   };
 
+  // Check for connection issues
+  const hasConnectionIssue = agent.status === "Disconnected" || agent.status === "Error";
+  
   // Only show credentials for Customer User types
   const shouldShowCredentials = agent.type === "External";
   const shouldShowTwoFABanner = agent.status === "Disconnected" && agent.type === "External";
+  
+  // Only show account type details for Monto users
+  const shouldShowAccountTypeDetails = agent.type === "Monto";
 
   if (isEditMode) {
     return (
@@ -75,6 +82,27 @@ export function ViewDetailsModal({
         <ViewDetailsHeader agent={agent} connectionInfo={connectionInfo} />
         
         <div className="space-y-4 mt-6">
+          {/* Warning Banner for Connection Issues */}
+          {hasConnectionIssue && (
+            <Alert className="bg-orange-50 border-orange-200 text-orange-800">
+              <span className="text-orange-500">⚠️</span>
+              <AlertDescription className="ml-2">
+                <span className="font-bold">Issue Detected:</span>{" "}
+                {agent.status === "Disconnected" 
+                  ? "Agent failed to connect due to authentication issues." 
+                  : "Agent encountered an error during operation."
+                }
+                <Button 
+                  variant="link" 
+                  className="p-0 ml-2 text-orange-600 underline font-medium h-auto"
+                  onClick={handleConfigureSettings}
+                >
+                  Resolve Now
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
+
           {/* Attention Banner for Disconnected Customer Agents */}
           {shouldShowTwoFABanner && (
             <div className="bg-orange-100 border border-orange-300 text-orange-800 px-4 py-2 rounded-md flex items-start gap-2 text-sm">
@@ -106,8 +134,8 @@ export function ViewDetailsModal({
             />
           )}
 
-          {/* Information for Monto User */}
-          {agent.type === "Monto" && (
+          {/* Account Type Information for Monto User */}
+          {shouldShowAccountTypeDetails && (
             <ViewDetailsMontoInfo />
           )}
         </div>

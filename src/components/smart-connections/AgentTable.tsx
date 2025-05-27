@@ -47,9 +47,6 @@ export function AgentTable({ connection, onViewDetails, onDeactivateAgent }: Age
               User Type
             </TableHead>
             <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
-              Account Type
-            </TableHead>
-            <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
             </TableHead>
             <TableHead className="w-12"></TableHead>
           </TableRow>
