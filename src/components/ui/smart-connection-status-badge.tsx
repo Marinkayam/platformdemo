@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -16,7 +15,7 @@ export function SmartConnectionStatusBadge({ status, className }: SmartConnectio
       case "In Process":
         return "bg-blue-50 text-blue-700 border-blue-200";
       case "Unavailable":
-        return "bg-yellow-50 text-yellow-700 border-yellow-200";
+        return "bg-red-50 text-red-700 border-red-200";
       case "Disconnected":
         return "bg-red-50 text-red-700 border-red-200";
       case "Inactive":
