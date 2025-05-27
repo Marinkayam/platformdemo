@@ -2,9 +2,12 @@
 import { useState, useEffect } from 'react';
 import { PurchaseOrder } from '@/types/purchaseOrder';
 
+type SortField = "poNumber" | "buyerName" | "status" | "portal" | "total" | "invoicedAmount" | "amountLeft" | "paymentTerms";
+type SortDirection = 'asc' | 'desc';
+
 export function useSortedPurchaseOrders(purchaseOrders: PurchaseOrder[]) {
-  const [sortField, setSortField] = useState<keyof PurchaseOrder | null>(null);
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [sortField, setSortField] = useState<SortField | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [localPurchaseOrders, setLocalPurchaseOrders] = useState<PurchaseOrder[]>(purchaseOrders);
 
   // Update localPurchaseOrders when purchaseOrders prop changes
@@ -12,7 +15,7 @@ export function useSortedPurchaseOrders(purchaseOrders: PurchaseOrder[]) {
     setLocalPurchaseOrders(purchaseOrders);
   }, [purchaseOrders]);
 
-  const handleSort = (field: keyof PurchaseOrder) => {
+  const handleSort = (field: SortField) => {
     if (sortField === field) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
