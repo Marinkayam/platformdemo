@@ -2,7 +2,9 @@
 import { useParams } from "react-router-dom";
 import { purchaseOrderData } from "@/data/purchaseOrders";
 import { PurchaseOrderDetailHeader } from "@/components/purchase-orders/detail/PurchaseOrderDetailHeader";
-import { PurchaseOrderDetailContent } from "@/components/purchase-orders/detail/PurchaseOrderDetailContent";
+import { PurchaseOrderFinancialData } from "@/components/purchase-orders/detail/PurchaseOrderFinancialData";
+import { PurchaseOrderLineItems } from "@/components/purchase-orders/detail/PurchaseOrderLineItems";
+import { PurchaseOrderRelatedInvoices } from "@/components/purchase-orders/detail/PurchaseOrderRelatedInvoices";
 import { PurchaseOrderPdfViewer } from "@/components/purchase-orders/detail/PurchaseOrderPdfViewer";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
@@ -26,7 +28,11 @@ export default function PurchaseOrderDetail() {
       
       <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
         <ResizablePanel defaultSize={55} className="p-6 bg-white">
-          <PurchaseOrderDetailContent purchaseOrder={purchaseOrder} />
+          <div className="space-y-6">
+            <PurchaseOrderFinancialData purchaseOrder={purchaseOrder} />
+            <PurchaseOrderLineItems lineItems={purchaseOrder.lineItems} />
+            <PurchaseOrderRelatedInvoices invoiceIds={purchaseOrder.relatedInvoices} />
+          </div>
         </ResizablePanel>
 
         <ResizableHandle />

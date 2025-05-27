@@ -31,7 +31,7 @@ export function PurchaseOrderDetailHeader({ purchaseOrder }: PurchaseOrderDetail
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{purchaseOrder.poNumber}</h1>
+          <h1 className="text-2xl font-bold text-[#38415F]">{purchaseOrder.poNumber}</h1>
           <p className="text-sm text-gray-600">Purchase Order Details</p>
         </div>
       </div>
@@ -55,11 +55,6 @@ export function PurchaseOrderDetailHeader({ purchaseOrder }: PurchaseOrderDetail
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-gray-600">Total:</span>
           <span className="text-sm font-semibold text-gray-900">{formatCurrency(purchaseOrder.total)}</span>
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-600">Amount Left:</span>
-          <span className="text-sm font-semibold text-gray-900">{formatCurrency(purchaseOrder.amountLeft)}</span>
         </div>
       </div>
     </div>

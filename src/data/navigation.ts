@@ -207,8 +207,8 @@ export const navMain: NavItem[] = [
     icon: SmartConnectionsIcon,
   },
   {
-    title: "Purchase Order",
-    href: "/purchase-order",
+    title: "Purchase Orders",
+    href: "/purchase-orders",
     icon: PurchaseOrderIcon,
   },
   {

@@ -1,7 +1,46 @@
-
 import { PurchaseOrder } from "@/types/purchaseOrder";
 
 export const purchaseOrderData: PurchaseOrder[] = [
+  {
+    id: "po-38415f",
+    poNumber: "#38415F",
+    buyerName: "Acme Corporation",
+    status: "New",
+    portal: "SAP Ariba",
+    total: 15000.00,
+    invoicedAmount: 0,
+    amountLeft: 15000.00,
+    paymentTerms: "Net 30",
+    orderDate: "2024-01-15",
+    currency: "USD",
+    shipmentNumbers: ["SH-001", "SH-002"],
+    shipToAddress: {
+      line1: "123 Business Ave",
+      line2: "Suite 100",
+      city: "New York",
+      state: "NY",
+      zipCode: "10001",
+      country: "USA"
+    },
+    lineItems: [
+      {
+        id: "li-001",
+        description: "Software License - Annual",
+        quantity: 10,
+        unitPrice: 1200.00,
+        total: 12000.00
+      },
+      {
+        id: "li-002",
+        description: "Implementation Services",
+        quantity: 1,
+        unitPrice: 3000.00,
+        total: 3000.00
+      }
+    ],
+    relatedInvoices: [],
+    lastUpdated: "2024-01-15T10:00:00Z"
+  },
   {
     id: "po-001",
     poNumber: "PO-2024-001",
