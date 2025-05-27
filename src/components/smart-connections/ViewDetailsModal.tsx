@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Copy, ExternalLink, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Agent } from "@/types/smartConnection";
+import { AgentStatusBadge } from "@/components/ui/agent-status-badge";
+import { AgentUserTypeBadge } from "@/components/ui/agent-user-type-badge";
 
 interface ViewDetailsModalProps {
   isOpen: boolean;
@@ -28,7 +30,7 @@ export function ViewDetailsModal({
   const credentials = {
     username: agent.portalUser,
     password: "••••••••",
-    twoFA: "Enabled",
+    twoFA: "Enabled", // Can be "Enabled" or "Disabled"
     portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`
   };
 
@@ -36,94 +38,116 @@ export function ViewDetailsModal({
     navigator.clipboard.writeText(text);
   };
 
+  const handleEdit = () => {
+    // Placeholder for edit functionality
+    console.log("Edit agent:", agent.id);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold">
-            {agent.portalName} Details
+          <DialogTitle className="text-lg font-semibold text-gray-900">
+            Agent Details
           </DialogTitle>
+          
+          {/* Status chips in the same row */}
+          <div className="flex items-center gap-2 mt-2">
+            <AgentStatusBadge status={agent.status} />
+            <AgentUserTypeBadge type={agent.type} />
+          </div>
+          
+          {/* Subtitle without "Connection:" prefix */}
+          <div className="text-sm text-gray-600 mt-2">
+            {connectionInfo.receivable} → {connectionInfo.payable}
+          </div>
         </DialogHeader>
         
-        <div className="space-y-4">
-          <div className="text-sm text-gray-600">
-            Connection: {connectionInfo.receivable} → {connectionInfo.payable}
+        <div className="space-y-6 mt-6">
+          {/* Credentials Section */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium text-gray-900">Credentials</h3>
+            
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Username
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 p-2 bg-gray-50 border rounded text-sm">
+                    {credentials.username}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => copyToClipboard(credentials.username)}
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 p-2 bg-gray-50 border rounded text-sm font-mono">
+                    {showPassword ? "demo_password_123" : credentials.password}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => copyToClipboard("demo_password_123")}
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Portal Link
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 p-2 bg-gray-50 border rounded text-sm text-blue-600">
+                    {credentials.portalLink}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open(credentials.portalLink, '_blank')}
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
           
+          {/* Two-Factor Authentication moved to bottom */}
           <div className="space-y-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Username
-              </label>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 p-2 bg-gray-50 border rounded text-sm">
-                  {credentials.username}
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => copyToClipboard(credentials.username)}
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 p-2 bg-gray-50 border rounded text-sm font-mono">
-                  {showPassword ? "demo_password_123" : credentials.password}
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => copyToClipboard("demo_password_123")}
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Two-Factor Authentication
-              </label>
-              <div className="p-2 bg-gray-50 border rounded text-sm">
-                {credentials.twoFA}
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Portal Link
-              </label>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 p-2 bg-gray-50 border rounded text-sm text-blue-600">
-                  {credentials.portalLink}
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => window.open(credentials.portalLink, '_blank')}
-                >
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
-              </div>
+            <h3 className="text-sm font-medium text-gray-900">Two-Factor Authentication</h3>
+            <div className="p-2 bg-gray-50 border rounded text-sm">
+              {credentials.twoFA}
             </div>
           </div>
           
-          <div className="flex justify-end pt-4">
-            <Button onClick={onClose}>Close</Button>
+          {/* Updated Footer with Edit and Close buttons */}
+          <div className="flex justify-between items-center pt-4 border-t">
+            <Button variant="outline" onClick={onClose}>
+              Close
+            </Button>
+            <Button onClick={handleEdit} className="bg-blue-600 hover:bg-blue-700">
+              Edit
+            </Button>
           </div>
         </div>
       </DialogContent>
