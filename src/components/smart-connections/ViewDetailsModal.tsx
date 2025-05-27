@@ -58,13 +58,13 @@ export function ViewDetailsModal({
             <AgentUserTypeBadge type={agent.type} />
           </div>
           
-          {/* Subtitle */}
-          <div className="text-sm text-gray-600 mt-4 text-left">
+          {/* Subtitle with improved spacing */}
+          <div className="text-sm text-gray-600 mt-6 text-left">
             {connectionInfo.receivable} → {connectionInfo.payable}
           </div>
           
-          {/* Separator under subtitle with more spacing */}
-          <Separator className="mt-6" />
+          {/* Separator with balanced spacing */}
+          <Separator className="mt-8" />
         </DialogHeader>
         
         <div className="space-y-8 mt-8">
@@ -73,6 +73,24 @@ export function ViewDetailsModal({
             <h3 className="text-sm font-medium text-gray-900">Credentials</h3>
             
             <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Portal Link
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 p-2 bg-gray-50 border rounded text-sm text-blue-600">
+                    {credentials.portalLink}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open(credentials.portalLink, '_blank')}
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Username
@@ -115,24 +133,6 @@ export function ViewDetailsModal({
                   </Button>
                 </div>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Portal Link
-                </label>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 p-2 bg-gray-50 border rounded text-sm text-blue-600">
-                    {credentials.portalLink}
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.open(credentials.portalLink, '_blank')}
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
             </div>
           </div>
           
@@ -151,12 +151,12 @@ export function ViewDetailsModal({
             </div>
           </div>
           
-          {/* Updated Footer with Edit Agent and Close buttons */}
+          {/* Updated Footer with purple Edit Agent button */}
           <div className="flex justify-between items-center pt-4 border-t">
             <Button variant="outline" onClick={onClose}>
               Close
             </Button>
-            <Button onClick={handleEdit} className="bg-blue-600 hover:bg-blue-700">
+            <Button onClick={handleEdit} className="bg-purple-600 hover:bg-purple-700">
               Edit Agent
             </Button>
           </div>

@@ -13,9 +13,9 @@ export function AgentUserTypeBadge({ type, className }: AgentUserTypeBadgeProps)
       case "Monto":
         return "bg-purple-50 text-purple-700 border-purple-200";
       case "External":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-gray-50 text-gray-700 border-gray-200";
       default:
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return "bg-gray-50 text-gray-700 border-gray-200";
     }
   };
 
