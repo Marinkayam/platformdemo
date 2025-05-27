@@ -1,62 +1,73 @@
 
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PurchaseOrder } from "@/types/purchaseOrder";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+type SortField = "poNumber" | "buyerName" | "status" | "portal" | "total" | "invoicedAmount" | "amountLeft" | "paymentTerms";
+type SortDirection = "asc" | "desc";
 
 interface PurchaseOrderTableHeaderProps {
-  sortField: keyof PurchaseOrder | null;
-  sortDirection: 'asc' | 'desc';
-  onSort: (field: keyof PurchaseOrder) => void;
+  sortField: SortField | null;
+  sortDirection: SortDirection;
+  onSort: (field: SortField) => void;
+  className?: string;
 }
 
-export function PurchaseOrderTableHeader({
-  sortField,
-  sortDirection,
-  onSort
+export function PurchaseOrderTableHeader({ 
+  sortField, 
+  sortDirection, 
+  onSort,
+  className 
 }: PurchaseOrderTableHeaderProps) {
-  const renderSortIndicator = (field: keyof PurchaseOrder) => {
-    return sortField === field && <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>;
+  const getSortIcon = (field: SortField) => {
+    if (sortField !== field) {
+      return <ArrowUpDown className="h-4 w-4" />;
+    }
+    return sortDirection === "asc" ? 
+      <ArrowUp className="h-4 w-4" /> : 
+      <ArrowDown className="h-4 w-4" />;
   };
 
+  const SortButton = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
+    <Button
+      variant="ghost"
+      onClick={() => onSort(field)}
+      className="h-auto p-0 font-medium text-gray-600 hover:text-gray-900 justify-start"
+    >
+      {children}
+      {getSortIcon(field)}
+    </Button>
+  );
+
   return (
-    <TableHeader>
-      <TableRow className="h-14 bg-gray-50">
-        <TableHead onClick={() => onSort('poNumber')} className="w-[180px] cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
-          PO Number
-          {renderSortIndicator('poNumber')}
+    <TableHeader className={cn("border-b", className)}>
+      <TableRow className="bg-gray-50 hover:bg-gray-50">
+        <TableHead className="py-3 px-4 text-left">
+          <SortButton field="poNumber">PO Number</SortButton>
         </TableHead>
-        
-        <TableHead onClick={() => onSort('buyerName')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
-          Buyer Name
-          {renderSortIndicator('buyerName')}
+        <TableHead className="py-3 px-4">
+          <SortButton field="buyerName">Buyer Name</SortButton>
         </TableHead>
-
-        <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
-          Status
+        <TableHead className="py-3 px-4">
+          <SortButton field="status">Status</SortButton>
         </TableHead>
-        
-        <TableHead onClick={() => onSort('portal')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
-          Portal
-          {renderSortIndicator('portal')}
+        <TableHead className="py-3 px-4">
+          <SortButton field="portal">Portal</SortButton>
         </TableHead>
-        
-        <TableHead onClick={() => onSort('total')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
-          Total
-          {renderSortIndicator('total')}
+        <TableHead className="py-3 px-4">
+          <SortButton field="total">Total</SortButton>
         </TableHead>
-
-        <TableHead onClick={() => onSort('invoicedAmount')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
-          Invoiced Amount
-          {renderSortIndicator('invoicedAmount')}
+        <TableHead className="py-3 px-4">
+          <SortButton field="invoicedAmount">Invoiced Amount</SortButton>
         </TableHead>
-
-        <TableHead onClick={() => onSort('amountLeft')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
-          Amount Left
-          {renderSortIndicator('amountLeft')}
+        <TableHead className="py-3 px-4">
+          <SortButton field="amountLeft">Amount Left</SortButton>
         </TableHead>
-
-        <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
-          Payment Terms
+        <TableHead className="py-3 px-4">
+          <SortButton field="paymentTerms">Payment Terms</SortButton>
         </TableHead>
+        <TableHead className="py-3 px-4 text-center">Actions</TableHead>
       </TableRow>
     </TableHeader>
   );

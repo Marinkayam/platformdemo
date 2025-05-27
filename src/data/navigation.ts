@@ -43,28 +43,6 @@ const InvoicesIcon = ({ size = 20, className }: { size?: number; className?: str
   )
 );
 
-const PortalManagementIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
-  React.createElement('svg', {
-    xmlns: "http://www.w3.org/2000/svg",
-    width: size,
-    height: size,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "1",
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    className: className
-  },
-  React.createElement('path', { d: "M7 3.34V5a3 3 0 0 0 3 3" }),
-  React.createElement('path', { d: "M11 21.95V18a2 2 0 0 0-2-2 2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05" }),
-  React.createElement('path', { d: "M21.54 15H17a2 2 0 0 0-2 2v4.54" }),
-  React.createElement('path', { d: "M12 2a10 10 0 1 0 9.54 13" }),
-  React.createElement('path', { d: "M20 6V4a2 2 0 1 0-4 0v2" }),
-  React.createElement('rect', { width: "8", height: "5", x: "14", y: "6", rx: "1" })
-  )
-);
-
 const SmartConnectionsIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
   React.createElement('svg', {
     xmlns: "http://www.w3.org/2000/svg",
@@ -195,11 +173,6 @@ export const navMain: NavItem[] = [
       { title: "Overdue", href: "/invoices?status=overdue" },
       { title: "Cleared", href: "/invoices?status=cleared" },
     ],
-  },
-  {
-    title: "Portal Management",
-    href: "/portal-management",
-    icon: PortalManagementIcon,
   },
   {
     title: "Smart Connections",

@@ -54,7 +54,7 @@ export function PurchaseOrderHeader({ purchaseOrder }: PurchaseOrderHeaderProps)
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3 px-2 py-1">
-                <div className="text-lg font-semibold text-[#38415F]">
+                <div className="text-2xl font-bold text-[#38415F]">
                   {purchaseOrder.poNumber}
                 </div>
                 <PurchaseOrderStatusBadge status={purchaseOrder.status} />
