@@ -181,6 +181,56 @@ export const mockSmartConnections: SmartConnection[] = [
         role: "Both"
       }
     ]
+  },
+  {
+    id: "7",
+    receivableEntity: "Samsung Electronics",
+    payableEntity: "Best Buy Co.",
+    receivableErp: "SAP",
+    payableErp: "Oracle",
+    status: "Unavailable",
+    agentCount: 2,
+    lastUpdated: "2025-05-03",
+    isActive: true,
+    agents: [
+      {
+        id: "a11",
+        portalName: "SAP Ariba",
+        type: "External",
+        status: "Disconnected",
+        portalUser: "procurement@bestbuy.com",
+        role: "Submit Invoice"
+      },
+      {
+        id: "a12",
+        portalName: "Oracle Commerce",
+        type: "External",
+        status: "Disconnected",
+        portalUser: "vendor@samsung.com",
+        role: "Monitor Invoice"
+      }
+    ]
+  },
+  {
+    id: "8",
+    receivableEntity: "IBM Corp",
+    payableEntity: "HP Inc.",
+    receivableErp: "Workday",
+    payableErp: "NetSuite",
+    status: "Unavailable",
+    agentCount: 1,
+    lastUpdated: "2025-05-02",
+    isActive: true,
+    agents: [
+      {
+        id: "a13",
+        portalName: "Coupa",
+        type: "External",
+        status: "Disconnected",
+        portalUser: "finance@hp.com",
+        role: "Both"
+      }
+    ]
   }
 ];
 

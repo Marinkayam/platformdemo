@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { MoreVertical, FileLock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -81,7 +80,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
 
   return (
     <>
-      <div className="bg-white border-t border-gray-200">
+      <div className="bg-white border-t-2 border-gray-200 mt-2 mb-2">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-gray-200 bg-gray-50">
