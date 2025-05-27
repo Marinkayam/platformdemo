@@ -1,8 +1,11 @@
 
 import { useNavigate } from "react-router-dom";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { PurchaseOrder } from "@/types/purchaseOrder";
 import { PurchaseOrderStatusBadge } from "@/components/ui/purchase-order-status-badge";
+import { useSortedPurchaseOrders } from "@/hooks/useSortedPurchaseOrders";
+import { PurchaseOrderTableHeader } from "./table/PurchaseOrderTableHeader";
+import { PurchaseOrderTableFooter } from "./table/PurchaseOrderTableFooter";
 
 interface PurchaseOrderTableProps {
   purchaseOrders: PurchaseOrder[];
@@ -10,6 +13,13 @@ interface PurchaseOrderTableProps {
 
 export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) {
   const navigate = useNavigate();
+  const { 
+    sortedPurchaseOrders, 
+    sortField, 
+    sortDirection, 
+    handleSort, 
+    setLocalPurchaseOrders 
+  } = useSortedPurchaseOrders(purchaseOrders);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -25,49 +35,44 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
   return (
     <div className="rounded-xl border overflow-hidden">
       <Table>
-        <TableHeader>
-          <TableRow className="bg-gray-50">
-            <TableHead className="font-medium text-gray-900">PO Number</TableHead>
-            <TableHead className="font-medium text-gray-900">Buyer Name</TableHead>
-            <TableHead className="font-medium text-gray-900">Status</TableHead>
-            <TableHead className="font-medium text-gray-900">Portal</TableHead>
-            <TableHead className="font-medium text-gray-900">Total</TableHead>
-            <TableHead className="font-medium text-gray-900">Invoiced Amount</TableHead>
-            <TableHead className="font-medium text-gray-900">Amount Left</TableHead>
-            <TableHead className="font-medium text-gray-900">Payment Terms</TableHead>
-          </TableRow>
-        </TableHeader>
+        <PurchaseOrderTableHeader 
+          sortField={sortField}
+          sortDirection={sortDirection}
+          onSort={handleSort}
+        />
         
-        <TableBody>
-          {purchaseOrders.length === 0 ? (
+        <TableBody className="divide-y">
+          {sortedPurchaseOrders.length === 0 ? (
             <TableRow>
               <TableCell colSpan={8} className="h-[56px] text-center text-[14px] text-gray-600 py-2 align-middle bg-white">
                 No purchase orders found.
               </TableCell>
             </TableRow>
           ) : (
-            purchaseOrders.map((po) => (
+            sortedPurchaseOrders.map((po) => (
               <TableRow
                 key={po.id}
-                className="cursor-pointer hover:bg-gray-50 transition-colors"
+                className="h-14 cursor-pointer hover:bg-gray-50 transition-colors bg-white"
                 onClick={() => handleRowClick(po.id)}
               >
-                <TableCell className="font-bold text-blue-600 hover:text-blue-800">
+                <TableCell className="py-3 px-4 text-sm font-bold text-blue-600 hover:text-blue-800">
                   {po.poNumber}
                 </TableCell>
-                <TableCell>{po.buyerName}</TableCell>
-                <TableCell>
+                <TableCell className="py-3 px-4 text-sm">{po.buyerName}</TableCell>
+                <TableCell className="py-3 px-4 text-sm">
                   <PurchaseOrderStatusBadge status={po.status} />
                 </TableCell>
-                <TableCell>{po.portal}</TableCell>
-                <TableCell>{formatCurrency(po.total)}</TableCell>
-                <TableCell>{formatCurrency(po.invoicedAmount)}</TableCell>
-                <TableCell>{formatCurrency(po.amountLeft)}</TableCell>
-                <TableCell>{po.paymentTerms}</TableCell>
+                <TableCell className="py-3 px-4 text-sm">{po.portal}</TableCell>
+                <TableCell className="py-3 px-4 text-sm">{formatCurrency(po.total)}</TableCell>
+                <TableCell className="py-3 px-4 text-sm">{formatCurrency(po.invoicedAmount)}</TableCell>
+                <TableCell className="py-3 px-4 text-sm">{formatCurrency(po.amountLeft)}</TableCell>
+                <TableCell className="py-3 px-4 text-sm">{po.paymentTerms}</TableCell>
               </TableRow>
             ))
           )}
         </TableBody>
+        
+        <PurchaseOrderTableFooter purchaseOrders={sortedPurchaseOrders} />
       </Table>
     </div>
   );

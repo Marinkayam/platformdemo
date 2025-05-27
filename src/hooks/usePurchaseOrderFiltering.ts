@@ -1,9 +1,15 @@
 
 import { useState, useMemo } from "react";
-import { PurchaseOrder, PurchaseOrderFilters } from "@/types/purchaseOrder";
+import { PurchaseOrder } from "@/types/purchaseOrder";
+import { PurchaseOrderFilters } from "@/components/purchase-orders/filters/types";
 
 export function usePurchaseOrderFiltering(purchaseOrders: PurchaseOrder[], activeTab: string) {
-  const [filters, setFilters] = useState<PurchaseOrderFilters>({});
+  const [filters, setFilters] = useState<PurchaseOrderFilters>({
+    status: [],
+    buyer: [],
+    portal: [],
+    poNumber: ""
+  });
 
   const filteredPurchaseOrders = useMemo(() => {
     let filtered = [...purchaseOrders];
@@ -24,23 +30,23 @@ export function usePurchaseOrderFiltering(purchaseOrders: PurchaseOrder[], activ
     }
 
     // Apply additional filters
-    if (filters.buyerName) {
+    if (filters.status.length > 0) {
+      filtered = filtered.filter(po => filters.status.includes(po.status));
+    }
+
+    if (filters.buyer.length > 0) {
       filtered = filtered.filter(po => 
-        po.buyerName.toLowerCase().includes(filters.buyerName!.toLowerCase())
+        filters.buyer.some(buyer => po.buyerName.toLowerCase().includes(buyer.toLowerCase()))
       );
     }
 
-    if (filters.portal) {
-      filtered = filtered.filter(po => po.portal === filters.portal);
-    }
-
-    if (filters.status) {
-      filtered = filtered.filter(po => po.status === filters.status);
+    if (filters.portal.length > 0) {
+      filtered = filtered.filter(po => filters.portal.includes(po.portal));
     }
 
     if (filters.poNumber) {
       filtered = filtered.filter(po => 
-        po.poNumber.toLowerCase().includes(filters.poNumber!.toLowerCase())
+        po.poNumber.toLowerCase().includes(filters.poNumber.toLowerCase())
       );
     }
 

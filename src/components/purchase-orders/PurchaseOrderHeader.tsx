@@ -1,7 +1,8 @@
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PurchaseOrderTabs } from "./PurchaseOrderTabs";
 import { PurchaseOrderFilters } from "./PurchaseOrderFilters";
-import { PurchaseOrderFilters as FilterType } from "@/types/purchaseOrder";
+import { PurchaseOrderFilters as FilterType } from "./filters/types";
+import { PurchaseOrderActions } from "./PurchaseOrderActions";
 
 interface Tab {
   id: string;
@@ -25,33 +26,19 @@ export function PurchaseOrderHeader({
   purchaseOrderCount 
 }: PurchaseOrderHeaderProps) {
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Monitor and track purchase orders discovered by Monto
-          </p>
-        </div>
-      </div>
-
-      <Tabs value={activeTab} onValueChange={onTabChange}>
-        <TabsList className="grid w-full grid-cols-3">
-          {tabs.map((tab) => (
-            <TabsTrigger key={tab.id} value={tab.id} className="relative">
-              {tab.label}
-              <span className="ml-2 bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
-                {tab.count}
-              </span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-
-      <PurchaseOrderFilters 
-        onFilterChange={onFilterChange}
-        purchaseOrderCount={purchaseOrderCount}
+    <>
+      <h1 className="text-[32px] font-semibold text-gray-900 mb-4">Purchase Orders</h1>
+      
+      <PurchaseOrderTabs
+        tabs={tabs}
+        activeTab={activeTab}
+        onTabChange={onTabChange}
       />
-    </div>
+      
+      <div className="flex justify-between items-center mb-6">
+        <PurchaseOrderFilters onFilterChange={onFilterChange} />
+        <PurchaseOrderActions purchaseOrderCount={purchaseOrderCount} />
+      </div>
+    </>
   );
 }
