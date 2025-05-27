@@ -1,10 +1,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LineItem } from "@/types/purchaseOrder";
+import { PurchaseOrderLineItem } from "@/types/purchaseOrder";
 import { PurchaseOrderLineItemsTable } from "./PurchaseOrderLineItemsTable";
 
 interface PurchaseOrderLineItemsProps {
-  lineItems: LineItem[];
+  lineItems: PurchaseOrderLineItem[];
 }
 
 export function PurchaseOrderLineItems({ lineItems }: PurchaseOrderLineItemsProps) {
