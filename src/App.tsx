@@ -11,6 +11,8 @@ import InvoiceDetail from "./pages/InvoiceDetail";
 import SmartConnections from "./pages/SmartConnections";
 import AddAgent from "./pages/AddAgent";
 import NewSmartConnection from "./pages/NewSmartConnection";
+import PurchaseOrders from "./pages/PurchaseOrders";
+import PurchaseOrderDetail from "./pages/PurchaseOrderDetail";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
 import { NotificationsProvider } from "./context/NotificationsContext";
@@ -72,6 +74,22 @@ const App = () => (
               element={
                 <MainLayout>
                   <NewSmartConnection />
+                </MainLayout>
+              } 
+            />
+            <Route 
+              path="/purchase-orders" 
+              element={
+                <MainLayout>
+                  <PurchaseOrders />
+                </MainLayout>
+              } 
+            />
+            <Route 
+              path="/purchase-orders/:id" 
+              element={
+                <MainLayout>
+                  <PurchaseOrderDetail />
                 </MainLayout>
               } 
             />
