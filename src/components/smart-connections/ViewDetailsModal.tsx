@@ -2,7 +2,8 @@
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Copy, ExternalLink, Eye, EyeOff } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Copy, ExternalLink, Eye, EyeOff, QrCode } from "lucide-react";
 import { useState } from "react";
 import { Agent } from "@/types/smartConnection";
 import { AgentStatusBadge } from "@/components/ui/agent-status-badge";
@@ -30,7 +31,8 @@ export function ViewDetailsModal({
   const credentials = {
     username: agent.portalUser,
     password: "••••••••",
-    twoFA: "Enabled", // Can be "Enabled" or "Disabled"
+    twoFA: "Enabled",
+    twoFAMethod: "Google Authenticator", // Mock 2FA method
     portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`
   };
 
@@ -45,22 +47,26 @@ export function ViewDetailsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold text-gray-900">
-            Agent Details
-          </DialogTitle>
-          
-          {/* Status chips in the same row */}
-          <div className="flex items-center gap-2 mt-2">
-            <AgentStatusBadge status={agent.status} />
-            <AgentUserTypeBadge type={agent.type} />
+          {/* Title and status badges in the same row */}
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-lg font-semibold text-gray-900">
+              Agent Details
+            </DialogTitle>
+            <div className="flex items-center gap-2">
+              <AgentStatusBadge status={agent.status} />
+              <AgentUserTypeBadge type={agent.type} />
+            </div>
           </div>
           
-          {/* Subtitle without "Connection:" prefix */}
-          <div className="text-sm text-gray-600 mt-2">
+          {/* Subtitle */}
+          <div className="text-sm text-gray-600 mt-2 text-left">
             {connectionInfo.receivable} → {connectionInfo.payable}
           </div>
+          
+          {/* Separator under subtitle */}
+          <Separator className="mt-3" />
         </DialogHeader>
         
         <div className="space-y-6 mt-6">
@@ -132,21 +138,28 @@ export function ViewDetailsModal({
             </div>
           </div>
           
-          {/* Two-Factor Authentication moved to bottom */}
+          {/* Two-Factor Authentication moved to bottom with enhanced info */}
           <div className="space-y-3">
             <h3 className="text-sm font-medium text-gray-900">Two-Factor Authentication</h3>
-            <div className="p-2 bg-gray-50 border rounded text-sm">
-              {credentials.twoFA}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between p-2 bg-gray-50 border rounded text-sm">
+                <span>{credentials.twoFA}</span>
+                <span className="text-gray-600">via {credentials.twoFAMethod}</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-gray-500">
+                <QrCode className="h-3 w-3" />
+                <span>Set up during agent configuration with {credentials.twoFAMethod}</span>
+              </div>
             </div>
           </div>
           
-          {/* Updated Footer with Edit and Close buttons */}
+          {/* Updated Footer with Edit Agent and Close buttons */}
           <div className="flex justify-between items-center pt-4 border-t">
             <Button variant="outline" onClick={onClose}>
               Close
             </Button>
             <Button onClick={handleEdit} className="bg-blue-600 hover:bg-blue-700">
-              Edit
+              Edit Agent
             </Button>
           </div>
         </div>
