@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Agent } from "@/types/smartConnection";
 import { AgentStatusBadge } from "@/components/ui/agent-status-badge";
 import { AgentUserTypeBadge } from "@/components/ui/agent-user-type-badge";
+import { EditAgentModal } from "./EditAgentModal";
 
 interface ViewDetailsModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export function ViewDetailsModal({
   connectionInfo
 }: ViewDetailsModalProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   // Mock credentials for demo purposes
   const credentials = {
@@ -42,14 +44,33 @@ export function ViewDetailsModal({
   };
 
   const handleEdit = () => {
-    // Placeholder for edit functionality
-    console.log("Edit agent:", agent.id);
+    setIsEditMode(true);
   };
 
   const handleConfigureSettings = () => {
-    // Same as edit functionality for now
-    handleEdit();
+    setIsEditMode(true);
   };
+
+  const handleBackToView = () => {
+    setIsEditMode(false);
+  };
+
+  const handleCloseEdit = () => {
+    setIsEditMode(false);
+    onClose();
+  };
+
+  if (isEditMode) {
+    return (
+      <EditAgentModal
+        isOpen={isOpen}
+        onClose={handleCloseEdit}
+        onBack={handleBackToView}
+        agent={agent}
+        connectionInfo={connectionInfo}
+      />
+    );
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -169,7 +190,11 @@ export function ViewDetailsModal({
             <Button variant="outline" onClick={onClose}>
               Close
             </Button>
-            <Button onClick={handleEdit} className="bg-purple-600 hover:bg-purple-700">
+            <Button 
+              onClick={handleEdit} 
+              style={{ backgroundColor: '#7B59FF' }}
+              className="hover:opacity-90"
+            >
               Edit Agent
             </Button>
           </div>
