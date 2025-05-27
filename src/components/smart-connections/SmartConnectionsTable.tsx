@@ -98,13 +98,11 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
           </TableRow>
         </TableHeader>
         <TableBody className="divide-y divide-gray-200">
-          {connections.map((connection, index) => (
+          {connections.map((connection) => (
             <>
               <TableRow 
                 key={connection.id}
-                className={`h-14 hover:bg-gray-50 cursor-pointer transition-colors ${
-                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
-                }`}
+                className="h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white"
                 onClick={(e) => handleRowClick(connection.id, e)}
               >
                 <TableCell className="px-4 py-3">

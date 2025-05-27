@@ -6,7 +6,7 @@ import { Copy, ExternalLink, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Agent } from "@/types/smartConnection";
 
-interface ViewCredentialsModalProps {
+interface ViewDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
   agent: Agent;
@@ -16,12 +16,12 @@ interface ViewCredentialsModalProps {
   };
 }
 
-export function ViewCredentialsModal({
+export function ViewDetailsModal({
   isOpen,
   onClose,
   agent,
   connectionInfo
-}: ViewCredentialsModalProps) {
+}: ViewDetailsModalProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   // Mock credentials for demo purposes
@@ -41,7 +41,7 @@ export function ViewCredentialsModal({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
-            {agent.portalName} Credentials
+            {agent.portalName} Details
           </DialogTitle>
         </DialogHeader>
         
