@@ -16,7 +16,9 @@ export function PurchaseOrderFinancialData({
         <h2 className="text-lg font-medium">Purchase Order Information</h2>
       </div>
 
-      <PurchaseOrderFinancialFields purchaseOrder={purchaseOrder} />
+      <div className="bg-white rounded-lg shadow p-6">
+        <PurchaseOrderFinancialFields purchaseOrder={purchaseOrder} />
+      </div>
 
       <PurchaseOrderShipToAddress purchaseOrder={purchaseOrder} />
     </div>

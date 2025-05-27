@@ -1,4 +1,5 @@
 
+import { Input } from "@/components/ui/input";
 import { PurchaseOrder } from "@/types/purchaseOrder";
 
 interface PurchaseOrderFinancialFieldsProps {
@@ -22,64 +23,58 @@ export function PurchaseOrderFinancialFields({ purchaseOrder }: PurchaseOrderFin
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="grid grid-cols-2 gap-6">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">PO Number</label>
-            <div className="text-sm font-semibold text-[#38415F]">{purchaseOrder.poNumber}</div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Buyer Name</label>
-            <div className="text-sm text-gray-900">{purchaseOrder.buyerName}</div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Status</label>
-            <div className="text-sm text-gray-900">{purchaseOrder.status}</div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Portal</label>
-            <div className="text-sm text-gray-900">{purchaseOrder.portal}</div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Order Date</label>
-            <div className="text-sm text-gray-900">{formatDate(purchaseOrder.orderDate)}</div>
-          </div>
-        </div>
-        
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Total</label>
-            <div className="text-sm font-semibold text-gray-900">{formatCurrency(purchaseOrder.total)}</div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Invoiced Amount</label>
-            <div className="text-sm text-gray-900">{formatCurrency(purchaseOrder.invoicedAmount)}</div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Payment Terms</label>
-            <div className="text-sm text-gray-900">{purchaseOrder.paymentTerms}</div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Currency</label>
-            <div className="text-sm text-gray-900">{purchaseOrder.currency}</div>
-          </div>
-          
-          {purchaseOrder.shipmentNumbers && purchaseOrder.shipmentNumbers.length > 0 && (
-            <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">Shipment Numbers</label>
-              <div className="text-sm text-gray-900">{purchaseOrder.shipmentNumbers.join(", ")}</div>
-            </div>
-          )}
-        </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-2">
+        <label className="text-sm text-gray-500">PO Number</label>
+        <Input value={purchaseOrder.poNumber} readOnly className="bg-gray-50" />
       </div>
+      
+      <div className="space-y-2">
+        <label className="text-sm text-gray-500">Buyer Name</label>
+        <Input value={purchaseOrder.buyerName} readOnly className="bg-gray-50" />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm text-gray-500">Status</label>
+        <Input value={purchaseOrder.status} readOnly className="bg-gray-50" />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm text-gray-500">Portal</label>
+        <Input value={purchaseOrder.portal} readOnly className="bg-gray-50" />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm text-gray-500">Order Date</label>
+        <Input value={formatDate(purchaseOrder.orderDate)} readOnly className="bg-gray-50" />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm text-gray-500">Total</label>
+        <Input value={formatCurrency(purchaseOrder.total)} readOnly className="bg-gray-50" />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm text-gray-500">Invoiced Amount</label>
+        <Input value={formatCurrency(purchaseOrder.invoicedAmount)} readOnly className="bg-gray-50" />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm text-gray-500">Payment Terms</label>
+        <Input value={purchaseOrder.paymentTerms} readOnly className="bg-gray-50" />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm text-gray-500">Currency</label>
+        <Input value={purchaseOrder.currency} readOnly className="bg-gray-50" />
+      </div>
+
+      {purchaseOrder.shipmentNumbers && purchaseOrder.shipmentNumbers.length > 0 && (
+        <div className="space-y-2">
+          <label className="text-sm text-gray-500">Shipment Numbers</label>
+          <Input value={purchaseOrder.shipmentNumbers.join(", ")} readOnly className="bg-gray-50" />
+        </div>
+      )}
     </div>
   );
 }

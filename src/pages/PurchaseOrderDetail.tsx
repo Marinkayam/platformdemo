@@ -1,7 +1,7 @@
 
 import { useParams } from "react-router-dom";
 import { purchaseOrderData } from "@/data/purchaseOrders";
-import { PurchaseOrderDetailHeader } from "@/components/purchase-orders/detail/PurchaseOrderDetailHeader";
+import { PurchaseOrderHeader } from "@/components/purchase-orders/detail/PurchaseOrderHeader";
 import { PurchaseOrderFinancialData } from "@/components/purchase-orders/detail/PurchaseOrderFinancialData";
 import { PurchaseOrderLineItems } from "@/components/purchase-orders/detail/PurchaseOrderLineItems";
 import { PurchaseOrderRelatedInvoices } from "@/components/purchase-orders/detail/PurchaseOrderRelatedInvoices";
@@ -24,7 +24,7 @@ export default function PurchaseOrderDetail() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <PurchaseOrderDetailHeader purchaseOrder={purchaseOrder} />
+      <PurchaseOrderHeader purchaseOrder={purchaseOrder} />
       
       <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
         <ResizablePanel defaultSize={55} className="p-6 bg-white">
