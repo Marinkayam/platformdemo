@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { ChevronDown, ChevronRight, MoreVertical } from "lucide-react";
+import { ChevronDown, ChevronRight, MoreVertical, AlertTriangle } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -17,6 +17,13 @@ interface SmartConnectionsTableProps {
 const getRandomCompanyName = () => {
   const companies = ["Monto LTD", "Monto INC", "Monto Corp", "Monto LLC"];
   return companies[Math.floor(Math.random() * companies.length)];
+};
+
+// Helper function to check if connection has issues
+const hasConnectionIssues = (connection: SmartConnection): boolean => {
+  return connection.agents.some(agent => 
+    agent.status === "Disconnected" || agent.status === "Error"
+  );
 };
 
 export function SmartConnectionsTable({ connections }: SmartConnectionsTableProps) {
@@ -106,11 +113,18 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                 onClick={(e) => handleRowClick(connection.id, e)}
               >
                 <TableCell className="px-4 py-3">
-                  <div className="font-medium text-gray-900 text-base">
-                    {connection.receivableEntity}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {getRandomCompanyName()}
+                  <div className="flex items-center gap-2">
+                    <div>
+                      <div className="font-medium text-gray-900 text-base">
+                        {connection.receivableEntity}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {getRandomCompanyName()}
+                      </div>
+                    </div>
+                    {hasConnectionIssues(connection) && (
+                      <AlertTriangle className="h-4 w-4 text-orange-500" />
+                    )}
                   </div>
                 </TableCell>
                 <TableCell className="px-4 py-3">
