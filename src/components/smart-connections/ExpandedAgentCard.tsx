@@ -1,12 +1,13 @@
 
 import { useState } from "react";
-import { MoreVertical, FileLock } from "lucide-react";
+import { MoreVertical, FileLock, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ViewDetailsModal } from "./ViewDetailsModal";
 import { DeactivateAgentModal } from "./DeactivateAgentModal";
+import { AccountTypeTooltip } from "./AccountTypeTooltip";
 import { SmartConnection, Agent } from "@/types/smartConnection";
 
 interface ExpandedAgentCardProps {
@@ -45,6 +46,10 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
       default:
         return "bg-gray-100 text-gray-700";
     }
+  };
+
+  const getAccountTypeDisplay = (type: string) => {
+    return type === "Monto" ? "Monto" : "Customer";
   };
 
   const handleViewDetails = (agent: Agent) => {
@@ -98,6 +103,14 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
                 User Type
               </TableHead>
               <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
+                <AccountTypeTooltip type="Customer">
+                  <div className="flex items-center gap-1 cursor-help">
+                    Account Type
+                    <Info className="h-3 w-3 text-gray-400" />
+                  </div>
+                </AccountTypeTooltip>
+              </TableHead>
+              <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
               </TableHead>
               <TableHead className="w-12"></TableHead>
             </TableRow>
@@ -132,6 +145,13 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
                   >
                     {agent.type === "Monto" ? "Monto User" : "Customer User"}
                   </Badge>
+                </TableCell>
+                <TableCell className="px-6 py-3">
+                  <AccountTypeTooltip type={agent.type === "Monto" ? "Monto" : "Customer"}>
+                    <span className="text-sm text-gray-600 cursor-help">
+                      {getAccountTypeDisplay(agent.type)}
+                    </span>
+                  </AccountTypeTooltip>
                 </TableCell>
                 <TableCell className="px-6 py-3">
                   <Button 
