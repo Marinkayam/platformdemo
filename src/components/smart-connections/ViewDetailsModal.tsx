@@ -50,26 +50,24 @@ export function ViewDetailsModal({
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           {/* Title and status badges in the same row */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <DialogTitle className="text-lg font-semibold text-gray-900">
               Agent Details
             </DialogTitle>
-            <div className="flex items-center gap-2">
-              <AgentStatusBadge status={agent.status} />
-              <AgentUserTypeBadge type={agent.type} />
-            </div>
+            <AgentStatusBadge status={agent.status} />
+            <AgentUserTypeBadge type={agent.type} />
           </div>
           
           {/* Subtitle */}
-          <div className="text-sm text-gray-600 mt-2 text-left">
+          <div className="text-sm text-gray-600 mt-4 text-left">
             {connectionInfo.receivable} → {connectionInfo.payable}
           </div>
           
-          {/* Separator under subtitle */}
-          <Separator className="mt-3" />
+          {/* Separator under subtitle with more spacing */}
+          <Separator className="mt-6" />
         </DialogHeader>
         
-        <div className="space-y-6 mt-6">
+        <div className="space-y-8 mt-8">
           {/* Credentials Section */}
           <div className="space-y-4">
             <h3 className="text-sm font-medium text-gray-900">Credentials</h3>

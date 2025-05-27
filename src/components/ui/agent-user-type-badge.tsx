@@ -11,11 +11,11 @@ export function AgentUserTypeBadge({ type, className }: AgentUserTypeBadgeProps)
   const getTypeStyles = () => {
     switch (type) {
       case "Monto":
-        return "bg-blue-50 text-blue-700 border-blue-200";
+        return "bg-purple-50 text-purple-700 border-purple-200";
       case "External":
-        return "bg-gray-50 text-gray-700 border-gray-200";
+        return "bg-purple-50 text-purple-700 border-purple-200";
       default:
-        return "bg-gray-50 text-gray-700 border-gray-200";
+        return "bg-purple-50 text-purple-700 border-purple-200";
     }
   };
 
