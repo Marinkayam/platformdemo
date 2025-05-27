@@ -20,7 +20,7 @@ export function PurchaseOrderFilters({ onFilterChange, purchaseOrderCount }: Pur
 
   const updateFilter = (key: keyof FilterType, value: string | undefined) => {
     const newFilters = { ...filters };
-    if (value) {
+    if (value && value !== "all") {
       newFilters[key] = value as any;
     } else {
       delete newFilters[key];
@@ -58,12 +58,12 @@ export function PurchaseOrderFilters({ onFilterChange, purchaseOrderCount }: Pur
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Buyer Name
           </label>
-          <Select value={filters.buyerName || ""} onValueChange={(value) => updateFilter("buyerName", value || undefined)}>
+          <Select value={filters.buyerName || "all"} onValueChange={(value) => updateFilter("buyerName", value)}>
             <SelectTrigger>
               <SelectValue placeholder="All buyers" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All buyers</SelectItem>
+              <SelectItem value="all">All buyers</SelectItem>
               {buyerNames.map((buyer) => (
                 <SelectItem key={buyer} value={buyer}>{buyer}</SelectItem>
               ))}
@@ -75,12 +75,12 @@ export function PurchaseOrderFilters({ onFilterChange, purchaseOrderCount }: Pur
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Portal
           </label>
-          <Select value={filters.portal || ""} onValueChange={(value) => updateFilter("portal", value || undefined)}>
+          <Select value={filters.portal || "all"} onValueChange={(value) => updateFilter("portal", value)}>
             <SelectTrigger>
               <SelectValue placeholder="All portals" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All portals</SelectItem>
+              <SelectItem value="all">All portals</SelectItem>
               {portals.map((portal) => (
                 <SelectItem key={portal} value={portal}>{portal}</SelectItem>
               ))}
@@ -92,12 +92,12 @@ export function PurchaseOrderFilters({ onFilterChange, purchaseOrderCount }: Pur
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Status
           </label>
-          <Select value={filters.status || ""} onValueChange={(value) => updateFilter("status", value as PurchaseOrderStatus || undefined)}>
+          <Select value={filters.status || "all"} onValueChange={(value) => updateFilter("status", value as PurchaseOrderStatus)}>
             <SelectTrigger>
               <SelectValue placeholder="All statuses" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All statuses</SelectItem>
+              <SelectItem value="all">All statuses</SelectItem>
               {statuses.map((status) => (
                 <SelectItem key={status} value={status}>{status}</SelectItem>
               ))}
