@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { MoreVertical, FileLock, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +18,11 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isDeactivateModalOpen, setIsDeactivateModalOpen] = useState(false);
   const [agentToDeactivate, setAgentToDeactivate] = useState<Agent | null>(null);
+
+  // Filter out disconnected Monto users
+  const filteredAgents = connection.agents.filter(agent => 
+    !(agent.type === "Monto" && agent.status === "Disconnected")
+  );
 
   const getAgentStatusColor = (status: string) => {
     switch (status) {
@@ -71,7 +75,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
     }
   };
 
-  if (connection.agents.length === 0) {
+  if (filteredAgents.length === 0) {
     return (
       <div className="p-4 bg-gray-50">
         <div className="text-center text-gray-600">
@@ -103,12 +107,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
                 User Type
               </TableHead>
               <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
-                <AccountTypeTooltip type="Customer">
-                  <div className="flex items-center gap-1 cursor-help">
-                    Account Type
-                    <Info className="h-3 w-3 text-gray-400" />
-                  </div>
-                </AccountTypeTooltip>
+                Account Type
               </TableHead>
               <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
               </TableHead>
@@ -116,7 +115,7 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {connection.agents.map((agent) => (
+            {filteredAgents.map((agent) => (
               <TableRow key={agent.id} className="hover:bg-gray-100/50 transition-colors bg-white">
                 <TableCell className="px-6 py-3">
                   <button
@@ -147,11 +146,9 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
                   </Badge>
                 </TableCell>
                 <TableCell className="px-6 py-3">
-                  <AccountTypeTooltip type={agent.type === "Monto" ? "Monto" : "Customer"}>
-                    <span className="text-sm text-gray-600 cursor-help">
-                      {getAccountTypeDisplay(agent.type)}
-                    </span>
-                  </AccountTypeTooltip>
+                  <span className="text-sm text-gray-600">
+                    {getAccountTypeDisplay(agent.type)}
+                  </span>
                 </TableCell>
                 <TableCell className="px-6 py-3">
                   <Button 

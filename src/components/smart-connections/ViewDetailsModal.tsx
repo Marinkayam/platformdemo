@@ -80,7 +80,6 @@ export function ViewDetailsModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          {/* Title and status badges in the same row */}
           <div className="flex items-center gap-3">
             <DialogTitle className="text-lg font-semibold text-gray-900">
               Agent Details
@@ -89,21 +88,19 @@ export function ViewDetailsModal({
             <AgentUserTypeBadge type={agent.type} />
           </div>
           
-          {/* Subtitle with improved spacing */}
-          <div className="text-sm text-gray-600 mt-6 text-left my-[21px]">
+          <div className="text-sm text-gray-600 mt-6 text-left">
             {connectionInfo.receivable} → {connectionInfo.payable}
           </div>
           
-          {/* Separator with balanced spacing */}
-          <Separator className="mt-8 my-[25px]" />
+          <Separator className="mt-6" />
         </DialogHeader>
         
-        <div className="space-y-6 mt-8">
+        <div className="space-y-4 mt-6">
           {/* Attention Banner for Disconnected Customer Agents */}
           {shouldShowTwoFABanner && (
-            <div className="flex items-start gap-2 bg-orange-50 border border-orange-200 rounded-md p-3 text-sm">
+            <div className="bg-orange-100 border border-orange-300 text-orange-800 px-4 py-2 rounded-md flex items-start gap-2 text-sm">
               <span className="text-orange-500 mt-0.5">⚠️</span>
-              <div className="text-orange-800">
+              <div>
                 <span className="font-bold">Two-Factor Authentication Required</span>
                 <br />
                 The portal requires 2FA to be configured for this account.{" "}
@@ -120,11 +117,11 @@ export function ViewDetailsModal({
           {/* Credentials Section - only for Customer User */}
           {shouldShowCredentials && (
             <div className="space-y-4">
-              <h3 className="text-sm font-medium text-gray-900">Credentials</h3>
+              <h4 className="text-base font-semibold text-primary">Credentials</h4>
               
-              <div className="w-full max-w-md space-y-4">
+              <div className="max-w-md space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Portal Link
                   </label>
                   <div className="flex items-center gap-2">
@@ -138,7 +135,7 @@ export function ViewDetailsModal({
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Username
                   </label>
                   <div className="flex items-center gap-2">
@@ -152,7 +149,7 @@ export function ViewDetailsModal({
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Password
                   </label>
                   <div className="flex items-center gap-2">
@@ -174,8 +171,8 @@ export function ViewDetailsModal({
           {/* Two-Factor Authentication Section - only for Customer User */}
           {shouldShowCredentials && (
             <div className="space-y-4">
-              <h3 className="text-sm font-medium text-gray-900">🔐 Two-Factor Authentication</h3>
-              <div className="w-full max-w-md space-y-2">
+              <h4 className="text-base font-semibold text-primary">🔐 Two-Factor Authentication</h4>
+              <div className="max-w-md space-y-2">
                 <div className="flex items-center justify-between p-2 bg-gray-50 border rounded text-sm">
                   <div>
                     <span className="text-gray-500">Status: </span>
@@ -211,8 +208,8 @@ export function ViewDetailsModal({
           {/* Information for Monto User */}
           {agent.type === "Monto" && (
             <div className="space-y-4">
-              <h3 className="text-sm font-medium text-gray-900">Account Information</h3>
-              <div className="w-full max-w-md p-3 bg-blue-50 border border-blue-200 rounded-md text-sm">
+              <h4 className="text-base font-semibold text-primary">Account Information</h4>
+              <div className="max-w-md p-3 bg-blue-50 border border-blue-200 rounded-md text-sm">
                 <p className="text-blue-800">
                   This agent uses a dedicated Monto user account for portal access. 
                   Credentials are managed independently by your organization.
@@ -220,20 +217,19 @@ export function ViewDetailsModal({
               </div>
             </div>
           )}
+        </div>
           
-          {/* Footer with Edit Agent button */}
-          <div className="flex justify-between items-center pt-4 border-t">
-            <Button variant="outline" onClick={onClose}>
-              Close
-            </Button>
-            <Button 
-              onClick={handleEdit} 
-              style={{ backgroundColor: '#7B59FF' }}
-              className="hover:opacity-90"
-            >
-              Edit Agent
-            </Button>
-          </div>
+        {/* Footer with Edit Agent button */}
+        <div className="flex justify-end gap-2 pt-4 border-t mt-4">
+          <Button variant="ghost" onClick={onClose}>
+            Close
+          </Button>
+          <Button 
+            onClick={handleEdit} 
+            className="bg-[#7B59FF] text-white"
+          >
+            Edit Agent
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

@@ -108,7 +108,7 @@ export function EditAgentModal({
               ? isMonto 
                 ? "bg-[#EEEAFF] border-[#7B59FF]"
                 : "bg-gray-100 border-gray-300"
-              : "bg-white border-gray-200 hover:border-gray-300"
+              : "bg-white border-gray-200" + (isMonto ? " hover:border-gray-300" : "")
           }`}
           onClick={() => handleAccountTypeSelect(type)}
         >
@@ -353,7 +353,6 @@ export function EditAgentModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          {/* Title and status badges in the same row */}
           <div className="flex items-center gap-3">
             <DialogTitle className="text-lg font-semibold text-gray-900">
               Edit Agent
@@ -362,32 +361,29 @@ export function EditAgentModal({
             <AgentUserTypeBadge type={agent.type} />
           </div>
           
-          {/* Subtitle with improved spacing */}
-          <div className="text-sm text-gray-600 mt-6 text-left my-[21px]">
+          <div className="text-sm text-gray-600 mt-6 text-left">
             {connectionInfo.receivable} → {connectionInfo.payable}
           </div>
           
-          {/* Separator with balanced spacing */}
-          <Separator className="mt-8 my-[25px]" />
+          <Separator className="mt-6" />
         </DialogHeader>
         
-        <div className="space-y-8 mt-8">
+        <div className="space-y-4 mt-6">
           {/* Attention Banner for Disconnected Agents - only show for Customer User */}
           {agent.status === "Disconnected" && selectedAccountType === "Customer" && (
-            <Alert className="border-orange-200 bg-orange-50 p-3">
-              <AlertTitle className="text-orange-800 flex items-center gap-2">
-                <span>⚠️</span>
+            <div className="bg-orange-100 border border-orange-300 text-orange-800 px-4 py-2 rounded-md flex items-start gap-2 text-sm">
+              <span className="text-orange-500 mt-0.5">⚠️</span>
+              <div>
                 <span className="font-bold">Two-Factor Authentication Required</span>
-              </AlertTitle>
-              <AlertDescription className="text-orange-700 mt-2">
-                The portal requires 2FA to be configured for this account.
-              </AlertDescription>
-            </Alert>
+                <br />
+                <span>The portal requires 2FA to be configured for this account.</span>
+              </div>
+            </div>
           )}
 
           {/* Account Type Section */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium text-gray-900">Account Type</h3>
+            <h4 className="text-base font-semibold text-primary">Account Type</h4>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {renderAccountTypeCard("Customer", "Customer User", "Your company's account")}
@@ -401,18 +397,18 @@ export function EditAgentModal({
           {/* Conditional Credentials Section */}
           {shouldShowCredentials && (
             <div className="space-y-4">
-              <h3 className="text-sm font-medium text-gray-900">Credentials</h3>
+              <h4 className="text-base font-semibold text-primary">Credentials</h4>
               
-              <div className="space-y-4 w-full max-w-md">
+              <div className="space-y-4 max-w-md">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Portal Link
                   </label>
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
                       defaultValue={credentials.portalLink}
-                      className="flex-1 p-2 bg-gray-50 border rounded text-sm text-blue-600"
+                      className="flex-1 p-2 bg-white border rounded text-sm text-blue-600"
                     />
                     <Button variant="outline" size="sm" onClick={() => window.open(credentials.portalLink, '_blank')}>
                       <ExternalLink className="h-4 w-4" />
@@ -421,14 +417,14 @@ export function EditAgentModal({
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Username
                   </label>
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
                       defaultValue={credentials.username}
-                      className="flex-1 p-2 bg-gray-50 border rounded text-sm"
+                      className="flex-1 p-2 bg-white border rounded text-sm"
                     />
                     <Button variant="outline" size="sm" onClick={() => copyToClipboard(credentials.username)}>
                       <Copy className="h-4 w-4" />
@@ -437,14 +433,14 @@ export function EditAgentModal({
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Password
                   </label>
                   <div className="flex items-center gap-2">
                     <input
                       type={showPassword ? "text" : "password"}
                       defaultValue="demo_password_123"
-                      className="flex-1 p-2 bg-gray-50 border rounded text-sm font-mono"
+                      className="flex-1 p-2 bg-white border rounded text-sm font-mono"
                     />
                     <Button variant="outline" size="sm" onClick={() => setShowPassword(!showPassword)}>
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -461,8 +457,8 @@ export function EditAgentModal({
           {/* Conditional Two-Factor Authentication Section */}
           {shouldShowCredentials && (
             <div className="space-y-4">
-              <h3 className="text-sm font-medium text-gray-900">🔐 Two-Factor Authentication</h3>
-              <div className="space-y-2 w-full max-w-md">
+              <h4 className="text-base font-semibold text-primary">🔐 Two-Factor Authentication</h4>
+              <div className="space-y-2 max-w-md">
                 <div className="flex items-center justify-between p-2 bg-gray-50 border rounded text-sm">
                   <div>
                     <span className="text-gray-500">Status: </span>
@@ -506,26 +502,26 @@ export function EditAgentModal({
               </div>
             </div>
           )}
+        </div>
           
-          {/* Action Footer */}
-          <div className="flex justify-between items-center pt-4 border-t">
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={onBack}>
-                Back
-              </Button>
-              <Button variant="outline" onClick={onClose}>
-                Cancel
-              </Button>
-            </div>
-            <Button 
-              onClick={handleSaveChanges} 
-              disabled={isSaveDisabled}
-              style={{ backgroundColor: isSaveDisabled ? '#9CA3AF' : '#7B59FF' }}
-              className={`hover:opacity-90 ${isSaveDisabled ? 'cursor-not-allowed' : ''}`}
-            >
-              Save Changes
+        {/* Action Footer */}
+        <div className="flex justify-between items-center pt-4 border-t mt-4">
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={onBack}>
+              Back
+            </Button>
+            <Button variant="outline" onClick={onClose}>
+              Cancel
             </Button>
           </div>
+          <Button 
+            onClick={handleSaveChanges} 
+            disabled={isSaveDisabled}
+            style={{ backgroundColor: isSaveDisabled ? '#9CA3AF' : '#7B59FF' }}
+            className={`hover:opacity-90 ${isSaveDisabled ? 'cursor-not-allowed' : ''}`}
+          >
+            Save Changes
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
