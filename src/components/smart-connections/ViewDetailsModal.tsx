@@ -1,12 +1,15 @@
+
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Copy, ExternalLink, Eye, EyeOff, QrCode } from "lucide-react";
 import { useState } from "react";
 import { Agent } from "@/types/smartConnection";
 import { AgentStatusBadge } from "@/components/ui/agent-status-badge";
 import { AgentUserTypeBadge } from "@/components/ui/agent-user-type-badge";
+
 interface ViewDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -16,6 +19,7 @@ interface ViewDetailsModalProps {
     payable: string;
   };
 }
+
 export function ViewDetailsModal({
   isOpen,
   onClose,
@@ -28,19 +32,27 @@ export function ViewDetailsModal({
   const credentials = {
     username: agent.portalUser,
     password: "••••••••",
-    twoFA: "Enabled",
+    twoFA: agent.status === "Disconnected" ? "Disabled" : "Enabled",
     twoFAMethod: "Google Authenticator",
-    // Mock 2FA method
     portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`
   };
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
   };
+
   const handleEdit = () => {
     // Placeholder for edit functionality
     console.log("Edit agent:", agent.id);
   };
-  return <Dialog open={isOpen} onOpenChange={onClose}>
+
+  const handleConfigureSettings = () => {
+    // Same as edit functionality for now
+    handleEdit();
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           {/* Title and status badges in the same row */}
@@ -62,6 +74,25 @@ export function ViewDetailsModal({
         </DialogHeader>
         
         <div className="space-y-8 mt-8">
+          {/* Attention Banner for Disconnected Agents */}
+          {agent.status === "Disconnected" && (
+            <Alert className="border-orange-200 bg-orange-50">
+              <AlertTitle className="text-orange-800 flex items-center gap-2">
+                <span>⚠️</span>
+                <span className="font-bold">Two-Factor Authentication Required</span>
+              </AlertTitle>
+              <AlertDescription className="text-orange-700 mt-2">
+                The portal requires 2FA to be configured for this account.{" "}
+                <button 
+                  onClick={handleConfigureSettings}
+                  className="text-orange-800 underline hover:text-orange-900 font-medium"
+                >
+                  Configure settings
+                </button>
+              </AlertDescription>
+            </Alert>
+          )}
+
           {/* Credentials Section */}
           <div className="space-y-4">
             <h3 className="text-sm font-medium text-gray-900">Credentials</h3>
@@ -120,12 +151,16 @@ export function ViewDetailsModal({
             <div className="space-y-2">
               <div className="flex items-center justify-between p-2 bg-gray-50 border rounded text-sm">
                 <span>{credentials.twoFA}</span>
-                <span className="text-gray-600">via {credentials.twoFAMethod}</span>
+                {credentials.twoFA === "Enabled" && (
+                  <span className="text-gray-600">via {credentials.twoFAMethod}</span>
+                )}
               </div>
-              <div className="flex items-center gap-2 text-xs text-gray-500">
-                <QrCode className="h-3 w-3" />
-                <span>Set up during agent configuration with {credentials.twoFAMethod}</span>
-              </div>
+              {credentials.twoFA === "Enabled" && (
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <QrCode className="h-3 w-3" />
+                  <span>Set up during agent configuration with {credentials.twoFAMethod}</span>
+                </div>
+              )}
             </div>
           </div>
           
@@ -140,5 +175,6 @@ export function ViewDetailsModal({
           </div>
         </div>
       </DialogContent>
-    </Dialog>;
+    </Dialog>
+  );
 }
