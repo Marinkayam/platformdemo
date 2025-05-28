@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Agent } from "@/types/smartConnection";
 import { EditAgentModal } from "./EditAgentModal";
 import { ViewDetailsHeader } from "./ViewDetailsHeader";
@@ -54,12 +53,8 @@ export function ViewDetailsModal({
     onClose();
   };
 
-  // Check for connection issues
-  const hasConnectionIssue = agent.status === "Disconnected" || agent.status === "Error";
-  
   // Only show credentials for Customer User types
   const shouldShowCredentials = agent.type === "External";
-  const shouldShowTwoFABanner = agent.status === "Disconnected" && agent.type === "External";
   
   // Only show account type details for Monto users
   const shouldShowAccountTypeDetails = agent.type === "Monto";
@@ -82,45 +77,6 @@ export function ViewDetailsModal({
         <ViewDetailsHeader agent={agent} connectionInfo={connectionInfo} />
         
         <div className="space-y-4 mt-6">
-          {/* Warning Banner for Connection Issues */}
-          {hasConnectionIssue && (
-            <Alert className="bg-orange-50 border-orange-200 text-orange-800">
-              <span className="text-orange-500">⚠️</span>
-              <AlertDescription className="ml-2">
-                <span className="font-bold">Issue Detected:</span>{" "}
-                {agent.status === "Disconnected" 
-                  ? "Agent failed to connect due to authentication issues." 
-                  : "Agent encountered an error during operation."
-                }
-                <Button 
-                  variant="link" 
-                  className="p-0 ml-2 text-orange-600 underline font-medium h-auto"
-                  onClick={handleConfigureSettings}
-                >
-                  Resolve Now
-                </Button>
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {/* Attention Banner for Disconnected Customer Agents */}
-          {shouldShowTwoFABanner && (
-            <div className="bg-orange-100 border border-orange-300 text-orange-800 px-4 py-2 rounded-md flex items-start gap-2 text-sm">
-              <span className="text-orange-500 mt-0.5">⚠️</span>
-              <div>
-                <span className="font-bold">Two-Factor Authentication Required</span>
-                <br />
-                The portal requires 2FA to be configured for this account.{" "}
-                <button 
-                  onClick={handleConfigureSettings}
-                  className="underline font-medium hover:text-orange-900"
-                >
-                  Configure settings
-                </button>
-              </div>
-            </div>
-          )}
-
           {/* Credentials Section - only for Customer User */}
           {shouldShowCredentials && (
             <ViewDetailsCredentials credentials={credentials} />
