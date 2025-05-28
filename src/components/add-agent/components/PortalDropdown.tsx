@@ -21,6 +21,11 @@ export function PortalDropdown({ selectedPortal, onPortalSelect }: PortalDropdow
     ? searchPortals(searchValue)
     : getAllPortals();
 
+  const handleManualAdd = () => {
+    // For now, just close the dropdown - this will be enhanced later
+    setOpen(false);
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -42,7 +47,19 @@ export function PortalDropdown({ selectedPortal, onPortalSelect }: PortalDropdow
             onValueChange={setSearchValue}
           />
           <CommandList>
-            <CommandEmpty>No portal found.</CommandEmpty>
+            <CommandEmpty>
+              <div className="py-2">
+                <div className="text-center text-sm text-muted-foreground py-2">
+                  No portal found.
+                </div>
+                <div 
+                  className="text-sm text-primary cursor-pointer px-3 py-2 hover:bg-gray-100 transition-colors text-center"
+                  onClick={handleManualAdd}
+                >
+                  ➕ Add new portal manually
+                </div>
+              </div>
+            </CommandEmpty>
             <CommandGroup>
               {portalsToShow.map((portal) => (
                 <CommandItem

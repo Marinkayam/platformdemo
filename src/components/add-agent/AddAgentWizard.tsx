@@ -32,6 +32,16 @@ export function AddAgentWizard() {
     <div className="max-w-[1280px] mx-auto px-6">
       <div className="bg-white rounded-xl border shadow-sm p-6">
         <div className="space-y-8">
+          {/* Heading Section */}
+          <div className="text-center w-full flex flex-col items-center gap-1">
+            <h1 className="text-2xl font-semibold text-primary">
+              Adding an agent to Smart Connection
+            </h1>
+            <p className="text-base text-muted-foreground">
+              Apple Inc. → Monto LTD
+            </p>
+          </div>
+          
           <MontoStepper />
           {renderCurrentStep()}
           <WizardNavigation />
