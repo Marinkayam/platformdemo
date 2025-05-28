@@ -10,6 +10,11 @@ export interface ConnectionIssue {
 export function getConnectionIssues(connection: SmartConnection): ConnectionIssue[] {
   const issues: ConnectionIssue[] = [];
   
+  // Only show issues for Samsung Electronics
+  if (connection.receivableEntity !== "Samsung Electronics") {
+    return issues;
+  }
+  
   // Only show issues for Unavailable connections
   if (connection.status !== "Unavailable") {
     return issues;
@@ -66,6 +71,11 @@ export function getHighestSeverityIssue(issues: ConnectionIssue[]): ConnectionIs
 }
 
 export function getAgentIssueMessage(agent: Agent): string | null {
+  // Only show issue for SAP Ariba agent
+  if (agent.portalName !== "SAP Ariba") {
+    return null;
+  }
+  
   if (agent.status === "Disconnected") {
     if (agent.type === "External") {
       return "Login failed. Please verify username and password.";

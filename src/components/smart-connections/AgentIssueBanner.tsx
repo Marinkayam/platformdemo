@@ -15,27 +15,27 @@ export function AgentIssueBanner({ agent }: AgentIssueBannerProps) {
     return null;
   }
 
-  const handleUpdateCredentials = () => {
+  const handleResolveIssue = () => {
     // TODO: Implement navigation to edit agent credentials
-    console.log('Update credentials for agent:', agent.id);
+    console.log('Resolve issue for agent:', agent.id);
   };
 
   return (
-    <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-2 mt-2 rounded-md">
+    <div className="bg-destructive/10 text-destructive text-sm rounded-md pt-2 pl-4 pr-4 pb-2 mt-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4 text-red-500" />
-          <span className="text-sm">
-            <span className="font-bold">❗</span> {issueMessage}
+          <AlertTriangle className="h-4 w-4 stroke-red-600" />
+          <span>
+            {issueMessage}
           </span>
         </div>
         <Button 
           variant="link" 
           size="sm" 
-          className="text-red-600 underline font-medium h-auto p-0"
-          onClick={handleUpdateCredentials}
+          className="text-destructive underline font-medium h-auto p-0 text-sm"
+          onClick={handleResolveIssue}
         >
-          Update Credentials
+          Resolve issue
         </Button>
       </div>
     </div>
