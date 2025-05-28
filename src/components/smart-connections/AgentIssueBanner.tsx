@@ -21,10 +21,10 @@ export function AgentIssueBanner({ agent }: AgentIssueBannerProps) {
   };
 
   return (
-    <div className="bg-destructive/10 text-destructive text-sm rounded-md pt-2 pl-4 pr-4 pb-2 mt-2">
+    <div className="bg-red-100 text-red-700 text-sm rounded-md py-2 px-4 mt-2">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4 stroke-red-600" />
+        <div className="flex items-center">
+          <AlertTriangle className="h-4 w-4 stroke-red-500 mr-2" />
           <span>
             {issueMessage}
           </span>
@@ -32,7 +32,7 @@ export function AgentIssueBanner({ agent }: AgentIssueBannerProps) {
         <Button 
           variant="link" 
           size="sm" 
-          className="text-destructive underline font-medium h-auto p-0 text-sm"
+          className="text-red-600 underline cursor-pointer font-medium h-auto p-0 text-sm ml-2"
           onClick={handleResolveIssue}
         >
           Resolve issue

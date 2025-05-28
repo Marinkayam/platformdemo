@@ -71,7 +71,7 @@ export function getHighestSeverityIssue(issues: ConnectionIssue[]): ConnectionIs
 }
 
 export function getAgentIssueMessage(agent: Agent): string | null {
-  // Only show issue for SAP Ariba agent
+  // Only show issue for SAP Ariba agent, not Oracle Commerce
   if (agent.portalName !== "SAP Ariba") {
     return null;
   }
