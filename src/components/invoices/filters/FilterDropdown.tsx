@@ -79,11 +79,12 @@ export function FilterDropdown({
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            className="absolute top-full left-0 mt-1 w-60 bg-white border rounded-md shadow-lg py-1 z-10"
+            className="absolute top-full left-0 mt-1 w-60 bg-white border rounded-md shadow-lg py-1 z-[9999]"
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             transition={{ duration: 0.2 }}
+            style={{ position: 'absolute' }}
           >
             {searchable && (
               <div className="px-3 py-2 border-b">

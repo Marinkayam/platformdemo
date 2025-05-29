@@ -33,8 +33,8 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
   };
 
   return (
-    <div className="rounded-xl border overflow-hidden">
-      <div className="overflow-x-auto max-h-[600px] scrollbar-none">
+    <div className="rounded-xl border overflow-hidden relative">
+      <div className="overflow-x-auto max-h-[600px] scrollbar-none" style={{ overflow: 'auto' }}>
         <Table>
           <PurchaseOrderTableHeader 
             sortField={sortField}

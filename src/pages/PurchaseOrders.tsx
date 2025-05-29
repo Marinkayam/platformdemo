@@ -33,9 +33,9 @@ export default function PurchaseOrders() {
     po.status === "Partially Invoiced" || po.status === "Fully Invoiced"
   ).length;
   
-  // Update tabs with counts
+  // Update tabs with counts - changed "Found by Monto" to "All POs"
   const tabsWithCounts = [
-    { id: "found", label: "Found by Monto", count: purchaseOrderData.length },
+    { id: "found", label: "All POs", count: purchaseOrderData.length },
     { id: "new", label: "New POs", count: newCount },
     { id: "low-funds", label: "Low Funds", count: lowFundsCount },
   ];
