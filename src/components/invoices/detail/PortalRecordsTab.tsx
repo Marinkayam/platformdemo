@@ -123,7 +123,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
         </p>
       </div>
       
-      {/* Header */}
+      {/* Header - removed "Actions" text, adjusted to 5 columns */}
       <div className="bg-[#F8FAFC] px-6 py-3 h-[48px] border-b border-[#E2E8F0]">
         <div className="grid grid-cols-6 items-center text-sm font-bold text-[#38415F]">
           <div>Portal Record</div>
