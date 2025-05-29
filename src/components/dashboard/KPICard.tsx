@@ -42,13 +42,7 @@ export function KPICard({ title, value, subtitle, type, showProgress }: KPICardP
             <Progress 
               value={value} 
               className="h-2" 
-              style={{'--tw-bg-opacity': '0.2'} as React.CSSProperties}
             />
-            <style jsx>{`
-              .bg-primary {
-                background-color: ${getProgressColor()} !important;
-              }
-            `}</style>
           </div>
         )}
       </CardContent>
