@@ -41,18 +41,30 @@ export function AnalyticsCard({ title, value, subtitle, type, icon }: AnalyticsC
     }
   };
 
+  const getTextColor = () => {
+    if (subtitle?.includes('-')) return 'text-red-500';
+    if (subtitle?.includes('+')) return 'text-green-500';
+    return 'text-gray-500';
+  };
+
   return (
-    <Card>
+    <Card className="hover-scale animate-fade-in">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
-        <div className={`p-2 rounded-md ${getColorClasses()}`}>
-          {icon || getDefaultIcon()}
-        </div>
+        {(icon || getDefaultIcon()) && (
+          <div className={`p-2 rounded-md ${getColorClasses()}`}>
+            {icon || getDefaultIcon()}
+          </div>
+        )}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold text-gray-900">{value}</div>
+        <div className="text-2xl font-bold text-gray-900 mb-1">{value}</div>
         {subtitle && (
-          <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
+          <p className={`text-xs ${getTextColor()} flex items-center gap-1`}>
+            {subtitle.includes('+') && <TrendingUp className="h-3 w-3" />}
+            {subtitle.includes('-') && <TrendingDown className="h-3 w-3" />}
+            {subtitle}
+          </p>
         )}
       </CardContent>
     </Card>
