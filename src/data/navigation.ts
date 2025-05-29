@@ -1,4 +1,3 @@
-
 import React from "react";
 
 // Custom SVG components for the navigation icons
@@ -149,7 +148,6 @@ const ChevronDownIcon = ({ size = 16, className }: { size?: number; className?: 
   },
   React.createElement('path', { d: "m6 9 6 6 6-6" })
   )
-);
 
 export interface NavItem {
   title: string;
@@ -160,7 +158,7 @@ export interface NavItem {
 
 export const navMain: NavItem[] = [
   {
-    title: "Dashboard",
+    title: "Home Page",
     href: "/dashboard",
     icon: DashboardIcon,
   },
