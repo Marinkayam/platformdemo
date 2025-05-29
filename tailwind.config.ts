@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,13 +20,14 @@ export default {
 		},
 		extend: {
 			colors: {
+				'monto-purple': '#7B59FF',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
+					DEFAULT: '#7B59FF',
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
