@@ -81,7 +81,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     if (matchType === "Primary") {
       return (
         <span className="text-sm text-[#7B59FF] font-medium">
-          ⭐ Primary
+          Primary
         </span>
       );
     }
@@ -90,7 +90,14 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
 
   const toggleExpanded = (recordId: string) => {
     console.log("Expanded ID:", expandedId, "Clicked ID:", recordId);
-    setExpandedId(prev => prev === recordId ? null : recordId);
+    setExpandedId(prev => {
+      // If currently showing all, switch to just this record
+      if (prev === "all") {
+        return null; // First click collapses from "all" state
+      }
+      // Normal toggle behavior
+      return prev === recordId ? null : recordId;
+    });
   };
 
   const isExpanded = (recordId: string) => {
