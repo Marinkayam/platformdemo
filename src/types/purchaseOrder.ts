@@ -25,6 +25,10 @@ export interface PurchaseOrder {
   amountLeft: number;
   paymentTerms: string;
   orderDate: string;
+  createdDate: string;
+  dueDate: string;
+  description: string;
+  owner: string;
   currency: string;
   shipmentNumbers?: string[];
   shipToAddress: {
