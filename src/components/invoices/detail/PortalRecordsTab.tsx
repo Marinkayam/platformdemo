@@ -21,25 +21,25 @@ const Field = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-// Additional mock records for testing
+// Additional mock records for testing - updated to match current invoice
 const additionalMockRecords: PortalRecord[] = [
   {
-    id: "INV-10021301-PR3",
-    portal: "SAP",
-    status: "Approved",
-    matchType: "Alternate",
-    updated: "2024-04-08",
-    conflict: false,
-    invoiceNumber: "3"
-  },
-  {
-    id: "INV-10021301-PR4",
-    portal: "Oracle",
+    id: "INV-10021301-PR1",
+    portal: "Coupa",
     status: "Paid",
     matchType: "Alternate",
     updated: "2024-04-08",
     conflict: false,
-    invoiceNumber: "3"
+    invoiceNumber: "1"
+  },
+  {
+    id: "INV-10021301-PR2",
+    portal: "Coupa",
+    status: "Rejected",
+    matchType: "Alternate",
+    updated: "2024-04-08",
+    conflict: true,
+    invoiceNumber: "1"
   }
 ];
 
