@@ -1,6 +1,7 @@
 
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
 interface InvoiceTableHeaderProps {
   sortField: keyof Invoice | null;
@@ -15,59 +16,66 @@ export function InvoiceTableHeader({
   onSort,
   isPendingTab
 }: InvoiceTableHeaderProps) {
-  const renderSortIndicator = (field: keyof Invoice) => {
-    return sortField === field && <span className="ml-1">{sortDirection === 'asc' ? '▲' : '▼'}</span>;
+  const renderSortButton = (field: keyof Invoice, label: string) => {
+    const isActive = sortField === field;
+    const SortIcon = !isActive ? ArrowUpDown : sortDirection === 'asc' ? ArrowUp : ArrowDown;
+    
+    return (
+      <button
+        onClick={() => onSort(field)}
+        className="flex items-center gap-2 hover:text-gray-900 transition-colors"
+        aria-label={`Sort by ${label}`}
+      >
+        {label}
+        <SortIcon className="h-4 w-4" />
+      </button>
+    );
   };
 
   return (
     <TableHeader>
-      <TableRow className="h-12 bg-gray-50">
-        <TableHead onClick={() => onSort('number')} className="w-[180px] cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
-          Invoice Number
-          {renderSortIndicator('number')}
+      <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
+        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 flex-1">
+          {renderSortButton('number', 'Invoice Number')}
         </TableHead>
         
-        <TableHead onClick={() => onSort('buyer')} className="cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
-          Buyer
-          {renderSortIndicator('buyer')}
+        <TableHead className="flex-1">
+          {renderSortButton('buyer', 'Buyer')}
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="text-xs font-medium text-gray-600 bg-white px-4">
-            Rejected by
+          <TableHead className="flex-1">
+            Rejected By
           </TableHead>
         ) : (
-          <TableHead onClick={() => onSort('dueDate')} className="cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
-            Due Date
-            {renderSortIndicator('dueDate')}
+          <TableHead className="flex-1">
+            {renderSortButton('dueDate', 'Due Date')}
           </TableHead>
         )}
 
-        <TableHead className="text-xs font-medium text-gray-600 bg-white px-4">
+        <TableHead className="flex-1">
           Status
         </TableHead>
         
-        <TableHead className="text-xs font-medium text-gray-600 bg-white px-4">
+        <TableHead className="flex-1">
           Portal
         </TableHead>
         
-        <TableHead onClick={() => onSort('total')} className="cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
-          Total
-          {renderSortIndicator('total')}
+        <TableHead className="flex-1">
+          {renderSortButton('total', 'Total')}
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="text-xs font-medium text-gray-600 bg-white px-4">
+          <TableHead className="flex-1">
             Assignee
           </TableHead>
         ) : (
-          <TableHead onClick={() => onSort('owner')} className="cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
-            Owner
-            {renderSortIndicator('owner')}
+          <TableHead className="flex-1">
+            {renderSortButton('owner', 'Owner')}
           </TableHead>
         )}
 
-        <TableHead className="w-[60px] text-xs font-medium text-gray-600 bg-white px-4 text-center">
+        <TableHead className="w-[80px] text-center">
           Actions
         </TableHead>
       </TableRow>

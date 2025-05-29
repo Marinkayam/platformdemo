@@ -27,21 +27,21 @@ export function InvoiceTableFooter({ invoices }: InvoiceTableFooterProps) {
 
   return (
     <TableFooter>
-      <TableRow className="h-14 bg-gray-50">
-        <TableCell colSpan={2} className="text-[14px] font-medium text-gray-700 bg-neutral-100 px-4">
+      <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
+        <TableCell colSpan={3} className="font-semibold text-gray-700 sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200">
           <div className="flex items-center gap-2">
             <span>Total Invoices:</span>
-            <span className="font-semibold text-gray-900">{totalInvoices}</span>
+            <span className="font-bold text-gray-900">{totalInvoices}</span>
           </div>
         </TableCell>
-        <TableCell colSpan={3} className="bg-neutral-100 px-4"></TableCell>
-        <TableCell className="text-[14px] font-medium text-gray-700 bg-neutral-100 px-4">
+        <TableCell colSpan={3} className="bg-[#F6F7F9]"></TableCell>
+        <TableCell className="font-semibold text-gray-700 bg-[#F6F7F9]">
           <div className="flex items-center gap-2">
             <span>Total Amount:</span>
-            <span className="font-semibold text-gray-900">{totalAmountDisplay}</span>
+            <span className="font-bold text-gray-900">{totalAmountDisplay}</span>
           </div>
         </TableCell>
-        <TableCell colSpan={2} className="bg-neutral-100 px-4"></TableCell>
+        <TableCell className="bg-[#F6F7F9]"></TableCell>
       </TableRow>
     </TableFooter>
   );

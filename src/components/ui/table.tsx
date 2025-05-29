@@ -7,10 +7,11 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
+  <div className="relative w-full overflow-x-auto">
     <table
       ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
+      className={cn("w-full caption-bottom text-sm font-normal", className)}
+      style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
       {...props}
     />
   </div>
@@ -21,7 +22,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b bg-[#F6F7F9]", className)} {...props} />
+  <thead ref={ref} className={cn("bg-[#F6F7F9] border-b border-gray-200", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
@@ -44,7 +45,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "border-t bg-[#F6F7F9] font-medium [&>tr]:last:border-b-0",
+      "border-t border-gray-200 bg-[#F6F7F9] font-semibold [&>tr]:last:border-b-0",
       className
     )}
     {...props}
@@ -59,7 +60,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "h-16 border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+      "h-[65px] border-b transition-colors hover:bg-gray-50 data-[state=selected]:bg-muted",
       className
     )}
     {...props}
@@ -74,7 +75,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-16 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      "h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm min-w-[150px] [&:has([role=checkbox])]:pr-0",
       className
     )}
     {...props}
@@ -88,7 +89,7 @@ const TableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
+    className={cn("h-[65px] px-4 align-middle text-sm font-normal min-w-[150px] [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
 ))

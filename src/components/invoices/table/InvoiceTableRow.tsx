@@ -6,7 +6,7 @@ import { Invoice } from "@/types/invoice";
 import { formatCurrency } from "@/lib/utils";
 import { AssigneeComponent } from "@/components/invoices/AssigneeComponent";
 import { InvoiceActionsMenu } from "./row/InvoiceActionsMenu";
-import { StatusBadge } from "@/components/ui/status-badge";
+import { UniversalStatusBadge } from "@/components/ui/universal-status-badge";
 import { RejectionInfo } from "./row/RejectionInfo";
 import { InvoiceNumber } from "./row/InvoiceNumber";
 import { getRandomPortalName } from "@/lib/portalUtils";
@@ -34,45 +34,58 @@ export function InvoiceTableRow({
 
   return (
     <TableRow 
-      className="h-12 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative"
+      className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
       onClick={handleClick}
     >
-      <InvoiceNumber 
-        number={invoice.number}
-        hasWarning={invoice.hasWarning}
-        isPending={isPendingTab || false}
-        isCreditMemo={invoice.documentType === "Credit Memo"}
-      />
+      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-medium">
+        <InvoiceNumber 
+          number={invoice.number}
+          hasWarning={invoice.hasWarning}
+          isPending={isPendingTab || false}
+          isCreditMemo={invoice.documentType === "Credit Memo"}
+        />
+      </TableCell>
       
-      <TableCell className="py-2 px-4 text-xs">
-        {invoice.buyer}
+      <TableCell className="truncate">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="truncate cursor-help">{invoice.buyer}</span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{invoice.buyer}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </TableCell>
       
       {isPendingTab ? (
-        <RejectionInfo 
-          isRejectedByMonto={invoice.rejectedBy === 'Monto'}
-          isRejectedByBuyer={invoice.rejectedBy === 'Buyer'}
-        />
+        <TableCell>
+          <RejectionInfo 
+            isRejectedByMonto={invoice.rejectedBy === 'Monto'}
+            isRejectedByBuyer={invoice.rejectedBy === 'Buyer'}
+          />
+        </TableCell>
       ) : (
-        <TableCell className="py-2 px-4 text-xs">
+        <TableCell>
           {invoice.dueDate}
         </TableCell>
       )}
       
-      <TableCell className="py-2 px-4 text-xs">
-        <StatusBadge status={invoice.status} dueDate={invoice.dueDate} />
+      <TableCell>
+        <UniversalStatusBadge status={invoice.status} />
       </TableCell>
       
-      <TableCell className="py-2 px-4 text-xs">
+      <TableCell className="truncate">
         {getRandomPortalName()}
       </TableCell>
       
-      <TableCell className="py-2 px-4 text-xs">
+      <TableCell className="font-medium">
         {formatCurrency(invoice.total, invoice.currency)}
       </TableCell>
       
       {isPendingTab ? (
-        <TableCell className="py-2 px-4">
+        <TableCell>
           <div onClick={(e) => e.stopPropagation()}>
             <AssigneeComponent 
               assignee={invoice.assignee}
@@ -82,12 +95,21 @@ export function InvoiceTableRow({
           </div>
         </TableCell>
       ) : (
-        <TableCell className="py-2 px-4 text-xs">
-          {invoice.owner}
+        <TableCell className="truncate">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="truncate cursor-help">{invoice.owner}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{invoice.owner}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </TableCell>
       )}
       
-      <TableCell className="py-2 px-4 text-center">
+      <TableCell className="text-center">
         <div onClick={(e) => e.stopPropagation()}>
           <InvoiceActionsMenu 
             invoiceId={invoice.id} 

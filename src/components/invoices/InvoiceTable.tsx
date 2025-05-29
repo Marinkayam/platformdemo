@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { Table, TableBody } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
@@ -45,39 +46,41 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
   };
 
   return (
-    <div className="rounded-xl border overflow-hidden">
-      <Table>
-        <InvoiceTableHeader 
-          sortField={sortField}
-          sortDirection={sortDirection}
-          onSort={handleSort}
-          isPendingTab={isPendingTab}
-        />
-        
-        <TableBody className="divide-y">
-          {sortedInvoices.length === 0 ? (
-            <tr>
-              <td colSpan={8} className="h-[56px] text-center text-[14px] text-gray-600 py-2 align-middle bg-white">
-                No invoices found.
-              </td>
-            </tr>
-          ) : (
-            sortedInvoices.map((invoice) => (
-              <InvoiceTableRow
-                key={invoice.id}
-                invoice={invoice}
-                isPendingTab={isPendingTab}
-                onNavigate={(id) => navigate(`/invoices/${id}`)}
-                onAssign={handleAssign}
-                onRemoveAssignee={handleRemoveAssignee}
-                onExclude={handleExcludeInvoice}
-              />
-            ))
-          )}
-        </TableBody>
-        
-        <InvoiceTableFooter invoices={sortedInvoices} />
-      </Table>
+    <div className="rounded-xl border overflow-hidden bg-white">
+      <div className="overflow-x-auto">
+        <Table>
+          <InvoiceTableHeader 
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+            isPendingTab={isPendingTab}
+          />
+          
+          <TableBody className="divide-y divide-gray-100">
+            {sortedInvoices.length === 0 ? (
+              <tr>
+                <td colSpan={8} className="h-[65px] text-center text-sm text-gray-600 py-2 align-middle bg-white">
+                  No invoices found.
+                </td>
+              </tr>
+            ) : (
+              sortedInvoices.map((invoice) => (
+                <InvoiceTableRow
+                  key={invoice.id}
+                  invoice={invoice}
+                  isPendingTab={isPendingTab}
+                  onNavigate={(id) => navigate(`/invoices/${id}`)}
+                  onAssign={handleAssign}
+                  onRemoveAssignee={handleRemoveAssignee}
+                  onExclude={handleExcludeInvoice}
+                />
+              ))
+            )}
+          </TableBody>
+          
+          <InvoiceTableFooter invoices={sortedInvoices} />
+        </Table>
+      </div>
     </div>
   );
 }
