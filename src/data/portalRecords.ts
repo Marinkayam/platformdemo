@@ -9,7 +9,13 @@ export const portalRecordsData: PortalRecord[] = [
     matchType: "Primary",
     updated: "2024-01-15",
     conflict: false,
-    invoiceNumber: "3"
+    invoiceNumber: "3",
+    buyer: "Acme Corporation",
+    total: 25000.00,
+    poNumber: "PO-88991",
+    supplierName: "Tech Solutions Inc",
+    type: "Primary",
+    currency: "USD"
   },
   {
     id: "PR-002-INV3",
@@ -18,7 +24,13 @@ export const portalRecordsData: PortalRecord[] = [
     matchType: "Alternate",
     updated: "2024-01-14",
     conflict: true,
-    invoiceNumber: "3"
+    invoiceNumber: "3",
+    buyer: "Global Enterprises",
+    total: 35000.00,
+    poNumber: "PO-77893",
+    supplierName: "Manufacturing Corp",
+    type: "Conflict",
+    currency: "USD"
   },
   {
     id: "PR-003-INV3",
@@ -27,7 +39,13 @@ export const portalRecordsData: PortalRecord[] = [
     matchType: "Alternate",
     updated: "2024-01-13",
     conflict: false,
-    invoiceNumber: "3"
+    invoiceNumber: "3",
+    buyer: "European Partners GmbH",
+    total: 42000.00,
+    poNumber: "PO-66784",
+    supplierName: "Consulting Services Ltd",
+    type: "Alternate",
+    currency: "EUR"
   },
   {
     id: "PR-004-INV1",
@@ -36,7 +54,13 @@ export const portalRecordsData: PortalRecord[] = [
     matchType: "Primary",
     updated: "2024-01-12",
     conflict: false,
-    invoiceNumber: "1"
+    invoiceNumber: "1",
+    buyer: "Tech Solutions Ltd",
+    total: 15000.00,
+    poNumber: "PO-99102",
+    supplierName: "Software Vendor Inc",
+    type: "Primary",
+    currency: "USD"
   },
   {
     id: "PR-005-INV2",
@@ -45,6 +69,27 @@ export const portalRecordsData: PortalRecord[] = [
     matchType: "Primary",
     updated: "2024-01-11",
     conflict: false,
-    invoiceNumber: "2"
+    invoiceNumber: "2",
+    buyer: "Retail Chain Inc",
+    total: 28000.00,
+    poNumber: "PO-55667",
+    supplierName: "Inventory Systems Co",
+    type: "Primary",
+    currency: "USD"
+  },
+  {
+    id: "PR-006-UNMATCHED",
+    portal: "Oracle",
+    status: "Pending",
+    matchType: "Primary",
+    updated: "2024-01-10",
+    conflict: false,
+    invoiceNumber: "",
+    buyer: "Manufacturing Co",
+    total: 12000.00,
+    poNumber: "PO-44556",
+    supplierName: "Parts Supplier LLC",
+    type: "Unmatched",
+    currency: "USD"
   }
 ];

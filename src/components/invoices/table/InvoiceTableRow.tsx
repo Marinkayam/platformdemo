@@ -34,7 +34,7 @@ export function InvoiceTableRow({
 
   return (
     <TableRow 
-      className="h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative"
+      className="h-12 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative"
       onClick={handleClick}
     >
       <InvoiceNumber 
@@ -44,7 +44,7 @@ export function InvoiceTableRow({
         isCreditMemo={invoice.documentType === "Credit Memo"}
       />
       
-      <TableCell className="py-3 px-4 text-sm">
+      <TableCell className="py-2 px-4 text-xs">
         {invoice.buyer}
       </TableCell>
       
@@ -54,25 +54,25 @@ export function InvoiceTableRow({
           isRejectedByBuyer={invoice.rejectedBy === 'Buyer'}
         />
       ) : (
-        <TableCell className="py-3 px-4 text-sm">
+        <TableCell className="py-2 px-4 text-xs">
           {invoice.dueDate}
         </TableCell>
       )}
       
-      <TableCell className="py-3 px-4 text-sm">
+      <TableCell className="py-2 px-4 text-xs">
         <StatusBadge status={invoice.status} dueDate={invoice.dueDate} />
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm">
+      <TableCell className="py-2 px-4 text-xs">
         {getRandomPortalName()}
       </TableCell>
       
-      <TableCell className="py-3 px-4 text-sm">
+      <TableCell className="py-2 px-4 text-xs">
         {formatCurrency(invoice.total, invoice.currency)}
       </TableCell>
       
       {isPendingTab ? (
-        <TableCell className="py-3 px-4">
+        <TableCell className="py-2 px-4">
           <div onClick={(e) => e.stopPropagation()}>
             <AssigneeComponent 
               assignee={invoice.assignee}
@@ -82,12 +82,12 @@ export function InvoiceTableRow({
           </div>
         </TableCell>
       ) : (
-        <TableCell className="py-3 px-4 text-sm">
+        <TableCell className="py-2 px-4 text-xs">
           {invoice.owner}
         </TableCell>
       )}
       
-      <TableCell className="py-3 px-4 text-center">
+      <TableCell className="py-2 px-4 text-center">
         <div onClick={(e) => e.stopPropagation()}>
           <InvoiceActionsMenu 
             invoiceId={invoice.id} 

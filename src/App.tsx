@@ -13,6 +13,7 @@ import AddAgent from "./pages/AddAgent";
 import NewSmartConnection from "./pages/NewSmartConnection";
 import PurchaseOrders from "./pages/PurchaseOrders";
 import PurchaseOrderDetail from "./pages/PurchaseOrderDetail";
+import PortalRecords from "./pages/PortalRecords";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
 import { NotificationsProvider } from "./context/NotificationsContext";
@@ -90,6 +91,14 @@ const App = () => (
               element={
                 <MainLayout>
                   <PurchaseOrderDetail />
+                </MainLayout>
+              } 
+            />
+            <Route 
+              path="/portal-records" 
+              element={
+                <MainLayout>
+                  <PortalRecords />
                 </MainLayout>
               } 
             />

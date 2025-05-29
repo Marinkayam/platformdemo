@@ -21,53 +21,53 @@ export function InvoiceTableHeader({
 
   return (
     <TableHeader>
-      <TableRow className="h-14 bg-gray-50">
-        <TableHead onClick={() => onSort('number')} className="w-[180px] cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
+      <TableRow className="h-12 bg-gray-50">
+        <TableHead onClick={() => onSort('number')} className="w-[180px] cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
           Invoice Number
           {renderSortIndicator('number')}
         </TableHead>
         
-        <TableHead onClick={() => onSort('buyer')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
+        <TableHead onClick={() => onSort('buyer')} className="cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
           Buyer
           {renderSortIndicator('buyer')}
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
+          <TableHead className="text-xs font-medium text-gray-600 bg-white px-4">
             Rejected by
           </TableHead>
         ) : (
-          <TableHead onClick={() => onSort('dueDate')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
+          <TableHead onClick={() => onSort('dueDate')} className="cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
             Due Date
             {renderSortIndicator('dueDate')}
           </TableHead>
         )}
 
-        <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
+        <TableHead className="text-xs font-medium text-gray-600 bg-white px-4">
           Status
         </TableHead>
         
-        <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
+        <TableHead className="text-xs font-medium text-gray-600 bg-white px-4">
           Portal
         </TableHead>
         
-        <TableHead onClick={() => onSort('total')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
+        <TableHead onClick={() => onSort('total')} className="cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
           Total
           {renderSortIndicator('total')}
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="text-[14px] font-medium text-gray-600 bg-white px-4">
+          <TableHead className="text-xs font-medium text-gray-600 bg-white px-4">
             Assignee
           </TableHead>
         ) : (
-          <TableHead onClick={() => onSort('owner')} className="cursor-pointer text-[14px] font-medium text-gray-600 bg-white px-4">
+          <TableHead onClick={() => onSort('owner')} className="cursor-pointer text-xs font-medium text-gray-600 bg-white px-4">
             Owner
             {renderSortIndicator('owner')}
           </TableHead>
         )}
 
-        <TableHead className="w-[60px] text-[14px] font-medium text-gray-600 bg-white px-4 text-center">
+        <TableHead className="w-[60px] text-xs font-medium text-gray-600 bg-white px-4 text-center">
           Actions
         </TableHead>
       </TableRow>

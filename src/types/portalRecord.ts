@@ -7,4 +7,10 @@ export interface PortalRecord {
   updated: string;
   conflict: boolean;
   invoiceNumber: string;
+  buyer: string;
+  total: number;
+  poNumber: string;
+  supplierName: string;
+  type: 'Primary' | 'Alternate' | 'Unmatched' | 'Conflict';
+  currency?: string;
 }
