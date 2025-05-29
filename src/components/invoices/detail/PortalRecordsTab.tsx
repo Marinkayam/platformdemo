@@ -77,6 +77,11 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
 
   return (
     <div className="bg-white rounded-lg shadow">
+      <div className="p-6 pb-0">
+        <p className="text-sm text-[#8C92A3] mb-4">
+          These records were pulled from buyer portals and linked to this invoice. Each record displays key invoice attributes and its current status in the portal.
+        </p>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -118,11 +123,11 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                   <TableCell colSpan={6} className="p-0">
                     <div className="p-6">
                       {record.conflict && (
-                        <div className="mb-4 p-3 bg-[#FFF8E1] text-[#7B5915] rounded-md">
+                        <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4">
                           ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
                         </div>
                       )}
-                      <div className="grid grid-cols-2 gap-4 bg-white p-6 rounded-lg mt-2">
+                      <div className="grid grid-cols-2 gap-4 bg-white p-6 rounded-lg mt-2 border-t border-[#E2E8F0]">
                         <div className="space-y-3">
                           <LabelValue label="Invoice Number" value={record.id} />
                           <LabelValue label="Buyer" value="Global Supplies Ltd" />
