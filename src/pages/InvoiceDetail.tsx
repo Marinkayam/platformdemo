@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { invoiceData } from "@/data/invoices";
@@ -9,20 +10,21 @@ import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { useNotes } from "@/hooks/useNotes";
 import { Separator } from "@/components/ui/separator";
+
 export default function InvoiceDetail() {
-  const {
-    id
-  } = useParams();
+  const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [zoomLevel, setZoomLevel] = useState(1.0);
   const [activeTab, setActiveTab] = useState("invoice-data");
-  const {
-    notes
-  } = useNotes();
+  const [hasInitialized, setHasInitialized] = useState(false);
+  const { notes } = useNotes();
 
   // Activity count - 4 activity items (hardcoded in ActivityTimeline) + notes count
   const activityCount = 4 + notes.length;
+
+  // Find the invoice by id
+  const invoice = invoiceData.find(inv => inv.id === id);
 
   // Check for tab parameter in URL
   useEffect(() => {
@@ -30,6 +32,7 @@ export default function InvoiceDetail() {
     const tabParam = searchParams.get("tab");
     if (tabParam) {
       setActiveTab(tabParam);
+      setHasInitialized(true);
     }
   }, [location.search]);
 
@@ -47,23 +50,32 @@ export default function InvoiceDetail() {
     };
   }, []);
 
-  // Find the invoice by id
-  const invoice = invoiceData.find(inv => inv.id === id);
-
-  // Set default tab to exceptions if invoice has exceptions and status is "Pending Action"
+  // Set default tab to exceptions ONLY on initial load for invoices with exceptions and status "Pending Action"
   useEffect(() => {
-    if (invoice?.hasExceptions && invoice?.status === "Pending Action" && activeTab === "invoice-data" && location.search === '') {
+    if (
+      invoice?.hasExceptions && 
+      invoice?.status === "Pending Action" && 
+      activeTab === "invoice-data" && 
+      location.search === '' && 
+      !hasInitialized
+    ) {
       setActiveTab("exceptions");
+      setHasInitialized(true);
+    } else if (!hasInitialized) {
+      setHasInitialized(true);
     }
-  }, [invoice, activeTab, location.search]);
+  }, [invoice, activeTab, location.search, hasInitialized]);
+
   if (!invoice) {
     return <div className="p-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Invoice not found</h2>
       </div>;
   }
+
   const handleZoomIn = () => {
     setZoomLevel(prev => Math.min(prev + 0.1, 2.0));
   };
+
   const handleZoomOut = () => {
     setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
   };
@@ -88,6 +100,7 @@ export default function InvoiceDetail() {
     unitPrice: 350.25,
     total: 350.25
   }];
+
   const attachments = [{
     id: "1",
     fileName: "Invoice_PDF.pdf",
@@ -104,6 +117,7 @@ export default function InvoiceDetail() {
     fileType: "image" as const,
     url: "#"
   }];
+
   return (
     <div className="container mx-auto px-4 py-6">
       <InvoiceHeader invoice={invoice} />
