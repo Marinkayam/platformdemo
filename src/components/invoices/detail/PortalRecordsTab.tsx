@@ -21,11 +21,36 @@ const Field = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
+// Additional mock records for testing
+const additionalMockRecords: PortalRecord[] = [
+  {
+    id: "INV-10021301-PR3",
+    portal: "SAP",
+    status: "Approved",
+    matchType: "Alternate",
+    updated: "2024-04-08",
+    conflict: false,
+    invoiceNumber: "3"
+  },
+  {
+    id: "INV-10021301-PR4",
+    portal: "Oracle",
+    status: "Paid",
+    matchType: "Alternate",
+    updated: "2024-04-08",
+    conflict: false,
+    invoiceNumber: "3"
+  }
+];
+
 export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
+  // Combine original records with additional mock records
+  const allRecords = [...portalRecordsData, ...additionalMockRecords];
+  
   // Filter portal records for the current invoice
-  const relevantRecords = portalRecordsData.filter(
+  const relevantRecords = allRecords.filter(
     record => record.invoiceNumber === invoiceId
   );
 
@@ -69,7 +94,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
 
   if (relevantRecords.length === 0) {
     return (
-      <Card className="rounded-2xl bg-white shadow-md p-6">
+      <Card className="rounded-2xl bg-white">
         <div className="text-center text-[#8C92A3] py-10">
           No portal records found.
         </div>
@@ -78,7 +103,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   }
 
   return (
-    <Card className="rounded-2xl bg-white shadow-md overflow-hidden">
+    <Card className="rounded-2xl bg-white overflow-hidden">
       <div className="p-6 pb-0">
         <p className="text-sm text-[#8C92A3] mb-4">
           These records were pulled from buyer portals and linked to this invoice. Each record displays key invoice attributes and its current status in the portal.
@@ -87,13 +112,13 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
       
       {/* Header */}
       <div className="bg-[#F8FAFC] px-6 py-3 h-[48px] border-b border-[#E2E8F0]">
-        <div className="flex text-sm font-bold text-[#38415F]">
-          <div className="flex-1">Portal Record</div>
-          <div className="w-24">Portal</div>
-          <div className="w-24">Status</div>
-          <div className="w-28">Match Type</div>
-          <div className="w-32">Last Updated</div>
-          <div className="w-24">Actions</div>
+        <div className="grid grid-cols-6 items-center text-sm font-bold text-[#38415F]">
+          <div>Portal Record</div>
+          <div>Portal</div>
+          <div>Status</div>
+          <div>Match Type</div>
+          <div>Last Updated</div>
+          <div className="text-right">Actions</div>
         </div>
       </div>
 
@@ -101,26 +126,32 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
       <div className="divide-y divide-[#E2E8F0]">
         {relevantRecords.map((record) => (
           <div key={record.id}>
-            {/* Record Row */}
-            <div className="px-6 py-4 h-[56px] flex items-center border-b border-[#E2E8F0]">
-              <div className="flex-1 flex items-center gap-2">
+            {/* Record Row - Clickable */}
+            <div 
+              className="grid grid-cols-6 items-center h-[56px] px-6 hover:bg-[#F8FAFC] cursor-pointer"
+              onClick={() => toggleExpanded(record.id)}
+            >
+              <div className="flex items-center gap-2">
                 {record.conflict && (
                   <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
                 )}
                 <span className="text-sm font-medium text-[#38415F]">{record.id}</span>
               </div>
-              <div className="w-24 text-sm text-[#8C92A3]">{record.portal}</div>
-              <div className="w-24">{getStatusBadge(record.status)}</div>
-              <div className="w-28">{getMatchTypeDisplay(record.matchType)}</div>
-              <div className="w-32 text-sm text-[#8C92A3]">
+              <div className="text-sm text-[#8C92A3]">{record.portal}</div>
+              <div>{getStatusBadge(record.status)}</div>
+              <div>{getMatchTypeDisplay(record.matchType)}</div>
+              <div className="text-sm text-[#8C92A3]">
                 {format(new Date(record.updated), "MMM d, yyyy")}
               </div>
-              <div className="w-24">
+              <div className="text-right">
                 <Button 
                   variant="outline" 
                   size="sm"
                   className="flex gap-1 items-center hover:bg-gray-50"
-                  onClick={() => toggleExpanded(record.id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent row click when clicking button
+                    toggleExpanded(record.id);
+                  }}
                 >
                   {expandedId === record.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                   Details
