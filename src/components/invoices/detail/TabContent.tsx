@@ -1,9 +1,9 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ExceptionsTab } from "./ExceptionsTab";
 import { RTPDataTab } from "./RTPDataTab";
 import { ActivityTab } from "./ActivityTab";
+import { PortalRecordsTab } from "./PortalRecordsTab";
 import { Invoice, Attachment } from "@/types/invoice";
 import { toast } from "@/hooks/use-toast";
 
@@ -88,11 +88,7 @@ export function TabContent({ tab, invoice, attachments = [] }: TabContentProps) 
     case "rtp-data":
       return <RTPDataTab invoice={localInvoice} attachments={attachments} />;
     case "portal-records":
-      return (
-        <div className="bg-white rounded-lg shadow p-6">
-          <p className="text-muted-foreground">No portal records found.</p>
-        </div>
-      );
+      return <PortalRecordsTab invoiceId={localInvoice?.id || ""} />;
     case "activity":
       return <ActivityTab />;
     default:
