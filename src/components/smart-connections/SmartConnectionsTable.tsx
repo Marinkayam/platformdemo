@@ -108,7 +108,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                     onClick={(e) => handleRowClick(connection.id, e)}
                   >
                     <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-semibold text-gray-900">
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>

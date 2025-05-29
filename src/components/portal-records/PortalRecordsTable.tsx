@@ -10,21 +10,6 @@ interface PortalRecordsTableProps {
 }
 
 export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
-  const getTypeBadgeColor = (type: string) => {
-    switch (type) {
-      case "Primary":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "Alternate":
-        return "bg-blue-100 text-blue-800 border-blue-200";
-      case "Unmatched":
-        return "bg-gray-100 text-gray-800 border-gray-200";
-      case "Conflict":
-        return "bg-red-100 text-red-800 border-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
-
   const formatInvoiceNumber = (invoiceNumber: string, type: string) => {
     if (type === "Unmatched") {
       return "-";
@@ -65,7 +50,7 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
                   key={record.id}
                   className="hover:bg-gray-50 transition-colors bg-white"
                 >
-                  <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-medium">
+                  <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold">
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -112,7 +97,7 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
                     )}
                   </TableCell>
                   <TableCell>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getTypeBadgeColor(record.type)}`}>
+                    <span className="text-sm font-normal text-gray-800">
                       {record.type}
                     </span>
                   </TableCell>
@@ -150,9 +135,8 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
 
           <TableFooter>
             <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-              <TableCell colSpan={8} className="bg-[#F6F7F9]"></TableCell>
-              <TableCell className="text-right text-sm text-muted-foreground bg-[#F6F7F9]">
-                {portalRecords.length} records
+              <TableCell colSpan={9} className="text-left text-sm text-muted-foreground bg-[#F6F7F9]">
+                Total Portal Records: {portalRecords.length}
               </TableCell>
             </TableRow>
           </TableFooter>

@@ -50,7 +50,7 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
                   className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
                   onClick={() => handleRowClick(po.id)}
                 >
-                  <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-medium">
+                  <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold">
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>

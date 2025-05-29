@@ -1,8 +1,10 @@
 
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import { PurchaseOrderTabs } from "./PurchaseOrderTabs";
 import { PurchaseOrderFilters } from "./PurchaseOrderFilters";
-import { PurchaseOrderFilters as FilterType } from "./filters/types";
-import { PurchaseOrderActions } from "./PurchaseOrderActions";
+import { PurchaseOrderFilters as PurchaseOrderFiltersType } from "./filters/types";
+import { PageHeader } from "@/components/common/PageHeader";
 
 interface Tab {
   id: string;
@@ -13,32 +15,39 @@ interface Tab {
 interface PurchaseOrderHeaderProps {
   tabs: Tab[];
   activeTab: string;
-  onTabChange: (tab: string) => void;
-  onFilterChange: (filters: FilterType) => void;
+  onTabChange: (tabId: string) => void;
+  onFilterChange: (filters: PurchaseOrderFiltersType) => void;
   purchaseOrderCount: number;
 }
 
-export function PurchaseOrderHeader({ 
-  tabs, 
-  activeTab, 
-  onTabChange, 
+export function PurchaseOrderHeader({
+  tabs,
+  activeTab,
+  onTabChange,
   onFilterChange,
-  purchaseOrderCount 
+  purchaseOrderCount
 }: PurchaseOrderHeaderProps) {
   return (
-    <>
-      <h1 className="text-[32px] font-semibold text-gray-900 mb-4">Purchase Orders</h1>
-      
+    <div className="mb-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <PageHeader 
+          title="Purchase Orders" 
+          subtitle="View and manage purchase order records synced from portals" 
+        />
+        
+        <Button className="flex items-center gap-2">
+          <Plus className="h-4 w-4" />
+          Add PO
+        </Button>
+      </div>
+
       <PurchaseOrderTabs
         tabs={tabs}
         activeTab={activeTab}
         onTabChange={onTabChange}
       />
-      
-      <div className="flex justify-between items-center mb-6">
-        <PurchaseOrderFilters onFilterChange={onFilterChange} />
-        <PurchaseOrderActions purchaseOrderCount={purchaseOrderCount} />
-      </div>
-    </>
+
+      <PurchaseOrderFilters onFilterChange={onFilterChange} />
+    </div>
   );
 }
