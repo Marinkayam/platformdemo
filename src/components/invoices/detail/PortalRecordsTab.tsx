@@ -21,7 +21,7 @@ const Field = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-// Additional mock records for testing - updated to match current invoice
+// Additional mock records for testing - updated to match current invoice and include all required properties
 const additionalMockRecords: PortalRecord[] = [
   {
     id: "INV-10021301-PR1",
@@ -30,7 +30,13 @@ const additionalMockRecords: PortalRecord[] = [
     matchType: "Alternate",
     updated: "2024-04-08",
     conflict: false,
-    invoiceNumber: "1"
+    invoiceNumber: "1",
+    buyer: "Global Supplies Ltd",
+    total: 3100.00,
+    poNumber: "PO-88991",
+    supplierName: "Acme Corporation",
+    type: "Alternate",
+    currency: "EUR"
   },
   {
     id: "INV-10021301-PR2",
@@ -39,7 +45,13 @@ const additionalMockRecords: PortalRecord[] = [
     matchType: "Alternate",
     updated: "2024-04-08",
     conflict: true,
-    invoiceNumber: "1"
+    invoiceNumber: "1",
+    buyer: "Global Supplies Ltd",
+    total: 3100.00,
+    poNumber: "PO-88991",
+    supplierName: "Acme Corporation",
+    type: "Conflict",
+    currency: "EUR"
   }
 ];
 
@@ -170,11 +182,11 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                   <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                     <Field label="Invoice Number" value={record.id} />
                     <Field label="Transaction Type" value="Invoice" />
-                    <Field label="Buyer" value="Global Supplies Ltd" />
-                    <Field label="Supplier" value="Acme Corporation" />
-                    <Field label="PO Number" value="PO-88991" />
-                    <Field label="Currency" value="EUR" />
-                    <Field label="Total" value="$3,100.00" />
+                    <Field label="Buyer" value={record.buyer} />
+                    <Field label="Supplier" value={record.supplierName} />
+                    <Field label="PO Number" value={record.poNumber} />
+                    <Field label="Currency" value={record.currency || "USD"} />
+                    <Field label="Total" value={`$${record.total.toLocaleString()}`} />
                   </div>
                 </div>
               </div>
