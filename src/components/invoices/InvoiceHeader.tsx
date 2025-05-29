@@ -25,7 +25,10 @@ export function InvoiceHeader({
 }: InvoiceHeaderProps) {
   return (
     <>
-      <h1 className="text-[32px] font-semibold text-gray-900 mb-4">Invoices</h1>
+      <div className="mb-4">
+        <h1 className="text-[32px] font-semibold text-gray-900">RTP's</h1>
+        <p className="text-[16px] text-gray-600 mt-1">Manage and track Real-Time Payment requests</p>
+      </div>
       
       <InvoiceTabs
         tabs={tabs}

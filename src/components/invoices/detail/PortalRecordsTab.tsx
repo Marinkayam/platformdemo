@@ -54,13 +54,13 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     record => record.invoiceNumber === invoiceId
   );
 
-  // Auto-expand all records on mount
+  // Auto-expand Primary record on mount
   useEffect(() => {
-    if (relevantRecords.length > 0) {
-      // Expand all records by default
-      setExpandedId("all");
+    const primary = relevantRecords.find(r => r.matchType === "Primary");
+    if (primary) {
+      setExpandedId(primary.id);
     }
-  }, [relevantRecords]);
+  }, [invoiceId]);
 
   const getStatusBadge = (status: PortalRecord['status']) => {
     const isSuccess = status === "Approved" || status === "Paid";
@@ -90,18 +90,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
 
   const toggleExpanded = (recordId: string) => {
     console.log("Expanded ID:", expandedId, "Clicked ID:", recordId);
-    setExpandedId(prev => {
-      // If currently showing all, switch to just this record
-      if (prev === "all") {
-        return null; // First click collapses from "all" state
-      }
-      // Normal toggle behavior
-      return prev === recordId ? null : recordId;
-    });
-  };
-
-  const isExpanded = (recordId: string) => {
-    return expandedId === "all" || expandedId === recordId;
+    setExpandedId(prev => prev === recordId ? null : recordId);
   };
 
   if (relevantRecords.length === 0) {
@@ -161,14 +150,14 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                   size="sm"
                   className="flex gap-1 items-center ml-auto pointer-events-none"
                 >
-                  {isExpanded(record.id) ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  {expandedId === record.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                   Details
                 </Button>
               </div>
             </div>
 
             {/* Expanded Details */}
-            {isExpanded(record.id) && (
+            {expandedId === record.id && (
               <div className="px-6 pt-6 pb-4">
                 {record.conflict && (
                   <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4">

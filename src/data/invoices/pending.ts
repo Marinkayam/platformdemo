@@ -1,121 +1,89 @@
 
-import { getBasicInvoiceData } from "./types";
-import { Exception } from "@/types/exception";
+import { Invoice } from "@/types/invoice";
 
-const poExceptions: Exception[] = [
+export const pendingInvoices: Invoice[] = [
   {
-    id: "exc1",
-    type: "PO_CLOSED",
-    message: "PO is closed for invoicing",
-    details: "The purchase order referenced in this invoice is marked as closed and cannot accept new invoices.",
-    createdAt: "2024-04-27T10:15:30Z",
-    resolved: false
+    id: "1",
+    number: "INV-10021301",
+    buyer: "Acme Corporation",
+    dueDate: "2024-04-15",
+    status: "Pending Action",
+    total: 2350.25,
+    creationDate: "2024-03-16",
+    owner: "john.doe@example.com",
+    assignee: "jane.smith@example.com",
+    subtotal: 2000.00,
+    tax: 350.25,
+    paymentTerms: "Net 30",
+    currency: "USD",
+    poNumber: "PO-88991",
+    taxId: "TAX-001",
+    requesterEmail: "requester@acme.com",
+    documentType: "Invoice",
+    portal: "Ariba",
+    hasExceptions: true
   },
   {
-    id: "exc2",
-    type: "PO_INSUFFICIENT_FUNDS",
-    message: "PO funds insufficient",
-    details: "The remaining funds in the referenced purchase order are insufficient for this invoice amount.",
-    createdAt: "2024-04-27T10:15:30Z",
-    resolved: false
-  }
-];
-
-const duplicateExceptions: Exception[] = [
+    id: "2",
+    number: "INV-20230402",
+    buyer: "Tech Solutions Ltd",
+    dueDate: "2024-04-20",
+    status: "Pending Action",
+    total: 1750.50,
+    creationDate: "2024-03-22",
+    owner: "sarah.wilson@example.com",
+    assignee: "mike.johnson@example.com",
+    subtotal: 1500.00,
+    tax: 250.50,
+    paymentTerms: "Net 15",
+    currency: "USD",
+    poNumber: "PO-99102",
+    taxId: "TAX-002",
+    requesterEmail: "procurement@techsolutions.com",
+    documentType: "Invoice",
+    portal: "Coupa",
+    hasExceptions: true
+  },
   {
-    id: "exc3",
-    type: "DUPLICATE_INVOICE",
-    message: "Duplicate invoice detected",
-    details: "The system has found 2 other invoices with the same invoice number. Please review and resolve this duplication.",
-    createdAt: "2024-04-28T14:22:45Z",
-    resolved: false
+    id: "3",
+    number: "INV-30230522",
+    buyer: "Global Enterprises",
+    dueDate: "2024-05-10",
+    status: "Pending Action",
+    total: 3200.75,
+    creationDate: "2024-04-11",
+    owner: "david.clark@example.com",
+    assignee: "emma.davis@example.com",
+    subtotal: 2800.00,
+    tax: 400.75,
+    paymentTerms: "Net 45",
+    currency: "USD",
+    poNumber: "PO-77893",
+    taxId: "TAX-003",
+    requesterEmail: "billing@globalent.com",
+    documentType: "Invoice",
+    portal: "Bill",
+    hasExceptions: false
+  },
+  {
+    id: "4",
+    number: "INV-40230612",
+    buyer: "European Partners GmbH",
+    dueDate: "2024-06-05",
+    status: "Pending Action",
+    total: 4250.80,
+    creationDate: "2024-05-07",
+    owner: "anna.mueller@example.com",
+    assignee: "carlos.rodriguez@example.com",
+    subtotal: 3500.00,
+    tax: 750.80,
+    paymentTerms: "Net 30",
+    currency: "EUR",
+    poNumber: "PO-66784",
+    taxId: "TAX-004",
+    requesterEmail: "finance@europartners.de",
+    documentType: "Invoice",
+    portal: "Ariba",
+    hasExceptions: true
   }
-];
-
-const dataExtractionException: Exception = {
-  id: "exc4",
-  type: "MISSING_INFORMATION",
-  message: "Incorrect Data",
-  details: "The invoice PDF contains invalid required information: Invoice Date, Customer Name",
-  createdAt: "2024-05-20T10:00:00Z",
-  resolved: false,
-  missingFields: ["Invoice Date", "Customer Name"]
-};
-
-export const pendingInvoices = [
-  getBasicInvoiceData(
-    "1",
-    "INV-100123322",
-    "Adidas",
-    "12/31/2024",
-    "Pending Action",
-    564534.55,
-    "04/28/2024",
-    "Camila",
-    {
-      subtotal: 513213.23,
-      tax: 51321.32,
-      rejectedBy: "Monto",
-      exceptions: [dataExtractionException],
-      hasExceptions: true,
-      poNumber: "PO-987654"
-    }
-  ),
-  getBasicInvoiceData(
-    "2",
-    "INV-100231211",
-    "Marvel",
-    "12/31/2024",
-    "Pending Action",
-    12423,
-    "04/26/2024",
-    "Camila",
-    {
-      rejectedBy: "Monto",
-      exceptions: duplicateExceptions,
-      hasExceptions: true,
-      subtotal: 11294.55,
-      tax: 1128.45,
-      poNumber: "PO-123456"
-    }
-  ),
-  getBasicInvoiceData(
-    "3",
-    "INV-100121298",
-    "Amazon",
-    "09/15/2024",
-    "Pending Action",
-    15020.34,
-    "09/15/2024",
-    "Camila",
-    {
-      rejectedBy: "Monto"
-    }
-  ),
-  getBasicInvoiceData(
-    "4",
-    "INV-100121299",
-    "Shimoni",
-    "09/15/2024",
-    "Pending Action",
-    5202.15,
-    "09/15/2024",
-    "Rihana",
-    {
-      rejectedBy: "Monto"
-    }
-  ),
-  getBasicInvoiceData(
-    "5",
-    "INV-100121300",
-    "Nike",
-    "09/15/2024",
-    "Pending Action",
-    8750.90,
-    "09/15/2024",
-    "Madona",
-    {
-      rejectedBy: "Buyer"
-    }
-  )
 ];
