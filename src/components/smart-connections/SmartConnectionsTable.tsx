@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { UniversalStatusBadge } from "@/components/ui/universal-status-badge";
+import { SmartConnectionStatusBadge } from "./SmartConnectionStatusBadge";
 import { ExpandedAgentCard } from "./ExpandedAgentCard";
 import { SmartConnectionsTableFooter } from "./SmartConnectionsTableFooter";
 import { SmartConnection } from "@/types/smartConnection";
@@ -125,7 +125,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                       </div>
                     </TableCell>
                     <TableCell>
-                      <UniversalStatusBadge status={connection.status} />
+                      <SmartConnectionStatusBadge status={connection.status} />
                     </TableCell>
                     <TableCell>
                       {highestIssue && (

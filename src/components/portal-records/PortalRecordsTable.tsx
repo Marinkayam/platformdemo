@@ -2,7 +2,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
 import { PortalRecord } from "@/types/portalRecord";
 import { formatCurrency } from "@/lib/utils";
-import { UniversalStatusBadge } from "@/components/ui/universal-status-badge";
+import { PortalRecordStatusBadge } from "./PortalRecordStatusBadge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface PortalRecordsTableProps {
@@ -50,7 +50,7 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
                   key={record.id}
                   className="hover:bg-gray-50 transition-colors bg-white"
                 >
-                  <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold">
+                  <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-200 font-semibold">
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -87,7 +87,7 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
                     </TooltipProvider>
                   </TableCell>
                   <TableCell>
-                    <UniversalStatusBadge status={record.status} />
+                    <PortalRecordStatusBadge status={record.status} />
                   </TableCell>
                   <TableCell className="font-medium">
                     {record.type === "Unmatched" ? (

@@ -5,7 +5,7 @@ import { formatCurrency } from "@/lib/utils";
 import { PurchaseOrderTableFooter } from "./table/PurchaseOrderTableFooter";
 import { PurchaseOrderTableHeader } from "./table/PurchaseOrderTableHeader";
 import { useSortedPurchaseOrders } from "@/hooks/useSortedPurchaseOrders";
-import { UniversalStatusBadge } from "@/components/ui/universal-status-badge";
+import { PurchaseOrderStatusBadge } from "./PurchaseOrderStatusBadge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigate } from "react-router-dom";
 
@@ -75,7 +75,7 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
                     </TooltipProvider>
                   </TableCell>
                   <TableCell>
-                    <UniversalStatusBadge status={po.status} />
+                    <PurchaseOrderStatusBadge status={po.status} />
                   </TableCell>
                   <TableCell className="truncate">
                     <TooltipProvider>

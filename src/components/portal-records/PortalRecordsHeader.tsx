@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { PortalRecordsTabs } from "./PortalRecordsTabs";
 import { PortalRecordsFilters } from "./PortalRecordsFilters";
 import { PortalRecordFilters } from "./filters/types";
+import { PageHeader } from "@/components/common/PageHeader";
 
 interface Tab {
   id: string;
@@ -29,9 +30,10 @@ export function PortalRecordsHeader({
   return (
     <div className="mb-6 space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Portal Records</h1>
-        </div>
+        <PageHeader 
+          title="Portal Records" 
+          subtitle="Track synced records and their invoice statuses across portals" 
+        />
         
         <Button className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
