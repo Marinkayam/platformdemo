@@ -14,6 +14,10 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
     if (type === "Unmatched") {
       return "-";
     }
+    // Handle both old format (numbers) and new format (already formatted)
+    if (invoiceNumber.startsWith('INV-')) {
+      return invoiceNumber;
+    }
     return `INV-${invoiceNumber.padStart(8, '0')}`;
   };
 
@@ -97,8 +101,11 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
                     )}
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm font-normal text-gray-800">
+                    <span className={`text-sm font-normal ${
+                      record.conflict ? 'text-orange-600' : 'text-gray-800'
+                    }`}>
                       {record.type}
+                      {record.conflict && ' ⚠️'}
                     </span>
                   </TableCell>
                   <TableCell className="font-medium">

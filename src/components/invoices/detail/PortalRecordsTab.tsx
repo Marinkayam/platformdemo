@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ChevronDown, ChevronUp, TriangleAlert } from "lucide-react";
-import { portalRecordsData } from "@/data/portalRecords";
+import { allPortalRecords } from "@/data/portalRecords";
 import { PortalRecord } from "@/types/portalRecord";
 
 interface PortalRecordsTabProps {
@@ -21,50 +21,16 @@ const Field = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-// Additional mock records for testing - updated to match current invoice and include all required properties
-const additionalMockRecords: PortalRecord[] = [
-  {
-    id: "INV-10021301-PR1",
-    portal: "Coupa",
-    status: "Paid",
-    matchType: "Alternate",
-    updated: "2024-04-08",
-    conflict: false,
-    invoiceNumber: "1",
-    buyer: "Global Supplies Ltd",
-    total: 3100.00,
-    poNumber: "PO-88991",
-    supplierName: "Acme Corporation",
-    type: "Alternate",
-    currency: "EUR"
-  },
-  {
-    id: "INV-10021301-PR2",
-    portal: "Coupa",
-    status: "Rejected",
-    matchType: "Alternate",
-    updated: "2024-04-08",
-    conflict: true,
-    invoiceNumber: "1",
-    buyer: "Global Supplies Ltd",
-    total: 3100.00,
-    poNumber: "PO-88991",
-    supplierName: "Acme Corporation",
-    type: "Conflict",
-    currency: "EUR"
-  }
-];
-
 export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // Combine original records with additional mock records
-  const allRecords = [...portalRecordsData, ...additionalMockRecords];
-  
-  // Filter portal records for the current invoice
-  const relevantRecords = allRecords.filter(
-    record => record.invoiceNumber === invoiceId
-  );
+  // Filter portal records for the current invoice - handle both old and new invoice ID formats
+  const relevantRecords = allPortalRecords.filter(record => {
+    // Handle both numeric IDs and formatted invoice numbers
+    return record.invoiceNumber === invoiceId || 
+           record.invoiceNumber === invoiceId.replace('INV-', '').replace(/^0+/, '') ||
+           record.invoiceNumber.padStart(8, '0') === invoiceId.replace('INV-', '');
+  });
 
   // Auto-expand Primary record on mount
   useEffect(() => {
@@ -101,7 +67,6 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   };
 
   const toggleExpanded = (recordId: string) => {
-    console.log("Expanded ID:", expandedId, "Clicked ID:", recordId);
     setExpandedId(prev => prev === recordId ? null : recordId);
   };
 
@@ -109,7 +74,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     return (
       <Card className="rounded-2xl bg-white">
         <div className="text-center text-[#8C92A3] py-10">
-          No portal records found.
+          No portal records found for this invoice.
         </div>
       </Card>
     );
@@ -123,7 +88,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
         </p>
       </div>
       
-      {/* Header - removed "Actions" text, adjusted to 5 columns */}
+      {/* Header */}
       <div className="bg-[#F8FAFC] px-6 py-3 h-[48px] border-b border-[#E2E8F0]">
         <div className="grid grid-cols-6 items-center text-sm font-bold text-[#38415F]">
           <div>Portal Record</div>
@@ -186,7 +151,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                     <Field label="Supplier" value={record.supplierName} />
                     <Field label="PO Number" value={record.poNumber} />
                     <Field label="Currency" value={record.currency || "USD"} />
-                    <Field label="Total" value={`$${record.total.toLocaleString()}`} />
+                    <Field label="Total" value={`${record.currency === 'EUR' ? '€' : record.currency === 'GBP' ? '£' : '$'}${record.total.toLocaleString()}`} />
                   </div>
                 </div>
               </div>
