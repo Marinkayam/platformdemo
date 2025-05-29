@@ -5,8 +5,9 @@ import { PortalRecordFilters, defaultPortalRecordFilters } from "@/components/po
 
 export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string) {
   const [filters, setFilters] = useState<PortalRecordFilters>(defaultPortalRecordFilters);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredPortalRecords = useMemo(() => {
+  const filteredRecords = useMemo(() => {
     let filtered = [...data];
 
     // Filter by active tab (type)
@@ -39,8 +40,8 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
     }
 
     // Apply search filter
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase();
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
       filtered = filtered.filter(record =>
         record.id.toLowerCase().includes(searchLower) ||
         record.portal.toLowerCase().includes(searchLower) ||
@@ -52,11 +53,19 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
     }
 
     return filtered;
-  }, [data, activeTab, filters]);
+  }, [data, activeTab, filters, searchTerm]);
+
+  const clearAllFilters = () => {
+    setFilters(defaultPortalRecordFilters);
+    setSearchTerm("");
+  };
 
   return {
+    filteredRecords,
+    searchTerm,
+    setSearchTerm,
     filters,
     setFilters,
-    filteredPortalRecords
+    clearAllFilters
   };
 }
