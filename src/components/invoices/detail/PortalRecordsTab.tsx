@@ -4,9 +4,7 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, TriangleAlert } from "lucide-react";
 import { portalRecordsData } from "@/data/portalRecords";
 import { PortalRecord } from "@/types/portalRecord";
 
@@ -84,73 +82,76 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
           These records were pulled from buyer portals and linked to this invoice. Each record displays key invoice attributes and its current status in the portal.
         </p>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Portal Record</TableHead>
-            <TableHead>Portal</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Match Type</TableHead>
-            <TableHead>Last Updated</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {relevantRecords.map((record) => (
-            <Collapsible 
-              key={record.id}
-              open={expandedId === record.id}
-              onOpenChange={() => toggleExpanded(record.id)}
-            >
-              <TableRow className="h-14">
-                <TableCell className="font-medium">{record.id}</TableCell>
-                <TableCell>{record.portal}</TableCell>
-                <TableCell>{getStatusBadge(record.status)}</TableCell>
-                <TableCell>{getMatchTypeDisplay(record.matchType)}</TableCell>
-                <TableCell>{format(new Date(record.updated), "MMM d, yyyy")}</TableCell>
-                <TableCell>
-                  <CollapsibleTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="flex gap-1 items-center hover:bg-gray-50"
-                    >
-                      {expandedId === record.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                      Details
-                    </Button>
-                  </CollapsibleTrigger>
-                </TableCell>
-              </TableRow>
-              <CollapsibleContent>
-                <TableRow>
-                  <TableCell colSpan={6} className="p-0">
-                    <div className="p-6">
-                      {record.conflict && (
-                        <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4">
-                          ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
-                        </div>
-                      )}
-                      <div className="grid grid-cols-2 gap-4 bg-white p-6 rounded-lg mt-2 border-t border-[#E2E8F0]">
-                        <div className="space-y-3">
-                          <LabelValue label="Invoice Number" value={record.id} />
-                          <LabelValue label="Buyer" value="Global Supplies Ltd" />
-                          <LabelValue label="PO Number" value="PO-88991" />
-                          <LabelValue label="Total" value="$3,100.00" />
-                        </div>
-                        <div className="space-y-3">
-                          <LabelValue label="Transaction Type" value="Invoice" />
-                          <LabelValue label="Supplier" value="Acme Corporation" />
-                          <LabelValue label="Currency" value="EUR" />
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </CollapsibleContent>
-            </Collapsible>
-          ))}
-        </TableBody>
-      </Table>
+      
+      {/* Header */}
+      <div className="px-6 py-4 border-b border-[#E2E8F0]">
+        <div className="flex text-sm font-medium text-[#8C92A3] uppercase tracking-wide">
+          <div className="flex-1">Portal Record</div>
+          <div className="w-24">Portal</div>
+          <div className="w-24">Status</div>
+          <div className="w-28">Match Type</div>
+          <div className="w-32">Last Updated</div>
+          <div className="w-24">Actions</div>
+        </div>
+      </div>
+
+      {/* Records */}
+      <div className="divide-y divide-[#E2E8F0]">
+        {relevantRecords.map((record) => (
+          <div key={record.id}>
+            {/* Record Row */}
+            <div className="px-6 py-4 flex items-center">
+              <div className="flex-1 flex items-center gap-2">
+                {record.conflict && (
+                  <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
+                )}
+                <span className="font-medium text-[#38415F]">{record.id}</span>
+              </div>
+              <div className="w-24 text-[#38415F]">{record.portal}</div>
+              <div className="w-24">{getStatusBadge(record.status)}</div>
+              <div className="w-28">{getMatchTypeDisplay(record.matchType)}</div>
+              <div className="w-32 text-sm text-[#8C92A3]">
+                {format(new Date(record.updated), "MMM d, yyyy")}
+              </div>
+              <div className="w-24">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="flex gap-1 items-center hover:bg-gray-50"
+                  onClick={() => toggleExpanded(record.id)}
+                >
+                  {expandedId === record.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  Details
+                </Button>
+              </div>
+            </div>
+
+            {/* Expanded Details */}
+            {expandedId === record.id && (
+              <div className="px-6 pb-6">
+                {record.conflict && (
+                  <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4">
+                    ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
+                  </div>
+                )}
+                <div className="grid grid-cols-2 gap-4 bg-white p-6 rounded-lg border border-[#E2E8F0]">
+                  <div className="space-y-3">
+                    <LabelValue label="Invoice Number" value={record.id} />
+                    <LabelValue label="Buyer" value="Global Supplies Ltd" />
+                    <LabelValue label="PO Number" value="PO-88991" />
+                    <LabelValue label="Total" value="$3,100.00" />
+                  </div>
+                  <div className="space-y-3">
+                    <LabelValue label="Transaction Type" value="Invoice" />
+                    <LabelValue label="Supplier" value="Acme Corporation" />
+                    <LabelValue label="Currency" value="EUR" />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </Card>
   );
 }
