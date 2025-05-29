@@ -8,6 +8,7 @@ import { AssigneeComponent } from "@/components/invoices/AssigneeComponent";
 import { InvoiceActionsMenu } from "./row/InvoiceActionsMenu";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { RejectionInfo } from "./row/RejectionInfo";
+import { InvoiceNumber } from "./row/InvoiceNumber";
 import { getRandomPortalName } from "@/lib/portalUtils";
 
 interface InvoiceTableRowProps {
@@ -36,9 +37,12 @@ export function InvoiceTableRow({
       className="h-14 hover:bg-gray-50 cursor-pointer transition-colors bg-white relative"
       onClick={handleClick}
     >
-      <TableCell className="py-3 px-4 text-sm font-bold">
-        {invoice.number}
-      </TableCell>
+      <InvoiceNumber 
+        number={invoice.number}
+        hasWarning={invoice.hasWarning}
+        isPending={isPendingTab || false}
+        isCreditMemo={invoice.documentType === "Credit Memo"}
+      />
       
       <TableCell className="py-3 px-4 text-sm">
         {invoice.buyer}
@@ -64,7 +68,7 @@ export function InvoiceTableRow({
       </TableCell>
       
       <TableCell className="py-3 px-4 text-sm">
-        {formatCurrency(invoice.total)}
+        {formatCurrency(invoice.total, invoice.currency)}
       </TableCell>
       
       {isPendingTab ? (

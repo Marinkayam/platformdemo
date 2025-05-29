@@ -21,7 +21,8 @@ export const pendingInvoices: Invoice[] = [
     requesterEmail: "requester@acme.com",
     documentType: "Invoice",
     portal: "Ariba",
-    hasExceptions: true
+    hasExceptions: true,
+    rejectedBy: "Monto"
   },
   {
     id: "2",
@@ -42,7 +43,8 @@ export const pendingInvoices: Invoice[] = [
     requesterEmail: "procurement@techsolutions.com",
     documentType: "Invoice",
     portal: "Coupa",
-    hasExceptions: true
+    hasExceptions: true,
+    rejectedBy: "Buyer"
   },
   {
     id: "3",
@@ -85,5 +87,26 @@ export const pendingInvoices: Invoice[] = [
     documentType: "Invoice",
     portal: "Ariba",
     hasExceptions: true
+  },
+  {
+    id: "5",
+    number: "INV-10021111",
+    buyer: "Espresso",
+    dueDate: "2024-04-04",
+    status: "Paid",
+    total: 23412.22,
+    creationDate: "2024-03-20",
+    owner: "maria.garcia@example.com",
+    assignee: undefined,
+    subtotal: 20000.00,
+    tax: 3412.22,
+    paymentTerms: "Net 30",
+    currency: "EUR",
+    poNumber: "PO-55667",
+    taxId: "TAX-005",
+    requesterEmail: "accounting@espresso.com",
+    documentType: "Invoice",
+    portal: "Ariba",
+    hasExceptions: false
   }
 ];

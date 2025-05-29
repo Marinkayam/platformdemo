@@ -7,7 +7,6 @@ import { Card } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
 import { AssigneeComponent } from "../AssigneeComponent";
 import { ExcludeInvoiceDialog } from "../ExcludeInvoiceDialog";
-import { mockConnectionWithIssue } from "./rtp/mockData";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
@@ -88,7 +87,7 @@ export function InvoiceHeader({
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/invoices">Invoices</Link>
+                  <Link to="/invoices">RTP's</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
@@ -132,7 +131,7 @@ export function InvoiceHeader({
               </div>
               
               <div className="text-sm text-gray-400 font-normal px-2 py-1">
-                {mockConnectionWithIssue.buyer.name} → {mockConnectionWithIssue.supplier.name}
+                {localInvoice.buyer}
               </div>
             </div>
             
