@@ -1,5 +1,5 @@
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
 import { PortalRecord } from "@/types/portalRecord";
 import { formatCurrency } from "@/lib/utils";
 import { UniversalStatusBadge } from "@/components/ui/universal-status-badge";
@@ -147,6 +147,15 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
               ))
             )}
           </TableBody>
+
+          <TableFooter>
+            <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
+              <TableCell colSpan={8} className="bg-[#F6F7F9]"></TableCell>
+              <TableCell className="text-right text-sm text-muted-foreground bg-[#F6F7F9]">
+                {portalRecords.length} records
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
       </div>
     </div>

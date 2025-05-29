@@ -130,8 +130,8 @@ export function InvoiceHeader({
                 </DropdownMenu>
               </div>
               
-              <div className="text-sm text-gray-400 font-normal px-2 py-1">
-                {localInvoice.buyer}
+              <div className="text-sm text-muted-foreground font-normal px-2 py-1">
+                Buyer: {localInvoice.buyer}
               </div>
             </div>
             

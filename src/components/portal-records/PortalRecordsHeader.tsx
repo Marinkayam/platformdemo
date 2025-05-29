@@ -1,47 +1,51 @@
 
-import { PortalRecordsTabs } from "@/components/portal-records/PortalRecordsTabs";
-import { PortalRecordsFilters } from "@/components/portal-records/PortalRecordsFilters";
-import { PortalRecordFilters } from "@/components/portal-records/filters/types";
-import { PageHeader } from "@/components/common/PageHeader";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { PortalRecordsTabs } from "./PortalRecordsTabs";
+import { PortalRecordsFilters } from "./PortalRecordsFilters";
+import { PortalRecordFilters } from "./filters/types";
+
+interface Tab {
+  id: string;
+  label: string;
+  count: number;
+}
 
 interface PortalRecordsHeaderProps {
-  tabs: {
-    id: string;
-    label: string;
-    count: number;
-  }[];
+  tabs: Tab[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
   onFilterChange: (filters: PortalRecordFilters) => void;
   recordCount: number;
 }
 
-export function PortalRecordsHeader({ 
-  tabs, 
-  activeTab, 
+export function PortalRecordsHeader({
+  tabs,
+  activeTab,
   onTabChange,
   onFilterChange,
   recordCount
 }: PortalRecordsHeaderProps) {
   return (
-    <>
-      <PageHeader 
-        title="Portal Records" 
-        subtitle="View and manage portal record matches and conflicts" 
-      />
-      
+    <div className="mb-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Portal Records</h1>
+        </div>
+        
+        <Button className="flex items-center gap-2">
+          <Plus className="h-4 w-4" />
+          Add Record
+        </Button>
+      </div>
+
       <PortalRecordsTabs
         tabs={tabs}
         activeTab={activeTab}
         onTabChange={onTabChange}
       />
-      
-      <div className="flex justify-between items-center mb-6">
-        <PortalRecordsFilters onFilterChange={onFilterChange} />
-        <div className="text-sm text-gray-600">
-          {recordCount} record{recordCount !== 1 ? 's' : ''}
-        </div>
-      </div>
-    </>
+
+      <PortalRecordsFilters onFilterChange={onFilterChange} />
+    </div>
   );
 }

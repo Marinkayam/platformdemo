@@ -131,7 +131,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
           <div>Status</div>
           <div>Match Type</div>
           <div>Last Updated</div>
-          <div className="text-right">Actions</div>
+          <div className="text-right"></div>
         </div>
       </div>
 

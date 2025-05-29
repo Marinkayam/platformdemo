@@ -1,8 +1,6 @@
 
-import { X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { X } from "lucide-react";
 
 interface ActiveFilterBadgeProps {
   label: string;
@@ -13,27 +11,20 @@ interface ActiveFilterBadgeProps {
 export function ActiveFilterBadge({ label, value, onRemove }: ActiveFilterBadgeProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: -4 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -4 }}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.2 }}
+      className="inline-flex items-center gap-1 px-2.5 py-1 bg-purple-50 text-purple-700 border border-purple-200 rounded-full text-xs font-normal"
     >
-      <Badge 
-        variant="outline" 
-        className={cn(
-          "bg-primary/10 text-primary border-primary/20 hover:bg-primary/15",
-          "px-2.5 py-1.5 gap-2 items-center transition-all duration-200"
-        )}
+      <span>{label}: {value}</span>
+      <button
+        onClick={onRemove}
+        className="hover:bg-purple-100 rounded-full p-0.5 transition-colors"
+        aria-label={`Remove ${label} filter`}
       >
-        <span className="font-medium">{label}:</span> {value}
-        <X 
-          className="h-3.5 w-3.5 cursor-pointer hover:text-primary/80 transition-colors" 
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemove();
-          }}
-        />
-      </Badge>
+        <X className="h-3 w-3" />
+      </button>
     </motion.div>
   );
 }
