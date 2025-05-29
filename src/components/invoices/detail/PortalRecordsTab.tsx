@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { portalRecordsData } from "@/data/portalRecords";
 import { PortalRecord } from "@/types/portalRecord";
 
@@ -53,7 +55,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   const getMatchTypeDisplay = (matchType: PortalRecord['matchType']) => {
     if (matchType === "Primary") {
       return (
-        <span className="font-bold text-[#7B59FF]">
+        <span className="text-[#7B59FF] font-medium">
           ⭐ Primary
         </span>
       );
@@ -67,16 +69,16 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
 
   if (relevantRecords.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow p-6">
+      <Card className="rounded-2xl bg-white shadow-md p-6">
         <div className="text-center text-[#8C92A3] py-10">
           No portal records found.
         </div>
-      </div>
+      </Card>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow">
+    <Card className="rounded-2xl bg-white shadow-md p-0">
       <div className="p-6 pb-0">
         <p className="text-sm text-[#8C92A3] mb-4">
           These records were pulled from buyer portals and linked to this invoice. Each record displays key invoice attributes and its current status in the portal.
@@ -111,8 +113,9 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      className="hover:bg-gray-50"
+                      className="flex gap-1 items-center hover:bg-gray-50"
                     >
+                      {expandedId === record.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                       Details
                     </Button>
                   </CollapsibleTrigger>
@@ -148,6 +151,6 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </Card>
   );
 }
