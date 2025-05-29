@@ -54,11 +54,11 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     record => record.invoiceNumber === invoiceId
   );
 
-  // Auto-expand the Primary record on mount
+  // Auto-expand all records on mount
   useEffect(() => {
-    const primaryRecord = relevantRecords.find(record => record.matchType === "Primary");
-    if (primaryRecord) {
-      setExpandedId(primaryRecord.id);
+    if (relevantRecords.length > 0) {
+      // Expand all records by default
+      setExpandedId("all");
     }
   }, [relevantRecords]);
 
@@ -80,16 +80,21 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   const getMatchTypeDisplay = (matchType: PortalRecord['matchType']) => {
     if (matchType === "Primary") {
       return (
-        <span className="text-[#7B59FF] font-medium">
+        <span className="text-sm text-[#7B59FF] font-medium">
           ⭐ Primary
         </span>
       );
     }
-    return <span className="text-[#8C92A3]">Alternate</span>;
+    return <span className="text-sm text-[#8C92A3]">Alternate</span>;
   };
 
   const toggleExpanded = (recordId: string) => {
-    setExpandedId(expandedId === recordId ? null : recordId);
+    console.log("Expanded ID:", expandedId, "Clicked ID:", recordId);
+    setExpandedId(prev => prev === recordId ? null : recordId);
+  };
+
+  const isExpanded = (recordId: string) => {
+    return expandedId === "all" || expandedId === recordId;
   };
 
   if (relevantRecords.length === 0) {
@@ -147,28 +152,24 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="flex gap-1 items-center hover:bg-gray-50"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent row click when clicking button
-                    toggleExpanded(record.id);
-                  }}
+                  className="flex gap-1 items-center ml-auto pointer-events-none"
                 >
-                  {expandedId === record.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  {isExpanded(record.id) ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                   Details
                 </Button>
               </div>
             </div>
 
             {/* Expanded Details */}
-            {expandedId === record.id && (
-              <div className="border-t border-[#E2E8F0] px-6 pt-6 pb-4">
+            {isExpanded(record.id) && (
+              <div className="px-6 pt-6 pb-4">
                 {record.conflict && (
                   <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4">
                     ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
                   </div>
                 )}
                 <div className="space-y-6">
-                  <h3 className="text-sm font-semibold text-[#38415F]">Portal Record Details</h3>
+                  <h3 className="text-sm font-semibold text-[#38415F] mb-4">Portal Record Details</h3>
                   
                   <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                     <Field label="Invoice Number" value={record.id} />
