@@ -12,10 +12,12 @@ interface PortalRecordsTabProps {
   invoiceId: string;
 }
 
-const LabelValue = ({ label, value }: { label: string; value: string }) => (
-  <div>
-    <div className="text-sm text-[#8C92A3]">{label}</div>
-    <div className="text-base text-[#38415F] font-medium">{value}</div>
+const Field = ({ label, value }: { label: string; value: string }) => (
+  <div className="flex flex-col gap-1">
+    <div className="text-xs text-[#8C92A3]">{label}</div>
+    <div className="text-sm font-medium text-[#38415F] bg-[#F1F5F9] rounded-md py-2 px-3">
+      {value}
+    </div>
   </div>
 );
 
@@ -76,7 +78,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   }
 
   return (
-    <Card className="rounded-2xl bg-white shadow-md p-0">
+    <Card className="rounded-2xl bg-white shadow-md overflow-hidden">
       <div className="p-6 pb-0">
         <p className="text-sm text-[#8C92A3] mb-4">
           These records were pulled from buyer portals and linked to this invoice. Each record displays key invoice attributes and its current status in the portal.
@@ -84,8 +86,8 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
       </div>
       
       {/* Header */}
-      <div className="px-6 py-4 border-b border-[#E2E8F0]">
-        <div className="flex text-sm font-medium text-[#8C92A3] uppercase tracking-wide">
+      <div className="bg-[#F8FAFC] px-6 py-3 h-[48px] border-b border-[#E2E8F0]">
+        <div className="flex text-sm font-bold text-[#38415F]">
           <div className="flex-1">Portal Record</div>
           <div className="w-24">Portal</div>
           <div className="w-24">Status</div>
@@ -100,14 +102,14 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
         {relevantRecords.map((record) => (
           <div key={record.id}>
             {/* Record Row */}
-            <div className="px-6 py-4 flex items-center">
+            <div className="px-6 py-4 h-[56px] flex items-center border-b border-[#E2E8F0]">
               <div className="flex-1 flex items-center gap-2">
                 {record.conflict && (
                   <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
                 )}
-                <span className="font-medium text-[#38415F]">{record.id}</span>
+                <span className="text-sm font-medium text-[#38415F]">{record.id}</span>
               </div>
-              <div className="w-24 text-[#38415F]">{record.portal}</div>
+              <div className="w-24 text-sm text-[#8C92A3]">{record.portal}</div>
               <div className="w-24">{getStatusBadge(record.status)}</div>
               <div className="w-28">{getMatchTypeDisplay(record.matchType)}</div>
               <div className="w-32 text-sm text-[#8C92A3]">
@@ -128,23 +130,23 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
 
             {/* Expanded Details */}
             {expandedId === record.id && (
-              <div className="px-6 pb-6">
+              <div className="border-t border-[#E2E8F0] px-6 pt-6 pb-4">
                 {record.conflict && (
                   <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4">
                     ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
                   </div>
                 )}
-                <div className="grid grid-cols-2 gap-4 bg-white p-6 rounded-lg border border-[#E2E8F0]">
-                  <div className="space-y-3">
-                    <LabelValue label="Invoice Number" value={record.id} />
-                    <LabelValue label="Buyer" value="Global Supplies Ltd" />
-                    <LabelValue label="PO Number" value="PO-88991" />
-                    <LabelValue label="Total" value="$3,100.00" />
-                  </div>
-                  <div className="space-y-3">
-                    <LabelValue label="Transaction Type" value="Invoice" />
-                    <LabelValue label="Supplier" value="Acme Corporation" />
-                    <LabelValue label="Currency" value="EUR" />
+                <div className="space-y-6">
+                  <h3 className="text-sm font-semibold text-[#38415F]">Portal Record Details</h3>
+                  
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                    <Field label="Invoice Number" value={record.id} />
+                    <Field label="Transaction Type" value="Invoice" />
+                    <Field label="Buyer" value="Global Supplies Ltd" />
+                    <Field label="Supplier" value="Acme Corporation" />
+                    <Field label="PO Number" value="PO-88991" />
+                    <Field label="Currency" value="EUR" />
+                    <Field label="Total" value="$3,100.00" />
                   </div>
                 </div>
               </div>
