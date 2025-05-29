@@ -1,37 +1,45 @@
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+
+interface PortalRecordTab {
+  id: string;
+  label: string;
+  count: number;
+}
 
 interface PortalRecordsTabsProps {
-  tabs: {
-    id: string;
-    label: string;
-    count: number;
-  }[];
+  tabs: PortalRecordTab[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
 }
 
 export function PortalRecordsTabs({ tabs, activeTab, onTabChange }: PortalRecordsTabsProps) {
   return (
-    <div className="mb-6">
-      <Tabs value={activeTab} onValueChange={onTabChange}>
-        <TabsList className="grid w-full grid-cols-5 bg-gray-100 p-1 rounded-lg">
-          {tabs.map((tab) => (
-            <TabsTrigger
-              key={tab.id}
-              value={tab.id}
-              className="relative px-4 py-2 text-sm font-medium transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-sm"
-            >
-              <span className="flex items-center gap-2">
-                {tab.label}
-                <span className="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full min-w-[20px] text-center data-[state=active]:bg-gray-100">
-                  {tab.count}
-                </span>
+    <div className="border-b mb-6">
+      <div className="flex space-x-8">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => onTabChange(tab.id)}
+            className={cn(
+              "py-3 px-1 relative font-medium text-sm",
+              activeTab === tab.id
+                ? "text-primary border-b-2 border-primary"
+                : "text-gray-600 hover:text-gray-900"
+            )}
+          >
+            <div className="flex items-center">
+              {tab.label}
+              <span className={cn(
+                "ml-2 px-2 py-0.5 rounded-full text-xs",
+                activeTab === tab.id ? "bg-primary/10 text-primary" : "bg-gray-100 text-gray-600"
+              )}>
+                {tab.count}
               </span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

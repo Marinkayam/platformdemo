@@ -11,8 +11,7 @@ export function SmartConnectionsHeader() {
   };
 
   return (
-    <div className="flex justify-between items-center">
-      <h1 className="text-2xl font-semibold text-gray-900">Smart Connections</h1>
+    <div className="flex justify-end">
       <Button 
         onClick={handleNewConnection}
         size="default"

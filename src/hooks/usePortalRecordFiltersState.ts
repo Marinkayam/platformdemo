@@ -15,9 +15,35 @@ export function usePortalRecordFiltersState(onFilterChange: (filters: PortalReco
     handleFilterChange("search", value);
   }, [handleFilterChange]);
 
+  const handleRemoveFilter = useCallback((key: string, value: string) => {
+    const newFilters = { ...filters };
+    
+    if (key.startsWith("portal-")) {
+      newFilters.portal = newFilters.portal.filter(p => p !== value);
+    } else if (key.startsWith("buyer-")) {
+      newFilters.buyer = newFilters.buyer.filter(b => b !== value);
+    } else if (key === "status") {
+      newFilters.status = "All";
+    } else if (key === "type") {
+      newFilters.type = "All";
+    } else if (key === "search") {
+      newFilters.search = "";
+    }
+    
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  }, [filters, onFilterChange]);
+
+  const handleResetFilters = useCallback(() => {
+    setFilters(defaultPortalRecordFilters);
+    onFilterChange(defaultPortalRecordFilters);
+  }, [onFilterChange]);
+
   return {
     filters,
     handleFilterChange,
-    handleSearchChange
+    handleSearchChange,
+    handleRemoveFilter,
+    handleResetFilters
   };
 }

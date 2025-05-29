@@ -18,37 +18,7 @@ export const portalRecordsData: PortalRecord[] = [
     currency: "USD"
   },
   {
-    id: "PR-002-INV3",
-    portal: "Coupa",
-    status: "Paid",
-    matchType: "Alternate",
-    updated: "2024-01-14",
-    conflict: true,
-    invoiceNumber: "3",
-    buyer: "Global Enterprises",
-    total: 35000.00,
-    poNumber: "PO-77893",
-    supplierName: "Manufacturing Corp",
-    type: "Conflict",
-    currency: "USD"
-  },
-  {
-    id: "PR-003-INV3",
-    portal: "Bill",
-    status: "Rejected",
-    matchType: "Alternate",
-    updated: "2024-01-13",
-    conflict: false,
-    invoiceNumber: "3",
-    buyer: "European Partners GmbH",
-    total: 42000.00,
-    poNumber: "PO-66784",
-    supplierName: "Consulting Services Ltd",
-    type: "Alternate",
-    currency: "EUR"
-  },
-  {
-    id: "PR-004-INV1",
+    id: "PR-002-INV1",
     portal: "Ariba",
     status: "Approved",
     matchType: "Primary",
@@ -63,7 +33,7 @@ export const portalRecordsData: PortalRecord[] = [
     currency: "USD"
   },
   {
-    id: "PR-005-INV2",
+    id: "PR-003-INV2",
     portal: "Tipalti",
     status: "Pending",
     matchType: "Primary",
@@ -78,7 +48,22 @@ export const portalRecordsData: PortalRecord[] = [
     currency: "USD"
   },
   {
-    id: "PR-006-UNMATCHED",
+    id: "PR-004-INV3",
+    portal: "Coupa",
+    status: "Paid",
+    matchType: "Alternate",
+    updated: "2024-01-14",
+    conflict: true,
+    invoiceNumber: "3",
+    buyer: "Global Enterprises",
+    total: 35000.00,
+    poNumber: "PO-77893",
+    supplierName: "Manufacturing Corp",
+    type: "Conflict",
+    currency: "USD"
+  },
+  {
+    id: "PR-005-UNMATCHED",
     portal: "Oracle",
     status: "Pending",
     matchType: "Primary",
@@ -91,5 +76,20 @@ export const portalRecordsData: PortalRecord[] = [
     supplierName: "Parts Supplier LLC",
     type: "Unmatched",
     currency: "USD"
+  },
+  {
+    id: "PR-006-INV3",
+    portal: "Bill",
+    status: "Rejected",
+    matchType: "Alternate",
+    updated: "2024-01-13",
+    conflict: false,
+    invoiceNumber: "3",
+    buyer: "European Partners GmbH",
+    total: 42000.00,
+    poNumber: "PO-66784",
+    supplierName: "Consulting Services Ltd",
+    type: "Alternate",
+    currency: "EUR"
   }
 ];

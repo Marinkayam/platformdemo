@@ -1,5 +1,6 @@
 
 import React from "react";
+import { PageHeader } from "@/components/common/PageHeader";
 import { SmartConnectionsHeader } from "@/components/smart-connections/SmartConnectionsHeader";
 import { SmartConnectionsFilters } from "@/components/smart-connections/SmartConnectionsFilters";
 import { SmartConnectionsTable } from "@/components/smart-connections/SmartConnectionsTable";
@@ -18,6 +19,10 @@ export default function SmartConnections() {
   return (
     <TooltipProvider>
       <div className="space-y-6">
+        <PageHeader 
+          title="Smart Connections" 
+          subtitle="Sync and manage supplier connections across portals" 
+        />
         <SmartConnectionsHeader />
         
         <SmartConnectionsFilters
