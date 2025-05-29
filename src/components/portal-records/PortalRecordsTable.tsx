@@ -49,33 +49,33 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
     <div className="rounded-xl border overflow-hidden">
       <div className="overflow-x-auto max-h-[600px]" style={{ overflow: 'auto' }}>
         <Table>
-          <TableHeader className="sticky top-0 z-10 bg-white">
-            <TableRow className="h-14 bg-gray-50">
-              <TableHead className="text-sm font-medium text-gray-600 bg-white px-4 w-[140px]">
+          <TableHeader className="sticky top-0 z-10">
+            <TableRow className="bg-[#F6F7F9]">
+              <TableHead className="text-sm font-medium text-gray-600 px-4 w-[140px]">
                 Portal Record ID
               </TableHead>
-              <TableHead className="text-sm font-medium text-gray-600 bg-white px-4">
+              <TableHead className="text-sm font-medium text-gray-600 px-4">
                 Portal
               </TableHead>
-              <TableHead className="text-sm font-medium text-gray-600 bg-white px-4">
+              <TableHead className="text-sm font-medium text-gray-600 px-4">
                 Buyer
               </TableHead>
-              <TableHead className="text-sm font-medium text-gray-600 bg-white px-4">
+              <TableHead className="text-sm font-medium text-gray-600 px-4">
                 Portal Status
               </TableHead>
-              <TableHead className="text-sm font-medium text-gray-600 bg-white px-4">
+              <TableHead className="text-sm font-medium text-gray-600 px-4">
                 Invoice Number
               </TableHead>
-              <TableHead className="text-sm font-medium text-gray-600 bg-white px-4">
+              <TableHead className="text-sm font-medium text-gray-600 px-4">
                 Type
               </TableHead>
-              <TableHead className="text-sm font-medium text-gray-600 bg-white px-4">
+              <TableHead className="text-sm font-medium text-gray-600 px-4">
                 Total
               </TableHead>
-              <TableHead className="text-sm font-medium text-gray-600 bg-white px-4">
+              <TableHead className="text-sm font-medium text-gray-600 px-4">
                 PO Number
               </TableHead>
-              <TableHead className="text-sm font-medium text-gray-600 bg-white px-4">
+              <TableHead className="text-sm font-medium text-gray-600 px-4">
                 Supplier Name on Portal
               </TableHead>
             </TableRow>
@@ -84,7 +84,7 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
           <TableBody className="divide-y">
             {portalRecords.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={9} className="h-14 text-center text-sm text-gray-600 py-3 align-middle bg-white">
+                <TableCell colSpan={9} className="text-center text-sm text-gray-600 align-middle bg-white">
                   No portal records match your filters.
                 </TableCell>
               </TableRow>
@@ -92,41 +92,41 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
               portalRecords.map((record) => (
                 <TableRow
                   key={record.id}
-                  className="h-14 hover:bg-gray-50 transition-colors bg-white"
+                  className="hover:bg-gray-50 transition-colors bg-white"
                 >
-                  <TableCell className="py-3 px-4 text-sm font-medium">
+                  <TableCell className="px-4 text-sm font-medium">
                     {record.id}
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">
+                  <TableCell className="px-4 text-sm">
                     {record.portal}
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">
+                  <TableCell className="px-4 text-sm">
                     {record.buyer}
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">
-                    <span className={`px-2 py-1 rounded-full text-sm font-medium ${getStatusBadgeColor(record.status)}`}>
+                  <TableCell className="px-4 text-sm">
+                    <span className={`px-2.5 py-1 rounded-md text-sm font-medium ${getStatusBadgeColor(record.status)}`}>
                       {record.status}
                     </span>
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">
+                  <TableCell className="px-4 text-sm">
                     {record.type === "Unmatched" ? (
                       <span className="text-gray-400">-</span>
                     ) : (
                       formatInvoiceNumber(record.invoiceNumber, record.type)
                     )}
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">
-                    <span className={`px-2 py-1 rounded-full text-sm font-medium ${getTypeBadgeColor(record.type)}`}>
+                  <TableCell className="px-4 text-sm">
+                    <span className={`px-2.5 py-1 rounded-md text-sm font-medium ${getTypeBadgeColor(record.type)}`}>
                       {record.type}
                     </span>
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">
+                  <TableCell className="px-4 text-sm">
                     {formatCurrency(record.total, record.currency)}
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">
+                  <TableCell className="px-4 text-sm">
                     {record.poNumber}
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">
+                  <TableCell className="px-4 text-sm">
                     {record.supplierName}
                   </TableCell>
                 </TableRow>

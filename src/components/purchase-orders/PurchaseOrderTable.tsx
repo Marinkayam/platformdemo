@@ -40,13 +40,13 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
             sortField={sortField}
             sortDirection={sortDirection}
             onSort={handleSort}
-            className="sticky top-0 z-10 bg-white"
+            className="sticky top-0 z-10"
           />
           
           <TableBody className="divide-y">
             {sortedPurchaseOrders.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="h-[56px] text-center text-[14px] text-gray-600 py-2 align-middle bg-white">
+                <TableCell colSpan={8} className="text-center text-sm text-gray-600 align-middle bg-white">
                   No purchase orders found.
                 </TableCell>
               </TableRow>
@@ -54,23 +54,23 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
               sortedPurchaseOrders.map((po) => (
                 <TableRow
                   key={po.id}
-                  className="h-14 cursor-pointer hover:bg-gray-50 transition-colors bg-white"
+                  className="cursor-pointer hover:bg-gray-50 transition-colors bg-white"
                   onClick={() => handleRowClick(po.id)}
                 >
-                  <TableCell className="py-3 px-4 text-left sticky left-0 z-10 bg-white">
+                  <TableCell className="px-4 text-left sticky left-0 z-10 bg-white">
                     <span className="font-medium text-[#0A0714] hover:text-blue-800">
                       {po.poNumber}
                     </span>
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">{po.buyerName}</TableCell>
-                  <TableCell className="py-3 px-4 text-sm">
+                  <TableCell className="px-4 text-sm">{po.buyerName}</TableCell>
+                  <TableCell className="px-4 text-sm">
                     <PurchaseOrderStatusBadge status={po.status} />
                   </TableCell>
-                  <TableCell className="py-3 px-4 text-sm">{po.portal}</TableCell>
-                  <TableCell className="py-3 px-4 text-sm">{formatCurrency(po.total)}</TableCell>
-                  <TableCell className="py-3 px-4 text-sm">{formatCurrency(po.invoicedAmount)}</TableCell>
-                  <TableCell className="py-3 px-4 text-sm">{formatCurrency(po.amountLeft)}</TableCell>
-                  <TableCell className="py-3 px-4 text-sm">{po.paymentTerms}</TableCell>
+                  <TableCell className="px-4 text-sm">{po.portal}</TableCell>
+                  <TableCell className="px-4 text-sm">{formatCurrency(po.total)}</TableCell>
+                  <TableCell className="px-4 text-sm">{formatCurrency(po.invoicedAmount)}</TableCell>
+                  <TableCell className="px-4 text-sm">{formatCurrency(po.amountLeft)}</TableCell>
+                  <TableCell className="px-4 text-sm">{po.paymentTerms}</TableCell>
                 </TableRow>
               ))
             )}

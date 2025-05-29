@@ -19,11 +19,13 @@ export default function SmartConnections() {
   return (
     <TooltipProvider>
       <div className="space-y-6">
-        <PageHeader 
-          title="Smart Connections" 
-          subtitle="Sync and manage supplier connections across portals" 
-        />
-        <SmartConnectionsHeader />
+        <div className="flex items-center justify-between">
+          <PageHeader 
+            title="Smart Connections" 
+            subtitle="Sync and manage supplier connections across portals" 
+          />
+          <SmartConnectionsHeader />
+        </div>
         
         <SmartConnectionsFilters
           filters={filters}

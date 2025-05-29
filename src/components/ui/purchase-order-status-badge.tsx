@@ -28,7 +28,7 @@ export function PurchaseOrderStatusBadge({ status, className }: PurchaseOrderSta
   return (
     <span
       className={cn(
-        "inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap",
+        "inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium whitespace-nowrap",
         getBadgeStyles(),
         className
       )}

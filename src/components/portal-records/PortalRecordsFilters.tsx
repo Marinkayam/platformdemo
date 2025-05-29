@@ -56,7 +56,7 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
             placeholder="Search records..."
             value={filters.search}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="pl-10 w-64"
+            className="pl-10 w-64 h-9 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           />
         </div>
       </div>

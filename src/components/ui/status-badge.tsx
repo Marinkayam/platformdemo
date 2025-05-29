@@ -21,9 +21,9 @@ export function StatusBadge({ status, className, dueDate }: StatusBadgeProps) {
       case "Pending Action":
         return "bg-red-100 text-red-600";
       case "Rejected by Buyer":
-        return "bg-red-50 text-red-600";
+        return "bg-red-100 text-red-600";
       case "Rejected by Monto":
-        return "bg-[#F3E8FF] text-[#9333EA]";
+        return "bg-purple-100 text-purple-600";
       case "Approved by Buyer":
         return "bg-orange-100 text-orange-600";
       case "External Submission":
@@ -76,7 +76,7 @@ export function StatusBadge({ status, className, dueDate }: StatusBadgeProps) {
         <TooltipTrigger asChild>
           <span
             className={cn(
-              "inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap cursor-help",
+              "inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium whitespace-nowrap cursor-help",
               getBadgeStyles(),
               className
             )}
