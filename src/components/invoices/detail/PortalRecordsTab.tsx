@@ -12,6 +12,13 @@ interface PortalRecordsTabProps {
   invoiceId: string;
 }
 
+const LabelValue = ({ label, value }: { label: string; value: string }) => (
+  <div>
+    <div className="text-sm text-[#8C92A3]">{label}</div>
+    <div className="text-base text-[#38415F] font-medium">{value}</div>
+  </div>
+);
+
 export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -109,44 +116,23 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
               <CollapsibleContent>
                 <TableRow>
                   <TableCell colSpan={6} className="p-0">
-                    <div className="px-6 py-4 bg-gray-50">
+                    <div className="p-6">
                       {record.conflict && (
                         <div className="mb-4 p-3 bg-[#FFF8E1] text-[#7B5915] rounded-md">
                           ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
                         </div>
                       )}
-                      <div className="grid grid-cols-2 gap-6">
+                      <div className="grid grid-cols-2 gap-4 bg-white p-6 rounded-lg mt-2">
                         <div className="space-y-3">
-                          <div>
-                            <span className="text-sm font-medium text-[#38415F]">Invoice Number</span>
-                            <div className="text-[#38415F]">{record.id}</div>
-                          </div>
-                          <div>
-                            <span className="text-sm font-medium text-[#38415F]">Buyer</span>
-                            <div className="text-[#38415F]">Global Supplies Ltd</div>
-                          </div>
-                          <div>
-                            <span className="text-sm font-medium text-[#38415F]">PO Number</span>
-                            <div className="text-[#38415F]">PO-88991</div>
-                          </div>
-                          <div>
-                            <span className="text-sm font-medium text-[#38415F]">Total</span>
-                            <div className="text-[#38415F]">$3,100.00</div>
-                          </div>
+                          <LabelValue label="Invoice Number" value={record.id} />
+                          <LabelValue label="Buyer" value="Global Supplies Ltd" />
+                          <LabelValue label="PO Number" value="PO-88991" />
+                          <LabelValue label="Total" value="$3,100.00" />
                         </div>
                         <div className="space-y-3">
-                          <div>
-                            <span className="text-sm font-medium text-[#38415F]">Transaction Type</span>
-                            <div className="text-[#38415F]">Invoice</div>
-                          </div>
-                          <div>
-                            <span className="text-sm font-medium text-[#38415F]">Supplier</span>
-                            <div className="text-[#38415F]">Acme Corporation</div>
-                          </div>
-                          <div>
-                            <span className="text-sm font-medium text-[#38415F]">Currency</span>
-                            <div className="text-[#38415F]">EUR</div>
-                          </div>
+                          <LabelValue label="Transaction Type" value="Invoice" />
+                          <LabelValue label="Supplier" value="Acme Corporation" />
+                          <LabelValue label="Currency" value="EUR" />
                         </div>
                       </div>
                     </div>
