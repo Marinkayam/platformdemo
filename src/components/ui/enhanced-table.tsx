@@ -30,15 +30,17 @@ const EnhancedTable = React.forwardRef<
           scrollbarColor: '#e5e7eb transparent'
         }}
       >
-        <style jsx>{`
-          div::-webkit-scrollbar { height: 4px; }
-          div::-webkit-scrollbar-track { background: transparent; }
-          div::-webkit-scrollbar-thumb { 
-            background-color: #e5e7eb; 
-            border-radius: 2px; 
-          }
-          div::-webkit-scrollbar-thumb:hover { background-color: #d1d5db; }
-        `}</style>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            div::-webkit-scrollbar { height: 4px; }
+            div::-webkit-scrollbar-track { background: transparent; }
+            div::-webkit-scrollbar-thumb { 
+              background-color: #e5e7eb; 
+              border-radius: 2px; 
+            }
+            div::-webkit-scrollbar-thumb:hover { background-color: #d1d5db; }
+          `
+        }} />
         <table
           ref={ref}
           className={cn("w-full caption-bottom text-sm font-normal", className)}

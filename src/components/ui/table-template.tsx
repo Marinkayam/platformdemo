@@ -12,7 +12,7 @@ import {
 } from "./enhanced-table"
 import { UnifiedStatusBadge } from "./unified-status-badge"
 import { TruncatedCell, EnhancedTooltipProvider } from "./enhanced-tooltip"
-import { TableActions, TableAction } from "./table-actions"
+import { TableActions, type TableAction } from "./table-actions"
 import { formatCurrency } from "@/lib/utils"
 
 interface TableColumn<T> {
@@ -55,6 +55,10 @@ export function TableTemplate<T extends Record<string, any>>({
     setSortConfig({ key, direction });
   };
 
+  const handleScroll = (scrolled: boolean) => {
+    setIsScrolled(scrolled);
+  };
+
   const sortedData = React.useMemo(() => {
     if (!sortConfig.key) return data;
     
@@ -70,7 +74,7 @@ export function TableTemplate<T extends Record<string, any>>({
 
   return (
     <EnhancedTooltipProvider>
-      <EnhancedTable onScroll={setIsScrolled}>
+      <EnhancedTable onScroll={handleScroll}>
         <EnhancedTableHeader>
           <EnhancedTableRow>
             {columns.map((column, index) => (

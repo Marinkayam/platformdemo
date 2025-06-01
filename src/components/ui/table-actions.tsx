@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 
-interface TableAction {
+export interface TableAction {
   label: string;
   icon?: React.ComponentType<{ className?: string }>;
   onClick: () => void;
