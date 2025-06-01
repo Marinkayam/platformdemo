@@ -1,14 +1,15 @@
-
 import * as React from "react"
 import { useState } from "react"
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+interface EnhancedTableProps extends Omit<React.HTMLAttributes<HTMLTableElement>, 'onScroll'> {
+  onScroll?: (scrolled: boolean) => void;
+}
+
 const EnhancedTable = React.forwardRef<
   HTMLTableElement,
-  React.HTMLAttributes<HTMLTableElement> & {
-    onScroll?: (scrolled: boolean) => void;
-  }
+  EnhancedTableProps
 >(({ className, onScroll, ...props }, ref) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
