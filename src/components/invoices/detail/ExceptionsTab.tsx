@@ -12,6 +12,7 @@ import { FilePreviewList } from "./exceptions/FilePreviewList";
 import { ActionButtons } from "./exceptions/ActionButtons";
 import { DuplicateInvoiceHandler } from "./exceptions/DuplicateInvoiceHandler";
 import { DataExtractionResolver } from "./exceptions/DataExtractionResolver";
+import ExceptionResolutionWizard from "./exceptions/ExceptionResolutionWizard";
 
 interface ExceptionsTabProps {
   exceptions: Exception[];
@@ -27,6 +28,50 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
   // Check if we have a duplicate invoice exception or data extraction exception
   const isDuplicateException = exceptions.some(exception => exception.type === 'DUPLICATE_INVOICE');
   const isDataExtractionException = exceptions.some(exception => exception.type === 'MISSING_INFORMATION');
+  const isPOException = exceptions.some(exception => exception.type === 'PO_CLOSED' || exception.type === 'PO_INSUFFICIENT_FUNDS');
+  
+  // Handle resolution from the wizard
+  const handleWizardResolve = (resolutionData: any) => {
+    console.log('Resolution data:', resolutionData);
+    
+    let resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT' | 'EXCLUDED' = 'MARK_RESOLVED';
+    
+    switch(resolutionData.action) {
+      case 'upload':
+        resolution = 'UPLOAD_NEW_PDF';
+        toast({
+          title: "File uploaded successfully",
+          description: "Your new RTP has been uploaded and exceptions resolved"
+        });
+        break;
+      case 'force_submit':
+        resolution = 'FORCE_SUBMIT';
+        toast({
+          title: "Invoice force submitted",
+          description: "Invoice has been submitted despite exceptions"
+        });
+        break;
+      case 'exclude':
+        resolution = 'EXCLUDED';
+        toast({
+          title: "Invoice excluded",
+          description: "Invoice has been excluded from submission"
+        });
+        break;
+      case 'resolve_outside':
+        resolution = 'MARK_RESOLVED';
+        toast({
+          title: "Exception resolved",
+          description: "Exception marked as resolved outside the system"
+        });
+        break;
+    }
+    
+    // Mark all exceptions as resolved
+    exceptions.forEach(exception => {
+      onResolveException(exception.id, resolution);
+    });
+  };
   
   const simulateUploadProgress = () => {
     setIsUploading(true);
@@ -99,6 +144,27 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
     return (
       <div className="bg-white rounded-lg shadow p-6">
         <p className="text-muted-foreground">No exceptions found for this invoice.</p>
+      </div>
+    );
+  }
+
+  // Use the new wizard for PO exceptions
+  if (isPOException) {
+    // Convert exceptions to wizard format
+    const wizardExceptions = exceptions.map(exception => ({
+      id: exception.id,
+      title: exception.message,
+      description: exception.details,
+      severity: exception.type === 'PO_CLOSED' ? 'warning' as const : 'error' as const,
+      color: exception.type === 'PO_CLOSED' ? '#F2AE40' : '#DF1C41'
+    }));
+
+    return (
+      <div className="space-y-6">
+        <ExceptionResolutionWizard 
+          exceptions={wizardExceptions}
+          onResolve={handleWizardResolve}
+        />
       </div>
     );
   }
