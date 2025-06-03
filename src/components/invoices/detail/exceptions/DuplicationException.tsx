@@ -51,7 +51,7 @@ export function DuplicationException({
       {/* Red Alert Banner */}
       <Alert variant="destructive" className="border-red-200 bg-red-50">
         <AlertTriangle className="h-4 w-4" />
-        <AlertDescription className="text-red-800 font-medium">
+        <AlertDescription className="text-gray-900 font-medium">
           <strong>Duplication Detected:</strong> Invoice {currentInvoice.number} has been submitted multiple times with different details.
         </AlertDescription>
       </Alert>
@@ -71,7 +71,7 @@ export function DuplicationException({
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="border-b border-gray-200">
+                <tr className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
                   <th className="text-left py-3 px-4 font-medium text-gray-700">Field</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-700">Current (Original)</th>
                   <th className="text-left py-3 px-4 font-medium text-gray-700">Duplication (New)</th>
@@ -83,10 +83,10 @@ export function DuplicationException({
                   return (
                     <tr key={index} className="border-b border-gray-100">
                       <td className="py-3 px-4 font-medium text-gray-900">{field.label}</td>
-                      <td className={`py-3 px-4 ${isDifferent ? 'bg-amber-50 text-amber-800 font-medium' : 'text-gray-700'}`}>
+                      <td className={`py-3 px-4 ${isDifferent ? 'font-medium border-l-2 border-red-300' : 'text-gray-700'}`}>
                         {field.current}
                       </td>
-                      <td className={`py-3 px-4 ${isDifferent ? 'bg-amber-50 text-amber-800 font-medium' : 'text-gray-700'}`}>
+                      <td className={`py-3 px-4 ${isDifferent ? 'font-medium border-l-2 border-red-300' : 'text-gray-700'}`}>
                         {field.duplicate}
                       </td>
                     </tr>
