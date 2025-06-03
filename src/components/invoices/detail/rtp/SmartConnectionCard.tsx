@@ -3,15 +3,21 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
 import { SmartConnectionAlert } from "./SmartConnectionAlert";
-import { ProcessTimeline } from "./ProcessTimeline";
 import { SmartConnectionProps } from "./types";
 import { ExternalLink } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface SmartConnectionCardProps {
   connection: SmartConnectionProps;
 }
 
 export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
+  const navigate = useNavigate();
+
+  const handleViewFullDetails = () => {
+    navigate('/smart-connections');
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -59,14 +65,15 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
           
           {/* View Full Details link */}
           <div className="pt-2">
-            <button className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1 hover:underline">
+            <button 
+              onClick={handleViewFullDetails}
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1 hover:underline"
+            >
               View Full Details
               <ExternalLink size={14} />
             </button>
           </div>
         </div>
-
-        <ProcessTimeline />
       </CardContent>
     </Card>
   );

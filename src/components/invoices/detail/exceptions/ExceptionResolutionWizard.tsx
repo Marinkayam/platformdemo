@@ -310,7 +310,7 @@ const ExceptionResolutionWizard = ({
                     size={18} 
                   />
                   <div>
-                    <p className="text-gray-900">
+                    <p className="text-gray-900 text-sm">
                       <span className="font-semibold">{exception.title}:</span> {exception.description}
                     </p>
                   </div>
@@ -324,7 +324,7 @@ const ExceptionResolutionWizard = ({
             <div className="flex items-start gap-3">
               <Lightbulb className="mt-1 flex-shrink-0" style={{ color: '#7B59FF' }} size={20} />
               <div>
-                <p style={{ color: '#38415F' }}>
+                <p style={{ color: '#38415F' }} className="text-sm">
                   To resolve these issues, you can upload a new RTP with a valid PO number that has sufficient available funds, or contact your customer for clarification.
                 </p>
               </div>
@@ -359,7 +359,7 @@ const ExceptionResolutionWizard = ({
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <h3 className="font-medium mb-1" style={{ color: '#38415F' }}>
+                <h3 className="font-medium mb-1 text-sm" style={{ color: '#38415F' }}>
                   Upload New RTP
                 </h3>
                 <p className="text-sm mb-4 text-center" style={{ color: '#8C92A3' }}>
@@ -453,7 +453,7 @@ const ExceptionResolutionWizard = ({
                 className="w-full flex justify-between items-center px-2 py-2 rounded-lg bg-white hover:bg-gray-50 transition-colors duration-200 ease-in-out"
                 onClick={toggleOtherOptions}
               >
-                <span className="font-medium" style={{ color: '#38415F' }}>
+                <span className="font-medium text-sm" style={{ color: '#38415F' }}>
                   Other Resolution Options
                 </span>
                 {showOtherOptions ? 
@@ -479,7 +479,7 @@ const ExceptionResolutionWizard = ({
                       style={{ accentColor: '#7B59FF' }}
                     />
                     <div>
-                      <h4 className="font-medium" style={{ color: '#38415F' }}>
+                      <h4 className="font-medium text-sm" style={{ color: '#38415F' }}>
                         Force submit
                       </h4>
                       <p className="text-sm" style={{ color: '#8C92A3' }}>
@@ -502,7 +502,7 @@ const ExceptionResolutionWizard = ({
                       style={{ accentColor: '#7B59FF' }}
                     />
                     <div>
-                      <h4 className="font-medium" style={{ color: '#38415F' }}>
+                      <h4 className="font-medium text-sm" style={{ color: '#38415F' }}>
                         Exclude from submission
                       </h4>
                       <p className="text-sm" style={{ color: '#8C92A3' }}>
@@ -525,7 +525,7 @@ const ExceptionResolutionWizard = ({
                       style={{ accentColor: '#7B59FF' }}
                     />
                     <div>
-                      <h4 className="font-medium" style={{ color: '#38415F' }}>
+                      <h4 className="font-medium text-sm" style={{ color: '#38415F' }}>
                         Resolve outside monto
                       </h4>
                       <p className="text-sm" style={{ color: '#8C92A3' }}>
@@ -541,7 +541,7 @@ const ExceptionResolutionWizard = ({
           {/* Action Buttons Section */}
           <div className="flex justify-end pt-4 border-t border-gray-200">
             <button 
-              className={`px-8 py-3 rounded-lg font-medium transition-colors duration-200 ease-in-out shadow-sm flex justify-center items-center gap-2 ${
+              className={`px-8 py-3 rounded-lg font-medium transition-colors duration-200 ease-in-out shadow-sm flex justify-center items-center gap-2 text-sm ${
                 isActionButtonEnabled() 
                   ? 'text-white cursor-pointer' 
                   : 'cursor-not-allowed'
