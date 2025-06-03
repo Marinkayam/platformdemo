@@ -17,8 +17,8 @@ export default function Invoices() {
     
     if (status === "pending") {
       setActiveTab("pending");
-    } else if (status === "cleared") {
-      setActiveTab("cleared");
+    } else if (status === "settled") {
+      setActiveTab("settled");
     } else if (status === "overdue") {
       setActiveTab("overdue");
     } else {
@@ -43,14 +43,14 @@ export default function Invoices() {
 
   const pendingCount = invoiceData.filter(invoice => invoice.status === "Pending Action").length;
   const overdueCount = invoiceData.filter(invoice => isOverdue(invoice.dueDate)).length;
-  const clearedCount = invoiceData.filter(invoice => ["Paid", "Settled"].includes(invoice.status)).length;
+  const settledCount = invoiceData.filter(invoice => ["Paid", "Settled"].includes(invoice.status)).length;
   
   // Update tabs with counts
   const tabsWithCounts = [
-    { id: "all", label: "All Invoices", count: invoiceData.length },
+    { id: "all", label: "All RTP's", count: invoiceData.length },
     { id: "pending", label: "Pending Action", count: pendingCount },
     { id: "overdue", label: "Overdue", count: overdueCount },
-    { id: "cleared", label: "Cleared", count: clearedCount },
+    { id: "settled", label: "Settled", count: settledCount },
   ];
 
   return (

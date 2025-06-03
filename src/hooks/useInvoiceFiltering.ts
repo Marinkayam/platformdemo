@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from "react";
 import { Invoice } from "@/types/invoice";
 import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";
@@ -36,7 +35,7 @@ export function useInvoiceFiltering(invoices: Invoice[], activeTab: string) {
       // First apply tab filter
       if (activeTab === "pending" && invoice.status !== "Pending Action") return false;
       if (activeTab === "overdue" && !isOverdue(invoice.dueDate)) return false;
-      if (activeTab === "cleared" && !["Paid", "Settled"].includes(invoice.status)) return false;
+      if (activeTab === "settled" && !["Paid", "Settled"].includes(invoice.status)) return false;
       
       // Then apply dropdown filters
       if (filters.status.length > 0 && !filters.status.includes(invoice.status)) return false;

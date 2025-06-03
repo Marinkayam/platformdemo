@@ -165,13 +165,13 @@ export const navMain: NavItem[] = [
     icon: DashboardIcon,
   },
   {
-    title: "Invoices",
+    title: "RTP's",
     href: "/invoices",
     icon: InvoicesIcon,
     items: [
       { title: "Pending Actions", href: "/invoices?status=pending" },
       { title: "Overdue", href: "/invoices?status=overdue" },
-      { title: "Cleared", href: "/invoices?status=cleared" },
+      { title: "Settled", href: "/invoices?status=settled" },
     ],
   },
   {
