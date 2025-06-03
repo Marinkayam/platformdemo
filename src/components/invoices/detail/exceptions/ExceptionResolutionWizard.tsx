@@ -334,12 +334,8 @@ const ExceptionResolutionWizard = ({
           {/* File Upload Section */}
           <div 
             className={`bg-white p-6 rounded-xl border border-gray-200 mb-6 flex flex-col items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 ${
-              selectedOption === 'upload' ? 'ring-2 border-0' : ''
-            }`} 
-            style={selectedOption === 'upload' ? { 
-              ringColor: '#7B59FF', 
-              backgroundColor: 'white' 
-            } : {}}
+              selectedOption === 'upload' ? 'ring-2 ring-purple-500 border-purple-500' : ''
+            }`}
             onClick={() => !uploadedFile && !isUploading && document.getElementById('file-input')?.click()}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
