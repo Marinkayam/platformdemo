@@ -34,6 +34,19 @@ export function DuplicationException({
     setShowConfirmModal(false);
   };
 
+  const getButtonText = () => {
+    switch (selectedAction) {
+      case 'KEEP_CURRENT':
+        return 'Keep Current';
+      case 'REPLACE':
+        return 'Replace with New';
+      case 'FORCE_SUBMIT':
+        return 'Force Submit Both';
+      default:
+        return 'Resolve Exception';
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header with Resolve Exception title and Duplication chip */}
@@ -61,15 +74,11 @@ export function DuplicationException({
         </AlertDescription>
       </Alert>
 
-      {/* Comparison Table using Lovable Table System */}
-      <Card>
-        <CardContent className="p-6">
-          <ComparisonTable 
-            currentInvoice={currentInvoice}
-            duplicateInvoice={duplicateInvoice}
-          />
-        </CardContent>
-      </Card>
+      {/* Comparison Table without inner box */}
+      <ComparisonTable 
+        currentInvoice={currentInvoice}
+        duplicateInvoice={duplicateInvoice}
+      />
 
       {/* Resolution Selector */}
       <Card>
@@ -120,7 +129,7 @@ export function DuplicationException({
               onClick={handleResolve}
               className="px-6"
             >
-              Resolve Exception
+              {getButtonText()}
             </Button>
           </div>
         </CardContent>

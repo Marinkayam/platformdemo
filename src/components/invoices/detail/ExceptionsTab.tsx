@@ -15,6 +15,7 @@ import { DuplicationException } from "./exceptions/DuplicationException";
 import ExceptionResolutionWizard from "./exceptions/ExceptionResolutionWizard";
 import ValidationExceptionWizard from "./exceptions/ValidationExceptionWizard";
 import { invoiceData } from "@/data/invoices";
+import { useNavigate } from "react-router-dom";
 
 interface ExceptionsTabProps {
   exceptions: Exception[];
@@ -26,6 +27,7 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
   const { attachments, addAttachment, removeAttachment, clearAttachments } = useFileAttachments();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const navigate = useNavigate();
   
   // Check exception types
   const isDuplicateException = exceptions.some(exception => exception.type === 'DUPLICATE_INVOICE');
@@ -69,6 +71,10 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
           title: "Invoice replaced",
           description: "Current invoice has been replaced with the new version"
         });
+        // For demo: navigate back to pending invoices after resolution
+        setTimeout(() => {
+          navigate("/invoices?status=pending");
+        }, 1500);
         break;
       case 'KEEP_CURRENT':
         resolution = 'MARK_RESOLVED';
@@ -76,6 +82,10 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
           title: "Duplicate resolved",
           description: "Current invoice kept, duplicate discarded"
         });
+        // For demo: navigate back to pending invoices after resolution
+        setTimeout(() => {
+          navigate("/invoices?status=pending");
+        }, 1500);
         break;
       case 'resolve_outside':
         resolution = 'MARK_RESOLVED';

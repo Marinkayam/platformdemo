@@ -38,11 +38,6 @@ export function ComparisonTable({ currentInvoice, duplicateInvoice }: Comparison
       duplicate: duplicateInvoice.dueDate 
     },
     { 
-      field: 'PO Number', 
-      current: currentInvoice.poNumber || 'N/A', 
-      duplicate: duplicateInvoice.poNumber || 'N/A' 
-    },
-    { 
       field: 'Portal', 
       current: currentInvoice.portal || 'N/A', 
       duplicate: duplicateInvoice.portal || 'N/A' 
@@ -86,21 +81,10 @@ export function ComparisonTable({ currentInvoice, duplicateInvoice }: Comparison
         >
           <thead>
             <tr style={{ height: '65px', backgroundColor: '#F6F7F9' }}>
-              <th 
-                className={`sticky left-0 z-10 px-4 text-left text-sm font-semibold text-gray-700 min-w-[150px] transition-shadow duration-200 ${
-                  isScrolled ? 'border-r-2 border-gray-300' : 'border-r border-gray-100'
-                }`}
-                style={{ 
-                  backgroundColor: '#F6F7F9',
-                  boxShadow: isScrolled ? '2px 0 8px rgba(0, 0, 0, 0.15)' : 'none'
-                }}
-              >
-                Field
-              </th>
-              <th className="px-4 text-left text-sm font-semibold text-gray-700 min-w-[150px]">
+              <th className="px-4 text-left text-sm font-semibold text-gray-700 min-w-[200px]">
                 Current (Original)
               </th>
-              <th className="px-4 text-left text-sm font-semibold text-gray-700 min-w-[150px]">
+              <th className="px-4 text-left text-sm font-semibold text-gray-700 min-w-[200px]">
                 Duplication (New)
               </th>
             </tr>
@@ -114,21 +98,17 @@ export function ComparisonTable({ currentInvoice, duplicateInvoice }: Comparison
                   className="hover:bg-gray-50 transition-colors bg-white"
                   style={{ height: '65px' }}
                 >
-                  <td 
-                    className={`sticky left-0 z-10 bg-white px-4 font-semibold text-sm text-gray-900 transition-shadow duration-200 ${
-                      isScrolled ? 'border-r-2 border-gray-300' : 'border-r border-gray-100'
-                    }`}
-                    style={{ 
-                      boxShadow: isScrolled ? '2px 0 8px rgba(0, 0, 0, 0.15)' : 'none'
-                    }}
-                  >
-                    {row.field}
+                  <td className={`px-4 text-sm ${isDifferent ? 'font-medium text-gray-900' : 'font-normal text-gray-700'}`}>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-gray-500 mb-1">{row.field}</span>
+                      <span>{row.current}</span>
+                    </div>
                   </td>
-                  <td className={`px-4 text-sm ${isDifferent ? 'font-medium border-l-2 border-red-300' : 'font-normal text-gray-700'}`}>
-                    {row.current}
-                  </td>
-                  <td className={`px-4 text-sm ${isDifferent ? 'font-medium border-l-2 border-red-300' : 'font-normal text-gray-700'}`}>
-                    {row.duplicate}
+                  <td className={`px-4 text-sm ${isDifferent ? 'font-medium text-gray-900' : 'font-normal text-gray-700'}`}>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-gray-500 mb-1">{row.field}</span>
+                      <span>{row.duplicate}</span>
+                    </div>
                   </td>
                 </tr>
               );
