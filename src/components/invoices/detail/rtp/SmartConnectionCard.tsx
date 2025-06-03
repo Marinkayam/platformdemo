@@ -26,22 +26,36 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
           />
         )}
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div>
-            <span className="text-muted-foreground">Portal:</span>
-            <p className="font-medium">{connection.portal.type}</p>
+        <div className="space-y-4">
+          {/* Buyer and Supplier row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <span className="text-muted-foreground">Buyer:</span>
+              <p className="font-medium">{connection.buyer.name}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Supplier:</span>
+              <p className="font-medium">{connection.supplier.name}</p>
+            </div>
           </div>
-          <div>
-            <span className="text-muted-foreground">Account Type:</span>
-            <p className="font-medium">{connection.portal.reference}</p>
+          
+          {/* Portal and Portal User row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <span className="text-muted-foreground">Portal:</span>
+              <p className="font-medium">{connection.portal.type}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Portal User:</span>
+              <p className="font-medium">{connection.portal.user}</p>
+            </div>
           </div>
-          <div>
-            <span className="text-muted-foreground">Last Sync:</span>
-            <p className="font-medium">{connection.lastUpdated}</p>
-          </div>
-          <div>
-            <span className="text-muted-foreground">Connection ID:</span>
-            <p className="font-medium text-xs">{connection.buyer.id}</p>
+          
+          {/* View Full Details link */}
+          <div className="pt-2">
+            <button className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
+              View Full Details
+            </button>
           </div>
         </div>
 
