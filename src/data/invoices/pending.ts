@@ -154,25 +154,17 @@ export const pendingInvoices: Invoice[] = [
     hasExceptions: true,
     exceptions: [
       {
-        id: "exc-po-status-001",
+        id: "exc-po-validation-001",
         type: "VALIDATION_ERROR",
-        message: "PO Status",
-        details: "PO status is NOT Open",
+        message: "PO Validation Rules",
+        details: "PO status is NOT Open, PO total amount is NOT bigger than PO sub total",
         createdAt: "2024-05-07T10:30:00Z",
         resolved: false
       },
       {
-        id: "exc-po-total-001",
+        id: "exc-invoice-data-validation-001",
         type: "VALIDATION_ERROR",
-        message: "PO Total Alert",
-        details: "PO total amount is NOT bigger than PO sub total",
-        createdAt: "2024-05-07T10:35:00Z",
-        resolved: false
-      },
-      {
-        id: "exc-date-format-001",
-        type: "VALIDATION_ERROR",
-        message: "Invoice Date Format",
+        message: "Invoice Data Validation Rules",
         details: "Date format must be dd/mm/yyyy",
         createdAt: "2024-05-07T10:40:00Z",
         resolved: false

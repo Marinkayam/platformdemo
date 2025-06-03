@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { TriangleAlert, Lightbulb } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,7 +14,7 @@ import { useNotes } from "@/hooks/useNotes";
 interface DuplicationExceptionProps {
   currentInvoice: Invoice;
   duplicateInvoice: Invoice;
-  onResolve: (action: 'REPLACE' | 'KEEP_CURRENT' | 'FORCE_SUBMIT') => void;
+  onResolve: (action: 'REPLACE' | 'KEEP_CURRENT' | 'EXCLUDE_BOTH') => void;
 }
 
 export function DuplicationException({ 
@@ -21,7 +22,7 @@ export function DuplicationException({
   duplicateInvoice, 
   onResolve 
 }: DuplicationExceptionProps) {
-  const [selectedAction, setSelectedAction] = useState<'REPLACE' | 'KEEP_CURRENT' | 'FORCE_SUBMIT'>('KEEP_CURRENT');
+  const [selectedAction, setSelectedAction] = useState<'REPLACE' | 'KEEP_CURRENT' | 'EXCLUDE_BOTH'>('KEEP_CURRENT');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { addActivity } = useNotes();
 
@@ -43,9 +44,9 @@ export function DuplicationException({
         activityTitle = "Duplicate Exception Resolved";
         activityDescription = `Replaced invoice ${currentInvoice.number} with version from ${duplicateInvoice.buyer}`;
         break;
-      case 'FORCE_SUBMIT':
-        activityTitle = "Duplicate Exception Force Submitted";
-        activityDescription = `Force submitted both versions of invoice ${currentInvoice.number}`;
+      case 'EXCLUDE_BOTH':
+        activityTitle = "Duplicate Exception Resolved";
+        activityDescription = `Excluded both versions of invoice ${currentInvoice.number} from Monto processing`;
         break;
     }
     
@@ -63,8 +64,8 @@ export function DuplicationException({
         return 'Keep Current';
       case 'REPLACE':
         return 'Replace with New';
-      case 'FORCE_SUBMIT':
-        return 'Force Submit Both';
+      case 'EXCLUDE_BOTH':
+        return 'Exclude Both';
       default:
         return 'Resolve Exception';
     }
@@ -107,7 +108,7 @@ export function DuplicationException({
           <div>
             <p className="text-gray-900 text-sm">
               <span className="font-semibold">Action Required:</span> Compare both versions below and choose how to resolve this duplication. 
-              Select the version you want to keep or force submit both if needed.
+              Select the version you want to keep or exclude both if needed.
             </p>
           </div>
         </div>
@@ -150,13 +151,13 @@ export function DuplicationException({
               </div>
               
               <div className="flex items-start space-x-3">
-                <RadioGroupItem value="FORCE_SUBMIT" id="force-submit" className="mt-1" />
+                <RadioGroupItem value="EXCLUDE_BOTH" id="exclude-both" className="mt-1" />
                 <div>
-                  <Label htmlFor="force-submit" className="font-medium text-gray-900 cursor-pointer">
-                    Submit this version anyway (Force Submit)
+                  <Label htmlFor="exclude-both" className="font-medium text-gray-900 cursor-pointer">
+                    Exclude Both Invoices
                   </Label>
                   <p className="text-sm text-gray-600 mt-1">
-                    Both invoices will be processed. Use only if you're certain they represent different transactions.
+                    Both invoices will be Excluded from monto.
                   </p>
                 </div>
               </div>

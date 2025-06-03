@@ -14,7 +14,7 @@ interface DuplicationResolutionModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
-  action: 'REPLACE' | 'KEEP_CURRENT' | 'FORCE_SUBMIT';
+  action: 'REPLACE' | 'KEEP_CURRENT' | 'EXCLUDE_BOTH';
   invoiceNumber: string;
 }
 
@@ -31,8 +31,8 @@ export function DuplicationResolutionModal({
         return 'replace the current invoice with this new version';
       case 'KEEP_CURRENT':
         return 'keep the current invoice and discard the new one';
-      case 'FORCE_SUBMIT':
-        return 'force submit both versions';
+      case 'EXCLUDE_BOTH':
+        return 'exclude both invoices from monto';
       default:
         return 'resolve this duplication';
     }
@@ -44,8 +44,8 @@ export function DuplicationResolutionModal({
         return 'Replace Invoice';
       case 'KEEP_CURRENT':
         return 'Keep Current';
-      case 'FORCE_SUBMIT':
-        return 'Force Submit';
+      case 'EXCLUDE_BOTH':
+        return 'Exclude Both';
       default:
         return 'Confirm';
     }
