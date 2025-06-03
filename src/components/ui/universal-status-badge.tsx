@@ -1,5 +1,6 @@
 
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface UniversalStatusBadgeProps {
   status: string;
@@ -24,6 +25,11 @@ export function UniversalStatusBadge({ status, type = "auto", className }: Unive
       }
     }
     
+    // Specific check for "Pending Action" - must be red
+    if (lowerStatus === "pending action") {
+      return "bg-red-100 text-red-600 border-red-200";
+    }
+    
     // Common success states
     if (lowerStatus.includes("paid") || lowerStatus.includes("settled") || lowerStatus.includes("live") || lowerStatus.includes("connected")) {
       return "bg-green-100 text-green-600 border-green-200";
@@ -34,7 +40,7 @@ export function UniversalStatusBadge({ status, type = "auto", className }: Unive
       return "bg-red-100 text-red-600 border-red-200";
     }
     
-    // Common warning states
+    // Common warning states (excluding "Pending Action")
     if (lowerStatus.includes("pending") || lowerStatus.includes("awaiting") || lowerStatus.includes("validating") || lowerStatus.includes("building")) {
       return "bg-yellow-100 text-yellow-600 border-yellow-200";
     }
@@ -82,15 +88,57 @@ export function UniversalStatusBadge({ status, type = "auto", className }: Unive
     return "bg-gray-100 text-gray-600 border-gray-200";
   };
 
+  const getTooltipContent = (status: string) => {
+    const lowerStatus = status.toLowerCase();
+    
+    switch (lowerStatus) {
+      case "pending action":
+        return "Invoice requires attention or action";
+      case "paid":
+        return "Invoice has been paid in full";
+      case "settled":
+        return "Payment has been settled";
+      case "partially settled":
+        return "Payment has been partially settled";
+      case "rejected by buyer":
+        return "Invoice was rejected by the buyer";
+      case "rejected by monto":
+        return "Invoice was rejected by Monto";
+      case "approved by buyer":
+        return "Invoice has been approved by the buyer";
+      case "external submission":
+        return "Invoice submitted through external system";
+      case "rtp prepared":
+        return "Real-time payment has been prepared";
+      case "rtp sent":
+        return "Real-time payment has been sent";
+      case "awaiting sc":
+        return "Awaiting smart connection";
+      case "excluded":
+        return "Invoice has been excluded from processing";
+      default:
+        return `Status: ${status}`;
+    }
+  };
+
   return (
-    <span
-      className={cn(
-        "inline-flex items-center px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap border",
-        getStatusStyles(status, type),
-        className
-      )}
-    >
-      {status}
-    </span>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span
+            className={cn(
+              "inline-flex items-center px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap border cursor-help",
+              getStatusStyles(status, type),
+              className
+            )}
+          >
+            {status}
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{getTooltipContent(status)}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

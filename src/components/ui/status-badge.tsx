@@ -76,7 +76,7 @@ export function StatusBadge({ status, className, dueDate }: StatusBadgeProps) {
         <TooltipTrigger asChild>
           <span
             className={cn(
-              "inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium whitespace-nowrap cursor-help",
+              "inline-flex items-center px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap cursor-help",
               getBadgeStyles(),
               className
             )}
