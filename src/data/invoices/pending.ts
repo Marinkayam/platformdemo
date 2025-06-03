@@ -1,5 +1,5 @@
-
 import { Invoice } from "@/types/invoice";
+import { Exception } from "@/types/exception";
 
 export const pendingInvoices: Invoice[] = [
   {
@@ -22,7 +22,25 @@ export const pendingInvoices: Invoice[] = [
     documentType: "Invoice",
     portal: "Ariba",
     hasExceptions: true,
-    rejectedBy: "Monto"
+    rejectedBy: "Monto",
+    exceptions: [
+      {
+        id: "exc-po-closed-001",
+        type: "PO_CLOSED",
+        message: "PO status",
+        details: "The PO is closed for invoicing",
+        createdAt: "2024-03-16T10:30:00Z",
+        resolved: false
+      },
+      {
+        id: "exc-po-funds-001", 
+        type: "PO_INSUFFICIENT_FUNDS",
+        message: "PO funds",
+        details: "The PO doesn't have enough available funds to cover the full invoice amount",
+        createdAt: "2024-03-16T10:35:00Z",
+        resolved: false
+      }
+    ]
   },
   {
     id: "2",
