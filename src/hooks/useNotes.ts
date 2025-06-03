@@ -14,6 +14,16 @@ export interface Note {
   attachments: FileAttachment[];
 }
 
+// Activity interface for timeline
+export interface Activity {
+  id: string;
+  type: "status" | "document" | "note" | "system" | "exception";
+  title: string;
+  user: string;
+  timestamp: Date;
+  description: string | null;
+}
+
 // Mock notes data
 const initialNotesData = [
   {
@@ -43,9 +53,46 @@ const initialNotesData = [
   }
 ];
 
+// Activity timeline data
+const initialActivityData: Activity[] = [
+  {
+    id: "a1",
+    type: "status",
+    title: "Status changed to Pending Action",
+    user: "John Smith",
+    timestamp: new Date(2024, 3,  25, 14, 30),
+    description: "Invoice requires approval from finance department"
+  },
+  {
+    id: "a2",
+    type: "document",
+    title: "Document uploaded",
+    user: "Maria Garcia",
+    timestamp: new Date(2024, 3, 24, 11, 15),
+    description: "Supporting_Document.pdf"
+  },
+  {
+    id: "a3",
+    type: "note",
+    title: "Note added",
+    user: "Alex Wong",
+    timestamp: new Date(2024, 3, 24, 9, 45),
+    description: "Verified vendor details"
+  },
+  {
+    id: "a4",
+    type: "system",
+    title: "Invoice created",
+    user: "System",
+    timestamp: new Date(2024, 3, 23, 16, 20),
+    description: null
+  }
+];
+
 export function useNotes() {
   const { addNotification } = useNotifications();
   const [notes, setNotes] = useState<Note[]>(initialNotesData);
+  const [activities, setActivities] = useState<Activity[]>(initialActivityData);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const addNote = (content: string, attachments: FileAttachment[]) => {
@@ -74,6 +121,26 @@ export function useNotes() {
     }
   };
 
+  const addActivity = (
+    type: "status" | "document" | "note" | "system" | "exception",
+    title: string,
+    description: string | null = null,
+    user: string = "Me"
+  ) => {
+    const newActivity: Activity = {
+      id: `a${Date.now()}`,
+      type,
+      title,
+      user,
+      timestamp: new Date(),
+      description
+    };
+
+    setActivities([newActivity, ...activities]);
+    
+    return newActivity;
+  };
+
   const removeNoteAttachment = (noteId: string, attachmentId: string) => {
     setNotes(notes.map(note => {
       if (note.id === noteId) {
@@ -88,8 +155,10 @@ export function useNotes() {
 
   return {
     notes,
+    activities,
     scrollRef,
     addNote,
+    addActivity,
     removeNoteAttachment
   };
 }

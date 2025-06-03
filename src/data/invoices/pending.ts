@@ -117,10 +117,20 @@ export const pendingInvoices: Invoice[] = [
     requesterEmail: "procurement@newco.com",
     documentType: "Invoice",
     portal: "Ariba",
-    hasExceptions: false,
+    hasExceptions: true,
     isDuplicate: true,
     submitMethod: "Email",
-    submittedAt: "2024-04-12T14:20:00Z"
+    submittedAt: "2024-04-12T14:20:00Z",
+    exceptions: [
+      {
+        id: "exc-duplicate-002",
+        type: "DUPLICATE_INVOICE",
+        message: "Duplicate Invoice Detected",
+        details: "This invoice number has been submitted multiple times with different details",
+        createdAt: "2024-04-12T14:25:00Z",
+        resolved: false
+      }
+    ]
   },
   {
     id: "4",

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { TriangleAlert, Lightbulb } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Invoice } from "@/types/invoice";
 import { DuplicationResolutionModal } from "./DuplicationResolutionModal";
 import { ComparisonTable } from "./ComparisonTable";
+import { useNotes } from "@/hooks/useNotes";
 
 interface DuplicationExceptionProps {
   currentInvoice: Invoice;
@@ -23,12 +23,36 @@ export function DuplicationException({
 }: DuplicationExceptionProps) {
   const [selectedAction, setSelectedAction] = useState<'REPLACE' | 'KEEP_CURRENT' | 'FORCE_SUBMIT'>('KEEP_CURRENT');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const { addActivity } = useNotes();
 
   const handleResolve = () => {
     setShowConfirmModal(true);
   };
 
   const handleConfirmResolve = () => {
+    // Add resolution action to activity timeline
+    let activityTitle = "";
+    let activityDescription = "";
+    
+    switch(selectedAction) {
+      case 'KEEP_CURRENT':
+        activityTitle = "Duplicate Exception Resolved";
+        activityDescription = `Kept current invoice ${currentInvoice.number} from ${currentInvoice.buyer} and excluded duplicate from ${duplicateInvoice.buyer}`;
+        break;
+      case 'REPLACE':
+        activityTitle = "Duplicate Exception Resolved";
+        activityDescription = `Replaced invoice ${currentInvoice.number} with version from ${duplicateInvoice.buyer}`;
+        break;
+      case 'FORCE_SUBMIT':
+        activityTitle = "Duplicate Exception Force Submitted";
+        activityDescription = `Force submitted both versions of invoice ${currentInvoice.number}`;
+        break;
+    }
+    
+    // Add the activity to the timeline
+    addActivity("exception", activityTitle, activityDescription);
+    
+    // Call the original onResolve
     onResolve(selectedAction);
     setShowConfirmModal(false);
   };
