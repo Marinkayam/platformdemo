@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, File, UserRoundCheck, MoreVertical, ArrowLeft } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Invoice } from "@/types/invoice";
 import { AssigneeComponent } from "../AssigneeComponent";
@@ -107,6 +108,11 @@ export function InvoiceHeader({
                     {localInvoice.number}
                   </div>
                   <StatusBadge status={localInvoice.status} dueDate={localInvoice.dueDate} />
+                  {localInvoice.isDuplicate && (
+                    <Badge className="bg-red-100 text-red-700 border-red-200 text-xs">
+                      Duplication
+                    </Badge>
+                  )}
                 </div>
                 
                 <DropdownMenu>

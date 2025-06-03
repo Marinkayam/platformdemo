@@ -8,8 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Invoice } from "@/types/invoice";
-import { formatCurrency } from "@/lib/utils";
 import { DuplicationResolutionModal } from "./DuplicationResolutionModal";
+import { ComparisonTable } from "./ComparisonTable";
 
 interface DuplicationExceptionProps {
   currentInvoice: Invoice;
@@ -33,17 +33,6 @@ export function DuplicationException({
     onResolve(selectedAction);
     setShowConfirmModal(false);
   };
-
-  const comparisonFields = [
-    { label: 'Invoice Number', current: currentInvoice.number, duplicate: duplicateInvoice.number },
-    { label: 'Buyer', current: currentInvoice.buyer, duplicate: duplicateInvoice.buyer },
-    { label: 'Amount', current: formatCurrency(currentInvoice.total, currentInvoice.currency), duplicate: formatCurrency(duplicateInvoice.total, duplicateInvoice.currency) },
-    { label: 'Due Date', current: currentInvoice.dueDate, duplicate: duplicateInvoice.dueDate },
-    { label: 'PO Number', current: currentInvoice.poNumber || 'N/A', duplicate: duplicateInvoice.poNumber || 'N/A' },
-    { label: 'Portal', current: currentInvoice.portal || 'N/A', duplicate: duplicateInvoice.portal || 'N/A' },
-    { label: 'Submit Method', current: currentInvoice.submitMethod || 'N/A', duplicate: duplicateInvoice.submitMethod || 'N/A' },
-    { label: 'Submitted At', current: currentInvoice.submittedAt ? new Date(currentInvoice.submittedAt).toLocaleString() : 'N/A', duplicate: duplicateInvoice.submittedAt ? new Date(duplicateInvoice.submittedAt).toLocaleString() : 'N/A' },
-  ];
 
   return (
     <div className="space-y-6">
@@ -72,36 +61,13 @@ export function DuplicationException({
         </AlertDescription>
       </Alert>
 
-      {/* Comparison Table */}
+      {/* Comparison Table using Lovable Table System */}
       <Card>
         <CardContent className="p-6">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-                  <th className="text-left py-3 px-4 font-medium text-gray-700">Field</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-700">Current (Original)</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-700">Duplication (New)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparisonFields.map((field, index) => {
-                  const isDifferent = field.current !== field.duplicate;
-                  return (
-                    <tr key={index} className="border-b border-gray-100">
-                      <td className="py-3 px-4 font-medium text-gray-900">{field.label}</td>
-                      <td className={`py-3 px-4 ${isDifferent ? 'font-medium border-l-2 border-red-300' : 'text-gray-700'}`}>
-                        {field.current}
-                      </td>
-                      <td className={`py-3 px-4 ${isDifferent ? 'font-medium border-l-2 border-red-300' : 'text-gray-700'}`}>
-                        {field.duplicate}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <ComparisonTable 
+            currentInvoice={currentInvoice}
+            duplicateInvoice={duplicateInvoice}
+          />
         </CardContent>
       </Card>
 
