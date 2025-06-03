@@ -275,281 +275,284 @@ const ExceptionResolutionWizard = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header Section - Updated to match FinancialData layout */}
-      <div className="flex items-center gap-2 mb-6">
-        <h2 className="text-lg font-medium">Resolve Exception</h2>
-        <span className="text-xs px-2 py-1 bg-purple-100 text-purple-600 rounded-full font-medium">
-          PO
-        </span>
-      </div>
-
-      {/* Exception Alerts Section */}
-      <div className="space-y-3">
-        {exceptions.map((exception, index) => (
-          <div 
-            key={exception.id}
-            className="bg-gray-50 p-4 rounded-xl border" 
-            style={{ borderColor: exception.color }}
-          >
-            <div className="flex items-start gap-3">
-              <TriangleAlert 
-                strokeWidth={1.25} 
-                className="mt-1 flex-shrink-0" 
-                style={{ color: exception.color }} 
-                size={18} 
-              />
-              <div>
-                <h3 className="font-medium mb-1" style={{ color: '#38415F' }}>
-                  {exception.title}
-                </h3>
-                <p style={{ color: '#38415F' }}>
-                  {exception.description}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      
-      {/* Resolution Guidance Section */}
-      <div className="bg-white p-4 rounded-xl border border-gray-200">
-        <div className="flex items-start gap-3">
-          <Lightbulb className="mt-1 flex-shrink-0" style={{ color: '#7B59FF' }} size={20} />
-          <div>
-            <p style={{ color: '#38415F' }}>
-              To resolve these issues, you can upload a new RTP with a valid PO number that has sufficient available funds, or contact your customer for clarification.
-            </p>
-          </div>
+    <div className="mt-4">
+      {/* Boxed Wrapper to match Portal Records and other tabs */}
+      <div className="bg-white border border-gray-200 rounded-xl p-6">
+        {/* Header Section */}
+        <div className="flex items-center gap-2 mb-6">
+          <h2 className="text-lg font-medium">Resolve Exception</h2>
+          <span className="text-xs px-2 py-1 bg-purple-100 text-purple-600 rounded-full font-medium ml-2">
+            PO
+          </span>
         </div>
-      </div>
-      
-      {/* File Upload Section */}
-      <div 
-        className={`bg-white p-6 rounded-xl border border-gray-200 flex flex-col items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 ${
-          selectedOption === 'upload' ? 'ring-2 ring-purple-500 border-purple-500' : ''
-        }`}
-        onClick={() => !uploadedFile && !isUploading && document.getElementById('file-input')?.click()}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-      >
-        <input
-          id="file-input"
-          type="file"
-          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-          className="hidden"
-          onChange={handleFileInputChange}
-        />
-        
-        {/* Upload States */}
-        {!uploadedFile && !isUploading ? (
-          // Initial Upload State
-          <>
-            <div className="h-20 w-20 mb-4 flex items-center justify-center">
-              <svg width="80" height="60" viewBox="0 0 112 84" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g opacity="0.2">
-                  <rect x="0.5" width="111" height="84" fill="#7B59FF"/>
-                </g>
-                <path fillRule="evenodd" clipRule="evenodd" d="M48.144 48.9805C46.2998 48.9805 44.8047 50.489 44.8047 52.3499C44.8047 54.2108 46.2998 55.7193 48.144 55.7193C49.9883 55.7193 51.4834 54.2108 51.4834 52.3499C51.4834 50.489 49.9883 48.9805 48.144 48.9805V48.9805Z" fill="#523BAA"/>
-                <path opacity="0.72" fillRule="evenodd" clipRule="evenodd" d="M48.1442 49.3711C49.774 49.3711 51.0951 50.7042 51.0951 52.3486C51.0951 53.993 49.774 55.326 48.1442 55.326C46.5145 55.326 45.1934 53.993 45.1934 52.3486C45.1948 50.7048 46.5151 49.3725 48.1442 49.3711" fill="#7B59FF"/>
-              </svg>
-            </div>
-            <h3 className="font-medium mb-1" style={{ color: '#38415F' }}>
-              Upload New RTP
-            </h3>
-            <p className="text-sm mb-4 text-center" style={{ color: '#8C92A3' }}>
-              This invoice must include the updated PO
-            </p>
-            <p className="text-sm mb-4" style={{ color: '#8C92A3' }}>
-              Drag & drop a file here or{' '}
-              <span className="font-medium cursor-pointer underline" style={{ color: '#7B59FF' }}>
-                click to browse
-              </span>
-            </p>
-          </>
-        ) : isUploading ? (
-          // Uploading State
-          <>
-            <div className="w-full">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium" style={{ color: '#38415F' }}>
-                  Uploading PDF file...
-                </h3>
-                <span className="text-sm" style={{ color: '#8C92A3' }}>
-                  {uploadProgress}% Completed
-                </span>
-              </div>
-              
-              {/* Progress Bar */}
-              <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-                <div 
-                  className="h-2 rounded-full transition-all duration-300 ease-out" 
-                  style={{ 
-                    backgroundColor: '#7B59FF',
-                    width: `${uploadProgress}%`
-                  }}
-                ></div>
-              </div>
-              
-              <p className="font-medium text-sm mb-4" style={{ color: '#38415F' }}>
-                #{uploadedFile?.name || 'file'}
-              </p>
-              
-              <p className="text-xs text-center" style={{ color: '#8C92A3' }}>
-                Your current invoice will be archived, you can see it in the activity log
-              </p>
-            </div>
-          </>
-        ) : (
-          // File Uploaded State
-          <>
-            <div className="w-full">
-              <div className="flex items-start gap-3 mb-4">
-                <File className="mt-1 flex-shrink-0" style={{ color: '#7B59FF' }} size={16} />
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-sm" style={{ color: '#38415F' }}>
-                        {uploadedFile?.name}
-                      </p>
-                      <p className="text-xs" style={{ color: '#8C92A3' }}>
-                        {uploadedFile ? (uploadedFile.size / 1024).toFixed(2) : '0'} KB
-                      </p>
-                    </div>
-                    <button 
-                      className="flex items-center gap-1 text-sm font-medium hover:underline transition-colors duration-200"
-                      style={{ color: '#8C92A3' }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleFileRemoval(e);
-                      }}
-                    >
-                      <X size={14} />
-                      Remove
-                    </button>
+
+        <div className="space-y-4">
+          {/* Exception Alerts Section */}
+          <div className="space-y-3">
+            {exceptions.map((exception, index) => (
+              <div 
+                key={exception.id}
+                className="bg-gray-50 p-4 rounded-xl border" 
+                style={{ borderColor: exception.color }}
+              >
+                <div className="flex items-start gap-3">
+                  <TriangleAlert 
+                    strokeWidth={1.25} 
+                    className="mt-1 flex-shrink-0" 
+                    style={{ color: exception.color }} 
+                    size={18} 
+                  />
+                  <div>
+                    <h3 className="font-medium mb-1" style={{ color: '#38415F' }}>
+                      {exception.title}
+                    </h3>
+                    <p style={{ color: '#38415F' }}>
+                      {exception.description}
+                    </p>
                   </div>
                 </div>
               </div>
-              
-              <div className="pl-8">
-                <p className="text-sm" style={{ color: '#8C92A3' }}>
-                  • Your current invoice will be archived, you can see it in the activity log
+            ))}
+          </div>
+          
+          {/* Resolution Guidance Section */}
+          <div className="bg-white p-4 rounded-xl border border-gray-200">
+            <div className="flex items-start gap-3">
+              <Lightbulb className="mt-1 flex-shrink-0" style={{ color: '#7B59FF' }} size={20} />
+              <div>
+                <p style={{ color: '#38415F' }}>
+                  To resolve these issues, you can upload a new RTP with a valid PO number that has sufficient available funds, or contact your customer for clarification.
                 </p>
               </div>
             </div>
-          </>
-        )}
-      </div>
-      
-      {/* Other Resolution Options Section */}
-      <div className="bg-white p-4 rounded-xl border border-gray-200">
-        <div className="py-0">
-          <button 
-            className="w-full flex justify-between items-center px-2 py-2 rounded-lg bg-white hover:bg-gray-50 transition-colors duration-200 ease-in-out"
-            onClick={toggleOtherOptions}
-          >
-            <span className="font-medium" style={{ color: '#38415F' }}>
-              Other Resolution Options
-            </span>
-            {showOtherOptions ? 
-              <ChevronUp size={16} style={{ color: '#8C92A3' }} /> : 
-              <ChevronDown size={16} style={{ color: '#8C92A3' }} />
-            }
-          </button>
-        </div>
-        
-        {/* Collapsible Options */}
-        {showOtherOptions && (
-          <div className="pt-2 space-y-4">
-            {/* Force Submit Option */}
-            <div>
-              <label className="flex items-start gap-2 cursor-pointer p-2 rounded hover:bg-gray-50 transition-colors duration-200 ease-in-out">
-                <input 
-                  type="radio" 
-                  name="resolutionOption" 
-                  value="force_submit" 
-                  checked={selectedOption === 'force_submit'} 
-                  onChange={() => handleOptionSelect('force_submit')}
-                  className="mt-1 focus:ring-purple-200"
-                  style={{ accentColor: '#7B59FF' }}
-                />
-                <div>
-                  <h4 className="font-medium" style={{ color: '#38415F' }}>
-                    Force submit
-                  </h4>
-                  <p className="text-sm" style={{ color: '#8C92A3' }}>
-                    Override validation and force processing despite the error
-                  </p>
-                </div>
-              </label>
-            </div>
-            
-            {/* Exclude Option */}
-            <div>
-              <label className="flex items-start gap-2 cursor-pointer p-2 rounded hover:bg-gray-50 transition-colors duration-200 ease-in-out">
-                <input 
-                  type="radio" 
-                  name="resolutionOption" 
-                  value="exclude" 
-                  checked={selectedOption === 'exclude'} 
-                  onChange={() => handleOptionSelect('exclude')}
-                  className="mt-1 focus:ring-purple-200"
-                  style={{ accentColor: '#7B59FF' }}
-                />
-                <div>
-                  <h4 className="font-medium" style={{ color: '#38415F' }}>
-                    Exclude from submission
-                  </h4>
-                  <p className="text-sm" style={{ color: '#8C92A3' }}>
-                    Mark this invoice as excluded
-                  </p>
-                </div>
-              </label>
-            </div>
-            
-            {/* Resolve Outside Option */}
-            <div>
-              <label className="flex items-start gap-2 cursor-pointer p-2 rounded hover:bg-gray-50 transition-colors duration-200 ease-in-out">
-                <input 
-                  type="radio" 
-                  name="resolutionOption" 
-                  value="resolve_outside" 
-                  checked={selectedOption === 'resolve_outside'} 
-                  onChange={() => handleOptionSelect('resolve_outside')}
-                  className="mt-1 focus:ring-purple-200"
-                  style={{ accentColor: '#7B59FF' }}
-                />
-                <div>
-                  <h4 className="font-medium" style={{ color: '#38415F' }}>
-                    Resolve outside monto
-                  </h4>
-                  <p className="text-sm" style={{ color: '#8C92A3' }}>
-                    Indicate that the issue was resolved outside the platform
-                  </p>
-                </div>
-              </label>
-            </div>
           </div>
-        )}
-      </div>
-      
-      {/* Action Buttons Section */}
-      <div className="flex justify-end pt-4 border-t border-gray-200">
-        <button 
-          className={`px-8 py-3 rounded-lg font-medium transition-colors duration-200 ease-in-out shadow-sm flex justify-center items-center gap-2 ${
-            isActionButtonEnabled() 
-              ? 'text-white cursor-pointer' 
-              : 'cursor-not-allowed'
-          }`}
-          style={isActionButtonEnabled() 
-            ? { backgroundColor: '#7B59FF' }
-            : { backgroundColor: '#E4E5E9', color: '#8C92A3' }
-          }
-          onClick={handleMainButtonClick}
-          disabled={!isActionButtonEnabled()}
-        >
-          {getActionButtonText()}
-        </button>
+          
+          {/* File Upload Section */}
+          <div 
+            className={`bg-white p-6 rounded-xl border border-gray-200 flex flex-col items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 ${
+              selectedOption === 'upload' ? 'ring-2 ring-purple-500 border-purple-500' : ''
+            }`}
+            onClick={() => !uploadedFile && !isUploading && document.getElementById('file-input')?.click()}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+          >
+            <input
+              id="file-input"
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+              className="hidden"
+              onChange={handleFileInputChange}
+            />
+            
+            {/* Upload States */}
+            {!uploadedFile && !isUploading ? (
+              // Initial Upload State with new illustration
+              <>
+                <div className="h-20 w-20 mb-4 flex items-center justify-center">
+                  <img 
+                    src="/lovable-uploads/723d6803-fb23-463b-a8b9-414055e13898.png" 
+                    alt="Upload illustration" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <h3 className="font-medium mb-1" style={{ color: '#38415F' }}>
+                  Upload New RTP
+                </h3>
+                <p className="text-sm mb-4 text-center" style={{ color: '#8C92A3' }}>
+                  This invoice must include the updated PO
+                </p>
+                <p className="text-sm mb-4" style={{ color: '#8C92A3' }}>
+                  Drag & drop a file here or{' '}
+                  <span className="font-medium cursor-pointer underline" style={{ color: '#7B59FF' }}>
+                    click to browse
+                  </span>
+                </p>
+              </>
+            ) : isUploading ? (
+              // Uploading State
+              <>
+                <div className="w-full">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-medium" style={{ color: '#38415F' }}>
+                      Uploading PDF file...
+                    </h3>
+                    <span className="text-sm" style={{ color: '#8C92A3' }}>
+                      {uploadProgress}% Completed
+                    </span>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                    <div 
+                      className="h-2 rounded-full transition-all duration-300 ease-out" 
+                      style={{ 
+                        backgroundColor: '#7B59FF',
+                        width: `${uploadProgress}%`
+                      }}
+                    ></div>
+                  </div>
+                  
+                  <p className="font-medium text-sm mb-4" style={{ color: '#38415F' }}>
+                    #{uploadedFile?.name || 'file'}
+                  </p>
+                  
+                  <p className="text-xs text-center" style={{ color: '#8C92A3' }}>
+                    Your current invoice will be archived, you can see it in the activity log
+                  </p>
+                </div>
+              </>
+            ) : (
+              // File Uploaded State
+              <>
+                <div className="w-full">
+                  <div className="flex items-start gap-3 mb-4">
+                    <File className="mt-1 flex-shrink-0" style={{ color: '#7B59FF' }} size={16} />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-sm" style={{ color: '#38415F' }}>
+                            {uploadedFile?.name}
+                          </p>
+                          <p className="text-xs" style={{ color: '#8C92A3' }}>
+                            {uploadedFile ? (uploadedFile.size / 1024).toFixed(2) : '0'} KB
+                          </p>
+                        </div>
+                        <button 
+                          className="flex items-center gap-1 text-sm font-medium hover:underline transition-colors duration-200"
+                          style={{ color: '#8C92A3' }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFileRemoval(e);
+                          }}
+                        >
+                          <X size={14} />
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="pl-8">
+                    <p className="text-sm" style={{ color: '#8C92A3' }}>
+                      • Your current invoice will be archived, you can see it in the activity log
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          
+          {/* Other Resolution Options Section */}
+          <div className="bg-white p-4 rounded-xl border border-gray-200">
+            <div className="py-0">
+              <button 
+                className="w-full flex justify-between items-center px-2 py-2 rounded-lg bg-white hover:bg-gray-50 transition-colors duration-200 ease-in-out"
+                onClick={toggleOtherOptions}
+              >
+                <span className="font-medium" style={{ color: '#38415F' }}>
+                  Other Resolution Options
+                </span>
+                {showOtherOptions ? 
+                  <ChevronUp size={16} style={{ color: '#8C92A3' }} /> : 
+                  <ChevronDown size={16} style={{ color: '#8C92A3' }} />
+                }
+              </button>
+            </div>
+            
+            {/* Collapsible Options */}
+            {showOtherOptions && (
+              <div className="pt-2 space-y-4">
+                {/* Force Submit Option */}
+                <div>
+                  <label className="flex items-start gap-2 cursor-pointer p-2 rounded hover:bg-gray-50 transition-colors duration-200 ease-in-out">
+                    <input 
+                      type="radio" 
+                      name="resolutionOption" 
+                      value="force_submit" 
+                      checked={selectedOption === 'force_submit'} 
+                      onChange={() => handleOptionSelect('force_submit')}
+                      className="mt-1 focus:ring-purple-200"
+                      style={{ accentColor: '#7B59FF' }}
+                    />
+                    <div>
+                      <h4 className="font-medium" style={{ color: '#38415F' }}>
+                        Force submit
+                      </h4>
+                      <p className="text-sm" style={{ color: '#8C92A3' }}>
+                        Override validation and force processing despite the error
+                      </p>
+                    </div>
+                  </label>
+                </div>
+                
+                {/* Exclude Option */}
+                <div>
+                  <label className="flex items-start gap-2 cursor-pointer p-2 rounded hover:bg-gray-50 transition-colors duration-200 ease-in-out">
+                    <input 
+                      type="radio" 
+                      name="resolutionOption" 
+                      value="exclude" 
+                      checked={selectedOption === 'exclude'} 
+                      onChange={() => handleOptionSelect('exclude')}
+                      className="mt-1 focus:ring-purple-200"
+                      style={{ accentColor: '#7B59FF' }}
+                    />
+                    <div>
+                      <h4 className="font-medium" style={{ color: '#38415F' }}>
+                        Exclude from submission
+                      </h4>
+                      <p className="text-sm" style={{ color: '#8C92A3' }}>
+                        Mark this invoice as excluded
+                      </p>
+                    </div>
+                  </label>
+                </div>
+                
+                {/* Resolve Outside Option */}
+                <div>
+                  <label className="flex items-start gap-2 cursor-pointer p-2 rounded hover:bg-gray-50 transition-colors duration-200 ease-in-out">
+                    <input 
+                      type="radio" 
+                      name="resolutionOption" 
+                      value="resolve_outside" 
+                      checked={selectedOption === 'resolve_outside'} 
+                      onChange={() => handleOptionSelect('resolve_outside')}
+                      className="mt-1 focus:ring-purple-200"
+                      style={{ accentColor: '#7B59FF' }}
+                    />
+                    <div>
+                      <h4 className="font-medium" style={{ color: '#38415F' }}>
+                        Resolve outside monto
+                      </h4>
+                      <p className="text-sm" style={{ color: '#8C92A3' }}>
+                        Indicate that the issue was resolved outside the platform
+                      </p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Action Buttons Section */}
+          <div className="flex justify-end pt-4 border-t border-gray-200">
+            <button 
+              className={`px-8 py-3 rounded-lg font-medium transition-colors duration-200 ease-in-out shadow-sm flex justify-center items-center gap-2 ${
+                isActionButtonEnabled() 
+                  ? 'text-white cursor-pointer' 
+                  : 'cursor-not-allowed'
+              }`}
+              style={isActionButtonEnabled() 
+                ? { backgroundColor: '#7B59FF' }
+                : { backgroundColor: '#E4E5E9', color: '#8C92A3' }
+              }
+              onClick={handleMainButtonClick}
+              disabled={!isActionButtonEnabled()}
+            >
+              {getActionButtonText()}
+            </button>
+          </div>
+        </div>
       </div>
       
       {/* Confirmation Modal */}
