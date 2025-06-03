@@ -5,6 +5,7 @@ import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-sta
 import { SmartConnectionAlert } from "./SmartConnectionAlert";
 import { ProcessTimeline } from "./ProcessTimeline";
 import { SmartConnectionProps } from "./types";
+import { ExternalLink } from "lucide-react";
 
 interface SmartConnectionCardProps {
   connection: SmartConnectionProps;
@@ -26,35 +27,41 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
           />
         )}
         
-        <div className="space-y-4">
+        <div className="space-y-3">
           {/* Buyer and Supplier row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
             <div>
-              <span className="text-muted-foreground">Buyer:</span>
-              <p className="font-medium">{connection.buyer.name}</p>
+              <span className="text-gray-500 text-sm">Buyer:</span>
+              <p className="font-medium text-gray-900 mt-1">{connection.buyer.name}</p>
             </div>
             <div>
-              <span className="text-muted-foreground">Supplier:</span>
-              <p className="font-medium">{connection.supplier.name}</p>
+              <span className="text-gray-500 text-sm">Supplier:</span>
+              <p className="font-medium text-gray-900 mt-1">{connection.supplier.name}</p>
             </div>
           </div>
           
           {/* Portal and Portal User row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
             <div>
-              <span className="text-muted-foreground">Portal:</span>
-              <p className="font-medium">{connection.portal.type}</p>
+              <span className="text-gray-500 text-sm">Portal:</span>
+              <p className="font-medium text-gray-900 mt-1 flex items-center gap-2">
+                <span className="w-6 h-6 bg-orange-500 text-white text-xs font-bold rounded flex items-center justify-center">
+                  C
+                </span>
+                Coupa
+              </p>
             </div>
             <div>
-              <span className="text-muted-foreground">Portal User:</span>
-              <p className="font-medium">{connection.portal.user}</p>
+              <span className="text-gray-500 text-sm">Portal User:</span>
+              <p className="font-medium text-gray-900 mt-1">{connection.portal.user}</p>
             </div>
           </div>
           
           {/* View Full Details link */}
           <div className="pt-2">
-            <button className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
+            <button className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1 hover:underline">
               View Full Details
+              <ExternalLink size={14} />
             </button>
           </div>
         </div>
