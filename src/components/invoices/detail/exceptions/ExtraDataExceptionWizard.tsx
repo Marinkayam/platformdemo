@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { TriangleAlert, Lightbulb, Upload, ChevronDown, File, X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -146,7 +147,7 @@ export function ExtraDataExceptionWizard({ onResolve }: ExtraDataExceptionWizard
           />
           <div>
             <p className="text-gray-900 text-sm">
-              <span className="font-semibold">Resolve this issue by</span> Manually filling required fields
+              <span className="font-semibold">Resolve this issue by</span> Manually filling required fields Or Upload New RTP with the correct Data (Optional)
             </p>
           </div>
         </div>
@@ -156,34 +157,37 @@ export function ExtraDataExceptionWizard({ onResolve }: ExtraDataExceptionWizard
       <Card>
         <CardContent className="p-6">
           <div className="space-y-4">
-            {/* Invoice Date Input */}
-            <div className="space-y-2">
-              <Label htmlFor="invoice-date" className="text-sm font-medium text-gray-900">
-                Invoice Date
-              </Label>
-              <Input
-                id="invoice-date"
-                type="text"
-                placeholder="please add the invoice data"
-                value={invoiceDate}
-                onChange={(e) => setInvoiceDate(e.target.value)}
-                className="w-full"
-              />
-            </div>
+            {/* Side-by-side Input Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Invoice Date Input */}
+              <div className="space-y-2">
+                <Label htmlFor="invoice-date" className="text-sm font-medium text-gray-900">
+                  Invoice Date
+                </Label>
+                <Input
+                  id="invoice-date"
+                  type="text"
+                  placeholder="please add the invoice data"
+                  value={invoiceDate}
+                  onChange={(e) => setInvoiceDate(e.target.value)}
+                  className="w-full"
+                />
+              </div>
 
-            {/* Customer Name Input */}
-            <div className="space-y-2">
-              <Label htmlFor="customer-name" className="text-sm font-medium text-gray-900">
-                Customer Name
-              </Label>
-              <Input
-                id="customer-name"
-                type="text"
-                placeholder="Please insert Customer Name"
-                value={customerName}
-                onChange={(e) => setCustomerName(e.target.value)}
-                className="w-full"
-              />
+              {/* Customer Name Input */}
+              <div className="space-y-2">
+                <Label htmlFor="customer-name" className="text-sm font-medium text-gray-900">
+                  Customer Name
+                </Label>
+                <Input
+                  id="customer-name"
+                  type="text"
+                  placeholder="Please insert Customer Name"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                  className="w-full"
+                />
+              </div>
             </div>
 
             {/* Separator */}
@@ -315,45 +319,49 @@ export function ExtraDataExceptionWizard({ onResolve }: ExtraDataExceptionWizard
                 </Button>
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-3">
-                <RadioGroup value={selectedAction || ''} onValueChange={(value) => setSelectedAction(value as any)}>
-                  <div className="space-y-3">
-                    <div className="flex items-start space-x-3">
-                      <RadioGroupItem value="force_submit" id="force-submit" className="mt-1" />
-                      <div>
-                        <Label htmlFor="force-submit" className="font-medium text-gray-900 cursor-pointer">
-                          Force Submit
-                        </Label>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Submit the invoice despite missing data
-                        </p>
+                <Card className="bg-gray-50 border-gray-200">
+                  <CardContent className="p-4">
+                    <RadioGroup value={selectedAction || ''} onValueChange={(value) => setSelectedAction(value as any)}>
+                      <div className="space-y-4">
+                        <div className="flex items-start space-x-3">
+                          <RadioGroupItem value="force_submit" id="force-submit" className="mt-1" />
+                          <div>
+                            <Label htmlFor="force-submit" className="font-medium text-gray-900 cursor-pointer">
+                              Force Submit
+                            </Label>
+                            <p className="text-sm text-gray-600 mt-1">
+                              Submit the invoice despite missing data
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start space-x-3">
+                          <RadioGroupItem value="exclude" id="exclude" className="mt-1" />
+                          <div>
+                            <Label htmlFor="exclude" className="font-medium text-gray-900 cursor-pointer">
+                              Exclude Invoice
+                            </Label>
+                            <p className="text-sm text-gray-600 mt-1">
+                              Remove this invoice from processing
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start space-x-3">
+                          <RadioGroupItem value="resolve_outside" id="resolve-outside" className="mt-1" />
+                          <div>
+                            <Label htmlFor="resolve-outside" className="font-medium text-gray-900 cursor-pointer">
+                              Resolved Outside System
+                            </Label>
+                            <p className="text-sm text-gray-600 mt-1">
+                              Mark as resolved if handled externally
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="flex items-start space-x-3">
-                      <RadioGroupItem value="exclude" id="exclude" className="mt-1" />
-                      <div>
-                        <Label htmlFor="exclude" className="font-medium text-gray-900 cursor-pointer">
-                          Exclude Invoice
-                        </Label>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Remove this invoice from processing
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start space-x-3">
-                      <RadioGroupItem value="resolve_outside" id="resolve-outside" className="mt-1" />
-                      <div>
-                        <Label htmlFor="resolve-outside" className="font-medium text-gray-900 cursor-pointer">
-                          Resolved Outside System
-                        </Label>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Mark as resolved if handled externally
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </RadioGroup>
+                    </RadioGroup>
+                  </CardContent>
+                </Card>
               </CollapsibleContent>
             </Collapsible>
 
