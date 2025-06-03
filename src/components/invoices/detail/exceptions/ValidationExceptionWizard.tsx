@@ -225,12 +225,12 @@ const ValidationExceptionWizard = ({
         </div>
 
         <div className="space-y-4">
-          {/* Exception Alerts Section */}
+          {/* Exception Alerts Section - Updated styling to match INV-10021301 */}
           <div className="space-y-3">
             {exceptions.map((exception, index) => (
               <div 
                 key={exception.id}
-                className="bg-red-50 p-4 rounded-xl border-l-4 border-red-300"
+                className="bg-red-50 p-4 rounded-xl border border-red-200"
               >
                 <div className="flex items-start gap-3">
                   <TriangleAlert 
@@ -239,7 +239,7 @@ const ValidationExceptionWizard = ({
                     size={18} 
                   />
                   <div>
-                    <p className="text-red-700 text-sm">
+                    <p className="text-gray-900 text-sm">
                       <span className="font-semibold">{exception.title}:</span> {exception.description}
                     </p>
                   </div>
