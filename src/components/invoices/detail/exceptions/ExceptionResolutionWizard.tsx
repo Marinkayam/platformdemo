@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AlertTriangle, Upload, ChevronDown, ChevronUp, Lightbulb, X, File, TriangleAlert } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface ExceptionResolutionWizardProps {
   onResolve?: (resolutionData: any) => void;
@@ -31,7 +32,7 @@ const ExceptionResolutionWizard = ({
       title: 'PO status',
       description: 'The PO is closed for invoicing',
       severity: 'warning' as const,
-      color: '#F2AE40'
+      color: '#DF1C41'
     },
     {
       id: 'po_funds',
@@ -42,6 +43,8 @@ const ExceptionResolutionWizard = ({
     }
   ]
 }: ExceptionResolutionWizardProps) => {
+  const navigate = useNavigate();
+  
   // State management
   const [showOtherOptions, setShowOtherOptions] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -168,6 +171,9 @@ const ExceptionResolutionWizard = ({
           resolutionMethod: 'file_upload'
         }
       });
+      
+      // Navigate back to invoices table
+      navigate('/invoices');
     }
   };
   
@@ -184,6 +190,9 @@ const ExceptionResolutionWizard = ({
         confirmedAt: new Date().toISOString()
       }
     });
+    
+    // Navigate back to invoices table
+    navigate('/invoices');
   };
   
   /**
@@ -292,22 +301,17 @@ const ExceptionResolutionWizard = ({
             {exceptions.map((exception, index) => (
               <div 
                 key={exception.id}
-                className="bg-gray-50 p-4 rounded-xl border" 
-                style={{ borderColor: exception.color }}
+                className="bg-red-50 p-4 rounded-xl border border-red-200"
               >
                 <div className="flex items-start gap-3">
                   <TriangleAlert 
                     strokeWidth={1.25} 
-                    className="mt-1 flex-shrink-0" 
-                    style={{ color: exception.color }} 
+                    className="mt-1 flex-shrink-0 text-red-600" 
                     size={18} 
                   />
                   <div>
-                    <h3 className="font-medium mb-1" style={{ color: '#38415F' }}>
-                      {exception.title}
-                    </h3>
-                    <p style={{ color: '#38415F' }}>
-                      {exception.description}
+                    <p className="text-gray-900">
+                      <span className="font-semibold">{exception.title}:</span> {exception.description}
                     </p>
                   </div>
                 </div>
