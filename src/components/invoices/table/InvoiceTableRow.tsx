@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -50,13 +49,20 @@ export function InvoiceTableRow({
       onClick={handleClick}
     >
       <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold py-2 align-middle">
-        <InvoiceNumber 
-          number={invoice.number}
-          hasWarning={invoice.hasWarning}
-          status={invoice.status}
-          isCreditMemo={invoice.documentType === "Credit Memo"}
-          isDuplicate={invoice.isDuplicate}
-        />
+        <div className="flex items-center gap-2">
+          <InvoiceNumber 
+            number={invoice.number}
+            hasWarning={invoice.hasWarning}
+            status={invoice.status}
+            isCreditMemo={invoice.documentType === "Credit Memo"}
+            isDuplicate={invoice.isDuplicate}
+          />
+          {invoice.isDuplicate && (
+            <Badge className="bg-red-100 text-red-700 border-red-200 text-xs">
+              Duplication
+            </Badge>
+          )}
+        </div>
       </TableCell>
       
       <TableCell className="truncate">

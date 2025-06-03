@@ -6,8 +6,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Invoice } from "@/types/invoice";
 import { formatCurrency } from "@/lib/utils";
+import { DuplicationResolutionModal } from "./DuplicationResolutionModal";
 
 interface DuplicationExceptionProps {
   currentInvoice: Invoice;
@@ -21,18 +23,15 @@ export function DuplicationException({
   onResolve 
 }: DuplicationExceptionProps) {
   const [selectedAction, setSelectedAction] = useState<'REPLACE' | 'KEEP_CURRENT' | 'FORCE_SUBMIT'>('KEEP_CURRENT');
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const getButtonText = () => {
-    switch (selectedAction) {
-      case 'REPLACE':
-        return 'Replace Invoice';
-      case 'KEEP_CURRENT':
-        return 'Keep Current';
-      case 'FORCE_SUBMIT':
-        return 'Force Submit';
-      default:
-        return 'Resolve';
-    }
+  const handleResolve = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmResolve = () => {
+    onResolve(selectedAction);
+    setShowConfirmModal(false);
   };
 
   const comparisonFields = [
@@ -48,18 +47,26 @@ export function DuplicationException({
 
   return (
     <div className="space-y-6">
-      {/* Red Alert Banner */}
-      <Alert variant="destructive" className="border-red-200 bg-red-50">
-        <AlertTriangle className="h-4 w-4" />
-        <AlertDescription className="text-gray-900 font-medium">
+      {/* Header with Resolve Exception title and Duplication chip */}
+      <div className="flex items-center gap-3">
+        <h2 className="text-xl font-semibold text-gray-900">Resolve Exception</h2>
+        <Badge className="bg-purple-100 text-purple-700 border-purple-200">
+          Duplication
+        </Badge>
+      </div>
+
+      {/* Clean Alert Banner */}
+      <Alert className="border-red-200 bg-white">
+        <AlertTriangle className="h-4 w-4 text-red-500" />
+        <AlertDescription className="text-gray-900">
           <strong>Duplication Detected:</strong> Invoice {currentInvoice.number} has been submitted multiple times with different details.
         </AlertDescription>
       </Alert>
 
-      {/* Purple Info Box */}
-      <Alert className="border-purple-200 bg-purple-50">
-        <Info className="h-4 w-4 text-purple-600" />
-        <AlertDescription className="text-purple-800">
+      {/* Clean Info Box */}
+      <Alert className="border-blue-200 bg-white">
+        <Info className="h-4 w-4 text-blue-500" />
+        <AlertDescription className="text-gray-700">
           <strong>Action Required:</strong> Compare both versions below and choose how to resolve this duplication. 
           Select the version you want to keep or force submit both if needed.
         </AlertDescription>
@@ -144,14 +151,23 @@ export function DuplicationException({
           
           <div className="mt-6 flex justify-end">
             <Button 
-              onClick={() => onResolve(selectedAction)}
+              onClick={handleResolve}
               className="px-6"
             >
-              {getButtonText()}
+              Resolve Exception
             </Button>
           </div>
         </CardContent>
       </Card>
+
+      {/* Confirmation Modal */}
+      <DuplicationResolutionModal
+        open={showConfirmModal}
+        onOpenChange={setShowConfirmModal}
+        onConfirm={handleConfirmResolve}
+        action={selectedAction}
+        invoiceNumber={currentInvoice.number}
+      />
     </div>
   );
 }
