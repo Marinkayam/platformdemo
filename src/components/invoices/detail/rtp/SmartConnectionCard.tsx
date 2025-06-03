@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
 import { SmartConnectionAlert } from "./SmartConnectionAlert";
 import { ProcessTimeline } from "./ProcessTimeline";
-import { SmartConnectionProps } from "./types";
+import { SmartConnection } from "./types";
 
 interface SmartConnectionCardProps {
-  connection: SmartConnectionProps;
+  connection: SmartConnection;
 }
 
 export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
@@ -15,33 +15,35 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-medium">RTP Connection</CardTitle>
+          <CardTitle className="text-lg font-semibold">Smart Connection</CardTitle>
           <SmartConnectionStatusBadge status={connection.status} />
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
         {connection.status === "Unavailable" && (
           <SmartConnectionAlert 
-            exceptions={connection.exceptions}
+            message="One or more agents are disconnected. Credentials may be outdated or missing — please review to restore connection."
+            actionText="Review Connection"
+            onAction={() => console.log("Review connection clicked")}
           />
         )}
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div>
             <span className="text-muted-foreground">Portal:</span>
-            <p className="font-medium">{connection.portal.type}</p>
+            <p className="font-medium">{connection.portal}</p>
           </div>
           <div>
             <span className="text-muted-foreground">Account Type:</span>
-            <p className="font-medium">{connection.portal.reference}</p>
+            <p className="font-medium">{connection.accountType}</p>
           </div>
           <div>
             <span className="text-muted-foreground">Last Sync:</span>
-            <p className="font-medium">{connection.lastUpdated}</p>
+            <p className="font-medium">{connection.lastSync}</p>
           </div>
           <div>
             <span className="text-muted-foreground">Connection ID:</span>
-            <p className="font-medium text-xs">{connection.buyer.id}</p>
+            <p className="font-medium text-xs">{connection.id}</p>
           </div>
         </div>
 
