@@ -1,4 +1,3 @@
-
 import { SmartConnectionProps, POInformationProps, RelatedInvoiceProps } from "./types";
 
 export const mockSmartConnection: SmartConnectionProps = {
@@ -20,11 +19,23 @@ export const mockSmartConnection: SmartConnectionProps = {
 };
 
 export const mockConnectionWithIssue: SmartConnectionProps = {
-  ...mockSmartConnection,
   status: "Unavailable",
+  buyer: {
+    name: "Acme Corporation",
+    id: ""
+  },
+  supplier: {
+    name: "Supplier",
+    id: ""
+  },
+  portal: {
+    type: "Coupa",
+    reference: "",
+    user: "admin@acmecorp.com"
+  },
+  lastUpdated: "2025-04-28T15:23:44Z",
   exceptions: [
-    "Portal User Credentials are missing",
-    "Last sync attempt failed at 15:23"
+    "Portal User Credentials are missing"
   ]
 };
 
