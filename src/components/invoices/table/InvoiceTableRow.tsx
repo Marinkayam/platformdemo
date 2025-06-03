@@ -1,6 +1,8 @@
+
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 import { Invoice } from "@/types/invoice";
 import { formatCurrency } from "@/lib/utils";
 import { AssigneeComponent } from "@/components/invoices/AssigneeComponent";
