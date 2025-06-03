@@ -83,8 +83,20 @@ export const pendingInvoices: Invoice[] = [
     requesterEmail: "billing@globalent.com",
     documentType: "Invoice",
     portal: "Bill",
-    hasExceptions: false,
-    isDuplicate: true
+    hasExceptions: true,
+    isDuplicate: true,
+    submitMethod: "ERP",
+    submittedAt: "2024-04-11T09:30:00Z",
+    exceptions: [
+      {
+        id: "exc-duplicate-001",
+        type: "DUPLICATE_INVOICE",
+        message: "Duplicate Invoice Detected",
+        details: "This invoice number has been submitted multiple times with different details",
+        createdAt: "2024-04-11T09:35:00Z",
+        resolved: false
+      }
+    ]
   },
   {
     id: "3-duplicate",
@@ -106,7 +118,9 @@ export const pendingInvoices: Invoice[] = [
     documentType: "Invoice",
     portal: "Ariba",
     hasExceptions: false,
-    isDuplicate: true
+    isDuplicate: true,
+    submitMethod: "Email",
+    submittedAt: "2024-04-12T14:20:00Z"
   },
   {
     id: "4",

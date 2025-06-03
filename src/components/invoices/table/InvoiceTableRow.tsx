@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -48,7 +49,7 @@ export function InvoiceTableRow({
       className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
       onClick={handleClick}
     >
-      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold">
+      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold py-2 align-middle">
         <InvoiceNumber 
           number={invoice.number}
           hasWarning={invoice.hasWarning}

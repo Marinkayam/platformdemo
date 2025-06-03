@@ -27,6 +27,8 @@ export interface Invoice {
   exceptions?: Exception[];
   hasExceptions?: boolean;
   isDuplicate?: boolean;
+  submitMethod?: 'ERP' | 'Email' | 'Portal Upload' | 'API';
+  submittedAt?: string;
 }
 
 export type InvoiceStatus = 

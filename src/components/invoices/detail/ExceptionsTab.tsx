@@ -11,8 +11,10 @@ import { FilePreviewList } from "./exceptions/FilePreviewList";
 import { ActionButtons } from "./exceptions/ActionButtons";
 import { DuplicateInvoiceHandler } from "./exceptions/DuplicateInvoiceHandler";
 import { DataExtractionResolver } from "./exceptions/DataExtractionResolver";
+import { DuplicationException } from "./exceptions/DuplicationException";
 import ExceptionResolutionWizard from "./exceptions/ExceptionResolutionWizard";
 import ValidationExceptionWizard from "./exceptions/ValidationExceptionWizard";
+import { invoiceData } from "@/data/invoices";
 
 interface ExceptionsTabProps {
   exceptions: Exception[];
@@ -31,13 +33,13 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
   const isPOException = exceptions.some(exception => exception.type === 'PO_CLOSED' || exception.type === 'PO_INSUFFICIENT_FUNDS');
   const isValidationException = exceptions.some(exception => exception.type === 'VALIDATION_ERROR');
   
-  // Handle resolution from the wizard
+  // Handle resolution from the wizard or new duplicate component
   const handleWizardResolve = (resolutionData: any) => {
     console.log('Resolution data:', resolutionData);
     
     let resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT' | 'EXCLUDED' = 'MARK_RESOLVED';
     
-    switch(resolutionData.action) {
+    switch(resolutionData.action || resolutionData) {
       case 'upload':
         resolution = 'UPLOAD_NEW_PDF';
         toast({
@@ -46,6 +48,7 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         });
         break;
       case 'force_submit':
+      case 'FORCE_SUBMIT':
         resolution = 'FORCE_SUBMIT';
         toast({
           title: "Invoice force submitted",
@@ -53,10 +56,25 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         });
         break;
       case 'exclude':
+      case 'EXCLUDED':
         resolution = 'EXCLUDED';
         toast({
           title: "Invoice excluded",
           description: "Invoice has been excluded from submission"
+        });
+        break;
+      case 'REPLACE':
+        resolution = 'MARK_RESOLVED';
+        toast({
+          title: "Invoice replaced",
+          description: "Current invoice has been replaced with the new version"
+        });
+        break;
+      case 'KEEP_CURRENT':
+        resolution = 'MARK_RESOLVED';
+        toast({
+          title: "Duplicate resolved",
+          description: "Current invoice kept, duplicate discarded"
         });
         break;
       case 'resolve_outside':
@@ -66,6 +84,8 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
           description: "Exception marked as resolved outside the system"
         });
         break;
+      default:
+        resolution = 'MARK_RESOLVED';
     }
     
     // Mark all exceptions as resolved
@@ -147,6 +167,28 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         <p className="text-muted-foreground">No exceptions found for this invoice.</p>
       </div>
     );
+  }
+
+  // Use the new streamlined duplicate resolution component
+  if (isDuplicateException && invoice) {
+    // Find the duplicate invoice
+    const duplicateInvoice = invoiceData.find(inv => 
+      inv.number === invoice.number && 
+      inv.id !== invoice.id && 
+      inv.isDuplicate
+    );
+
+    if (duplicateInvoice) {
+      return (
+        <div className="space-y-6">
+          <DuplicationException
+            currentInvoice={invoice}
+            duplicateInvoice={duplicateInvoice}
+            onResolve={handleWizardResolve}
+          />
+        </div>
+      );
+    }
   }
 
   // Use the validation wizard for VALIDATION_ERROR exceptions (INV-40230612)
