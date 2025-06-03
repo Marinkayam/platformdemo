@@ -1,4 +1,4 @@
-export type ExceptionType = 'PO_CLOSED' | 'PO_INSUFFICIENT_FUNDS' | 'MISSING_INFORMATION' | 'VALIDATION_ERROR' | 'DUPLICATE_INVOICE';
+export type ExceptionType = 'PO_CLOSED' | 'PO_INSUFFICIENT_FUNDS' | 'MISSING_INFORMATION' | 'VALIDATION_ERROR' | 'DUPLICATE_INVOICE' | 'EXTRA_DATA';
 
 export interface Exception {
   id: string;

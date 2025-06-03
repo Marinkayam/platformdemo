@@ -31,7 +31,7 @@ export const getBasicInvoiceData = (
 
 // Test data for Overdue Invoices and Credit Memos
 export const testInvoices = [
-  // Overdue Invoices
+  // Overdue Invoices with Extra Data Exception
   getBasicInvoiceData(
     "test-overdue-1",
     "INV-10032100",
@@ -43,7 +43,18 @@ export const testInvoices = [
     "Elon",
     {
       portal: "Coupa",
-      isOverdue: true
+      isOverdue: true,
+      hasExceptions: true,
+      exceptions: [
+        {
+          id: "exc-extra-data-001",
+          type: "EXTRA_DATA",
+          message: "Missing Data",
+          details: "Required information is missing from the invoice's additional data: Invoice Date, Customer Name",
+          createdAt: "2024-02-15T10:30:00Z",
+          resolved: false
+        }
+      ]
     }
   ),
   

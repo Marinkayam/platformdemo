@@ -16,6 +16,7 @@ import ExceptionResolutionWizard from "./exceptions/ExceptionResolutionWizard";
 import ValidationExceptionWizard from "./exceptions/ValidationExceptionWizard";
 import { invoiceData } from "@/data/invoices";
 import { useNavigate } from "react-router-dom";
+import { ExtraDataExceptionWizard } from "./exceptions/ExtraDataExceptionWizard";
 
 interface ExceptionsTabProps {
   exceptions: Exception[];
@@ -34,6 +35,7 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
   const isDataExtractionException = exceptions.some(exception => exception.type === 'MISSING_INFORMATION');
   const isPOException = exceptions.some(exception => exception.type === 'PO_CLOSED' || exception.type === 'PO_INSUFFICIENT_FUNDS');
   const isValidationException = exceptions.some(exception => exception.type === 'VALIDATION_ERROR');
+  const isExtraDataException = exceptions.some(exception => exception.type === 'EXTRA_DATA');
   
   // Handle resolution from the wizard or new duplicate component
   const handleWizardResolve = (resolutionData: any) => {
@@ -47,6 +49,13 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         toast({
           title: "File uploaded successfully",
           description: "Your new RTP has been uploaded and exceptions resolved"
+        });
+        break;
+      case 'resolve_manual':
+        resolution = 'MARK_RESOLVED';
+        toast({
+          title: "Exception resolved",
+          description: "Missing data has been filled and exception resolved"
         });
         break;
       case 'force_submit':
@@ -199,6 +208,17 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         </div>
       );
     }
+  }
+
+  // Use the extra data wizard for EXTRA_DATA exceptions
+  if (isExtraDataException) {
+    return (
+      <div className="space-y-6">
+        <ExtraDataExceptionWizard 
+          onResolve={handleWizardResolve}
+        />
+      </div>
+    );
   }
 
   // Use the validation wizard for VALIDATION_ERROR exceptions (INV-40230612)
