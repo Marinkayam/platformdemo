@@ -1,5 +1,5 @@
 
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Layers2 } from "lucide-react";
 import { TableCell } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -8,13 +8,15 @@ interface InvoiceNumberProps {
   hasWarning?: boolean;
   status: string;
   isCreditMemo?: boolean;
+  isDuplicate?: boolean;
 }
 
 export function InvoiceNumber({
   number,
   hasWarning,
   status,
-  isCreditMemo
+  isCreditMemo,
+  isDuplicate
 }: InvoiceNumberProps) {
   const isPendingAction = status === "Pending Action";
   
@@ -26,6 +28,19 @@ export function InvoiceNumber({
           <span className={`truncate ${isPendingAction ? "text-red-600 font-semibold" : "font-semibold"}`}>
             {number}
           </span>
+          
+          {isDuplicate && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Layers2 className="h-4 w-4 text-orange-500 flex-shrink-0" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Duplicate Invoice</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
           
           {isCreditMemo && (
             <TooltipProvider>

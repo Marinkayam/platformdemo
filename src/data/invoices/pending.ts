@@ -1,4 +1,3 @@
-
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 
@@ -84,7 +83,30 @@ export const pendingInvoices: Invoice[] = [
     requesterEmail: "billing@globalent.com",
     documentType: "Invoice",
     portal: "Bill",
-    hasExceptions: false
+    hasExceptions: false,
+    isDuplicate: true
+  },
+  {
+    id: "3-duplicate",
+    number: "INV-30230522",
+    buyer: "NewCo Inc",
+    dueDate: "2024-06-10",
+    status: "Pending Action",
+    total: 3350.00,
+    creationDate: "2024-04-12",
+    owner: "jane.smith@example.com",
+    assignee: "mike.johnson@example.com",
+    subtotal: 2900.00,
+    tax: 450.00,
+    paymentTerms: "Net 30",
+    currency: "USD",
+    poNumber: "PO-88994",
+    taxId: "TAX-006",
+    requesterEmail: "procurement@newco.com",
+    documentType: "Invoice",
+    portal: "Ariba",
+    hasExceptions: false,
+    isDuplicate: true
   },
   {
     id: "4",

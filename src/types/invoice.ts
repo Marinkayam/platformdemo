@@ -1,4 +1,3 @@
-
 import { Exception } from "./exception";
 
 export interface Invoice {
@@ -27,6 +26,7 @@ export interface Invoice {
   attachments?: Attachment[];
   exceptions?: Exception[];
   hasExceptions?: boolean;
+  isDuplicate?: boolean;
 }
 
 export type InvoiceStatus = 

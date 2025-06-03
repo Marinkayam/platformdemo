@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -55,6 +54,7 @@ export function InvoiceTableRow({
           hasWarning={invoice.hasWarning}
           status={invoice.status}
           isCreditMemo={invoice.documentType === "Credit Memo"}
+          isDuplicate={invoice.isDuplicate}
         />
       </TableCell>
       
