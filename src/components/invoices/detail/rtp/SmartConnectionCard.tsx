@@ -2,7 +2,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
-import { SmartConnectionAlert } from "./SmartConnectionAlert";
 import { SmartConnectionProps } from "./types";
 import { ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -27,12 +26,6 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {connection.status === "Unavailable" && (
-          <SmartConnectionAlert 
-            exceptions={connection.exceptions}
-          />
-        )}
-        
         <div className="space-y-3">
           {/* Buyer and Supplier row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
