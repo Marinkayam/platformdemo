@@ -26,11 +26,6 @@ export function FilterControls({ filters, onFilterChange }: FilterControlsProps)
         multiSelect
         searchable
       />
-      <DateRangePicker
-        fromDate={filters.dueDate.from}
-        toDate={filters.dueDate.to}
-        onDateChange={(from, to) => onFilterChange("dueDate", { from, to })}
-      />
       <FilterDropdown 
         label="Buyer" 
         value={filters.buyer} 
@@ -61,6 +56,13 @@ export function FilterControls({ filters, onFilterChange }: FilterControlsProps)
         multiSelect
         searchable
       />
+      <div className="ml-auto">
+        <DateRangePicker
+          fromDate={filters.dueDate.from}
+          toDate={filters.dueDate.to}
+          onDateChange={(from, to) => onFilterChange("dueDate", { from, to })}
+        />
+      </div>
     </motion.div>
   );
 }

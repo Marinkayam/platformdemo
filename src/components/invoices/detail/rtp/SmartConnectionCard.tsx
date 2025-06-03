@@ -1,5 +1,6 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 import { 
   Card, 
@@ -30,6 +31,12 @@ const getPortalIcon = (type: PortalType) => {
 };
 
 export const SmartConnectionCard = ({ connection }: { connection: SmartConnectionProps }) => {
+  const navigate = useNavigate();
+
+  const handleViewFullDetails = () => {
+    navigate('/smart-connections');
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="pb-2">
@@ -96,7 +103,12 @@ export const SmartConnectionCard = ({ connection }: { connection: SmartConnectio
         </div>
       </CardContent>
       <CardFooter className="pt-0 flex justify-between items-center">
-        <Button variant="outline" size="sm" className="text-primary flex items-center gap-2">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="text-primary flex items-center gap-2"
+          onClick={handleViewFullDetails}
+        >
           View Full Details <ExternalLink className="h-4 w-4" />
         </Button>
       </CardFooter>

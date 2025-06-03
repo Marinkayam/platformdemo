@@ -20,6 +20,18 @@ interface InvoiceTableRowProps {
   onExclude: (invoiceId: string) => void;
 }
 
+// Helper function to extract name from owner field
+const formatOwnerName = (owner: string): string => {
+  // If owner contains email format, extract name part
+  if (owner.includes('@')) {
+    const namePart = owner.split('@')[0];
+    // Convert underscore/dot separated names to proper format
+    return namePart.replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  }
+  // Return as is if it's already a name
+  return owner;
+};
+
 export function InvoiceTableRow({
   invoice,
   isPendingTab,
@@ -41,7 +53,7 @@ export function InvoiceTableRow({
         <InvoiceNumber 
           number={invoice.number}
           hasWarning={invoice.hasWarning}
-          isPending={isPendingTab || false}
+          status={invoice.status}
           isCreditMemo={invoice.documentType === "Credit Memo"}
         />
       </TableCell>
@@ -99,10 +111,10 @@ export function InvoiceTableRow({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="truncate cursor-help">{invoice.owner}</span>
+                <span className="truncate cursor-help">{formatOwnerName(invoice.owner)}</span>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{invoice.owner}</p>
+                <p>{formatOwnerName(invoice.owner)}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
