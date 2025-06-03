@@ -1,13 +1,36 @@
 
 import { useState } from "react";
-import { UserCircle2, X } from "lucide-react";
+import { UserCircle2, X, Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
   Popover, 
   PopoverContent, 
   PopoverTrigger 
 } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { toast } from "@/hooks/use-toast";
+
+interface Assignee {
+  id: string;
+  name: string;
+  initials: string;
+  email: string;
+}
+
+const mockAssignees: Assignee[] = [
+  { id: '1', name: 'Jane Doe', initials: 'JD', email: 'jane.doe@example.com' },
+  { id: '2', name: 'Alex Morgan', initials: 'AM', email: 'alex.morgan@example.com' },
+  { id: '3', name: 'Sam Lee', initials: 'SL', email: 'sam.lee@example.com' },
+  { id: '4', name: 'Maria Garcia', initials: 'MG', email: 'maria.garcia@example.com' },
+  { id: '5', name: 'John Smith', initials: 'JS', email: 'john.smith@example.com' },
+];
 
 interface AssigneeComponentProps {
   assignee?: string;
@@ -17,24 +40,24 @@ interface AssigneeComponentProps {
 
 export function AssigneeComponent({ assignee, onAssign, onRemove }: AssigneeComponentProps) {
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState("");
+  const [selectedAssignee, setSelectedAssignee] = useState<Assignee | null>(null);
   
   const handleAssign = () => {
-    if (!email || !email.includes('@')) {
+    if (!selectedAssignee) {
       toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address",
+        title: "No assignee selected",
+        description: "Please select an assignee from the list",
       });
       return;
     }
     
-    onAssign(email);
-    setEmail("");
+    onAssign(selectedAssignee.email);
+    setSelectedAssignee(null);
     setOpen(false);
     
     toast({
       title: "Invoice assigned",
-      description: `Invoice has been assigned to ${email}`,
+      description: `Invoice has been assigned to ${selectedAssignee.name}`,
     });
   };
   
@@ -49,10 +72,18 @@ export function AssigneeComponent({ assignee, onAssign, onRemove }: AssigneeComp
   };
   
   if (assignee) {
+    // Find the assignee details for display
+    const assigneeDetails = mockAssignees.find(a => a.email === assignee) || {
+      initials: assignee.split('@')[0].slice(0, 2).toUpperCase(),
+      name: assignee
+    };
+    
     return (
       <div className="flex items-center gap-2 group">
-        <UserCircle2 className="h-4 w-4 text-gray-400" />
-        <span className="text-[14px] text-gray-900">{assignee}</span>
+        <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+          <span className="text-xs font-semibold text-gray-700">{assigneeDetails.initials}</span>
+        </div>
+        <span className="text-[14px] text-gray-900">{assigneeDetails.name}</span>
         <button 
           onClick={handleRemove}
           className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -73,42 +104,48 @@ export function AssigneeComponent({ assignee, onAssign, onRemove }: AssigneeComp
           Assign
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-4" align="start">
-        <div className="space-y-4">
-          <h4 className="font-medium text-sm">Assign Invoice</h4>
-          <div className="space-y-2">
-            <label htmlFor="assign-email" className="text-sm text-gray-500">
-              Email Address
-            </label>
-            <input
-              id="assign-email"
-              type="email"
-              placeholder="Enter email address"
-              className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleAssign();
-                }
-              }}
-            />
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button 
-              size="sm"
-              onClick={handleAssign}
-            >
-              Assign
-            </Button>
-          </div>
+      <PopoverContent className="w-80 p-0" align="start">
+        <Command>
+          <CommandInput placeholder="Search assignees..." className="h-9" />
+          <CommandList>
+            <CommandEmpty>No assignee found.</CommandEmpty>
+            <CommandGroup>
+              {mockAssignees.map((assignee) => (
+                <CommandItem
+                  key={assignee.id}
+                  value={assignee.name}
+                  onSelect={() => {
+                    setSelectedAssignee(assignee);
+                  }}
+                  className="flex items-center gap-2 py-2 px-3"
+                >
+                  <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+                    <span className="text-xs font-semibold text-gray-700">{assignee.initials}</span>
+                  </div>
+                  <span className="text-sm font-normal">{assignee.name}</span>
+                  {selectedAssignee?.id === assignee.id && (
+                    <Check className="ml-auto h-4 w-4" />
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+        <div className="flex justify-end gap-2 p-4 border-t">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => setOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button 
+            size="sm"
+            onClick={handleAssign}
+            disabled={!selectedAssignee}
+          >
+            Assign
+          </Button>
         </div>
       </PopoverContent>
     </Popover>

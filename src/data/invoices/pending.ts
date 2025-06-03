@@ -1,3 +1,4 @@
+
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 
@@ -104,7 +105,33 @@ export const pendingInvoices: Invoice[] = [
     requesterEmail: "finance@europartners.de",
     documentType: "Invoice",
     portal: "Ariba",
-    hasExceptions: true
+    hasExceptions: true,
+    exceptions: [
+      {
+        id: "exc-po-status-001",
+        type: "VALIDATION_ERROR",
+        message: "PO Status",
+        details: "PO status is NOT Open",
+        createdAt: "2024-05-07T10:30:00Z",
+        resolved: false
+      },
+      {
+        id: "exc-po-total-001",
+        type: "VALIDATION_ERROR",
+        message: "PO Total Alert",
+        details: "PO total amount is NOT bigger than PO sub total",
+        createdAt: "2024-05-07T10:35:00Z",
+        resolved: false
+      },
+      {
+        id: "exc-date-format-001",
+        type: "VALIDATION_ERROR",
+        message: "Invoice Date Format",
+        details: "Date format must be dd/mm/yyyy",
+        createdAt: "2024-05-07T10:40:00Z",
+        resolved: false
+      }
+    ]
   },
   {
     id: "5",

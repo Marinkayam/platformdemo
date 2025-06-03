@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Exception } from "@/types/exception";
 import { Invoice } from "@/types/invoice";
@@ -13,6 +12,7 @@ import { ActionButtons } from "./exceptions/ActionButtons";
 import { DuplicateInvoiceHandler } from "./exceptions/DuplicateInvoiceHandler";
 import { DataExtractionResolver } from "./exceptions/DataExtractionResolver";
 import ExceptionResolutionWizard from "./exceptions/ExceptionResolutionWizard";
+import ValidationExceptionWizard from "./exceptions/ValidationExceptionWizard";
 
 interface ExceptionsTabProps {
   exceptions: Exception[];
@@ -25,10 +25,11 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   
-  // Check if we have a duplicate invoice exception or data extraction exception
+  // Check exception types
   const isDuplicateException = exceptions.some(exception => exception.type === 'DUPLICATE_INVOICE');
   const isDataExtractionException = exceptions.some(exception => exception.type === 'MISSING_INFORMATION');
   const isPOException = exceptions.some(exception => exception.type === 'PO_CLOSED' || exception.type === 'PO_INSUFFICIENT_FUNDS');
+  const isValidationException = exceptions.some(exception => exception.type === 'VALIDATION_ERROR');
   
   // Handle resolution from the wizard
   const handleWizardResolve = (resolutionData: any) => {
@@ -148,9 +149,28 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
     );
   }
 
-  // Use the new wizard for PO exceptions
+  // Use the validation wizard for VALIDATION_ERROR exceptions (INV-40230612)
+  if (isValidationException) {
+    const wizardExceptions = exceptions.map(exception => ({
+      id: exception.id,
+      title: exception.message,
+      description: exception.details,
+      severity: 'error' as const,
+      color: '#DF1C41'
+    }));
+
+    return (
+      <div className="space-y-6">
+        <ValidationExceptionWizard 
+          exceptions={wizardExceptions}
+          onResolve={handleWizardResolve}
+        />
+      </div>
+    );
+  }
+
+  // Use the PO wizard for PO exceptions
   if (isPOException) {
-    // Convert exceptions to wizard format
     const wizardExceptions = exceptions.map(exception => ({
       id: exception.id,
       title: exception.message,
