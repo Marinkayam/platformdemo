@@ -69,7 +69,7 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         resolution = 'MARK_RESOLVED';
         toast({
           title: "Invoice replaced",
-          description: "Current invoice has been replaced with the new version"
+          description: "The new invoice version has been selected and duplicates removed"
         });
         // For demo: navigate back to pending invoices after resolution
         setTimeout(() => {
@@ -80,7 +80,7 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         resolution = 'MARK_RESOLVED';
         toast({
           title: "Duplicate resolved",
-          description: "Current invoice kept, duplicate discarded"
+          description: "Current invoice kept active, duplicate invoice removed from table"
         });
         // For demo: navigate back to pending invoices after resolution
         setTimeout(() => {

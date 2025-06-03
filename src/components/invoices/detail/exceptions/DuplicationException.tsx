@@ -1,7 +1,6 @@
 
 import { useState } from "react";
-import { AlertTriangle, Info } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { TriangleAlert, Lightbulb } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -57,22 +56,38 @@ export function DuplicationException({
         </Badge>
       </div>
 
-      {/* Clean Alert Banner */}
-      <Alert className="border-red-200 bg-white">
-        <AlertTriangle className="h-4 w-4 text-red-500" />
-        <AlertDescription className="text-gray-900">
-          <strong>Duplication Detected:</strong> Invoice {currentInvoice.number} has been submitted multiple times with different details.
-        </AlertDescription>
-      </Alert>
+      {/* Exception Alert Banner - Updated styling to match INV-40230612 */}
+      <div className="bg-red-50 p-4 rounded-xl border border-red-200">
+        <div className="flex items-start gap-3">
+          <TriangleAlert 
+            strokeWidth={1.25} 
+            className="mt-1 flex-shrink-0 text-red-600" 
+            size={18} 
+          />
+          <div>
+            <p className="text-gray-900 text-sm">
+              <span className="font-semibold">Duplication Detected:</span> Invoice {currentInvoice.number} has been submitted multiple times with different details.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      {/* Clean Info Box */}
-      <Alert className="border-blue-200 bg-white">
-        <Info className="h-4 w-4 text-blue-500" />
-        <AlertDescription className="text-gray-700">
-          <strong>Action Required:</strong> Compare both versions below and choose how to resolve this duplication. 
-          Select the version you want to keep or force submit both if needed.
-        </AlertDescription>
-      </Alert>
+      {/* Info Banner - Updated styling to match INV-40230612 */}
+      <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
+        <div className="flex items-start gap-3">
+          <Lightbulb 
+            strokeWidth={1.25} 
+            className="mt-1 flex-shrink-0 text-blue-600" 
+            size={18} 
+          />
+          <div>
+            <p className="text-gray-900 text-sm">
+              <span className="font-semibold">Action Required:</span> Compare both versions below and choose how to resolve this duplication. 
+              Select the version you want to keep or force submit both if needed.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Comparison Table without inner box */}
       <ComparisonTable 
