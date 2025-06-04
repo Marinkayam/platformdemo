@@ -26,10 +26,6 @@ export default function InvoiceDetail() {
   // Find the invoice by id
   const invoice = invoiceData.find(inv => inv.id === id);
 
-  console.log("InvoiceDetail - ID:", id, "Invoice found:", invoice);
-  console.log("Invoice exceptions:", invoice?.exceptions);
-  console.log("Has exceptions:", invoice?.hasExceptions);
-
   // Check for tab parameter in URL
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -56,14 +52,6 @@ export default function InvoiceDetail() {
 
   // Set default tab to exceptions ONLY on initial load for invoices with exceptions and status "Pending Action"
   useEffect(() => {
-    console.log("Checking if should switch to exceptions tab:", {
-      hasExceptions: invoice?.hasExceptions,
-      status: invoice?.status,
-      activeTab,
-      search: location.search,
-      hasInitialized
-    });
-    
     if (
       invoice?.hasExceptions && 
       invoice?.status === "Pending Action" && 
@@ -71,7 +59,6 @@ export default function InvoiceDetail() {
       location.search === '' && 
       !hasInitialized
     ) {
-      console.log("Switching to exceptions tab");
       setActiveTab("exceptions");
       setHasInitialized(true);
     } else if (!hasInitialized) {
@@ -130,8 +117,6 @@ export default function InvoiceDetail() {
     fileType: "image" as const,
     url: "#"
   }];
-
-  console.log("Rendering with activeTab:", activeTab);
 
   return (
     <div className="container mx-auto px-4 py-6">

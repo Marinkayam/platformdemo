@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ExceptionsTab } from "./ExceptionsTab";
@@ -79,9 +78,10 @@ export function TabContent({ tab, invoice, attachments = [] }: TabContentProps) 
       // This will be handled directly by the InvoiceDetail component
       return null;
     case "exceptions":
-      if (!localInvoice) return null;
       return (
         <ExceptionsTab 
+          exceptions={localInvoice?.exceptions || []}
+          onResolveException={handleResolveException}
           invoice={localInvoice}
         />
       );
