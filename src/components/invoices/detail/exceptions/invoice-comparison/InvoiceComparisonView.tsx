@@ -80,6 +80,9 @@ export function InvoiceComparisonView({
 
   // Count the number of differences
   const differenceCount = Object.values(differences).filter(Boolean).length;
+
+  // Calculate dynamic grid columns based on number of invoices
+  const gridCols = `grid-cols-${Math.min(invoices.length + 1, 5)}`; // Cap at 5 columns for readability
   
   return (
     <div className="space-y-6">
@@ -110,7 +113,7 @@ export function InvoiceComparisonView({
       </div>
 
       <RadioGroup value={selectedId || ""} onValueChange={handleRadioChange}>
-        <div className="grid grid-cols-3 gap-4">
+        <div className={`grid gap-4 ${invoices.length <= 4 ? gridCols : 'grid-cols-5'}`}>
           <FieldLabels 
             fields={fieldsToDisplay} 
             differences={differences} 
@@ -133,6 +136,12 @@ export function InvoiceComparisonView({
             );
           })}
         </div>
+
+        {invoices.length > 4 && (
+          <div className="text-xs text-gray-500 mt-2">
+            Scroll horizontally to view all invoices
+          </div>
+        )}
       </RadioGroup>
       
       <FooterActions 

@@ -2,8 +2,9 @@
 import { Invoice } from "@/types/invoice";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { RadioGroupItem } from "@/components/ui/radio-group";
-import { Check, AlertTriangle, MessageSquare } from "lucide-react";
+import { Check, AlertTriangle } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import { PdfDownloadButton } from "./PdfDownloadButton";
 import {
   Tooltip,
   TooltipContent,
@@ -100,6 +101,9 @@ export function InvoiceTableRow({
             Recommended
           </span>
         )}
+      </TableCell>
+      <TableCell className="text-center">
+        <PdfDownloadButton invoice={invoice} />
       </TableCell>
     </TableRow>
   );

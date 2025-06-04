@@ -4,6 +4,7 @@ import { RadioGroupItem } from "@/components/ui/radio-group";
 import { Check, ArrowUp, ArrowDown } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { formatDate } from "./utils";
+import { PdfDownloadButton } from "../duplicate-table/PdfDownloadButton";
 import {
   Tooltip,
   TooltipContent,
@@ -68,7 +69,8 @@ export function InvoiceColumn({
                 Created: {formatDate(invoice.creationDate)}
               </span>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
+              <PdfDownloadButton invoice={invoice} variant="ghost" />
               <RadioGroupItem value={invoice.id} id={`invoice-${invoice.id}`} className="h-5 w-5" />
             </div>
           </div>

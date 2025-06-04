@@ -11,6 +11,7 @@ export function InvoiceTableHeader() {
         <TableHead>Status</TableHead>
         <TableHead>Exceptions</TableHead>
         <TableHead className="w-32 text-right">Recommendation</TableHead>
+        <TableHead className="w-20 text-center">Actions</TableHead>
       </TableRow>
     </TableHeader>
   );
