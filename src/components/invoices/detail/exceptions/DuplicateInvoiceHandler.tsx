@@ -10,9 +10,10 @@ import { duplicateInvoices } from "@/data/invoices/duplicates";
 import { ExcludeAllModal } from "./ExcludeAllModal";
 import { ContactCustomerModal } from "./ContactCustomerModal";
 import { StepIndicator } from "./invoice-comparison/StepIndicator";
-import { DuplicateInvoiceTable } from "./duplicate-table";
+import { DuplicateInvoiceCardsGrid } from "./duplicate-cards";
 import { InvoiceComparisonView } from "./invoice-comparison";
 import { ConfirmationStep } from "./ConfirmationStep";
+import { TableActions } from "./duplicate-table/TableActions";
 
 interface DuplicateInvoiceHandlerProps {
   invoice: Invoice;
@@ -26,6 +27,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedInvoices, setSelectedInvoices] = useState<Invoice[]>([]);
   const [keepInvoice, setKeepInvoice] = useState<Invoice | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isExcludeModalOpen, setIsExcludeModalOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [selectedInvoiceForContact, setSelectedInvoiceForContact] = useState<Invoice | null>(null);
@@ -34,16 +36,42 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
   // Get the duplicate exception
   const duplicateException = exceptions.find(e => e.type === 'DUPLICATE_INVOICE');
   
-  // Find the newest invoice to pre-select, but don't auto-advance to step 2
+  // Find the newest invoice to pre-select
   const newestInvoice = [...duplicateInvoices].sort((a, b) => 
     new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
   )[0];
   
-  const handleSelectInvoices = (selected: Invoice[]) => {
-    setSelectedInvoices(selected);
-    if (selected.length > 0) {
+  // Pre-select the newest invoice
+  useState(() => {
+    if (newestInvoice && !selectedId) {
+      setSelectedId(newestInvoice.id);
+    }
+  });
+  
+  const handleSelectChange = (id: string) => {
+    setSelectedId(id);
+  };
+  
+  const handleConfirmSelection = () => {
+    if (!selectedId) {
+      toast({
+        title: "Selection required",
+        description: "Please select an invoice to continue.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const selectedInvoice = duplicateInvoices.find(inv => inv.id === selectedId);
+    if (selectedInvoice) {
+      setSelectedInvoices([selectedInvoice]);
       setStep(2);
     }
+  };
+
+  const handleClearSelection = () => {
+    setSelectedId(null);
+    setSelectedInvoices([]);
   };
   
   const handleSelectInvoice = (selected: Invoice) => {
@@ -113,17 +141,20 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
           <StepIndicator currentStep={step} steps={STEP_LABELS} />
           
           {step === 1 && (
-            <DuplicateInvoiceTable 
-              invoices={duplicateInvoices} 
-              onSelect={handleSelectInvoices}
-              onSelectSingle={handleSelectInvoice}
-              onExcludeAll={() => setIsExcludeModalOpen(true)}
-              currentInvoice={invoice}
-              selectedInvoices={selectedInvoices}
-              defaultSelectedInvoice={newestInvoice}
-              onContactSupport={handleContactSupport}
-              preventAutoAdvance={true}
-            />
+            <div className="space-y-6">
+              <DuplicateInvoiceCardsGrid 
+                invoices={duplicateInvoices}
+                selectedId={selectedId}
+                onSelectChange={handleSelectChange}
+                onContactSupport={handleContactSupport}
+              />
+              
+              <TableActions 
+                onClearSelection={handleClearSelection}
+                onExcludeAll={() => setIsExcludeModalOpen(true)}
+                onConfirmSelection={handleConfirmSelection}
+              />
+            </div>
           )}
           
           {step === 2 && selectedInvoices.length > 0 && (
