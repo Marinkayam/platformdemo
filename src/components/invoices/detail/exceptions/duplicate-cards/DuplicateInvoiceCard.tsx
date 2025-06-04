@@ -1,25 +1,20 @@
 
 import { Invoice } from "@/types/invoice";
 import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { PdfDownloadButton } from "../duplicate-table/PdfDownloadButton";
-import { MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DuplicateInvoiceCardProps {
   invoice: Invoice;
   isSelected: boolean;
   onSelect: () => void;
-  onContactSupport?: (invoice: Invoice) => void;
 }
 
 export function DuplicateInvoiceCard({
   invoice,
   isSelected,
-  onSelect,
-  onContactSupport
+  onSelect
 }: DuplicateInvoiceCardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -55,33 +50,10 @@ export function DuplicateInvoiceCard({
       onClick={onSelect}
     >
       <CardContent className="p-4 space-y-3">
-        {/* Header with radio button and date */}
+        {/* Header with date and PDF download */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <RadioGroupItem 
-              value={invoice.id} 
-              id={invoice.id}
-              checked={isSelected}
-              className="pointer-events-none"
-            />
-            <span className="text-sm text-gray-600">Issue Date</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <PdfDownloadButton invoice={invoice} size="icon" variant="ghost" />
-            {onContactSupport && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onContactSupport(invoice);
-                }}
-                className="h-8 w-8"
-              >
-                <MessageCircle className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
+          <span className="text-sm text-gray-600">Issue Date</span>
+          <PdfDownloadButton invoice={invoice} size="icon" variant="ghost" />
         </div>
 
         {/* Date */}
