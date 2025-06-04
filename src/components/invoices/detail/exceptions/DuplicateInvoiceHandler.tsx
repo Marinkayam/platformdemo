@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 import { toast } from "@/hooks/use-toast";
@@ -85,11 +86,26 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
     <Card className="border border-gray-200 shadow-sm">
       <CardContent className="pt-6">
         <div className="space-y-6">
-          <div>
-            <h2 className="text-xl font-semibold text-primary mb-2">
-              Duplication Exceptions - Monto detected multiple invoices with the same number
+          {/* Header with title and chip */}
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-semibold text-black">
+              Resolve Exception
             </h2>
-            <p className="text-gray-600">
+            <Badge variant="destructive" className="bg-red-100 text-red-800 border-red-200">
+              Duplication
+            </Badge>
+          </div>
+
+          {/* Red banner with error message */}
+          <div className="bg-red-50 border border-red-200 rounded-md p-4">
+            <p className="text-red-800 text-sm font-medium">
+              Duplication Exceptions - Monto detected multiple invoices with the same number
+            </p>
+          </div>
+
+          {/* Blue banner with instructions */}
+          <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+            <p className="text-blue-800 text-sm">
               Please select the invoice you'd like to proceed with. Click on a card to select it, then choose to keep your selection or exclude all duplicates.
             </p>
           </div>

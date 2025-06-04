@@ -27,17 +27,18 @@ export function DuplicateInvoiceCard({
     }
   };
 
-  const getRecommendation = (invoice: Invoice) => {
-    if (invoice.status === "Approved by Buyer") {
-      return { text: "Approved", color: "text-green-600" };
-    }
-    if (invoice.exceptions && invoice.exceptions.length === 0) {
-      return { text: "No Issues", color: "text-green-600" };
-    }
-    return { text: "Review Required", color: "text-orange-600" };
+  // Format date with time
+  const formatDateWithTime = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
   };
-
-  const recommendation = getRecommendation(invoice);
 
   return (
     <Card 
@@ -52,37 +53,29 @@ export function DuplicateInvoiceCard({
       <CardContent className="p-4 space-y-3">
         {/* Header with date and PDF download */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Issue Date</span>
+          <span className="text-sm text-gray-600 font-normal">Issue Date</span>
           <PdfDownloadButton invoice={invoice} size="icon" variant="ghost" />
         </div>
 
-        {/* Date */}
-        <div className="text-lg font-medium">{invoice.creationDate}</div>
+        {/* Date with time */}
+        <div className="text-sm font-normal text-gray-900">{formatDateWithTime(invoice.creationDate)}</div>
 
         {/* Buyer */}
         <div className="space-y-1">
-          <span className="text-xs text-gray-500 uppercase tracking-wide">Buyer</span>
-          <div className="text-sm font-medium">{invoice.buyer}</div>
+          <span className="text-xs text-gray-500 uppercase tracking-wide font-normal">Buyer</span>
+          <div className="text-sm font-normal text-gray-900">{invoice.buyer}</div>
         </div>
 
         {/* Total */}
         <div className="space-y-1">
-          <span className="text-xs text-gray-500 uppercase tracking-wide">Total</span>
-          <div className="text-lg font-semibold">${invoice.total.toLocaleString()}</div>
-        </div>
-
-        {/* Status */}
-        <div className="space-y-1">
-          <span className="text-xs text-gray-500 uppercase tracking-wide">Status</span>
-          <Badge variant="secondary" className={getStatusColor(invoice.status)}>
-            {invoice.status}
-          </Badge>
+          <span className="text-xs text-gray-500 uppercase tracking-wide font-normal">Total</span>
+          <div className="text-sm font-normal text-gray-900">${invoice.total.toLocaleString()}</div>
         </div>
 
         {/* Exceptions */}
         <div className="space-y-1">
-          <span className="text-xs text-gray-500 uppercase tracking-wide">Exceptions</span>
-          <div className="text-sm">
+          <span className="text-xs text-gray-500 uppercase tracking-wide font-normal">Exceptions</span>
+          <div className="text-sm font-normal text-gray-900">
             {invoice.exceptions && invoice.exceptions.length > 0 
               ? `${invoice.exceptions.length} exception${invoice.exceptions.length > 1 ? 's' : ''}`
               : "None"
@@ -90,18 +83,10 @@ export function DuplicateInvoiceCard({
           </div>
         </div>
 
-        {/* Recommendation */}
-        <div className="space-y-1">
-          <span className="text-xs text-gray-500 uppercase tracking-wide">Recommendation</span>
-          <div className={cn("text-sm font-medium", recommendation.color)}>
-            {recommendation.text}
-          </div>
-        </div>
-
         {/* Owner */}
         <div className="space-y-1">
-          <span className="text-xs text-gray-500 uppercase tracking-wide">Owner</span>
-          <div className="text-sm">{invoice.owner}</div>
+          <span className="text-xs text-gray-500 uppercase tracking-wide font-normal">Owner</span>
+          <div className="text-sm font-normal text-gray-900">{invoice.owner}</div>
         </div>
       </CardContent>
     </Card>

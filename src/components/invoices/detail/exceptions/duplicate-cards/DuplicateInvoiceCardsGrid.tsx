@@ -16,10 +16,6 @@ export function DuplicateInvoiceCardsGrid({
 }: DuplicateInvoiceCardsGridProps) {
   return (
     <div className="space-y-4">
-      <div className="text-sm text-gray-600">
-        Select the invoice you'd like to keep. Compare the details carefully before making your choice.
-      </div>
-      
       <ScrollArea className="w-full">
         <div className="flex gap-4 pb-4">
           {invoices.map((invoice) => (
