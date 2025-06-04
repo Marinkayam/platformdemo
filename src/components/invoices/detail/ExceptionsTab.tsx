@@ -1,22 +1,10 @@
-import { useState } from "react";
+
 import { Exception } from "@/types/exception";
 import { Invoice } from "@/types/invoice";
-import { Card, CardContent } from "@/components/ui/card";
-import { useFileAttachments } from "@/hooks/useFileAttachments";
 import { toast } from "@/hooks/use-toast";
-import { ExceptionsList } from "./exceptions/ExceptionsList";
-import { FileUploadZone } from "./exceptions/FileUploadZone";
-import { UploadProgress } from "./exceptions/UploadProgress";
-import { FilePreviewList } from "./exceptions/FilePreviewList";
-import { ActionButtons } from "./exceptions/ActionButtons";
-import { DuplicateInvoiceHandler } from "./exceptions/DuplicateInvoiceHandler";
-import { DataExtractionResolver } from "./exceptions/DataExtractionResolver";
-import { DuplicationException } from "./exceptions/DuplicationException";
-import ExceptionResolutionWizard from "./exceptions/ExceptionResolutionWizard";
-import ValidationExceptionWizard from "./exceptions/ValidationExceptionWizard";
-import { invoiceData } from "@/data/invoices";
 import { useNavigate } from "react-router-dom";
-import { ExtraDataExceptionWizard } from "./exceptions/ExtraDataExceptionWizard";
+import { ExceptionHandler } from "./exceptions/ExceptionHandler";
+import { FileUploadExceptionHandler } from "./exceptions/FileUploadExceptionHandler";
 
 interface ExceptionsTabProps {
   exceptions: Exception[];
@@ -25,17 +13,7 @@ interface ExceptionsTabProps {
 }
 
 export function ExceptionsTab({ exceptions, onResolveException, invoice }: ExceptionsTabProps) {
-  const { attachments, addAttachment, removeAttachment, clearAttachments } = useFileAttachments();
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
-  
-  // Check exception types
-  const isDuplicateException = exceptions.some(exception => exception.type === 'DUPLICATE_INVOICE');
-  const isDataExtractionException = exceptions.some(exception => exception.type === 'MISSING_INFORMATION');
-  const isPOException = exceptions.some(exception => exception.type === 'PO_CLOSED' || exception.type === 'PO_INSUFFICIENT_FUNDS');
-  const isValidationException = exceptions.some(exception => exception.type === 'VALIDATION_ERROR');
-  const isExtraDataException = exceptions.some(exception => exception.type === 'EXTRA_DATA');
   
   // Handle resolution from the wizard or new duplicate component
   const handleWizardResolve = (resolutionData: any) => {
@@ -112,73 +90,6 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
       onResolveException(exception.id, resolution);
     });
   };
-  
-  const simulateUploadProgress = () => {
-    setIsUploading(true);
-    setUploadProgress(0);
-    
-    const timer = setInterval(() => {
-      setUploadProgress(prev => {
-        const newProgress = prev + 5;
-        if (newProgress >= 100) {
-          clearInterval(timer);
-          setIsUploading(false);
-          return 100;
-        }
-        return newProgress;
-      });
-    }, 100);
-  };
-  
-  const handleFileUpload = (file: File) => {
-    clearAttachments();
-    simulateUploadProgress();
-    
-    // Simulate network delay for upload
-    setTimeout(() => {
-      addAttachment(file);
-      toast({
-        title: "File uploaded",
-        description: "Your PDF has been uploaded successfully"
-      });
-    }, 2000);
-  };
-  
-  const handleDelete = (id: string) => {
-    removeAttachment(id);
-    toast({
-      title: "File removed",
-      description: "The PDF has been removed"
-    });
-  };
-  
-  const handleMarkAsResolved = () => {
-    if (attachments.length === 0) {
-      toast({
-        title: "Upload required",
-        description: "Please upload a corrected invoice PDF first",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    // Mark all exceptions as resolved
-    exceptions.forEach(exception => {
-      onResolveException(exception.id, 'UPLOAD_NEW_PDF');
-    });
-    
-    toast({
-      title: "Exceptions resolved",
-      description: "The invoice exceptions have been marked as resolved"
-    });
-  };
-  
-  const handleForceSubmit = () => {
-    // Force submit despite exceptions
-    exceptions.forEach(exception => {
-      onResolveException(exception.id, 'FORCE_SUBMIT');
-    });
-  };
 
   if (!exceptions || exceptions.length === 0) {
     return (
@@ -188,103 +99,27 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
     );
   }
 
-  // Use the new DuplicateInvoiceHandler for ALL duplicate exceptions
-  if (isDuplicateException && invoice) {
-    return (
-      <div className="space-y-6">
-        <DuplicateInvoiceHandler
-          invoice={invoice}
-          exceptions={exceptions}
-          onResolveException={onResolveException}
-        />
-      </div>
-    );
+  // Try to handle with specific exception handlers first
+  const specificHandler = (
+    <ExceptionHandler
+      exceptions={exceptions}
+      onResolveException={onResolveException}
+      invoice={invoice}
+      onWizardResolve={handleWizardResolve}
+    />
+  );
+
+  if (specificHandler) {
+    return <div className="space-y-6">{specificHandler}</div>;
   }
 
-  // Use the extra data wizard for EXTRA_DATA exceptions
-  if (isExtraDataException) {
-    return (
-      <div className="space-y-6">
-        <ExtraDataExceptionWizard 
-          onResolve={handleWizardResolve}
-        />
-      </div>
-    );
-  }
-
-  // Use the validation wizard for VALIDATION_ERROR exceptions (INV-40230612)
-  if (isValidationException) {
-    const wizardExceptions = exceptions.map(exception => ({
-      id: exception.id,
-      title: exception.message,
-      description: exception.details,
-      severity: 'error' as const,
-      color: '#DF1C41'
-    }));
-
-    return (
-      <div className="space-y-6">
-        <ValidationExceptionWizard 
-          exceptions={wizardExceptions}
-          onResolve={handleWizardResolve}
-        />
-      </div>
-    );
-  }
-
-  // Use the PO wizard for PO exceptions
-  if (isPOException) {
-    const wizardExceptions = exceptions.map(exception => ({
-      id: exception.id,
-      title: exception.message,
-      description: exception.details,
-      severity: exception.type === 'PO_CLOSED' ? 'warning' as const : 'error' as const,
-      color: exception.type === 'PO_CLOSED' ? '#F2AE40' : '#DF1C41'
-    }));
-
-    return (
-      <div className="space-y-6">
-        <ExceptionResolutionWizard 
-          exceptions={wizardExceptions}
-          onResolve={handleWizardResolve}
-        />
-      </div>
-    );
-  }
-
+  // Fallback to file upload handler for other exception types
   return (
     <div className="space-y-6">
-      {isDataExtractionException && invoice ? (
-        <DataExtractionResolver 
-          exceptions={exceptions}
-          invoice={invoice}
-          onResolveException={onResolveException}
-        />
-      ) : (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="space-y-4">
-              <FileUploadZone onFileUpload={handleFileUpload} />
-              
-              <UploadProgress 
-                uploadProgress={uploadProgress} 
-                isUploading={isUploading} 
-              />
-              
-              <FilePreviewList 
-                attachments={attachments} 
-                onDelete={handleDelete} 
-              />
-              
-              <ActionButtons 
-                attachmentsCount={attachments.length}
-                onForceSubmit={handleForceSubmit}
-                onMarkAsResolved={handleMarkAsResolved}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      <FileUploadExceptionHandler 
+        exceptions={exceptions}
+        onResolveException={onResolveException}
+      />
     </div>
   );
 }
