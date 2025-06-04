@@ -1,9 +1,9 @@
 
 import { Invoice } from "@/types/invoice";
 import { DuplicateInvoiceHandler } from "./exceptions/DuplicateInvoiceHandler";
-import { ExceptionResolutionWizard } from "./exceptions/ExceptionResolutionWizard";
+import ExceptionResolutionWizard from "./exceptions/ExceptionResolutionWizard";
 import { ExtraDataExceptionWizard } from "./exceptions/ExtraDataExceptionWizard";
-import { ValidationExceptionWizard } from "./exceptions/ValidationExceptionWizard";
+import ValidationExceptionWizard from "./exceptions/ValidationExceptionWizard";
 
 interface ExceptionsTabProps {
   invoice: Invoice;
@@ -60,10 +60,8 @@ export function ExceptionsTab({ invoice }: ExceptionsTabProps) {
   if (poExceptions.length > 0) {
     return (
       <ExtraDataExceptionWizard
-        invoice={invoice}
-        exceptions={poExceptions}
-        onResolveException={(exceptionId, resolution) => {
-          console.log(`Resolving PO exception ${exceptionId} with resolution: ${resolution}`);
+        onResolve={(action) => {
+          console.log(`Resolving PO exception with action: ${action}`);
         }}
       />
     );
@@ -72,10 +70,15 @@ export function ExceptionsTab({ invoice }: ExceptionsTabProps) {
   // Default exception handler
   return (
     <ExceptionResolutionWizard
-      invoice={invoice}
-      exceptions={exceptions}
-      onResolveException={(exceptionId, resolution) => {
-        console.log(`Resolving exception ${exceptionId} with resolution: ${resolution}`);
+      exceptions={exceptions.map(exc => ({
+        id: exc.id,
+        title: exc.message,
+        description: exc.details,
+        severity: 'error' as const,
+        color: '#DF1C41'
+      }))}
+      onResolve={(resolutionData) => {
+        console.log(`Resolving exception with data:`, resolutionData);
       }}
     />
   );
