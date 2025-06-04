@@ -188,26 +188,17 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
     );
   }
 
-  // Use the new streamlined duplicate resolution component
+  // Use the new DuplicateInvoiceHandler for ALL duplicate exceptions
   if (isDuplicateException && invoice) {
-    // Find the duplicate invoice
-    const duplicateInvoice = invoiceData.find(inv => 
-      inv.number === invoice.number && 
-      inv.id !== invoice.id && 
-      inv.isDuplicate
+    return (
+      <div className="space-y-6">
+        <DuplicateInvoiceHandler
+          invoice={invoice}
+          exceptions={exceptions}
+          onResolveException={onResolveException}
+        />
+      </div>
     );
-
-    if (duplicateInvoice) {
-      return (
-        <div className="space-y-6">
-          <DuplicationException
-            currentInvoice={invoice}
-            duplicateInvoice={duplicateInvoice}
-            onResolve={handleWizardResolve}
-          />
-        </div>
-      );
-    }
   }
 
   // Use the extra data wizard for EXTRA_DATA exceptions
@@ -263,13 +254,7 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
 
   return (
     <div className="space-y-6">
-      {isDuplicateException && invoice ? (
-        <DuplicateInvoiceHandler
-          invoice={invoice}
-          exceptions={exceptions}
-          onResolveException={onResolveException}
-        />
-      ) : isDataExtractionException && invoice ? (
+      {isDataExtractionException && invoice ? (
         <DataExtractionResolver 
           exceptions={exceptions}
           invoice={invoice}
