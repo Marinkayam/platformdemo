@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlertTriangle } from "lucide-react";
 import { Exception } from "@/types/exception";
 import { Invoice } from "@/types/invoice";
+import { ResolutionOptions } from "./extra-data/ResolutionOptions";
 
 interface POLineItemsExceptionHandlerProps {
   exceptions: Exception[];
@@ -19,10 +21,34 @@ export function POLineItemsExceptionHandler({
   onResolveException 
 }: POLineItemsExceptionHandlerProps) {
   const [instructions, setInstructions] = useState("");
+  const [selectedAction, setSelectedAction] = useState<string | null>(null);
+  const [showOtherOptions, setShowOtherOptions] = useState(false);
 
   const handleMarkAsResolved = () => {
     exceptions.forEach(exception => {
       onResolveException(exception.id, 'MARK_RESOLVED');
+    });
+  };
+
+  const handleResolutionAction = () => {
+    let resolution: 'UPLOAD_NEW_PDF' | 'MARK_RESOLVED' | 'FORCE_SUBMIT' | 'EXCLUDED' = 'MARK_RESOLVED';
+    
+    switch(selectedAction) {
+      case 'force_submit':
+        resolution = 'FORCE_SUBMIT';
+        break;
+      case 'exclude':
+        resolution = 'EXCLUDED';
+        break;
+      case 'resolve_outside':
+        resolution = 'MARK_RESOLVED';
+        break;
+      default:
+        resolution = 'MARK_RESOLVED';
+    }
+    
+    exceptions.forEach(exception => {
+      onResolveException(exception.id, resolution);
     });
   };
 
@@ -36,23 +62,28 @@ export function POLineItemsExceptionHandler({
         </Badge>
       </div>
 
-      {/* Red Warning Banner */}
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+      {/* Red Warning Banner - Updated styling to match INV-10032100 */}
+      <div className="bg-red-50 p-4 rounded-xl border border-red-200">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+          <AlertTriangle 
+            strokeWidth={1.25} 
+            className="mt-1 flex-shrink-0 text-red-600" 
+            size={18} 
+          />
           <div>
-            <p className="text-red-800 font-medium">
-              ⚠️ PO Line Items: Monto Could not find or select PO line items that matches the invoice details
+            <p className="text-gray-900 text-sm">
+              <span className="font-semibold">⚠️ PO Line Items:</span> Monto Could not find or select PO line items that matches the invoice details
             </p>
           </div>
         </div>
       </div>
 
-      {/* Resolution Instructions Banner */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      {/* Resolution Instructions Banner - Updated styling to match INV-10032100 */}
+      <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
         <div className="text-blue-800">
-          <p className="font-medium mb-2">Resolution Instructions from Back Office:</p>
-          <p>To resolve these issues select PO line items that matches the invoice details</p>
+          <p className="text-gray-900 text-sm">
+            <span className="font-semibold">Resolution Instructions from Back Office:</span> To resolve these issues select PO line items that matches the invoice details
+          </p>
         </div>
       </div>
 
@@ -74,13 +105,33 @@ export function POLineItemsExceptionHandler({
 
             {/* Other Resolution Options */}
             <div className="pt-4">
-              <h3 className="text-sm font-medium text-gray-700 mb-4">Other Resolution Options</h3>
+              <ResolutionOptions
+                selectedAction={selectedAction}
+                showOtherOptions={showOtherOptions}
+                onSelectedActionChange={setSelectedAction}
+                onShowOtherOptionsChange={setShowOtherOptions}
+              />
+            </div>
+
+            {/* Action Buttons */}
+            <div className="pt-4 flex gap-3">
               <Button 
                 onClick={handleMarkAsResolved}
                 className="bg-monto-purple hover:bg-purple-700 text-white"
               >
                 Mark as Resolved
               </Button>
+              {selectedAction && (
+                <Button 
+                  onClick={handleResolutionAction}
+                  variant="outline"
+                  className="border-gray-300"
+                >
+                  {selectedAction === 'force_submit' && 'Force Submit'}
+                  {selectedAction === 'exclude' && 'Exclude'}
+                  {selectedAction === 'resolve_outside' && 'Resolve Outside Monto'}
+                </Button>
+              )}
             </div>
           </div>
         </CardContent>

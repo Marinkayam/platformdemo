@@ -81,7 +81,7 @@ export function DuplicationException({
         </Badge>
       </div>
 
-      {/* Exception Alert Banner - Updated styling to match INV-40230612 */}
+      {/* Exception Alert Banner - Updated styling to match INV-10032100 */}
       <div className="bg-red-50 p-4 rounded-xl border border-red-200">
         <div className="flex items-start gap-3">
           <TriangleAlert 
@@ -97,7 +97,7 @@ export function DuplicationException({
         </div>
       </div>
 
-      {/* Info Banner - Updated styling to match INV-40230612 */}
+      {/* Info Banner - Updated styling to match INV-10032100 */}
       <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
         <div className="flex items-start gap-3">
           <Lightbulb 
