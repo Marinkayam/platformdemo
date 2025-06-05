@@ -6,7 +6,7 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
-    navigate('/dashboard');
+    navigate('/login');
   };
 
   const handleLogoClick = () => {
@@ -43,7 +43,7 @@ const Welcome = () => {
             onClick={handleGetStarted}
             className="bg-primary-main text-primary-contrast-text px-8 py-3 rounded-lg font-sans font-medium hover:bg-primary-dark transition-colors"
           >
-            Enter Platform
+            Get Started
           </button>
         </div>
       </div>
