@@ -30,6 +30,10 @@ export function MainLayout({
     navigate("/settings");
   };
 
+  const handleLogoClick = () => {
+    navigate("/design-system");
+  };
+
   return (
     <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden">
@@ -38,7 +42,16 @@ export function MainLayout({
         <div className="flex-1 flex flex-col overflow-hidden">
           <header className="h-[64px] border-b px-4 flex items-center justify-between gap-3 bg-zinc-50 py-0 my-0">
             <div className="flex items-center gap-2">
-              {/* Removed SidebarTrigger since we no longer need collapse functionality */}
+              <button 
+                onClick={handleLogoClick}
+                className="hover:opacity-80 transition-opacity"
+              >
+                <img 
+                  src="/monto-logo.svg" 
+                  alt="Monto" 
+                  className="h-6 w-auto"
+                />
+              </button>
             </div>
             
             <div className="flex items-center gap-3">

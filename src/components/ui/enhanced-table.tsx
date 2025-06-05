@@ -44,8 +44,7 @@ const EnhancedTable = React.forwardRef<
         }} />
         <table
           ref={ref}
-          className={cn("w-full caption-bottom text-sm font-normal", className)}
-          style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
+          className={cn("w-full caption-bottom text-sm font-normal font-sans", className)}
           {...props}
         />
       </div>
@@ -142,7 +141,7 @@ const EnhancedTableHead = React.forwardRef<
     <th
       ref={ref}
       className={cn(
-        "h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm min-w-[150px] [&:has([role=checkbox])]:pr-0",
+        "h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm min-w-[150px] font-sans [&:has([role=checkbox])]:pr-0",
         sticky && "sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 transition-shadow duration-200",
         sticky && isScrolled && "shadow-[2px_0_8px_rgba(0,0,0,0.15)]",
         className
@@ -165,7 +164,7 @@ const EnhancedTableCell = React.forwardRef<
   <td
     ref={ref}
     className={cn(
-      "h-[65px] px-4 align-middle text-sm font-normal min-w-[150px] [&:has([role=checkbox])]:pr-0",
+      "h-[65px] px-4 align-middle text-sm font-normal font-sans min-w-[150px] [&:has([role=checkbox])]:pr-0",
       sticky && "sticky left-0 z-10 bg-white border-r border-gray-100 transition-shadow duration-200",
       sticky && isScrolled && "shadow-[2px_0_8px_rgba(0,0,0,0.15)]",
       className

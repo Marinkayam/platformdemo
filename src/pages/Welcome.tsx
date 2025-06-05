@@ -1,24 +1,7 @@
 
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 const Welcome = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === 'e' || event.key === 'E') {
-        navigate('/design-system');
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, [navigate]);
-
   return (
     <div className="min-h-screen bg-background-default flex items-center justify-center">
       <div className="text-center max-w-2xl mx-auto p-8">
