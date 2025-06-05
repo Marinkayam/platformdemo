@@ -4,6 +4,7 @@ import { AlertTriangle, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { showWarningToast } from "@/lib/toast-helpers";
 
 interface SmartConnectionAlertProps {
   exceptions?: string[];
@@ -19,6 +20,10 @@ export const SmartConnectionAlert = ({ exceptions }: SmartConnectionAlertProps) 
   };
   
   const handleResolveNow = () => {
+    showWarningToast(
+      "Navigating to Smart Connections",
+      "Redirecting to resolve portal credential issues"
+    );
     navigate('/smart-connections');
   };
   
