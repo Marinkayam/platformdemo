@@ -102,29 +102,29 @@ export default function DesignSystemPlayground() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans font-medium">Basic Input</Label>
-              <Input placeholder="Enter text..." className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main bg-background-paper" />
+              <Input placeholder="Enter text..." className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
             </div>
             
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans font-medium">Labeled Input</Label>
-              <Input placeholder="With label" className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main bg-background-paper" />
+              <Input placeholder="With label" className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
             </div>
             
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans font-medium">With Helper Text</Label>
-              <Input placeholder="Type something" className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main bg-background-paper" />
+              <Input placeholder="Type something" className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
               <p className="text-sm text-grey-500 font-sans">This is some helpful text</p>
             </div>
             
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans font-medium">Error State</Label>
-              <Input placeholder="Error input" className="border-error-main focus-visible:ring-1 focus-visible:ring-error-main focus-visible:border-error-main bg-background-paper" />
+              <Input placeholder="Error input" className="border-error-main focus-visible:ring-0 focus-visible:border-error-main bg-background-paper" />
               <p className="text-sm text-error-main font-sans">This field has an error</p>
             </div>
             
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans font-medium">Password Input</Label>
-              <Input type="password" placeholder="Enter password" className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main bg-background-paper" />
+              <Input type="password" placeholder="Enter password" className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
             </div>
           </div>
 
@@ -132,7 +132,7 @@ export default function DesignSystemPlayground() {
             <h3 className="text-xl font-semibold text-grey-700 font-sans">Text Areas</h3>
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans font-medium">Basic Textarea</Label>
-              <Textarea placeholder="Enter multiline text here..." className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main bg-background-paper" />
+              <Textarea placeholder="Enter multiline text here..." className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
             </div>
           </div>
         </section>
@@ -260,18 +260,20 @@ export default function DesignSystemPlayground() {
               <div className="space-y-2">
                 <p className="text-base font-medium text-grey-700 font-sans">Size Variants</p>
                 <div className="flex items-center space-x-6">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="small" className="h-3 w-3 border-grey-400 text-primary-main" />
-                    <Label className="text-sm text-grey-700 font-sans">Small</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="default" className="h-4 w-4 border-grey-400 text-primary-main" />
-                    <Label className="text-grey-700 font-sans">Default</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="large" className="h-5 w-5 border-grey-400 text-primary-main" />
-                    <Label className="text-lg text-grey-700 font-sans">Large</Label>
-                  </div>
+                  <RadioGroup defaultValue="small-demo" className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="small-demo" className="h-3 w-3 border-grey-400 text-primary-main" />
+                      <Label className="text-sm text-grey-700 font-sans">Small</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="default-demo" className="h-4 w-4 border-grey-400 text-primary-main" />
+                      <Label className="text-grey-700 font-sans">Default</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="large-demo" className="h-5 w-5 border-grey-400 text-primary-main" />
+                      <Label className="text-lg text-grey-700 font-sans">Large</Label>
+                    </div>
+                  </RadioGroup>
                 </div>
               </div>
             </div>
