@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -16,20 +17,19 @@ export function InvoiceActions({ invoiceCount = 0 }) {
   const [emailExportOpen, setEmailExportOpen] = useState(false);
 
   const handleCustomizeTable = (columns: any[]) => {
-    showSuccessToast({
-      title: "Table customized",
-      description: `${columns.filter(c => c.selected).length} columns selected`,
-    });
+    showSuccessToast(
+      "Table customized",
+      `${columns.filter(c => c.selected).length} columns selected`
+    );
   };
 
   const handleExportInvoices = () => {
     // If more than 1000 invoices, show error toast
     if (invoiceCount > 1000) {
-      showErrorToast({
-        title: "Export limit exceeded",
-        description: "You can only export up to 1000 invoices at a time.",
-        variant: "destructive",
-      });
+      showErrorToast(
+        "Export limit exceeded",
+        "You can only export up to 1000 invoices at a time."
+      );
       return;
     }
 
@@ -61,18 +61,18 @@ export function InvoiceActions({ invoiceCount = 0 }) {
     link.click();
     document.body.removeChild(link);
     
-    showSuccessToast({
-      title: "Export completed",
-      description: "Your invoices have been downloaded as CSV.",
-    });
+    showSuccessToast(
+      "Export completed",
+      "Your invoices have been downloaded as CSV."
+    );
   };
 
   const handleEmailExport = (email: string) => {
     // Simulate email sending
-    showSuccessToast({
-      title: "Export sent",
-      description: `Your invoices have been sent to ${email}`,
-    });
+    showSuccessToast(
+      "Export sent",
+      `Your invoices have been sent to ${email}`
+    );
 
     // Close the modal
     setEmailExportOpen(false);
