@@ -1,183 +1,24 @@
+
 import * as React from "react"
-
-import type {
-  ToastActionElement,
-  ToastProps,
-} from "@/components/ui/toast"
-
-const TOAST_LIMIT = 5
-export const TOAST_REMOVE_DELAY = 3000 // 3 seconds
-
-export type ToastVariant = "default" | "destructive" | "success" | "warning" | "info"
-
-type ToasterToast = ToastProps & {
-  id: string
-  title?: React.ReactNode
-  description?: React.ReactNode
-  action?: ToastActionElement
-  variant?: ToastVariant
-}
-
-const actionTypes = {
-  ADD_TOAST: "ADD_TOAST",
-  UPDATE_TOAST: "UPDATE_TOAST",
-  DISMISS_TOAST: "DISMISS_TOAST",
-  REMOVE_TOAST: "REMOVE_TOAST",
-} as const
-
-let count = 0
-
-function genId() {
-  count = (count + 1) % Number.MAX_VALUE
-  return count.toString()
-}
-
-type ActionType = typeof actionTypes
-
-type Action =
-  | {
-      type: ActionType["ADD_TOAST"]
-      toast: ToasterToast
-    }
-  | {
-      type: ActionType["UPDATE_TOAST"]
-      toast: Partial<ToasterToast> & Pick<ToasterToast, "id">
-    }
-  | {
-      type: ActionType["DISMISS_TOAST"]
-      toastId?: ToasterToast["id"]
-    }
-  | {
-      type: ActionType["REMOVE_TOAST"]
-      toastId?: ToasterToast["id"]
-    }
-
-interface State {
-  toasts: ToasterToast[]
-}
-
-const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
-
-const addToRemoveQueue = (toastId: string) => {
-  if (toastTimeouts.has(toastId)) {
-    return
-  }
-
-  const timeout = setTimeout(() => {
-    toastTimeouts.delete(toastId)
-    dispatch({
-      type: actionTypes.REMOVE_TOAST,
-      toastId: toastId,
-    })
-  }, TOAST_REMOVE_DELAY)
-
-  toastTimeouts.set(toastId, timeout)
-}
-
-export const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case actionTypes.ADD_TOAST:
-      // Enforce auto-dismiss of toasts by adding them to the remove queue
-      if (!action.toast.id) {
-        const id = genId()
-        action.toast.id = id
-      }
-      addToRemoveQueue(action.toast.id)
-      
-      return {
-        ...state,
-        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
-      }
-
-    case actionTypes.UPDATE_TOAST:
-      // Update toast and reset auto-dismiss timer
-      if (action.toast.id) {
-        addToRemoveQueue(action.toast.id)
-      }
-      
-      return {
-        ...state,
-        toasts: state.toasts.map((t) =>
-          t.id === action.toast.id ? { ...t, ...action.toast } : t
-        ),
-      }
-
-    case actionTypes.DISMISS_TOAST: {
-      const { toastId } = action
-
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
-      if (toastId) {
-        addToRemoveQueue(toastId)
-      } else {
-        state.toasts.forEach((toast) => {
-          addToRemoveQueue(toast.id)
-        })
-      }
-
-      return {
-        ...state,
-        toasts: state.toasts.map((t) =>
-          t.id === toastId || toastId === undefined
-            ? {
-                ...t,
-                open: false,
-              }
-            : t
-        ),
-      }
-    }
-    case actionTypes.REMOVE_TOAST:
-      if (action.toastId === undefined) {
-        return {
-          ...state,
-          toasts: [],
-        }
-      }
-      return {
-        ...state,
-        toasts: state.toasts.filter((t) => t.id !== action.toastId),
-      }
-  }
-}
+import { State, Action, Toast, actionTypes } from "./toast/types"
+import { reducer } from "./toast/reducer"
+import { genId, getMontoClassName } from "./toast/utils"
 
 const listeners: Array<(state: State) => void> = []
-
 let memoryState: State = { toasts: [] }
 
 function dispatch(action: Action) {
-  memoryState = reducer(memoryState, action)
+  memoryState = reducer(memoryState, action, dispatch)
   listeners.forEach((listener) => {
     listener(memoryState)
   })
 }
 
-type Toast = Omit<ToasterToast, "id">
-
 function toast({ variant = "default", className, ...props }: Toast) {
   const id = genId()
+  const montoClassName = getMontoClassName(variant, className)
 
-  // Apply Monto styling based on variant
-  let montoClassName = className || ""
-  
-  switch (variant) {
-    case "success":
-      montoClassName = `border-success-main bg-success-main/10 text-success-main ${className || ""}`.trim()
-      break
-    case "warning":
-      montoClassName = `border-warning-main bg-warning-main/10 text-warning-main ${className || ""}`.trim()
-      break
-    case "info":
-      montoClassName = `border-info-main bg-info-main/10 text-info-main ${className || ""}`.trim()
-      break
-    case "destructive":
-      montoClassName = `border-error-main bg-error-main/10 text-error-main ${className || ""}`.trim()
-      break
-    default:
-      montoClassName = className || ""
-  }
-
-  const update = (props: ToasterToast) =>
+  const update = (props: any) =>
     dispatch({
       type: actionTypes.UPDATE_TOAST,
       toast: { ...props, id },
@@ -226,3 +67,4 @@ function useToast() {
 }
 
 export { useToast, toast }
+export type { Toast }
