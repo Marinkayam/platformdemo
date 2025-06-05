@@ -14,6 +14,7 @@ import NewSmartConnection from "./pages/NewSmartConnection";
 import PurchaseOrders from "./pages/PurchaseOrders";
 import PurchaseOrderDetail from "./pages/PurchaseOrderDetail";
 import PortalRecords from "./pages/PortalRecords";
+import Settings from "./pages/Settings";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
 import { NotificationsProvider } from "./context/NotificationsContext";
@@ -99,6 +100,14 @@ const App = () => (
               element={
                 <MainLayout>
                   <PortalRecords />
+                </MainLayout>
+              } 
+            />
+            <Route 
+              path="/settings" 
+              element={
+                <MainLayout>
+                  <Settings />
                 </MainLayout>
               } 
             />
