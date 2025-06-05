@@ -97,7 +97,7 @@ export default function Settings() {
               <p className="text-sm text-gray-600">Manage your company details and preferences.</p>
             </div>
             
-            <Card>
+            <Card className="shadow-none">
               <CardContent className="p-6 space-y-6">
                 {/* Logo Upload Section */}
                 <div className="flex items-start gap-4">
@@ -148,7 +148,7 @@ export default function Settings() {
 
                 {/* Save Button */}
                 <div className="flex justify-end pt-4">
-                  <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+                  <Button className="bg-monto-purple hover:bg-purple-700 text-white">
                     Save Changes
                   </Button>
                 </div>
@@ -168,7 +168,7 @@ export default function Settings() {
               </p>
             </div>
             
-            <Card>
+            <Card className="shadow-none">
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -211,7 +211,7 @@ export default function Settings() {
                 </div>
                 
                 <div className="p-6 border-t">
-                  <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+                  <Button className="bg-monto-purple hover:bg-purple-700 text-white">
                     <Plus size={16} className="mr-2" />
                     Add New Member
                   </Button>
@@ -240,7 +240,7 @@ export default function Settings() {
               <p className="text-sm text-gray-600">Configure your notification preferences.</p>
             </div>
             
-            <Card>
+            <Card className="shadow-none">
               <CardContent className="p-6 space-y-6">
                 {notifications.map((notification, index) => (
                   <div key={notification.id}>
@@ -256,7 +256,7 @@ export default function Settings() {
                       <Switch
                         checked={notification.enabled}
                         onCheckedChange={() => toggleNotification(notification.id)}
-                        className="data-[state=checked]:bg-purple-600"
+                        className="data-[state=checked]:bg-monto-purple"
                       />
                     </div>
                     {index < notifications.length - 1 && (
@@ -270,7 +270,7 @@ export default function Settings() {
                   <Button variant="outline" className="text-gray-600">
                     Dismiss All
                   </Button>
-                  <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+                  <Button className="bg-monto-purple hover:bg-purple-700 text-white">
                     Save Settings
                   </Button>
                 </div>
@@ -290,7 +290,7 @@ export default function Settings() {
         subtitle="Manage your account preferences and application settings" 
       />
       
-      <Card className="mt-6">
+      <Card className="mt-6 shadow-none">
         <CardContent className="p-0">
           <div className="flex">
             {/* Sidebar */}
@@ -304,8 +304,8 @@ export default function Settings() {
                       onClick={() => setActiveTab(item.id)}
                       className={`w-full flex items-center gap-3 px-3 py-3 text-sm rounded-md transition-colors ${
                         activeTab === item.id
-                          ? "bg-purple-50 text-purple-700 border-l-4 border-purple-600"
-                          : "text-gray-600 hover:bg-gray-100"
+                          ? "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
+                          : "text-[#3F4758] hover:bg-[#F4F4F7]"
                       }`}
                     >
                       <Icon size={18} />
