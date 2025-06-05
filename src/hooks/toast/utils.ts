@@ -19,7 +19,7 @@ export function getMontoClassName(variant: ToastVariant, className?: string): st
       montoClassName = `border-warning-main bg-warning-main text-grey-900 ${className || ""}`.trim()
       break
     case "info":
-      montoClassName = `border-info-main bg-info-main text-white ${className || ""}`.trim()
+      montoClassName = `border-primary-lighter bg-primary-lighter text-primary-darker ${className || ""}`.trim()
       break
     case "destructive":
       montoClassName = `border-error-main bg-error-main text-white ${className || ""}`.trim()

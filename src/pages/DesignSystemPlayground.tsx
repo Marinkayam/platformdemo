@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -24,6 +25,7 @@ export default function DesignSystemPlayground() {
   const [basicCheckbox, setBasicCheckbox] = useState(false);
   const [checkedCheckbox, setCheckedCheckbox] = useState(true);
   const [requiredCheckbox, setRequiredCheckbox] = useState(false);
+  const [radioValue, setRadioValue] = useState("option1");
   const [loading, setLoading] = useState(false);
 
   const handleLoadingAction = (action: string) => {
@@ -35,15 +37,15 @@ export default function DesignSystemPlayground() {
   };
 
   const testToasts = () => {
-    showSuccessToast("Operation successful", "Your changes have been saved successfully");
+    showInfoToast("Information", "Here's some helpful information for you");
     setTimeout(() => {
-      showErrorToast("Error occurred", "Something went wrong with the operation");
+      showSuccessToast("Operation successful", "Your changes have been saved successfully");
     }, 1000);
     setTimeout(() => {
-      showWarningToast("Warning message", "Please check your input before proceeding");
+      showErrorToast("Error occurred", "Something went wrong with the operation");
     }, 2000);
     setTimeout(() => {
-      showInfoToast("Information", "Here's some helpful information for you");
+      showWarningToast("Warning message", "Please check your input before proceeding");
     }, 3000);
   };
 
@@ -101,29 +103,29 @@ export default function DesignSystemPlayground() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans">Basic Input</Label>
-              <Input placeholder="Enter text..." className="border-grey-400 focus:border-primary-main focus:ring-primary-main" />
+              <Input placeholder="Enter text..." className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main" />
             </div>
             
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans">Labeled Input</Label>
-              <Input placeholder="With label" className="border-grey-400 focus:border-primary-main focus:ring-primary-main" />
+              <Input placeholder="With label" className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main" />
             </div>
             
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans">With Helper Text</Label>
-              <Input placeholder="Type something" className="border-grey-400 focus:border-primary-main focus:ring-primary-main" />
+              <Input placeholder="Type something" className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main" />
               <p className="text-sm text-grey-500">This is some helpful text</p>
             </div>
             
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans">Error State</Label>
-              <Input placeholder="Error input" className="border-error-main focus:border-error-main focus:ring-error-main" />
+              <Input placeholder="Error input" className="border-error-main focus-visible:ring-1 focus-visible:ring-error-main focus-visible:border-error-main" />
               <p className="text-sm text-error-main">This field has an error</p>
             </div>
             
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans">Password Input</Label>
-              <Input type="password" placeholder="Enter password" className="border-grey-400 focus:border-primary-main focus:ring-primary-main" />
+              <Input type="password" placeholder="Enter password" className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main" />
             </div>
           </div>
 
@@ -131,7 +133,7 @@ export default function DesignSystemPlayground() {
             <h3 className="text-lg font-medium text-grey-700">Text Areas</h3>
             <div className="space-y-2">
               <Label className="text-grey-700 font-sans">Basic Textarea</Label>
-              <Textarea placeholder="Enter multiline text here..." className="border-grey-400 focus:border-primary-main focus:ring-primary-main" />
+              <Textarea placeholder="Enter multiline text here..." className="border-grey-400 focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main" />
             </div>
           </div>
         </section>
@@ -170,7 +172,7 @@ export default function DesignSystemPlayground() {
               <Checkbox 
                 id="basic" 
                 checked={basicCheckbox}
-                onCheckedChange={setBasicCheckbox}
+                onCheckedChange={(checked) => setBasicCheckbox(checked === true)}
                 className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main"
               />
               <Label htmlFor="basic" className="text-grey-700 font-sans">Basic Checkbox</Label>
@@ -180,7 +182,7 @@ export default function DesignSystemPlayground() {
               <Checkbox 
                 id="checked" 
                 checked={checkedCheckbox}
-                onCheckedChange={setCheckedCheckbox}
+                onCheckedChange={(checked) => setCheckedCheckbox(checked === true)}
                 className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main"
               />
               <Label htmlFor="checked" className="text-grey-700 font-sans">Checked Checkbox</Label>
@@ -190,7 +192,7 @@ export default function DesignSystemPlayground() {
               <Checkbox 
                 id="required" 
                 checked={requiredCheckbox}
-                onCheckedChange={setRequiredCheckbox}
+                onCheckedChange={(checked) => setRequiredCheckbox(checked === true)}
                 className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main"
               />
               <Label htmlFor="required" className="text-grey-700 font-sans">Required Checkbox</Label>
@@ -201,7 +203,7 @@ export default function DesignSystemPlayground() {
             <h3 className="text-lg font-medium text-grey-700">Sizes</h3>
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2">
-                <Checkbox className="h-3 w-3 border-grey-400 data-[state=checked]:bg-primary-main" />
+                <Checkbox className="h-3 w-3 border-grey-400 data-[state=checked]:bg-primary-main rounded-xs" />
                 <Label className="text-sm text-grey-700 font-sans">Small</Label>
               </div>
               <div className="flex items-center space-x-2">
@@ -213,6 +215,46 @@ export default function DesignSystemPlayground() {
                 <Label className="text-lg text-grey-700 font-sans">Large</Label>
               </div>
             </div>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Radio Buttons Section */}
+        <section className="space-y-6 mb-12">
+          <h2 className="text-2xl font-semibold text-grey-800 font-sans">Radio Buttons</h2>
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-grey-700">Basic Radio Group</h3>
+            <RadioGroup value={radioValue} onValueChange={setRadioValue} className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option1" id="option1" className="border-grey-400 text-primary-main" />
+                <Label htmlFor="option1" className="text-grey-700 font-sans">Option 1</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option2" id="option2" className="border-grey-400 text-primary-main" />
+                <Label htmlFor="option2" className="text-grey-700 font-sans">Option 2</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option3" id="option3" className="border-grey-400 text-primary-main" />
+                <Label htmlFor="option3" className="text-grey-700 font-sans">Option 3</Label>
+              </div>
+            </RadioGroup>
+
+            <h3 className="text-lg font-medium text-grey-700">Horizontal Radio Group</h3>
+            <RadioGroup value={radioValue} onValueChange={setRadioValue} className="flex space-x-6">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="horizontal1" id="horizontal1" className="border-grey-400 text-primary-main" />
+                <Label htmlFor="horizontal1" className="text-grey-700 font-sans">Choice A</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="horizontal2" id="horizontal2" className="border-grey-400 text-primary-main" />
+                <Label htmlFor="horizontal2" className="text-grey-700 font-sans">Choice B</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="horizontal3" id="horizontal3" className="border-grey-400 text-primary-main" />
+                <Label htmlFor="horizontal3" className="text-grey-700 font-sans">Choice C</Label>
+              </div>
+            </RadioGroup>
           </div>
         </section>
 
@@ -273,6 +315,52 @@ export default function DesignSystemPlayground() {
               Deletable
               <X className="ml-1 h-3 w-3" />
             </Badge>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Status Badges Section */}
+        <section className="space-y-6 mb-12">
+          <h2 className="text-2xl font-semibold text-grey-800 font-sans">Status Badges</h2>
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-grey-700">Connection Status</h3>
+            <div className="flex flex-wrap gap-3">
+              <Badge className="bg-success-main text-white">
+                <CheckCircle className="mr-1 h-3 w-3" />
+                Connected
+              </Badge>
+              <Badge className="bg-error-main text-white">
+                <X className="mr-1 h-3 w-3" />
+                Disconnected
+              </Badge>
+              <Badge className="bg-warning-main text-grey-900">
+                <AlertTriangle className="mr-1 h-3 w-3" />
+                Warning
+              </Badge>
+              <Badge className="bg-info-main text-white">
+                <Info className="mr-1 h-3 w-3" />
+                Processing
+              </Badge>
+            </div>
+
+            <h3 className="text-lg font-medium text-grey-700">System Status</h3>
+            <div className="flex flex-wrap gap-3">
+              <Badge className="bg-success-main text-white">Active</Badge>
+              <Badge className="bg-grey-500 text-white">Inactive</Badge>
+              <Badge className="bg-warning-main text-grey-900">Pending</Badge>
+              <Badge className="bg-error-main text-white">Failed</Badge>
+              <Badge className="bg-info-main text-white">In Progress</Badge>
+              <Badge className="bg-primary-main text-white">Complete</Badge>
+            </div>
+
+            <h3 className="text-lg font-medium text-grey-700">Priority Levels</h3>
+            <div className="flex flex-wrap gap-3">
+              <Badge className="bg-error-main text-white">High Priority</Badge>
+              <Badge className="bg-warning-main text-grey-900">Medium Priority</Badge>
+              <Badge className="bg-success-main text-white">Low Priority</Badge>
+              <Badge className="bg-grey-400 text-grey-800">Normal</Badge>
+            </div>
           </div>
         </section>
 
@@ -491,7 +579,7 @@ export default function DesignSystemPlayground() {
             <Button onClick={() => showErrorToast("Error!", "Something went wrong")} className="bg-error-main hover:bg-error-main/90 text-white">
               Show Error Toast
             </Button>
-            <Button onClick={() => showInfoToast("Info", "Here's some information")} className="bg-info-main hover:bg-info-main/90 text-white">
+            <Button onClick={() => showInfoToast("Info", "Here's some information")} className="bg-primary-lighter hover:bg-primary-light text-primary-darker">
               Show Info Toast
             </Button>
             <Button onClick={() => showWarningToast("Warning", "Please be careful")} className="bg-warning-main hover:bg-warning-main/90 text-grey-900">
