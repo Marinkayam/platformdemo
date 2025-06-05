@@ -15,23 +15,23 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } from "@/lib/toast-helpers";
 import { Toaster } from "@/components/ui/toaster";
 import { Separator } from "@/components/ui/separator";
-import { AlertTriangle, Check, Info, X, Download, BadgeCheck, Heart, Star, CheckCircle, Loader2 } from "lucide-react";
+import { AlertTriangle, Check, Info, X, Download, BadgeCheck, Heart, Star, CheckCircle, Loader2, ArrowLeft, Palette } from "lucide-react";
 
 export default function DesignSystemPlayground() {
-  const [switchChecked, setSwitchChecked] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  const [autoSave, setAutoSave] = useState(true);
   const [basicCheckbox, setBasicCheckbox] = useState(false);
   const [checkedCheckbox, setCheckedCheckbox] = useState(true);
   const [requiredCheckbox, setRequiredCheckbox] = useState(false);
   const [radioValue, setRadioValue] = useState("option1");
+  const [switchChecked, setSwitchChecked] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [autoSave, setAutoSave] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const handleLoadingAction = (action: string) => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      showSuccessToast(`${action} completed`, `${action} operation finished successfully`);
+      showSuccessToast("Success!", `${action} completed successfully`);
     }, 2000);
   };
 
@@ -49,1096 +49,586 @@ export default function DesignSystemPlayground() {
   };
 
   return (
-    <div className="container mx-auto p-8 space-y-12 bg-background-default min-h-screen">
-      <div className="bg-background-paper rounded-lg p-8 shadow-md">
-        <h1 className="text-5xl font-medium mb-2 text-grey-900 font-sans">Design System Playground</h1>
-        <p className="text-lg text-grey-600 mb-8 font-sans">Exploring Monto's Design Tokens</p>
-        
-        {/* Typography Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Typography</h2>
-          <div className="space-y-4">
-            <div className="flex items-baseline gap-4">
-              <h1 className="text-6xl font-medium text-grey-900 font-sans">Heading 1</h1>
-              <span className="text-sm text-grey-500 font-mono">60px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <h2 className="text-5xl font-medium text-grey-900 font-sans">Heading 2</h2>
-              <span className="text-sm text-grey-500 font-mono">48px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <h3 className="text-3xl font-medium text-grey-900 font-sans">Heading 3</h3>
-              <span className="text-sm text-grey-500 font-mono">30px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <h4 className="text-2xl font-medium text-grey-900 font-sans">Heading 4</h4>
-              <span className="text-sm text-grey-500 font-mono">24px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <h5 className="text-xl font-semibold text-grey-900 font-sans">Heading 5</h5>
-              <span className="text-sm text-grey-500 font-mono">20px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <h6 className="text-lg font-medium text-grey-900 font-sans">Heading 6</h6>
-              <span className="text-sm text-grey-500 font-mono">18px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <p className="text-base font-semibold text-grey-800 font-sans">Subtitle1</p>
-              <span className="text-sm text-grey-500 font-mono">16px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <p className="text-sm font-normal text-grey-700 font-sans">Subtitle2</p>
-              <span className="text-sm text-grey-500 font-mono">14px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <p className="text-base font-normal text-grey-800 font-sans">Body1 - Main text for content</p>
-              <span className="text-sm text-grey-500 font-mono">16px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <p className="text-sm font-normal text-grey-700 font-sans">Body2 - Secondary text</p>
-              <span className="text-sm text-grey-500 font-mono">14px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <p className="text-sm font-light text-grey-600 font-sans">Body3 - Light text for subtle information</p>
-              <span className="text-sm text-grey-500 font-mono">14px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <p className="text-xs font-normal text-grey-600 font-sans">Caption text for images and meta info</p>
-              <span className="text-sm text-grey-500 font-mono">12px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <p className="text-overline font-medium text-grey-800 font-sans uppercase tracking-wide">OVERLINE TEXT FOR LABELS</p>
-              <span className="text-sm text-grey-500 font-mono">10px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <p className="text-xs font-medium text-grey-800 font-sans uppercase">BUTTON TEXT</p>
-              <span className="text-sm text-grey-500 font-mono">12px</span>
-            </div>
-            <div className="flex items-baseline gap-4">
-              <p className="text-small-text font-normal text-grey-600 font-sans">Small text for fine print</p>
-              <span className="text-sm text-grey-500 font-mono">11px</span>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Controls Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Controls</h2>
-          
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">List Items</h3>
-            <div className="bg-background-paper border border-grey-300 rounded-lg p-6 space-y-1">
-              <div className="flex items-center justify-between p-3 hover:bg-grey-200 rounded-md transition-colors cursor-pointer">
-                <div className="flex items-center space-x-3">
-                  <Checkbox className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main" />
-                  <span className="text-grey-800 font-sans">List Item</span>
-                </div>
-                <button className="text-grey-500 hover:text-grey-700">⋮</button>
+    <div className="min-h-screen bg-background-default">
+      {/* Header */}
+      <div className="bg-background-paper border-b border-grey-300 sticky top-0 z-10">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="sm" className="text-grey-600 hover:text-grey-800 hover:bg-grey-200">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Button>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary-lighter rounded-lg">
+                <Palette className="h-5 w-5 text-primary-main" />
               </div>
-              
-              <div className="flex items-center justify-between p-3 bg-grey-200 rounded-md">
-                <div className="flex items-center space-x-3">
-                  <Checkbox className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main" />
-                  <span className="text-grey-800 font-sans">Hovered Item</span>
-                </div>
-                <button className="text-grey-500 hover:text-grey-700">⋮</button>
-              </div>
-              
-              <div className="flex items-center justify-between p-3 bg-primary-lighter rounded-md">
-                <div className="flex items-center space-x-3">
-                  <Checkbox checked className="border-primary-main bg-primary-main data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main" />
-                  <span className="text-primary-darker font-sans font-medium">Selected Item</span>
-                </div>
-                <button className="text-primary-dark">⋮</button>
-              </div>
-              
-              <div className="flex items-center justify-between p-3 opacity-50">
-                <div className="flex items-center space-x-3">
-                  <Checkbox disabled className="border-grey-300 bg-grey-200" />
-                  <span className="text-grey-500 font-sans">Disabled Item</span>
-                </div>
-                <button className="text-grey-400" disabled>⋮</button>
+              <div>
+                <h1 className="text-2xl font-semibold text-grey-900">Design System</h1>
+                <p className="text-sm text-grey-600">Monto UI Components & Design Tokens</p>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </div>
 
-        <Separator className="my-8" />
-
-        {/* Alert Cases Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Alert Cases</h2>
+      {/* Main Content */}
+      <div className="container mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Standard Alerts</h3>
-            <div className="space-y-3">
-              <Alert className="border-info-main bg-info-lighter">
-                <Info className="h-4 w-4 text-info-main" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-info-dark font-sans">
-                    This is an Info alert — check it out!
-                  </AlertDescription>
-                  <button className="text-info-main hover:text-info-dark ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              </Alert>
+          {/* Sidebar Navigation */}
+          <div className="lg:col-span-1">
+            <div className="bg-background-paper rounded-xl border border-grey-300 p-6 sticky top-24">
+              <h3 className="text-lg font-semibold text-grey-900 mb-4">Components</h3>
+              <nav className="space-y-2">
+                <a href="#typography" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Typography</a>
+                <a href="#buttons" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Buttons</a>
+                <a href="#status-badges" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Status Badges</a>
+                <a href="#chips-badges" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Chips & Badges</a>
+                <a href="#inputs" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Inputs</a>
+                <a href="#controls" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Controls</a>
+                <a href="#alerts" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Alerts</a>
+                <a href="#cards" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Cards</a>
+                <a href="#colors" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Colors</a>
+              </nav>
+            </div>
+          </div>
+
+          {/* Main Content Area */}
+          <div className="lg:col-span-3 space-y-12">
+
+            {/* Typography Section */}
+            <section id="typography" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Typography</h2>
+                <p className="text-grey-600">Consistent text hierarchy using Studio Feixen Sans</p>
+              </div>
               
-              <Alert className="border-success-main bg-success-lighter">
-                <Check className="h-4 w-4 text-success-main" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-success-dark font-sans">
-                    This is a Success alert — check it out!
-                  </AlertDescription>
-                  <div className="flex gap-2 ml-4">
-                    <Button size="sm" className="bg-success-main hover:bg-success-dark text-success-contrast-text font-medium h-8 px-3 text-xs">Action</Button>
-                    <Button size="sm" variant="ghost" className="text-success-dark hover:bg-success-light h-8 px-3 text-xs">Dismiss</Button>
+              <div className="grid gap-6">
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <h1 className="text-6xl font-medium text-grey-900">Heading 1</h1>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">60px</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <h2 className="text-5xl font-medium text-grey-900">Heading 2</h2>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">48px</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <h3 className="text-3xl font-medium text-grey-900">Heading 3</h3>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">30px</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <h4 className="text-2xl font-medium text-grey-900">Heading 4</h4>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">24px</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <p className="text-base font-semibold text-grey-800">Subtitle 1 - Primary subtitles</p>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">16px</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <p className="text-base font-normal text-grey-700">Body 1 - Main content text for readability</p>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">16px</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <p className="text-sm font-normal text-grey-600">Body 2 - Secondary content and descriptions</p>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">14px</span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <p className="text-xs font-normal text-grey-500">Caption - Meta information and fine print</p>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">12px</span>
+                </div>
+              </div>
+            </section>
+
+            {/* Buttons Section */}
+            <section id="buttons" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Buttons</h2>
+                <p className="text-grey-600">Interactive elements with consistent styling</p>
+              </div>
+              
+              <div className="grid gap-8">
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Button Variants</h3>
+                  <div className="flex flex-wrap gap-4">
+                    <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary</Button>
+                    <Button variant="secondary" className="bg-grey-200 hover:bg-grey-300 text-grey-800">Secondary</Button>
+                    <Button variant="destructive" className="bg-error-main hover:bg-error-dark text-error-contrast-text">Destructive</Button>
+                    <Button variant="outline" className="border-primary-main text-primary-main hover:bg-primary-main hover:text-primary-contrast-text">Outline</Button>
+                    <Button variant="ghost" className="text-primary-main hover:bg-primary-lighter">Ghost</Button>
                   </div>
                 </div>
-              </Alert>
-              
-              <Alert className="border-warning-main bg-warning-lighter">
-                <AlertTriangle className="h-4 w-4 text-warning-main" />
-                <div className="flex items-start justify-between flex-1">
-                  <div>
-                    <h4 className="text-warning-dark font-medium font-sans mb-1 text-sm">Warning</h4>
-                    <AlertDescription className="text-warning-dark font-sans">
-                      This is a Warning alert — check it out!
-                    </AlertDescription>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Button Sizes</h3>
+                  <div className="flex flex-wrap items-center gap-4">
+                    <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Small</Button>
+                    <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Default</Button>
+                    <Button size="lg" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Large</Button>
                   </div>
-                  <button className="text-warning-main hover:text-warning-dark ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
                 </div>
-              </Alert>
-            </div>
-            
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Filled Alerts</h3>
-            <div className="space-y-3">
-              <Alert className="bg-info-main text-info-contrast-text border-0">
-                <Info className="h-4 w-4 text-info-contrast-text" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-info-contrast-text font-sans">
-                    This is an Info alert — check it out!
-                  </AlertDescription>
-                  <button className="text-info-contrast-text hover:opacity-80 ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Button States</h3>
+                  <div className="flex flex-wrap gap-4">
+                    <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Normal</Button>
+                    <Button disabled className="bg-grey-300 text-grey-500 cursor-not-allowed">Disabled</Button>
+                    <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">
+                      <Download className="mr-2 h-4 w-4" />
+                      With Icon
+                    </Button>
+                    <Button 
+                      onClick={() => handleLoadingAction("Save")}
+                      disabled={loading}
+                      className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text"
+                    >
+                      {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                      Loading State
+                    </Button>
+                  </div>
                 </div>
-              </Alert>
+              </div>
+            </section>
+
+            {/* Status Badges Section */}
+            <section id="status-badges" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Status Badges</h2>
+                <p className="text-grey-600">Invoice status indicators matching RTP table design</p>
+              </div>
               
-              <Alert className="bg-success-main text-success-contrast-text border-0">
-                <Check className="h-4 w-4 text-success-contrast-text" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-success-contrast-text font-sans">
-                    This is a Success alert — check it out!
-                  </AlertDescription>
-                  <button className="text-success-contrast-text hover:opacity-80 ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
+              <div className="grid gap-6">
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Process Status</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge className="bg-violet-100 text-violet-700 border-violet-200 hover:bg-violet-200">RTP Prepared</Badge>
+                    <Badge className="bg-violet-100 text-violet-700 border-violet-200 hover:bg-violet-200">Awaiting SC</Badge>
+                    <Badge className="bg-violet-100 text-violet-700 border-violet-200 hover:bg-violet-200">RTP Sent</Badge>
+                  </div>
                 </div>
-              </Alert>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Action Required</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge className="bg-red-100 text-red-700 border-red-200 hover:bg-red-200">Pending Action</Badge>
+                    <Badge className="bg-red-100 text-red-700 border-red-200 hover:bg-red-200">Rejected by Buyer</Badge>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Approval Status</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge className="bg-orange-100 text-orange-700 border-orange-200 hover:bg-orange-200">Approved by Buyer</Badge>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">External Status</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge className="bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-200">External Submission</Badge>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Payment Status</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge className="bg-green-100 text-green-700 border-green-200 hover:bg-green-200">Paid</Badge>
+                    <Badge className="bg-green-100 text-green-700 border-green-200 hover:bg-green-200">Settled</Badge>
+                    <Badge className="bg-green-100 text-green-700 border-green-200 hover:bg-green-200">Partially Settled</Badge>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Other Status</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge className="bg-grey-200 text-grey-700 border-grey-300 hover:bg-grey-300">Excluded</Badge>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Chips & Badges Section */}
+            <section id="chips-badges" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Chips & Badges</h2>
+                <p className="text-grey-600">Interactive chips and informational badges</p>
+              </div>
               
-              <Alert className="bg-warning-main text-warning-contrast-text border-0">
-                <AlertTriangle className="h-4 w-4 text-warning-contrast-text" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-warning-contrast-text font-sans">
-                    This is a Warning alert — check it out!
-                  </AlertDescription>
-                  <button className="text-warning-contrast-text hover:opacity-80 ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
+              <div className="grid gap-6">
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Basic Badges</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge className="bg-primary-lighter text-primary-dark border-primary-light">Default</Badge>
+                    <Badge variant="secondary" className="bg-grey-200 text-grey-700 border-grey-300">Secondary</Badge>
+                    <Badge variant="outline" className="border-grey-400 text-grey-700 bg-background-paper">Outlined</Badge>
+                  </div>
                 </div>
-              </Alert>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Semantic Badges</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge className="bg-success-lighter text-success-dark border-success-light">Success</Badge>
+                    <Badge className="bg-warning-lighter text-warning-dark border-warning-light">Warning</Badge>
+                    <Badge className="bg-error-lighter text-error-dark border-error-light">Error</Badge>
+                    <Badge className="bg-info-lighter text-info-dark border-info-light">Info</Badge>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Interactive Chips</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge className="bg-primary-lighter text-primary-dark border-primary-light cursor-pointer hover:bg-primary-light">
+                      Clickable
+                    </Badge>
+                    <Badge className="bg-primary-lighter text-primary-dark border-primary-light cursor-pointer hover:bg-primary-light">
+                      Deletable
+                      <X className="ml-1 h-3 w-3" />
+                    </Badge>
+                    <Badge className="bg-success-lighter text-success-dark border-success-light cursor-pointer hover:bg-success-light">
+                      <CheckCircle className="mr-1 h-3 w-3" />
+                      With Icon
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Inputs Section */}
+            <section id="inputs" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Form Inputs</h2>
+                <p className="text-grey-600">Input components for data collection</p>
+              </div>
               
-              <Alert className="bg-error-main text-error-contrast-text border-0">
-                <X className="h-4 w-4 text-error-contrast-text" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-error-contrast-text font-sans">
-                    This is an Error alert — check it out!
-                  </AlertDescription>
-                  <button className="text-error-contrast-text hover:opacity-80 ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-grey-800 font-medium">Default Input</Label>
+                  <Input placeholder="Enter text..." className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
                 </div>
-              </Alert>
-            </div>
-            
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Outlined Alerts</h3>
-            <div className="space-y-3">
-              <Alert className="border-info-main bg-transparent">
-                <Info className="h-4 w-4 text-info-main" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-info-main font-sans">
-                    This is an Info alert — check it out!
-                  </AlertDescription>
-                  <button className="text-info-main hover:text-info-dark ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
+                
+                <div className="space-y-2">
+                  <Label className="text-grey-800 font-medium">With Helper Text</Label>
+                  <Input placeholder="Type something" className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
+                  <p className="text-sm text-grey-600">This is helpful guidance text</p>
                 </div>
-              </Alert>
+                
+                <div className="space-y-2">
+                  <Label className="text-grey-800 font-medium">Error State</Label>
+                  <Input placeholder="Error input" className="border-error-main focus-visible:ring-0 focus-visible:border-error-main bg-background-paper" />
+                  <p className="text-sm text-error-main">This field has a validation error</p>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label className="text-grey-800 font-medium">Disabled Input</Label>
+                  <Input placeholder="Disabled" disabled className="bg-grey-200 border-grey-300 text-grey-500" />
+                </div>
+              </div>
+
+              <div className="mt-6 space-y-2">
+                <Label className="text-grey-800 font-medium">Textarea</Label>
+                <Textarea placeholder="Enter multiline text here..." className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
+              </div>
+            </section>
+
+            {/* Controls Section */}
+            <section id="controls" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Controls</h2>
+                <p className="text-grey-600">Interactive form controls and toggles</p>
+              </div>
               
-              <Alert className="border-success-main bg-transparent">
-                <Check className="h-4 w-4 text-success-main" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-success-main font-sans">
-                    This is a Success alert — check it out!
-                  </AlertDescription>
-                  <button className="text-success-main hover:text-success-dark ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              </Alert>
-              
-              <Alert className="border-warning-main bg-transparent">
-                <AlertTriangle className="h-4 w-4 text-warning-main" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-warning-main font-sans">
-                    This is a Warning alert — check it out!
-                  </AlertDescription>
-                  <button className="text-warning-main hover:text-warning-dark ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              </Alert>
-              
-              <Alert className="border-error-main bg-transparent">
-                <X className="h-4 w-4 text-error-main" />
-                <div className="flex items-center justify-between flex-1">
-                  <AlertDescription className="text-error-main font-sans">
-                    This is an Error alert — check it out!
-                  </AlertDescription>
-                  <button className="text-error-main hover:text-error-dark ml-4">
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              </Alert>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Status Badges Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Status Badges</h2>
-          
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Invoice Status Badges</h3>
-            <div className="flex flex-wrap gap-3">
-              <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">RTP Prepared</Badge>
-              <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">Awaiting SC</Badge>
-              <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">RTP Sent</Badge>
-              <Badge className="bg-error-lighter text-error-dark border border-error-light font-medium px-3 py-1">Pending Action</Badge>
-              <Badge className="bg-error-lighter text-error-dark border border-error-light font-medium px-3 py-1">Rejected by Buyer</Badge>
-              <Badge className="bg-warning-lighter text-warning-dark border border-warning-light font-medium px-3 py-1">Approved by Buyer</Badge>
-              <Badge className="bg-info-lighter text-info-dark border border-info-light font-medium px-3 py-1">External Submission</Badge>
-              <Badge className="bg-success-lighter text-success-dark border border-success-light font-medium px-3 py-1">Paid</Badge>
-              <Badge className="bg-success-lighter text-success-dark border border-success-light font-medium px-3 py-1">Settled</Badge>
-              <Badge className="bg-success-lighter text-success-dark border border-success-light font-medium px-3 py-1">Partially Settled</Badge>
-              <Badge className="bg-grey-300 text-grey-700 border border-grey-400 font-medium px-3 py-1">Excluded</Badge>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Chips & Badges Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Chips & Badges</h2>
-          <div className="flex flex-wrap gap-3">
-            <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">Default</Badge>
-            <Badge variant="secondary" className="bg-secondary-lighter text-grey-800 border border-grey-300 font-medium px-3 py-1">Secondary</Badge>
-            <Badge variant="outline" className="border-grey-400 text-grey-700 font-medium px-3 py-1">Outlined</Badge>
-            <Badge className="bg-success-lighter text-success-dark border border-success-light font-medium px-3 py-1">Success</Badge>
-            <Badge className="bg-warning-lighter text-warning-dark border border-warning-light font-medium px-3 py-1">Warning</Badge>
-            <Badge className="bg-error-lighter text-error-dark border border-error-light font-medium px-3 py-1">Error</Badge>
-            <Badge className="bg-info-lighter text-info-dark border border-info-light font-medium px-3 py-1">Info</Badge>
-            <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">
-              Deletable
-              <X className="ml-1 h-3 w-3" />
-            </Badge>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Buttons Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Buttons</h2>
-          
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Button Variants</h3>
-            <div className="flex flex-wrap gap-4">
-              <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium">Default</Button>
-              <Button variant="secondary" className="bg-secondary-lighter text-grey-800 hover:bg-grey-300 font-medium">Secondary</Button>
-              <Button variant="destructive" className="bg-error-main hover:bg-error-dark text-error-contrast-text font-medium">Destructive</Button>
-              <Button variant="outline" className="border-primary-main text-primary-main hover:bg-primary-main hover:text-primary-contrast-text font-medium">Outline</Button>
-              <Button variant="ghost" className="text-primary-main hover:bg-primary-lighter font-medium">Ghost</Button>
-              <Button variant="link" className="text-primary-main underline-offset-4 hover:underline font-medium">Link</Button>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Button Sizes</h3>
-            <div className="flex flex-wrap items-center gap-4">
-              <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium">Small</Button>
-              <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium">Default</Button>
-              <Button size="lg" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium">Large</Button>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Button States</h3>
-            <div className="flex flex-wrap gap-4">
-              <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium">Normal</Button>
-              <Button disabled className="bg-grey-400 text-grey-600 cursor-not-allowed font-medium">Disabled</Button>
-              <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium">
-                <Download className="mr-2 h-4 w-4" />
-                With Icon
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Inputs Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Inputs</h2>
-          <p className="text-base text-grey-600 font-sans">Form Input Components</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label className="text-grey-700 font-sans font-medium">Basic Input</Label>
-              <Input placeholder="Enter text..." className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
-            </div>
-            
-            <div className="space-y-2">
-              <Label className="text-grey-700 font-sans font-medium">Labeled Input</Label>
-              <Input placeholder="With label" className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
-            </div>
-            
-            <div className="space-y-2">
-              <Label className="text-grey-700 font-sans font-medium">With Helper Text</Label>
-              <Input placeholder="Type something" className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
-              <p className="text-sm text-grey-500 font-sans">This is some helpful text</p>
-            </div>
-            
-            <div className="space-y-2">
-              <Label className="text-grey-700 font-sans font-medium">Error State</Label>
-              <Input placeholder="Error input" className="border-error-main focus-visible:ring-0 focus-visible:border-error-main bg-background-paper" />
-              <p className="text-sm text-error-main font-sans">This field has an error</p>
-            </div>
-            
-            <div className="space-y-2">
-              <Label className="text-grey-700 font-sans font-medium">Password Input</Label>
-              <Input type="password" placeholder="Enter password" className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Text Areas</h3>
-            <div className="space-y-2">
-              <Label className="text-grey-700 font-sans font-medium">Basic Textarea</Label>
-              <Textarea placeholder="Enter multiline text here..." className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Checkboxes Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Checkboxes</h2>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="basic" 
-                checked={basicCheckbox}
-                onCheckedChange={(checked) => setBasicCheckbox(checked === true)}
-                className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main data-[state=checked]:text-primary-contrast-text"
-              />
-              <Label htmlFor="basic" className="text-grey-700 font-sans font-normal">Basic Checkbox</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="checked" 
-                checked={checkedCheckbox}
-                onCheckedChange={(checked) => setCheckedCheckbox(checked === true)}
-                className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main data-[state=checked]:text-primary-contrast-text"
-              />
-              <Label htmlFor="checked" className="text-grey-700 font-sans font-normal">Checked Checkbox</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="required" 
-                checked={requiredCheckbox}
-                onCheckedChange={(checked) => setRequiredCheckbox(checked === true)}
-                className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main data-[state=checked]:text-primary-contrast-text"
-              />
-              <Label htmlFor="required" className="text-grey-700 font-sans font-normal">Required Checkbox</Label>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Sizes</h3>
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <Checkbox className="h-3 w-3 border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main rounded-xs" />
-                <Label className="text-sm text-grey-700 font-sans">Small</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox className="h-4 w-4 border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main" />
-                <Label className="text-grey-700 font-sans">Default</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox className="h-5 w-5 border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main" />
-                <Label className="text-lg text-grey-700 font-sans">Large</Label>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Radio Buttons Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Radio Buttons</h2>
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Basic Radio Group</h3>
-            <RadioGroup value={radioValue} onValueChange={setRadioValue} className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option1" id="option1" className="border-grey-400 text-primary-main" />
-                <Label htmlFor="option1" className="text-grey-700 font-sans">Option 1</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option2" id="option2" className="border-grey-400 text-primary-main" />
-                <Label htmlFor="option2" className="text-grey-700 font-sans">Option 2</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option3" id="option3" className="border-grey-400 text-primary-main" />
-                <Label htmlFor="option3" className="text-grey-700 font-sans">Option 3</Label>
-              </div>
-            </RadioGroup>
-
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Horizontal Radio Group</h3>
-            <RadioGroup value={radioValue} onValueChange={setRadioValue} className="flex space-x-6">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="horizontal1" id="horizontal1" className="border-grey-400 text-primary-main" />
-                <Label htmlFor="horizontal1" className="text-grey-700 font-sans">Choice A</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="horizontal2" id="horizontal2" className="border-grey-400 text-primary-main" />
-                <Label htmlFor="horizontal2" className="text-grey-700 font-sans">Choice B</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="horizontal3" id="horizontal3" className="border-grey-400 text-primary-main" />
-                <Label htmlFor="horizontal3" className="text-grey-700 font-sans">Choice C</Label>
-              </div>
-            </RadioGroup>
-
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Radio Button Variants</h3>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <p className="text-base font-medium text-grey-700 font-sans">Size Variants</p>
-                <div className="flex items-center space-x-6">
-                  <RadioGroup defaultValue="small-demo" className="flex items-center space-x-6">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="small-demo" className="h-3 w-3 border-grey-400 text-primary-main" />
-                      <Label className="text-sm text-grey-700 font-sans">Small</Label>
+              <div className="grid gap-8">
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Checkboxes</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <Checkbox 
+                        id="basic" 
+                        checked={basicCheckbox}
+                        onCheckedChange={(checked) => setBasicCheckbox(checked === true)}
+                        className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main"
+                      />
+                      <Label htmlFor="basic" className="text-grey-700">Basic checkbox option</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="default-demo" className="h-4 w-4 border-grey-400 text-primary-main" />
-                      <Label className="text-grey-700 font-sans">Default</Label>
+                    
+                    <div className="flex items-center space-x-3">
+                      <Checkbox 
+                        id="checked" 
+                        checked={checkedCheckbox}
+                        onCheckedChange={(checked) => setCheckedCheckbox(checked === true)}
+                        className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main"
+                      />
+                      <Label htmlFor="checked" className="text-grey-700">Pre-selected option</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="large-demo" className="h-5 w-5 border-grey-400 text-primary-main" />
-                      <Label className="text-lg text-grey-700 font-sans">Large</Label>
+                    
+                    <div className="flex items-center space-x-3">
+                      <Checkbox disabled className="border-grey-300 bg-grey-100" />
+                      <Label className="text-grey-500">Disabled option</Label>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Radio Buttons</h3>
+                  <RadioGroup value={radioValue} onValueChange={setRadioValue} className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <RadioGroupItem value="option1" id="radio1" className="border-grey-400 text-primary-main" />
+                      <Label htmlFor="radio1" className="text-grey-700">First option</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <RadioGroupItem value="option2" id="radio2" className="border-grey-400 text-primary-main" />
+                      <Label htmlFor="radio2" className="text-grey-700">Second option</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <RadioGroupItem value="option3" id="radio3" className="border-grey-400 text-primary-main" />
+                      <Label htmlFor="radio3" className="text-grey-700">Third option</Label>
                     </div>
                   </RadioGroup>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <Separator className="my-8" />
-
-        {/* Toggles & Switches Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Toggles & Switches</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 border rounded-lg border-grey-300 bg-background-paper">
-              <div>
-                <Label className="text-grey-700 font-sans font-medium">Notifications</Label>
-                <p className="text-sm text-grey-600 font-sans">Receive email notifications</p>
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Switches</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 border rounded-lg border-grey-300">
+                      <div>
+                        <Label className="text-grey-800 font-medium">Email Notifications</Label>
+                        <p className="text-sm text-grey-600">Receive updates via email</p>
+                      </div>
+                      <Switch 
+                        checked={switchChecked}
+                        onCheckedChange={setSwitchChecked}
+                      />
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-4 border rounded-lg border-grey-300">
+                      <div>
+                        <Label className="text-grey-800 font-medium">Auto Save</Label>
+                        <p className="text-sm text-grey-600">Save changes automatically</p>
+                      </div>
+                      <Switch 
+                        checked={autoSave}
+                        onCheckedChange={setAutoSave}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <Switch 
-                checked={switchChecked}
-                onCheckedChange={setSwitchChecked}
-              />
-            </div>
-            
-            <div className="flex items-center justify-between p-4 border rounded-lg border-grey-300 bg-background-paper">
-              <div>
-                <Label className="text-grey-700 font-sans font-medium">Dark Mode</Label>
-                <p className="text-sm text-grey-600 font-sans">Toggle dark theme</p>
-              </div>
-              <Switch 
-                checked={darkMode}
-                onCheckedChange={setDarkMode}
-              />
-            </div>
-            
-            <div className="flex items-center justify-between p-4 border rounded-lg border-grey-300 bg-background-paper">
-              <div>
-                <Label className="text-grey-700 font-sans font-medium">Auto Save</Label>
-                <p className="text-sm text-grey-600 font-sans">Automatically save changes</p>
-              </div>
-              <Switch 
-                checked={autoSave}
-                onCheckedChange={setAutoSave}
-              />
-            </div>
-          </div>
-        </section>
+            </section>
 
-        <Separator className="my-8" />
-
-        {/* Tooltips Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Tooltips</h2>
-          <TooltipProvider>
-            <div className="flex gap-4">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="outline" className="border-grey-400 text-grey-700 hover:bg-grey-200 font-medium">Hover Me</Button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-grey-800 text-common-white">
-                  <p className="font-sans">Basic tooltip content</p>
-                </TooltipContent>
-              </Tooltip>
+            {/* Alert Cases Section */}
+            <section id="alerts" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Alert Cases</h2>
+                <p className="text-grey-600">User notifications and system messages</p>
+              </div>
               
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button className="bg-success-main hover:bg-success-dark text-success-contrast-text font-medium">Success Tooltip</Button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-success-main text-success-contrast-text">
-                  <p className="font-sans">Success message</p>
-                </TooltipContent>
-              </Tooltip>
+              <div className="grid gap-6">
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Standard Alerts</h3>
+                  <div className="space-y-4">
+                    <Alert className="border-info-main bg-info-lighter">
+                      <Info className="h-4 w-4 text-info-main" />
+                      <AlertDescription className="text-info-dark">
+                        This is an informational alert with important details for the user.
+                      </AlertDescription>
+                    </Alert>
+                    
+                    <Alert className="border-success-main bg-success-lighter">
+                      <Check className="h-4 w-4 text-success-main" />
+                      <AlertDescription className="text-success-dark">
+                        Operation completed successfully! Your changes have been saved.
+                      </AlertDescription>
+                    </Alert>
+                    
+                    <Alert className="border-warning-main bg-warning-lighter">
+                      <AlertTriangle className="h-4 w-4 text-warning-main" />
+                      <AlertDescription className="text-warning-dark">
+                        Please review your input before proceeding with this action.
+                      </AlertDescription>
+                    </Alert>
+                    
+                    <Alert className="border-error-main bg-error-lighter">
+                      <X className="h-4 w-4 text-error-main" />
+                      <AlertDescription className="text-error-dark">
+                        An error occurred while processing your request. Please try again.
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Filled Alerts</h3>
+                  <div className="space-y-4">
+                    <Alert className="bg-info-main text-info-contrast-text border-0">
+                      <Info className="h-4 w-4 text-info-contrast-text" />
+                      <AlertDescription className="text-info-contrast-text">
+                        High contrast informational alert for maximum visibility.
+                      </AlertDescription>
+                    </Alert>
+                    
+                    <Alert className="bg-success-main text-success-contrast-text border-0">
+                      <Check className="h-4 w-4 text-success-contrast-text" />
+                      <AlertDescription className="text-success-contrast-text">
+                        Bold success message for completed operations.
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Cards Section */}
+            <section id="cards" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Cards</h2>
+                <p className="text-grey-600">Content containers with different elevations</p>
+              </div>
               
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button className="bg-warning-main hover:bg-warning-dark text-warning-contrast-text font-medium">Warning Tooltip</Button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-warning-main text-warning-contrast-text">
-                  <p className="font-sans">Warning message</p>
-                </TooltipContent>
-              </Tooltip>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="border-grey-300 shadow-sm">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg font-medium text-grey-900">Basic Card</CardTitle>
+                    <p className="text-sm text-grey-600">Simple content container</p>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-grey-700">Standard card with minimal elevation for organizing content.</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="border-2 border-grey-300 shadow-md">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg font-medium text-grey-900">Outlined Card</CardTitle>
+                    <p className="text-sm text-grey-600">Enhanced border styling</p>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-grey-700">Card with prominent border for visual separation.</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="border-grey-300 shadow-lg">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg font-medium text-grey-900">Elevated Card</CardTitle>
+                    <p className="text-sm text-grey-600">Higher elevation design</p>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-grey-700">Card with increased shadow for floating appearance.</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </section>
+
+            {/* Colors Section */}
+            <section id="colors" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Color Palette</h2>
+                <p className="text-grey-600">Monto design system color tokens</p>
+              </div>
               
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button className="bg-error-main hover:bg-error-dark text-error-contrast-text font-medium">Error Tooltip</Button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-error-main text-error-contrast-text">
-                  <p className="font-sans">Error message</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          </TooltipProvider>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Cards Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Cards</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="shadow-sm border-grey-300 bg-background-paper">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-medium text-grey-900 font-sans">Default Card</CardTitle>
-                <p className="text-sm text-grey-600 font-sans">Small size</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-grey-700 font-sans">Basic card content</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-2 border-grey-300 bg-background-paper">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-medium text-grey-900 font-sans">Outlined Card</CardTitle>
-                <p className="text-sm text-grey-600 font-sans">Default size</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-grey-700 font-sans">Card with outline</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="shadow-lg border-grey-300 bg-background-paper">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-medium text-grey-900 font-sans">Elevated Card</CardTitle>
-                <p className="text-sm text-grey-600 font-sans">Large size</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-grey-700 font-sans">Card with elevation</p>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Icons Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Icons</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="flex items-center space-x-2">
-              <BadgeCheck className="h-5 w-5 text-primary-main" />
-              <span className="text-grey-700 font-sans">Badge Check Icon</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Heart className="h-5 w-5 text-error-main" />
-              <span className="text-grey-700 font-sans">Heart Icon</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Star className="h-5 w-5 text-warning-main" />
-              <span className="text-grey-700 font-sans">Star Icon</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Download className="h-5 w-5 text-success-main" />
-              <span className="text-grey-700 font-sans">Download Icon</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="h-5 w-5 text-success-main" />
-              <span className="text-grey-700 font-sans">Check Circle Icon</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <AlertTriangle className="h-5 w-5 text-warning-main" />
-              <span className="text-grey-700 font-sans">Alert Triangle Icon</span>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Loading States Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Loading States</h2>
-          
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Skeleton Loading</h3>
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-[250px] bg-grey-300" />
-              <Skeleton className="h-4 w-[200px] bg-grey-300" />
-              <Skeleton className="h-4 w-[300px] bg-grey-300" />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Button Loading States</h3>
-            <div className="flex gap-4">
-              <Button 
-                onClick={() => handleLoadingAction("Save Document")}
-                disabled={loading}
-                className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium"
-              >
-                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Save Document
-              </Button>
-              <Button 
-                onClick={() => handleLoadingAction("Upload File")}
-                disabled={loading}
-                className="bg-success-main hover:bg-success-dark text-success-contrast-text font-medium"
-              >
-                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Upload File
-              </Button>
-              <Button 
-                onClick={() => handleLoadingAction("Process Data")}
-                disabled={loading}
-                className="bg-info-main hover:bg-info-dark text-info-contrast-text font-medium"
-              >
-                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Process Data
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Banners & Alerts Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Banners & Alerts</h2>
-          <div className="space-y-4">
-            <Alert className="border-info-main bg-info-lighter">
-              <Info className="h-4 w-4 text-info-main" />
-              <div>
-                <h4 className="text-info-main font-medium font-sans">Information</h4>
-                <p className="text-info-dark font-sans">This is an informational banner to provide helpful context.</p>
-              </div>
-            </Alert>
-            
-            <Alert className="border-success-main bg-success-lighter">
-              <Check className="h-4 w-4 text-success-main" />
-              <div>
-                <h4 className="text-success-main font-medium font-sans">Success</h4>
-                <p className="text-success-dark font-sans">Your operation completed successfully!</p>
-              </div>
-            </Alert>
-            
-            <Alert className="border-warning-main bg-warning-lighter">
-              <AlertTriangle className="h-4 w-4 text-warning-main" />
-              <div>
-                <h4 className="text-warning-main font-medium font-sans">Warning</h4>
-                <p className="text-warning-dark font-sans">Please review this important information before proceeding.</p>
-              </div>
-            </Alert>
-            
-            <Alert className="border-error-main bg-error-lighter">
-              <X className="h-4 w-4 text-error-main" />
-              <div>
-                <h4 className="text-error-main font-medium font-sans">Error</h4>
-                <p className="text-error-dark font-sans">Something went wrong. Please check your input and try again.</p>
-              </div>
-            </Alert>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Toast Notifications Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Toast Notifications</h2>
-          <div className="flex gap-4">
-            <Button onClick={() => showSuccessToast("Success!", "Operation completed successfully")} className="bg-success-main hover:bg-success-dark text-success-contrast-text font-medium">
-              Show Success Toast
-            </Button>
-            <Button onClick={() => showErrorToast("Error!", "Something went wrong")} className="bg-error-main hover:bg-error-dark text-error-contrast-text font-medium">
-              Show Error Toast
-            </Button>
-            <Button onClick={() => showInfoToast("Info", "Here's some information")} className="bg-primary-lighter hover:bg-primary-light text-primary-darker font-medium">
-              Show Info Toast
-            </Button>
-            <Button onClick={() => showWarningToast("Warning", "Please be careful")} className="bg-warning-main hover:bg-warning-dark text-warning-contrast-text font-medium">
-              Show Warning Toast
-            </Button>
-            <Button onClick={testToasts} className="bg-info-main hover:bg-info-dark text-info-contrast-text font-medium">
-              Test All Toasts
-            </Button>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Modals & Dialogs Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Modals & Dialogs</h2>
-          <div className="flex gap-4">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="border-grey-400 text-grey-700 hover:bg-grey-200 font-medium">Simple Modal</Button>
-              </DialogTrigger>
-              <DialogContent className="bg-background-paper border-grey-300">
-                <DialogHeader>
-                  <DialogTitle className="text-grey-900 font-sans font-medium">Simple Modal</DialogTitle>
-                  <DialogDescription className="text-grey-600 font-sans">
-                    This is a basic modal dialog with some content.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="py-4">
-                  <p className="text-grey-700 font-sans">Modal content goes here...</p>
+              <div className="grid gap-8">
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Primary Colors</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="space-y-2">
+                      <div className="h-16 bg-primary-lighter rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">primary-lighter</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-primary-light rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">primary-light</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-primary-main rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">primary-main</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-primary-dark rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">primary-dark</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-primary-darker rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">primary-darker</p>
+                    </div>
+                  </div>
                 </div>
-              </DialogContent>
-            </Dialog>
-            
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="bg-warning-main hover:bg-warning-dark text-warning-contrast-text font-medium">Confirmation Modal</Button>
-              </DialogTrigger>
-              <DialogContent className="bg-background-paper border-grey-300">
-                <DialogHeader>
-                  <DialogTitle className="text-grey-900 font-sans font-medium">Are You Sure?</DialogTitle>
-                  <DialogDescription className="text-grey-600 font-sans">
-                    Once excluded, Monto will no longer track or monitor it.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="py-4">
-                  <p className="text-grey-700 font-sans mb-4">Please select the relevant reason:</p>
-                  <select className="w-full p-3 border border-grey-400 rounded-lg bg-background-paper text-grey-700">
-                    <option>Paid outside the portal</option>
-                  </select>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Semantic Colors</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="space-y-2">
+                      <div className="h-16 bg-success-main rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">success-main</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-warning-main rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">warning-main</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-error-main rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">error-main</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-info-main rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">info-main</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex justify-end gap-2 mt-4">
-                  <Button variant="outline" className="border-grey-400 text-grey-700 hover:bg-grey-200 font-medium">Close</Button>
-                  <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium">Confirm Exclude</Button>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Grey Scale</h3>
+                  <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+                    <div className="space-y-2">
+                      <div className="h-16 bg-grey-200 rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">grey-200</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-grey-300 rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">grey-300</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-grey-500 rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">grey-500</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-grey-700 rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">grey-700</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-grey-800 rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">grey-800</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-16 bg-grey-900 rounded-lg border border-grey-300"></div>
+                      <p className="text-sm font-mono text-grey-600">grey-900</p>
+                    </div>
+                  </div>
                 </div>
-              </DialogContent>
-            </Dialog>
-            
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="bg-info-main hover:bg-info-dark text-info-contrast-text font-medium">Info Modal</Button>
-              </DialogTrigger>
-              <DialogContent className="bg-background-paper border-grey-300">
-                <DialogHeader>
-                  <DialogTitle className="text-grey-900 font-sans font-medium">Information</DialogTitle>
-                  <DialogDescription className="text-grey-600 font-sans">
-                    Here's some important information you should know.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="py-4">
-                  <p className="text-grey-700 font-sans">Detailed information content...</p>
-                </div>
-              </DialogContent>
-            </Dialog>
+              </div>
+            </section>
+
+            {/* Toast Testing Section */}
+            <section className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-6">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Toast Notifications</h2>
+                <p className="text-grey-600">Test notification components</p>
+              </div>
+              
+              <div className="flex flex-wrap gap-4">
+                <Button onClick={() => showSuccessToast("Success!", "Operation completed")} className="bg-success-main hover:bg-success-dark text-success-contrast-text">
+                  Success Toast
+                </Button>
+                <Button onClick={() => showErrorToast("Error!", "Something went wrong")} className="bg-error-main hover:bg-error-dark text-error-contrast-text">
+                  Error Toast
+                </Button>
+                <Button onClick={() => showInfoToast("Info", "Here's some information")} className="bg-info-main hover:bg-info-dark text-info-contrast-text">
+                  Info Toast
+                </Button>
+                <Button onClick={() => showWarningToast("Warning", "Please be careful")} className="bg-warning-main hover:bg-warning-dark text-warning-contrast-text">
+                  Warning Toast
+                </Button>
+              </div>
+            </section>
+
           </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Color Palette Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Color Palette</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="space-y-2">
-              <div className="h-16 bg-primary-lighter rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">primary-lighter</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#EFEBFF</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-primary-light rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">primary-light</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#BEADFF</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-primary-main rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">primary-main</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#7B59FF</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-primary-dark rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">primary-dark</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#523BAA</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-primary-darker rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">primary-darker</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#291E55</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-secondary-lighter rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">secondary-lighter</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#E6E7EB</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-secondary-light rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">secondary-light</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#6F768B</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-secondary-main rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">secondary-main</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#1D153B</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-secondary-dark rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">secondary-dark</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#181231</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-secondary-darker rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">secondary-darker</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#0A0714</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-0 border border-grey-300 rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">grey-0</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#FFFFFF</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-100 rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">grey-100</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#707C87</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-200 rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">grey-200</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#F4F6F8</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-300 rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">grey-300</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#F1F1F3</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-400 rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">grey-400</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#E6E7EB</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-500 rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">grey-500</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#8C94A9</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-600 rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">grey-600</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#818799</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-700 rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">grey-700</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#586079</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-800 rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">grey-800</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#38415F</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-grey-900 rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">grey-900</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#061237</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-info-main rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">info-main</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#375DFB</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-success-main rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">success-main</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#007737</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-warning-main rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">warning-main</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#F2AE40</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-error-main rounded-lg flex items-center justify-center text-white text-sm font-medium font-sans">error-main</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#DF1C41</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-background-default rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">background-default</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#F4F6F8</p>
-            </div>
-            <div className="space-y-2">
-              <div className="h-16 bg-background-paper border border-grey-300 rounded-lg flex items-center justify-center text-grey-900 text-sm font-medium font-sans">background-paper</div>
-              <p className="text-xs text-grey-600 text-center font-mono">#FFFFFF</p>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Spacing Scale Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Spacing Scale</h2>
-          <div className="space-y-2">
-            <div className="flex items-center gap-4">
-              <div className="w-1 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-1</span>
-              <span className="text-grey-600 font-mono text-sm">0.25rem</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-2 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-2</span>
-              <span className="text-grey-600 font-mono text-sm">0.5rem</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-4 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-4</span>
-              <span className="text-grey-600 font-mono text-sm">1rem</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-6 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-6</span>
-              <span className="text-grey-600 font-mono text-sm">1.5rem</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-8 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-8</span>
-              <span className="text-grey-600 font-mono text-sm">2rem</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-10</span>
-              <span className="text-grey-600 font-mono text-sm">2.5rem</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-12</span>
-              <span className="text-grey-600 font-mono text-sm">3rem</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-16</span>
-              <span className="text-grey-600 font-mono text-sm">4rem</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-20 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-20</span>
-              <span className="text-grey-600 font-mono text-sm">5rem</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-24 h-8 bg-primary-main rounded-xs"></div>
-              <span className="text-grey-700 font-sans font-medium">p-24</span>
-              <span className="text-grey-600 font-mono text-sm">6rem</span>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Border Radius Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Border Radius</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-main rounded-xs mx-auto mb-2"></div>
-              <p className="text-sm text-grey-700 font-sans font-medium">rounded-xs</p>
-              <p className="text-xs text-grey-600 font-mono">0.125rem</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-main rounded-sm mx-auto mb-2"></div>
-              <p className="text-sm text-grey-700 font-sans font-medium">rounded-sm</p>
-              <p className="text-xs text-grey-600 font-mono">0.25rem</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-main rounded mx-auto mb-2"></div>
-              <p className="text-sm text-grey-700 font-sans font-medium">rounded</p>
-              <p className="text-xs text-grey-600 font-mono">0.375rem</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-main rounded-lg mx-auto mb-2"></div>
-              <p className="text-sm text-grey-700 font-sans font-medium">rounded-lg</p>
-              <p className="text-xs text-grey-600 font-mono">0.5rem</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-main rounded-xl mx-auto mb-2"></div>
-              <p className="text-sm text-grey-700 font-sans font-medium">rounded-xl</p>
-              <p className="text-xs text-grey-600 font-mono">0.75rem</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-main rounded-2xl mx-auto mb-2"></div>
-              <p className="text-sm text-grey-700 font-sans font-medium">rounded-2xl</p>
-              <p className="text-xs text-grey-600 font-mono">1rem</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-main rounded-3xl mx-auto mb-2"></div>
-              <p className="text-sm text-grey-700 font-sans font-medium">rounded-3xl</p>
-              <p className="text-xs text-grey-600 font-mono">1.5rem</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-main rounded-full mx-auto mb-2"></div>
-              <p className="text-sm text-grey-700 font-sans font-medium">rounded-full</p>
-              <p className="text-xs text-grey-600 font-mono">9999px</p>
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Shadows Section */}
-        <section className="space-y-6">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Shadows</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 bg-background-paper rounded-lg shadow-sm border border-grey-300">
-              <p className="text-grey-700 font-medium font-sans">shadow-sm</p>
-            </div>
-            <div className="p-6 bg-background-paper rounded-lg shadow border border-grey-300">
-              <p className="text-grey-700 font-medium font-sans">shadow</p>
-            </div>
-            <div className="p-6 bg-background-paper rounded-lg shadow-md border border-grey-300">
-              <p className="text-grey-700 font-medium font-sans">shadow-md</p>
-            </div>
-          </div>
-        </section>
+        </div>
       </div>
       
       <Toaster />
