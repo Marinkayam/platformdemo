@@ -17,6 +17,8 @@ import PortalRecords from "./pages/PortalRecords";
 import Settings from "./pages/Settings";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
+import Welcome from "./pages/Welcome";
+import DesignSystemPlayground from "./pages/DesignSystemPlayground";
 import { NotificationsProvider } from "./context/NotificationsContext";
 
 const queryClient = new QueryClient();
@@ -29,8 +31,9 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/design-system" element={<DesignSystemPlayground />} />
             <Route 
               path="/dashboard" 
               element={

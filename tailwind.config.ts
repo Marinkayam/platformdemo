@@ -19,12 +19,42 @@ export default {
 			}
 		},
 		extend: {
-  fontFamily: {
-    sans: ['"Studio Feixen Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-  },
-  colors: {
-    'monto-purple': '#7B59FF',
-    border: 'hsl(var(--border))',
+			fontFamily: {
+				sans: ['"Studio Feixen Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				mono: ['Roboto Mono', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace']
+			},
+			colors: {
+				'primary-lighter': '#EFEBFF',
+				'primary-light': '#BEADFF',
+				'primary-main': '#7B59FF',
+				'primary-dark': '#523BAA',
+				'primary-darker': '#291E55',
+				'primary-contrast-text': '#FFFFFF',
+				'secondary-lighter': '#E6E7EB',
+				'secondary-light': '#6F768B',
+				'secondary-main': '#1D153B',
+				'secondary-dark': '#181231',
+				'secondary-darker': '#0A0714',
+				'secondary-contrast-text': '#FFFFFF',
+				'grey-0': '#FFFFFF',
+				'grey-100': '#707C87',
+				'grey-200': '#F4F6F8',
+				'grey-300': '#F1F1F3',
+				'grey-400': '#E6E7EB',
+				'grey-500': '#8C94A9',
+				'grey-600': '#818799',
+				'grey-700': '#586079',
+				'grey-800': '#38415F',
+				'grey-900': '#061237',
+				'info-main': '#375DFB',
+				'success-main': '#007737',
+				'warning-main': '#F2AE40',
+				'error-main': '#DF1C41',
+				'background-default': '#F4F6F8',
+				'background-paper': '#FFFFFF',
+				'divider': 'rgba(140, 148, 169, 0.2)',
+				'monto-purple': '#7B59FF',
+				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
@@ -68,10 +98,42 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				}
 			},
+			fontSize: {
+				'overline': ['0.625rem', { 'lineHeight': '1.2' }],
+				'small-text': ['0.6875rem', { 'lineHeight': '1.25' }]
+			},
 			borderRadius: {
+				'xs': '0.125rem',
+				'sm': '0.25rem',
+				'DEFAULT': '0.375rem',
+				'lg': '0.5rem',
+				'xl': '0.75rem',
+				'2xl': '1rem',
+				'3xl': '1.5rem',
+				'full': '9999px',
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			spacing: {
+				'1': '0.25rem',
+				'2': '0.5rem',
+				'4': '1rem',
+				'6': '1.5rem',
+				'8': '2rem',
+				'10': '2.5rem',
+				'12': '3rem',
+				'16': '4rem',
+				'20': '5rem',
+				'24': '6rem'
+			},
+			boxShadow: {
+				'sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+				'DEFAULT': '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+				'md': '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+				'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+				'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+				'2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
 			},
 			keyframes: {
 				'accordion-down': {
