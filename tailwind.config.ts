@@ -19,9 +19,12 @@ export default {
 			}
 		},
 		extend: {
-			colors: {
-				'monto-purple': '#7B59FF',
-				border: 'hsl(var(--border))',
+  fontFamily: {
+    sans: ['"Studio Feixen Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+  },
+  colors: {
+    'monto-purple': '#7B59FF',
+    border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
