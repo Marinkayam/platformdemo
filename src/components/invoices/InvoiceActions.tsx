@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -8,7 +7,7 @@ import {
   DropdownMenuItem 
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical, Settings, Download } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
+import { showSuccessToast, showErrorToast } from "@/lib/toast-helpers";
 import { TableCustomizationDialog } from "@/components/invoices/TableCustomizationDialog";
 import { EmailExportModal } from "@/components/invoices/EmailExportModal";
 
@@ -17,7 +16,7 @@ export function InvoiceActions({ invoiceCount = 0 }) {
   const [emailExportOpen, setEmailExportOpen] = useState(false);
 
   const handleCustomizeTable = (columns: any[]) => {
-    toast({
+    showSuccessToast({
       title: "Table customized",
       description: `${columns.filter(c => c.selected).length} columns selected`,
     });
@@ -26,7 +25,7 @@ export function InvoiceActions({ invoiceCount = 0 }) {
   const handleExportInvoices = () => {
     // If more than 1000 invoices, show error toast
     if (invoiceCount > 1000) {
-      toast({
+      showErrorToast({
         title: "Export limit exceeded",
         description: "You can only export up to 1000 invoices at a time.",
         variant: "destructive",
@@ -62,7 +61,7 @@ export function InvoiceActions({ invoiceCount = 0 }) {
     link.click();
     document.body.removeChild(link);
     
-    toast({
+    showSuccessToast({
       title: "Export completed",
       description: "Your invoices have been downloaded as CSV.",
     });
@@ -70,7 +69,7 @@ export function InvoiceActions({ invoiceCount = 0 }) {
 
   const handleEmailExport = (email: string) => {
     // Simulate email sending
-    toast({
+    showSuccessToast({
       title: "Export sent",
       description: `Your invoices have been sent to ${email}`,
     });

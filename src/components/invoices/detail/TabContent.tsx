@@ -5,7 +5,7 @@ import { RTPDataTab } from "./RTPDataTab";
 import { ActivityTab } from "./ActivityTab";
 import { PortalRecordsTab } from "./PortalRecordsTab";
 import { Invoice, Attachment } from "@/types/invoice";
-import { toast } from "@/hooks/use-toast";
+import { showSuccessToast } from "@/lib/toast-helpers";
 
 interface TabContentProps {
   tab: string;
@@ -59,10 +59,7 @@ export function TabContent({ tab, invoice, attachments = [] }: TabContentProps) 
       }
       
       setTimeout(() => {
-        toast({
-          title: toastMessage,
-          description: toastDescription
-        });
+        showSuccessToast(toastMessage, toastDescription);
         
         // Navigate back to invoices list
         setTimeout(() => {

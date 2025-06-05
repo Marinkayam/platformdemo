@@ -1,7 +1,7 @@
 
 import { Exception } from "@/types/exception";
 import { Invoice } from "@/types/invoice";
-import { toast } from "@/hooks/use-toast";
+import { showSuccessToast } from "@/lib/toast-helpers";
 import { useNavigate } from "react-router-dom";
 import { ExceptionHandler } from "./exceptions/ExceptionHandler";
 import { FileUploadExceptionHandler } from "./exceptions/FileUploadExceptionHandler";
@@ -24,40 +24,40 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
     switch(resolutionData.action || resolutionData) {
       case 'upload':
         resolution = 'UPLOAD_NEW_PDF';
-        toast({
-          title: "File uploaded successfully",
-          description: "Your new RTP has been uploaded and exceptions resolved"
-        });
+        showSuccessToast(
+          "File uploaded successfully",
+          "Your new RTP has been uploaded and exceptions resolved"
+        );
         break;
       case 'resolve_manual':
         resolution = 'MARK_RESOLVED';
-        toast({
-          title: "Exception resolved",
-          description: "Missing data has been filled and exception resolved"
-        });
+        showSuccessToast(
+          "Exception resolved",
+          "Missing data has been filled and exception resolved"
+        );
         break;
       case 'force_submit':
       case 'FORCE_SUBMIT':
         resolution = 'FORCE_SUBMIT';
-        toast({
-          title: "Invoice force submitted",
-          description: "Invoice has been submitted despite exceptions"
-        });
+        showSuccessToast(
+          "Invoice force submitted",
+          "Invoice has been submitted despite exceptions"
+        );
         break;
       case 'exclude':
       case 'EXCLUDED':
         resolution = 'EXCLUDED';
-        toast({
-          title: "Invoice excluded",
-          description: "Invoice has been excluded from submission"
-        });
+        showSuccessToast(
+          "Invoice excluded",
+          "Invoice has been excluded from submission"
+        );
         break;
       case 'REPLACE':
         resolution = 'MARK_RESOLVED';
-        toast({
-          title: "Invoice replaced",
-          description: "The new invoice version has been selected and duplicates removed"
-        });
+        showSuccessToast(
+          "Invoice replaced",
+          "The new invoice version has been selected and duplicates removed"
+        );
         // For demo: navigate back to pending invoices after resolution
         setTimeout(() => {
           navigate("/invoices?status=pending");
@@ -65,10 +65,10 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         break;
       case 'KEEP_CURRENT':
         resolution = 'MARK_RESOLVED';
-        toast({
-          title: "Duplicate resolved",
-          description: "Current invoice kept active, duplicate invoice removed from table"
-        });
+        showSuccessToast(
+          "Duplicate resolved",
+          "Current invoice kept active, duplicate invoice removed from table"
+        );
         // For demo: navigate back to pending invoices after resolution
         setTimeout(() => {
           navigate("/invoices?status=pending");
@@ -76,10 +76,10 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
         break;
       case 'resolve_outside':
         resolution = 'MARK_RESOLVED';
-        toast({
-          title: "Exception resolved",
-          description: "Exception marked as resolved outside the system"
-        });
+        showSuccessToast(
+          "Exception resolved",
+          "Exception marked as resolved outside the system"
+        );
         break;
       default:
         resolution = 'MARK_RESOLVED';
