@@ -54,6 +54,317 @@ export default function DesignSystemPlayground() {
         <h1 className="text-5xl font-medium mb-2 text-grey-900 font-sans">Design System Playground</h1>
         <p className="text-lg text-grey-600 mb-8 font-sans">Exploring Monto's Design Tokens</p>
         
+        {/* Typography Section */}
+        <section className="space-y-6 mb-12">
+          <h2 className="text-3xl font-medium text-grey-800 font-sans">Typography</h2>
+          <div className="space-y-4">
+            <div className="flex items-baseline gap-4">
+              <h1 className="text-6xl font-medium text-grey-900 font-sans">Heading 1</h1>
+              <span className="text-sm text-grey-500 font-mono">60px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <h2 className="text-5xl font-medium text-grey-900 font-sans">Heading 2</h2>
+              <span className="text-sm text-grey-500 font-mono">48px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <h3 className="text-3xl font-medium text-grey-900 font-sans">Heading 3</h3>
+              <span className="text-sm text-grey-500 font-mono">30px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <h4 className="text-2xl font-medium text-grey-900 font-sans">Heading 4</h4>
+              <span className="text-sm text-grey-500 font-mono">24px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <h5 className="text-xl font-semibold text-grey-900 font-sans">Heading 5</h5>
+              <span className="text-sm text-grey-500 font-mono">20px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <h6 className="text-lg font-medium text-grey-900 font-sans">Heading 6</h6>
+              <span className="text-sm text-grey-500 font-mono">18px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <p className="text-base font-semibold text-grey-800 font-sans">Subtitle1</p>
+              <span className="text-sm text-grey-500 font-mono">16px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <p className="text-sm font-normal text-grey-700 font-sans">Subtitle2</p>
+              <span className="text-sm text-grey-500 font-mono">14px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <p className="text-base font-normal text-grey-800 font-sans">Body1 - Main text for content</p>
+              <span className="text-sm text-grey-500 font-mono">16px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <p className="text-sm font-normal text-grey-700 font-sans">Body2 - Secondary text</p>
+              <span className="text-sm text-grey-500 font-mono">14px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <p className="text-sm font-light text-grey-600 font-sans">Body3 - Light text for subtle information</p>
+              <span className="text-sm text-grey-500 font-mono">14px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <p className="text-xs font-normal text-grey-600 font-sans">Caption text for images and meta info</p>
+              <span className="text-sm text-grey-500 font-mono">12px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <p className="text-overline font-medium text-grey-800 font-sans uppercase tracking-wide">OVERLINE TEXT FOR LABELS</p>
+              <span className="text-sm text-grey-500 font-mono">10px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <p className="text-xs font-medium text-grey-800 font-sans uppercase">BUTTON TEXT</p>
+              <span className="text-sm text-grey-500 font-mono">12px</span>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <p className="text-small-text font-normal text-grey-600 font-sans">Small text for fine print</p>
+              <span className="text-sm text-grey-500 font-mono">11px</span>
+            </div>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Controls Section */}
+        <section className="space-y-6 mb-12">
+          <h2 className="text-3xl font-medium text-grey-800 font-sans">Controls</h2>
+          
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-grey-700 font-sans">List Items</h3>
+            <div className="bg-background-paper border border-grey-300 rounded-lg p-6 space-y-1">
+              <div className="flex items-center justify-between p-3 hover:bg-grey-200 rounded-md transition-colors cursor-pointer">
+                <div className="flex items-center space-x-3">
+                  <Checkbox className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main" />
+                  <span className="text-grey-800 font-sans">List Item</span>
+                </div>
+                <button className="text-grey-500 hover:text-grey-700">⋮</button>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-grey-200 rounded-md">
+                <div className="flex items-center space-x-3">
+                  <Checkbox className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main" />
+                  <span className="text-grey-800 font-sans">Hovered Item</span>
+                </div>
+                <button className="text-grey-500 hover:text-grey-700">⋮</button>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-primary-lighter rounded-md">
+                <div className="flex items-center space-x-3">
+                  <Checkbox checked className="border-primary-main bg-primary-main data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main" />
+                  <span className="text-primary-darker font-sans font-medium">Selected Item</span>
+                </div>
+                <button className="text-primary-dark">⋮</button>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 opacity-50">
+                <div className="flex items-center space-x-3">
+                  <Checkbox disabled className="border-grey-300 bg-grey-200" />
+                  <span className="text-grey-500 font-sans">Disabled Item</span>
+                </div>
+                <button className="text-grey-400" disabled>⋮</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Alert Cases Section */}
+        <section className="space-y-6 mb-12">
+          <h2 className="text-3xl font-medium text-grey-800 font-sans">Alert Cases</h2>
+          
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-grey-700 font-sans">Standard Alerts</h3>
+            <div className="space-y-3">
+              <Alert className="border-info-main bg-info-lighter">
+                <Info className="h-4 w-4 text-info-main" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-info-dark font-sans">
+                    This is an Info alert — check it out!
+                  </AlertDescription>
+                  <button className="text-info-main hover:text-info-dark ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+              
+              <Alert className="border-success-main bg-success-lighter">
+                <Check className="h-4 w-4 text-success-main" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-success-dark font-sans">
+                    This is a Success alert — check it out!
+                  </AlertDescription>
+                  <div className="flex gap-2 ml-4">
+                    <Button size="sm" className="bg-success-main hover:bg-success-dark text-success-contrast-text font-medium h-8 px-3 text-xs">Action</Button>
+                    <Button size="sm" variant="ghost" className="text-success-dark hover:bg-success-light h-8 px-3 text-xs">Dismiss</Button>
+                  </div>
+                </div>
+              </Alert>
+              
+              <Alert className="border-warning-main bg-warning-lighter">
+                <AlertTriangle className="h-4 w-4 text-warning-main" />
+                <div className="flex items-start justify-between flex-1">
+                  <div>
+                    <h4 className="text-warning-dark font-medium font-sans mb-1 text-sm">Warning</h4>
+                    <AlertDescription className="text-warning-dark font-sans">
+                      This is a Warning alert — check it out!
+                    </AlertDescription>
+                  </div>
+                  <button className="text-warning-main hover:text-warning-dark ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+            </div>
+            
+            <h3 className="text-xl font-semibold text-grey-700 font-sans">Filled Alerts</h3>
+            <div className="space-y-3">
+              <Alert className="bg-info-main text-info-contrast-text border-0">
+                <Info className="h-4 w-4 text-info-contrast-text" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-info-contrast-text font-sans">
+                    This is an Info alert — check it out!
+                  </AlertDescription>
+                  <button className="text-info-contrast-text hover:opacity-80 ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+              
+              <Alert className="bg-success-main text-success-contrast-text border-0">
+                <Check className="h-4 w-4 text-success-contrast-text" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-success-contrast-text font-sans">
+                    This is a Success alert — check it out!
+                  </AlertDescription>
+                  <button className="text-success-contrast-text hover:opacity-80 ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+              
+              <Alert className="bg-warning-main text-warning-contrast-text border-0">
+                <AlertTriangle className="h-4 w-4 text-warning-contrast-text" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-warning-contrast-text font-sans">
+                    This is a Warning alert — check it out!
+                  </AlertDescription>
+                  <button className="text-warning-contrast-text hover:opacity-80 ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+              
+              <Alert className="bg-error-main text-error-contrast-text border-0">
+                <X className="h-4 w-4 text-error-contrast-text" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-error-contrast-text font-sans">
+                    This is an Error alert — check it out!
+                  </AlertDescription>
+                  <button className="text-error-contrast-text hover:opacity-80 ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+            </div>
+            
+            <h3 className="text-xl font-semibold text-grey-700 font-sans">Outlined Alerts</h3>
+            <div className="space-y-3">
+              <Alert className="border-info-main bg-transparent">
+                <Info className="h-4 w-4 text-info-main" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-info-main font-sans">
+                    This is an Info alert — check it out!
+                  </AlertDescription>
+                  <button className="text-info-main hover:text-info-dark ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+              
+              <Alert className="border-success-main bg-transparent">
+                <Check className="h-4 w-4 text-success-main" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-success-main font-sans">
+                    This is a Success alert — check it out!
+                  </AlertDescription>
+                  <button className="text-success-main hover:text-success-dark ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+              
+              <Alert className="border-warning-main bg-transparent">
+                <AlertTriangle className="h-4 w-4 text-warning-main" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-warning-main font-sans">
+                    This is a Warning alert — check it out!
+                  </AlertDescription>
+                  <button className="text-warning-main hover:text-warning-dark ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+              
+              <Alert className="border-error-main bg-transparent">
+                <X className="h-4 w-4 text-error-main" />
+                <div className="flex items-center justify-between flex-1">
+                  <AlertDescription className="text-error-main font-sans">
+                    This is an Error alert — check it out!
+                  </AlertDescription>
+                  <button className="text-error-main hover:text-error-dark ml-4">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </Alert>
+            </div>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Status Badges Section */}
+        <section className="space-y-6 mb-12">
+          <h2 className="text-3xl font-medium text-grey-800 font-sans">Status Badges</h2>
+          
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-grey-700 font-sans">Invoice Status Badges</h3>
+            <div className="flex flex-wrap gap-3">
+              <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">RTP Prepared</Badge>
+              <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">Awaiting SC</Badge>
+              <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">RTP Sent</Badge>
+              <Badge className="bg-error-lighter text-error-dark border border-error-light font-medium px-3 py-1">Pending Action</Badge>
+              <Badge className="bg-error-lighter text-error-dark border border-error-light font-medium px-3 py-1">Rejected by Buyer</Badge>
+              <Badge className="bg-warning-lighter text-warning-dark border border-warning-light font-medium px-3 py-1">Approved by Buyer</Badge>
+              <Badge className="bg-info-lighter text-info-dark border border-info-light font-medium px-3 py-1">External Submission</Badge>
+              <Badge className="bg-success-lighter text-success-dark border border-success-light font-medium px-3 py-1">Paid</Badge>
+              <Badge className="bg-success-lighter text-success-dark border border-success-light font-medium px-3 py-1">Settled</Badge>
+              <Badge className="bg-success-lighter text-success-dark border border-success-light font-medium px-3 py-1">Partially Settled</Badge>
+              <Badge className="bg-grey-300 text-grey-700 border border-grey-400 font-medium px-3 py-1">Excluded</Badge>
+            </div>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Chips & Badges Section */}
+        <section className="space-y-6 mb-12">
+          <h2 className="text-3xl font-medium text-grey-800 font-sans">Chips & Badges</h2>
+          <div className="flex flex-wrap gap-3">
+            <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">Default</Badge>
+            <Badge variant="secondary" className="bg-secondary-lighter text-grey-800 border border-grey-300 font-medium px-3 py-1">Secondary</Badge>
+            <Badge variant="outline" className="border-grey-400 text-grey-700 font-medium px-3 py-1">Outlined</Badge>
+            <Badge className="bg-success-lighter text-success-dark border border-success-light font-medium px-3 py-1">Success</Badge>
+            <Badge className="bg-warning-lighter text-warning-dark border border-warning-light font-medium px-3 py-1">Warning</Badge>
+            <Badge className="bg-error-lighter text-error-dark border border-error-light font-medium px-3 py-1">Error</Badge>
+            <Badge className="bg-info-lighter text-info-dark border border-info-light font-medium px-3 py-1">Info</Badge>
+            <Badge className="bg-primary-lighter text-primary-dark border border-primary-light font-medium px-3 py-1">
+              Deletable
+              <X className="ml-1 h-3 w-3" />
+            </Badge>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
         {/* Buttons Section */}
         <section className="space-y-6 mb-12">
           <h2 className="text-3xl font-medium text-grey-800 font-sans">Buttons</h2>
@@ -134,30 +445,6 @@ export default function DesignSystemPlayground() {
               <Label className="text-grey-700 font-sans font-medium">Basic Textarea</Label>
               <Textarea placeholder="Enter multiline text here..." className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
             </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Typography Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Typography</h2>
-          <div className="space-y-4">
-            <h1 className="text-6xl font-medium text-grey-900 font-sans">Heading 1</h1>
-            <h2 className="text-5xl font-medium text-grey-900 font-sans">Heading 2</h2>
-            <h3 className="text-3xl font-medium text-grey-900 font-sans">Heading 3</h3>
-            <h4 className="text-2xl font-medium text-grey-900 font-sans">Heading 4</h4>
-            <h5 className="text-xl font-semibold text-grey-900 font-sans">Heading 5</h5>
-            <h6 className="text-lg font-medium text-grey-900 font-sans">Heading 6</h6>
-            <p className="text-base font-semibold text-grey-800 font-sans">Subtitle1</p>
-            <p className="text-sm font-normal text-grey-700 font-sans">Subtitle2</p>
-            <p className="text-base font-normal text-grey-800 font-sans">Body1 - Main text for content</p>
-            <p className="text-sm font-normal text-grey-700 font-sans">Body2 - Secondary text</p>
-            <p className="text-sm font-light text-grey-600 font-sans">Body3 - Light text for subtle information</p>
-            <p className="text-xs font-normal text-grey-600 font-sans">Caption text for images and meta info</p>
-            <p className="text-overline font-medium text-grey-800 font-sans uppercase tracking-wide">OVERLINE TEXT FOR LABELS</p>
-            <p className="text-xs font-medium text-grey-800 font-sans uppercase">BUTTON TEXT</p>
-            <p className="text-small-text font-normal text-grey-600 font-sans">Small text for fine print</p>
           </div>
         </section>
 
@@ -317,71 +604,6 @@ export default function DesignSystemPlayground() {
                 checked={autoSave}
                 onCheckedChange={setAutoSave}
               />
-            </div>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Chips & Badges Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Chips & Badges</h2>
-          <div className="flex flex-wrap gap-3">
-            <Badge className="bg-primary-main text-primary-contrast-text font-medium">Default</Badge>
-            <Badge variant="secondary" className="bg-secondary-lighter text-grey-800 font-medium">Secondary</Badge>
-            <Badge variant="outline" className="border-grey-400 text-grey-700 font-medium">Outlined</Badge>
-            <Badge className="bg-success-main text-success-contrast-text font-medium">Success</Badge>
-            <Badge className="bg-warning-main text-warning-contrast-text font-medium">Warning</Badge>
-            <Badge className="bg-error-main text-error-contrast-text font-medium">Error</Badge>
-            <Badge className="bg-primary-main text-primary-contrast-text font-medium">
-              Deletable
-              <X className="ml-1 h-3 w-3" />
-            </Badge>
-          </div>
-        </section>
-
-        <Separator className="my-8" />
-
-        {/* Status Badges Section */}
-        <section className="space-y-6 mb-12">
-          <h2 className="text-3xl font-medium text-grey-800 font-sans">Status Badges</h2>
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Connection Status</h3>
-            <div className="flex flex-wrap gap-3">
-              <Badge className="bg-success-main text-success-contrast-text font-medium">
-                <CheckCircle className="mr-1 h-3 w-3" />
-                Connected
-              </Badge>
-              <Badge className="bg-error-main text-error-contrast-text font-medium">
-                <X className="mr-1 h-3 w-3" />
-                Disconnected
-              </Badge>
-              <Badge className="bg-warning-main text-warning-contrast-text font-medium">
-                <AlertTriangle className="mr-1 h-3 w-3" />
-                Warning
-              </Badge>
-              <Badge className="bg-info-main text-info-contrast-text font-medium">
-                <Info className="mr-1 h-3 w-3" />
-                Processing
-              </Badge>
-            </div>
-
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">System Status</h3>
-            <div className="flex flex-wrap gap-3">
-              <Badge className="bg-success-main text-success-contrast-text font-medium">Active</Badge>
-              <Badge className="bg-grey-500 text-common-white font-medium">Inactive</Badge>
-              <Badge className="bg-warning-main text-warning-contrast-text font-medium">Pending</Badge>
-              <Badge className="bg-error-main text-error-contrast-text font-medium">Failed</Badge>
-              <Badge className="bg-info-main text-info-contrast-text font-medium">In Progress</Badge>
-              <Badge className="bg-primary-main text-primary-contrast-text font-medium">Complete</Badge>
-            </div>
-
-            <h3 className="text-xl font-semibold text-grey-700 font-sans">Priority Levels</h3>
-            <div className="flex flex-wrap gap-3">
-              <Badge className="bg-error-main text-error-contrast-text font-medium">High Priority</Badge>
-              <Badge className="bg-warning-main text-warning-contrast-text font-medium">Medium Priority</Badge>
-              <Badge className="bg-success-main text-success-contrast-text font-medium">Low Priority</Badge>
-              <Badge className="bg-grey-400 text-grey-800 font-medium">Normal</Badge>
             </div>
           </div>
         </section>
@@ -607,6 +829,9 @@ export default function DesignSystemPlayground() {
             <Button onClick={() => showWarningToast("Warning", "Please be careful")} className="bg-warning-main hover:bg-warning-dark text-warning-contrast-text font-medium">
               Show Warning Toast
             </Button>
+            <Button onClick={testToasts} className="bg-info-main hover:bg-info-dark text-info-contrast-text font-medium">
+              Test All Toasts
+            </Button>
           </div>
         </section>
 
@@ -639,14 +864,20 @@ export default function DesignSystemPlayground() {
               </DialogTrigger>
               <DialogContent className="bg-background-paper border-grey-300">
                 <DialogHeader>
-                  <DialogTitle className="text-grey-900 font-sans font-medium">Confirm Action</DialogTitle>
+                  <DialogTitle className="text-grey-900 font-sans font-medium">Are You Sure?</DialogTitle>
                   <DialogDescription className="text-grey-600 font-sans">
-                    Are you sure you want to proceed with this action?
+                    Once excluded, Monto will no longer track or monitor it.
                   </DialogDescription>
                 </DialogHeader>
+                <div className="py-4">
+                  <p className="text-grey-700 font-sans mb-4">Please select the relevant reason:</p>
+                  <select className="w-full p-3 border border-grey-400 rounded-lg bg-background-paper text-grey-700">
+                    <option>Paid outside the portal</option>
+                  </select>
+                </div>
                 <div className="flex justify-end gap-2 mt-4">
-                  <Button variant="outline" className="border-grey-400 text-grey-700 hover:bg-grey-200 font-medium">Cancel</Button>
-                  <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium">Confirm</Button>
+                  <Button variant="outline" className="border-grey-400 text-grey-700 hover:bg-grey-200 font-medium">Close</Button>
+                  <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text font-medium">Confirm Exclude</Button>
                 </div>
               </DialogContent>
             </Dialog>
