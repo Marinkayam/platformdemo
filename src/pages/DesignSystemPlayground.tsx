@@ -1,8 +1,25 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { toast } from '@/hooks/use-toast';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertCircle, CheckCircle, Info, AlertTriangle, Loader2, Heart, Star, Download } from 'lucide-react';
 
 const DesignSystemPlayground = () => {
+  const [toggleStates, setToggleStates] = useState({
+    notifications: false,
+    darkMode: false,
+    autoSave: true,
+  });
+  const [loadingStates, setLoadingStates] = useState({
+    saving: false,
+    uploading: false,
+    processing: false,
+  });
+
   // Color palette data based on Monto design tokens
   const colorTokens = [
     { name: 'primary-lighter', class: 'bg-primary-lighter', hex: '#EFEBFF' },
@@ -66,6 +83,53 @@ const DesignSystemPlayground = () => {
     { name: 'shadow-2xl', class: 'shadow-2xl' },
   ];
 
+  const handleToggle = (key: string) => {
+    setToggleStates(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const handleLoadingDemo = (key: string) => {
+    setLoadingStates(prev => ({ ...prev, [key]: true }));
+    setTimeout(() => {
+      setLoadingStates(prev => ({ ...prev, [key]: false }));
+    }, 3000);
+  };
+
+  const showToast = (type: string) => {
+    switch (type) {
+      case 'success':
+        toast({
+          title: "Success!",
+          description: "Your action was completed successfully.",
+          className: "border-success-main bg-success-main/10 text-success-main",
+        });
+        break;
+      case 'error':
+        toast({
+          title: "Error!",
+          description: "Something went wrong. Please try again.",
+          className: "border-error-main bg-error-main/10 text-error-main",
+        });
+        break;
+      case 'info':
+        toast({
+          title: "Information",
+          description: "Here's some helpful information for you.",
+          className: "border-info-main bg-info-main/10 text-info-main",
+        });
+        break;
+      case 'warning':
+        toast({
+          title: "Warning",
+          description: "Please review this important information.",
+          className: "border-warning-main bg-warning-main/10 text-warning-main",
+        });
+        break;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background-default p-8">
       <div className="max-w-7xl mx-auto space-y-12">
@@ -78,6 +142,325 @@ const DesignSystemPlayground = () => {
             Exploring Monto's Design Tokens
           </p>
         </div>
+
+        {/* Buttons */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl font-sans text-secondary-main">
+              Buttons
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-8">
+            <div>
+              <h3 className="text-xl font-sans font-medium text-grey-800 mb-4">Button Variants</h3>
+              <div className="flex flex-wrap gap-4">
+                <Button variant="default">Default</Button>
+                <Button variant="secondary">Secondary</Button>
+                <Button variant="destructive">Destructive</Button>
+                <Button variant="outline">Outline</Button>
+                <Button variant="ghost">Ghost</Button>
+                <Button variant="link">Link</Button>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-sans font-medium text-grey-800 mb-4">Button Sizes</h3>
+              <div className="flex flex-wrap items-center gap-4">
+                <Button size="sm">Small</Button>
+                <Button size="default">Default</Button>
+                <Button size="lg">Large</Button>
+                <Button size="icon">
+                  <Heart className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-sans font-medium text-grey-800 mb-4">Button States</h3>
+              <div className="flex flex-wrap gap-4">
+                <Button>Normal</Button>
+                <Button disabled>Disabled</Button>
+                <Button>
+                  <Star className="mr-2 h-4 w-4" />
+                  With Icon
+                </Button>
+                <Button>
+                  Download
+                  <Download className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Toggles */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl font-sans text-secondary-main">
+              Toggles & Switches
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="flex items-center justify-between p-4 border rounded-lg">
+                <div>
+                  <p className="font-medium">Notifications</p>
+                  <p className="text-sm text-grey-600">Receive email notifications</p>
+                </div>
+                <Switch
+                  checked={toggleStates.notifications}
+                  onCheckedChange={() => handleToggle('notifications')}
+                />
+              </div>
+              <div className="flex items-center justify-between p-4 border rounded-lg">
+                <div>
+                  <p className="font-medium">Dark Mode</p>
+                  <p className="text-sm text-grey-600">Toggle dark theme</p>
+                </div>
+                <Switch
+                  checked={toggleStates.darkMode}
+                  onCheckedChange={() => handleToggle('darkMode')}
+                />
+              </div>
+              <div className="flex items-center justify-between p-4 border rounded-lg">
+                <div>
+                  <p className="font-medium">Auto Save</p>
+                  <p className="text-sm text-grey-600">Automatically save changes</p>
+                </div>
+                <Switch
+                  checked={toggleStates.autoSave}
+                  onCheckedChange={() => handleToggle('autoSave')}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Loading States */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl font-sans text-secondary-main">
+              Loading States
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div>
+              <h3 className="text-xl font-sans font-medium text-grey-800 mb-4">Skeleton Loading</h3>
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[200px]" />
+                <Skeleton className="h-4 w-[300px]" />
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-sans font-medium text-grey-800 mb-4">Button Loading States</h3>
+              <div className="flex flex-wrap gap-4">
+                <Button 
+                  onClick={() => handleLoadingDemo('saving')}
+                  disabled={loadingStates.saving}
+                >
+                  {loadingStates.saving ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Document'
+                  )}
+                </Button>
+                <Button 
+                  onClick={() => handleLoadingDemo('uploading')}
+                  disabled={loadingStates.uploading}
+                  variant="secondary"
+                >
+                  {loadingStates.uploading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    'Upload File'
+                  )}
+                </Button>
+                <Button 
+                  onClick={() => handleLoadingDemo('processing')}
+                  disabled={loadingStates.processing}
+                  variant="outline"
+                >
+                  {loadingStates.processing ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    'Process Data'
+                  )}
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Banners */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl font-sans text-secondary-main">
+              Banners & Alerts
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Alert className="border-info-main bg-info-main/10">
+              <Info className="h-4 w-4 text-info-main" />
+              <AlertTitle className="text-info-main">Information</AlertTitle>
+              <AlertDescription className="text-info-main/80">
+                This is an informational banner to provide helpful context.
+              </AlertDescription>
+            </Alert>
+            
+            <Alert className="border-success-main bg-success-main/10">
+              <CheckCircle className="h-4 w-4 text-success-main" />
+              <AlertTitle className="text-success-main">Success</AlertTitle>
+              <AlertDescription className="text-success-main/80">
+                Your operation completed successfully!
+              </AlertDescription>
+            </Alert>
+            
+            <Alert className="border-warning-main bg-warning-main/10">
+              <AlertTriangle className="h-4 w-4 text-warning-main" />
+              <AlertTitle className="text-warning-main">Warning</AlertTitle>
+              <AlertDescription className="text-warning-main/80">
+                Please review this important information before proceeding.
+              </AlertDescription>
+            </Alert>
+            
+            <Alert className="border-error-main bg-error-main/10">
+              <AlertCircle className="h-4 w-4 text-error-main" />
+              <AlertTitle className="text-error-main">Error</AlertTitle>
+              <AlertDescription className="text-error-main/80">
+                Something went wrong. Please check your input and try again.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
+
+        {/* Toast Banners */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl font-sans text-secondary-main">
+              Toast Notifications
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-4">
+              <Button onClick={() => showToast('success')} variant="outline">
+                <CheckCircle className="mr-2 h-4 w-4" />
+                Show Success Toast
+              </Button>
+              <Button onClick={() => showToast('error')} variant="outline">
+                <AlertCircle className="mr-2 h-4 w-4" />
+                Show Error Toast
+              </Button>
+              <Button onClick={() => showToast('info')} variant="outline">
+                <Info className="mr-2 h-4 w-4" />
+                Show Info Toast
+              </Button>
+              <Button onClick={() => showToast('warning')} variant="outline">
+                <AlertTriangle className="mr-2 h-4 w-4" />
+                Show Warning Toast
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Modals */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl font-sans text-secondary-main">
+              Modals & Dialogs
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-4">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button>Simple Modal</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Simple Dialog</DialogTitle>
+                    <DialogDescription>
+                      This is a basic modal dialog with some content.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="py-4">
+                    <p className="text-sm text-grey-600">
+                      This modal demonstrates the basic structure and styling of our dialog component.
+                    </p>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline">Cancel</Button>
+                    <Button>Confirm</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="secondary">Confirmation Modal</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Confirm Action</DialogTitle>
+                    <DialogDescription>
+                      Are you sure you want to proceed with this action? This cannot be undone.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="py-4">
+                    <Alert className="border-warning-main bg-warning-main/10">
+                      <AlertTriangle className="h-4 w-4 text-warning-main" />
+                      <AlertDescription className="text-warning-main/80">
+                        This action is permanent and cannot be reversed.
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline">Cancel</Button>
+                    <Button variant="destructive">Delete</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline">Info Modal</Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <Info className="h-5 w-5 text-info-main" />
+                      Information
+                    </DialogTitle>
+                    <DialogDescription>
+                      Here's some additional information about this feature.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <p className="text-sm text-grey-600">
+                      This modal provides detailed information and can include various content types.
+                    </p>
+                    <div className="bg-grey-200 p-3 rounded-lg">
+                      <p className="text-sm font-medium">Quick Tip:</p>
+                      <p className="text-sm text-grey-600">
+                        You can customize modals to fit your specific use case.
+                      </p>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button>Got it</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Color Palette */}
         <Card>
