@@ -28,7 +28,7 @@ export function InvoiceHeader({
     <>
       <PageHeader 
         title="RTPs" 
-        subtitle="Manage and track Real-Time Payment requests" 
+        subtitle="RTPs (Real-Time Payments) in Monto are smart, trackable payment requests that sync invoice data across portals, enabling teams to monitor, validate, and settle transactions in real time." 
       />
       
       <InvoiceTabs

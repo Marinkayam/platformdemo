@@ -169,6 +169,7 @@ export const navMain: NavItem[] = [
     href: "/invoices",
     icon: InvoicesIcon,
     items: [
+      { title: "All RTPs", href: "/invoices" },
       { title: "Pending Actions", href: "/invoices?status=pending" },
       { title: "Overdue", href: "/invoices?status=overdue" },
       { title: "Settled", href: "/invoices?status=settled" },

@@ -22,7 +22,7 @@ export function SidebarSection({
   // Initialize Invoices as expanded if user is on invoices page
   useEffect(() => {
     if (pathname.includes("/invoices")) {
-      setExpandedItems(prev => new Set(prev).add("Invoices"));
+      setExpandedItems(prev => new Set(prev).add("RTPs"));
     }
   }, [pathname]);
 
@@ -38,8 +38,8 @@ export function SidebarSection({
     });
   };
 
-  const handleInvoicesClick = () => {
-    toggleExpanded("Invoices");
+  const handleRTPsClick = () => {
+    toggleExpanded("RTPs");
     navigate("/invoices");
   };
 
@@ -54,15 +54,16 @@ export function SidebarSection({
           const isExpanded = expandedItems.has(item.title);
 
           if (hasSubmenu) {
+            const isAllRTPsActive = pathname === "/invoices" && !search;
             const isInvoicePendingActive = pathname === "/invoices" && search.includes("pending");
             const isInvoiceOverdueActive = pathname === "/invoices" && search.includes("overdue");
-            const isInvoiceClearedActive = pathname === "/invoices" && search.includes("cleared");
+            const isInvoiceSettledActive = pathname === "/invoices" && search.includes("settled");
             const isSubmenuActive = pathname.includes("/invoices");
 
             return (
               <div key={item.title}>
                 <button
-                  onClick={item.title === "Invoices" ? handleInvoicesClick : () => toggleExpanded(item.title)}
+                  onClick={item.title === "RTPs" ? handleRTPsClick : () => toggleExpanded(item.title)}
                   className={cn(
                     "flex items-center justify-between gap-3 px-3 py-3 text-sm rounded-md transition-colors w-full",
                     "text-[#3F4758] hover:bg-[#F4F4F7]",
@@ -93,9 +94,10 @@ export function SidebarSection({
                   <div className="ml-8 mt-1 space-y-1 transition-all duration-200">
                     {item.items?.map(subItem => {
                       const isSubActive = pathname === "/invoices" && (
+                        (subItem.href === "/invoices" && isAllRTPsActive) ||
                         (subItem.href?.includes("pending") && isInvoicePendingActive) ||
                         (subItem.href?.includes("overdue") && isInvoiceOverdueActive) ||
-                        (subItem.href?.includes("cleared") && isInvoiceClearedActive)
+                        (subItem.href?.includes("settled") && isInvoiceSettledActive)
                       );
                       
                       return (
