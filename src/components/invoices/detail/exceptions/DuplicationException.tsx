@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { TriangleAlert, Lightbulb } from "lucide-react";
+import { TriangleAlert, Sparkles } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -81,7 +81,7 @@ export function DuplicationException({
         </Badge>
       </div>
 
-      {/* Exception Alert Banner - Updated styling to match INV-10032100 */}
+      {/* Exception Alert Banner */}
       <div className="bg-red-50 p-4 rounded-xl border border-red-200">
         <div className="flex items-start gap-3">
           <TriangleAlert 
@@ -97,10 +97,10 @@ export function DuplicationException({
         </div>
       </div>
 
-      {/* Info Banner - Updated styling to match INV-10032100 */}
+      {/* Info Banner */}
       <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
         <div className="flex items-start gap-3">
-          <Lightbulb 
+          <Sparkles 
             strokeWidth={1.25} 
             className="mt-1 flex-shrink-0 text-blue-600" 
             size={18} 

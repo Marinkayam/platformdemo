@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertTriangle } from "lucide-react";
+import { TriangleAlert, Sparkles } from "lucide-react";
 import { Exception } from "@/types/exception";
 import { Invoice } from "@/types/invoice";
 import { ResolutionOptions } from "./extra-data/ResolutionOptions";
@@ -62,10 +62,10 @@ export function POLineItemsExceptionHandler({
         </Badge>
       </div>
 
-      {/* Red Warning Banner - Updated styling to match INV-10032100 */}
+      {/* Red Warning Banner */}
       <div className="bg-red-50 p-4 rounded-xl border border-red-200">
         <div className="flex items-start gap-3">
-          <AlertTriangle 
+          <TriangleAlert 
             strokeWidth={1.25} 
             className="mt-1 flex-shrink-0 text-red-600" 
             size={18} 
@@ -78,12 +78,19 @@ export function POLineItemsExceptionHandler({
         </div>
       </div>
 
-      {/* Resolution Instructions Banner - Updated styling to match INV-10032100 */}
+      {/* Resolution Instructions Banner */}
       <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
-        <div className="text-blue-800">
-          <p className="text-gray-900 text-sm">
-            <span className="font-semibold">Resolution Instructions from Back Office:</span> To resolve these issues select PO line items that matches the invoice details
-          </p>
+        <div className="flex items-start gap-3">
+          <Sparkles 
+            strokeWidth={1.25} 
+            className="mt-1 flex-shrink-0 text-blue-600" 
+            size={18} 
+          />
+          <div>
+            <p className="text-gray-900 text-sm">
+              <span className="font-semibold">Resolution Instructions from Back Office:</span> To resolve these issues select PO line items that matches the invoice details
+            </p>
+          </div>
         </div>
       </div>
 
@@ -92,9 +99,6 @@ export function POLineItemsExceptionHandler({
         <CardContent className="p-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Instructions for Resolution
-              </label>
               <Textarea
                 value={instructions}
                 onChange={(e) => setInstructions(e.target.value)}
@@ -113,8 +117,8 @@ export function POLineItemsExceptionHandler({
               />
             </div>
 
-            {/* Action Buttons */}
-            <div className="pt-4 flex gap-3">
+            {/* Action Buttons - Right aligned */}
+            <div className="pt-4 flex justify-end gap-3">
               <Button 
                 onClick={handleMarkAsResolved}
                 className="bg-monto-purple hover:bg-purple-700 text-white"
