@@ -8,11 +8,14 @@ import type {
 const TOAST_LIMIT = 5
 export const TOAST_REMOVE_DELAY = 3000 // 3 seconds
 
+export type ToastVariant = "default" | "destructive" | "success" | "warning" | "info"
+
 type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
+  variant?: ToastVariant
 }
 
 const actionTypes = {
@@ -151,8 +154,28 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, "id">
 
-function toast({ ...props }: Toast) {
+function toast({ variant = "default", className, ...props }: Toast) {
   const id = genId()
+
+  // Apply Monto styling based on variant
+  let montoClassName = className || ""
+  
+  switch (variant) {
+    case "success":
+      montoClassName = `border-success-main bg-success-main/10 text-success-main ${className || ""}`.trim()
+      break
+    case "warning":
+      montoClassName = `border-warning-main bg-warning-main/10 text-warning-main ${className || ""}`.trim()
+      break
+    case "info":
+      montoClassName = `border-info-main bg-info-main/10 text-info-main ${className || ""}`.trim()
+      break
+    case "destructive":
+      montoClassName = `border-error-main bg-error-main/10 text-error-main ${className || ""}`.trim()
+      break
+    default:
+      montoClassName = className || ""
+  }
 
   const update = (props: ToasterToast) =>
     dispatch({
@@ -166,6 +189,8 @@ function toast({ ...props }: Toast) {
     toast: {
       ...props,
       id,
+      variant,
+      className: montoClassName,
       open: true,
       onOpenChange: (open) => {
         if (!open) dismiss()

@@ -10,9 +10,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertCircle, CheckCircle, Info, AlertTriangle, Loader2, Heart, Star, Download, BadgeCheck, Eye, EyeOff } from 'lucide-react';
+import { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } from '@/lib/toast-helpers';
 
 const DesignSystemPlayground = () => {
   const [toggleStates, setToggleStates] = useState({
@@ -115,32 +115,16 @@ const DesignSystemPlayground = () => {
   const showToast = (type: string) => {
     switch (type) {
       case 'success':
-        toast({
-          title: "Success!",
-          description: "Your action was completed successfully.",
-          className: "border-success-main bg-success-main/10 text-success-main",
-        });
+        showSuccessToast("Success!", "Your action was completed successfully.");
         break;
       case 'error':
-        toast({
-          title: "Error!",
-          description: "Something went wrong. Please try again.",
-          className: "border-error-main bg-error-main/10 text-error-main",
-        });
+        showErrorToast("Error!", "Something went wrong. Please try again.");
         break;
       case 'info':
-        toast({
-          title: "Information",
-          description: "Here's some helpful information for you.",
-          className: "border-info-main bg-info-main/10 text-info-main",
-        });
+        showInfoToast("Information", "Here's some helpful information for you.");
         break;
       case 'warning':
-        toast({
-          title: "Warning",
-          description: "Please review this important information.",
-          className: "border-warning-main bg-warning-main/10 text-warning-main",
-        });
+        showWarningToast("Warning", "Please review this important information.");
         break;
     }
   };
