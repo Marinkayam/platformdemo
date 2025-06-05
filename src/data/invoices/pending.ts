@@ -62,7 +62,18 @@ export const pendingInvoices: Invoice[] = [
     documentType: "Invoice",
     portal: "Coupa",
     hasExceptions: true,
-    rejectedBy: "Buyer"
+    rejectedBy: "Buyer",
+    exceptions: [
+      {
+        id: "exc-po-line-items-001",
+        type: "MISSING_INFORMATION",
+        message: "PO Line Items",
+        details: "Monto could not find or select PO line items that matches the invoice details",
+        createdAt: "2024-03-22T10:30:00Z",
+        resolved: false,
+        missingFields: ["poLineItems"]
+      }
+    ]
   },
   {
     id: "3",

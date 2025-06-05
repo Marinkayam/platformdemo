@@ -3,6 +3,7 @@ import { Exception } from "@/types/exception";
 import { Invoice } from "@/types/invoice";
 import { DuplicateInvoiceHandler } from "./DuplicateInvoiceHandler";
 import { DataExtractionResolver } from "./DataExtractionResolver";
+import { POLineItemsExceptionHandler } from "./POLineItemsExceptionHandler";
 import ExceptionResolutionWizard from "./ExceptionResolutionWizard";
 import ValidationExceptionWizard from "./ValidationExceptionWizard";
 import { ExtraDataExceptionWizard } from "./ExtraDataExceptionWizard";
@@ -23,6 +24,9 @@ export function ExceptionHandler({
   // Check exception types
   const isDuplicateException = exceptions.some(exception => exception.type === 'DUPLICATE_INVOICE');
   const isDataExtractionException = exceptions.some(exception => exception.type === 'MISSING_INFORMATION');
+  const isPOLineItemsException = exceptions.some(exception => 
+    exception.type === 'MISSING_INFORMATION' && exception.missingFields?.includes('poLineItems')
+  );
   const isPOException = exceptions.some(exception => exception.type === 'PO_CLOSED' || exception.type === 'PO_INSUFFICIENT_FUNDS');
   const isValidationException = exceptions.some(exception => exception.type === 'VALIDATION_ERROR');
   const isExtraDataException = exceptions.some(exception => exception.type === 'EXTRA_DATA');
@@ -83,7 +87,18 @@ export function ExceptionHandler({
     );
   }
 
-  // Use DataExtractionResolver for MISSING_INFORMATION exceptions
+  // Use POLineItemsExceptionHandler for PO line items exceptions
+  if (isPOLineItemsException && invoice) {
+    return (
+      <POLineItemsExceptionHandler 
+        exceptions={exceptions}
+        invoice={invoice}
+        onResolveException={onResolveException}
+      />
+    );
+  }
+
+  // Use DataExtractionResolver for other MISSING_INFORMATION exceptions
   if (isDataExtractionException && invoice) {
     return (
       <DataExtractionResolver 
