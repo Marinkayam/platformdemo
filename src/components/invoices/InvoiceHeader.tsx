@@ -27,7 +27,7 @@ export function InvoiceHeader({
   return (
     <>
       <PageHeader 
-        title="RTP's" 
+        title="RTPs" 
         subtitle="Manage and track Real-Time Payment requests" 
       />
       

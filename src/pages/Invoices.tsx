@@ -47,7 +47,7 @@ export default function Invoices() {
   
   // Update tabs with counts
   const tabsWithCounts = [
-    { id: "all", label: "All RTP's", count: invoiceData.length },
+    { id: "all", label: "All RTPs", count: invoiceData.length },
     { id: "pending", label: "Pending Action", count: pendingCount },
     { id: "overdue", label: "Overdue", count: overdueCount },
     { id: "settled", label: "Settled", count: settledCount },

@@ -9,6 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { duplicateInvoices } from "@/data/invoices/duplicates";
 import { ExcludeAllModal } from "./ExcludeAllModal";
+import { ConfirmationDialog } from "./confirmation/ConfirmationDialog";
 import { DuplicateInvoiceCardsGrid } from "./duplicate-cards";
 
 interface DuplicateInvoiceHandlerProps {
@@ -20,6 +21,7 @@ interface DuplicateInvoiceHandlerProps {
 export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveException }: DuplicateInvoiceHandlerProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isExcludeModalOpen, setIsExcludeModalOpen] = useState(false);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const navigate = useNavigate();
   
   // Get the duplicate exception
@@ -51,6 +53,10 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
       return;
     }
     
+    setIsConfirmationModalOpen(true);
+  };
+
+  const handleConfirmSelection = () => {
     if (duplicateException) {
       onResolveException(duplicateException.id, 'MARK_RESOLVED');
       
@@ -81,6 +87,8 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
       }, 1500);
     }
   };
+
+  const selectedInvoice = duplicateInvoices.find(inv => inv.id === selectedId);
 
   return (
     <Card className="border border-gray-200 shadow-sm">
@@ -140,6 +148,15 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
         onClose={() => setIsExcludeModalOpen(false)}
         onConfirm={handleExcludeAll}
       />
+
+      {selectedInvoice && (
+        <ConfirmationDialog
+          invoice={selectedInvoice}
+          isOpen={isConfirmationModalOpen}
+          onOpenChange={setIsConfirmationModalOpen}
+          onConfirm={handleConfirmSelection}
+        />
+      )}
     </Card>
   );
 }

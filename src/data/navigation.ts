@@ -165,7 +165,7 @@ export const navMain: NavItem[] = [
     icon: DashboardIcon,
   },
   {
-    title: "RTP's",
+    title: "RTPs",
     href: "/invoices",
     icon: InvoicesIcon,
     items: [
