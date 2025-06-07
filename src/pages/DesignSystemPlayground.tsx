@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -13,10 +12,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Progress } from "@/components/ui/progress";
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } from "@/lib/toast-helpers";
 import { Toaster } from "@/components/ui/toaster";
 import { Separator } from "@/components/ui/separator";
-import { AlertTriangle, Check, Info, X, Download, BadgeCheck, Heart, Star, CheckCircle, Loader2, ArrowLeft, Palette, Settings, ExternalLink, Users, FileText, Package } from "lucide-react";
+import { AlertTriangle, Check, Info, X, Download, BadgeCheck, Heart, Star, CheckCircle, Loader2, ArrowLeft, Palette, Settings, Users, FileText, Package, MoreVertical, ChevronRight, Home } from "lucide-react";
 
 export default function DesignSystemPlayground() {
   const [basicCheckbox, setBasicCheckbox] = useState(false);
@@ -27,6 +30,7 @@ export default function DesignSystemPlayground() {
   const [darkMode, setDarkMode] = useState(false);
   const [autoSave, setAutoSave] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(33);
 
   const handleLoadingAction = (action: string) => {
     setLoading(true);
@@ -86,10 +90,13 @@ export default function DesignSystemPlayground() {
                 <a href="#status-badges" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Status Badges</a>
                 <a href="#chips-badges" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Chips & Badges</a>
                 <a href="#inputs" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Inputs</a>
+                <a href="#dropdowns" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Dropdowns</a>
                 <a href="#controls" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Controls</a>
                 <a href="#alerts" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Alerts</a>
                 <a href="#modals" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Modals</a>
                 <a href="#table-rows" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Table Rows</a>
+                <a href="#breadcrumbs" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Breadcrumbs</a>
+                <a href="#progress" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Progress</a>
                 <a href="#spacing" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Spacing</a>
                 <a href="#cards" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Cards</a>
                 <a href="#colors" className="block px-3 py-2 text-sm text-grey-700 hover:bg-grey-200 rounded-lg transition-colors">Colors</a>
@@ -126,31 +133,43 @@ export default function DesignSystemPlayground() {
                   <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">24px / font-medium</span>
                 </div>
                 <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
-                  <p className="text-base font-semibold text-grey-800">Subtitle 1 - Primary subtitles</p>
+                  <p className="text-base font-bold text-grey-800">Body Bold - Maximum emphasis</p>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">16px / font-bold</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <p className="text-base font-semibold text-grey-800">Body Semibold - Strong emphasis</p>
                   <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">16px / font-semibold</span>
                 </div>
                 <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
-                  <p className="text-base font-medium text-grey-800">Subtitle 2 - Medium weight</p>
+                  <p className="text-base font-medium text-grey-800">Body Medium - Medium emphasis</p>
                   <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">16px / font-medium</span>
                 </div>
                 <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
-                  <p className="text-base font-normal text-grey-700">Body 1 - Main content text for readability</p>
+                  <p className="text-base font-normal text-grey-700">Body Normal - Default content text</p>
                   <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">16px / font-normal</span>
                 </div>
                 <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
-                  <p className="text-base font-light text-grey-700">Body 1 Light - Light weight content</p>
+                  <p className="text-base font-light text-grey-700">Body Light - Elegant subtle text</p>
                   <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">16px / font-light</span>
                 </div>
                 <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
-                  <p className="text-sm font-normal text-grey-600">Body 2 - Secondary content and descriptions</p>
-                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">14px / font-normal</span>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
-                  <p className="text-sm font-bold text-grey-800">Body 2 Bold - Emphasized secondary content</p>
+                  <p className="text-sm font-bold text-grey-800">Small Bold - Emphasized secondary</p>
                   <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">14px / font-bold</span>
                 </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <p className="text-sm font-semibold text-grey-800">Small Semibold - Strong secondary</p>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">14px / font-semibold</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <p className="text-sm font-medium text-grey-700">Small Medium - Medium secondary</p>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">14px / font-medium</span>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-grey-300 pb-4">
+                  <p className="text-sm font-normal text-grey-600">Small Normal - Secondary content</p>
+                  <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">14px / font-normal</span>
+                </div>
                 <div className="flex items-baseline justify-between">
-                  <p className="text-xs font-normal text-grey-500">Caption - Meta information and fine print</p>
+                  <p className="text-xs font-normal text-grey-500">Caption - Meta information</p>
                   <span className="text-sm text-grey-500 font-mono bg-grey-200 px-2 py-1 rounded">12px / font-normal</span>
                 </div>
               </div>
@@ -169,11 +188,10 @@ export default function DesignSystemPlayground() {
                   <div className="flex flex-wrap gap-4">
                     <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary</Button>
                     <Button variant="secondary" className="bg-grey-200 hover:bg-grey-300 text-grey-800">Secondary</Button>
-                    <Button variant="destructive" className="bg-error-main hover:bg-error-dark text-error-contrast-text">Destructive</Button>
+                    <Button variant="destructive" className="bg-error-main hover:bg-error-dark text-white">Destructive</Button>
                     <Button variant="outline" className="border-primary-main text-primary-main hover:bg-primary-main hover:text-primary-contrast-text">Outline</Button>
                     <Button variant="ghost" className="text-primary-main hover:bg-primary-lighter">Ghost</Button>
                     <Button variant="link" className="text-primary-main hover:underline p-0 h-auto">
-                      <ExternalLink className="mr-2 h-4 w-4" />
                       Link Button
                     </Button>
                   </div>
@@ -222,47 +240,47 @@ export default function DesignSystemPlayground() {
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Process Status</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-violet-100 font-normal">RTP Prepared</Badge>
-                    <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-violet-100 font-normal">Awaiting SC</Badge>
-                    <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-violet-100 font-normal">RTP Sent</Badge>
+                    <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">RTP Prepared</Badge>
+                    <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Awaiting SC</Badge>
+                    <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">RTP Sent</Badge>
                   </div>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Action Required</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100 font-normal">Pending Action</Badge>
-                    <Badge className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100 font-normal">Rejected by Buyer</Badge>
+                    <Badge className="bg-red-50 text-red-700 border-red-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Pending Action</Badge>
+                    <Badge className="bg-red-50 text-red-700 border-red-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Rejected by Buyer</Badge>
                   </div>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Approval Status</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100 font-normal">Approved by Buyer</Badge>
+                    <Badge className="bg-orange-50 text-orange-700 border-orange-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Approved by Buyer</Badge>
                   </div>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">External Status</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 font-normal">External Submission</Badge>
+                    <Badge className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">External Submission</Badge>
                   </div>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Payment Status</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100 font-normal">Paid</Badge>
-                    <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100 font-normal">Settled</Badge>
-                    <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100 font-normal">Partially Settled</Badge>
+                    <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Paid</Badge>
+                    <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Settled</Badge>
+                    <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Partially Settled</Badge>
                   </div>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Other Status</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-grey-100 text-grey-700 border-grey-300 hover:bg-grey-200 font-normal">Excluded</Badge>
+                    <Badge className="bg-grey-100 text-grey-700 border-grey-300 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Excluded</Badge>
                   </div>
                 </div>
               </div>
@@ -279,33 +297,33 @@ export default function DesignSystemPlayground() {
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Basic Badges</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-primary-lighter text-primary-dark border-primary-light font-normal">Default</Badge>
-                    <Badge variant="secondary" className="bg-grey-200 text-grey-700 border-grey-300 font-normal">Secondary</Badge>
-                    <Badge variant="outline" className="border-grey-400 text-grey-700 bg-background-paper font-normal">Outlined</Badge>
+                    <Badge className="bg-primary-lighter text-primary-dark border-primary-light hover:bg-primary-main hover:text-primary-contrast-text font-normal">Default</Badge>
+                    <Badge variant="secondary" className="bg-grey-200 text-grey-700 border-grey-300 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Secondary</Badge>
+                    <Badge variant="outline" className="border-grey-400 text-grey-700 bg-background-paper hover:bg-primary-main hover:text-primary-contrast-text font-normal">Outlined</Badge>
                   </div>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Semantic Badges</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-success-lighter text-success-dark border-success-light font-normal">Success</Badge>
-                    <Badge className="bg-warning-lighter text-warning-dark border-warning-light font-normal">Warning</Badge>
-                    <Badge className="bg-error-lighter text-error-dark border-error-light font-normal">Error</Badge>
-                    <Badge className="bg-info-lighter text-info-dark border-info-light font-normal">Info</Badge>
+                    <Badge className="bg-success-lighter text-success-dark border-success-light hover:bg-primary-main hover:text-primary-contrast-text font-normal">Success</Badge>
+                    <Badge className="bg-warning-lighter text-warning-dark border-warning-light hover:bg-primary-main hover:text-primary-contrast-text font-normal">Warning</Badge>
+                    <Badge className="bg-error-lighter text-error-dark border-error-light hover:bg-primary-main hover:text-primary-contrast-text font-normal">Error</Badge>
+                    <Badge className="bg-info-lighter text-info-dark border-info-light hover:bg-primary-main hover:text-primary-contrast-text font-normal">Info</Badge>
                   </div>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Interactive Chips</h3>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-primary-lighter text-primary-dark border-primary-light cursor-pointer hover:bg-primary-light font-normal">
+                    <Badge className="bg-primary-lighter text-primary-dark border-primary-light cursor-pointer hover:bg-primary-main hover:text-primary-contrast-text font-normal">
                       Clickable
                     </Badge>
-                    <Badge className="bg-primary-lighter text-primary-dark border-primary-light cursor-pointer hover:bg-primary-light font-normal">
+                    <Badge className="bg-primary-lighter text-primary-dark border-primary-light cursor-pointer hover:bg-primary-main hover:text-primary-contrast-text font-normal">
                       Deletable
                       <X className="ml-1 h-3 w-3" />
                     </Badge>
-                    <Badge className="bg-success-lighter text-success-dark border-success-light cursor-pointer hover:bg-success-light font-normal">
+                    <Badge className="bg-success-lighter text-success-dark border-success-light cursor-pointer hover:bg-primary-main hover:text-primary-contrast-text font-normal">
                       <CheckCircle className="mr-1 h-3 w-3" />
                       With Icon
                     </Badge>
@@ -348,6 +366,74 @@ export default function DesignSystemPlayground() {
               <div className="mt-6 space-y-2">
                 <Label className="text-grey-800 font-medium">Textarea</Label>
                 <Textarea placeholder="Enter multiline text here..." className="border-grey-400 focus-visible:ring-0 focus-visible:border-primary-main bg-background-paper" />
+              </div>
+            </section>
+
+            {/* Dropdowns Section */}
+            <section id="dropdowns" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Dropdown Fields</h2>
+                <p className="text-grey-600">Select components and dropdown menus</p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-grey-800 font-medium">Basic Select</Label>
+                  <Select>
+                    <SelectTrigger className="border-grey-400 focus:ring-0 focus:border-primary-main bg-background-paper">
+                      <SelectValue placeholder="Select an option" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                      <SelectItem value="option1">Option 1</SelectItem>
+                      <SelectItem value="option2">Option 2</SelectItem>
+                      <SelectItem value="option3">Option 3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-grey-800 font-medium">With Helper Text</Label>
+                  <Select>
+                    <SelectTrigger className="border-grey-400 focus:ring-0 focus:border-primary-main bg-background-paper">
+                      <SelectValue placeholder="Choose wisely" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                      <SelectItem value="good">Good Choice</SelectItem>
+                      <SelectItem value="better">Better Choice</SelectItem>
+                      <SelectItem value="best">Best Choice</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-sm text-grey-600">Select the most appropriate option</p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-grey-800 font-medium">Dropdown Menu</Label>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="border-grey-400 text-grey-700 hover:bg-grey-200">
+                        Actions
+                        <MoreVertical className="ml-2 h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                      <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">Edit</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">Duplicate</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer hover:bg-grey-100 text-error-main">Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-grey-800 font-medium">Disabled Select</Label>
+                  <Select disabled>
+                    <SelectTrigger className="bg-grey-200 border-grey-300 text-grey-500 cursor-not-allowed">
+                      <SelectValue placeholder="Disabled select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="disabled">Not available</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </section>
 
@@ -447,30 +533,30 @@ export default function DesignSystemPlayground() {
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Standard Alerts</h3>
                   <div className="space-y-4">
-                    <Alert className="border-info-light bg-info-lighter">
-                      <Info className="h-4 w-4 text-info-main" />
-                      <AlertDescription className="text-info-dark">
+                    <Alert className="border-blue-200 bg-blue-50">
+                      <Info className="h-4 w-4 text-blue-700" />
+                      <AlertDescription className="text-blue-700">
                         This is an informational alert with important details for the user.
                       </AlertDescription>
                     </Alert>
                     
-                    <Alert className="border-success-light bg-success-lighter">
-                      <Check className="h-4 w-4 text-success-main" />
-                      <AlertDescription className="text-success-dark">
+                    <Alert className="border-green-200 bg-green-50">
+                      <Check className="h-4 w-4 text-green-700" />
+                      <AlertDescription className="text-green-700">
                         Operation completed successfully! Your changes have been saved.
                       </AlertDescription>
                     </Alert>
                     
-                    <Alert className="border-warning-light bg-warning-lighter">
-                      <AlertTriangle className="h-4 w-4 text-warning-main" />
-                      <AlertDescription className="text-warning-dark">
+                    <Alert className="border-orange-200 bg-orange-50">
+                      <AlertTriangle className="h-4 w-4 text-orange-700" />
+                      <AlertDescription className="text-orange-700">
                         Please review your input before proceeding with this action.
                       </AlertDescription>
                     </Alert>
                     
-                    <Alert className="border-error-light bg-error-lighter">
-                      <X className="h-4 w-4 text-error-main" />
-                      <AlertDescription className="text-error-dark">
+                    <Alert className="border-red-200 bg-red-50">
+                      <X className="h-4 w-4 text-red-700" />
+                      <AlertDescription className="text-red-700">
                         An error occurred while processing your request. Please try again.
                       </AlertDescription>
                     </Alert>
@@ -480,30 +566,30 @@ export default function DesignSystemPlayground() {
                 <div>
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Filled Alerts</h3>
                   <div className="space-y-4">
-                    <Alert className="bg-info-main text-info-contrast-text border-0">
-                      <Info className="h-4 w-4 text-info-contrast-text" />
-                      <AlertDescription className="text-info-contrast-text">
+                    <Alert className="bg-blue-600 text-white border-0">
+                      <Info className="h-4 w-4 text-white" />
+                      <AlertDescription className="text-white">
                         High contrast informational alert for maximum visibility.
                       </AlertDescription>
                     </Alert>
                     
-                    <Alert className="bg-success-main text-success-contrast-text border-0">
-                      <Check className="h-4 w-4 text-success-contrast-text" />
-                      <AlertDescription className="text-success-contrast-text">
+                    <Alert className="bg-green-600 text-white border-0">
+                      <Check className="h-4 w-4 text-white" />
+                      <AlertDescription className="text-white">
                         Bold success message for completed operations.
                       </AlertDescription>
                     </Alert>
 
-                    <Alert className="bg-warning-main text-warning-contrast-text border-0">
-                      <AlertTriangle className="h-4 w-4 text-warning-contrast-text" />
-                      <AlertDescription className="text-warning-contrast-text">
+                    <Alert className="bg-orange-600 text-white border-0">
+                      <AlertTriangle className="h-4 w-4 text-white" />
+                      <AlertDescription className="text-white">
                         Important warning message requiring immediate attention.
                       </AlertDescription>
                     </Alert>
 
-                    <Alert className="bg-error-main text-error-contrast-text border-0">
-                      <X className="h-4 w-4 text-error-contrast-text" />
-                      <AlertDescription className="text-error-contrast-text">
+                    <Alert className="bg-red-600 text-white border-0">
+                      <X className="h-4 w-4 text-white" />
+                      <AlertDescription className="text-white">
                         Critical error alert with high contrast for urgent situations.
                       </AlertDescription>
                     </Alert>
@@ -521,31 +607,94 @@ export default function DesignSystemPlayground() {
               
               <div className="grid gap-6">
                 <div>
-                  <h3 className="text-lg font-medium text-grey-800 mb-4">Basic Modal</h3>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Open Modal</Button>
-                    </DialogTrigger>
-                    <DialogContent className="bg-background-paper border border-grey-300 rounded-xl shadow-xl">
-                      <DialogHeader>
-                        <DialogTitle className="text-grey-900">Modal Title</DialogTitle>
-                        <DialogDescription className="text-grey-600">
-                          This is a basic modal dialog component with a title and description.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="py-4">
-                        <p className="text-grey-700">Modal content goes here. You can add forms, buttons, or any other content.</p>
-                      </div>
-                      <div className="flex justify-end gap-3">
-                        <Button variant="outline" className="border-grey-300 text-grey-700 hover:bg-grey-200">
-                          Cancel
-                        </Button>
-                        <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">
-                          Confirm
-                        </Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Modal Variants</h3>
+                  <div className="flex flex-wrap gap-4">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Basic Modal</Button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-background-paper border border-grey-300 rounded-xl shadow-xl">
+                        <DialogHeader>
+                          <DialogTitle className="text-grey-900">Basic Modal</DialogTitle>
+                          <DialogDescription className="text-grey-600">
+                            This is a basic modal dialog component with a title and description.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="py-4">
+                          <p className="text-grey-700">Modal content goes here. You can add forms, buttons, or any other content.</p>
+                        </div>
+                        <div className="flex justify-end gap-3">
+                          <Button variant="outline" className="border-grey-300 text-grey-700 hover:bg-grey-200">
+                            Cancel
+                          </Button>
+                          <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">
+                            Confirm
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" className="border-warning-main text-warning-main hover:bg-warning-main hover:text-white">Confirmation Modal</Button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-background-paper border border-warning-main rounded-xl shadow-xl">
+                        <DialogHeader>
+                          <DialogTitle className="text-warning-main flex items-center gap-2">
+                            <AlertTriangle className="h-5 w-5" />
+                            Confirm Action
+                          </DialogTitle>
+                          <DialogDescription className="text-grey-600">
+                            Are you sure you want to proceed? This action cannot be undone.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="py-4">
+                          <div className="bg-warning-lighter p-4 rounded-lg border border-warning-light">
+                            <p className="text-warning-dark text-sm">
+                              This is a warning modal used for confirmations that require user attention.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex justify-end gap-3">
+                          <Button variant="outline" className="border-grey-300 text-grey-700 hover:bg-grey-200">
+                            Cancel
+                          </Button>
+                          <Button className="bg-warning-main hover:bg-warning-dark text-white">
+                            Proceed
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" className="border-info-main text-info-main hover:bg-info-main hover:text-white">Info Modal</Button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-background-paper border border-info-main rounded-xl shadow-xl">
+                        <DialogHeader>
+                          <DialogTitle className="text-info-main flex items-center gap-2">
+                            <Info className="h-5 w-5" />
+                            Information
+                          </DialogTitle>
+                          <DialogDescription className="text-grey-600">
+                            Here's some important information you should know.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="py-4">
+                          <div className="bg-info-lighter p-4 rounded-lg border border-info-light">
+                            <p className="text-info-dark text-sm">
+                              This modal provides informational content to help users understand features or processes.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex justify-end gap-3">
+                          <Button className="bg-info-main hover:bg-info-dark text-info-contrast-text">
+                            Got it
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </div>
               </div>
             </section>
@@ -562,39 +711,226 @@ export default function DesignSystemPlayground() {
                   <h3 className="text-lg font-medium text-grey-800 mb-4">Row States</h3>
                   <div className="border border-grey-300 rounded-lg overflow-hidden">
                     <div className="bg-grey-200 px-4 py-3 border-b border-grey-300">
-                      <div className="grid grid-cols-4 gap-4 text-sm font-medium text-grey-800">
+                      <div className="grid grid-cols-5 gap-4 text-sm font-medium text-grey-800">
                         <span>Name</span>
                         <span>Status</span>
                         <span>Date</span>
+                        <span>Amount</span>
                         <span>Actions</span>
                       </div>
                     </div>
                     
-                    <div className="bg-background-paper px-4 py-3 border-b border-grey-300 hover:bg-grey-100 transition-colors">
-                      <div className="grid grid-cols-4 gap-4 text-sm text-grey-700">
-                        <span>Normal Row</span>
-                        <Badge className="bg-success-lighter text-success-dark border-success-light font-normal w-fit">Active</Badge>
+                    <div className="bg-background-paper px-4 py-3 border-b border-grey-300">
+                      <div className="grid grid-cols-5 gap-4 text-sm text-grey-700 items-center">
+                        <span>Invoice #001</span>
+                        <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal w-fit">Paid</Badge>
                         <span>2024-01-15</span>
-                        <Button size="sm" variant="outline" className="border-grey-300 text-grey-700 w-fit">Edit</Button>
+                        <span>$1,250.00</span>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                            <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">View</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">Edit</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer hover:bg-grey-100 text-error-main">Delete</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                     </div>
                     
                     <div className="bg-primary-lighter px-4 py-3 border-b border-grey-300">
-                      <div className="grid grid-cols-4 gap-4 text-sm text-grey-700">
-                        <span>Selected Row</span>
-                        <Badge className="bg-info-lighter text-info-dark border-info-light font-normal w-fit">Pending</Badge>
+                      <div className="grid grid-cols-5 gap-4 text-sm text-grey-700 items-center">
+                        <span>Invoice #002</span>
+                        <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal w-fit">RTP Sent</Badge>
                         <span>2024-01-16</span>
-                        <Button size="sm" variant="outline" className="border-grey-300 text-grey-700 w-fit">Edit</Button>
+                        <span>$2,750.00</span>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                            <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">View</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">Edit</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer hover:bg-grey-100 text-error-main">Delete</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                     </div>
                     
-                    <div className="bg-grey-100 px-4 py-3 opacity-60">
-                      <div className="grid grid-cols-4 gap-4 text-sm text-grey-500">
-                        <span>Disabled Row</span>
-                        <Badge className="bg-grey-200 text-grey-600 border-grey-300 font-normal w-fit">Inactive</Badge>
+                    <div className="bg-background-paper px-4 py-3">
+                      <div className="grid grid-cols-5 gap-4 text-sm text-grey-700 items-center">
+                        <span>Invoice #003</span>
+                        <Badge className="bg-red-50 text-red-700 border-red-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal w-fit">Pending Action</Badge>
                         <span>2024-01-17</span>
-                        <Button size="sm" variant="outline" disabled className="w-fit">Edit</Button>
+                        <span>$890.00</span>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                            <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">View</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">Edit</DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer hover:bg-grey-100 text-error-main">Delete</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Breadcrumbs Section */}
+            <section id="breadcrumbs" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Breadcrumbs</h2>
+                <p className="text-grey-600">Navigation breadcrumb components</p>
+              </div>
+              
+              <div className="grid gap-6">
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Basic Breadcrumbs</h3>
+                  <Breadcrumb>
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                          <Home className="h-4 w-4" />
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>
+                        <ChevronRight className="h-4 w-4 text-grey-400" />
+                      </BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                          Invoices
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>
+                        <ChevronRight className="h-4 w-4 text-grey-400" />
+                      </BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbPage className="text-grey-900 font-medium">
+                          Invoice #12345
+                        </BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Complex Navigation</h3>
+                  <Breadcrumb>
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                          Dashboard
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>
+                        <ChevronRight className="h-4 w-4 text-grey-400" />
+                      </BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                          Financial Management
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>
+                        <ChevronRight className="h-4 w-4 text-grey-400" />
+                      </BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                          Real-time Payments
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>
+                        <ChevronRight className="h-4 w-4 text-grey-400" />
+                      </BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbPage className="text-grey-900 font-medium">
+                          Setup Wizard
+                        </BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </div>
+              </div>
+            </section>
+
+            {/* Progress Indicators Section */}
+            <section id="progress" className="bg-background-paper rounded-xl border border-grey-300 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Progress Indicators</h2>
+                <p className="text-grey-600">Progress bars and loading indicators</p>
+              </div>
+              
+              <div className="grid gap-6">
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Progress Bars</h3>
+                  <div className="space-y-6">
+                    <div>
+                      <Label className="text-grey-700 mb-2 block">Upload Progress - 33%</Label>
+                      <Progress value={33} className="h-2 bg-grey-200" />
+                    </div>
+                    
+                    <div>
+                      <Label className="text-grey-700 mb-2 block">Processing - 66%</Label>
+                      <Progress value={66} className="h-3 bg-grey-200" />
+                    </div>
+                    
+                    <div>
+                      <Label className="text-grey-700 mb-2 block">Complete - 100%</Label>
+                      <Progress value={100} className="h-4 bg-grey-200" />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Step Indicators</h3>
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-primary-main text-primary-contrast-text flex items-center justify-center text-sm font-medium">
+                        1
+                      </div>
+                      <span className="ml-2 text-sm text-grey-700">Setup</span>
+                    </div>
+                    <div className="h-px bg-primary-main flex-1"></div>
+                    
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-primary-main text-primary-contrast-text flex items-center justify-center text-sm font-medium">
+                        2
+                      </div>
+                      <span className="ml-2 text-sm text-grey-700">Configure</span>
+                    </div>
+                    <div className="h-px bg-grey-300 flex-1"></div>
+                    
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-grey-300 text-grey-600 flex items-center justify-center text-sm font-medium">
+                        3
+                      </div>
+                      <span className="ml-2 text-sm text-grey-500">Review</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-grey-800 mb-4">Loading States</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <Loader2 className="h-5 w-5 animate-spin text-primary-main" />
+                      <span className="text-grey-700">Loading content...</span>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <Skeleton className="h-4 w-full bg-grey-200" />
+                      <Skeleton className="h-4 w-3/4 bg-grey-200" />
+                      <Skeleton className="h-4 w-1/2 bg-grey-200" />
                     </div>
                   </div>
                 </div>
@@ -773,23 +1109,23 @@ export default function DesignSystemPlayground() {
             <section id="toasts" className="bg-background-paper rounded-xl border border-grey-300 p-8">
               <div className="mb-6">
                 <h2 className="text-2xl font-semibold text-grey-900 mb-2">Toast Notifications</h2>
-                <p className="text-grey-600">Enhanced notification components with Monto styling</p>
+                <p className="text-grey-600">Enhanced notification components with status badge styling</p>
               </div>
               
               <div className="flex flex-wrap gap-4">
-                <Button onClick={() => showSuccessToast("Success!", "Operation completed successfully")} className="bg-success-main hover:bg-success-dark text-success-contrast-text">
+                <Button onClick={() => showSuccessToast("Success!", "Operation completed successfully")} className="bg-green-600 hover:bg-green-700 text-white">
                   <Check className="mr-2 h-4 w-4" />
                   Success Toast
                 </Button>
-                <Button onClick={() => showErrorToast("Error!", "Something went wrong")} className="bg-error-main hover:bg-error-dark text-error-contrast-text">
+                <Button onClick={() => showErrorToast("Error!", "Something went wrong")} className="bg-red-600 hover:bg-red-700 text-white">
                   <X className="mr-2 h-4 w-4" />
                   Error Toast
                 </Button>
-                <Button onClick={() => showInfoToast("Info", "Here's some information")} className="bg-info-main hover:bg-info-dark text-info-contrast-text">
+                <Button onClick={() => showInfoToast("Info", "Here's some information")} className="bg-blue-600 hover:bg-blue-700 text-white">
                   <Info className="mr-2 h-4 w-4" />
                   Info Toast
                 </Button>
-                <Button onClick={() => showWarningToast("Warning", "Please be careful")} className="bg-warning-main hover:bg-warning-dark text-warning-contrast-text">
+                <Button onClick={() => showWarningToast("Warning", "Please be careful")} className="bg-orange-600 hover:bg-orange-700 text-white">
                   <AlertTriangle className="mr-2 h-4 w-4" />
                   Warning Toast
                 </Button>
