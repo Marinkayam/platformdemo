@@ -26,7 +26,7 @@ interface ApplyGloballyModalProps {
 export function ApplyGloballyModal({ 
   componentType, 
   children, 
-  usageData, 
+  usageData = [], // Provide default empty array
   onApply 
 }: ApplyGloballyModalProps) {
   const [selectedPages, setSelectedPages] = useState<string[]>([]);
@@ -54,7 +54,8 @@ export function ApplyGloballyModal({
     setSelectedPages([]);
   };
 
-  const totalInstances = usageData.reduce((sum, usage) => sum + usage.instances, 0);
+  // Add safety check for usageData before using reduce
+  const totalInstances = usageData?.reduce((sum, usage) => sum + usage.instances, 0) || 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
