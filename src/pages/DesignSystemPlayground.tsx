@@ -14,7 +14,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ApplyGloballyModal } from '@/components/ui/apply-globally-modal';
 import { Typography } from '@/components/ui/typography/typography';
-import MontoLogo from '@/components/MontoLogo';
+import { MontoLogo } from '@/components/MontoLogo';
 import MontoIcon from '@/components/MontoIcon';
 import { componentUsageData, ComponentUsage } from '@/data/componentUsage';
 import { 
