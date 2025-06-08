@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { MontoLogo } from "@/components/MontoLogo";
 import MontoIcon from "@/components/MontoIcon";
+import { componentUsageData } from "@/data/componentUsage";
 
 interface Tab {
   id: string;
@@ -48,18 +49,15 @@ const tabs: Tab[] = [
 
 export default function DesignSystemPlayground() {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
-  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [selectedSpacing, setSelectedSpacing] = useState('4');
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
   };
 
-  const handleApplyGlobally = () => {
-    setIsApplyModalOpen(true);
-  };
-
-  const handleCloseApplyModal = () => {
-    setIsApplyModalOpen(false);
+  const handleApplyGlobally = (selectedPages: string[]) => {
+    console.log('Applying changes to pages:', selectedPages);
+    // Here you would implement the actual application logic
   };
 
   return (
@@ -69,7 +67,13 @@ export default function DesignSystemPlayground() {
           <h1 className="text-2xl font-bold text-grey-900">Design System Playground</h1>
           <p className="text-grey-600">Explore and test the available UI components</p>
         </div>
-        <Button onClick={handleApplyGlobally}>Apply Globally</Button>
+        <ApplyGloballyModal
+          componentType="Design System Components"
+          usageData={componentUsageData.buttons}
+          onApply={handleApplyGlobally}
+        >
+          <Button onClick={() => {}}>Apply Globally</Button>
+        </ApplyGloballyModal>
       </div>
 
       <div className="max-w-7xl mx-auto">
@@ -288,8 +292,6 @@ export default function DesignSystemPlayground() {
           </section>
         )}
       </div>
-
-      <ApplyGloballyModal isOpen={isApplyModalOpen} onClose={handleCloseApplyModal} />
     </div>
   );
 }
