@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -463,7 +464,7 @@ const DesignSystemPlayground = () => {
                 <Typography variant="h4" className="mb-3">Implementation Guidelines</Typography>
                 <div className="space-y-2 text-sm text-grey-700">
                   <p>• Use multi-select for filters that benefit from multiple selections (like status, categories)</p>
-                  <p>• Enable search for filters with many options (>10 items)</p>
+                  <p>• Enable search for filters with many options (&gt; 10 items)</p>
                   <p>• Always show active filters as removable chips below the filter controls</p>
                   <p>• Maintain filter state in parent component for proper data flow</p>
                   <p>• Use consistent labeling: "Label: Value" format for chips</p>
