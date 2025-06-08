@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +19,10 @@ import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-sta
 import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
 import { ActiveFiltersList } from "@/components/invoices/filters/ActiveFiltersList";
 import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";
+import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { 
   Palette,
   Type,
@@ -43,7 +49,11 @@ import {
   Search,
   ArrowUpDown,
   ArrowUp,
-  ArrowDown
+  ArrowDown,
+  MoreVertical,
+  X,
+  ArrowLeft,
+  Home
 } from 'lucide-react';
 import { MontoLogo } from "@/components/MontoLogo";
 import MontoIcon from "@/components/MontoIcon";
@@ -145,6 +155,14 @@ export default function DesignSystemPlayground() {
   // Table sort state
   const [sortField, setSortField] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+  // Tab states
+  const [activeInvoiceTab, setActiveInvoiceTab] = useState("all");
+  const [activeDetailTab, setActiveDetailTab] = useState("financial");
+
+  // Form states
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedMultiple, setSelectedMultiple] = useState<string[]>([]);
 
   const handleSort = (field: string) => {
     if (sortField === field) {
@@ -335,21 +353,26 @@ export default function DesignSystemPlayground() {
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Spacing Scale</h2>
         <div className="space-y-6">
           {[
-            { name: "xs", value: "0.25rem", pixels: "4px", class: "p-1" },
-            { name: "sm", value: "0.5rem", pixels: "8px", class: "p-2" },
-            { name: "md", value: "1rem", pixels: "16px", class: "p-4" },
-            { name: "lg", value: "1.5rem", pixels: "24px", class: "p-6" },
-            { name: "xl", value: "2rem", pixels: "32px", class: "p-8" },
-            { name: "2xl", value: "3rem", pixels: "48px", class: "p-12" },
+            { name: "xs", value: "0.25rem", pixels: "4px", class: "p-1", token: "--space-xs" },
+            { name: "sm", value: "0.5rem", pixels: "8px", class: "p-2", token: "--space-sm" },
+            { name: "md", value: "1rem", pixels: "16px", class: "p-4", token: "--space-md" },
+            { name: "lg", value: "1.5rem", pixels: "24px", class: "p-6", token: "--space-lg" },
+            { name: "xl", value: "2rem", pixels: "32px", class: "p-8", token: "--space-xl" },
+            { name: "2xl", value: "3rem", pixels: "48px", class: "p-12", token: "--space-2xl" },
           ].map((space) => (
             <div key={space.name} className="border border-grey-300 rounded-lg p-4 bg-background-paper">
               <div className="flex items-center justify-between mb-3">
-                <span className="font-medium text-grey-900">{space.name}</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-grey-900">{space.name}</span>
+                  <span className="text-xs font-mono text-grey-600 bg-grey-200 px-2 py-1 rounded">{space.token}</span>
+                </div>
                 <span className="text-sm text-grey-600">{space.value} ({space.pixels})</span>
               </div>
-              <div className="bg-grey-200 rounded-md p-2">
-                <div className={`bg-primary-light rounded-md ${space.class}`}>
-                  <div className="bg-primary-main rounded-md h-6"></div>
+              <div className="bg-grey-200 rounded-md p-2 border-2 border-dashed border-grey-400">
+                <div className={`bg-primary-light rounded-md ${space.class} border-2 border-dashed border-primary-main`}>
+                  <div className="bg-primary-main rounded-md h-6 text-center text-primary-contrast-text text-xs leading-6 font-medium">
+                    Content Area
+                  </div>
                 </div>
               </div>
             </div>
@@ -358,33 +381,71 @@ export default function DesignSystemPlayground() {
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Grid with Gap Examples</h2>
-        <div className="space-y-6">
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Grid Layout Examples</h2>
+        <div className="space-y-8">
           {/* Single Item Grid */}
           <Card>
             <CardHeader>
               <CardTitle>Single Item Grid</CardTitle>
-              <CardDescription>A single item using proper spacing tokens</CardDescription>
+              <CardDescription>grid-cols-1 with gap-4 spacing</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 gap-4">
-                <div className="bg-primary-lighter border border-primary-light rounded-lg p-6 text-center text-primary-main font-medium">
-                  Single Grid Item
+              <div className="grid grid-cols-1 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
+                <div className="bg-primary-lighter border border-primary-light rounded-lg p-6 text-center text-primary-main font-medium relative">
+                  <span className="absolute top-2 left-2 text-xs bg-primary-main text-primary-contrast-text px-2 py-1 rounded">gap-4</span>
+                  Single Grid Item (100% width)
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* 4 Items Grid */}
+          {/* Two Items Grid */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Two Items Grid (50/50)</CardTitle>
+              <CardDescription>grid-cols-2 with gap-4 spacing</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
+                {[1, 2].map((item) => (
+                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-6 text-center text-primary-main font-medium relative">
+                    {item === 1 && <span className="absolute top-2 left-2 text-xs bg-primary-main text-primary-contrast-text px-2 py-1 rounded">gap-4</span>}
+                    Item {item} (50% width)
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Three Items Grid */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Three Items Grid (Equal Thirds)</CardTitle>
+              <CardDescription>grid-cols-3 with gap-4 spacing</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-4 text-center text-primary-main font-medium relative">
+                    {item === 1 && <span className="absolute top-1 left-1 text-xs bg-primary-main text-primary-contrast-text px-1 py-0.5 rounded">gap-4</span>}
+                    Item {item}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Four Items Grid */}
           <Card>
             <CardHeader>
               <CardTitle>Four Items Grid</CardTitle>
-              <CardDescription>Four items demonstrating consistent gap spacing</CardDescription>
+              <CardDescription>grid-cols-2 lg:grid-cols-4 with gap-4 spacing</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
                 {[1, 2, 3, 4].map((item) => (
-                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-4 text-center text-primary-main font-medium">
+                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-4 text-center text-primary-main font-medium relative">
+                    {item === 1 && <span className="absolute top-1 left-1 text-xs bg-primary-main text-primary-contrast-text px-1 py-0.5 rounded">gap-4</span>}
                     Item {item}
                   </div>
                 ))}
@@ -395,17 +456,31 @@ export default function DesignSystemPlayground() {
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Layout Examples</h2>
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Card with Standard Padding</CardTitle>
-              <CardDescription>This card uses our standard padding tokens</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-grey-700">Content area with proper spacing using design system tokens.</p>
-            </CardContent>
-          </Card>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Card with Padding Visualization</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            { name: "Standard Card", padding: "p-6", token: "--space-6", pixels: "24px" },
+            { name: "Compact Card", padding: "p-4", token: "--space-4", pixels: "16px" },
+          ].map((card) => (
+            <Card key={card.name} className="border-2 border-dashed border-primary-light">
+              <CardHeader className={`${card.padding} border-2 border-dashed border-grey-400 bg-grey-100`}>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  {card.name}
+                  <span className="text-xs font-mono bg-primary-main text-primary-contrast-text px-2 py-1 rounded">
+                    {card.token}
+                  </span>
+                </CardTitle>
+                <CardDescription>
+                  Using {card.padding} class ({card.pixels} padding)
+                </CardDescription>
+              </CardHeader>
+              <CardContent className={`${card.padding} border-2 border-dashed border-success-light bg-success-lighter`}>
+                <p className="text-grey-700">
+                  Content area showing the visual padding space around text and elements.
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </div>
@@ -436,11 +511,56 @@ export default function DesignSystemPlayground() {
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Button Groups</h2>
-        <div className="flex gap-2">
-          <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">First</Button>
-          <Button variant="outline">Second</Button>
-          <Button variant="outline">Third</Button>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Button Groups & Selection</h2>
+        
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-medium text-grey-800 mb-3">Simple Button Group</h3>
+            <div className="flex gap-2">
+              <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary</Button>
+              <Button variant="outline">Secondary</Button>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium text-grey-800 mb-3">Radio Button Selection</h3>
+            <RadioGroup value={selectedOption} onValueChange={setSelectedOption} className="flex gap-4">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option1" id="option1" />
+                <Label htmlFor="option1">Option 1</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option2" id="option2" />
+                <Label htmlFor="option2">Option 2</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option3" id="option3" />
+                <Label htmlFor="option3">Option 3</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium text-grey-800 mb-3">Multi-Selection</h3>
+            <div className="flex flex-wrap gap-2">
+              {["Option A", "Option B", "Option C", "Option D"].map((option) => (
+                <div key={option} className="flex items-center space-x-2">
+                  <Checkbox 
+                    id={option}
+                    checked={selectedMultiple.includes(option)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSelectedMultiple([...selectedMultiple, option]);
+                      } else {
+                        setSelectedMultiple(selectedMultiple.filter(item => item !== option));
+                      }
+                    }}
+                  />
+                  <Label htmlFor={option}>{option}</Label>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -496,131 +616,92 @@ export default function DesignSystemPlayground() {
   const renderTabNavigation = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Tab Navigation</h2>
-        <Tabs defaultValue="all" className="w-full">
-          <TabsList className="bg-grey-200">
-            <TabsTrigger value="all" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-              All RTPs
-              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-grey-300 text-grey-700">1,234</span>
-            </TabsTrigger>
-            <TabsTrigger value="pending" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-              Pending Action
-              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-error-lighter text-error-main">43</span>
-            </TabsTrigger>
-            <TabsTrigger value="overdue" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-              Overdue
-              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-warning-lighter text-warning-main">12</span>
-            </TabsTrigger>
-            <TabsTrigger value="settled" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-              Settled
-              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-success-lighter text-success-main">856</span>
-            </TabsTrigger>
-          </TabsList>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice List Tabs (RTP Navigation)</h2>
+        <div className="bg-background-paper border border-grey-300 rounded-lg p-6">
+          <InvoiceTabs
+            tabs={[
+              { id: "all", label: "All RTPs", count: 1234 },
+              { id: "pending", label: "Pending Action", count: 43 },
+              { id: "overdue", label: "Overdue", count: 12 },
+              { id: "settled", label: "Settled", count: 856 },
+            ]}
+            activeTab={activeInvoiceTab}
+            onTabChange={setActiveInvoiceTab}
+          />
           
-          <TabsContent value="all" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>All RTPs</CardTitle>
-                <CardDescription>Complete list of Request to Pay invoices</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>This shows all RTP invoices in the system.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="pending" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Pending Action</CardTitle>
-                <CardDescription>Invoices requiring immediate attention</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>This shows invoices that need action from users.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="overdue" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Overdue</CardTitle>
-                <CardDescription>Invoices past their due date</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>This shows overdue invoices requiring urgent attention.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="settled" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Settled</CardTitle>
-                <CardDescription>Successfully processed invoices</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>This shows invoices that have been successfully settled.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+          <div className="mt-4 p-4 bg-grey-200 rounded-lg">
+            <p className="text-sm text-grey-700">
+              <strong>Active Tab:</strong> {activeInvoiceTab} - This matches the exact styling from the /invoices page with proper underlines, counts, and hover states.
+            </p>
+          </div>
+        </div>
       </div>
 
       <div>
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Detail Tabs</h2>
-        <Tabs defaultValue="financial" className="w-full">
-          <TabsList className="bg-grey-200">
-            <TabsTrigger value="financial" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Financial Data</TabsTrigger>
-            <TabsTrigger value="activity" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Activity</TabsTrigger>
-            <TabsTrigger value="exceptions" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-              Exceptions
-              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-error-lighter text-error-main">2</span>
-            </TabsTrigger>
-            <TabsTrigger value="rtp" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">RTP Data</TabsTrigger>
-            <TabsTrigger value="records" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Portal Records</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="financial" className="mt-6">
-            <Card>
-              <CardContent className="pt-6">
-                <p>Financial data and line items would be displayed here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="activity" className="mt-6">
-            <Card>
-              <CardContent className="pt-6">
-                <p>Activity timeline and notes would be displayed here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="exceptions" className="mt-6">
-            <Card>
-              <CardContent className="pt-6">
-                <p>Exception handling and resolution would be displayed here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="rtp" className="mt-6">
-            <Card>
-              <CardContent className="pt-6">
-                <p>Request to Pay data and processing information would be displayed here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="records" className="mt-6">
-            <Card>
-              <CardContent className="pt-6">
-                <p>Portal records and submission history would be displayed here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        <div className="bg-background-paper border border-grey-300 rounded-lg p-6">
+          <Tabs value={activeDetailTab} onValueChange={setActiveDetailTab} className="w-full">
+            <TabsList className="bg-grey-200">
+              <TabsTrigger value="financial" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+                Financial Data
+              </TabsTrigger>
+              <TabsTrigger value="activity" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+                Activity
+                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-info-lighter text-info-main">5</span>
+              </TabsTrigger>
+              <TabsTrigger value="exceptions" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+                Exceptions
+                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-error-lighter text-error-main">2</span>
+              </TabsTrigger>
+              <TabsTrigger value="rtp" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+                RTP Data
+              </TabsTrigger>
+              <TabsTrigger value="records" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+                Portal Records
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="financial" className="mt-6">
+              <Card>
+                <CardContent className="pt-6">
+                  <p>Financial data and line items would be displayed here.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="activity" className="mt-6">
+              <Card>
+                <CardContent className="pt-6">
+                  <p>Activity timeline and notes would be displayed here.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="exceptions" className="mt-6">
+              <Card>
+                <CardContent className="pt-6">
+                  <p>Exception handling and resolution would be displayed here.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="rtp" className="mt-6">
+              <Card>
+                <CardContent className="pt-6">
+                  <p>Request to Pay data and processing information would be displayed here.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="records" className="mt-6">
+              <Card>
+                <CardContent className="pt-6">
+                  <p>Portal records and submission history would be displayed here.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </div>
   );
@@ -677,7 +758,7 @@ export default function DesignSystemPlayground() {
                   placeholder="Search invoices..."
                   value={filters.search}
                   onChange={(e) => handleFilterChange("search", e.target.value)}
-                  className="pl-10 w-64 h-9 border border-grey-400 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-main/20 focus:border-primary-main"
+                  className="pl-10 w-64 h-9 border border-grey-400 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-main focus:border-primary-main"
                 />
               </div>
             </div>
@@ -784,7 +865,7 @@ export default function DesignSystemPlayground() {
                           <TableCell>{item.owner}</TableCell>
                           <TableCell className="text-center">
                             <Button variant="ghost" size="sm">
-                              <Settings className="h-4 w-4" />
+                              <MoreVertical className="h-4 w-4" />
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -801,7 +882,7 @@ export default function DesignSystemPlayground() {
                   <li>• Hover effects for better interactivity</li>
                   <li>• Sticky first column for horizontal scrolling</li>
                   <li>• Status badges with proper styling</li>
-                  <li>• Action buttons in the last column</li>
+                  <li>• Action buttons with vertical kebab menu (⋮)</li>
                   <li>• Proper spacing and typography</li>
                 </ul>
               </div>
@@ -819,7 +900,7 @@ export default function DesignSystemPlayground() {
         <Card>
           <CardHeader>
             <CardTitle>Contact Form</CardTitle>
-            <CardDescription>A functional form example with validation</CardDescription>
+            <CardDescription>A functional form example with proper focus styles</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
@@ -830,7 +911,7 @@ export default function DesignSystemPlayground() {
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   placeholder="Enter your name" 
-                  className="border-grey-400 focus:border-primary-main focus:ring-primary-main"
+                  className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main"
                 />
               </div>
               <div className="space-y-2">
@@ -841,14 +922,14 @@ export default function DesignSystemPlayground() {
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   placeholder="Enter your email" 
-                  className="border-grey-400 focus:border-primary-main focus:ring-primary-main"
+                  className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main"
                 />
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
-                <SelectTrigger className="border-grey-400 focus:border-primary-main focus:ring-primary-main">
+                <SelectTrigger className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -866,7 +947,7 @@ export default function DesignSystemPlayground() {
                 value={formData.message}
                 onChange={(e) => setFormData({...formData, message: e.target.value})}
                 placeholder="Enter your message" 
-                className="border-grey-400 focus:border-primary-main focus:ring-primary-main min-h-[100px]"
+                className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main min-h-[100px]"
               />
             </div>
             <div className="flex items-center space-x-2">
@@ -891,21 +972,173 @@ export default function DesignSystemPlayground() {
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Input States</h2>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Input Focus States</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label>Default State</Label>
             <Input placeholder="Default input" className="border-grey-400" />
+            <p className="text-xs text-grey-500">No focus - grey border</p>
           </div>
           <div className="space-y-2">
-            <Label>Success State</Label>
-            <Input placeholder="Valid input" className="border-success-main focus:border-success-main focus:ring-success-main" />
+            <Label>Focus State (Single Border)</Label>
+            <Input placeholder="Focused input" className="border-primary-main ring-1 ring-primary-main" />
+            <p className="text-xs text-grey-500">Active focus - single primary border</p>
           </div>
           <div className="space-y-2">
             <Label>Error State</Label>
-            <Input placeholder="Invalid input" className="border-error-main focus:border-error-main focus:ring-error-main" />
+            <Input placeholder="Invalid input" className="border-error-main focus:ring-1 focus:ring-error-main focus:border-error-main" />
             <p className="text-xs text-error-main">This field is required</p>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderLayoutComponents = () => (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Layout Components</h2>
+        
+        <div className="space-y-8">
+          {/* Page Header */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Page Header</CardTitle>
+              <CardDescription>Standard page header with back button, title, and action</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="border border-grey-300 rounded-lg p-4 bg-grey-50">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <Button variant="ghost" size="sm">
+                      <ArrowLeft className="h-4 w-4" />
+                    </Button>
+                    <div>
+                      <h1 className="text-xl font-semibold text-grey-900">Invoice Detail</h1>
+                      <p className="text-sm text-grey-600">INV-2024-001 • Due March 15, 2024</p>
+                    </div>
+                  </div>
+                  <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">
+                    Export PDF
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Resizable Panel Group */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Resizable Panel Group</CardTitle>
+              <CardDescription>Used in detail pages for flexible layouts</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-64 border border-grey-300 rounded-lg overflow-hidden">
+                <ResizablePanelGroup direction="horizontal">
+                  <ResizablePanel defaultSize={50} minSize={30}>
+                    <div className="h-full p-4 bg-primary-lighter">
+                      <h3 className="font-medium text-primary-main mb-2">Left Panel</h3>
+                      <p className="text-sm text-grey-700">Invoice details and information would go here. This panel is resizable.</p>
+                    </div>
+                  </ResizablePanel>
+                  <ResizableHandle withHandle />
+                  <ResizablePanel defaultSize={50} minSize={30}>
+                    <div className="h-full p-4 bg-success-lighter">
+                      <h3 className="font-medium text-success-main mb-2">Right Panel</h3>
+                      <p className="text-sm text-grey-700">PDF viewer or additional content would go here. Drag the handle to resize.</p>
+                    </div>
+                  </ResizablePanel>
+                </ResizablePanelGroup>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Action Bar / Sticky Footer */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Sticky Action Bar</CardTitle>
+              <CardDescription>Bottom action bar for forms and detail pages</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="border border-grey-300 rounded-lg p-4 bg-grey-50">
+                <div className="flex items-center justify-between p-4 bg-background-paper border border-grey-300 rounded-lg shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-grey-600">2 items selected</span>
+                    <Badge variant="secondary">Changes pending</Badge>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm">Cancel</Button>
+                    <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">
+                      Save Changes
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderAlerts = () => (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Alert Components</h2>
+        
+        <div className="space-y-6">
+          {/* Info Alert */}
+          <Alert className="border-info-main bg-info-lighter">
+            <Info className="h-4 w-4 text-info-main" />
+            <AlertTitle className="text-info-main">Information</AlertTitle>
+            <AlertDescription className="text-info-dark">
+              This is an informational alert. It provides helpful context or guidance to users.
+            </AlertDescription>
+          </Alert>
+
+          {/* Success Alert */}
+          <Alert className="border-success-main bg-success-lighter">
+            <CheckCircle className="h-4 w-4 text-success-main" />
+            <AlertTitle className="text-success-main">Success</AlertTitle>
+            <AlertDescription className="text-success-dark">
+              Operation completed successfully! Your changes have been saved.
+            </AlertDescription>
+          </Alert>
+
+          {/* Warning Alert */}
+          <Alert className="border-warning-main bg-warning-lighter">
+            <AlertTriangle className="h-4 w-4 text-warning-main" />
+            <AlertTitle className="text-warning-main">Warning</AlertTitle>
+            <AlertDescription className="text-warning-dark">
+              Please review this action carefully before proceeding. This may affect other invoices.
+            </AlertDescription>
+          </Alert>
+
+          {/* Error Alert */}
+          <Alert className="border-error-main bg-error-lighter">
+            <AlertCircle className="h-4 w-4 text-error-main" />
+            <AlertTitle className="text-error-main">Error</AlertTitle>
+            <AlertDescription className="text-error-dark">
+              An error occurred while processing your request. Please try again.
+            </AlertDescription>
+          </Alert>
+
+          {/* Dismissable Alert */}
+          <Alert className="border-info-main bg-info-lighter relative">
+            <Info className="h-4 w-4 text-info-main" />
+            <AlertTitle className="text-info-main">Dismissable Alert</AlertTitle>
+            <AlertDescription className="text-info-dark">
+              This alert can be dismissed by clicking the X button.
+            </AlertDescription>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="absolute top-2 right-2 h-6 w-6 p-0 text-info-main hover:bg-info-main hover:text-info-contrast-text"
+              onClick={() => toast({ title: "Alert dismissed" })}
+            >
+              <X className="h-3 w-3" />
+            </Button>
+          </Alert>
         </div>
       </div>
     </div>
@@ -917,18 +1150,18 @@ export default function DesignSystemPlayground() {
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Progress Indicators</h2>
         <div className="space-y-6">
           <div>
-            <Label className="text-sm font-medium mb-2 block">Basic Progress</Label>
-            <Progress value={33} className="bg-grey-200" />
+            <Label className="text-sm font-medium mb-2 block">Basic Progress (Thin Style)</Label>
+            <Progress value={33} className="bg-grey-200 h-2" />
             <p className="text-xs text-grey-600 mt-1">33% Complete</p>
           </div>
           <div>
             <Label className="text-sm font-medium mb-2 block">Advanced Progress</Label>
-            <Progress value={67} className="bg-grey-200" />
+            <Progress value={67} className="bg-grey-200 h-2" />
             <p className="text-xs text-grey-600 mt-1">67% Complete</p>
           </div>
           <div>
             <Label className="text-sm font-medium mb-2 block">Complete</Label>
-            <Progress value={100} className="bg-grey-200" />
+            <Progress value={100} className="bg-grey-200 h-2" />
             <p className="text-xs text-grey-600 mt-1">100% Complete</p>
           </div>
         </div>
@@ -955,6 +1188,100 @@ export default function DesignSystemPlayground() {
             <span>In Progress</span>
             <span>Upcoming</span>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderBreadcrumbs = () => (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Breadcrumb Navigation</h2>
+        
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Two Level Breadcrumb</CardTitle>
+              <CardDescription>Basic navigation with home and current page</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                      <Home className="h-4 w-4" />
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-grey-900 font-medium">Invoices</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Three Level Breadcrumb</CardTitle>
+              <CardDescription>Navigation showing section hierarchy</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                      <Home className="h-4 w-4" />
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                      Invoices
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-grey-900 font-medium">Pending Action</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Four Level Breadcrumb</CardTitle>
+              <CardDescription>Deep navigation with detailed hierarchy</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                      <Home className="h-4 w-4" />
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                      Invoices
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
+                      Pending Action
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-grey-900 font-medium">INV-2024-001</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
@@ -1145,7 +1472,10 @@ export default function DesignSystemPlayground() {
       case "filter-components": return renderFilterComponents();
       case "table-system": return renderTableSystem();
       case "form-elements": return renderFormElements();
+      case "layout-components": return renderLayoutComponents();
+      case "alerts": return renderAlerts();
       case "progress": return renderProgress();
+      case "breadcrumbs": return renderBreadcrumbs();
       case "modals": return renderModals();
       case "brand-assets": return renderBrandAssets();
       default: return renderColorPalette();
