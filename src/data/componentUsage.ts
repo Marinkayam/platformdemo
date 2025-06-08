@@ -203,5 +203,68 @@ export const componentUsageData = {
       instances: 4,
       components: ["Connection Setup", "Portal Form", "Credentials", "User Type"]
     }
+  ] as ComponentUsage[],
+
+  layout: [
+    {
+      page: "Dashboard",
+      route: "/dashboard",
+      instances: 3,
+      components: ["Grid Layout", "Card Layout", "Content Containers"]
+    },
+    {
+      page: "Invoices List",
+      route: "/invoices",
+      instances: 2,
+      components: ["Table Layout", "Filter Layout"]
+    },
+    {
+      page: "Invoice Detail",
+      route: "/invoices/:id",
+      instances: 4,
+      components: ["Split Layout", "Tab Layout", "PDF Viewer Layout", "Content Grid"]
+    }
+  ] as ComponentUsage[],
+
+  progress: [
+    {
+      page: "Add Agent Wizard",
+      route: "/smart-connections/add-agent",
+      instances: 1,
+      components: ["Wizard Progress"]
+    },
+    {
+      page: "New Smart Connection",
+      route: "/smart-connections/new-connection",
+      instances: 1,
+      components: ["Setup Progress"]
+    },
+    {
+      page: "Upload Processing",
+      route: "/upload",
+      instances: 2,
+      components: ["File Upload Progress", "Processing Status"]
+    }
+  ] as ComponentUsage[],
+
+  modals: [
+    {
+      page: "Invoices List",
+      route: "/invoices",
+      instances: 3,
+      components: ["Export Modal", "Exclude Modal", "Confirmation Dialogs"]
+    },
+    {
+      page: "Invoice Detail",
+      route: "/invoices/:id",
+      instances: 5,
+      components: ["Exception Modals", "Contact Modal", "Upload Modal", "Resolution Dialogs"]
+    },
+    {
+      page: "Smart Connections",
+      route: "/smart-connections",
+      instances: 4,
+      components: ["Edit Agent Modal", "Deactivate Modal", "View Details Modal", "2FA Modal"]
+    }
   ] as ComponentUsage[]
 };
