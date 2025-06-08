@@ -203,5 +203,56 @@ export const componentUsageData = {
       instances: 4,
       components: ["Connection Setup", "Portal Form", "Credentials", "User Type"]
     }
+  ] as ComponentUsage[],
+
+  layout: [
+    {
+      page: "All Pages",
+      route: "/*",
+      instances: 1,
+      components: ["Main Layout", "Sidebar", "Header"]
+    },
+    {
+      page: "Invoice Detail",
+      route: "/invoices/:id",
+      instances: 2,
+      components: ["Resizable Panels", "Content Layout"]
+    }
+  ] as ComponentUsage[],
+
+  progress: [
+    {
+      page: "Add Agent Wizard",
+      route: "/smart-connections/add-agent",
+      instances: 1,
+      components: ["Step Progress Indicator"]
+    },
+    {
+      page: "New Smart Connection",
+      route: "/smart-connections/new-connection",
+      instances: 1,
+      components: ["Wizard Progress"]
+    }
+  ] as ComponentUsage[],
+
+  modals: [
+    {
+      page: "Invoices List",
+      route: "/invoices",
+      instances: 3,
+      components: ["Export Modal", "Exclude Modal", "Table Customization"]
+    },
+    {
+      page: "Smart Connections",
+      route: "/smart-connections",
+      instances: 4,
+      components: ["View Details", "Edit Agent", "Deactivate Agent", "Add Agent"]
+    },
+    {
+      page: "Invoice Detail",
+      route: "/invoices/:id",
+      instances: 5,
+      components: ["Exception Modals", "Contact Customer", "Force Submit"]
+    }
   ] as ComponentUsage[]
 };
