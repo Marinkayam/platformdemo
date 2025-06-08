@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,11 +9,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } from '@/lib/toast-helpers';
 import { Typography } from '@/components/ui/typography/typography';
+import { MontoLogo } from '@/components/MontoLogo';
 import MontoIcon from '@/components/MontoIcon';
-import { Toaster } from '@/components/ui/toaster';
 import { 
   Home, 
   Palette, 
@@ -23,12 +26,15 @@ import {
   CheckCircle, 
   Info, 
   AlertTriangle,
-  MoreHorizontal,
+  MoreVertical,
   ChevronDown,
   Copy,
   Download,
   FileText,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Edit,
+  Trash2,
+  Settings
 } from 'lucide-react';
 
 const DesignSystemPlayground = () => {
@@ -108,6 +114,7 @@ const DesignSystemPlayground = () => {
   const sidebarItems = [
     { id: 'colors', label: 'Color Palette', icon: Palette },
     { id: 'typography', label: 'Typography', icon: Type },
+    { id: 'spacing', label: 'Spacing & Layout', icon: Square },
     { id: 'buttons', label: 'Buttons', icon: Square },
     { id: 'badges', label: 'Status Badges', icon: Zap },
     { id: 'alerts', label: 'Alerts', icon: AlertCircle },
@@ -115,6 +122,8 @@ const DesignSystemPlayground = () => {
     { id: 'modals', label: 'Modals', icon: Square },
     { id: 'toasts', label: 'Toast Notifications', icon: Info },
     { id: 'dropdowns', label: 'Dropdowns', icon: ChevronDown },
+    { id: 'forms', label: 'Form Elements', icon: Settings },
+    { id: 'tables', label: 'Tables', icon: FileText },
     { id: 'breadcrumbs', label: 'Breadcrumbs', icon: Home },
     { id: 'brand', label: 'Brand Assets', icon: ImageIcon },
   ];
@@ -147,16 +156,6 @@ const DesignSystemPlayground = () => {
     { name: 'grey-800', value: '#38415F', description: 'Very dark grey for headings' },
     { name: 'grey-900', value: '#061237', description: 'Near black for emphasis' },
   ];
-
-  const logoSvgCode = `<svg width="80" height="16" viewBox="0 0 80 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <text x="0" y="12" fill="#7B59FF" font-family="Arial, sans-serif" font-size="14" font-weight="600">MONTO</text>
-</svg>`;
-
-  const iconSvgCode = `<svg width="508" height="508" viewBox="0 0 508 508" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="508" height="508" rx="60" fill="white"/>
-<path d="M227.651 243.494C244.092 216.347 245.366 184.103 244.899 162.182C244.814 157.848 243.03 153.855 239.928 150.881C236.827 147.908 232.706 146.336 228.416 146.378C219.494 146.591 212.442 153.983 212.612 162.861C212.994 180.747 212.102 206.789 200.037 226.755C186.528 249.059 161.463 259.807 123.228 259.595C114.265 259.552 107.042 266.774 107 275.866C107 280.199 108.742 284.235 111.801 287.251C114.859 290.267 118.853 291.839 123.228 291.924C161.505 291.797 186.528 302.46 200.037 324.763C212.102 344.73 212.994 370.772 212.612 388.657C212.442 397.579 219.494 404.971 228.416 405.141C228.543 405.141 228.628 405.141 228.756 405.141C237.507 405.141 244.729 398.131 244.899 389.337C245.366 367.416 244.092 335.171 227.651 308.025C219.452 294.515 208.364 283.682 194.642 275.738C208.406 267.794 219.494 256.961 227.651 243.451V243.494Z" fill="#7B59FF"/>
-<path d="M385.814 216.262H385.729C347.495 216.517 322.43 205.727 308.92 183.423C296.855 163.456 295.963 137.414 296.345 119.529C296.43 115.196 294.858 111.117 291.842 108.016C288.868 104.873 284.833 103.088 280.542 103.003C276.293 102.918 272.13 104.49 269.029 107.506C265.928 110.48 264.143 114.516 264.058 118.807C263.591 140.728 264.866 172.972 281.306 200.119C289.506 213.628 300.594 224.461 314.316 232.406C300.551 240.35 289.506 251.141 281.306 264.693C264.866 291.839 263.591 324.083 264.058 346.005C264.228 354.798 271.45 361.808 280.202 361.808C280.329 361.808 280.457 361.808 280.542 361.808C284.875 361.723 288.868 359.939 291.842 356.838C294.816 353.736 296.43 349.616 296.345 345.325C295.963 327.44 296.855 301.398 308.92 281.431C322.302 259.34 347.07 248.549 384.667 248.549C385.049 248.549 385.474 248.549 385.856 248.549C390.147 248.549 394.183 246.892 397.199 243.876C400.258 240.86 401.957 236.781 402 232.278C401.957 223.399 394.693 216.22 385.856 216.22L385.814 216.262Z" fill="#7B59FF"/>
-</svg>`;
 
   const renderContent = () => {
     switch (activeSection) {
@@ -192,6 +191,344 @@ const DesignSystemPlayground = () => {
           </div>
         );
 
+      case 'typography':
+        return (
+          <div className="space-y-8">
+            <Typography variant="h3" className="mb-6">Typography Scale</Typography>
+            
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h4" className="mb-4 text-grey-800">Headings</Typography>
+                <div className="space-y-6">
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="h1" className="mb-2">H1 Display Heading</Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 60px (3.75rem) on large screens</p>
+                      <p>Font Weight: 500 (Medium)</p>
+                      <p>Line Height: 1.2</p>
+                      <p>Usage: Hero sections, page titles</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="h2" className="mb-2">H2 Section Heading</Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 48px (3rem) on large screens</p>
+                      <p>Font Weight: 500 (Medium)</p>
+                      <p>Line Height: 1.25</p>
+                      <p>Usage: Major section headings</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="h3" className="mb-2">H3 Subsection Heading</Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 30px (1.875rem)</p>
+                      <p>Font Weight: 500 (Medium)</p>
+                      <p>Line Height: 1.375</p>
+                      <p>Usage: Content sections, component titles</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="h4" className="mb-2">H4 Component Heading</Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 24px (1.5rem)</p>
+                      <p>Font Weight: 700 (Bold)</p>
+                      <p>Line Height: 1.5</p>
+                      <p>Usage: Component headers, card titles</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="h5" className="mb-2">H5 Small Heading</Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 20px (1.25rem)</p>
+                      <p>Font Weight: 600 (Semibold)</p>
+                      <p>Line Height: 1.5</p>
+                      <p>Usage: Emphasized content, small headers</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="h6" className="mb-2">H6 Micro Heading</Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 16px (1rem)</p>
+                      <p>Font Weight: 500 (Medium)</p>
+                      <p>Line Height: 1.5</p>
+                      <p>Usage: Labels, micro headings</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div>
+                <Typography variant="h4" className="mb-4 text-grey-800">Body Text</Typography>
+                <div className="space-y-4">
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="body1" className="mb-2">
+                      Body 1 - This is the primary body text used for main content areas. It provides excellent readability and is optimized for long-form content.
+                    </Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 16px (1rem) • Weight: 400 (Normal) • Line Height: 1.5</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="body2" className="mb-2">
+                      Body 2 - Smaller body text for secondary content, descriptions, and supporting information.
+                    </Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 14px (0.875rem) • Weight: 400 (Normal) • Line Height: 1.5</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="body3" className="mb-2">
+                      Body 3 - Light body text for subtle information and elegant typography.
+                    </Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 14px (0.875rem) • Weight: 300 (Light) • Line Height: 1.5</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div>
+                <Typography variant="h4" className="mb-4 text-grey-800">Utility Text</Typography>
+                <div className="space-y-4">
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="caption" className="mb-2">Caption text for images and meta information</Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 12px (0.75rem) • Weight: 400 (Normal)</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="overline" className="mb-2">OVERLINE CATEGORY LABELS</Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 10px (0.625rem) • Weight: 500 (Medium) • Transform: Uppercase • Tracking: Wide</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg">
+                    <Typography variant="smallText" className="mb-2">Small text for fine print and micro content</Typography>
+                    <div className="text-sm text-grey-600 font-mono">
+                      <p>Font Size: 11px (0.6875rem) • Weight: 400 (Normal)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'spacing':
+        return (
+          <div className="space-y-8">
+            <Typography variant="h3" className="mb-6">Spacing & Layout</Typography>
+            
+            <div className="space-y-6">
+              <div>
+                <Typography variant="h4" className="mb-4">Spacing Scale</Typography>
+                <div className="space-y-4">
+                  {[
+                    { name: 'xs', value: '4px', class: 'p-1' },
+                    { name: 'sm', value: '8px', class: 'p-2' },
+                    { name: 'md', value: '16px', class: 'p-4' },
+                    { name: 'lg', value: '24px', class: 'p-6' },
+                    { name: 'xl', value: '32px', class: 'p-8' },
+                    { name: '2xl', value: '48px', class: 'p-12' },
+                  ].map((spacing) => (
+                    <div key={spacing.name} className="flex items-center space-x-4">
+                      <div className="w-16 text-sm font-mono">{spacing.name}</div>
+                      <div className="w-16 text-sm text-grey-600">{spacing.value}</div>
+                      <div className="bg-primary-lighter border border-primary-main rounded">
+                        <div className={`bg-primary-main ${spacing.class}`}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-4">Layout Examples</Typography>
+                <div className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Card with Standard Spacing</CardTitle>
+                      <CardDescription>This card uses the default padding (p-6 = 24px)</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p>Content area with consistent spacing throughout the component.</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card>
+                      <CardContent className="p-4">
+                        <Typography variant="h6">Compact Card</Typography>
+                        <Typography variant="body2">Smaller padding for dense layouts</Typography>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4">
+                        <Typography variant="h6">Compact Card</Typography>
+                        <Typography variant="body2">Consistent spacing across grid</Typography>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4">
+                        <Typography variant="h6">Compact Card</Typography>
+                        <Typography variant="body2">Responsive grid layout</Typography>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'tables':
+        return (
+          <div className="space-y-6">
+            <Typography variant="h3" className="mb-6">Table Components</Typography>
+            
+            <div className="border border-grey-300 rounded-lg overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-grey-200">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Role</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-grey-200">
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-grey-900">John Doe</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Badge className="bg-green-100 text-green-800">Active</Badge>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-grey-700">Administrator</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-600">
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-grey-900">Jane Smith</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-grey-700">Editor</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-600">
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+
+      case 'forms':
+        return (
+          <div className="space-y-8">
+            <Typography variant="h3" className="mb-6">Form Elements</Typography>
+            
+            <div className="space-y-6">
+              <div>
+                <Typography variant="h4" className="mb-4">Radio Button Groups</Typography>
+                <RadioGroup defaultValue="option1" className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="option1" id="option1" />
+                    <Label htmlFor="option1">Option 1 - Default selection</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="option2" id="option2" />
+                    <Label htmlFor="option2">Option 2 - Alternative choice</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="option3" id="option3" />
+                    <Label htmlFor="option3">Option 3 - Third option</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-4">Select Dropdowns</Typography>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className="text-sm font-medium mb-2 block">Basic Select</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Choose an option" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="option1">Option 1</SelectItem>
+                        <SelectItem value="option2">Option 2</SelectItem>
+                        <SelectItem value="option3">Option 3</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div>
+                    <Label className="text-sm font-medium mb-2 block">Status Filter</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Filter by status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Status</SelectItem>
+                        <SelectItem value="active">Active</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="inactive">Inactive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
       case 'brand':
         return (
           <div className="space-y-8">
@@ -200,23 +537,29 @@ const DesignSystemPlayground = () => {
               <div className="grid gap-6 md:grid-cols-2">
                 <LogoShowcase 
                   title="Small Logo" 
-                  svgCode={logoSvgCode}
+                  svgCode={`<MontoLogo className="w-20 h-4" />`}
                   width={80}
                   height={16}
                 >
-                  <svg width="80" height="16" viewBox="0 0 80 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <text x="0" y="12" fill="#7B59FF" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="600">MONTO</text>
-                  </svg>
+                  <MontoLogo className="w-20 h-4" />
                 </LogoShowcase>
                 <LogoShowcase 
                   title="Medium Logo" 
-                  svgCode={logoSvgCode}
-                  width={104}
-                  height={31}
+                  svgCode={`<MontoLogo className="w-32 h-8" />`}
+                  width={128}
+                  height={32}
                 >
-                  <svg width="104" height="31" viewBox="0 0 80 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <text x="0" y="12" fill="#7B59FF" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="600">MONTO</text>
-                  </svg>
+                  <MontoLogo className="w-32 h-8" />
+                </LogoShowcase>
+              </div>
+              <div className="mt-6">
+                <LogoShowcase 
+                  title="Large Logo" 
+                  svgCode={`<MontoLogo className="w-64 h-16" />`}
+                  width={256}
+                  height={64}
+                >
+                  <MontoLogo className="w-64 h-16" />
                 </LogoShowcase>
               </div>
             </div>
@@ -226,7 +569,7 @@ const DesignSystemPlayground = () => {
               <div className="grid gap-6 md:grid-cols-3">
                 <LogoShowcase 
                   title="Small Icon" 
-                  svgCode={iconSvgCode}
+                  svgCode={`<MontoIcon className="w-6 h-6" />`}
                   width={24}
                   height={24}
                 >
@@ -234,7 +577,7 @@ const DesignSystemPlayground = () => {
                 </LogoShowcase>
                 <LogoShowcase 
                   title="Medium Icon" 
-                  svgCode={iconSvgCode}
+                  svgCode={`<MontoIcon className="w-12 h-12" />`}
                   width={48}
                   height={48}
                 >
@@ -242,7 +585,7 @@ const DesignSystemPlayground = () => {
                 </LogoShowcase>
                 <LogoShowcase 
                   title="Large Icon" 
-                  svgCode={iconSvgCode}
+                  svgCode={`<MontoIcon className="w-24 h-24" />`}
                   width={96}
                   height={96}
                 >
@@ -346,225 +689,156 @@ const DesignSystemPlayground = () => {
           </div>
         );
 
-      // Typography section
-      case 'typography':
-        return (
-          <div className="space-y-6">
-            <Typography variant="h3" className="mb-6">Typography</Typography>
-            <div className="space-y-4">
-              <Typography variant="h1">Heading 1 - 60px / font-medium</Typography>
-              <Typography variant="h2">Heading 2 - 48px / font-medium</Typography>
-              <Typography variant="h3">Heading 3 - 30px / font-medium</Typography>
-              <Typography variant="h4">Heading 4 - 24px / font-medium</Typography>
-              <Typography variant="body1" className="font-bold">Body Bold - Maximum emphasis</Typography>
-              <Typography variant="body1" className="font-semibold">Body Semibold - Strong emphasis</Typography>
-              <Typography variant="body1" className="font-medium">Body Medium - Medium emphasis</Typography>
-              <Typography variant="body1">Body Normal - Default content text</Typography>
-              <Typography variant="body3">Body Light - Elegant subtle text</Typography>
-              <Typography variant="body2" className="font-bold">Small Bold - Emphasized secondary</Typography>
-              <Typography variant="body2" className="font-semibold">Small Semibold - Strong secondary</Typography>
-              <Typography variant="body2" className="font-medium">Small Medium - Medium secondary</Typography>
-              <Typography variant="body2">Small Normal - Secondary content</Typography>
-              <Typography variant="caption">Caption - Meta information</Typography>
-            </div>
-          </div>
-        );
-
-      // Buttons section
       case 'buttons':
         return (
-          <div className="space-y-6">
-            <Typography variant="h3" className="mb-6">Buttons</Typography>
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-4">
-                <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary</Button>
-                <Button variant="secondary" className="bg-grey-200 hover:bg-grey-300 text-grey-800">Secondary</Button>
-                <Button variant="destructive" className="bg-error-main hover:bg-error-dark text-white">Destructive</Button>
-                <Button variant="outline" className="border-primary-main text-primary-main hover:bg-primary-main hover:text-primary-contrast-text">Outline</Button>
-                <Button variant="ghost" className="text-primary-main hover:bg-primary-lighter">Ghost</Button>
-                <Button variant="link" className="text-primary-main hover:underline p-0 h-auto">Link Button</Button>
+          <div className="space-y-8">
+            <Typography variant="h3" className="mb-6">Button Components</Typography>
+            
+            <div className="space-y-6">
+              <div>
+                <Typography variant="h4" className="mb-3">Variants</Typography>
+                <div className="flex flex-wrap gap-3">
+                  <Button variant="default">Default</Button>
+                  <Button variant="secondary">Secondary</Button>
+                  <Button variant="outline">Outline</Button>
+                  <Button variant="destructive">Destructive</Button>
+                  <Button variant="ghost">Ghost</Button>
+                  <Button variant="link">Link</Button>
+                </div>
               </div>
-              <div className="flex flex-wrap items-center gap-4">
-                <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text h-7 px-2 text-xs">Extra Small</Button>
-                <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Small</Button>
-                <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Default</Button>
-                <Button size="lg" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Large</Button>
+
+              <div>
+                <Typography variant="h4" className="mb-3">Sizes</Typography>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button size="sm">Small</Button>
+                  <Button size="default">Default</Button>
+                  <Button size="lg">Large</Button>
+                  <Button size="icon"><Home className="h-4 w-4" /></Button>
+                </div>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-3">With Icons</Typography>
+                <div className="flex flex-wrap gap-3">
+                  <Button><Home className="w-4 h-4 mr-2" />Home</Button>
+                  <Button variant="outline"><Download className="w-4 h-4 mr-2" />Download</Button>
+                  <Button variant="secondary">Settings<Settings className="w-4 h-4 ml-2" /></Button>
+                </div>
               </div>
             </div>
           </div>
         );
 
-      // Badges section
       case 'badges':
         return (
           <div className="space-y-6">
             <Typography variant="h3" className="mb-6">Status Badges</Typography>
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-3">
-                <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">RTP Prepared</Badge>
-                <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Awaiting SC</Badge>
-                <Badge className="bg-violet-50 text-violet-700 border-violet-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">RTP Sent</Badge>
-                <Badge className="bg-red-50 text-red-700 border-red-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Pending Action</Badge>
-                <Badge className="bg-red-50 text-red-700 border-red-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Rejected by Buyer</Badge>
-                <Badge className="bg-orange-50 text-orange-700 border-orange-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Approved by Buyer</Badge>
-                <Badge className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">External Submission</Badge>
-                <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Paid</Badge>
-                <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Settled</Badge>
-                <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Partially Settled</Badge>
-                <Badge className="bg-grey-100 text-grey-700 border-grey-300 hover:bg-primary-main hover:text-primary-contrast-text font-normal">Excluded</Badge>
+            
+            <div className="space-y-6">
+              <div>
+                <Typography variant="h4" className="mb-3">Status Variants</Typography>
+                <div className="flex flex-wrap gap-3">
+                  <Badge variant="default">Default</Badge>
+                  <Badge variant="secondary">Secondary</Badge>
+                  <Badge variant="outline">Outline</Badge>
+                  <Badge variant="destructive">Destructive</Badge>
+                </div>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-3">Custom Status Colors</Typography>
+                <div className="flex flex-wrap gap-3">
+                  <Badge className="bg-green-100 text-green-700 border-green-200">Paid</Badge>
+                  <Badge className="bg-blue-100 text-blue-700 border-blue-200">Processing</Badge>
+                  <Badge className="bg-orange-100 text-orange-700 border-orange-200">Pending</Badge>
+                  <Badge className="bg-red-100 text-red-700 border-red-200">Failed</Badge>
+                  <Badge className="bg-purple-100 text-purple-700 border-purple-200">Draft</Badge>
+                </div>
               </div>
             </div>
           </div>
         );
 
-      // Alerts section
       case 'alerts':
         return (
           <div className="space-y-6">
-            <Typography variant="h3" className="mb-6">Alert Cases</Typography>
+            <Typography variant="h3" className="mb-6">Alert Components</Typography>
+            
             <div className="space-y-4">
               <Alert className="border-blue-200 bg-blue-50">
-                <Info className="h-4 w-4 text-blue-700" />
+                <Info className="h-4 w-4 text-blue-600" />
+                <AlertTitle className="text-blue-800">Information</AlertTitle>
                 <AlertDescription className="text-blue-700">
-                  This is an informational alert with important details for the user.
+                  This is an informational alert with helpful details.
                 </AlertDescription>
               </Alert>
+
               <Alert className="border-green-200 bg-green-50">
-                <CheckCircle className="h-4 w-4 text-green-700" />
+                <CheckCircle className="h-4 w-4 text-green-600" />
+                <AlertTitle className="text-green-800">Success</AlertTitle>
                 <AlertDescription className="text-green-700">
-                  Operation completed successfully! Your changes have been saved.
+                  Your action has been completed successfully.
                 </AlertDescription>
               </Alert>
+
               <Alert className="border-orange-200 bg-orange-50">
-                <AlertTriangle className="h-4 w-4 text-orange-700" />
+                <AlertTriangle className="h-4 w-4 text-orange-600" />
+                <AlertTitle className="text-orange-800">Warning</AlertTitle>
                 <AlertDescription className="text-orange-700">
-                  Please review your input before proceeding with this action.
+                  Please review the following before proceeding.
                 </AlertDescription>
               </Alert>
-              <Alert className="border-red-200 bg-red-50">
-                <AlertCircle className="h-4 w-4 text-red-700" />
+
+              <Alert variant="destructive" className="border-red-200 bg-red-50">
+                <AlertCircle className="h-4 w-4 text-red-600" />
+                <AlertTitle className="text-red-800">Error</AlertTitle>
                 <AlertDescription className="text-red-700">
-                  An error occurred while processing your request. Please try again.
-                </AlertDescription>
-              </Alert>
-            </div>
-            <div className="space-y-4">
-              <Alert className="bg-blue-600 text-white border-0">
-                <Info className="h-4 w-4 text-white" />
-                <AlertDescription className="text-white">
-                  High contrast informational alert for maximum visibility.
-                </AlertDescription>
-              </Alert>
-              <Alert className="bg-green-600 text-white border-0">
-                <CheckCircle className="h-4 w-4 text-white" />
-                <AlertDescription className="text-white">
-                  Bold success message for completed operations.
-                </AlertDescription>
-              </Alert>
-              <Alert className="bg-orange-600 text-white border-0">
-                <AlertTriangle className="h-4 w-4 text-white" />
-                <AlertDescription className="text-white">
-                  Important warning message requiring immediate attention.
-                </AlertDescription>
-              </Alert>
-              <Alert className="bg-red-600 text-white border-0">
-                <AlertCircle className="h-4 w-4 text-white" />
-                <AlertDescription className="text-white">
-                  Critical error alert with high contrast for urgent situations.
+                  An error occurred while processing your request.
                 </AlertDescription>
               </Alert>
             </div>
           </div>
         );
 
-      // Modals section
       case 'modals':
         return (
           <div className="space-y-6">
-            <Typography variant="h3" className="mb-6">Modals</Typography>
-            <div className="space-y-4">
+            <Typography variant="h3" className="mb-6">Modal Dialogs</Typography>
+            
+            <div className="grid gap-4 md:grid-cols-2">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Basic Modal</Button>
                 </DialogTrigger>
-                <DialogContent className="bg-background-paper border border-grey-300 rounded-xl shadow-xl">
+                <DialogContent className="border-primary-main">
                   <DialogHeader>
-                    <DialogTitle className="text-grey-900">Basic Modal</DialogTitle>
-                    <DialogDescription className="text-grey-600">
-                      This is a basic modal dialog component with a title and description.
+                    <DialogTitle className="text-primary-main">Basic Modal</DialogTitle>
+                    <DialogDescription>
+                      This modal uses the primary brand color #7B59FF for consistent styling.
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="py-4">
-                    <p className="text-grey-700">Modal content goes here. You can add forms, buttons, or any other content.</p>
-                  </div>
-                  <div className="flex justify-end gap-3">
-                    <Button variant="outline" className="border-grey-300 text-grey-700 hover:bg-grey-200">
-                      Cancel
-                    </Button>
-                    <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">
-                      Confirm
-                    </Button>
+                  <div className="space-y-4">
+                    <p className="text-sm text-grey-600">
+                      All modals should use the primary brand color for headers and accents.
+                    </p>
                   </div>
                 </DialogContent>
               </Dialog>
 
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="border-warning-main text-warning-main hover:bg-warning-main hover:text-white">Confirmation Modal</Button>
+                  <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Confirmation Modal</Button>
                 </DialogTrigger>
-                <DialogContent className="bg-background-paper border border-warning-main rounded-xl shadow-xl">
+                <DialogContent className="border-primary-main">
                   <DialogHeader>
-                    <DialogTitle className="text-warning-main flex items-center gap-2">
-                      <AlertTriangle className="h-5 w-5" />
-                      Confirm Action
-                    </DialogTitle>
-                    <DialogDescription className="text-grey-600">
-                      Are you sure you want to proceed? This action cannot be undone.
+                    <DialogTitle className="text-primary-main">Confirm Action</DialogTitle>
+                    <DialogDescription>
+                      Are you sure you want to proceed with this action?
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="py-4">
-                    <div className="bg-warning-lighter p-4 rounded-lg border border-warning-light">
-                      <p className="text-warning-dark text-sm">
-                        This is a warning modal used for confirmations that require user attention.
-                      </p>
-                    </div>
-                  </div>
                   <div className="flex justify-end gap-3">
-                    <Button variant="outline" className="border-grey-300 text-grey-700 hover:bg-grey-200">
-                      Cancel
-                    </Button>
-                    <Button className="bg-warning-main hover:bg-warning-dark text-white">
-                      Proceed
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" className="border-info-main text-info-main hover:bg-info-main hover:text-white">Info Modal</Button>
-                </DialogTrigger>
-                <DialogContent className="bg-background-paper border border-info-main rounded-xl shadow-xl">
-                  <DialogHeader>
-                    <DialogTitle className="text-info-main flex items-center gap-2">
-                      <Info className="h-5 w-5" />
-                      Information
-                    </DialogTitle>
-                    <DialogDescription className="text-grey-600">
-                      Here's some important information you should know.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="py-4">
-                    <div className="bg-info-lighter p-4 rounded-lg border border-info-light">
-                      <p className="text-info-dark text-sm">
-                        This modal provides informational content to help users understand features or processes.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex justify-end gap-3">
-                    <Button className="bg-info-main hover:bg-info-dark text-info-contrast-text">
-                      Got it
-                    </Button>
+                    <Button variant="outline">Cancel</Button>
+                    <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Confirm</Button>
                   </div>
                 </DialogContent>
               </Dialog>
@@ -572,80 +846,127 @@ const DesignSystemPlayground = () => {
           </div>
         );
 
-      // Dropdowns section
       case 'dropdowns':
         return (
           <div className="space-y-6">
-            <Typography variant="h3" className="mb-6">Dropdown Fields</Typography>
-            <div className="space-y-4">
-              <Select>
-                <SelectTrigger className="border-grey-400 focus:ring-0 focus:border-primary-main bg-background-paper">
-                  <SelectValue placeholder="Select an option" />
-                </SelectTrigger>
-                <SelectContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
-                  <SelectItem value="option1">Option 1</SelectItem>
-                  <SelectItem value="option2">Option 2</SelectItem>
-                  <SelectItem value="option3">Option 3</SelectItem>
-                </SelectContent>
-              </Select>
+            <Typography variant="h3" className="mb-6">Dropdown Components</Typography>
+            
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                <Typography variant="h4">Action Menu</Typography>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">
+                      Actions
+                      <ChevronDown className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>
+                      <FileText className="mr-2 h-4 w-4" />
+                      View Details
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Copy className="mr-2 h-4 w-4" />
+                      Duplicate
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="text-red-600">
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="border-grey-400 text-grey-700 hover:bg-grey-200">
-                    Actions
-                    <MoreHorizontal className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
-                  <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">Edit</DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer hover:bg-grey-100">Duplicate</DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer hover:bg-grey-100 text-error-main">Delete</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="space-y-4">
+                <Typography variant="h4">Kebab Menu (Vertical)</Typography>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>
+                      <Edit className="mr-2 h-4 w-4" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Copy className="mr-2 h-4 w-4" />
+                      Duplicate
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="text-red-600">
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
           </div>
         );
 
-      // Breadcrumbs section
       case 'breadcrumbs':
         return (
           <div className="space-y-6">
-            <Typography variant="h3" className="mb-6">Breadcrumbs</Typography>
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                    <Home className="h-4 w-4" />
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator>
-                  <ChevronDown className="h-4 w-4 text-grey-400" />
-                </BreadcrumbSeparator>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                    Invoices
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator>
-                  <ChevronDown className="h-4 w-4 text-grey-400" />
-                </BreadcrumbSeparator>
-                <BreadcrumbItem>
-                  <BreadcrumbPage className="text-grey-900 font-medium">
-                    Invoice #12345
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+            <Typography variant="h3" className="mb-6">Breadcrumb Navigation</Typography>
+            
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h4" className="mb-3">Basic Breadcrumb</Typography>
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="#" className="flex items-center">
+                        <Home className="h-4 w-4 mr-1" />
+                        Home
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="#">Invoices</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>Invoice Details</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </BreadcrumbList>
+                </Breadcrumb>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-3">Multi-level Navigation</Typography>
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="#" className="flex items-center">
+                        <Home className="h-4 w-4 mr-1" />
+                        Dashboard
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="#">Smart Connections</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="#">Portal Management</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>Add New Agent</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </BreadcrumbList>
+                </Breadcrumb>
+              </div>
+            </div>
           </div>
         );
 
       default:
-        return (
-          <div className="space-y-6">
-            <Typography variant="h3">Select a Section</Typography>
-            <Typography variant="body1">Choose a component from the sidebar to explore the design system.</Typography>
-          </div>
-        );
+        return <div>Select a component from the sidebar</div>;
     }
   };
 
@@ -683,8 +1004,6 @@ const DesignSystemPlayground = () => {
           {renderContent()}
         </div>
       </div>
-      
-      <Toaster />
     </div>
   );
 };
