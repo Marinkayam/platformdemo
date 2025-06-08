@@ -213,10 +213,10 @@ export const componentUsageData = {
       components: ["Main Layout", "Sidebar", "Header"]
     },
     {
-      page: "Dashboard",
-      route: "/dashboard",
-      instances: 3,
-      components: ["Grid Layout", "Card Layout", "Responsive Sections"]
+      page: "Invoice Detail",
+      route: "/invoices/:id",
+      instances: 2,
+      components: ["Resizable Panels", "Content Layout"]
     }
   ] as ComponentUsage[],
 
@@ -231,13 +231,7 @@ export const componentUsageData = {
       page: "New Smart Connection",
       route: "/smart-connections/new-connection",
       instances: 1,
-      components: ["Connection Progress"]
-    },
-    {
-      page: "File Uploads",
-      route: "/invoices/:id",
-      instances: 2,
-      components: ["Upload Progress", "Processing Progress"]
+      components: ["Wizard Progress"]
     }
   ] as ComponentUsage[],
 
@@ -246,25 +240,19 @@ export const componentUsageData = {
       page: "Invoices List",
       route: "/invoices",
       instances: 3,
-      components: ["Export Modal", "Bulk Actions Modal", "Filter Modal"]
-    },
-    {
-      page: "Invoice Detail",
-      route: "/invoices/:id",
-      instances: 5,
-      components: ["Exception Modals", "Contact Modal", "Confirmation Dialogs"]
+      components: ["Export Modal", "Exclude Modal", "Table Customization"]
     },
     {
       page: "Smart Connections",
       route: "/smart-connections",
       instances: 4,
-      components: ["Edit Agent Modal", "Deactivate Modal", "View Details Modal"]
+      components: ["View Details", "Edit Agent", "Deactivate Agent", "Add Agent"]
     },
     {
-      page: "Purchase Orders",
-      route: "/purchase-orders",
-      instances: 2,
-      components: ["Export Modal", "Detail Modal"]
+      page: "Invoice Detail",
+      route: "/invoices/:id",
+      instances: 5,
+      components: ["Exception Modals", "Contact Customer", "Force Submit"]
     }
   ] as ComponentUsage[]
 };
