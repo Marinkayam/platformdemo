@@ -13,6 +13,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
+import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
+import { ActiveFiltersList } from "@/components/invoices/filters/ActiveFiltersList";
+import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";
 import { 
   Palette,
   Type,
@@ -35,7 +40,11 @@ import {
   Check,
   AlertTriangle,
   Info,
-  CheckCircle
+  CheckCircle,
+  Search,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown
 } from 'lucide-react';
 import { MontoLogo } from "@/components/MontoLogo";
 import MontoIcon from "@/components/MontoIcon";
@@ -118,6 +127,49 @@ export default function DesignSystemPlayground() {
     terms: false,
     category: ''
   });
+
+  // Filter state for demonstration
+  const [filters, setFilters] = useState<InvoiceFiltersType>({
+    status: [],
+    portal: [],
+    buyer: [],
+    owner: [],
+    dateRange: undefined,
+    search: ''
+  });
+
+  // Table sort state
+  const [sortField, setSortField] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const handleFilterChange = (key: keyof InvoiceFiltersType, value: any) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
+  const handleRemoveFilter = (key: string, value: string) => {
+    if (key === 'search') {
+      setFilters(prev => ({ ...prev, search: '' }));
+    } else {
+      setFilters(prev => ({
+        ...prev,
+        [key]: Array.isArray(prev[key as keyof InvoiceFiltersType]) 
+          ? (prev[key as keyof InvoiceFiltersType] as string[]).filter(item => item !== value)
+          : []
+      }));
+    }
+  };
 
   const renderColorPalette = () => (
     <div className="space-y-8">
@@ -277,7 +329,7 @@ export default function DesignSystemPlayground() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Spacing Scale</h2>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {[
             { name: "xs", value: "0.25rem", pixels: "4px", class: "p-1" },
             { name: "sm", value: "0.5rem", pixels: "8px", class: "p-2" },
@@ -287,17 +339,54 @@ export default function DesignSystemPlayground() {
             { name: "2xl", value: "3rem", pixels: "48px", class: "p-12" },
           ].map((space) => (
             <div key={space.name} className="border border-grey-300 rounded-lg p-4 bg-background-paper">
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-3">
                 <span className="font-medium text-grey-900">{space.name}</span>
                 <span className="text-sm text-grey-600">{space.value} ({space.pixels})</span>
               </div>
-              <div className="bg-grey-200 rounded">
-                <div className={`bg-primary-light rounded ${space.class}`}>
-                  <div className="bg-primary-main rounded h-4"></div>
+              <div className="bg-grey-200 rounded-md p-2">
+                <div className={`bg-primary-light rounded-md ${space.class}`}>
+                  <div className="bg-primary-main rounded-md h-6"></div>
                 </div>
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Grid with Gap Examples</h2>
+        <div className="space-y-6">
+          {/* Single Item Grid */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Single Item Grid</CardTitle>
+              <CardDescription>A single item using proper spacing tokens</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 gap-4">
+                <div className="bg-primary-lighter border border-primary-light rounded-lg p-6 text-center text-primary-main font-medium">
+                  Single Grid Item
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 4 Items Grid */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Four Items Grid</CardTitle>
+              <CardDescription>Four items demonstrating consistent gap spacing</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {[1, 2, 3, 4].map((item) => (
+                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-4 text-center text-primary-main font-medium">
+                    Item {item}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
@@ -313,15 +402,6 @@ export default function DesignSystemPlayground() {
               <p className="text-grey-700">Content area with proper spacing using design system tokens.</p>
             </CardContent>
           </Card>
-
-          <div className="bg-background-paper border border-grey-300 rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-4">Grid with Gap</h3>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-primary-lighter p-4 rounded text-center">Item 1</div>
-              <div className="bg-primary-lighter p-4 rounded text-center">Item 2</div>
-              <div className="bg-primary-lighter p-4 rounded text-center">Item 3</div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -365,32 +445,45 @@ export default function DesignSystemPlayground() {
   const renderStatusBadges = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Status Badges</h2>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Status Badges</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <div className="space-y-2">
-            <Badge className="bg-success-lighter text-success-darker border-success-main">Paid</Badge>
-            <p className="text-xs text-grey-600">Success state</p>
-          </div>
-          <div className="space-y-2">
-            <Badge className="bg-error-lighter text-error-darker border-error-main">Rejected</Badge>
-            <p className="text-xs text-grey-600">Error state</p>
-          </div>
-          <div className="space-y-2">
-            <Badge className="bg-warning-lighter text-warning-contrast-text border-warning-main">Pending</Badge>
-            <p className="text-xs text-grey-600">Warning state</p>
-          </div>
-          <div className="space-y-2">
-            <Badge className="bg-info-lighter text-info-darker border-info-main">Processing</Badge>
-            <p className="text-xs text-grey-600">Info state</p>
-          </div>
-          <div className="space-y-2">
-            <Badge className="bg-primary-lighter text-primary-darker border-primary-main">Active</Badge>
-            <p className="text-xs text-grey-600">Primary state</p>
-          </div>
-          <div className="space-y-2">
-            <Badge variant="secondary">Inactive</Badge>
-            <p className="text-xs text-grey-600">Secondary state</p>
-          </div>
+          {[
+            "Paid",
+            "Pending Action", 
+            "Settled",
+            "Rejected by Buyer",
+            "Rejected by Monto",
+            "Approved by Buyer",
+            "RTP Prepared",
+            "RTP Sent",
+            "Awaiting SC",
+            "External Submission",
+            "Partially Settled",
+            "Excluded"
+          ].map((status) => (
+            <div key={status} className="space-y-2 p-3 border border-grey-300 rounded-lg bg-background-paper">
+              <StatusBadge status={status as any} />
+              <p className="text-xs text-grey-600">{status}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Smart Connection Status Badges</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[
+            "Active",
+            "Inactive", 
+            "Error",
+            "Connecting",
+            "Pending"
+          ].map((status) => (
+            <div key={status} className="space-y-2 p-3 border border-grey-300 rounded-lg bg-background-paper">
+              <SmartConnectionStatusBadge status={status} />
+              <p className="text-xs text-grey-600">{status}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -399,55 +492,127 @@ export default function DesignSystemPlayground() {
   const renderTabNavigation = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Tab Navigation</h2>
-        <Tabs defaultValue="tab1" className="w-full">
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Tab Navigation</h2>
+        <Tabs defaultValue="all" className="w-full">
           <TabsList className="bg-grey-200">
-            <TabsTrigger value="tab1" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Overview</TabsTrigger>
-            <TabsTrigger value="tab2" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Analytics</TabsTrigger>
-            <TabsTrigger value="tab3" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Reports</TabsTrigger>
-            <TabsTrigger value="tab4" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Settings</TabsTrigger>
+            <TabsTrigger value="all" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+              All RTPs
+              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-grey-300 text-grey-700">1,234</span>
+            </TabsTrigger>
+            <TabsTrigger value="pending" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+              Pending Action
+              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-error-lighter text-error-main">43</span>
+            </TabsTrigger>
+            <TabsTrigger value="overdue" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+              Overdue
+              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-warning-lighter text-warning-main">12</span>
+            </TabsTrigger>
+            <TabsTrigger value="settled" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+              Settled
+              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-success-lighter text-success-main">856</span>
+            </TabsTrigger>
           </TabsList>
-          <TabsContent value="tab1" className="mt-6">
+          
+          <TabsContent value="all" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Overview</CardTitle>
-                <CardDescription>A comprehensive overview of your data</CardDescription>
+                <CardTitle>All RTPs</CardTitle>
+                <CardDescription>Complete list of Request to Pay invoices</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>This is the overview tab content.</p>
+                <p>This shows all RTP invoices in the system.</p>
               </CardContent>
             </Card>
           </TabsContent>
-          <TabsContent value="tab2" className="mt-6">
+          
+          <TabsContent value="pending" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Analytics</CardTitle>
-                <CardDescription>Detailed analytics and insights</CardDescription>
+                <CardTitle>Pending Action</CardTitle>
+                <CardDescription>Invoices requiring immediate attention</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>This is the analytics tab content.</p>
+                <p>This shows invoices that need action from users.</p>
               </CardContent>
             </Card>
           </TabsContent>
-          <TabsContent value="tab3" className="mt-6">
+          
+          <TabsContent value="overdue" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Reports</CardTitle>
-                <CardDescription>Generate and view reports</CardDescription>
+                <CardTitle>Overdue</CardTitle>
+                <CardDescription>Invoices past their due date</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>This is the reports tab content.</p>
+                <p>This shows overdue invoices requiring urgent attention.</p>
               </CardContent>
             </Card>
           </TabsContent>
-          <TabsContent value="tab4" className="mt-6">
+          
+          <TabsContent value="settled" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Settings</CardTitle>
-                <CardDescription>Configure your preferences</CardDescription>
+                <CardTitle>Settled</CardTitle>
+                <CardDescription>Successfully processed invoices</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>This is the settings tab content.</p>
+                <p>This shows invoices that have been successfully settled.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Detail Tabs</h2>
+        <Tabs defaultValue="financial" className="w-full">
+          <TabsList className="bg-grey-200">
+            <TabsTrigger value="financial" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Financial Data</TabsTrigger>
+            <TabsTrigger value="activity" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Activity</TabsTrigger>
+            <TabsTrigger value="exceptions" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
+              Exceptions
+              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-error-lighter text-error-main">2</span>
+            </TabsTrigger>
+            <TabsTrigger value="rtp" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">RTP Data</TabsTrigger>
+            <TabsTrigger value="records" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">Portal Records</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="financial" className="mt-6">
+            <Card>
+              <CardContent className="pt-6">
+                <p>Financial data and line items would be displayed here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="activity" className="mt-6">
+            <Card>
+              <CardContent className="pt-6">
+                <p>Activity timeline and notes would be displayed here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="exceptions" className="mt-6">
+            <Card>
+              <CardContent className="pt-6">
+                <p>Exception handling and resolution would be displayed here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="rtp" className="mt-6">
+            <Card>
+              <CardContent className="pt-6">
+                <p>Request to Pay data and processing information would be displayed here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="records" className="mt-6">
+            <Card>
+              <CardContent className="pt-6">
+                <p>Portal records and submission history would be displayed here.</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -455,6 +620,193 @@ export default function DesignSystemPlayground() {
       </div>
     </div>
   );
+
+  const renderFilterComponents = () => (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Filter Components</h2>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Interactive Filter System</CardTitle>
+            <CardDescription>Functional filters with state management and removable chips</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Filter Controls */}
+            <div className="flex flex-wrap items-center gap-3">
+              <FilterDropdown
+                label="Status"
+                value={filters.status}
+                options={["All", "Paid", "Pending Action", "Settled", "Rejected by Buyer", "Approved by Buyer"]}
+                onSelect={(value) => handleFilterChange("status", value)}
+                multiSelect
+              />
+              
+              <FilterDropdown
+                label="Portal"
+                value={filters.portal}
+                options={["All", "Ariba", "Coupa", "Oracle", "Concur", "Bill"]}
+                onSelect={(value) => handleFilterChange("portal", value)}
+                multiSelect
+                searchable
+              />
+              
+              <FilterDropdown
+                label="Buyer"
+                value={filters.buyer}
+                options={["All", "Acme Corp", "Global Inc", "Tech Solutions", "Manufacturing Co"]}
+                onSelect={(value) => handleFilterChange("buyer", value)}
+                multiSelect
+                searchable
+              />
+              
+              <FilterDropdown
+                label="Owner"
+                value={filters.owner}
+                options={["All", "John Doe", "Jane Smith", "Mike Johnson", "Sarah Wilson"]}
+                onSelect={(value) => handleFilterChange("owner", value)}
+              />
+              
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-grey-400 h-4 w-4" />
+                <Input
+                  placeholder="Search invoices..."
+                  value={filters.search}
+                  onChange={(e) => handleFilterChange("search", e.target.value)}
+                  className="pl-10 w-64 h-9 border border-grey-400 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-main/20 focus:border-primary-main"
+                />
+              </div>
+            </div>
+            
+            {/* Active Filters */}
+            <ActiveFiltersList 
+              filters={filters}
+              onRemoveFilter={handleRemoveFilter}
+            />
+            
+            {/* Filter Description */}
+            <div className="text-sm text-grey-600 bg-grey-200 p-4 rounded-lg">
+              <h4 className="font-medium text-grey-800 mb-2">How Filters Work:</h4>
+              <ul className="space-y-1">
+                <li>• Select multiple values in dropdown filters</li>
+                <li>• Use search to find specific invoices</li>
+                <li>• Click filter chips to remove them</li>
+                <li>• Filters are applied in real-time</li>
+                <li>• Combine multiple filters for precise results</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+
+  const renderTableSystem = () => {
+    const sampleData = [
+      { id: 1, number: "INV-001", buyer: "Acme Corp", status: "Paid", portal: "Ariba", total: 250000, owner: "John Doe" },
+      { id: 2, number: "INV-002", buyer: "Global Inc", status: "Pending Action", portal: "Coupa", total: 150000, owner: "Jane Smith" },
+      { id: 3, number: "INV-003", buyer: "Tech Solutions", status: "Settled", portal: "Oracle", total: 350000, owner: "Mike Johnson" },
+      { id: 4, number: "INV-004", buyer: "Manufacturing Co", status: "Rejected by Buyer", portal: "Bill", total: 125000, owner: "Sarah Wilson" },
+    ];
+
+    const renderSortButton = (field: string, label: string) => {
+      const isActive = sortField === field;
+      const SortIcon = !isActive ? ArrowUpDown : sortDirection === 'asc' ? ArrowUp : ArrowDown;
+      
+      return (
+        <button
+          onClick={() => handleSort(field)}
+          className="flex items-center gap-2 hover:text-grey-900 transition-colors"
+          aria-label={`Sort by ${label}`}
+        >
+          {label}
+          <SortIcon className="h-4 w-4" />
+        </button>
+      );
+    };
+
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Table System</h2>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Interactive Data Table</CardTitle>
+              <CardDescription>Full-featured table with sorting, hover effects, and proper styling</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-xl border overflow-hidden bg-background-paper">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
+                        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-grey-200">
+                          {renderSortButton('number', 'Invoice Number')}
+                        </TableHead>
+                        <TableHead>
+                          {renderSortButton('buyer', 'Buyer')}
+                        </TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Portal</TableHead>
+                        <TableHead>
+                          {renderSortButton('total', 'Total')}
+                        </TableHead>
+                        <TableHead>
+                          {renderSortButton('owner', 'Owner')}
+                        </TableHead>
+                        <TableHead className="w-[80px] text-center">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    
+                    <TableBody className="divide-y divide-grey-100">
+                      {sampleData.map((item) => (
+                        <TableRow key={item.id} className="h-[65px] hover:bg-grey-50 cursor-pointer transition-colors">
+                          <TableCell className="sticky left-0 z-10 bg-background-paper border-r border-grey-200 font-medium">
+                            {item.number}
+                          </TableCell>
+                          <TableCell>{item.buyer}</TableCell>
+                          <TableCell>
+                            <StatusBadge status={item.status as any} />
+                          </TableCell>
+                          <TableCell>
+                            <span className="px-2 py-1 bg-grey-200 text-grey-700 rounded text-xs font-medium">
+                              {item.portal}
+                            </span>
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            ${item.total.toLocaleString()}
+                          </TableCell>
+                          <TableCell>{item.owner}</TableCell>
+                          <TableCell className="text-center">
+                            <Button variant="ghost" size="sm">
+                              <Settings className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+              
+              <div className="mt-4 text-sm text-grey-600 bg-grey-200 p-4 rounded-lg">
+                <h4 className="font-medium text-grey-800 mb-2">Table Features:</h4>
+                <ul className="space-y-1">
+                  <li>• Sortable columns with visual indicators</li>
+                  <li>• Hover effects for better interactivity</li>
+                  <li>• Sticky first column for horizontal scrolling</li>
+                  <li>• Status badges with proper styling</li>
+                  <li>• Action buttons in the last column</li>
+                  <li>• Proper spacing and typography</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  };
 
   const renderFormElements = () => (
     <div className="space-y-8">
@@ -579,7 +931,7 @@ export default function DesignSystemPlayground() {
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Step Progress</h2>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Step Progress with Numbered Steps</h2>
         <div className="space-y-4">
           <div className="flex items-center space-x-4">
             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-main text-primary-contrast-text text-sm font-medium">
@@ -683,58 +1035,6 @@ export default function DesignSystemPlayground() {
     </div>
   );
 
-  const renderTableSystem = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Table System</h2>
-        <Card>
-          <CardHeader>
-            <CardTitle>Data Table</CardTitle>
-            <CardDescription>A sample data table with proper styling</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow className="border-grey-300">
-                  <TableHead className="text-grey-800 font-medium">Invoice</TableHead>
-                  <TableHead className="text-grey-800 font-medium">Status</TableHead>
-                  <TableHead className="text-grey-800 font-medium">Method</TableHead>
-                  <TableHead className="text-right text-grey-800 font-medium">Amount</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow className="border-grey-200">
-                  <TableCell className="font-medium">INV001</TableCell>
-                  <TableCell>
-                    <Badge className="bg-success-lighter text-success-darker border-success-main">Paid</Badge>
-                  </TableCell>
-                  <TableCell>Credit Card</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
-                </TableRow>
-                <TableRow className="border-grey-200">
-                  <TableCell className="font-medium">INV002</TableCell>
-                  <TableCell>
-                    <Badge className="bg-warning-lighter text-warning-contrast-text border-warning-main">Pending</Badge>
-                  </TableCell>
-                  <TableCell>PayPal</TableCell>
-                  <TableCell className="text-right">$150.00</TableCell>
-                </TableRow>
-                <TableRow className="border-grey-200">
-                  <TableCell className="font-medium">INV003</TableCell>
-                  <TableCell>
-                    <Badge className="bg-error-lighter text-error-darker border-error-main">Unpaid</Badge>
-                  </TableCell>
-                  <TableCell>Bank Transfer</TableCell>
-                  <TableCell className="text-right">$350.00</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-
   const renderBrandAssets = () => {
     const copyMontoLogoSVG = () => {
       const svg = `<svg viewBox="0 0 120 36" xmlns="http://www.w3.org/2000/svg">
@@ -764,7 +1064,7 @@ export default function DesignSystemPlayground() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-center p-8 bg-grey-50 rounded-lg">
-                  <MontoLogo className="h-8 w-auto" style={{ color: '#7B59FF' }} />
+                  <MontoLogo className="h-8 w-auto text-primary-main" />
                 </div>
                 <Button 
                   onClick={copyMontoLogoSVG}
@@ -784,7 +1084,7 @@ export default function DesignSystemPlayground() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-center p-8 bg-grey-50 rounded-lg">
-                  <MontoIcon className="h-8 w-auto" style={{ color: '#7B59FF' }} />
+                  <MontoIcon className="h-8 w-auto text-primary-main" />
                 </div>
                 <Button 
                   onClick={copyMontoIconSVG}
@@ -838,10 +1138,11 @@ export default function DesignSystemPlayground() {
       case "buttons": return renderButtons();
       case "status-badges": return renderStatusBadges();
       case "tab-navigation": return renderTabNavigation();
+      case "filter-components": return renderFilterComponents();
+      case "table-system": return renderTableSystem();
       case "form-elements": return renderFormElements();
       case "progress": return renderProgress();
       case "modals": return renderModals();
-      case "table-system": return renderTableSystem();
       case "brand-assets": return renderBrandAssets();
       default: return renderColorPalette();
     }
