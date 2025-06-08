@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,8 +16,8 @@ import { Typography } from '@/components/ui/typography/typography';
 import { ApplyGloballyModal } from '@/components/ui/apply-globally-modal';
 import { componentUsageData } from '@/data/componentUsage';
 import { MontoLogo } from '@/components/MontoLogo';
-import { MontoIcon } from '@/components/MontoIcon';
-import { Copy, Check, Filter, X, Search, Download, Upload, Settings, User, Mail, Phone, Calendar, Globe, FileText, Home, BarChart3, Users, CreditCard, Package, Truck, Building2, AlertCircle, CheckCircle, XCircle, Clock, Star, Heart, Eye, EyeOff, Plus, Minus, Edit, Trash2, Save, Send, Share, Lock, Unlock, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, MoreHorizontal, MoreVertical, Menu, Bell, Help, Info, AlertTriangle, Zap, Shield, Target, Award, Gift, Map, Camera, Image, Video, Music, Headphones, Phone as PhoneIcon, MessageCircle, PlusCircle, MinusCircle, PlayCircle, PauseCircle, Square, Triangle, Circle, Diamond, Hexagon, Octagon, Pentagon } from 'lucide-react';
+import MontoIcon from '@/components/MontoIcon';
+import { Copy, Check, Filter, X, Search, Download, Upload, Settings, User, Mail, Phone, Calendar, Globe, FileText, Home, BarChart3, Users, CreditCard, Package, Truck, Building2, AlertCircle, CheckCircle, XCircle, Clock, Star, Heart, Eye, EyeOff, Plus, Minus, Edit, Trash2, Save, Send, Share, Lock, Unlock, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, MoreHorizontal, MoreVertical, Menu, Bell, Info, AlertTriangle, Zap, Shield, Target, Award, Gift, Map, Camera, Image, Video, Music, Headphones, Phone as PhoneIcon, MessageCircle, PlusCircle, MinusCircle, PlayCircle, PauseCircle, Square, Triangle, Circle, Diamond, Hexagon, Octagon, Pentagon } from 'lucide-react';
 
 interface FilterState {
   search: string;
@@ -108,7 +107,7 @@ const DesignSystemPlayground = () => {
           <div className="flex items-center justify-between">
             <Typography variant="h2" className="text-grey-900">Color Palette</Typography>
             <ApplyGloballyModal 
-              componentType="colors" 
+              componentType="buttons" 
               usageData={componentUsageData.buttons}
               onApply={(pages) => console.log('Apply colors to:', pages)}
             >
@@ -135,8 +134,8 @@ const DesignSystemPlayground = () => {
                     <div className={`${color.class} h-16 rounded-lg border border-grey-300`}></div>
                     <div className="space-y-1">
                       <Typography variant="caption" className="font-medium">{color.name}</Typography>
-                      <Typography variant="small-text" className="text-grey-500 font-mono">{color.hex}</Typography>
-                      <Typography variant="small-text" className="text-grey-500 font-mono">{color.class}</Typography>
+                      <Typography variant="smallText" className="text-grey-500 font-mono">{color.hex}</Typography>
+                      <Typography variant="smallText" className="text-grey-500 font-mono">{color.class}</Typography>
                     </div>
                   </div>
                 ))}
@@ -194,7 +193,7 @@ const DesignSystemPlayground = () => {
                           <div className={`${color.class} w-8 h-8 rounded border border-grey-300`}></div>
                           <div>
                             <Typography variant="caption" className="font-medium">{color.name}</Typography>
-                            <Typography variant="small-text" className="text-grey-500 font-mono block">{color.hex}</Typography>
+                            <Typography variant="smallText" className="text-grey-500 font-mono block">{color.hex}</Typography>
                           </div>
                         </div>
                       ))}
@@ -211,7 +210,7 @@ const DesignSystemPlayground = () => {
           <div className="flex items-center justify-between">
             <Typography variant="h2" className="text-grey-900">Typography</Typography>
             <ApplyGloballyModal 
-              componentType="typography" 
+              componentType="buttons" 
               usageData={componentUsageData.buttons}
               onApply={(pages) => console.log('Apply typography to:', pages)}
             >
