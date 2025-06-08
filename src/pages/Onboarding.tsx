@@ -7,9 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Upload, X, CheckCircle, AlertCircle, Building, Globe, Users, Shield } from 'lucide-react';
+import { Upload, X, CheckCircle, Building, Users, Shield, Eye, EyeOff } from 'lucide-react';
+import { StepIndicator } from '@/components/onboarding/StepIndicator';
+import { PortalSelection } from '@/components/onboarding/PortalSelection';
+import { ConnectedUsersList, ConnectedUser } from '@/components/onboarding/ConnectedUsersList';
 
 interface WorkspaceData {
   companyName: string;
@@ -18,35 +20,25 @@ interface WorkspaceData {
   teamMembers: string[];
 }
 
-interface PortalConnection {
-  id: string;
-  portal: string;
-  username: string;
-  password: string;
-  url?: string;
-  status: 'idle' | 'connecting' | 'connected' | 'failed';
-  poCount?: number;
-  invoiceCount?: number;
-  error?: string;
-}
-
 const Onboarding = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [portalStep, setPortalStep] = useState(1);
   const [workspaceData, setWorkspaceData] = useState<WorkspaceData>({
-    companyName: 'Acme Corporation', // Pre-filled from HubSpot
+    companyName: 'Acme Corporation',
     timezone: 'Asia/Jerusalem',
     logo: null,
     teamMembers: []
   });
   
   const [emailInput, setEmailInput] = useState('');
-  const [connections, setConnections] = useState<PortalConnection[]>([]);
-  const [currentConnection, setCurrentConnection] = useState({
+  const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([]);
+  const [currentPortalForm, setCurrentPortalForm] = useState({
     portal: '',
     username: '',
     password: '',
     url: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const timezones = [
     { value: 'Asia/Jerusalem', label: 'Israel (GMT+2)' },
@@ -54,14 +46,6 @@ const Onboarding = () => {
     { value: 'Europe/London', label: 'London (GMT+0)' },
     { value: 'Europe/Berlin', label: 'Central Europe (GMT+1)' },
     { value: 'Asia/Tokyo', label: 'Tokyo (GMT+9)' }
-  ];
-
-  const popularPortals = [
-    { value: 'coupa', label: 'Coupa' },
-    { value: 'ariba', label: 'SAP Ariba' },
-    { value: 'oracle', label: 'Oracle Procurement' },
-    { value: 'jaggaer', label: 'Jaggaer' },
-    { value: 'custom', label: 'Add Custom Portal' }
   ];
 
   const handleEmailAdd = (e: React.KeyboardEvent) => {
@@ -92,38 +76,43 @@ const Onboarding = () => {
     }
   };
 
-  const isStep1Valid = workspaceData.timezone && workspaceData.companyName;
+  const handleConnectPortalUser = async () => {
+    if (!currentPortalForm.portal || !currentPortalForm.username || !currentPortalForm.password) return;
 
-  const handleConnectPortal = async () => {
-    if (!currentConnection.portal || !currentConnection.username || !currentConnection.password) return;
-
-    const newConnection: PortalConnection = {
+    const newUser: ConnectedUser = {
       id: Date.now().toString(),
-      ...currentConnection,
+      portal: currentPortalForm.portal,
+      username: currentPortalForm.username,
       status: 'connecting'
     };
 
-    setConnections(prev => [...prev, newConnection]);
-    setCurrentConnection({ portal: '', username: '', password: '', url: '' });
+    setConnectedUsers(prev => [...prev, newUser]);
+    setCurrentPortalForm({ portal: '', username: '', password: '', url: '' });
 
     // Simulate connection process
     setTimeout(() => {
-      const success = Math.random() > 0.3; // 70% success rate
-      setConnections(prev => prev.map(conn => 
-        conn.id === newConnection.id 
+      const success = Math.random() > 0.3;
+      setConnectedUsers(prev => prev.map(user => 
+        user.id === newUser.id 
           ? { 
-              ...conn, 
+              ...user, 
               status: success ? 'connected' : 'failed',
               poCount: success ? Math.floor(Math.random() * 300) + 50 : undefined,
               invoiceCount: success ? Math.floor(Math.random() * 500) + 100 : undefined,
               error: success ? undefined : 'Invalid credentials. Please check your username and password.'
             }
-          : conn
+          : user
       ));
     }, 2000);
   };
 
-  const hasSuccessfulConnection = connections.some(conn => conn.status === 'connected');
+  const removeConnectedUser = (id: string) => {
+    setConnectedUsers(prev => prev.filter(user => user.id !== id));
+  };
+
+  const isPortalFormValid = currentPortalForm.portal && currentPortalForm.username && currentPortalForm.password;
+  const hasMinimumUsers = connectedUsers.filter(user => user.status === 'connected').length >= 2;
+  const isStep1Valid = workspaceData.timezone && workspaceData.companyName;
 
   if (currentStep === 1) {
     return (
@@ -260,139 +249,179 @@ const Onboarding = () => {
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-semibold text-grey-900 flex items-center justify-center gap-2">
             <Shield className="h-8 w-8" />
-            Connect Your Procurement Portals
+            🔐 Connect Your Portal Account
           </CardTitle>
-          <CardDescription className="text-grey-600">
-            Monto uses these credentials to fetch live POs and invoices. Your data is encrypted end-to-end.
+          <CardDescription className="text-grey-600 max-w-2xl mx-auto">
+            Enter the login details you use for your portal account.
+            We'll use these to securely fetch your POs and invoices.
+            Your credentials are encrypted and never stored in plain text.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Portal Connection Form */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Add Portal Connection</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Portal</Label>
-                  <Select value={currentConnection.portal} onValueChange={(value) => 
-                    setCurrentConnection(prev => ({ ...prev, portal: value }))}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select your portal" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {popularPortals.map(portal => (
-                        <SelectItem key={portal.value} value={portal.value}>
-                          {portal.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Username/Email</Label>
-                  <Input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={currentConnection.username}
-                    onChange={(e) => setCurrentConnection(prev => ({ ...prev, username: e.target.value }))}
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Password</Label>
-                  <Input
-                    type="password"
-                    placeholder="••••••••"
-                    value={currentConnection.password}
-                    onChange={(e) => setCurrentConnection(prev => ({ ...prev, password: e.target.value }))}
-                  />
-                  <p className="text-xs text-grey-500">Your password is encrypted and never stored in plain text.</p>
-                </div>
-                <div className="space-y-2">
-                  <Label>Portal URL (if required)</Label>
-                  <Input
-                    placeholder="https://your-portal.com"
-                    value={currentConnection.url}
-                    onChange={(e) => setCurrentConnection(prev => ({ ...prev, url: e.target.value }))}
-                  />
-                </div>
-              </div>
+        <CardContent className="space-y-8">
+          <StepIndicator 
+            currentStep={portalStep} 
+            onStepClick={setPortalStep}
+          />
 
-              <Button 
-                onClick={handleConnectPortal}
-                disabled={!currentConnection.portal || !currentConnection.username || !currentConnection.password}
-                className="w-full"
-              >
-                Connect Portal User
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Connection Results */}
-          {connections.length > 0 && (
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-grey-900">Portal Connections</h3>
-              {connections.map(connection => (
-                <Card key={connection.id}>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Globe className="h-5 w-5 text-grey-600" />
-                        <div>
-                          <p className="font-medium text-grey-900">{connection.portal}</p>
-                          <p className="text-sm text-grey-600">{connection.username}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        {connection.status === 'connecting' && (
-                          <>
-                            <Progress value={60} className="w-20" />
-                            <span className="text-sm text-grey-600">Connecting...</span>
-                          </>
-                        )}
-                        {connection.status === 'connected' && (
-                          <>
-                            <CheckCircle className="h-5 w-5 text-green-600" />
-                            <span className="text-sm text-green-600">
-                              Connected • {connection.poCount} POs, {connection.invoiceCount} Invoices
-                            </span>
-                          </>
-                        )}
-                        {connection.status === 'failed' && (
-                          <>
-                            <AlertCircle className="h-5 w-5 text-red-600" />
-                            <span className="text-sm text-red-600">Failed</span>
-                          </>
-                        )}
-                      </div>
+          {portalStep === 1 && (
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Add Portal User</CardTitle>
+                  <CardDescription>
+                    ✅ You can add multiple users under the same portal.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <PortalSelection
+                    value={currentPortalForm.portal}
+                    onChange={(value) => setCurrentPortalForm(prev => ({ ...prev, portal: value }))}
+                  />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-grey-800">Username or Email</Label>
+                      <p className="text-sm text-grey-600">Enter your portal login username or email</p>
+                      <Input
+                        type="email"
+                        placeholder="your@email.com"
+                        value={currentPortalForm.username}
+                        onChange={(e) => setCurrentPortalForm(prev => ({ ...prev, username: e.target.value }))}
+                      />
                     </div>
-                    
-                    {connection.status === 'failed' && connection.error && (
-                      <Alert variant="destructive" className="mt-3">
-                        <AlertDescription>{connection.error}</AlertDescription>
-                      </Alert>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-grey-800">Password</Label>
+                      <p className="text-sm text-grey-600">Enter your portal password</p>
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          value={currentPortalForm.password}
+                          onChange={(e) => setCurrentPortalForm(prev => ({ ...prev, password: e.target.value }))}
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </Button>
+                      </div>
+                      <p className="text-xs text-grey-500">🛡️ We encrypt this and never store it in plain text.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-grey-800">Portal URL (if required)</Label>
+                    <p className="text-sm text-grey-600">Only if your portal requires a custom login link</p>
+                    <Input
+                      placeholder="https://your-portal.com"
+                      value={currentPortalForm.url}
+                      onChange={(e) => setCurrentPortalForm(prev => ({ ...prev, url: e.target.value }))}
+                    />
+                  </div>
+
+                  <Button 
+                    onClick={handleConnectPortalUser}
+                    disabled={!isPortalFormValid}
+                    className="w-full"
+                  >
+                    Connect Portal User
+                  </Button>
+                  <p className="text-sm text-grey-600 text-center">
+                    ↳ Add this portal user to your connection list.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <ConnectedUsersList 
+                users={connectedUsers}
+                onRemoveUser={removeConnectedUser}
+              />
+
+              {connectedUsers.length > 0 && (
+                <div className="flex justify-center pt-4">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Button 
+                            onClick={() => setPortalStep(2)}
+                            disabled={!hasMinimumUsers}
+                            size="lg"
+                            className="min-w-48"
+                          >
+                            Continue to Review
+                          </Button>
+                        </div>
+                      </TooltipTrigger>
+                      {!hasMinimumUsers && (
+                        <TooltipContent>
+                          <p>You need to connect at least 2 users to continue.</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Continue Button */}
-          <div className="flex justify-center pt-4">
-            <Button 
-              disabled={!hasSuccessfulConnection}
-              size="lg"
-              className="min-w-48"
-            >
-              Continue to Dashboard
-            </Button>
-          </div>
+          {portalStep === 2 && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <h2 className="text-2xl font-semibold text-grey-900 mb-2">Review Your Connections</h2>
+                <p className="text-grey-600">Verify your portal connections before continuing</p>
+              </div>
+              
+              <ConnectedUsersList 
+                users={connectedUsers}
+                onRemoveUser={removeConnectedUser}
+              />
+
+              <div className="flex justify-center gap-4 pt-4">
+                <Button 
+                  onClick={() => setPortalStep(1)}
+                  variant="outline"
+                  size="lg"
+                >
+                  Add More Users
+                </Button>
+                <Button 
+                  onClick={() => setPortalStep(3)}
+                  size="lg"
+                  className="min-w-48"
+                >
+                  Continue to Finish
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {portalStep === 3 && (
+            <div className="space-y-6 text-center">
+              <div className="space-y-4">
+                <CheckCircle className="h-16 w-16 text-green-600 mx-auto" />
+                <h2 className="text-2xl font-semibold text-grey-900">Setup Complete!</h2>
+                <p className="text-grey-600 max-w-md mx-auto">
+                  Your portal connections are ready. Smart Agents are now scanning for POs and invoices.
+                </p>
+              </div>
+
+              <Alert className="max-w-md mx-auto">
+                <CheckCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Connected {connectedUsers.filter(u => u.status === 'connected').length} portal users successfully
+                </AlertDescription>
+              </Alert>
+
+              <Button size="lg" className="min-w-48">
+                Continue to Dashboard
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
