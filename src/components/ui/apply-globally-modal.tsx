@@ -26,7 +26,7 @@ interface ApplyGloballyModalProps {
 export function ApplyGloballyModal({ 
   componentType, 
   children, 
-  usageData = [], // Default to empty array
+  usageData = [], // Provide default empty array
   onApply 
 }: ApplyGloballyModalProps) {
   const [selectedPages, setSelectedPages] = useState<string[]>([]);
@@ -54,7 +54,8 @@ export function ApplyGloballyModal({
     setSelectedPages([]);
   };
 
-  const totalInstances = usageData.reduce((sum, usage) => sum + usage.instances, 0);
+  // Add safety check for usageData before using reduce
+  const totalInstances = usageData?.reduce((sum, usage) => sum + usage.instances, 0) || 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -103,7 +104,6 @@ export function ApplyGloballyModal({
                 variant="outline" 
                 size="sm" 
                 onClick={handleSelectAll}
-                disabled={usageData.length === 0}
               >
                 {selectedPages.length === usageData.length ? 'Deselect All' : 'Select All'}
               </Button>
@@ -111,45 +111,39 @@ export function ApplyGloballyModal({
 
             <ScrollArea className="h-64 border border-grey-300 rounded-lg p-4">
               <div className="space-y-3">
-                {usageData.length === 0 ? (
-                  <Typography variant="body2" className="text-grey-600 text-center py-8">
-                    No usage data available for {componentType.toLowerCase()} components.
-                  </Typography>
-                ) : (
-                  usageData.map((usage, index) => (
-                    <div key={usage.route}>
-                      <div className="flex items-start space-x-3">
-                        <Checkbox
-                          id={`page-${index}`}
-                          checked={selectedPages.includes(usage.route)}
-                          onCheckedChange={() => handlePageToggle(usage.route)}
-                          className="mt-1"
-                        />
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Typography variant="subtitle1" className="text-grey-800">
-                              {usage.page}
-                            </Typography>
-                            <Badge variant="outline" className="text-xs">
-                              {usage.instances} instance{usage.instances !== 1 ? 's' : ''}
-                            </Badge>
-                          </div>
-                          <Typography variant="body2" className="text-grey-600 font-mono text-xs">
-                            {usage.route}
+                {usageData.map((usage, index) => (
+                  <div key={usage.route}>
+                    <div className="flex items-start space-x-3">
+                      <Checkbox
+                        id={`page-${index}`}
+                        checked={selectedPages.includes(usage.route)}
+                        onCheckedChange={() => handlePageToggle(usage.route)}
+                        className="mt-1"
+                      />
+                      <div className="flex-1 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Typography variant="subtitle1" className="text-grey-800">
+                            {usage.page}
                           </Typography>
-                          <div className="flex flex-wrap gap-1">
-                            {usage.components.map((component, idx) => (
-                              <Badge key={idx} variant="secondary" className="text-xs">
-                                {component}
-                              </Badge>
-                            ))}
-                          </div>
+                          <Badge variant="outline" className="text-xs">
+                            {usage.instances} instance{usage.instances !== 1 ? 's' : ''}
+                          </Badge>
+                        </div>
+                        <Typography variant="body2" className="text-grey-600 font-mono text-xs">
+                          {usage.route}
+                        </Typography>
+                        <div className="flex flex-wrap gap-1">
+                          {usage.components.map((component, idx) => (
+                            <Badge key={idx} variant="secondary" className="text-xs">
+                              {component}
+                            </Badge>
+                          ))}
                         </div>
                       </div>
-                      {index < usageData.length - 1 && <Separator className="mt-3" />}
                     </div>
-                  ))
-                )}
+                    {index < usageData.length - 1 && <Separator className="mt-3" />}
+                  </div>
+                ))}
               </div>
             </ScrollArea>
           </div>
