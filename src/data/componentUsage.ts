@@ -207,22 +207,16 @@ export const componentUsageData = {
 
   layout: [
     {
-      page: "Dashboard",
-      route: "/dashboard",
-      instances: 3,
-      components: ["Grid Layout", "Card Layout", "Content Containers"]
-    },
-    {
-      page: "Invoices List",
-      route: "/invoices",
-      instances: 2,
-      components: ["Table Layout", "Filter Layout"]
+      page: "All Pages",
+      route: "/*",
+      instances: 1,
+      components: ["Main Layout", "Sidebar", "Header"]
     },
     {
       page: "Invoice Detail",
       route: "/invoices/:id",
-      instances: 4,
-      components: ["Split Layout", "Tab Layout", "PDF Viewer Layout", "Content Grid"]
+      instances: 2,
+      components: ["Resizable Panels", "Content Layout"]
     }
   ] as ComponentUsage[],
 
@@ -231,19 +225,13 @@ export const componentUsageData = {
       page: "Add Agent Wizard",
       route: "/smart-connections/add-agent",
       instances: 1,
-      components: ["Wizard Progress"]
+      components: ["Step Progress Indicator"]
     },
     {
       page: "New Smart Connection",
       route: "/smart-connections/new-connection",
       instances: 1,
-      components: ["Setup Progress"]
-    },
-    {
-      page: "Upload Processing",
-      route: "/upload",
-      instances: 2,
-      components: ["File Upload Progress", "Processing Status"]
+      components: ["Wizard Progress"]
     }
   ] as ComponentUsage[],
 
@@ -252,19 +240,19 @@ export const componentUsageData = {
       page: "Invoices List",
       route: "/invoices",
       instances: 3,
-      components: ["Export Modal", "Exclude Modal", "Confirmation Dialogs"]
-    },
-    {
-      page: "Invoice Detail",
-      route: "/invoices/:id",
-      instances: 5,
-      components: ["Exception Modals", "Contact Modal", "Upload Modal", "Resolution Dialogs"]
+      components: ["Export Modal", "Exclude Modal", "Table Customization"]
     },
     {
       page: "Smart Connections",
       route: "/smart-connections",
       instances: 4,
-      components: ["Edit Agent Modal", "Deactivate Modal", "View Details Modal", "2FA Modal"]
+      components: ["View Details", "Edit Agent", "Deactivate Agent", "Add Agent"]
+    },
+    {
+      page: "Invoice Detail",
+      route: "/invoices/:id",
+      instances: 5,
+      components: ["Exception Modals", "Contact Customer", "Force Submit"]
     }
   ] as ComponentUsage[]
 };
