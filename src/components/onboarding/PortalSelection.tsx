@@ -40,10 +40,9 @@ export function PortalSelection({ value, onChange }: PortalSelectionProps) {
   return (
     <div className="space-y-2">
       <Label className="text-sm font-medium text-grey-800">Portal</Label>
-      <p className="text-sm text-grey-600">Select the portal you use to manage POs and invoices</p>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select your portal" />
+          <SelectValue placeholder="Select the portal to connect" />
         </SelectTrigger>
         <SelectContent>
           <div className="p-2">

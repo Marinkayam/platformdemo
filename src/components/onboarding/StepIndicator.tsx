@@ -15,15 +15,15 @@ const steps = [
 
 export function StepIndicator({ currentStep, onStepClick }: StepIndicatorProps) {
   return (
-    <div className="flex items-center justify-center w-full mb-12">
-      <div className="flex items-center space-x-8">
+    <div className="flex items-center justify-center w-full mb-16">
+      <div className="flex items-center space-x-12">
         {steps.map((step, index) => (
           <React.Fragment key={step.number}>
-            <div className="flex flex-col items-center space-y-3">
+            <div className="flex flex-col items-center space-y-4">
               <button
                 onClick={() => onStepClick(step.number)}
                 className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-200 hover:scale-105",
+                  "w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-200 hover:scale-105",
                   step.number < currentStep
                     ? "bg-[#BEADFF] text-[#7B59FF] cursor-pointer hover:bg-[#B5A3FF]"
                     : step.number === currentStep
@@ -35,7 +35,7 @@ export function StepIndicator({ currentStep, onStepClick }: StepIndicatorProps) 
               </button>
               <span
                 className={cn(
-                  "text-base font-medium transition-colors text-center",
+                  "text-lg font-semibold transition-colors text-center",
                   step.number <= currentStep
                     ? "text-grey-900"
                     : "text-grey-500"
@@ -46,7 +46,7 @@ export function StepIndicator({ currentStep, onStepClick }: StepIndicatorProps) 
             </div>
             {index < steps.length - 1 && (
               <div className={cn(
-                "w-20 h-px mt-[-24px] transition-colors",
+                "w-24 h-px mt-[-28px] transition-colors",
                 step.number < currentStep ? "bg-[#BEADFF]" : "bg-grey-200"
               )} />
             )}

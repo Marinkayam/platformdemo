@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,11 +7,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Upload, X, CheckCircle, Building, Users, Eye, EyeOff } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import { Upload, X, CheckCircle, Building, Users, Eye, EyeOff, FileText, Download } from 'lucide-react';
 import { StepIndicator } from '@/components/onboarding/StepIndicator';
 import { PortalSelection } from '@/components/onboarding/PortalSelection';
 import { ConnectedUsersList, ConnectedUser } from '@/components/onboarding/ConnectedUsersList';
-import { InvoiceUploadTabs } from '@/components/onboarding/InvoiceUploadTabs';
+import { BulkPortalUsersSection } from '@/components/onboarding/BulkPortalUsersSection';
 
 interface WorkspaceData {
   companyName: string;
@@ -40,6 +40,7 @@ const Onboarding = () => {
     url: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const timezones = [
     { value: 'Asia/Jerusalem', label: 'Israel (GMT+2)' },
@@ -80,6 +81,8 @@ const Onboarding = () => {
   const handleConnectPortalUser = async () => {
     if (!currentPortalForm.portal || !currentPortalForm.username || !currentPortalForm.password) return;
 
+    setIsConnecting(true);
+    
     const newUser: ConnectedUser = {
       id: Date.now().toString(),
       portal: currentPortalForm.portal,
@@ -88,7 +91,6 @@ const Onboarding = () => {
     };
 
     setConnectedUsers(prev => [...prev, newUser]);
-    setCurrentPortalForm({ portal: '', username: '', password: '', url: '' });
 
     // Simulate connection process
     setTimeout(() => {
@@ -100,10 +102,14 @@ const Onboarding = () => {
               status: success ? 'connected' : 'failed',
               poCount: success ? Math.floor(Math.random() * 300) + 50 : undefined,
               invoiceCount: success ? Math.floor(Math.random() * 500) + 100 : undefined,
-              error: success ? undefined : 'Invalid credentials. Please check your username and password.'
+              error: success ? undefined : 'WRONG_PASSWORD: Invalid credentials. Please check your username and password.'
             }
           : user
       ));
+      setIsConnecting(false);
+      if (success) {
+        setCurrentPortalForm({ portal: '', username: '', password: '', url: '' });
+      }
     }, 2000);
   };
 
@@ -247,14 +253,13 @@ const Onboarding = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <Card className="w-full max-w-4xl">
-        <CardHeader className="text-center pb-4">
+        <CardHeader className="text-center pb-6">
           <CardTitle className="text-3xl font-semibold text-grey-900">
-            Connect your Portal Accounts
+            🔐 Set Up Your Portal Access
           </CardTitle>
           <CardDescription className="text-grey-600 max-w-2xl mx-auto mt-4">
-            Enter the login details you use for your portal account.
-            We'll use these to securely fetch your POs and invoices.
-            Your credentials are encrypted.
+            We'll use these credentials to submit or monitor your invoices and POs. 
+            Credentials are encrypted and used only as needed.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
@@ -269,7 +274,7 @@ const Onboarding = () => {
                 <CardHeader>
                   <CardTitle className="text-lg">Add Portal User</CardTitle>
                   <CardDescription>
-                    ✅ You can add multiple users under the same portal.
+                    Connect a single portal user account
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -281,17 +286,15 @@ const Onboarding = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-grey-800">Username</Label>
-                      <p className="text-sm text-grey-600">Enter your portal login username</p>
                       <Input
                         type="text"
-                        placeholder="Enter your portal login username"
+                        placeholder="e.g. jdoe@company.com"
                         value={currentPortalForm.username}
                         onChange={(e) => setCurrentPortalForm(prev => ({ ...prev, username: e.target.value }))}
                       />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-grey-800">Password</Label>
-                      <p className="text-sm text-grey-600">Enter your portal password</p>
                       <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}
@@ -309,41 +312,57 @@ const Onboarding = () => {
                           {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </Button>
                       </div>
-                      <p className="text-xs text-grey-500">🛡️ We encrypt this and never store it in plain text.</p>
+                      <p className="text-xs text-grey-500">Encrypted. Used only for portal login.</p>
                     </div>
                   </div>
                   
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-grey-800">Portal URL (optional)</Label>
-                    <p className="text-sm text-grey-600">Only if your portal requires a custom login link</p>
                     <Input
-                      placeholder="Only if your portal requires a custom login link"
+                      placeholder="Optional – custom login URL"
                       value={currentPortalForm.url}
                       onChange={(e) => setCurrentPortalForm(prev => ({ ...prev, url: e.target.value }))}
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Button 
-                      onClick={handleConnectPortalUser}
-                      disabled={!isPortalFormValid}
-                      className="w-full"
-                    >
-                      Connect Portal User
-                    </Button>
-                    <p className="text-sm text-grey-500 text-center">
-                      Add this portal user to your connection list
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <Button 
+                              onClick={handleConnectPortalUser}
+                              disabled={!isPortalFormValid || isConnecting}
+                              className="w-full"
+                            >
+                              {isConnecting ? 'Validating...' : 'Connect Portal User'}
+                            </Button>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Add this portal user to your connection list</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-sm text-grey-600 flex items-center justify-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      You can add multiple users for the same portal if needed.
                     </p>
                   </div>
                 </CardContent>
               </Card>
 
+              <Separator />
+
+              <BulkPortalUsersSection />
+
               <ConnectedUsersList 
                 users={connectedUsers}
                 onRemoveUser={removeConnectedUser}
               />
-
-              <InvoiceUploadTabs />
 
               {connectedUsers.length > 0 && (
                 <div className="flex justify-center pt-4">
