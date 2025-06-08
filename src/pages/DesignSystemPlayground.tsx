@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -17,9 +18,8 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
 import { Typography } from "@/components/ui/typography/typography"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { InvoiceTabs } from "@/components/invoices/InvoiceTabs"
 import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown"
-import { ApplyGloballyModal } from "@/components/ui/apply-globally-modal"
-import { componentUsageData } from "@/data/componentUsage"
 import { useToast } from "@/hooks/use-toast"
 import { 
   ChevronDown, 
@@ -36,8 +36,7 @@ import {
   ChevronRight,
   Settings,
   Users,
-  Mail,
-  Globe
+  Mail
 } from "lucide-react"
 
 export default function DesignSystemPlayground() {
@@ -46,6 +45,7 @@ export default function DesignSystemPlayground() {
   const [multiSelect, setMultiSelect] = useState<string[]>([])
   const [switchValue, setSwitchValue] = useState(false)
   const [dropdownValue, setDropdownValue] = useState("")
+  const [invoiceTabValue, setInvoiceTabValue] = useState("all")
   const { toast } = useToast()
 
   const toggleMultiSelect = (value: string) => {
@@ -72,15 +72,6 @@ export default function DesignSystemPlayground() {
     })
   }
 
-  const handleApplyGlobally = (componentType: string, selectedPages: string[]) => {
-    console.log(`Applying ${componentType} changes to:`, selectedPages)
-    toast({
-      variant: "success",
-      title: "Changes Applied Successfully",
-      description: `${componentType} updates have been applied to ${selectedPages.length} page${selectedPages.length !== 1 ? 's' : ''}.`,
-    })
-  }
-
   const sidebarSections = [
     { id: "buttons", label: "Buttons" },
     { id: "badges", label: "Badges" },
@@ -97,26 +88,8 @@ export default function DesignSystemPlayground() {
     { id: "toasts", label: "Toast Notifications" },
     { id: "progress", label: "Progress Indicators" },
     { id: "breadcrumbs", label: "Breadcrumbs" },
-    { id: "typography", label: "Typography" },
+    { id: "typography", label: "Utility Text" },
   ]
-
-  const renderApplyGloballyButton = (componentType: string) => {
-    const usageKey = componentType.toLowerCase() as keyof typeof componentUsageData
-    const usageData = componentUsageData[usageKey] || []
-    
-    return (
-      <ApplyGloballyModal
-        componentType={componentType}
-        usageData={usageData}
-        onApply={(selectedPages) => handleApplyGlobally(componentType, selectedPages)}
-      >
-        <Button variant="outline" size="sm" className="gap-2">
-          <Globe className="h-4 w-4" />
-          Apply Globally
-        </Button>
-      </ApplyGloballyModal>
-    )
-  }
 
   return (
     <div className="min-h-screen bg-background-default">
@@ -152,20 +125,79 @@ export default function DesignSystemPlayground() {
           {/* Buttons Section */}
           {activeTab === "buttons" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Buttons</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Interactive elements for user actions</Typography>
-                </div>
-                {renderApplyGloballyButton("Button")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Buttons</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Interactive elements for user actions</Typography>
               </div>
 
-              <div className="space-y-4">
-                <Button variant="default">Default Button</Button>
-                <Button variant="outline">Outline Button</Button>
-                <Button variant="destructive">Destructive Button</Button>
-                <Button variant="secondary">Secondary Button</Button>
-                <Button variant="link">Link Button</Button>
+              {/* Button Variants */}
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Button Variants</Typography>
+                  <div className="flex flex-wrap gap-4">
+                    <Button variant="default">Primary Button</Button>
+                    <Button variant="secondary">Secondary Button</Button>
+                    <Button variant="outline">Outline Button</Button>
+                    <Button variant="ghost">Ghost Button</Button>
+                    <Button variant="destructive">Destructive Button</Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Button Sizes</Typography>
+                  <div className="flex flex-wrap items-center gap-4">
+                    <Button size="sm">Small</Button>
+                    <Button size="default">Default</Button>
+                    <Button size="lg">Large</Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Button Groups</Typography>
+                  <div className="space-y-4">
+                    {/* Primary + Secondary Group */}
+                    <div className="flex gap-2">
+                      <Button variant="default">Primary Action</Button>
+                      <Button variant="secondary">Secondary Action</Button>
+                    </div>
+
+                    {/* Radio Button Selection */}
+                    <div className="space-y-3">
+                      <Typography variant="subtitle2" className="text-grey-800">Radio Selection</Typography>
+                      <RadioGroup value={radioValue} onValueChange={setRadioValue} className="flex gap-6">
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="option1" id="option1" />
+                          <Label htmlFor="option1">Option 1</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="option2" id="option2" />
+                          <Label htmlFor="option2">Option 2</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="option3" id="option3" />
+                          <Label htmlFor="option3">Option 3</Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+
+                    {/* Multi-Selection */}
+                    <div className="space-y-3">
+                      <Typography variant="subtitle2" className="text-grey-800">Multi-Selection</Typography>
+                      <div className="flex gap-6">
+                        {["Filter 1", "Filter 2", "Filter 3"].map((filter) => (
+                          <div key={filter} className="flex items-center space-x-2">
+                            <Checkbox 
+                              id={filter}
+                              checked={multiSelect.includes(filter)}
+                              onCheckedChange={() => toggleMultiSelect(filter)}
+                            />
+                            <Label htmlFor={filter}>{filter}</Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -173,19 +205,31 @@ export default function DesignSystemPlayground() {
           {/* Badges Section */}
           {activeTab === "badges" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Badges</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Status indicators and labels</Typography>
-                </div>
-                {renderApplyGloballyButton("Badge")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Badges</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Status indicators and labels</Typography>
               </div>
 
-              <div className="space-y-4">
-                <Badge variant="default">Default Badge</Badge>
-                <Badge variant="success">Success Badge</Badge>
-                <Badge variant="warning">Warning Badge</Badge>
-                <Badge variant="error">Error Badge</Badge>
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Badge Variants</Typography>
+                  <div className="flex flex-wrap gap-4">
+                    <Badge variant="default">Default</Badge>
+                    <Badge variant="secondary">Secondary</Badge>
+                    <Badge variant="outline">Outline</Badge>
+                    <Badge variant="destructive">Destructive</Badge>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Status Badges</Typography>
+                  <div className="flex flex-wrap gap-4">
+                    <Badge className="bg-success-main text-success-contrast-text">Approved</Badge>
+                    <Badge className="bg-warning-main text-warning-contrast-text">Pending</Badge>
+                    <Badge className="bg-error-main text-error-contrast-text">Rejected</Badge>
+                    <Badge className="bg-info-main text-info-contrast-text">In Review</Badge>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -193,12 +237,9 @@ export default function DesignSystemPlayground() {
           {/* Form Elements Section */}
           {activeTab === "forms" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Form Elements</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Input fields and form controls with clean focus styles</Typography>
-                </div>
-                {renderApplyGloballyButton("Form")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Form Elements</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Input fields and form controls with clean focus styles</Typography>
               </div>
 
               <div className="space-y-6 max-w-md">
@@ -208,7 +249,7 @@ export default function DesignSystemPlayground() {
                     id="text-input" 
                     type="text" 
                     placeholder="Enter text here..." 
-                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main"
+                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none"
                   />
                 </div>
 
@@ -218,7 +259,7 @@ export default function DesignSystemPlayground() {
                     id="email-input" 
                     type="email" 
                     placeholder="Enter email..." 
-                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main"
+                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none"
                   />
                 </div>
 
@@ -228,7 +269,7 @@ export default function DesignSystemPlayground() {
                     id="password-input" 
                     type="password" 
                     placeholder="Enter password..." 
-                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main"
+                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none"
                   />
                 </div>
 
@@ -237,17 +278,17 @@ export default function DesignSystemPlayground() {
                   <Textarea 
                     id="textarea" 
                     placeholder="Enter multi-line text here..." 
-                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main"
+                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="select-input">Select Input</Label>
                   <Select>
-                    <SelectTrigger className="focus:ring-1 focus:ring-primary-main focus:border-primary-main">
+                    <SelectTrigger className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none">
                       <SelectValue placeholder="Select an option" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
                       <SelectItem value="option1">Option 1</SelectItem>
                       <SelectItem value="option2">Option 2</SelectItem>
                       <SelectItem value="option3">Option 3</SelectItem>
@@ -261,12 +302,9 @@ export default function DesignSystemPlayground() {
           {/* Dropdowns Section */}
           {activeTab === "dropdowns" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Dropdowns</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Dropdown menus and selectors</Typography>
-                </div>
-                {renderApplyGloballyButton("Dropdown")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Dropdowns</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Dropdown menus and selectors</Typography>
               </div>
 
               <div className="space-y-6">
@@ -278,7 +316,7 @@ export default function DesignSystemPlayground() {
                         Open Menu <ChevronDown className="ml-2 h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
                       <DropdownMenuItem>Profile</DropdownMenuItem>
                       <DropdownMenuItem>Settings</DropdownMenuItem>
                       <DropdownMenuItem>Logout</DropdownMenuItem>
@@ -327,30 +365,12 @@ export default function DesignSystemPlayground() {
                         <MoreVertical className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
                       <DropdownMenuItem>View Details</DropdownMenuItem>
                       <DropdownMenuItem>Edit</DropdownMenuItem>
                       <DropdownMenuItem className="text-error-main">Delete</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </div>
-
-                <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Radio Group</Typography>
-                  <RadioGroup value={radioValue} onValueChange={setRadioValue} className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="option1" id="radio1" />
-                      <Label htmlFor="radio1">Option 1</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="option2" id="radio2" />
-                      <Label htmlFor="radio2">Option 2</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="option3" id="radio3" />
-                      <Label htmlFor="radio3">Option 3</Label>
-                    </div>
-                  </RadioGroup>
                 </div>
               </div>
             </div>
@@ -359,12 +379,9 @@ export default function DesignSystemPlayground() {
           {/* Toggles Section */}
           {activeTab === "toggles" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Toggles</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Switch controls for binary states</Typography>
-                </div>
-                {renderApplyGloballyButton("Toggle")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Toggles</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Switch controls for binary states</Typography>
               </div>
 
               <div className="space-y-6">
@@ -385,11 +402,11 @@ export default function DesignSystemPlayground() {
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <Switch id="switch-on" checked={true} onCheckedChange={() => {}} />
-                      <Label htmlFor="switch-on">Enabled (ON)</Label>
+                      <Label htmlFor="switch-on">Enabled (On)</Label>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Switch id="switch-off" checked={false} onCheckedChange={() => {}} />
-                      <Label htmlFor="switch-off">Disabled (OFF)</Label>
+                      <Label htmlFor="switch-off">Disabled (Off)</Label>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Switch id="switch-disabled" checked={false} disabled />
@@ -404,15 +421,26 @@ export default function DesignSystemPlayground() {
           {/* Tab Navigation Section */}
           {activeTab === "tabs" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Tab Navigation</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Navigation tabs with counts and active states</Typography>
-                </div>
-                {renderApplyGloballyButton("Tab")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Tab Navigation</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Navigation tabs with counts and active states</Typography>
               </div>
 
               <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Invoice List Tabs</Typography>
+                  <InvoiceTabs 
+                    tabs={[
+                      { id: "all", label: "All RTPs", count: 1247 },
+                      { id: "pending", label: "Pending Action", count: 23 },
+                      { id: "approved", label: "Approved", count: 89 },
+                      { id: "settled", label: "Settled", count: 456 }
+                    ]}
+                    activeTab={invoiceTabValue}
+                    onTabChange={setInvoiceTabValue}
+                  />
+                </div>
+
                 <div>
                   <Typography variant="h4" className="text-grey-800 mb-4">Basic Tabs</Typography>
                   <Tabs defaultValue="tab1" className="w-full">
@@ -439,12 +467,9 @@ export default function DesignSystemPlayground() {
           {/* Grid Layout Section */}
           {activeTab === "grids" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Grid Layout Examples</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Responsive grid layouts with labeled spacing tokens</Typography>
-                </div>
-                {renderApplyGloballyButton("Grid")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Grid Layout Examples</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Responsive grid layouts with gap spacing</Typography>
               </div>
 
               <div className="space-y-8">
@@ -486,34 +511,82 @@ export default function DesignSystemPlayground() {
                     </div>
                   </div>
                 </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Four Column Grid</Typography>
+                  <Typography variant="body2" className="text-grey-600 mb-3">Gap: 6 (1.5rem / 24px)</Typography>
+                  <div className="grid grid-cols-4 gap-6">
+                    <div className="bg-warning-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-warning-contrast-text">Item 1</Typography>
+                    </div>
+                    <div className="bg-warning-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-warning-contrast-text">Item 2</Typography>
+                    </div>
+                    <div className="bg-warning-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-warning-contrast-text">Item 3</Typography>
+                    </div>
+                    <div className="bg-warning-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-warning-contrast-text">Item 4</Typography>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
-          {/* Cards Section */}
+          {/* Cards & Padding Section */}
           {activeTab === "cards" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Cards & Padding</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Flexible card components with padding examples</Typography>
-                </div>
-                {renderApplyGloballyButton("Card")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Cards & Padding</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Card layouts with visual padding examples</Typography>
               </div>
 
-              <div className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Card Title</CardTitle>
-                    <CardDescription>Card description goes here.</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Typography variant="body1">This is the main content of the card.</Typography>
-                  </CardContent>
-                  <CardFooter>
-                    <Button variant="outline">Action</Button>
-                  </CardFooter>
-                </Card>
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Padding Examples</Typography>
+                  <div className="grid grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader className="bg-grey-200 bg-opacity-30">
+                        <CardTitle className="text-sm">Small Padding (p-2)</CardTitle>
+                        <CardDescription>8px padding</CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-2 bg-primary-lighter bg-opacity-20">
+                        <Typography variant="body2">Content with small padding</Typography>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="bg-grey-200 bg-opacity-30">
+                        <CardTitle className="text-sm">Medium Padding (p-4)</CardTitle>
+                        <CardDescription>16px padding</CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-4 bg-primary-lighter bg-opacity-20">
+                        <Typography variant="body2">Content with medium padding</Typography>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="bg-grey-200 bg-opacity-30">
+                        <CardTitle className="text-sm">Large Padding (p-6)</CardTitle>
+                        <CardDescription>24px padding</CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-6 bg-primary-lighter bg-opacity-20">
+                        <Typography variant="body2">Content with large padding</Typography>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="bg-grey-200 bg-opacity-30">
+                        <CardTitle className="text-sm">Extra Large Padding (p-8)</CardTitle>
+                        <CardDescription>32px padding</CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-8 bg-primary-lighter bg-opacity-20">
+                        <Typography variant="body2">Content with extra large padding</Typography>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -521,55 +594,106 @@ export default function DesignSystemPlayground() {
           {/* Spacing System Section */}
           {activeTab === "spacing" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Spacing System</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Consistent spacing tokens for layout</Typography>
-                </div>
-                {renderApplyGloballyButton("Spacing")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Spacing System</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Design system spacing tokens and values</Typography>
               </div>
 
-              <div className="space-y-4">
-                <div className="p-4 bg-grey-200">Padding: 4 (1rem / 16px)</div>
-                <div className="p-6 bg-grey-300">Padding: 6 (1.5rem / 24px)</div>
-                <div className="p-8 bg-grey-400">Padding: 8 (2rem / 32px)</div>
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Spacing Scale</Typography>
+                  <div className="space-y-3">
+                    {[
+                      { token: "space-1", value: "4px", class: "p-1" },
+                      { token: "space-2", value: "8px", class: "p-2" },
+                      { token: "space-3", value: "12px", class: "p-3" },
+                      { token: "space-4", value: "16px", class: "p-4" },
+                      { token: "space-6", value: "24px", class: "p-6" },
+                      { token: "space-8", value: "32px", class: "p-8" },
+                      { token: "space-12", value: "48px", class: "p-12" },
+                      { token: "space-16", value: "64px", class: "p-16" },
+                    ].map((spacing) => (
+                      <div key={spacing.token} className="flex items-center gap-4">
+                        <div className="w-24 text-sm font-mono text-grey-600">{spacing.token}</div>
+                        <div className="w-16 text-sm text-grey-600">{spacing.value}</div>
+                        <div className="bg-primary-lighter border border-primary-main">
+                          <div className={`bg-primary-main ${spacing.class}`}>
+                            <div className="bg-background-paper text-xs text-grey-800 p-1">Content</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
-          {/* Tables Section */}
+          {/* Table System Section */}
           {activeTab === "tables" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Table System</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Responsive tables with headers and data</Typography>
-                </div>
-                {renderApplyGloballyButton("Table")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Table System</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Data tables with proper styling and interactions</Typography>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="min-w-full border border-grey-300">
-                  <thead>
-                    <tr>
-                      <th className="border-b border-grey-300 p-4 text-left">Header 1</th>
-                      <th className="border-b border-grey-300 p-4 text-left">Header 2</th>
-                      <th className="border-b border-grey-300 p-4 text-left">Header 3</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="border-b border-grey-300 p-4">Data 1</td>
-                      <td className="border-b border-grey-300 p-4">Data 2</td>
-                      <td className="border-b border-grey-300 p-4">Data 3</td>
-                    </tr>
-                    <tr>
-                      <td className="border-b border-grey-300 p-4">Data 4</td>
-                      <td className="border-b border-grey-300 p-4">Data 5</td>
-                      <td className="border-b border-grey-300 p-4">Data 6</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="space-y-6">
+                <div className="border border-grey-300 rounded-lg overflow-hidden">
+                  <table className="w-full">
+                    <thead className="bg-grey-200">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-grey-800">Name</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-grey-800">Status</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-grey-800">Amount</th>
+                        <th className="px-4 py-3 text-center text-sm font-medium text-grey-800">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-background-paper divide-y divide-grey-300">
+                      <tr className="hover:bg-grey-200 transition-colors">
+                        <td className="px-4 py-3 text-sm text-grey-900">Invoice #001</td>
+                        <td className="px-4 py-3">
+                          <Badge className="bg-success-main text-success-contrast-text">Approved</Badge>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-grey-900">$1,234.56</td>
+                        <td className="px-4 py-3 text-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                              <DropdownMenuItem>View</DropdownMenuItem>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem className="text-error-main">Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-grey-200 transition-colors">
+                        <td className="px-4 py-3 text-sm text-grey-900">Invoice #002</td>
+                        <td className="px-4 py-3">
+                          <Badge className="bg-warning-main text-warning-contrast-text">Pending</Badge>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-grey-900">$2,567.89</td>
+                        <td className="px-4 py-3 text-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                              <DropdownMenuItem>View</DropdownMenuItem>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem className="text-error-main">Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           )}
@@ -577,18 +701,65 @@ export default function DesignSystemPlayground() {
           {/* Layout Components Section */}
           {activeTab === "layouts" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Layout Components</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Flexible layout components for responsive design</Typography>
-                </div>
-                {renderApplyGloballyButton("Layout")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Layout Components</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Structural layout elements</Typography>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="flex-1 p-4 bg-grey-200">Column 1</div>
-                  <div className="flex-1 p-4 bg-grey-300">Column 2</div>
+              <div className="space-y-8">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Page Header</Typography>
+                  <div className="bg-background-paper border border-grey-300 rounded-lg p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Button variant="ghost" size="sm">
+                          <ArrowLeft className="h-4 w-4" />
+                        </Button>
+                        <div>
+                          <Typography variant="h3" className="text-grey-900">Page Title</Typography>
+                          <Typography variant="body2" className="text-grey-600">Subtitle or description</Typography>
+                        </div>
+                      </div>
+                      <Button>
+                        <Download className="h-4 w-4 mr-2" />
+                        Action
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Resizable Panel Group</Typography>
+                  <div className="h-64 border border-grey-300 rounded-lg overflow-hidden">
+                    <ResizablePanelGroup direction="horizontal">
+                      <ResizablePanel defaultSize={30} minSize={20}>
+                        <div className="p-4 h-full bg-primary-lighter">
+                          <Typography variant="body2" className="text-primary-dark">Left Panel</Typography>
+                        </div>
+                      </ResizablePanel>
+                      <ResizableHandle />
+                      <ResizablePanel defaultSize={70} minSize={30}>
+                        <div className="p-4 h-full bg-info-lighter">
+                          <Typography variant="body2" className="text-info-dark">Right Panel</Typography>
+                        </div>
+                      </ResizablePanel>
+                    </ResizablePanelGroup>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Sticky Footer / Action Bar</Typography>
+                  <div className="bg-background-paper border border-grey-300 rounded-lg overflow-hidden">
+                    <div className="p-6 h-32 bg-grey-200">
+                      <Typography variant="body1" className="text-grey-700">Main content area</Typography>
+                    </div>
+                    <div className="border-t border-grey-300 p-4 bg-background-paper sticky bottom-0">
+                      <div className="flex justify-end gap-3">
+                        <Button variant="outline">Cancel</Button>
+                        <Button>Save Changes</Button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -597,19 +768,62 @@ export default function DesignSystemPlayground() {
           {/* Alerts Section */}
           {activeTab === "alerts" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Alerts</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Static notification components</Typography>
-                </div>
-                {renderApplyGloballyButton("Alert")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Alerts</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Alert messages and notifications</Typography>
               </div>
 
-              <div className="space-y-4">
-                <Alert>
-                  <AlertTitle>Alert Title</AlertTitle>
-                  <AlertDescription>This is an alert description.</AlertDescription>
-                </Alert>
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Alert Variants</Typography>
+                  <div className="space-y-4">
+                    <Alert>
+                      <Info className="h-4 w-4" />
+                      <AlertTitle>Information</AlertTitle>
+                      <AlertDescription>
+                        This is an informational alert message.
+                      </AlertDescription>
+                    </Alert>
+
+                    <Alert className="border-success-main bg-success-lighter">
+                      <CheckCircle className="h-4 w-4 text-success-dark" />
+                      <AlertTitle className="text-success-dark">Success</AlertTitle>
+                      <AlertDescription className="text-success-dark">
+                        Your action was completed successfully.
+                      </AlertDescription>
+                    </Alert>
+
+                    <Alert className="border-warning-main bg-warning-lighter">
+                      <AlertTriangle className="h-4 w-4 text-warning-contrast-text" />
+                      <AlertTitle className="text-warning-contrast-text">Warning</AlertTitle>
+                      <AlertDescription className="text-warning-contrast-text">
+                        Please review this information carefully.
+                      </AlertDescription>
+                    </Alert>
+
+                    <Alert className="border-error-main bg-error-lighter">
+                      <AlertCircle className="h-4 w-4 text-error-dark" />
+                      <AlertTitle className="text-error-dark">Error</AlertTitle>
+                      <AlertDescription className="text-error-dark">
+                        An error occurred. Please try again.
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Dismissable Alert</Typography>
+                  <Alert className="border-info-main bg-info-lighter">
+                    <Info className="h-4 w-4 text-info-dark" />
+                    <AlertTitle className="text-info-dark">Dismissable Alert</AlertTitle>
+                    <AlertDescription className="text-info-dark">
+                      This alert can be dismissed by the user.
+                    </AlertDescription>
+                    <Button variant="ghost" size="sm" className="absolute top-2 right-2 h-6 w-6 p-0">
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Alert>
+                </div>
               </div>
             </div>
           )}
@@ -617,12 +831,9 @@ export default function DesignSystemPlayground() {
           {/* Toast Notifications Section */}
           {activeTab === "toasts" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Toast Notifications</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Temporary notification messages</Typography>
-                </div>
-                {renderApplyGloballyButton("Toast")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Toast Notifications</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Temporary notification messages</Typography>
               </div>
 
               <div className="space-y-6">
@@ -638,7 +849,7 @@ export default function DesignSystemPlayground() {
                 </div>
 
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Toast Style Examples</Typography>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Toast Examples</Typography>
                   <div className="space-y-3 max-w-md">
                     <div className="bg-background-paper border border-grey-300 rounded-lg p-4 shadow-md">
                       <div className="flex justify-between items-start">
@@ -675,30 +886,6 @@ export default function DesignSystemPlayground() {
                         </Button>
                       </div>
                     </div>
-
-                    <div className="bg-warning-main border border-warning-main rounded-lg p-4 shadow-md">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <Typography variant="subtitle2" className="text-warning-contrast-text mb-1">Warning</Typography>
-                          <Typography variant="body2" className="text-warning-contrast-text opacity-90">Please review before proceeding.</Typography>
-                        </div>
-                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-warning-contrast-text hover:bg-black hover:bg-opacity-20">
-                          <X className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="bg-info-main border border-info-main rounded-lg p-4 shadow-md">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <Typography variant="subtitle2" className="text-white mb-1">Information</Typography>
-                          <Typography variant="body2" className="text-white">Here's some important information for you.</Typography>
-                        </div>
-                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-white hover:bg-white hover:bg-opacity-20">
-                          <X className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -708,16 +895,33 @@ export default function DesignSystemPlayground() {
           {/* Progress Indicators Section */}
           {activeTab === "progress" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Progress Indicators</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Visual indicators for ongoing processes</Typography>
-                </div>
-                {renderApplyGloballyButton("Progress")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Progress Indicators</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Progress bars and loading states</Typography>
               </div>
 
-              <div className="space-y-4">
-                <Progress value={50} />
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Progress Bars</Typography>
+                  <div className="space-y-4 max-w-md">
+                    <div>
+                      <Typography variant="body2" className="text-grey-700 mb-2">25% Complete</Typography>
+                      <Progress value={25} className="h-2" />
+                    </div>
+                    <div>
+                      <Typography variant="body2" className="text-grey-700 mb-2">50% Complete</Typography>
+                      <Progress value={50} className="h-2" />
+                    </div>
+                    <div>
+                      <Typography variant="body2" className="text-grey-700 mb-2">75% Complete</Typography>
+                      <Progress value={75} className="h-2" />
+                    </div>
+                    <div>
+                      <Typography variant="body2" className="text-grey-700 mb-2">100% Complete</Typography>
+                      <Progress value={100} className="h-2" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -725,30 +929,94 @@ export default function DesignSystemPlayground() {
           {/* Breadcrumbs Section */}
           {activeTab === "breadcrumbs" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Breadcrumbs</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Navigation breadcrumbs for user orientation</Typography>
-                </div>
-                {renderApplyGloballyButton("Breadcrumb")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Breadcrumbs</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Navigation breadcrumbs showing page hierarchy</Typography>
               </div>
 
-              <div className="space-y-4">
-                <Breadcrumb>
-                  <BreadcrumbList>
-                    <BreadcrumbItem>
-                      <BreadcrumbLink href="#">Home</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                    <BreadcrumbItem>
-                      <BreadcrumbLink href="#">Library</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                    <BreadcrumbItem>
-                      <BreadcrumbLink href="#">Data</BreadcrumbLink>
-                    </BreadcrumbItem>
-                  </BreadcrumbList>
-                </Breadcrumb>
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Breadcrumb Examples</Typography>
+                  <div className="space-y-4">
+                    <div>
+                      <Typography variant="body2" className="text-grey-600 mb-2">2-level breadcrumb</Typography>
+                      <Breadcrumb>
+                        <BreadcrumbList>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/" className="flex items-center gap-1">
+                              <Home className="h-4 w-4" />
+                              Home
+                            </BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbPage>Current Page</BreadcrumbPage>
+                          </BreadcrumbItem>
+                        </BreadcrumbList>
+                      </Breadcrumb>
+                    </div>
+
+                    <div>
+                      <Typography variant="body2" className="text-grey-600 mb-2">3-level breadcrumb</Typography>
+                      <Breadcrumb>
+                        <BreadcrumbList>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/" className="flex items-center gap-1">
+                              <Home className="h-4 w-4" />
+                              Home
+                            </BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/invoices">Invoices</BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbPage>Invoice Detail</BreadcrumbPage>
+                          </BreadcrumbItem>
+                        </BreadcrumbList>
+                      </Breadcrumb>
+                    </div>
+
+                    <div>
+                      <Typography variant="body2" className="text-grey-600 mb-2">4-level breadcrumb</Typography>
+                      <Breadcrumb>
+                        <BreadcrumbList>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/" className="flex items-center gap-1">
+                              <Home className="h-4 w-4" />
+                              Home
+                            </BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/smart-connections">Smart Connections</BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/smart-connections/add-agent">Add Agent</BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbPage>User Type Selection</BreadcrumbPage>
+                          </BreadcrumbItem>
+                        </BreadcrumbList>
+                      </Breadcrumb>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -756,129 +1024,161 @@ export default function DesignSystemPlayground() {
           {/* Typography Section */}
           {activeTab === "typography" && (
             <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Typography variant="h2" className="text-grey-900 mb-4">Typography</Typography>
-                  <Typography variant="body1" className="text-grey-700 mb-6">Typography system with weights, sizes, alignment and utilities</Typography>
-                </div>
-                {renderApplyGloballyButton("Typography")}
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Utility Text</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Typography system with various styles and utilities</Typography>
               </div>
 
               <div className="space-y-8">
-                {/* Headings */}
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Headings</Typography>
-                  <div className="space-y-4">
-                    <Typography variant="h1" className="text-grey-900">H1 Heading</Typography>
-                    <Typography variant="h2" className="text-grey-900">H2 Heading</Typography>
-                    <Typography variant="h3" className="text-grey-900">H3 Heading</Typography>
-                    <Typography variant="h4" className="text-grey-900">H4 Heading</Typography>
-                    <Typography variant="h5" className="text-grey-900">H5 Heading</Typography>
-                    <Typography variant="h6" className="text-grey-900">H6 Heading</Typography>
-                  </div>
-                </div>
-
-                {/* Body Text */}
-                <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Body Text</Typography>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Typography Scale</Typography>
                   <div className="space-y-3">
-                    <Typography variant="subtitle1" className="text-grey-800">Subtitle 1 - Primary subtitles</Typography>
-                    <Typography variant="subtitle2" className="text-grey-700">Subtitle 2 - Secondary subtitles</Typography>
+                    <Typography variant="h1" className="text-grey-900">Heading 1 - Hero text</Typography>
+                    <Typography variant="h2" className="text-grey-900">Heading 2 - Page titles</Typography>
+                    <Typography variant="h3" className="text-grey-900">Heading 3 - Section headers</Typography>
+                    <Typography variant="h4" className="text-grey-800">Heading 4 - Subsections</Typography>
+                    <Typography variant="h5" className="text-grey-800">Heading 5 - Component titles</Typography>
+                    <Typography variant="h6" className="text-grey-800">Heading 6 - Small headings</Typography>
+                    <Typography variant="subtitle1" className="text-grey-700">Subtitle 1 - Important secondary text</Typography>
+                    <Typography variant="subtitle2" className="text-grey-700">Subtitle 2 - Secondary information</Typography>
                     <Typography variant="body1" className="text-grey-700">Body 1 - Default body text for main content</Typography>
                     <Typography variant="body2" className="text-grey-600">Body 2 - Small body text for secondary content</Typography>
                     <Typography variant="caption" className="text-grey-500">Caption - Image captions and meta information</Typography>
-                    <Typography variant="overline" className="text-grey-500">Overline - Category labels</Typography>
+                    <Typography variant="overline" className="text-grey-500">Overline - Category labels and section headers</Typography>
                   </div>
                 </div>
 
-                {/* Font Weights */}
                 <div>
                   <Typography variant="h4" className="text-grey-800 mb-4">Font Weights</Typography>
-                  <div className="space-y-3">
-                    <div className="text-lg font-light text-grey-700">Light (300) - Subtle emphasis</div>
-                    <div className="text-lg font-normal text-grey-700">Normal (400) - Regular body text</div>
-                    <div className="text-lg font-medium text-grey-700">Medium (500) - Subtle hierarchy</div>
-                    <div className="text-lg font-semibold text-grey-700">Semibold (600) - Strong emphasis</div>
-                    <div className="text-lg font-bold text-grey-700">Bold (700) - Maximum emphasis</div>
+                  <div className="space-y-2">
+                    <Typography variant="body1" className="font-light text-grey-700">Light text (font-weight: 300)</Typography>
+                    <Typography variant="body1" className="font-normal text-grey-700">Normal text (font-weight: 400)</Typography>
+                    <Typography variant="body1" className="font-medium text-grey-700">Medium text (font-weight: 500)</Typography>
+                    <Typography variant="body1" className="font-semibold text-grey-700">Semibold text (font-weight: 600)</Typography>
+                    <Typography variant="body1" className="font-bold text-grey-700">Bold text (font-weight: 700)</Typography>
                   </div>
                 </div>
 
-                {/* Font Sizes */}
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Font Sizes</Typography>
-                  <div className="space-y-3">
-                    <div className="text-xs text-grey-700">Extra Small (12px) - Micro content</div>
-                    <div className="text-sm text-grey-700">Small (14px) - Secondary information</div>
-                    <div className="text-base text-grey-700">Base (16px) - Default body text</div>
-                    <div className="text-lg text-grey-700">Large (18px) - Prominent content</div>
-                    <div className="text-xl text-grey-700">Extra Large (20px) - Small headings</div>
-                    <div className="text-2xl text-grey-700">2XL (24px) - Section titles</div>
-                    <div className="text-3xl text-grey-700">3XL (30px) - Page titles</div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Sizes</Typography>
+                  <div className="space-y-2">
+                    <div className="text-xs text-grey-700">Extra small text (text-xs - 12px)</div>
+                    <div className="text-sm text-grey-700">Small text (text-sm - 14px)</div>
+                    <div className="text-base text-grey-700">Base text (text-base - 16px)</div>
+                    <div className="text-lg text-grey-700">Large text (text-lg - 18px)</div>
+                    <div className="text-xl text-grey-700">Extra large text (text-xl - 20px)</div>
+                    <div className="text-2xl text-grey-700">2X large text (text-2xl - 24px)</div>
+                    <div className="text-3xl text-grey-700">3X large text (text-3xl - 30px)</div>
                   </div>
                 </div>
 
-                {/* Line Heights */}
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Line Heights</Typography>
-                  <div className="space-y-4">
-                    <div className="text-base leading-tight text-grey-700">
-                      Tight (1.25) - Compact layouts and headings with reduced vertical space for efficient use.
-                    </div>
-                    <div className="text-base leading-normal text-grey-700">
-                      Normal (1.5) - Default line height for body text providing optimal readability and comfort.
-                    </div>
-                    <div className="text-base leading-relaxed text-grey-700">
-                      Relaxed (1.625) - Improved readability with additional breathing room between lines.
-                    </div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Colors</Typography>
+                  <div className="space-y-2">
+                    <div className="text-grey-900">Primary text (grey-900)</div>
+                    <div className="text-grey-800">Secondary text (grey-800)</div>
+                    <div className="text-grey-700">Body text (grey-700)</div>
+                    <div className="text-grey-600">Muted text (grey-600)</div>
+                    <div className="text-grey-500">Subtle text (grey-500)</div>
+                    <div className="text-primary-main">Primary color text (primary-main)</div>
+                    <div className="text-secondary-main">Secondary color text (secondary-main)</div>
+                    <div className="text-success-main">Success color text (success-main)</div>
+                    <div className="text-warning-main">Warning color text (warning-main)</div>
+                    <div className="text-error-main">Error color text (error-main)</div>
+                    <div className="text-info-main">Info color text (info-main)</div>
                   </div>
                 </div>
 
-                {/* Text Alignment */}
                 <div>
                   <Typography variant="h4" className="text-grey-800 mb-4">Text Alignment</Typography>
-                  <div className="space-y-3">
-                    <div className="text-left text-grey-700">Left aligned text (default)</div>
+                  <div className="space-y-2">
+                    <div className="text-left text-grey-700">Left aligned text</div>
                     <div className="text-center text-grey-700">Center aligned text</div>
                     <div className="text-right text-grey-700">Right aligned text</div>
-                    <div className="text-justify text-grey-700">Justified text that spreads content evenly across the full width of the container for clean edges.</div>
+                    <div className="text-justify text-grey-700">Justified text that spans multiple lines to demonstrate how text justification works across longer content blocks with proper spacing and alignment.</div>
                   </div>
                 </div>
 
-                {/* Text Decoration */}
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Text Decoration & Utilities</Typography>
-                  <div className="space-y-3">
-                    <div className="text-grey-700">Normal text</div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Decoration & States</Typography>
+                  <div className="space-y-2">
                     <div className="underline text-grey-700">Underlined text</div>
-                    <div className="line-through text-grey-700">Strike-through text</div>
+                    <div className="line-through text-grey-700">Strikethrough text</div>
+                    <div className="no-underline text-primary-main hover:underline cursor-pointer">Link with hover underline</div>
                     <div className="uppercase text-grey-700">Uppercase text</div>
                     <div className="lowercase text-grey-700">LOWERCASE TEXT</div>
                     <div className="capitalize text-grey-700">capitalized text</div>
+                    <div className="italic text-grey-700">Italic text style</div>
+                    <div className="not-italic text-grey-700" style={{ fontStyle: 'italic' }}>Not italic (override)</div>
                   </div>
                 </div>
 
-                {/* Text Truncation */}
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Text Truncation</Typography>
-                  <div className="space-y-3 max-w-xs">
-                    <div className="truncate text-grey-700">
-                      This is a very long text that will be truncated with an ellipsis when it exceeds the container width
+                  <Typography variant="h4" className="text-grey-800 mb-4">Line Heights</Typography>
+                  <div className="space-y-4">
+                    <div className="leading-tight text-grey-700">
+                      Tight line height (leading-tight). This text demonstrates how tight line spacing affects readability when text wraps to multiple lines in a paragraph and content flows naturally.
                     </div>
-                    <div className="text-grey-700 break-words">
-                      This text will break at word boundaries: superlongwordthatwillbreakappropriately
+                    <div className="leading-normal text-grey-700">
+                      Normal line height (leading-normal). This text demonstrates how normal line spacing affects readability when text wraps to multiple lines in a paragraph and content flows naturally.
+                    </div>
+                    <div className="leading-relaxed text-grey-700">
+                      Relaxed line height (leading-relaxed). This text demonstrates how relaxed line spacing affects readability when text wraps to multiple lines in a paragraph and content flows naturally.
+                    </div>
+                    <div className="leading-loose text-grey-700">
+                      Loose line height (leading-loose). This text demonstrates how loose line spacing affects readability when text wraps to multiple lines in a paragraph and content flows naturally.
                     </div>
                   </div>
                 </div>
 
-                {/* Letter Spacing */}
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Truncation & Overflow</Typography>
+                  <div className="space-y-3">
+                    <div className="max-w-xs">
+                      <Typography variant="body2" className="text-grey-600 mb-1">Truncate with ellipsis:</Typography>
+                      <div className="truncate text-grey-700 bg-grey-200 p-2 rounded">
+                        This is a very long text that will be truncated when it exceeds the maximum width of its container
+                      </div>
+                    </div>
+                    <div className="max-w-xs">
+                      <Typography variant="body2" className="text-grey-600 mb-1">Text wrap (default):</Typography>
+                      <div className="text-grey-700 bg-grey-200 p-2 rounded">
+                        This text will wrap naturally when it exceeds the container width
+                      </div>
+                    </div>
+                    <div className="max-w-xs">
+                      <Typography variant="body2" className="text-grey-600 mb-1">No wrap:</Typography>
+                      <div className="whitespace-nowrap text-grey-700 bg-grey-200 p-2 rounded overflow-hidden">
+                        This text will not wrap and will overflow the container
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div>
                   <Typography variant="h4" className="text-grey-800 mb-4">Letter Spacing</Typography>
-                  <div className="space-y-3">
-                    <div className="tracking-tight text-grey-700">Tight tracking (-0.025em)</div>
-                    <div className="tracking-normal text-grey-700">Normal tracking (0em)</div>
-                    <div className="tracking-wide text-grey-700">Wide tracking (0.025em)</div>
-                    <div className="tracking-wider text-grey-700">Wider tracking (0.05em)</div>
-                    <div className="tracking-widest text-grey-700">Widest tracking (0.1em)</div>
+                  <div className="space-y-2">
+                    <div className="tracking-tighter text-grey-700">Tighter letter spacing</div>
+                    <div className="tracking-tight text-grey-700">Tight letter spacing</div>
+                    <div className="tracking-normal text-grey-700">Normal letter spacing</div>
+                    <div className="tracking-wide text-grey-700">Wide letter spacing</div>
+                    <div className="tracking-wider text-grey-700">Wider letter spacing</div>
+                    <div className="tracking-widest text-grey-700">Widest letter spacing</div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Monospace & Code</Typography>
+                  <div className="space-y-2">
+                    <div className="font-mono text-sm text-grey-700 bg-grey-200 p-2 rounded">
+                      const greeting = "Hello, World!";
+                    </div>
+                    <div className="font-mono text-xs text-grey-600">
+                      Small monospace for technical content
+                    </div>
+                    <Typography variant="body2" className="text-grey-700">
+                      Regular text with <code className="font-mono text-sm bg-grey-200 px-1 py-0.5 rounded">inline code</code> example.
+                    </Typography>
                   </div>
                 </div>
               </div>
