@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -128,14 +127,19 @@ export default function DesignSystemPlayground() {
     category: ''
   });
 
-  // Filter state for demonstration
+  // Filter state for demonstration - using correct property names
   const [filters, setFilters] = useState<InvoiceFiltersType>({
     status: [],
-    portal: [],
+    total: "All",
+    dueDate: {
+      from: "",
+      to: ""
+    },
     buyer: [],
+    portal: [],
+    transactionType: "All",
     owner: [],
-    dateRange: undefined,
-    search: ''
+    search: ""
   });
 
   // Table sort state
@@ -473,14 +477,14 @@ export default function DesignSystemPlayground() {
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Smart Connection Status Badges</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[
-            "Active",
+            "Live",
             "Inactive", 
-            "Error",
-            "Connecting",
-            "Pending"
+            "Disconnected",
+            "In Process",
+            "Unavailable"
           ].map((status) => (
             <div key={status} className="space-y-2 p-3 border border-grey-300 rounded-lg bg-background-paper">
-              <SmartConnectionStatusBadge status={status} />
+              <SmartConnectionStatusBadge status={status as "Live" | "Inactive" | "Disconnected" | "In Process" | "Unavailable"} />
               <p className="text-xs text-grey-600">{status}</p>
             </div>
           ))}
