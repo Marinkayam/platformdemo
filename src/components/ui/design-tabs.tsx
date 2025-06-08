@@ -34,7 +34,7 @@ export function DesignTabs({ tabs, activeTab, onTabChange, className }: DesignTa
               {tab.count !== undefined && (
                 <span className={cn(
                   "ml-2 px-2 py-0.5 rounded-full text-xs",
-                  activeTab === tab.id ? "bg-primary-main/10 text-primary-main" : "bg-grey-300 text-grey-700"
+                  activeTab === tab.id ? "bg-primary-main/10 text-primary-main" : "bg-grey-100 text-grey-600"
                 )}>
                   {tab.count}
                 </span>
