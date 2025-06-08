@@ -8,10 +8,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Upload, X, CheckCircle, Building, Users, Shield, Eye, EyeOff } from 'lucide-react';
+import { Upload, X, CheckCircle, Building, Users, Eye, EyeOff } from 'lucide-react';
 import { StepIndicator } from '@/components/onboarding/StepIndicator';
 import { PortalSelection } from '@/components/onboarding/PortalSelection';
 import { ConnectedUsersList, ConnectedUser } from '@/components/onboarding/ConnectedUsersList';
+import { InvoiceUploadTabs } from '@/components/onboarding/InvoiceUploadTabs';
 
 interface WorkspaceData {
   companyName: string;
@@ -246,15 +247,14 @@ const Onboarding = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <Card className="w-full max-w-4xl">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-semibold text-grey-900 flex items-center justify-center gap-2">
-            <Shield className="h-8 w-8" />
-            🔐 Connect Your Portal Account
+        <CardHeader className="text-center pb-4">
+          <CardTitle className="text-3xl font-semibold text-grey-900">
+            Connect your Portal Accounts
           </CardTitle>
-          <CardDescription className="text-grey-600 max-w-2xl mx-auto">
+          <CardDescription className="text-grey-600 max-w-2xl mx-auto mt-4">
             Enter the login details you use for your portal account.
             We'll use these to securely fetch your POs and invoices.
-            Your credentials are encrypted and never stored in plain text.
+            Your credentials are encrypted.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
@@ -264,7 +264,7 @@ const Onboarding = () => {
           />
 
           {portalStep === 1 && (
-            <div className="space-y-6">
+            <div className="space-y-8">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Add Portal User</CardTitle>
@@ -272,19 +272,19 @@ const Onboarding = () => {
                     ✅ You can add multiple users under the same portal.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-6">
                   <PortalSelection
                     value={currentPortalForm.portal}
                     onChange={(value) => setCurrentPortalForm(prev => ({ ...prev, portal: value }))}
                   />
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium text-grey-800">Username or Email</Label>
-                      <p className="text-sm text-grey-600">Enter your portal login username or email</p>
+                      <Label className="text-sm font-medium text-grey-800">Username</Label>
+                      <p className="text-sm text-grey-600">Enter your portal login username</p>
                       <Input
-                        type="email"
-                        placeholder="your@email.com"
+                        type="text"
+                        placeholder="Enter your portal login username"
                         value={currentPortalForm.username}
                         onChange={(e) => setCurrentPortalForm(prev => ({ ...prev, username: e.target.value }))}
                       />
@@ -295,7 +295,7 @@ const Onboarding = () => {
                       <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder="••••••••"
+                          placeholder="Enter your portal password"
                           value={currentPortalForm.password}
                           onChange={(e) => setCurrentPortalForm(prev => ({ ...prev, password: e.target.value }))}
                         />
@@ -314,25 +314,27 @@ const Onboarding = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium text-grey-800">Portal URL (if required)</Label>
+                    <Label className="text-sm font-medium text-grey-800">Portal URL (optional)</Label>
                     <p className="text-sm text-grey-600">Only if your portal requires a custom login link</p>
                     <Input
-                      placeholder="https://your-portal.com"
+                      placeholder="Only if your portal requires a custom login link"
                       value={currentPortalForm.url}
                       onChange={(e) => setCurrentPortalForm(prev => ({ ...prev, url: e.target.value }))}
                     />
                   </div>
 
-                  <Button 
-                    onClick={handleConnectPortalUser}
-                    disabled={!isPortalFormValid}
-                    className="w-full"
-                  >
-                    Connect Portal User
-                  </Button>
-                  <p className="text-sm text-grey-600 text-center">
-                    ↳ Add this portal user to your connection list.
-                  </p>
+                  <div className="space-y-2">
+                    <Button 
+                      onClick={handleConnectPortalUser}
+                      disabled={!isPortalFormValid}
+                      className="w-full"
+                    >
+                      Connect Portal User
+                    </Button>
+                    <p className="text-sm text-grey-500 text-center">
+                      Add this portal user to your connection list
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -340,6 +342,8 @@ const Onboarding = () => {
                 users={connectedUsers}
                 onRemoveUser={removeConnectedUser}
               />
+
+              <InvoiceUploadTabs />
 
               {connectedUsers.length > 0 && (
                 <div className="flex justify-center pt-4">

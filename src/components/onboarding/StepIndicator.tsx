@@ -15,29 +15,29 @@ const steps = [
 
 export function StepIndicator({ currentStep, onStepClick }: StepIndicatorProps) {
   return (
-    <div className="flex items-center justify-center w-full mb-8">
-      <div className="flex items-center space-x-4">
+    <div className="flex items-center justify-center w-full mb-12">
+      <div className="flex items-center space-x-8">
         {steps.map((step, index) => (
           <React.Fragment key={step.number}>
-            <div className="flex flex-col items-center space-y-2">
+            <div className="flex flex-col items-center space-y-3">
               <button
                 onClick={() => onStepClick(step.number)}
                 className={cn(
-                  "w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-colors",
+                  "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-200 hover:scale-105",
                   step.number < currentStep
-                    ? "bg-[#BEADFF] text-[#7B59FF] cursor-pointer"
+                    ? "bg-[#BEADFF] text-[#7B59FF] cursor-pointer hover:bg-[#B5A3FF]"
                     : step.number === currentStep
-                    ? "bg-[#7B59FF] text-white"
-                    : "bg-grey-200 text-grey-500 cursor-default"
+                    ? "bg-[#7B59FF] text-white hover:bg-[#6B4AFF]"
+                    : "bg-grey-200 text-grey-500 cursor-pointer hover:bg-grey-300 hover:text-grey-600"
                 )}
               >
                 {step.number}
               </button>
               <span
                 className={cn(
-                  "text-sm transition-colors text-center",
+                  "text-base font-medium transition-colors text-center",
                   step.number <= currentStep
-                    ? "font-medium text-grey-900"
+                    ? "text-grey-900"
                     : "text-grey-500"
                 )}
               >
@@ -46,7 +46,7 @@ export function StepIndicator({ currentStep, onStepClick }: StepIndicatorProps) 
             </div>
             {index < steps.length - 1 && (
               <div className={cn(
-                "w-16 h-px mt-[-20px] transition-colors",
+                "w-20 h-px mt-[-24px] transition-colors",
                 step.number < currentStep ? "bg-[#BEADFF]" : "bg-grey-200"
               )} />
             )}

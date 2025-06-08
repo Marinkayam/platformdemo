@@ -26,9 +26,9 @@ export function ConnectedUsersList({ users, onRemoveUser }: ConnectedUsersListPr
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h3 className="text-lg font-semibold text-grey-900">Connected Portal Users</h3>
-      <div className="space-y-3">
+      <div className="space-y-4">
         {users.map(user => (
           <Card key={user.id}>
             <CardContent className="pt-4">
