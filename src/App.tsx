@@ -19,6 +19,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
 import Welcome from "./pages/Welcome";
 import DesignSystemPlayground from "./pages/DesignSystemPlayground";
+import Onboarding from "./pages/Onboarding";
 import { NotificationsProvider } from "./context/NotificationsContext";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/design-system" element={<DesignSystemPlayground />} />
             <Route 
               path="/dashboard" 
