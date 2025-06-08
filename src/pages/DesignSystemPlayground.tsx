@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { StatusBadge } from '@/components/ui/status-badge';
+import { DesignTabs } from '@/components/ui/design-tabs';
+import { DesignFilterDropdown } from '@/components/ui/design-filter-dropdown';
+import { DesignFilterChip } from '@/components/ui/design-filter-chip';
 import { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } from '@/lib/toast-helpers';
 import { Typography } from '@/components/ui/typography/typography';
 import { MontoLogo } from '@/components/MontoLogo';
@@ -34,11 +37,28 @@ import {
   Image as ImageIcon,
   Edit,
   Trash2,
-  Settings
+  Settings,
+  Filter,
+  Tags
 } from 'lucide-react';
 
 const DesignSystemPlayground = () => {
   const [activeSection, setActiveSection] = useState('colors');
+  const [activeTab, setActiveTab] = useState('all');
+  const [filterStatus, setFilterStatus] = useState<string[]>([]);
+  const [filterBuyer, setFilterBuyer] = useState<string>('All');
+  const [activeFilters, setActiveFilters] = useState<Array<{label: string, value: string}>>([]);
+
+  // Sample data for demonstrations
+  const sampleTabs = [
+    { id: 'all', label: 'All Items', count: 156 },
+    { id: 'pending', label: 'Pending Action', count: 23 },
+    { id: 'completed', label: 'Completed', count: 89 },
+    { id: 'overdue', label: 'Overdue', count: 12 },
+  ];
+
+  const statusOptions = ['Paid', 'Pending Action', 'Settled', 'RTP Sent', 'Rejected by Buyer'];
+  const buyerOptions = ['ABC Corp', 'XYZ Ltd', 'Global Industries', 'Tech Solutions'];
 
   // Copy to clipboard function
   const copyToClipboard = async (text: string, description: string) => {
@@ -46,7 +66,6 @@ const DesignSystemPlayground = () => {
       await navigator.clipboard.writeText(text);
       showSuccessToast('Copied!', `${description} copied to clipboard`);
     } catch (err) {
-      // Fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = text;
       document.body.appendChild(textArea);
@@ -111,12 +130,45 @@ const DesignSystemPlayground = () => {
     </div>
   );
 
+  // Handle filter changes
+  const handleStatusFilter = (value: string | string[]) => {
+    setFilterStatus(Array.isArray(value) ? value : [value]);
+    updateActiveFilters('Status', Array.isArray(value) ? value : [value]);
+  };
+
+  const handleBuyerFilter = (value: string | string[]) => {
+    const buyerValue = Array.isArray(value) ? value[0] : value;
+    setFilterBuyer(buyerValue);
+    updateActiveFilters('Buyer', [buyerValue]);
+  };
+
+  const updateActiveFilters = (label: string, values: string[]) => {
+    const newFilters = activeFilters.filter(f => f.label !== label);
+    values.forEach(value => {
+      if (value !== 'All' && value !== '') {
+        newFilters.push({ label, value });
+      }
+    });
+    setActiveFilters(newFilters);
+  };
+
+  const removeFilter = (label: string, value: string) => {
+    if (label === 'Status') {
+      setFilterStatus(prev => prev.filter(s => s !== value));
+    } else if (label === 'Buyer') {
+      setFilterBuyer('All');
+    }
+    setActiveFilters(prev => prev.filter(f => !(f.label === label && f.value === value)));
+  };
+
   const sidebarItems = [
     { id: 'colors', label: 'Color Palette', icon: Palette },
     { id: 'typography', label: 'Typography', icon: Type },
     { id: 'spacing', label: 'Spacing & Layout', icon: Square },
     { id: 'buttons', label: 'Buttons', icon: Square },
     { id: 'badges', label: 'Status Badges', icon: Zap },
+    { id: 'tabs', label: 'Tab Navigation', icon: Tags },
+    { id: 'filters', label: 'Filter Components', icon: Filter },
     { id: 'alerts', label: 'Alerts', icon: AlertCircle },
     { id: 'progress', label: 'Progress', icon: CheckCircle },
     { id: 'modals', label: 'Modals', icon: Square },
@@ -186,6 +238,236 @@ const DesignSystemPlayground = () => {
                 {greyColors.map((color) => (
                   <ColorSwatch key={color.name} {...color} />
                 ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'badges':
+        return (
+          <div className="space-y-8">
+            <Typography variant="h3" className="mb-6">Status Badge System</Typography>
+            
+            <div className="space-y-6">
+              <div>
+                <Typography variant="h4" className="mb-4">Invoice Status Badges</Typography>
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="p-4 border border-grey-300 rounded-lg space-y-2">
+                    <StatusBadge status="Paid" />
+                    <Typography variant="caption" className="block">Success state - Payment completed</Typography>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg space-y-2">
+                    <StatusBadge status="Pending Action" />
+                    <Typography variant="caption" className="block">Requires attention or action</Typography>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg space-y-2">
+                    <StatusBadge status="Settled" />
+                    <Typography variant="caption" className="block">Payment has been settled</Typography>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg space-y-2">
+                    <StatusBadge status="RTP Sent" />
+                    <Typography variant="caption" className="block">Real-time payment sent</Typography>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg space-y-2">
+                    <StatusBadge status="Rejected by Buyer" />
+                    <Typography variant="caption" className="block">Invoice rejected by buyer</Typography>
+                  </div>
+                  
+                  <div className="p-4 border border-grey-300 rounded-lg space-y-2">
+                    <StatusBadge status="Approved by Buyer" />
+                    <Typography variant="caption" className="block">Invoice approved by buyer</Typography>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-grey-100 p-6 rounded-lg">
+                <Typography variant="h4" className="mb-3">Usage Guidelines</Typography>
+                <div className="space-y-2 text-sm text-grey-700">
+                  <p>• Status badges automatically apply appropriate colors based on status type</p>
+                  <p>• Hover over any badge to see additional context in tooltips</p>
+                  <p>• Colors follow semantic meaning: green for success, red for errors, orange for warnings</p>
+                  <p>• Use consistent status names across the application for visual consistency</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'tabs':
+        return (
+          <div className="space-y-8">
+            <Typography variant="h3" className="mb-6">Tab Navigation System</Typography>
+            
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h4" className="mb-4">Basic Tab Navigation</Typography>
+                <div className="border border-grey-300 rounded-lg p-6">
+                  <DesignTabs 
+                    tabs={sampleTabs}
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                  />
+                  <div className="mt-4 p-4 bg-grey-100 rounded">
+                    <Typography variant="body2">
+                      Current active tab: <strong>{sampleTabs.find(t => t.id === activeTab)?.label}</strong>
+                    </Typography>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-4">Tab Variants</Typography>
+                <div className="space-y-4">
+                  <div className="border border-grey-300 rounded-lg p-6">
+                    <Typography variant="subtitle2" className="mb-3">With Count Badges</Typography>
+                    <DesignTabs 
+                      tabs={[
+                        { id: 'invoices', label: 'Invoices', count: 24 },
+                        { id: 'pending', label: 'Pending', count: 8 },
+                        { id: 'completed', label: 'Completed', count: 16 }
+                      ]}
+                      activeTab="invoices"
+                      onTabChange={() => {}}
+                    />
+                  </div>
+                  
+                  <div className="border border-grey-300 rounded-lg p-6">
+                    <Typography variant="subtitle2" className="mb-3">Without Count Badges</Typography>
+                    <DesignTabs 
+                      tabs={[
+                        { id: 'overview', label: 'Overview' },
+                        { id: 'details', label: 'Details' },
+                        { id: 'history', label: 'History' }
+                      ]}
+                      activeTab="overview"
+                      onTabChange={() => {}}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-grey-100 p-6 rounded-lg">
+                <Typography variant="h4" className="mb-3">Implementation Example</Typography>
+                <pre className="text-sm bg-background-paper p-4 rounded border overflow-x-auto">
+{`<DesignTabs 
+  tabs={[
+    { id: 'all', label: 'All Items', count: 156 },
+    { id: 'pending', label: 'Pending', count: 23 }
+  ]}
+  activeTab={activeTab}
+  onTabChange={setActiveTab}
+/>`}
+                </pre>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'filters':
+        return (
+          <div className="space-y-8">
+            <Typography variant="h3" className="mb-6">Filter Component System</Typography>
+            
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h4" className="mb-4">Filter Dropdowns</Typography>
+                <div className="border border-grey-300 rounded-lg p-6 space-y-4">
+                  <div className="flex flex-wrap gap-3">
+                    <DesignFilterDropdown
+                      label="Status"
+                      value={filterStatus}
+                      options={statusOptions}
+                      onSelect={handleStatusFilter}
+                      multiSelect
+                      searchable
+                    />
+                    
+                    <DesignFilterDropdown
+                      label="Buyer"
+                      value={filterBuyer}
+                      options={['All', ...buyerOptions]}
+                      onSelect={handleBuyerFilter}
+                      searchable
+                    />
+                  </div>
+                  
+                  {activeFilters.length > 0 && (
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {activeFilters.map((filter, index) => (
+                        <DesignFilterChip
+                          key={`${filter.label}-${filter.value}-${index}`}
+                          label={filter.label}
+                          value={filter.value}
+                          onRemove={() => removeFilter(filter.label, filter.value)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-4">Filter Features</Typography>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Multi-Select Filtering</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <Typography variant="body2" className="text-grey-600">
+                        Support for selecting multiple values with visual checkmarks and count indicators.
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Search Within Filters</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <Typography variant="body2" className="text-grey-600">
+                        Built-in search functionality to quickly find options in large lists.
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Active Filter Chips</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <Typography variant="body2" className="text-grey-600">
+                        Visual indicators of active filters with easy removal functionality.
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Smooth Animations</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <Typography variant="body2" className="text-grey-600">
+                        Framer Motion animations for dropdown appearance and filter chip interactions.
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+
+              <div className="bg-grey-100 p-6 rounded-lg">
+                <Typography variant="h4" className="mb-3">Implementation Guidelines</Typography>
+                <div className="space-y-2 text-sm text-grey-700">
+                  <p>• Use multi-select for filters that benefit from multiple selections (like status, categories)</p>
+                  <p>• Enable search for filters with many options (>10 items)</p>
+                  <p>• Always show active filters as removable chips below the filter controls</p>
+                  <p>• Maintain filter state in parent component for proper data flow</p>
+                  <p>• Use consistent labeling: "Label: Value" format for chips</p>
+                </div>
               </div>
             </div>
           </div>
@@ -723,36 +1005,6 @@ const DesignSystemPlayground = () => {
                   <Button><Home className="w-4 h-4 mr-2" />Home</Button>
                   <Button variant="outline"><Download className="w-4 h-4 mr-2" />Download</Button>
                   <Button variant="secondary">Settings<Settings className="w-4 h-4 ml-2" /></Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'badges':
-        return (
-          <div className="space-y-6">
-            <Typography variant="h3" className="mb-6">Status Badges</Typography>
-            
-            <div className="space-y-6">
-              <div>
-                <Typography variant="h4" className="mb-3">Status Variants</Typography>
-                <div className="flex flex-wrap gap-3">
-                  <Badge variant="default">Default</Badge>
-                  <Badge variant="secondary">Secondary</Badge>
-                  <Badge variant="outline">Outline</Badge>
-                  <Badge variant="destructive">Destructive</Badge>
-                </div>
-              </div>
-
-              <div>
-                <Typography variant="h4" className="mb-3">Custom Status Colors</Typography>
-                <div className="flex flex-wrap gap-3">
-                  <Badge className="bg-green-100 text-green-700 border-green-200">Paid</Badge>
-                  <Badge className="bg-blue-100 text-blue-700 border-blue-200">Processing</Badge>
-                  <Badge className="bg-orange-100 text-orange-700 border-orange-200">Pending</Badge>
-                  <Badge className="bg-red-100 text-red-700 border-red-200">Failed</Badge>
-                  <Badge className="bg-purple-100 text-purple-700 border-purple-200">Draft</Badge>
                 </div>
               </div>
             </div>

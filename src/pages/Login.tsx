@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -35,9 +36,9 @@ const Login = () => {
       {/* Left Panel - Login Form */}
       <div className="flex flex-col justify-center px-12">
         <div className="mx-auto w-full max-w-sm space-y-6">
-          {/* Monto Logo */}
+          {/* Monto Logo - 50% smaller */}
           <div className="flex justify-center">
-            <MontoLogo className="mb-6" />
+            <MontoLogo className="mb-6 w-[52px] h-[15px]" />
           </div>
 
           {/* Header */}
