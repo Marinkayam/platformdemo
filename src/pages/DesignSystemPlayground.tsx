@@ -45,7 +45,6 @@ export default function DesignSystemPlayground() {
   const [multiSelect, setMultiSelect] = useState<string[]>([])
   const [switchValue, setSwitchValue] = useState(false)
   const [dropdownValue, setDropdownValue] = useState("")
-  const [invoiceTabValue, setInvoiceTabValue] = useState("all")
   const { toast } = useToast()
 
   const toggleMultiSelect = (value: string) => {
@@ -239,7 +238,7 @@ export default function DesignSystemPlayground() {
             <div className="space-y-8">
               <div>
                 <Typography variant="h2" className="text-grey-900 mb-4">Form Elements</Typography>
-                <Typography variant="body1" className="text-grey-700 mb-6">Input fields and form controls with clean focus styles</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Input fields and form controls with improved focus styles</Typography>
               </div>
 
               <div className="space-y-6 max-w-md">
@@ -249,7 +248,7 @@ export default function DesignSystemPlayground() {
                     id="text-input" 
                     type="text" 
                     placeholder="Enter text here..." 
-                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none"
+                    className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main"
                   />
                 </div>
 
@@ -259,7 +258,7 @@ export default function DesignSystemPlayground() {
                     id="email-input" 
                     type="email" 
                     placeholder="Enter email..." 
-                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none"
+                    className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main"
                   />
                 </div>
 
@@ -269,7 +268,7 @@ export default function DesignSystemPlayground() {
                     id="password-input" 
                     type="password" 
                     placeholder="Enter password..." 
-                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none"
+                    className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main"
                   />
                 </div>
 
@@ -278,14 +277,14 @@ export default function DesignSystemPlayground() {
                   <Textarea 
                     id="textarea" 
                     placeholder="Enter multi-line text here..." 
-                    className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none"
+                    className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="select-input">Select Input</Label>
                   <Select>
-                    <SelectTrigger className="focus:ring-1 focus:ring-primary-main focus:border-primary-main focus:outline-none">
+                    <SelectTrigger className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main">
                       <SelectValue placeholder="Select an option" />
                     </SelectTrigger>
                     <SelectContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
@@ -325,35 +324,17 @@ export default function DesignSystemPlayground() {
                 </div>
 
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Filter Dropdown (Single Select)</Typography>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Filter Dropdown</Typography>
                   <FilterDropdown
                     label="Status"
-                    value={dropdownValue || "All"}
-                    options={["All", "Pending", "Approved", "Rejected"]}
-                    onSelect={(value) => setDropdownValue(typeof value === 'string' ? value : '')}
-                    multiSelect={false}
-                  />
-                </div>
-
-                <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Filter Dropdown (Multi Select)</Typography>
-                  <FilterDropdown
-                    label="Categories"
-                    value={multiSelect}
-                    options={["Finance", "Operations", "Marketing", "Sales"]}
-                    onSelect={(value) => setMultiSelect(Array.isArray(value) ? value : [])}
-                    multiSelect={true}
-                  />
-                </div>
-
-                <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Searchable Dropdown</Typography>
-                  <FilterDropdown
-                    label="Location"
-                    value=""
-                    options={["New York", "San Francisco", "Los Angeles", "Chicago", "Miami", "Seattle"]}
-                    onSelect={() => {}}
-                    searchable={true}
+                    options={[
+                      { value: "pending", label: "Pending" },
+                      { value: "approved", label: "Approved" },
+                      { value: "rejected", label: "Rejected" }
+                    ]}
+                    selectedValues={[]}
+                    onSelectionChange={() => {}}
+                    placeholder="Select status..."
                   />
                 </div>
 
@@ -429,16 +410,7 @@ export default function DesignSystemPlayground() {
               <div className="space-y-6">
                 <div>
                   <Typography variant="h4" className="text-grey-800 mb-4">Invoice List Tabs</Typography>
-                  <InvoiceTabs 
-                    tabs={[
-                      { id: "all", label: "All RTPs", count: 1247 },
-                      { id: "pending", label: "Pending Action", count: 23 },
-                      { id: "approved", label: "Approved", count: 89 },
-                      { id: "settled", label: "Settled", count: 456 }
-                    ]}
-                    activeTab={invoiceTabValue}
-                    onTabChange={setInvoiceTabValue}
-                  />
+                  <InvoiceTabs />
                 </div>
 
                 <div>
@@ -1031,24 +1003,6 @@ export default function DesignSystemPlayground() {
 
               <div className="space-y-8">
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Typography Scale</Typography>
-                  <div className="space-y-3">
-                    <Typography variant="h1" className="text-grey-900">Heading 1 - Hero text</Typography>
-                    <Typography variant="h2" className="text-grey-900">Heading 2 - Page titles</Typography>
-                    <Typography variant="h3" className="text-grey-900">Heading 3 - Section headers</Typography>
-                    <Typography variant="h4" className="text-grey-800">Heading 4 - Subsections</Typography>
-                    <Typography variant="h5" className="text-grey-800">Heading 5 - Component titles</Typography>
-                    <Typography variant="h6" className="text-grey-800">Heading 6 - Small headings</Typography>
-                    <Typography variant="subtitle1" className="text-grey-700">Subtitle 1 - Important secondary text</Typography>
-                    <Typography variant="subtitle2" className="text-grey-700">Subtitle 2 - Secondary information</Typography>
-                    <Typography variant="body1" className="text-grey-700">Body 1 - Default body text for main content</Typography>
-                    <Typography variant="body2" className="text-grey-600">Body 2 - Small body text for secondary content</Typography>
-                    <Typography variant="caption" className="text-grey-500">Caption - Image captions and meta information</Typography>
-                    <Typography variant="overline" className="text-grey-500">Overline - Category labels and section headers</Typography>
-                  </div>
-                </div>
-
-                <div>
                   <Typography variant="h4" className="text-grey-800 mb-4">Font Weights</Typography>
                   <div className="space-y-2">
                     <Typography variant="body1" className="font-light text-grey-700">Light text (font-weight: 300)</Typography>
@@ -1062,13 +1016,12 @@ export default function DesignSystemPlayground() {
                 <div>
                   <Typography variant="h4" className="text-grey-800 mb-4">Text Sizes</Typography>
                   <div className="space-y-2">
-                    <div className="text-xs text-grey-700">Extra small text (text-xs - 12px)</div>
-                    <div className="text-sm text-grey-700">Small text (text-sm - 14px)</div>
-                    <div className="text-base text-grey-700">Base text (text-base - 16px)</div>
-                    <div className="text-lg text-grey-700">Large text (text-lg - 18px)</div>
-                    <div className="text-xl text-grey-700">Extra large text (text-xl - 20px)</div>
-                    <div className="text-2xl text-grey-700">2X large text (text-2xl - 24px)</div>
-                    <div className="text-3xl text-grey-700">3X large text (text-3xl - 30px)</div>
+                    <div className="text-xs text-grey-700">Extra small text (text-xs)</div>
+                    <div className="text-sm text-grey-700">Small text (text-sm)</div>
+                    <div className="text-base text-grey-700">Base text (text-base)</div>
+                    <div className="text-lg text-grey-700">Large text (text-lg)</div>
+                    <div className="text-xl text-grey-700">Extra large text (text-xl)</div>
+                    <div className="text-2xl text-grey-700">2X large text (text-2xl)</div>
                   </div>
                 </div>
 
@@ -1081,11 +1034,9 @@ export default function DesignSystemPlayground() {
                     <div className="text-grey-600">Muted text (grey-600)</div>
                     <div className="text-grey-500">Subtle text (grey-500)</div>
                     <div className="text-primary-main">Primary color text (primary-main)</div>
-                    <div className="text-secondary-main">Secondary color text (secondary-main)</div>
                     <div className="text-success-main">Success color text (success-main)</div>
                     <div className="text-warning-main">Warning color text (warning-main)</div>
                     <div className="text-error-main">Error color text (error-main)</div>
-                    <div className="text-info-main">Info color text (info-main)</div>
                   </div>
                 </div>
 
@@ -1095,21 +1046,16 @@ export default function DesignSystemPlayground() {
                     <div className="text-left text-grey-700">Left aligned text</div>
                     <div className="text-center text-grey-700">Center aligned text</div>
                     <div className="text-right text-grey-700">Right aligned text</div>
-                    <div className="text-justify text-grey-700">Justified text that spans multiple lines to demonstrate how text justification works across longer content blocks with proper spacing and alignment.</div>
+                    <div className="text-justify text-grey-700">Justified text that spans multiple lines to demonstrate how text justification works across longer content blocks.</div>
                   </div>
                 </div>
 
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Text Decoration & States</Typography>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Decoration</Typography>
                   <div className="space-y-2">
                     <div className="underline text-grey-700">Underlined text</div>
                     <div className="line-through text-grey-700">Strikethrough text</div>
-                    <div className="no-underline text-primary-main hover:underline cursor-pointer">Link with hover underline</div>
-                    <div className="uppercase text-grey-700">Uppercase text</div>
-                    <div className="lowercase text-grey-700">LOWERCASE TEXT</div>
-                    <div className="capitalize text-grey-700">capitalized text</div>
-                    <div className="italic text-grey-700">Italic text style</div>
-                    <div className="not-italic text-grey-700" style={{ fontStyle: 'italic' }}>Not italic (override)</div>
+                    <div className="no-underline text-primary-main">Link without underline</div>
                   </div>
                 </div>
 
@@ -1117,40 +1063,25 @@ export default function DesignSystemPlayground() {
                   <Typography variant="h4" className="text-grey-800 mb-4">Line Heights</Typography>
                   <div className="space-y-4">
                     <div className="leading-tight text-grey-700">
-                      Tight line height (leading-tight). This text demonstrates how tight line spacing affects readability when text wraps to multiple lines in a paragraph and content flows naturally.
+                      Tight line height (leading-tight). This text demonstrates how tight line spacing affects readability when text wraps to multiple lines in a paragraph.
                     </div>
                     <div className="leading-normal text-grey-700">
-                      Normal line height (leading-normal). This text demonstrates how normal line spacing affects readability when text wraps to multiple lines in a paragraph and content flows naturally.
+                      Normal line height (leading-normal). This text demonstrates how normal line spacing affects readability when text wraps to multiple lines in a paragraph.
                     </div>
                     <div className="leading-relaxed text-grey-700">
-                      Relaxed line height (leading-relaxed). This text demonstrates how relaxed line spacing affects readability when text wraps to multiple lines in a paragraph and content flows naturally.
-                    </div>
-                    <div className="leading-loose text-grey-700">
-                      Loose line height (leading-loose). This text demonstrates how loose line spacing affects readability when text wraps to multiple lines in a paragraph and content flows naturally.
+                      Relaxed line height (leading-relaxed). This text demonstrates how relaxed line spacing affects readability when text wraps to multiple lines in a paragraph.
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Text Truncation & Overflow</Typography>
-                  <div className="space-y-3">
-                    <div className="max-w-xs">
-                      <Typography variant="body2" className="text-grey-600 mb-1">Truncate with ellipsis:</Typography>
-                      <div className="truncate text-grey-700 bg-grey-200 p-2 rounded">
-                        This is a very long text that will be truncated when it exceeds the maximum width of its container
-                      </div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Truncation</Typography>
+                  <div className="space-y-2">
+                    <div className="truncate text-grey-700 max-w-xs">
+                      This is a very long text that will be truncated when it exceeds the maximum width
                     </div>
-                    <div className="max-w-xs">
-                      <Typography variant="body2" className="text-grey-600 mb-1">Text wrap (default):</Typography>
-                      <div className="text-grey-700 bg-grey-200 p-2 rounded">
-                        This text will wrap naturally when it exceeds the container width
-                      </div>
-                    </div>
-                    <div className="max-w-xs">
-                      <Typography variant="body2" className="text-grey-600 mb-1">No wrap:</Typography>
-                      <div className="whitespace-nowrap text-grey-700 bg-grey-200 p-2 rounded overflow-hidden">
-                        This text will not wrap and will overflow the container
-                      </div>
+                    <div className="text-ellipsis overflow-hidden text-grey-700 max-w-xs">
+                      This text shows ellipsis when it overflows the container
                     </div>
                   </div>
                 </div>
@@ -1158,27 +1089,11 @@ export default function DesignSystemPlayground() {
                 <div>
                   <Typography variant="h4" className="text-grey-800 mb-4">Letter Spacing</Typography>
                   <div className="space-y-2">
-                    <div className="tracking-tighter text-grey-700">Tighter letter spacing</div>
                     <div className="tracking-tight text-grey-700">Tight letter spacing</div>
                     <div className="tracking-normal text-grey-700">Normal letter spacing</div>
                     <div className="tracking-wide text-grey-700">Wide letter spacing</div>
                     <div className="tracking-wider text-grey-700">Wider letter spacing</div>
                     <div className="tracking-widest text-grey-700">Widest letter spacing</div>
-                  </div>
-                </div>
-
-                <div>
-                  <Typography variant="h4" className="text-grey-800 mb-4">Monospace & Code</Typography>
-                  <div className="space-y-2">
-                    <div className="font-mono text-sm text-grey-700 bg-grey-200 p-2 rounded">
-                      const greeting = "Hello, World!";
-                    </div>
-                    <div className="font-mono text-xs text-grey-600">
-                      Small monospace for technical content
-                    </div>
-                    <Typography variant="body2" className="text-grey-700">
-                      Regular text with <code className="font-mono text-sm bg-grey-200 px-1 py-0.5 rounded">inline code</code> example.
-                    </Typography>
                   </div>
                 </div>
               </div>
