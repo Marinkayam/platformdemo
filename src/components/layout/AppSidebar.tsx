@@ -1,5 +1,6 @@
+
 import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter } from "@/components/ui/sidebar";
-import MontoLogo from "@/components/MontoLogo";
+import { MontoLogo } from "@/components/MontoLogo";
 import { SidebarSection } from "./SidebarSection";
 import { navMain, navUser } from "@/data/navigation";
 export function AppSidebar() {
