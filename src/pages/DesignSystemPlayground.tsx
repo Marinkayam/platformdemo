@@ -1,1519 +1,1106 @@
 
-import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { StatusBadge } from "@/components/ui/status-badge";
-import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
-import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
-import { ActiveFiltersList } from "@/components/invoices/filters/ActiveFiltersList";
-import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";
-import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import React, { useState } from 'react'
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Switch } from "@/components/ui/switch"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Progress } from "@/components/ui/progress"
+import { Separator } from "@/components/ui/separator"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
+import { Typography } from "@/components/ui/typography/typography"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { InvoiceTabs } from "@/components/invoices/InvoiceTabs"
+import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown"
+import { useToast } from "@/hooks/use-toast"
 import { 
-  Palette,
-  Type,
-  Square,
-  MousePointer,
-  Award,
-  Navigation,
-  Filter,
-  Table as TableIcon,
-  Settings,
-  Layout,
-  AlertCircle,
-  BarChart3,
-  Layers,
-  Bell,
-  ChevronDown,
-  Navigation2,
-  Zap,
-  Copy,
-  Check,
-  AlertTriangle,
-  Info,
-  CheckCircle,
+  ChevronDown, 
+  MoreVertical, 
+  ArrowLeft, 
+  Download, 
   Search,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-  MoreVertical,
+  AlertCircle,
+  CheckCircle,
+  Info,
+  AlertTriangle,
   X,
-  ArrowLeft,
-  Home
-} from 'lucide-react';
-import { MontoLogo } from "@/components/MontoLogo";
-import MontoIcon from "@/components/MontoIcon";
-import { toast } from "@/hooks/use-toast";
-
-interface SidebarItem {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-}
-
-const sidebarItems: SidebarItem[] = [
-  { id: "color-palette", label: "Color Palette", icon: <Palette size={18} /> },
-  { id: "typography", label: "Typography", icon: <Type size={18} /> },
-  { id: "spacing-layout", label: "Spacing & Layout", icon: <Square size={18} /> },
-  { id: "buttons", label: "Buttons", icon: <MousePointer size={18} /> },
-  { id: "status-badges", label: "Status Badges", icon: <Award size={18} /> },
-  { id: "tab-navigation", label: "Tab Navigation", icon: <Navigation size={18} /> },
-  { id: "filter-components", label: "Filter Components", icon: <Filter size={18} /> },
-  { id: "table-system", label: "Table System", icon: <TableIcon size={18} /> },
-  { id: "form-elements", label: "Form Elements", icon: <Settings size={18} /> },
-  { id: "layout-components", label: "Layout Components", icon: <Layout size={18} /> },
-  { id: "alerts", label: "Alerts", icon: <AlertCircle size={18} /> },
-  { id: "progress", label: "Progress", icon: <BarChart3 size={18} /> },
-  { id: "modals", label: "Modals", icon: <Layers size={18} /> },
-  { id: "toast-notifications", label: "Toast Notifications", icon: <Bell size={18} /> },
-  { id: "dropdowns", label: "Dropdowns", icon: <ChevronDown size={18} /> },
-  { id: "breadcrumbs", label: "Breadcrumbs", icon: <Navigation2 size={18} /> },
-  { id: "brand-assets", label: "Brand Assets", icon: <Zap size={18} /> },
-];
-
-const ColorSwatch = ({ name, description, hex, className }: { name: string; description: string; hex: string; className: string }) => {
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast({ title: "Copied to clipboard", description: `${text} copied!` });
-  };
-
-  return (
-    <div className="border border-grey-300 rounded-lg p-4 bg-background-paper">
-      <div className="flex items-center justify-between mb-3">
-        <div className={`w-16 h-16 rounded-lg ${className} border border-grey-300`}></div>
-        <button 
-          onClick={() => copyToClipboard(hex)}
-          className="p-2 hover:bg-grey-200 rounded-md transition-colors"
-        >
-          <Copy size={16} className="text-grey-600" />
-        </button>
-      </div>
-      <h4 className="font-medium text-grey-900 mb-1">{name}</h4>
-      <p className="text-sm text-grey-600 mb-2">{description}</p>
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-mono text-grey-700">{hex}</span>
-      </div>
-    </div>
-  );
-};
-
-const TypographyExample = ({ variant, example, className }: { variant: string; example: string; className: string }) => (
-  <div className="border border-grey-300 rounded-lg p-4 bg-background-paper">
-    <div className="flex items-center justify-between mb-2">
-      <span className="text-sm font-medium text-grey-600">{variant}</span>
-      <button 
-        onClick={() => navigator.clipboard.writeText(className)}
-        className="p-1 hover:bg-grey-200 rounded transition-colors"
-      >
-        <Copy size={12} className="text-grey-500" />
-      </button>
-    </div>
-    <div className={className}>{example}</div>
-    <div className="text-xs text-grey-500 mt-2 font-mono">{className}</div>
-  </div>
-);
+  Home,
+  ChevronRight,
+  Settings,
+  Users,
+  Mail
+} from "lucide-react"
 
 export default function DesignSystemPlayground() {
-  const [activeSection, setActiveSection] = useState("color-palette");
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-    terms: false,
-    category: ''
-  });
+  const [activeTab, setActiveTab] = useState("buttons")
+  const [radioValue, setRadioValue] = useState("option1")
+  const [multiSelect, setMultiSelect] = useState<string[]>([])
+  const [switchValue, setSwitchValue] = useState(false)
+  const [dropdownValue, setDropdownValue] = useState("")
+  const { toast } = useToast()
 
-  // Filter state for demonstration - using correct property names
-  const [filters, setFilters] = useState<InvoiceFiltersType>({
-    status: [],
-    total: "All",
-    dueDate: {
-      from: "",
-      to: ""
-    },
-    buyer: [],
-    portal: [],
-    transactionType: "All",
-    owner: [],
-    search: ""
-  });
+  const toggleMultiSelect = (value: string) => {
+    setMultiSelect(prev => 
+      prev.includes(value) 
+        ? prev.filter(v => v !== value)
+        : [...prev, value]
+    )
+  }
 
-  // Table sort state
-  const [sortField, setSortField] = useState<string | null>(null);
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-
-  // Tab states
-  const [activeInvoiceTab, setActiveInvoiceTab] = useState("all");
-  const [activeDetailTab, setActiveDetailTab] = useState("financial");
-
-  // Form states
-  const [selectedOption, setSelectedOption] = useState("");
-  const [selectedMultiple, setSelectedMultiple] = useState<string[]>([]);
-
-  const handleSort = (field: string) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection('asc');
+  const showToast = (variant: "default" | "destructive" | "success" | "warning" | "info") => {
+    const toastConfig = {
+      default: { title: "Default Toast", description: "This is a default notification." },
+      destructive: { title: "Error occurred", description: "Something went wrong. Please try again." },
+      success: { title: "Success!", description: "Your action was completed successfully." },
+      warning: { title: "Warning", description: "Please review before proceeding." },
+      info: { title: "Information", description: "Here's some important information for you." }
     }
-  };
 
-  const handleFilterChange = (key: keyof InvoiceFiltersType, value: any) => {
-    setFilters(prev => ({
-      ...prev,
-      [key]: value
-    }));
-  };
+    toast({
+      variant,
+      title: toastConfig[variant].title,
+      description: toastConfig[variant].description,
+    })
+  }
 
-  const handleRemoveFilter = (key: string, value: string) => {
-    if (key === 'search') {
-      setFilters(prev => ({ ...prev, search: '' }));
-    } else {
-      setFilters(prev => ({
-        ...prev,
-        [key]: Array.isArray(prev[key as keyof InvoiceFiltersType]) 
-          ? (prev[key as keyof InvoiceFiltersType] as string[]).filter(item => item !== value)
-          : []
-      }));
-    }
-  };
-
-  const renderColorPalette = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Primary Colors</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <ColorSwatch 
-            name="primary-lighter" 
-            description="Lightest purple for subtle backgrounds" 
-            hex="#EFEBFF" 
-            className="bg-primary-lighter" 
-          />
-          <ColorSwatch 
-            name="primary-light" 
-            description="Light purple for secondary elements" 
-            hex="#BEADFF" 
-            className="bg-primary-light" 
-          />
-          <ColorSwatch 
-            name="primary-main" 
-            description="Main brand purple for primary actions" 
-            hex="#7B59FF" 
-            className="bg-primary-main" 
-          />
-          <ColorSwatch 
-            name="primary-dark" 
-            description="Dark purple for active states" 
-            hex="#523BAA" 
-            className="bg-primary-dark" 
-          />
-          <ColorSwatch 
-            name="primary-darker" 
-            description="Darkest purple for maximum emphasis" 
-            hex="#291E55" 
-            className="bg-primary-darker" 
-          />
-          <ColorSwatch 
-            name="primary-contrast-text" 
-            description="White text for primary backgrounds" 
-            hex="#FFFFFF" 
-            className="bg-primary-contrast-text border-2" 
-          />
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Status Colors</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <ColorSwatch 
-            name="success-main" 
-            description="Green for success states" 
-            hex="#007737" 
-            className="bg-success-main" 
-          />
-          <ColorSwatch 
-            name="error-main" 
-            description="Red for error states" 
-            hex="#DF1C41" 
-            className="bg-error-main" 
-          />
-          <ColorSwatch 
-            name="warning-main" 
-            description="Orange for warning states" 
-            hex="#F2AE40" 
-            className="bg-warning-main" 
-          />
-          <ColorSwatch 
-            name="info-main" 
-            description="Blue for information" 
-            hex="#375DFB" 
-            className="bg-info-main" 
-          />
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Grey Scale</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <ColorSwatch 
-            name="grey-900" 
-            description="Near black for maximum contrast" 
-            hex="#061237" 
-            className="bg-grey-900" 
-          />
-          <ColorSwatch 
-            name="grey-800" 
-            description="Very dark grey for primary text" 
-            hex="#38415F" 
-            className="bg-grey-800" 
-          />
-          <ColorSwatch 
-            name="grey-600" 
-            description="Darker grey for body text" 
-            hex="#818799" 
-            className="bg-grey-600" 
-          />
-          <ColorSwatch 
-            name="grey-400" 
-            description="Medium grey for borders" 
-            hex="#E6E7EB" 
-            className="bg-grey-400" 
-          />
-          <ColorSwatch 
-            name="grey-200" 
-            description="Light grey for backgrounds" 
-            hex="#F4F6F8" 
-            className="bg-grey-200" 
-          />
-          <ColorSwatch 
-            name="grey-0" 
-            description="Pure white" 
-            hex="#FFFFFF" 
-            className="bg-grey-0 border-2" 
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderTypography = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Headings</h2>
-        <div className="space-y-4">
-          <TypographyExample variant="H1" example="The quick brown fox jumps" className="text-6xl font-medium text-grey-900" />
-          <TypographyExample variant="H2" example="The quick brown fox jumps" className="text-5xl font-medium text-grey-900" />
-          <TypographyExample variant="H3" example="The quick brown fox jumps" className="text-2xl font-medium text-grey-900" />
-          <TypographyExample variant="H4" example="The quick brown fox jumps" className="text-xl font-bold text-grey-900" />
-          <TypographyExample variant="H5" example="The quick brown fox jumps" className="text-lg font-semibold text-grey-900" />
-          <TypographyExample variant="H6" example="The quick brown fox jumps" className="text-base font-medium text-grey-900" />
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Body Text</h2>
-        <div className="space-y-4">
-          <TypographyExample variant="Body Large" example="The quick brown fox jumps over the lazy dog" className="text-lg font-normal text-grey-700" />
-          <TypographyExample variant="Body Default" example="The quick brown fox jumps over the lazy dog" className="text-base font-normal text-grey-700" />
-          <TypographyExample variant="Body Small" example="The quick brown fox jumps over the lazy dog" className="text-sm font-normal text-grey-700" />
-          <TypographyExample variant="Caption" example="The quick brown fox jumps over the lazy dog" className="text-xs font-normal text-grey-600" />
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Utility Text</h2>
-        <div className="space-y-4">
-          <TypographyExample variant="Label" example="Form Label" className="text-sm font-medium text-grey-800" />
-          <TypographyExample variant="Overline" example="CATEGORY LABEL" className="text-xs font-medium uppercase tracking-wide text-grey-600" />
-          <TypographyExample variant="Helper Text" example="This is helper text for forms" className="text-xs font-normal text-grey-500" />
-          <TypographyExample variant="Subheading" example="Section Subheading" className="text-lg font-semibold text-grey-800" />
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderSpacingLayout = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Spacing Scale</h2>
-        <div className="space-y-6">
-          {[
-            { name: "xs", value: "0.25rem", pixels: "4px", class: "p-1", token: "--space-xs" },
-            { name: "sm", value: "0.5rem", pixels: "8px", class: "p-2", token: "--space-sm" },
-            { name: "md", value: "1rem", pixels: "16px", class: "p-4", token: "--space-md" },
-            { name: "lg", value: "1.5rem", pixels: "24px", class: "p-6", token: "--space-lg" },
-            { name: "xl", value: "2rem", pixels: "32px", class: "p-8", token: "--space-xl" },
-            { name: "2xl", value: "3rem", pixels: "48px", class: "p-12", token: "--space-2xl" },
-          ].map((space) => (
-            <div key={space.name} className="border border-grey-300 rounded-lg p-4 bg-background-paper">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-grey-900">{space.name}</span>
-                  <span className="text-xs font-mono text-grey-600 bg-grey-200 px-2 py-1 rounded">{space.token}</span>
-                </div>
-                <span className="text-sm text-grey-600">{space.value} ({space.pixels})</span>
-              </div>
-              <div className="bg-grey-200 rounded-md p-2 border-2 border-dashed border-grey-400">
-                <div className={`bg-primary-light rounded-md ${space.class} border-2 border-dashed border-primary-main`}>
-                  <div className="bg-primary-main rounded-md h-6 text-center text-primary-contrast-text text-xs leading-6 font-medium">
-                    Content Area
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Grid Layout Examples</h2>
-        <div className="space-y-8">
-          {/* Single Item Grid */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Single Item Grid</CardTitle>
-              <CardDescription>grid-cols-1 with gap-4 spacing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
-                <div className="bg-primary-lighter border border-primary-light rounded-lg p-6 text-center text-primary-main font-medium relative">
-                  <span className="absolute top-2 left-2 text-xs bg-primary-main text-primary-contrast-text px-2 py-1 rounded">gap-4</span>
-                  Single Grid Item (100% width)
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Two Items Grid */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Two Items Grid (50/50)</CardTitle>
-              <CardDescription>grid-cols-2 with gap-4 spacing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
-                {[1, 2].map((item) => (
-                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-6 text-center text-primary-main font-medium relative">
-                    {item === 1 && <span className="absolute top-2 left-2 text-xs bg-primary-main text-primary-contrast-text px-2 py-1 rounded">gap-4</span>}
-                    Item {item} (50% width)
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Three Items Grid */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Three Items Grid (Equal Thirds)</CardTitle>
-              <CardDescription>grid-cols-3 with gap-4 spacing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-4 text-center text-primary-main font-medium relative">
-                    {item === 1 && <span className="absolute top-1 left-1 text-xs bg-primary-main text-primary-contrast-text px-1 py-0.5 rounded">gap-4</span>}
-                    Item {item}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Four Items Grid */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Four Items Grid</CardTitle>
-              <CardDescription>grid-cols-2 lg:grid-cols-4 with gap-4 spacing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
-                {[1, 2, 3, 4].map((item) => (
-                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-4 text-center text-primary-main font-medium relative">
-                    {item === 1 && <span className="absolute top-1 left-1 text-xs bg-primary-main text-primary-contrast-text px-1 py-0.5 rounded">gap-4</span>}
-                    Item {item}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Card with Padding Visualization</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            { name: "Standard Card", padding: "p-6", token: "--space-6", pixels: "24px" },
-            { name: "Compact Card", padding: "p-4", token: "--space-4", pixels: "16px" },
-          ].map((card) => (
-            <Card key={card.name} className="border-2 border-dashed border-primary-light">
-              <CardHeader className={`${card.padding} border-2 border-dashed border-grey-400 bg-grey-100`}>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  {card.name}
-                  <span className="text-xs font-mono bg-primary-main text-primary-contrast-text px-2 py-1 rounded">
-                    {card.token}
-                  </span>
-                </CardTitle>
-                <CardDescription>
-                  Using {card.padding} class ({card.pixels} padding)
-                </CardDescription>
-              </CardHeader>
-              <CardContent className={`${card.padding} border-2 border-dashed border-success-light bg-success-lighter`}>
-                <p className="text-grey-700">
-                  Content area showing the visual padding space around text and elements.
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderButtons = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Button Variants</h2>
-        <div className="flex flex-wrap gap-4">
-          <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="destructive">Destructive</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="link">Link</Button>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Button Sizes</h2>
-        <div className="flex flex-wrap gap-4 items-center">
-          <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Small</Button>
-          <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Default</Button>
-          <Button size="lg" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Large</Button>
-          <Button size="icon" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text"><Settings /></Button>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Button Groups & Selection</h2>
-        
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-medium text-grey-800 mb-3">Simple Button Group</h3>
-            <div className="flex gap-2">
-              <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary</Button>
-              <Button variant="outline">Secondary</Button>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-medium text-grey-800 mb-3">Radio Button Selection</h3>
-            <RadioGroup value={selectedOption} onValueChange={setSelectedOption} className="flex gap-4">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option1" id="option1" />
-                <Label htmlFor="option1">Option 1</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option2" id="option2" />
-                <Label htmlFor="option2">Option 2</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option3" id="option3" />
-                <Label htmlFor="option3">Option 3</Label>
-              </div>
-            </RadioGroup>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-medium text-grey-800 mb-3">Multi-Selection</h3>
-            <div className="flex flex-wrap gap-2">
-              {["Option A", "Option B", "Option C", "Option D"].map((option) => (
-                <div key={option} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={option}
-                    checked={selectedMultiple.includes(option)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedMultiple([...selectedMultiple, option]);
-                      } else {
-                        setSelectedMultiple(selectedMultiple.filter(item => item !== option));
-                      }
-                    }}
-                  />
-                  <Label htmlFor={option}>{option}</Label>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderStatusBadges = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Status Badges</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {[
-            "Paid",
-            "Pending Action", 
-            "Settled",
-            "Rejected by Buyer",
-            "Rejected by Monto",
-            "Approved by Buyer",
-            "RTP Prepared",
-            "RTP Sent",
-            "Awaiting SC",
-            "External Submission",
-            "Partially Settled",
-            "Excluded"
-          ].map((status) => (
-            <div key={status} className="space-y-2 p-3 border border-grey-300 rounded-lg bg-background-paper">
-              <StatusBadge status={status as any} />
-              <p className="text-xs text-grey-600">{status}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Smart Connection Status Badges</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {[
-            "Live",
-            "Inactive", 
-            "Disconnected",
-            "In Process",
-            "Unavailable"
-          ].map((status) => (
-            <div key={status} className="space-y-2 p-3 border border-grey-300 rounded-lg bg-background-paper">
-              <SmartConnectionStatusBadge status={status as "Live" | "Inactive" | "Disconnected" | "In Process" | "Unavailable"} />
-              <p className="text-xs text-grey-600">{status}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderTabNavigation = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice List Tabs (RTP Navigation)</h2>
-        <div className="bg-background-paper border border-grey-300 rounded-lg p-6">
-          <InvoiceTabs
-            tabs={[
-              { id: "all", label: "All RTPs", count: 1234 },
-              { id: "pending", label: "Pending Action", count: 43 },
-              { id: "overdue", label: "Overdue", count: 12 },
-              { id: "settled", label: "Settled", count: 856 },
-            ]}
-            activeTab={activeInvoiceTab}
-            onTabChange={setActiveInvoiceTab}
-          />
-          
-          <div className="mt-4 p-4 bg-grey-200 rounded-lg">
-            <p className="text-sm text-grey-700">
-              <strong>Active Tab:</strong> {activeInvoiceTab} - This matches the exact styling from the /invoices page with proper underlines, counts, and hover states.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Detail Tabs</h2>
-        <div className="bg-background-paper border border-grey-300 rounded-lg p-6">
-          <Tabs value={activeDetailTab} onValueChange={setActiveDetailTab} className="w-full">
-            <TabsList className="bg-grey-200">
-              <TabsTrigger value="financial" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                Financial Data
-              </TabsTrigger>
-              <TabsTrigger value="activity" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                Activity
-                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-info-lighter text-info-main">5</span>
-              </TabsTrigger>
-              <TabsTrigger value="exceptions" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                Exceptions
-                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-error-lighter text-error-main">2</span>
-              </TabsTrigger>
-              <TabsTrigger value="rtp" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                RTP Data
-              </TabsTrigger>
-              <TabsTrigger value="records" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                Portal Records
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="financial" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Financial data and line items would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="activity" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Activity timeline and notes would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="exceptions" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Exception handling and resolution would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="rtp" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Request to Pay data and processing information would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="records" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Portal records and submission history would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderFilterComponents = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Filter Components</h2>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Interactive Filter System</CardTitle>
-            <CardDescription>Functional filters with state management and removable chips</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Filter Controls */}
-            <div className="flex flex-wrap items-center gap-3">
-              <FilterDropdown
-                label="Status"
-                value={filters.status}
-                options={["All", "Paid", "Pending Action", "Settled", "Rejected by Buyer", "Approved by Buyer"]}
-                onSelect={(value) => handleFilterChange("status", value)}
-                multiSelect
-              />
-              
-              <FilterDropdown
-                label="Portal"
-                value={filters.portal}
-                options={["All", "Ariba", "Coupa", "Oracle", "Concur", "Bill"]}
-                onSelect={(value) => handleFilterChange("portal", value)}
-                multiSelect
-                searchable
-              />
-              
-              <FilterDropdown
-                label="Buyer"
-                value={filters.buyer}
-                options={["All", "Acme Corp", "Global Inc", "Tech Solutions", "Manufacturing Co"]}
-                onSelect={(value) => handleFilterChange("buyer", value)}
-                multiSelect
-                searchable
-              />
-              
-              <FilterDropdown
-                label="Owner"
-                value={filters.owner}
-                options={["All", "John Doe", "Jane Smith", "Mike Johnson", "Sarah Wilson"]}
-                onSelect={(value) => handleFilterChange("owner", value)}
-              />
-              
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-grey-400 h-4 w-4" />
-                <Input
-                  placeholder="Search invoices..."
-                  value={filters.search}
-                  onChange={(e) => handleFilterChange("search", e.target.value)}
-                  className="pl-10 w-64 h-9 border border-grey-400 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-main focus:border-primary-main"
-                />
-              </div>
-            </div>
-            
-            {/* Active Filters */}
-            <ActiveFiltersList 
-              filters={filters}
-              onRemoveFilter={handleRemoveFilter}
-            />
-            
-            {/* Filter Description */}
-            <div className="text-sm text-grey-600 bg-grey-200 p-4 rounded-lg">
-              <h4 className="font-medium text-grey-800 mb-2">How Filters Work:</h4>
-              <ul className="space-y-1">
-                <li>• Select multiple values in dropdown filters</li>
-                <li>• Use search to find specific invoices</li>
-                <li>• Click filter chips to remove them</li>
-                <li>• Filters are applied in real-time</li>
-                <li>• Combine multiple filters for precise results</li>
-              </ul>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-
-  const renderTableSystem = () => {
-    const sampleData = [
-      { id: 1, number: "INV-001", buyer: "Acme Corp", status: "Paid", portal: "Ariba", total: 250000, owner: "John Doe" },
-      { id: 2, number: "INV-002", buyer: "Global Inc", status: "Pending Action", portal: "Coupa", total: 150000, owner: "Jane Smith" },
-      { id: 3, number: "INV-003", buyer: "Tech Solutions", status: "Settled", portal: "Oracle", total: 350000, owner: "Mike Johnson" },
-      { id: 4, number: "INV-004", buyer: "Manufacturing Co", status: "Rejected by Buyer", portal: "Bill", total: 125000, owner: "Sarah Wilson" },
-    ];
-
-    const renderSortButton = (field: string, label: string) => {
-      const isActive = sortField === field;
-      const SortIcon = !isActive ? ArrowUpDown : sortDirection === 'asc' ? ArrowUp : ArrowDown;
-      
-      return (
-        <button
-          onClick={() => handleSort(field)}
-          className="flex items-center gap-2 hover:text-grey-900 transition-colors"
-          aria-label={`Sort by ${label}`}
-        >
-          {label}
-          <SortIcon className="h-4 w-4" />
-        </button>
-      );
-    };
-
-    return (
-      <div className="space-y-8">
-        <div>
-          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Table System</h2>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Interactive Data Table</CardTitle>
-              <CardDescription>Full-featured table with sorting, hover effects, and proper styling</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="rounded-xl border overflow-hidden bg-background-paper">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-                        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-grey-200">
-                          {renderSortButton('number', 'Invoice Number')}
-                        </TableHead>
-                        <TableHead>
-                          {renderSortButton('buyer', 'Buyer')}
-                        </TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Portal</TableHead>
-                        <TableHead>
-                          {renderSortButton('total', 'Total')}
-                        </TableHead>
-                        <TableHead>
-                          {renderSortButton('owner', 'Owner')}
-                        </TableHead>
-                        <TableHead className="w-[80px] text-center">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    
-                    <TableBody className="divide-y divide-grey-100">
-                      {sampleData.map((item) => (
-                        <TableRow key={item.id} className="h-[65px] hover:bg-grey-50 cursor-pointer transition-colors">
-                          <TableCell className="sticky left-0 z-10 bg-background-paper border-r border-grey-200 font-medium">
-                            {item.number}
-                          </TableCell>
-                          <TableCell>{item.buyer}</TableCell>
-                          <TableCell>
-                            <StatusBadge status={item.status as any} />
-                          </TableCell>
-                          <TableCell>
-                            <span className="px-2 py-1 bg-grey-200 text-grey-700 rounded text-xs font-medium">
-                              {item.portal}
-                            </span>
-                          </TableCell>
-                          <TableCell className="font-medium">
-                            ${item.total.toLocaleString()}
-                          </TableCell>
-                          <TableCell>{item.owner}</TableCell>
-                          <TableCell className="text-center">
-                            <Button variant="ghost" size="sm">
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-              
-              <div className="mt-4 text-sm text-grey-600 bg-grey-200 p-4 rounded-lg">
-                <h4 className="font-medium text-grey-800 mb-2">Table Features:</h4>
-                <ul className="space-y-1">
-                  <li>• Sortable columns with visual indicators</li>
-                  <li>• Hover effects for better interactivity</li>
-                  <li>• Sticky first column for horizontal scrolling</li>
-                  <li>• Status badges with proper styling</li>
-                  <li>• Action buttons with vertical kebab menu (⋮)</li>
-                  <li>• Proper spacing and typography</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  };
-
-  const renderFormElements = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Form Elements</h2>
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact Form</CardTitle>
-            <CardDescription>A functional form example with proper focus styles</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name *</Label>
-                <Input 
-                  id="name" 
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  placeholder="Enter your name" 
-                  className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
-                <Input 
-                  id="email" 
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  placeholder="Enter your email" 
-                  className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
-              <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
-                <SelectTrigger className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main">
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="general">General Inquiry</SelectItem>
-                  <SelectItem value="support">Support</SelectItem>
-                  <SelectItem value="billing">Billing</SelectItem>
-                  <SelectItem value="feature">Feature Request</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="message">Message *</Label>
-              <Textarea 
-                id="message" 
-                value={formData.message}
-                onChange={(e) => setFormData({...formData, message: e.target.value})}
-                placeholder="Enter your message" 
-                className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main min-h-[100px]"
-              />
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="terms" 
-                checked={formData.terms}
-                onCheckedChange={(checked) => setFormData({...formData, terms: checked as boolean})}
-                className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main"
-              />
-              <Label htmlFor="terms" className="text-sm">
-                I agree to the terms and conditions *
-              </Label>
-            </div>
-            <Button 
-              className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text"
-              disabled={!formData.name || !formData.email || !formData.message || !formData.terms}
-            >
-              Submit Form
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Input Focus States</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label>Default State</Label>
-            <Input placeholder="Default input" className="border-grey-400" />
-            <p className="text-xs text-grey-500">No focus - grey border</p>
-          </div>
-          <div className="space-y-2">
-            <Label>Focus State (Single Border)</Label>
-            <Input placeholder="Focused input" className="border-primary-main ring-1 ring-primary-main" />
-            <p className="text-xs text-grey-500">Active focus - single primary border</p>
-          </div>
-          <div className="space-y-2">
-            <Label>Error State</Label>
-            <Input placeholder="Invalid input" className="border-error-main focus:ring-1 focus:ring-error-main focus:border-error-main" />
-            <p className="text-xs text-error-main">This field is required</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderLayoutComponents = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Layout Components</h2>
-        
-        <div className="space-y-8">
-          {/* Page Header */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Page Header</CardTitle>
-              <CardDescription>Standard page header with back button, title, and action</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="border border-grey-300 rounded-lg p-4 bg-grey-50">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="sm">
-                      <ArrowLeft className="h-4 w-4" />
-                    </Button>
-                    <div>
-                      <h1 className="text-xl font-semibold text-grey-900">Invoice Detail</h1>
-                      <p className="text-sm text-grey-600">INV-2024-001 • Due March 15, 2024</p>
-                    </div>
-                  </div>
-                  <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">
-                    Export PDF
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Resizable Panel Group */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Resizable Panel Group</CardTitle>
-              <CardDescription>Used in detail pages for flexible layouts</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64 border border-grey-300 rounded-lg overflow-hidden">
-                <ResizablePanelGroup direction="horizontal">
-                  <ResizablePanel defaultSize={50} minSize={30}>
-                    <div className="h-full p-4 bg-primary-lighter">
-                      <h3 className="font-medium text-primary-main mb-2">Left Panel</h3>
-                      <p className="text-sm text-grey-700">Invoice details and information would go here. This panel is resizable.</p>
-                    </div>
-                  </ResizablePanel>
-                  <ResizableHandle withHandle />
-                  <ResizablePanel defaultSize={50} minSize={30}>
-                    <div className="h-full p-4 bg-success-lighter">
-                      <h3 className="font-medium text-success-main mb-2">Right Panel</h3>
-                      <p className="text-sm text-grey-700">PDF viewer or additional content would go here. Drag the handle to resize.</p>
-                    </div>
-                  </ResizablePanel>
-                </ResizablePanelGroup>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Action Bar / Sticky Footer */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Sticky Action Bar</CardTitle>
-              <CardDescription>Bottom action bar for forms and detail pages</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="border border-grey-300 rounded-lg p-4 bg-grey-50">
-                <div className="flex items-center justify-between p-4 bg-background-paper border border-grey-300 rounded-lg shadow-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-grey-600">2 items selected</span>
-                    <Badge variant="secondary">Changes pending</Badge>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm">Cancel</Button>
-                    <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">
-                      Save Changes
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderAlerts = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Alert Components</h2>
-        
-        <div className="space-y-6">
-          {/* Info Alert */}
-          <Alert className="border-info-main bg-info-lighter">
-            <Info className="h-4 w-4 text-info-main" />
-            <AlertTitle className="text-info-main">Information</AlertTitle>
-            <AlertDescription className="text-info-dark">
-              This is an informational alert. It provides helpful context or guidance to users.
-            </AlertDescription>
-          </Alert>
-
-          {/* Success Alert */}
-          <Alert className="border-success-main bg-success-lighter">
-            <CheckCircle className="h-4 w-4 text-success-main" />
-            <AlertTitle className="text-success-main">Success</AlertTitle>
-            <AlertDescription className="text-success-dark">
-              Operation completed successfully! Your changes have been saved.
-            </AlertDescription>
-          </Alert>
-
-          {/* Warning Alert */}
-          <Alert className="border-warning-main bg-warning-lighter">
-            <AlertTriangle className="h-4 w-4 text-warning-main" />
-            <AlertTitle className="text-warning-main">Warning</AlertTitle>
-            <AlertDescription className="text-warning-dark">
-              Please review this action carefully before proceeding. This may affect other invoices.
-            </AlertDescription>
-          </Alert>
-
-          {/* Error Alert */}
-          <Alert className="border-error-main bg-error-lighter">
-            <AlertCircle className="h-4 w-4 text-error-main" />
-            <AlertTitle className="text-error-main">Error</AlertTitle>
-            <AlertDescription className="text-error-dark">
-              An error occurred while processing your request. Please try again.
-            </AlertDescription>
-          </Alert>
-
-          {/* Dismissable Alert */}
-          <Alert className="border-info-main bg-info-lighter relative">
-            <Info className="h-4 w-4 text-info-main" />
-            <AlertTitle className="text-info-main">Dismissable Alert</AlertTitle>
-            <AlertDescription className="text-info-dark">
-              This alert can be dismissed by clicking the X button.
-            </AlertDescription>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="absolute top-2 right-2 h-6 w-6 p-0 text-info-main hover:bg-info-main hover:text-info-contrast-text"
-              onClick={() => toast({ title: "Alert dismissed" })}
-            >
-              <X className="h-3 w-3" />
-            </Button>
-          </Alert>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderProgress = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Progress Indicators</h2>
-        <div className="space-y-6">
-          <div>
-            <Label className="text-sm font-medium mb-2 block">Basic Progress (Thin Style)</Label>
-            <Progress value={33} className="bg-grey-200 h-2" />
-            <p className="text-xs text-grey-600 mt-1">33% Complete</p>
-          </div>
-          <div>
-            <Label className="text-sm font-medium mb-2 block">Advanced Progress</Label>
-            <Progress value={67} className="bg-grey-200 h-2" />
-            <p className="text-xs text-grey-600 mt-1">67% Complete</p>
-          </div>
-          <div>
-            <Label className="text-sm font-medium mb-2 block">Complete</Label>
-            <Progress value={100} className="bg-grey-200 h-2" />
-            <p className="text-xs text-grey-600 mt-1">100% Complete</p>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Step Progress with Numbered Steps</h2>
-        <div className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-main text-primary-contrast-text text-sm font-medium">
-              <Check size={16} />
-            </div>
-            <div className="flex-1 h-1 bg-primary-main rounded"></div>
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-main text-primary-contrast-text text-sm font-medium">
-              2
-            </div>
-            <div className="flex-1 h-1 bg-grey-300 rounded"></div>
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-grey-300 text-grey-600 text-sm font-medium">
-              3
-            </div>
-          </div>
-          <div className="flex justify-between text-sm text-grey-600">
-            <span>Completed</span>
-            <span>In Progress</span>
-            <span>Upcoming</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderBreadcrumbs = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Breadcrumb Navigation</h2>
-        
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Two Level Breadcrumb</CardTitle>
-              <CardDescription>Basic navigation with home and current page</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                      <Home className="h-4 w-4" />
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage className="text-grey-900 font-medium">Invoices</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Three Level Breadcrumb</CardTitle>
-              <CardDescription>Navigation showing section hierarchy</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                      <Home className="h-4 w-4" />
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                      Invoices
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage className="text-grey-900 font-medium">Pending Action</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Four Level Breadcrumb</CardTitle>
-              <CardDescription>Deep navigation with detailed hierarchy</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                      <Home className="h-4 w-4" />
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                      Invoices
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                      Pending Action
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage className="text-grey-900 font-medium">INV-2024-001</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderModals = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Modal Examples</h2>
-        <div className="flex gap-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Basic Modal</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Edit Profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you're done.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="modal-name" className="text-right">Name</Label>
-                  <Input id="modal-name" defaultValue="John Doe" className="col-span-3" />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="modal-username" className="text-right">Username</Label>
-                  <Input id="modal-username" defaultValue="@johndoe" className="col-span-3" />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Save changes</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive">Delete Action</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <div className="flex justify-center mb-4">
-                  <AlertTriangle className="h-12 w-12 text-warning-main" />
-                </div>
-                <AlertDialogTitle className="text-center">Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription className="text-center">
-                  This action cannot be undone. This will permanently delete your account
-                  and remove your data from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className="bg-error-main hover:bg-error-dark text-error-contrast-text">Continue</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="border-info-main text-info-main hover:bg-info-lighter">Info Modal</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <div className="flex justify-center mb-4">
-                  <Info className="h-12 w-12 text-info-main" />
-                </div>
-                <DialogTitle className="text-center">Information</DialogTitle>
-                <DialogDescription className="text-center">
-                  Here's some important information you should know about this feature.
-                  This modal demonstrates the info variant with an icon.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Got it</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderBrandAssets = () => {
-    const copyMontoLogoSVG = () => {
-      const svg = `<svg viewBox="0 0 120 36" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 8h4v20H8V8zm8 0h4l6 12 6-12h4v20h-4V16l-6 12-6-12v12h-4V8zm28 0h4v16h8v4H44V8zm12 0h12v4h-8v4h6v4h-6v4h8v4H56V8zm20 0h4v20h-4V8z" fill="#7B59FF"/>
-      </svg>`;
-      navigator.clipboard.writeText(svg);
-      toast({ title: "Copied to clipboard", description: "Monto logo SVG copied!" });
-    };
-
-    const copyMontoIconSVG = () => {
-      const svg = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 4h4v16H2V4zm8 0h4l3 8 3-8h4v16h-4V12l-3 8-3-8v8h-4V4z" fill="#7B59FF"/>
-      </svg>`;
-      navigator.clipboard.writeText(svg);
-      toast({ title: "Copied to clipboard", description: "Monto icon SVG copied!" });
-    };
-
-    return (
-      <div className="space-y-8">
-        <div>
-          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Brand Assets</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Monto Logo</CardTitle>
-                <CardDescription>Primary brand logo in purple</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-center p-8 bg-grey-50 rounded-lg">
-                  <MontoLogo className="h-8 w-auto text-primary-main" />
-                </div>
-                <Button 
-                  onClick={copyMontoLogoSVG}
-                  variant="outline" 
-                  className="w-full"
-                >
-                  <Copy size={16} className="mr-2" />
-                  Copy SVG Code
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Monto Icon</CardTitle>
-                <CardDescription>Icon version in purple</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-center p-8 bg-grey-50 rounded-lg">
-                  <MontoIcon className="h-8 w-auto text-primary-main" />
-                </div>
-                <Button 
-                  onClick={copyMontoIconSVG}
-                  variant="outline" 
-                  className="w-full"
-                >
-                  <Copy size={16} className="mr-2" />
-                  Copy SVG Code
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Usage Guidelines</h2>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-medium text-grey-900 mb-2">Primary Color Usage</h4>
-                  <p className="text-sm text-grey-700">
-                    Always use the primary purple color (#7B59FF) for brand assets. This ensures consistency across all applications.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium text-grey-900 mb-2">Minimum Size</h4>
-                  <p className="text-sm text-grey-700">
-                    Maintain minimum dimensions to ensure legibility. Logo should not be smaller than 80px wide.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium text-grey-900 mb-2">Clear Space</h4>
-                  <p className="text-sm text-grey-700">
-                    Provide adequate clear space around the logo equal to the height of the "M" in the wordmark.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  };
-
-  const renderSection = () => {
-    switch (activeSection) {
-      case "color-palette": return renderColorPalette();
-      case "typography": return renderTypography();
-      case "spacing-layout": return renderSpacingLayout();
-      case "buttons": return renderButtons();
-      case "status-badges": return renderStatusBadges();
-      case "tab-navigation": return renderTabNavigation();
-      case "filter-components": return renderFilterComponents();
-      case "table-system": return renderTableSystem();
-      case "form-elements": return renderFormElements();
-      case "layout-components": return renderLayoutComponents();
-      case "alerts": return renderAlerts();
-      case "progress": return renderProgress();
-      case "breadcrumbs": return renderBreadcrumbs();
-      case "modals": return renderModals();
-      case "brand-assets": return renderBrandAssets();
-      default: return renderColorPalette();
-    }
-  };
+  const sidebarSections = [
+    { id: "buttons", label: "Buttons" },
+    { id: "badges", label: "Badges" },
+    { id: "forms", label: "Form Elements" },
+    { id: "dropdowns", label: "Dropdowns" },
+    { id: "toggles", label: "Toggles" },
+    { id: "tabs", label: "Tab Navigation" },
+    { id: "grids", label: "Grid Layout" },
+    { id: "cards", label: "Cards & Padding" },
+    { id: "spacing", label: "Spacing System" },
+    { id: "tables", label: "Table System" },
+    { id: "layouts", label: "Layout Components" },
+    { id: "alerts", label: "Alerts" },
+    { id: "toasts", label: "Toast Notifications" },
+    { id: "progress", label: "Progress Indicators" },
+    { id: "breadcrumbs", label: "Breadcrumbs" },
+    { id: "typography", label: "Utility Text" },
+  ]
 
   return (
-    <div className="flex h-screen bg-background-default">
-      {/* Sidebar */}
-      <div className="w-64 bg-common-white border-r border-grey-300 flex flex-col">
-        <div className="p-6 border-b border-grey-300">
-          <h1 className="text-xl font-semibold text-grey-900">Design System</h1>
+    <div className="min-h-screen bg-background-default">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-64 bg-background-paper border-r border-grey-300 min-h-screen">
+          <div className="p-6 border-b border-grey-300">
+            <Typography variant="h3" className="text-grey-900">Design System</Typography>
+            <Typography variant="body2" className="text-grey-600 mt-1">Component Library</Typography>
+          </div>
+          <nav className="p-4">
+            <ul className="space-y-2">
+              {sidebarSections.map((section) => (
+                <li key={section.id}>
+                  <button
+                    onClick={() => setActiveTab(section.id)}
+                    className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                      activeTab === section.id
+                        ? "bg-primary-lighter text-primary-dark font-medium"
+                        : "text-grey-700 hover:bg-grey-200 hover:text-grey-900"
+                    }`}
+                  >
+                    {section.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-        
-        <nav className="flex-1 p-4 space-y-1">
-          {sidebarItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveSection(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors text-left ${
-                activeSection === item.id 
-                  ? 'bg-primary-lighter text-primary-main font-medium' 
-                  : 'text-grey-700 hover:bg-grey-200'
-              }`}
-            >
-              {item.icon}
-              {item.label}
-            </button>
-          ))}
-        </nav>
-      </div>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-8">
-          {renderSection()}
+        {/* Main Content */}
+        <div className="flex-1 p-8">
+          {/* Buttons Section */}
+          {activeTab === "buttons" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Buttons</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Interactive elements for user actions</Typography>
+              </div>
+
+              {/* Button Variants */}
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Button Variants</Typography>
+                  <div className="flex flex-wrap gap-4">
+                    <Button variant="default">Primary Button</Button>
+                    <Button variant="secondary">Secondary Button</Button>
+                    <Button variant="outline">Outline Button</Button>
+                    <Button variant="ghost">Ghost Button</Button>
+                    <Button variant="destructive">Destructive Button</Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Button Sizes</Typography>
+                  <div className="flex flex-wrap items-center gap-4">
+                    <Button size="sm">Small</Button>
+                    <Button size="default">Default</Button>
+                    <Button size="lg">Large</Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Button Groups</Typography>
+                  <div className="space-y-4">
+                    {/* Primary + Secondary Group */}
+                    <div className="flex gap-2">
+                      <Button variant="default">Primary Action</Button>
+                      <Button variant="secondary">Secondary Action</Button>
+                    </div>
+
+                    {/* Radio Button Selection */}
+                    <div className="space-y-3">
+                      <Typography variant="subtitle2" className="text-grey-800">Radio Selection</Typography>
+                      <RadioGroup value={radioValue} onValueChange={setRadioValue} className="flex gap-6">
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="option1" id="option1" />
+                          <Label htmlFor="option1">Option 1</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="option2" id="option2" />
+                          <Label htmlFor="option2">Option 2</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="option3" id="option3" />
+                          <Label htmlFor="option3">Option 3</Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+
+                    {/* Multi-Selection */}
+                    <div className="space-y-3">
+                      <Typography variant="subtitle2" className="text-grey-800">Multi-Selection</Typography>
+                      <div className="flex gap-6">
+                        {["Filter 1", "Filter 2", "Filter 3"].map((filter) => (
+                          <div key={filter} className="flex items-center space-x-2">
+                            <Checkbox 
+                              id={filter}
+                              checked={multiSelect.includes(filter)}
+                              onCheckedChange={() => toggleMultiSelect(filter)}
+                            />
+                            <Label htmlFor={filter}>{filter}</Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Badges Section */}
+          {activeTab === "badges" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Badges</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Status indicators and labels</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Badge Variants</Typography>
+                  <div className="flex flex-wrap gap-4">
+                    <Badge variant="default">Default</Badge>
+                    <Badge variant="secondary">Secondary</Badge>
+                    <Badge variant="outline">Outline</Badge>
+                    <Badge variant="destructive">Destructive</Badge>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Status Badges</Typography>
+                  <div className="flex flex-wrap gap-4">
+                    <Badge className="bg-success-main text-success-contrast-text">Approved</Badge>
+                    <Badge className="bg-warning-main text-warning-contrast-text">Pending</Badge>
+                    <Badge className="bg-error-main text-error-contrast-text">Rejected</Badge>
+                    <Badge className="bg-info-main text-info-contrast-text">In Review</Badge>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Form Elements Section */}
+          {activeTab === "forms" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Form Elements</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Input fields and form controls with improved focus styles</Typography>
+              </div>
+
+              <div className="space-y-6 max-w-md">
+                <div className="space-y-2">
+                  <Label htmlFor="text-input">Text Input</Label>
+                  <Input 
+                    id="text-input" 
+                    type="text" 
+                    placeholder="Enter text here..." 
+                    className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email-input">Email Input</Label>
+                  <Input 
+                    id="email-input" 
+                    type="email" 
+                    placeholder="Enter email..." 
+                    className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="password-input">Password Input</Label>
+                  <Input 
+                    id="password-input" 
+                    type="password" 
+                    placeholder="Enter password..." 
+                    className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="textarea">Textarea</Label>
+                  <Textarea 
+                    id="textarea" 
+                    placeholder="Enter multi-line text here..." 
+                    className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="select-input">Select Input</Label>
+                  <Select>
+                    <SelectTrigger className="focus:ring-2 focus:ring-primary-main focus:ring-offset-2 focus:border-primary-main">
+                      <SelectValue placeholder="Select an option" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                      <SelectItem value="option1">Option 1</SelectItem>
+                      <SelectItem value="option2">Option 2</SelectItem>
+                      <SelectItem value="option3">Option 3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Dropdowns Section */}
+          {activeTab === "dropdowns" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Dropdowns</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Dropdown menus and selectors</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Basic Dropdown Menu</Typography>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline">
+                        Open Menu <ChevronDown className="ml-2 h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                      <DropdownMenuItem>Profile</DropdownMenuItem>
+                      <DropdownMenuItem>Settings</DropdownMenuItem>
+                      <DropdownMenuItem>Logout</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Filter Dropdown</Typography>
+                  <FilterDropdown
+                    label="Status"
+                    options={[
+                      { value: "pending", label: "Pending" },
+                      { value: "approved", label: "Approved" },
+                      { value: "rejected", label: "Rejected" }
+                    ]}
+                    selectedValues={[]}
+                    onSelectionChange={() => {}}
+                    placeholder="Select status..."
+                  />
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Action Menu (Table)</Typography>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                      <DropdownMenuItem>View Details</DropdownMenuItem>
+                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem className="text-error-main">Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Toggles Section */}
+          {activeTab === "toggles" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Toggles</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Switch controls for binary states</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <Typography variant="h4" className="text-grey-800 mb-4">Basic Switch</Typography>
+                  <div className="flex items-center space-x-3">
+                    <Switch 
+                      id="basic-switch" 
+                      checked={switchValue}
+                      onCheckedChange={setSwitchValue}
+                    />
+                    <Label htmlFor="basic-switch">Enable notifications</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <Typography variant="h4" className="text-grey-800 mb-4">Switch States</Typography>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <Switch id="switch-on" checked={true} onCheckedChange={() => {}} />
+                      <Label htmlFor="switch-on">Enabled (On)</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Switch id="switch-off" checked={false} onCheckedChange={() => {}} />
+                      <Label htmlFor="switch-off">Disabled (Off)</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Switch id="switch-disabled" checked={false} disabled />
+                      <Label htmlFor="switch-disabled" className="text-grey-500">Disabled State</Label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab Navigation Section */}
+          {activeTab === "tabs" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Tab Navigation</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Navigation tabs with counts and active states</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Invoice List Tabs</Typography>
+                  <InvoiceTabs />
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Basic Tabs</Typography>
+                  <Tabs defaultValue="tab1" className="w-full">
+                    <TabsList className="grid w-full grid-cols-3">
+                      <TabsTrigger value="tab1">Overview</TabsTrigger>
+                      <TabsTrigger value="tab2">Details</TabsTrigger>
+                      <TabsTrigger value="tab3">Settings</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="tab1" className="mt-4">
+                      <Typography variant="body1">Overview content goes here.</Typography>
+                    </TabsContent>
+                    <TabsContent value="tab2" className="mt-4">
+                      <Typography variant="body1">Details content goes here.</Typography>
+                    </TabsContent>
+                    <TabsContent value="tab3" className="mt-4">
+                      <Typography variant="body1">Settings content goes here.</Typography>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Grid Layout Section */}
+          {activeTab === "grids" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Grid Layout Examples</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Responsive grid layouts with gap spacing</Typography>
+              </div>
+
+              <div className="space-y-8">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Single Column Grid</Typography>
+                  <Typography variant="body2" className="text-grey-600 mb-3">Gap: 4 (1rem / 16px)</Typography>
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="bg-primary-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-primary-dark">Single Item</Typography>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Two Column Grid (50/50)</Typography>
+                  <Typography variant="body2" className="text-grey-600 mb-3">Gap: 6 (1.5rem / 24px)</Typography>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="bg-info-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-info-dark">Item 1</Typography>
+                    </div>
+                    <div className="bg-info-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-info-dark">Item 2</Typography>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Three Column Grid</Typography>
+                  <Typography variant="body2" className="text-grey-600 mb-3">Gap: 4 (1rem / 16px)</Typography>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="bg-success-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-success-dark">Item 1</Typography>
+                    </div>
+                    <div className="bg-success-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-success-dark">Item 2</Typography>
+                    </div>
+                    <div className="bg-success-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-success-dark">Item 3</Typography>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Four Column Grid</Typography>
+                  <Typography variant="body2" className="text-grey-600 mb-3">Gap: 6 (1.5rem / 24px)</Typography>
+                  <div className="grid grid-cols-4 gap-6">
+                    <div className="bg-warning-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-warning-contrast-text">Item 1</Typography>
+                    </div>
+                    <div className="bg-warning-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-warning-contrast-text">Item 2</Typography>
+                    </div>
+                    <div className="bg-warning-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-warning-contrast-text">Item 3</Typography>
+                    </div>
+                    <div className="bg-warning-lighter p-4 rounded-lg">
+                      <Typography variant="body2" className="text-warning-contrast-text">Item 4</Typography>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Cards & Padding Section */}
+          {activeTab === "cards" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Cards & Padding</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Card layouts with visual padding examples</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Padding Examples</Typography>
+                  <div className="grid grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader className="bg-grey-200 bg-opacity-30">
+                        <CardTitle className="text-sm">Small Padding (p-2)</CardTitle>
+                        <CardDescription>8px padding</CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-2 bg-primary-lighter bg-opacity-20">
+                        <Typography variant="body2">Content with small padding</Typography>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="bg-grey-200 bg-opacity-30">
+                        <CardTitle className="text-sm">Medium Padding (p-4)</CardTitle>
+                        <CardDescription>16px padding</CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-4 bg-primary-lighter bg-opacity-20">
+                        <Typography variant="body2">Content with medium padding</Typography>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="bg-grey-200 bg-opacity-30">
+                        <CardTitle className="text-sm">Large Padding (p-6)</CardTitle>
+                        <CardDescription>24px padding</CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-6 bg-primary-lighter bg-opacity-20">
+                        <Typography variant="body2">Content with large padding</Typography>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="bg-grey-200 bg-opacity-30">
+                        <CardTitle className="text-sm">Extra Large Padding (p-8)</CardTitle>
+                        <CardDescription>32px padding</CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-8 bg-primary-lighter bg-opacity-20">
+                        <Typography variant="body2">Content with extra large padding</Typography>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Spacing System Section */}
+          {activeTab === "spacing" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Spacing System</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Design system spacing tokens and values</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Spacing Scale</Typography>
+                  <div className="space-y-3">
+                    {[
+                      { token: "space-1", value: "4px", class: "p-1" },
+                      { token: "space-2", value: "8px", class: "p-2" },
+                      { token: "space-3", value: "12px", class: "p-3" },
+                      { token: "space-4", value: "16px", class: "p-4" },
+                      { token: "space-6", value: "24px", class: "p-6" },
+                      { token: "space-8", value: "32px", class: "p-8" },
+                      { token: "space-12", value: "48px", class: "p-12" },
+                      { token: "space-16", value: "64px", class: "p-16" },
+                    ].map((spacing) => (
+                      <div key={spacing.token} className="flex items-center gap-4">
+                        <div className="w-24 text-sm font-mono text-grey-600">{spacing.token}</div>
+                        <div className="w-16 text-sm text-grey-600">{spacing.value}</div>
+                        <div className="bg-primary-lighter border border-primary-main">
+                          <div className={`bg-primary-main ${spacing.class}`}>
+                            <div className="bg-background-paper text-xs text-grey-800 p-1">Content</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Table System Section */}
+          {activeTab === "tables" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Table System</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Data tables with proper styling and interactions</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div className="border border-grey-300 rounded-lg overflow-hidden">
+                  <table className="w-full">
+                    <thead className="bg-grey-200">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-grey-800">Name</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-grey-800">Status</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-grey-800">Amount</th>
+                        <th className="px-4 py-3 text-center text-sm font-medium text-grey-800">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-background-paper divide-y divide-grey-300">
+                      <tr className="hover:bg-grey-200 transition-colors">
+                        <td className="px-4 py-3 text-sm text-grey-900">Invoice #001</td>
+                        <td className="px-4 py-3">
+                          <Badge className="bg-success-main text-success-contrast-text">Approved</Badge>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-grey-900">$1,234.56</td>
+                        <td className="px-4 py-3 text-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                              <DropdownMenuItem>View</DropdownMenuItem>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem className="text-error-main">Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-grey-200 transition-colors">
+                        <td className="px-4 py-3 text-sm text-grey-900">Invoice #002</td>
+                        <td className="px-4 py-3">
+                          <Badge className="bg-warning-main text-warning-contrast-text">Pending</Badge>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-grey-900">$2,567.89</td>
+                        <td className="px-4 py-3 text-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-background-paper border border-grey-300 shadow-lg z-50">
+                              <DropdownMenuItem>View</DropdownMenuItem>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem className="text-error-main">Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Layout Components Section */}
+          {activeTab === "layouts" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Layout Components</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Structural layout elements</Typography>
+              </div>
+
+              <div className="space-y-8">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Page Header</Typography>
+                  <div className="bg-background-paper border border-grey-300 rounded-lg p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Button variant="ghost" size="sm">
+                          <ArrowLeft className="h-4 w-4" />
+                        </Button>
+                        <div>
+                          <Typography variant="h3" className="text-grey-900">Page Title</Typography>
+                          <Typography variant="body2" className="text-grey-600">Subtitle or description</Typography>
+                        </div>
+                      </div>
+                      <Button>
+                        <Download className="h-4 w-4 mr-2" />
+                        Action
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Resizable Panel Group</Typography>
+                  <div className="h-64 border border-grey-300 rounded-lg overflow-hidden">
+                    <ResizablePanelGroup direction="horizontal">
+                      <ResizablePanel defaultSize={30} minSize={20}>
+                        <div className="p-4 h-full bg-primary-lighter">
+                          <Typography variant="body2" className="text-primary-dark">Left Panel</Typography>
+                        </div>
+                      </ResizablePanel>
+                      <ResizableHandle />
+                      <ResizablePanel defaultSize={70} minSize={30}>
+                        <div className="p-4 h-full bg-info-lighter">
+                          <Typography variant="body2" className="text-info-dark">Right Panel</Typography>
+                        </div>
+                      </ResizablePanel>
+                    </ResizablePanelGroup>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Sticky Footer / Action Bar</Typography>
+                  <div className="bg-background-paper border border-grey-300 rounded-lg overflow-hidden">
+                    <div className="p-6 h-32 bg-grey-200">
+                      <Typography variant="body1" className="text-grey-700">Main content area</Typography>
+                    </div>
+                    <div className="border-t border-grey-300 p-4 bg-background-paper sticky bottom-0">
+                      <div className="flex justify-end gap-3">
+                        <Button variant="outline">Cancel</Button>
+                        <Button>Save Changes</Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Alerts Section */}
+          {activeTab === "alerts" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Alerts</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Alert messages and notifications</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Alert Variants</Typography>
+                  <div className="space-y-4">
+                    <Alert>
+                      <Info className="h-4 w-4" />
+                      <AlertTitle>Information</AlertTitle>
+                      <AlertDescription>
+                        This is an informational alert message.
+                      </AlertDescription>
+                    </Alert>
+
+                    <Alert className="border-success-main bg-success-lighter">
+                      <CheckCircle className="h-4 w-4 text-success-dark" />
+                      <AlertTitle className="text-success-dark">Success</AlertTitle>
+                      <AlertDescription className="text-success-dark">
+                        Your action was completed successfully.
+                      </AlertDescription>
+                    </Alert>
+
+                    <Alert className="border-warning-main bg-warning-lighter">
+                      <AlertTriangle className="h-4 w-4 text-warning-contrast-text" />
+                      <AlertTitle className="text-warning-contrast-text">Warning</AlertTitle>
+                      <AlertDescription className="text-warning-contrast-text">
+                        Please review this information carefully.
+                      </AlertDescription>
+                    </Alert>
+
+                    <Alert className="border-error-main bg-error-lighter">
+                      <AlertCircle className="h-4 w-4 text-error-dark" />
+                      <AlertTitle className="text-error-dark">Error</AlertTitle>
+                      <AlertDescription className="text-error-dark">
+                        An error occurred. Please try again.
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Dismissable Alert</Typography>
+                  <Alert className="border-info-main bg-info-lighter">
+                    <Info className="h-4 w-4 text-info-dark" />
+                    <AlertTitle className="text-info-dark">Dismissable Alert</AlertTitle>
+                    <AlertDescription className="text-info-dark">
+                      This alert can be dismissed by the user.
+                    </AlertDescription>
+                    <Button variant="ghost" size="sm" className="absolute top-2 right-2 h-6 w-6 p-0">
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Alert>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Toast Notifications Section */}
+          {activeTab === "toasts" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Toast Notifications</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Temporary notification messages</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Toast Variants</Typography>
+                  <div className="flex flex-wrap gap-4">
+                    <Button onClick={() => showToast("default")}>Show Default Toast</Button>
+                    <Button onClick={() => showToast("success")}>Show Success Toast</Button>
+                    <Button onClick={() => showToast("warning")}>Show Warning Toast</Button>
+                    <Button onClick={() => showToast("info")}>Show Info Toast</Button>
+                    <Button onClick={() => showToast("destructive")}>Show Error Toast</Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Toast Examples</Typography>
+                  <div className="space-y-3 max-w-md">
+                    <div className="bg-background-paper border border-grey-300 rounded-lg p-4 shadow-md">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <Typography variant="subtitle2" className="text-grey-900 mb-1">Default Toast</Typography>
+                          <Typography variant="body2" className="text-grey-700">This is a default notification.</Typography>
+                        </div>
+                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="bg-success-main border border-success-main rounded-lg p-4 shadow-md">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <Typography variant="subtitle2" className="text-white mb-1">Success!</Typography>
+                          <Typography variant="body2" className="text-white">Your action was completed successfully.</Typography>
+                        </div>
+                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-white hover:bg-white hover:bg-opacity-20">
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="bg-error-main border border-error-main rounded-lg p-4 shadow-md">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <Typography variant="subtitle2" className="text-white mb-1">Error occurred</Typography>
+                          <Typography variant="body2" className="text-white">Something went wrong. Please try again.</Typography>
+                        </div>
+                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-white hover:bg-white hover:bg-opacity-20">
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Progress Indicators Section */}
+          {activeTab === "progress" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Progress Indicators</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Progress bars and loading states</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Progress Bars</Typography>
+                  <div className="space-y-4 max-w-md">
+                    <div>
+                      <Typography variant="body2" className="text-grey-700 mb-2">25% Complete</Typography>
+                      <Progress value={25} className="h-2" />
+                    </div>
+                    <div>
+                      <Typography variant="body2" className="text-grey-700 mb-2">50% Complete</Typography>
+                      <Progress value={50} className="h-2" />
+                    </div>
+                    <div>
+                      <Typography variant="body2" className="text-grey-700 mb-2">75% Complete</Typography>
+                      <Progress value={75} className="h-2" />
+                    </div>
+                    <div>
+                      <Typography variant="body2" className="text-grey-700 mb-2">100% Complete</Typography>
+                      <Progress value={100} className="h-2" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Breadcrumbs Section */}
+          {activeTab === "breadcrumbs" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Breadcrumbs</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Navigation breadcrumbs showing page hierarchy</Typography>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Breadcrumb Examples</Typography>
+                  <div className="space-y-4">
+                    <div>
+                      <Typography variant="body2" className="text-grey-600 mb-2">2-level breadcrumb</Typography>
+                      <Breadcrumb>
+                        <BreadcrumbList>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/" className="flex items-center gap-1">
+                              <Home className="h-4 w-4" />
+                              Home
+                            </BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbPage>Current Page</BreadcrumbPage>
+                          </BreadcrumbItem>
+                        </BreadcrumbList>
+                      </Breadcrumb>
+                    </div>
+
+                    <div>
+                      <Typography variant="body2" className="text-grey-600 mb-2">3-level breadcrumb</Typography>
+                      <Breadcrumb>
+                        <BreadcrumbList>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/" className="flex items-center gap-1">
+                              <Home className="h-4 w-4" />
+                              Home
+                            </BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/invoices">Invoices</BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbPage>Invoice Detail</BreadcrumbPage>
+                          </BreadcrumbItem>
+                        </BreadcrumbList>
+                      </Breadcrumb>
+                    </div>
+
+                    <div>
+                      <Typography variant="body2" className="text-grey-600 mb-2">4-level breadcrumb</Typography>
+                      <Breadcrumb>
+                        <BreadcrumbList>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/" className="flex items-center gap-1">
+                              <Home className="h-4 w-4" />
+                              Home
+                            </BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/smart-connections">Smart Connections</BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbLink href="/smart-connections/add-agent">Add Agent</BreadcrumbLink>
+                          </BreadcrumbItem>
+                          <BreadcrumbSeparator>
+                            <ChevronRight className="h-4 w-4" />
+                          </BreadcrumbSeparator>
+                          <BreadcrumbItem>
+                            <BreadcrumbPage>User Type Selection</BreadcrumbPage>
+                          </BreadcrumbItem>
+                        </BreadcrumbList>
+                      </Breadcrumb>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Typography Section */}
+          {activeTab === "typography" && (
+            <div className="space-y-8">
+              <div>
+                <Typography variant="h2" className="text-grey-900 mb-4">Utility Text</Typography>
+                <Typography variant="body1" className="text-grey-700 mb-6">Typography system with various styles and utilities</Typography>
+              </div>
+
+              <div className="space-y-8">
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Font Weights</Typography>
+                  <div className="space-y-2">
+                    <Typography variant="body1" className="font-light text-grey-700">Light text (font-weight: 300)</Typography>
+                    <Typography variant="body1" className="font-normal text-grey-700">Normal text (font-weight: 400)</Typography>
+                    <Typography variant="body1" className="font-medium text-grey-700">Medium text (font-weight: 500)</Typography>
+                    <Typography variant="body1" className="font-semibold text-grey-700">Semibold text (font-weight: 600)</Typography>
+                    <Typography variant="body1" className="font-bold text-grey-700">Bold text (font-weight: 700)</Typography>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Sizes</Typography>
+                  <div className="space-y-2">
+                    <div className="text-xs text-grey-700">Extra small text (text-xs)</div>
+                    <div className="text-sm text-grey-700">Small text (text-sm)</div>
+                    <div className="text-base text-grey-700">Base text (text-base)</div>
+                    <div className="text-lg text-grey-700">Large text (text-lg)</div>
+                    <div className="text-xl text-grey-700">Extra large text (text-xl)</div>
+                    <div className="text-2xl text-grey-700">2X large text (text-2xl)</div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Colors</Typography>
+                  <div className="space-y-2">
+                    <div className="text-grey-900">Primary text (grey-900)</div>
+                    <div className="text-grey-800">Secondary text (grey-800)</div>
+                    <div className="text-grey-700">Body text (grey-700)</div>
+                    <div className="text-grey-600">Muted text (grey-600)</div>
+                    <div className="text-grey-500">Subtle text (grey-500)</div>
+                    <div className="text-primary-main">Primary color text (primary-main)</div>
+                    <div className="text-success-main">Success color text (success-main)</div>
+                    <div className="text-warning-main">Warning color text (warning-main)</div>
+                    <div className="text-error-main">Error color text (error-main)</div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Alignment</Typography>
+                  <div className="space-y-2">
+                    <div className="text-left text-grey-700">Left aligned text</div>
+                    <div className="text-center text-grey-700">Center aligned text</div>
+                    <div className="text-right text-grey-700">Right aligned text</div>
+                    <div className="text-justify text-grey-700">Justified text that spans multiple lines to demonstrate how text justification works across longer content blocks.</div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Decoration</Typography>
+                  <div className="space-y-2">
+                    <div className="underline text-grey-700">Underlined text</div>
+                    <div className="line-through text-grey-700">Strikethrough text</div>
+                    <div className="no-underline text-primary-main">Link without underline</div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Line Heights</Typography>
+                  <div className="space-y-4">
+                    <div className="leading-tight text-grey-700">
+                      Tight line height (leading-tight). This text demonstrates how tight line spacing affects readability when text wraps to multiple lines in a paragraph.
+                    </div>
+                    <div className="leading-normal text-grey-700">
+                      Normal line height (leading-normal). This text demonstrates how normal line spacing affects readability when text wraps to multiple lines in a paragraph.
+                    </div>
+                    <div className="leading-relaxed text-grey-700">
+                      Relaxed line height (leading-relaxed). This text demonstrates how relaxed line spacing affects readability when text wraps to multiple lines in a paragraph.
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Text Truncation</Typography>
+                  <div className="space-y-2">
+                    <div className="truncate text-grey-700 max-w-xs">
+                      This is a very long text that will be truncated when it exceeds the maximum width
+                    </div>
+                    <div className="text-ellipsis overflow-hidden text-grey-700 max-w-xs">
+                      This text shows ellipsis when it overflows the container
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Typography variant="h4" className="text-grey-800 mb-4">Letter Spacing</Typography>
+                  <div className="space-y-2">
+                    <div className="tracking-tight text-grey-700">Tight letter spacing</div>
+                    <div className="tracking-normal text-grey-700">Normal letter spacing</div>
+                    <div className="tracking-wide text-grey-700">Wide letter spacing</div>
+                    <div className="tracking-wider text-grey-700">Wider letter spacing</div>
+                    <div className="tracking-widest text-grey-700">Widest letter spacing</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
-  );
+  )
 }
