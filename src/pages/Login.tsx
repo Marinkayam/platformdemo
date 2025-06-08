@@ -36,9 +36,9 @@ const Login = () => {
       {/* Left Panel - Login Form */}
       <div className="flex flex-col justify-center px-12">
         <div className="mx-auto w-full max-w-sm space-y-6">
-          {/* Monto Logo - 50% smaller */}
+          {/* Monto Logo - 30% larger */}
           <div className="flex justify-center">
-            <MontoLogo className="mb-6 w-[52px] h-[15px]" />
+            <MontoLogo className="mb-6 w-[68px] h-[20px]" />
           </div>
 
           {/* Header */}

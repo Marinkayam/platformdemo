@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,10 +15,12 @@ import { StatusBadge } from '@/components/ui/status-badge';
 import { DesignTabs } from '@/components/ui/design-tabs';
 import { DesignFilterDropdown } from '@/components/ui/design-filter-dropdown';
 import { DesignFilterChip } from '@/components/ui/design-filter-chip';
+import { ApplyGloballyModal } from '@/components/ui/apply-globally-modal';
 import { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } from '@/lib/toast-helpers';
 import { Typography } from '@/components/ui/typography/typography';
 import { MontoLogo } from '@/components/MontoLogo';
 import MontoIcon from '@/components/MontoIcon';
+import { componentUsageData } from '@/data/componentUsage';
 import { 
   Home, 
   Palette, 
@@ -40,7 +41,11 @@ import {
   Trash2,
   Settings,
   Filter,
-  Tags
+  Tags,
+  Globe,
+  Table as TableIcon,
+  Layout,
+  Navigation
 } from 'lucide-react';
 
 const DesignSystemPlayground = () => {
@@ -60,6 +65,14 @@ const DesignSystemPlayground = () => {
 
   const statusOptions = ['Paid', 'Pending Action', 'Settled', 'RTP Sent', 'Rejected by Buyer'];
   const buyerOptions = ['ABC Corp', 'XYZ Ltd', 'Global Industries', 'Tech Solutions'];
+
+  // Apply Globally handlers
+  const handleApplyGlobally = (componentType: string) => (selectedPages: string[]) => {
+    showSuccessToast(
+      'Changes Applied!', 
+      `${componentType} updates applied to ${selectedPages.length} page${selectedPages.length !== 1 ? 's' : ''}`
+    );
+  };
 
   // Copy to clipboard function
   const copyToClipboard = async (text: string, description: string) => {
@@ -131,6 +144,33 @@ const DesignSystemPlayground = () => {
     </div>
   );
 
+  const ComponentSection = ({ title, children, componentType }: { 
+    title: string; 
+    children: React.ReactNode; 
+    componentType: keyof typeof componentUsageData;
+  }) => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <Typography variant="h3" className="mb-4">{title}</Typography>
+        <ApplyGloballyModal
+          componentType={title}
+          usageData={componentUsageData[componentType]}
+          onApply={handleApplyGlobally(title)}
+        >
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="flex items-center gap-2 text-primary-main border-primary-main hover:bg-primary-lighter"
+          >
+            <Globe className="h-4 w-4" />
+            Apply Globally
+          </Button>
+        </ApplyGloballyModal>
+      </div>
+      {children}
+    </div>
+  );
+
   // Handle filter changes
   const handleStatusFilter = (value: string | string[]) => {
     setFilterStatus(Array.isArray(value) ? value : [value]);
@@ -170,13 +210,14 @@ const DesignSystemPlayground = () => {
     { id: 'badges', label: 'Status Badges', icon: Zap },
     { id: 'tabs', label: 'Tab Navigation', icon: Tags },
     { id: 'filters', label: 'Filter Components', icon: Filter },
+    { id: 'tables', label: 'Table System', icon: TableIcon },
+    { id: 'forms', label: 'Form Elements', icon: Settings },
+    { id: 'layout', label: 'Layout Components', icon: Layout },
     { id: 'alerts', label: 'Alerts', icon: AlertCircle },
     { id: 'progress', label: 'Progress', icon: CheckCircle },
     { id: 'modals', label: 'Modals', icon: Square },
     { id: 'toasts', label: 'Toast Notifications', icon: Info },
     { id: 'dropdowns', label: 'Dropdowns', icon: ChevronDown },
-    { id: 'forms', label: 'Form Elements', icon: Settings },
-    { id: 'tables', label: 'Tables', icon: FileText },
     { id: 'breadcrumbs', label: 'Breadcrumbs', icon: Home },
     { id: 'brand', label: 'Brand Assets', icon: ImageIcon },
   ];
@@ -246,9 +287,7 @@ const DesignSystemPlayground = () => {
 
       case 'badges':
         return (
-          <div className="space-y-8">
-            <Typography variant="h3" className="mb-6">Status Badge System</Typography>
-            
+          <ComponentSection title="Status Badge System" componentType="badges">
             <div className="space-y-6">
               <div>
                 <Typography variant="h4" className="mb-4">Invoice Status Badges</Typography>
@@ -295,14 +334,12 @@ const DesignSystemPlayground = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </ComponentSection>
         );
 
       case 'tabs':
         return (
-          <div className="space-y-8">
-            <Typography variant="h3" className="mb-6">Tab Navigation System</Typography>
-            
+          <ComponentSection title="Tab Navigation System" componentType="tabs">
             <div className="space-y-8">
               <div>
                 <Typography variant="h4" className="mb-4">Basic Tab Navigation</Typography>
@@ -365,14 +402,12 @@ const DesignSystemPlayground = () => {
                 </pre>
               </div>
             </div>
-          </div>
+          </ComponentSection>
         );
 
       case 'filters':
         return (
-          <div className="space-y-8">
-            <Typography variant="h3" className="mb-6">Filter Component System</Typography>
-            
+          <ComponentSection title="Filter Component System" componentType="filters">
             <div className="space-y-8">
               <div>
                 <Typography variant="h4" className="mb-4">Filter Dropdowns</Typography>
@@ -471,7 +506,176 @@ const DesignSystemPlayground = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </ComponentSection>
+        );
+
+      case 'buttons':
+        return (
+          <ComponentSection title="Button Components" componentType="buttons">
+            <div className="space-y-6">
+              <div>
+                <Typography variant="h4" className="mb-3">Variants</Typography>
+                <div className="flex flex-wrap gap-3">
+                  <Button variant="default">Default</Button>
+                  <Button variant="secondary">Secondary</Button>
+                  <Button variant="outline">Outline</Button>
+                  <Button variant="destructive">Destructive</Button>
+                  <Button variant="ghost">Ghost</Button>
+                  <Button variant="link">Link</Button>
+                </div>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-3">Sizes</Typography>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button size="sm">Small</Button>
+                  <Button size="default">Default</Button>
+                  <Button size="lg">Large</Button>
+                  <Button size="icon"><Home className="h-4 w-4" /></Button>
+                </div>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-3">With Icons</Typography>
+                <div className="flex flex-wrap gap-3">
+                  <Button><Home className="w-4 h-4 mr-2" />Home</Button>
+                  <Button variant="outline"><Download className="w-4 h-4 mr-2" />Download</Button>
+                  <Button variant="secondary">Settings<Settings className="w-4 h-4 ml-2" /></Button>
+                </div>
+              </div>
+            </div>
+          </ComponentSection>
+        );
+
+      case 'tables':
+        return (
+          <ComponentSection title="Table System" componentType="tables">
+            <div className="border border-grey-300 rounded-lg overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-grey-200">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Role</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-grey-200">
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-grey-900">John Doe</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Badge className="bg-green-100 text-green-800">Active</Badge>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-grey-700">Administrator</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-600">
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-grey-900">Jane Smith</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-grey-700">Editor</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-600">
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ComponentSection>
+        );
+
+      case 'forms':
+        return (
+          <ComponentSection title="Form Elements" componentType="forms">
+            <div className="space-y-6">
+              <div>
+                <Typography variant="h4" className="mb-4">Radio Button Groups</Typography>
+                <RadioGroup defaultValue="option1" className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="option1" id="option1" />
+                    <Label htmlFor="option1">Option 1 - Default selection</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="option2" id="option2" />
+                    <Label htmlFor="option2">Option 2 - Alternative choice</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="option3" id="option3" />
+                    <Label htmlFor="option3">Option 3 - Third option</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+
+              <div>
+                <Typography variant="h4" className="mb-4">Select Dropdowns</Typography>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className="text-sm font-medium mb-2 block">Basic Select</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Choose an option" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="option1">Option 1</SelectItem>
+                        <SelectItem value="option2">Option 2</SelectItem>
+                        <SelectItem value="option3">Option 3</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div>
+                    <Label className="text-sm font-medium mb-2 block">Status Filter</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Filter by status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Status</SelectItem>
+                        <SelectItem value="active">Active</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="inactive">Inactive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ComponentSection>
         );
 
       case 'typography':
@@ -677,214 +881,57 @@ const DesignSystemPlayground = () => {
           </div>
         );
 
-      case 'tables':
-        return (
-          <div className="space-y-6">
-            <Typography variant="h3" className="mb-6">Table Components</Typography>
-            
-            <div className="border border-grey-300 rounded-lg overflow-hidden">
-              <table className="w-full">
-                <thead className="bg-grey-200">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Role</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-grey-700 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-grey-200">
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-grey-900">John Doe</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Badge className="bg-green-100 text-green-800">Active</Badge>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-grey-700">Administrator</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-grey-900">Jane Smith</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-grey-700">Editor</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-
-      case 'forms':
+      case 'layout':
         return (
           <div className="space-y-8">
-            <Typography variant="h3" className="mb-6">Form Elements</Typography>
+            <Typography variant="h3" className="mb-6">Layout Components</Typography>
             
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div>
-                <Typography variant="h4" className="mb-4">Radio Button Groups</Typography>
-                <RadioGroup defaultValue="option1" className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="option1" id="option1" />
-                    <Label htmlFor="option1">Option 1 - Default selection</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="option2" id="option2" />
-                    <Label htmlFor="option2">Option 2 - Alternative choice</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="option3" id="option3" />
-                    <Label htmlFor="option3">Option 3 - Third option</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-
-              <div>
-                <Typography variant="h4" className="mb-4">Select Dropdowns</Typography>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <Label className="text-sm font-medium mb-2 block">Basic Select</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Choose an option" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="option1">Option 1</SelectItem>
-                        <SelectItem value="option2">Option 2</SelectItem>
-                        <SelectItem value="option3">Option 3</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <Label className="text-sm font-medium mb-2 block">Status Filter</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Filter by status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Status</SelectItem>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
-                      </SelectContent>
-                    </Select>
+                <Typography variant="h4" className="mb-4">Resizable Panel System</Typography>
+                <Typography variant="body2" className="mb-4 text-grey-600">
+                  Used in Invoice Detail and Purchase Order Detail pages for splitting content views.
+                </Typography>
+                <div className="border border-grey-300 rounded-lg p-6 bg-grey-100">
+                  <Typography variant="subtitle2" className="mb-2">Example: Invoice Detail Layout</Typography>
+                  <div className="flex h-64 border border-grey-400 rounded">
+                    <div className="flex-1 bg-background-paper border-r border-grey-300 p-4">
+                      <Typography variant="body2" className="text-grey-700">Left Panel: Financial Data, Line Items, Activity</Typography>
+                    </div>
+                    <div className="w-2 bg-grey-300 cursor-col-resize"></div>
+                    <div className="flex-1 bg-background-paper p-4">
+                      <Typography variant="body2" className="text-grey-700">Right Panel: PDF Viewer with Zoom Controls</Typography>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        );
 
-      case 'brand':
-        return (
-          <div className="space-y-8">
-            <div>
-              <Typography variant="h3" className="mb-6">Monto Logo</Typography>
-              <div className="grid gap-6 md:grid-cols-2">
-                <LogoShowcase 
-                  title="Small Logo" 
-                  svgCode={`<MontoLogo className="w-20 h-4" />`}
-                  width={80}
-                  height={16}
-                >
-                  <MontoLogo className="w-20 h-4" />
-                </LogoShowcase>
-                <LogoShowcase 
-                  title="Medium Logo" 
-                  svgCode={`<MontoLogo className="w-32 h-8" />`}
-                  width={128}
-                  height={32}
-                >
-                  <MontoLogo className="w-32 h-8" />
-                </LogoShowcase>
-              </div>
-              <div className="mt-6">
-                <LogoShowcase 
-                  title="Large Logo" 
-                  svgCode={`<MontoLogo className="w-64 h-16" />`}
-                  width={256}
-                  height={64}
-                >
-                  <MontoLogo className="w-64 h-16" />
-                </LogoShowcase>
-              </div>
-            </div>
-
-            <div>
-              <Typography variant="h3" className="mb-6">Monto Icon</Typography>
-              <div className="grid gap-6 md:grid-cols-3">
-                <LogoShowcase 
-                  title="Small Icon" 
-                  svgCode={`<MontoIcon className="w-6 h-6" />`}
-                  width={24}
-                  height={24}
-                >
-                  <MontoIcon className="w-6 h-6" />
-                </LogoShowcase>
-                <LogoShowcase 
-                  title="Medium Icon" 
-                  svgCode={`<MontoIcon className="w-12 h-12" />`}
-                  width={48}
-                  height={48}
-                >
-                  <MontoIcon className="w-12 h-12" />
-                </LogoShowcase>
-                <LogoShowcase 
-                  title="Large Icon" 
-                  svgCode={`<MontoIcon className="w-24 h-24" />`}
-                  width={96}
-                  height={96}
-                >
-                  <MontoIcon className="w-24 h-24" />
-                </LogoShowcase>
-              </div>
-            </div>
-
-            <div className="bg-grey-100 p-6 rounded-lg">
-              <Typography variant="h4" className="mb-3">Usage Guidelines</Typography>
-              <div className="space-y-2 text-sm text-grey-700">
-                <p>• Use the logo on light backgrounds with sufficient contrast</p>
-                <p>• Maintain proper spacing around the logo (minimum clearance equal to the height of the 'M')</p>
-                <p>• The icon can be used independently for compact UI elements</p>
-                <p>• Preserve the original aspect ratio when resizing</p>
-                <p>• Use the provided SVG format for optimal quality at all sizes</p>
+              <div>
+                <Typography variant="h4" className="mb-4">Grid Layouts</Typography>
+                <div className="space-y-4">
+                  <div>
+                    <Typography variant="subtitle2" className="mb-2">Dashboard Grid (Analytics Cards)</Typography>
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 border border-grey-300 rounded-lg p-4">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <div key={i} className="bg-grey-200 rounded p-4 text-center">
+                          <Typography variant="caption">Card {i}</Typography>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Typography variant="subtitle2" className="mb-2">Content Grid (2-Column)</Typography>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-grey-300 rounded-lg p-4">
+                      <div className="bg-grey-200 rounded p-4">
+                        <Typography variant="caption">Left Content</Typography>
+                      </div>
+                      <div className="bg-grey-200 rounded p-4">
+                        <Typography variant="caption">Right Content</Typography>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -968,46 +1015,6 @@ const DesignSystemPlayground = () => {
                 <Info className="w-4 h-4 mr-2" />
                 Show Info Toast
               </Button>
-            </div>
-          </div>
-        );
-
-      case 'buttons':
-        return (
-          <div className="space-y-8">
-            <Typography variant="h3" className="mb-6">Button Components</Typography>
-            
-            <div className="space-y-6">
-              <div>
-                <Typography variant="h4" className="mb-3">Variants</Typography>
-                <div className="flex flex-wrap gap-3">
-                  <Button variant="default">Default</Button>
-                  <Button variant="secondary">Secondary</Button>
-                  <Button variant="outline">Outline</Button>
-                  <Button variant="destructive">Destructive</Button>
-                  <Button variant="ghost">Ghost</Button>
-                  <Button variant="link">Link</Button>
-                </div>
-              </div>
-
-              <div>
-                <Typography variant="h4" className="mb-3">Sizes</Typography>
-                <div className="flex flex-wrap items-center gap-3">
-                  <Button size="sm">Small</Button>
-                  <Button size="default">Default</Button>
-                  <Button size="lg">Large</Button>
-                  <Button size="icon"><Home className="h-4 w-4" /></Button>
-                </div>
-              </div>
-
-              <div>
-                <Typography variant="h4" className="mb-3">With Icons</Typography>
-                <div className="flex flex-wrap gap-3">
-                  <Button><Home className="w-4 h-4 mr-2" />Home</Button>
-                  <Button variant="outline"><Download className="w-4 h-4 mr-2" />Download</Button>
-                  <Button variant="secondary">Settings<Settings className="w-4 h-4 ml-2" /></Button>
-                </div>
-              </div>
             </div>
           </div>
         );
@@ -1213,6 +1220,84 @@ const DesignSystemPlayground = () => {
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'brand':
+        return (
+          <div className="space-y-8">
+            <div>
+              <Typography variant="h3" className="mb-6">Monto Logo</Typography>
+              <div className="grid gap-6 md:grid-cols-2">
+                <LogoShowcase 
+                  title="Small Logo" 
+                  svgCode={`<MontoLogo className="w-20 h-4" />`}
+                  width={80}
+                  height={16}
+                >
+                  <MontoLogo className="w-20 h-4" />
+                </LogoShowcase>
+                <LogoShowcase 
+                  title="Medium Logo" 
+                  svgCode={`<MontoLogo className="w-32 h-8" />`}
+                  width={128}
+                  height={32}
+                >
+                  <MontoLogo className="w-32 h-8" />
+                </LogoShowcase>
+              </div>
+              <div className="mt-6">
+                <LogoShowcase 
+                  title="Large Logo" 
+                  svgCode={`<MontoLogo className="w-64 h-16" />`}
+                  width={256}
+                  height={64}
+                >
+                  <MontoLogo className="w-64 h-16" />
+                </LogoShowcase>
+              </div>
+            </div>
+
+            <div>
+              <Typography variant="h3" className="mb-6">Monto Icon</Typography>
+              <div className="grid gap-6 md:grid-cols-3">
+                <LogoShowcase 
+                  title="Small Icon" 
+                  svgCode={`<MontoIcon className="w-6 h-6" />`}
+                  width={24}
+                  height={24}
+                >
+                  <MontoIcon className="w-6 h-6" />
+                </LogoShowcase>
+                <LogoShowcase 
+                  title="Medium Icon" 
+                  svgCode={`<MontoIcon className="w-12 h-12" />`}
+                  width={48}
+                  height={48}
+                >
+                  <MontoIcon className="w-12 h-12" />
+                </LogoShowcase>
+                <LogoShowcase 
+                  title="Large Icon" 
+                  svgCode={`<MontoIcon className="w-24 h-24" />`}
+                  width={96}
+                  height={96}
+                >
+                  <MontoIcon className="w-24 h-24" />
+                </LogoShowcase>
+              </div>
+            </div>
+
+            <div className="bg-grey-100 p-6 rounded-lg">
+              <Typography variant="h4" className="mb-3">Usage Guidelines</Typography>
+              <div className="space-y-2 text-sm text-grey-700">
+                <p>• Use the logo on light backgrounds with sufficient contrast</p>
+                <p>• Maintain proper spacing around the logo (minimum clearance equal to the height of the 'M')</p>
+                <p>• The icon can be used independently for compact UI elements</p>
+                <p>• Preserve the original aspect ratio when resizing</p>
+                <p>• Use the provided SVG format for optimal quality at all sizes</p>
               </div>
             </div>
           </div>
