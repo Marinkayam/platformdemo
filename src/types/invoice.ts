@@ -20,7 +20,7 @@ export interface Invoice {
   taxId?: string;
   requesterEmail?: string;
   documentType?: 'Invoice' | 'Credit Memo';
-  portal?: 'Ariba' | 'Coupa' | 'Bill' | 'Tipalti';
+  portal?: 'Coupa' | 'Tipalti' | 'Bill.com' | 'Amazon Payee' | 'Apple' | 'SAP' | 'Facturaxion' | 'Fieldglass' | 'iSupplier' | 'KissFlow' | 'Qualcomm' | 'Sainsburys' | 'Segment' | 'Shopify' | 'StoreNext' | 'Taulia' | 'Teradata' | 'Tungsten' | 'Walmart' | 'Oracle Procurement' | 'SAP Ariba';
   isOverdue?: boolean;
   lineItems?: LineItem[];
   attachments?: Attachment[];

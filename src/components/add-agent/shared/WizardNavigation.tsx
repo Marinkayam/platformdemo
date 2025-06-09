@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
@@ -47,7 +46,7 @@ export function WizardNavigation() {
   };
 
   const handleCancel = () => {
-    navigate('/smart-connections');
+    navigate('/payments-relationships');
   };
 
   const handleSubmit = () => {
@@ -58,7 +57,7 @@ export function WizardNavigation() {
     
     // Auto-close wizard after short delay
     setTimeout(() => {
-      navigate('/smart-connections');
+      navigate('/payments-relationships');
     }, 2000);
   };
 

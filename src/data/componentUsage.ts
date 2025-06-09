@@ -1,4 +1,3 @@
-
 export interface ComponentUsage {
   page: string;
   route: string;
@@ -40,19 +39,19 @@ export const componentUsageData = {
     },
     {
       page: "Add Agent Wizard",
-      route: "/smart-connections/add-agent",
+      route: "/payments-relationships/add-agent",
       instances: 4,
       components: ["Navigation Buttons", "Form Submissions"]
     },
     {
       page: "Purchase Orders",
-      route: "/purchase-orders",
+      route: "/payments-relationships",
       instances: 8,
       components: ["Filter Actions", "Export Button", "Table Actions"]
     },
     {
       page: "Portal Records",
-      route: "/portal-records",
+      route: "/payments-relationships",
       instances: 6,
       components: ["Filter Actions", "Export Button", "Table Actions"]
     }
@@ -85,13 +84,13 @@ export const componentUsageData = {
     },
     {
       page: "Purchase Orders",
-      route: "/purchase-orders",
+      route: "/payments-relationships",
       instances: 89,
       components: ["PO Status", "Processing State"]
     },
     {
       page: "Portal Records",
-      route: "/portal-records",
+      route: "/payments-relationships",
       instances: 67,
       components: ["Record Status", "Type Indicators"]
     }
@@ -112,13 +111,13 @@ export const componentUsageData = {
     },
     {
       page: "Purchase Orders",
-      route: "/purchase-orders",
+      route: "/payments-relationships",
       instances: 1,
       components: ["Main Navigation Tabs"]
     },
     {
       page: "Portal Records",
-      route: "/portal-records",
+      route: "/payments-relationships",
       instances: 1,
       components: ["Record Type Tabs"]
     }
@@ -139,13 +138,13 @@ export const componentUsageData = {
     },
     {
       page: "Purchase Orders",
-      route: "/purchase-orders",
+      route: "/payments-relationships",
       instances: 5,
       components: ["Status Filter", "Vendor Filter", "Date Range", "Search"]
     },
     {
       page: "Portal Records",
-      route: "/portal-records",
+      route: "/payments-relationships",
       instances: 4,
       components: ["Type Filter", "Status Filter", "Search"]
     }
@@ -172,13 +171,13 @@ export const componentUsageData = {
     },
     {
       page: "Purchase Orders",
-      route: "/purchase-orders",
+      route: "/payments-relationships",
       instances: 1,
       components: ["Main Purchase Orders Table"]
     },
     {
       page: "Portal Records",
-      route: "/portal-records",
+      route: "/payments-relationships",
       instances: 1,
       components: ["Records Table"]
     }
@@ -193,13 +192,13 @@ export const componentUsageData = {
     },
     {
       page: "Add Agent Wizard",
-      route: "/smart-connections/add-agent",
+      route: "/payments-relationships/add-agent",
       instances: 4,
       components: ["User Type Form", "Portal Selection", "Credentials Form", "2FA Setup"]
     },
     {
       page: "New Smart Connection",
-      route: "/smart-connections/new-connection",
+      route: "/payments-relationships/new-relationship",
       instances: 4,
       components: ["Connection Setup", "Portal Form", "Credentials", "User Type"]
     }
@@ -223,13 +222,13 @@ export const componentUsageData = {
   progress: [
     {
       page: "Add Agent Wizard",
-      route: "/smart-connections/add-agent",
+      route: "/payments-relationships/add-agent",
       instances: 1,
       components: ["Step Progress Indicator"]
     },
     {
       page: "New Smart Connection",
-      route: "/smart-connections/new-connection",
+      route: "/payments-relationships/new-relationship",
       instances: 1,
       components: ["Wizard Progress"]
     }

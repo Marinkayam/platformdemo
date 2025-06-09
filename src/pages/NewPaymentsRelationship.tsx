@@ -1,11 +1,10 @@
-
 import React from "react";
 import { NewSmartConnectionWizard } from "@/components/new-smart-connection/NewSmartConnectionWizard";
 import { NewSmartConnectionBreadcrumb } from "@/components/new-smart-connection/NewSmartConnectionBreadcrumb";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { NewSmartConnectionProvider } from "@/context/NewSmartConnectionContext";
 
-export default function NewSmartConnection() {
+export default function NewPaymentsRelationship() {
   return (
     <TooltipProvider>
       <NewSmartConnectionProvider>

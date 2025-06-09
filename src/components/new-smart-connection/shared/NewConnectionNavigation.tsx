@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
@@ -49,7 +48,7 @@ export function NewConnectionNavigation() {
   };
 
   const handleCancel = () => {
-    navigate('/smart-connections');
+    navigate('/payments-relationships');
   };
 
   const handleSubmit = () => {
@@ -59,7 +58,7 @@ export function NewConnectionNavigation() {
     });
     
     setTimeout(() => {
-      navigate('/smart-connections');
+      navigate('/payments-relationships');
     }, 2000);
   };
 

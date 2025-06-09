@@ -9,6 +9,7 @@ interface FilterDropdownProps {
   onSelect: (value: string | string[]) => void;
   multiSelect?: boolean;
   searchable?: boolean;
+  renderOption?: (option: string) => React.ReactNode;
 }
 
 export function FilterDropdown({ 
@@ -17,7 +18,8 @@ export function FilterDropdown({
   options, 
   onSelect, 
   multiSelect = false, 
-  searchable = false 
+  searchable = false, 
+  renderOption 
 }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -109,9 +111,9 @@ export function FilterDropdown({
                   `}
                   onClick={() => handleSelect(option)}
                 >
-                  {option}
+                  {renderOption ? renderOption(option) : option}
                   {multiSelect && values.includes(option) && (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                    <svg xmlns="≈http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
                       <path d="M20 6 9 17l-5-5"/>
                     </svg>
                   )}

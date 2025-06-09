@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building, Eye, Edit, Trash2 } from 'lucide-react';
+import { Building, Eye, Edit, Trash2, Copy } from 'lucide-react';
 import { AgentStatusBadge } from '@/components/ui/agent-status-badge';
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -9,6 +9,8 @@ import { formatDistanceToNow, format } from 'date-fns';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
 import { PortalUsersEmptyState } from './PortalUsersEmptyState';
+import { View2FAModal } from './View2FAModal';
+import { PortalUserDetailModal } from './PortalUserDetailModal';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +26,8 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
+import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface Column {
   key: keyof PortalUser | 'actions';
@@ -46,6 +50,26 @@ export function PortalUsersTable({
 }: PortalUsersTableProps) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<PortalUser | null>(null);
+  const [is2FAModalOpen, setIs2FAModalOpen] = useState(false);
+  const [selected2FAUserId, setSelected2FAUserId] = useState<string | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedPortalUser, setSelectedPortalUser] = useState<PortalUser | null>(null);
+  const navigate = useNavigate();
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast({ title: "Copied to clipboard", description: `${text} copied!` });
+  };
+
+  const handleRowClick = (portalUser: PortalUser) => {
+    setSelectedPortalUser(portalUser);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setIsDetailModalOpen(false);
+    setSelectedPortalUser(null);
+  };
 
   const handleAddPortalUser = (userData: Partial<PortalUser>) => {
     console.log('Adding portal user:', userData);
@@ -64,6 +88,16 @@ export function PortalUsersTable({
     }
   };
 
+  const handleView2FA = (portalUserId: string) => {
+    setSelected2FAUserId(portalUserId);
+    setIs2FAModalOpen(true);
+  };
+
+  const close2FAModal = () => {
+    setIs2FAModalOpen(false);
+    setSelected2FAUserId(null);
+  };
+
   const getRowActions = (portalUser: PortalUser) => [
     {
       label: "Edit",
@@ -75,6 +109,11 @@ export function PortalUsersTable({
       icon: Trash2,
       onClick: () => handleRemovePortalUser(portalUser.id),
       variant: "destructive" as const
+    },
+    {
+      label: "View 2FA",
+      icon: Eye,
+      onClick: () => handleView2FA(portalUser.id),
     }
   ];
 
@@ -83,8 +122,7 @@ export function PortalUsersTable({
       "SAP Ariba": "ariba.png",
       "Coupa": "coupa.png",
       "Oracle Procurement": "oracle.png",
-      "Jaggaer": "tipalti.png",
-      "SAP Concur": "Amazon Payee.png",
+      "Tipalti": "tipalti.png",
       "Amazon Payee": "Amazon Payee.png",
       "Apple": "apple.png",
       "AT&T": "AT&T.png",
@@ -100,7 +138,6 @@ export function PortalUsersTable({
       "StoreNext": "StoreNext.png",
       "Taulia": "taulia.png",
       "Teradata": "Teradata.png",
-      "Tipalti": "tipalti.png",
       "Tungsten": "tungsten.png",
       "Walmart": "walmart.png",
     };
@@ -136,7 +173,20 @@ export function PortalUsersTable({
       label: 'Username',
       sortable: true,
       render: (username: string) => (
-        <span className="font-mono text-sm">{username}</span>
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-sm">{username}</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-6 w-6 p-0 text-gray-400 hover:text-gray-600"
+            onClick={(e) => {
+              e.stopPropagation();
+              copyToClipboard(username);
+            }}
+          >
+            <Copy className="h-3 w-3" />
+          </Button>
+        </div>
       )
     },
     {
@@ -178,14 +228,14 @@ export function PortalUsersTable({
           <Tooltip>
             <TooltipTrigger asChild>
               <span className="cursor-help">
-                {count > 0 ? `${count} Smart Connections` : '—'}
+                {count > 0 ? `${count}` : '—'}
               </span>
             </TooltipTrigger>
             <TooltipContent>
               <p>
                 {count > 0
-                  ? `Smart Connections that use this portal user's agent(s)`
-                  : "This user isn't linked to any Smart Connection yet."
+                  ? `This user is linked to ${count} Payments Relationship${count !== 1 ? 's' : ''}.`
+                  : "This user isn't linked to any Payments Relationship yet."
                 }
               </p>
             </TooltipContent>
@@ -198,7 +248,7 @@ export function PortalUsersTable({
       label: 'Last Updated',
       sortable: true,
       render: (lastUpdated: string) => (
-        <span className="text-grey-600">
+        <span className="text-sm text-grey-700">
           {format(new Date(lastUpdated), 'MMM dd, yyyy HH:mm')}
         </span>
       )
@@ -206,21 +256,24 @@ export function PortalUsersTable({
     {
       key: 'actions',
       label: 'Actions',
-      render: (value: any, portalUser: PortalUser) => (
+      render: (_, portalUser) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
               <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setEditingUser(portalUser)}>
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleRemovePortalUser(portalUser.id)} className="text-error-main">
-              Remove
-            </DropdownMenuItem>
+            {getRowActions(portalUser).map((action, index) => (
+              <DropdownMenuItem
+                key={index}
+                onClick={action.onClick}
+                className={action.variant === "destructive" ? "text-red-600" : ""}
+              >
+                {action.icon && <action.icon className="mr-2 h-4 w-4" />}
+                {action.label}
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -232,61 +285,49 @@ export function PortalUsersTable({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-semibold text-grey-900">Portal Users</h3>
-          <p className="text-sm text-grey-600">Manage portal credentials used by your Smart Connections</p>
-        </div>
-        <Button onClick={() => setIsAddModalOpen(true)}>
-          + Add Portal User
-        </Button>
-      </div>
-
-      <div className="rounded-xl border overflow-hidden bg-white">
-        <div className="relative w-full overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-[#F6F7F9] border-b border-gray-200">
-                {columns.map((column, index) => (
-                  <TableHead
-                    key={column.key as string || index}
-                    className={column.sticky ? "sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200" : ""}
-                  >
-                    {column.label}
-                  </TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {portalUsers.map((user) => (
-                <TableRow key={user.id}>
-                  {columns.map((column, index) => (
-                    <TableCell key={column.key as string || index} className={column.key === 'portal' ? 'sticky left-0 bg-white border-r border-gray-200' : ''}>
-                      {column.render ? column.render((user as any)[column.key], user) : (user as any)[column.key]}
-                    </TableCell>
-                  ))}
-                </TableRow>
+    <div className="rounded-xl border overflow-hidden">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-grey-50 hover:bg-grey-50">
+            {columns.map(column => (
+              <TableHead key={column.key} className={column.sticky ? "sticky left-0 bg-grey-50 z-10 border-r border-grey-200" : ""}>
+                {column.label}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {portalUsers.map((portalUser) => (
+            <TableRow key={portalUser.id} className="h-[65px] hover:bg-grey-50 cursor-pointer transition-colors" onClick={() => handleRowClick(portalUser)}>
+              {columns.map(column => (
+                <TableCell key={column.key} className={column.sticky ? "sticky left-0 bg-background-paper z-10 border-r border-grey-200" : ""}>
+                  {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
+                </TableCell>
               ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
       <AddPortalUserModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        mode="create"
         onSave={handleAddPortalUser}
+        portalUser={editingUser || undefined}
+        mode={editingUser ? 'edit' : 'create'}
       />
-
-      {editingUser && (
-        <AddPortalUserModal
-          isOpen={true}
-          onClose={() => setEditingUser(null)}
-          mode="edit"
-          portalUser={editingUser}
-          onSave={handleEditPortalUser}
+      {is2FAModalOpen && selected2FAUserId && (
+        <View2FAModal
+          isOpen={is2FAModalOpen}
+          onClose={close2FAModal}
+          portalUserId={selected2FAUserId}
+        />
+      )}
+      {isDetailModalOpen && selectedPortalUser && (
+        <PortalUserDetailModal
+          isOpen={isDetailModalOpen}
+          onClose={closeDetailModal}
+          portalUser={selectedPortalUser}
         />
       )}
     </div>

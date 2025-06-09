@@ -1,4 +1,3 @@
-
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 
@@ -84,7 +83,7 @@ export const testInvoices = [
     "Madona",
     {
       documentType: "Credit Memo",
-      portal: "Bill"
+      portal: "Bill.com"
     }
   )
 ];

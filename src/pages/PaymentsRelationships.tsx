@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
-import { SmartConnectionsHeader } from "@/components/smart-connections/SmartConnectionsHeader";
-import { SmartConnectionsFilters } from "@/components/smart-connections/SmartConnectionsFilters";
-import { SmartConnectionsTable } from "@/components/smart-connections/SmartConnectionsTable";
+import { PaymentsRelationshipsHeader } from "@/components/payments-relationships/PaymentsRelationshipsHeader";
+import { PaymentsRelationshipsFilters } from "@/components/payments-relationships/PaymentsRelationshipsFilters";
+import { PaymentsRelationshipsTable } from "@/components/payments-relationships/PaymentsRelationshipsTable";
 import { DesignTabs } from "@/components/ui/design-tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { mockSmartConnections } from "@/data/smartConnections";
 import { mockPortalUsers } from "@/data/portalUsers";
 import { useSmartConnectionFiltering } from "@/hooks/useSmartConnectionFiltering";
 import { PortalUser } from "@/types/portalUser";
-import { PortalUsersTable } from "@/components/smart-connections/portal-users";
-import { PortalUsersEmptyState } from "@/components/smart-connections/portal-users/PortalUsersEmptyState";
-import { AddPortalUserModal } from "@/components/smart-connections/portal-users/AddPortalUserModal";
-import { ConfirmRemoveModal } from "@/components/smart-connections/portal-users/ConfirmRemoveModal";
+import { PortalUsersTable } from "@/components/payments-relationships/portal-users";
+import { PortalUsersEmptyState } from "@/components/payments-relationships/portal-users/PortalUsersEmptyState";
+import { AddPortalUserModal } from "@/components/payments-relationships/portal-users/AddPortalUserModal";
+import { ConfirmRemoveModal } from "@/components/payments-relationships/portal-users/ConfirmRemoveModal";
 import { Badge } from "@/components/ui/badge";
 
 // Mock data for Portal Users (for now)
@@ -63,7 +63,7 @@ export default function PaymentsRelationships() {
   } = useSmartConnectionFiltering(mockSmartConnections);
 
   const tabs = [
-    { id: "payments-relationships", label: "Smart Connections", count: mockSmartConnections.length },
+    { id: "payments-relationships", label: "Payments Relationships", count: mockSmartConnections.length },
     { id: "portal-users", label: "Portal Users", count: mockPortalUsers.length }
   ];
 
@@ -87,7 +87,7 @@ export default function PaymentsRelationships() {
             title="Payments Relationships" 
             subtitle="Manage and monitor your payments relationships in real-time" 
           />
-          <SmartConnectionsHeader 
+          <PaymentsRelationshipsHeader 
             activeTab={activeTab}
             onAddPortalUser={() => setIsAddPortalUserModalOpen(true)}
           />
@@ -101,13 +101,13 @@ export default function PaymentsRelationships() {
 
         {activeTab === "payments-relationships" && (
           <>
-            <SmartConnectionsFilters
+            <PaymentsRelationshipsFilters
               filters={filters}
               onFilterChange={handleFilterChange}
               onResetFilters={handleResetFilters}
             />
             
-            <SmartConnectionsTable connections={filteredConnections} />
+            <PaymentsRelationshipsTable connections={filteredConnections} />
           </>
         )}
 

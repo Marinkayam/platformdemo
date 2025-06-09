@@ -1,7 +1,6 @@
-
 export type ConnectionStatus = "Live" | "In Process" | "Unavailable" | "Inactive";
 export type ValidationStatus = "Valid" | "Invalid" | "Pending";
-export type PortalType = "Coupa" | "Ariba" | "Tipalti" | "SAP" | "Oracle";
+export type PortalType = "Coupa" | "SAP Ariba" | "Tipalti" | "SAP" | "Oracle" | "Bill.com" | "Amazon Payee" | "Apple" | "Facturaxion" | "Fieldglass" | "iSupplier" | "KissFlow" | "Qualcomm" | "Sainsburys" | "Segment" | "Shopify" | "StoreNext" | "Taulia" | "Teradata" | "Tungsten" | "Walmart" | "AT&T" | "Oracle Procurement";
 
 export interface SmartConnectionProps {
   status: ConnectionStatus;

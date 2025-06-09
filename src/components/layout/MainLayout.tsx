@@ -1,15 +1,16 @@
 import { LogOut } from "lucide-react";
 import { NotificationsPopover } from "../notifications/NotificationsPopover";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { AppSidebar } from "./AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+
 interface MainLayoutProps {
-  children: React.ReactNode;
+  // children: React.ReactNode; // Removed children prop
 }
 export function MainLayout({
-  children
+  // children // Removed children prop
 }: MainLayoutProps) {
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -72,7 +73,7 @@ export function MainLayout({
           
           <main className="flex-1 overflow-y-auto bg-white">
             <div className="px-8 py-4 bg-white">
-              {children}
+              <Outlet />
             </div>
           </main>
         </div>

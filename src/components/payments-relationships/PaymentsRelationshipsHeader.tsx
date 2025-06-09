@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -9,7 +8,7 @@ interface SmartConnectionsHeaderProps {
   onAddPortalUser?: () => void;
 }
 
-export function SmartConnectionsHeader({ activeTab = "smart-connections", onAddPortalUser }: SmartConnectionsHeaderProps) {
+export function PaymentsRelationshipsHeader({ activeTab = "smart-connections", onAddPortalUser }: SmartConnectionsHeaderProps) {
   const navigate = useNavigate();
 
   if (activeTab === "portal-users") {
@@ -22,9 +21,9 @@ export function SmartConnectionsHeader({ activeTab = "smart-connections", onAddP
   }
 
   return (
-    <Button onClick={() => navigate("/smart-connections/new")}>
+    <Button onClick={() => navigate("/payments-relationships/new")}>
       <Plus className="w-4 h-4 mr-2" />
-      New Smart Connection
+      New Payments Relationship
     </Button>
   );
 }

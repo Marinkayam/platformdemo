@@ -1,4 +1,3 @@
-
 /**
  * Configuration file for invoice filter options
  * This makes it easier to update or extend filter options without modifying component logic
@@ -39,10 +38,27 @@ export const filterConfig = {
   ],
   
   portalOptions: [
-    "Ariba", 
+    "SAP Ariba", 
     "Coupa", 
-    "Bill", 
-    "Tipalti"
+    "Bill.com", 
+    "Tipalti",
+    "Amazon Payee",
+    "Apple",
+    "SAP",
+    "Facturaxion",
+    "Fieldglass",
+    "iSupplier",
+    "KissFlow",
+    "Qualcomm",
+    "Sainsburys",
+    "Segment",
+    "Shopify",
+    "StoreNext",
+    "Taulia",
+    "Teradata",
+    "Tungsten",
+    "Walmart",
+    "Oracle Procurement",
   ],
   
   transactionOptions: [

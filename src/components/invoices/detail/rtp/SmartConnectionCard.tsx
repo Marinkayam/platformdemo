@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
@@ -13,8 +12,35 @@ interface SmartConnectionCardProps {
 export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
   const navigate = useNavigate();
 
+  const getPortalLogoUrl = (portalName: string): string => {
+    const logoMap: { [key: string]: string } = {
+      "SAP Ariba": "ariba.png",
+      "Coupa": "coupa.png",
+      "Oracle Procurement": "oracle.png",
+      "Tipalti": "tipalti.png",
+      "Amazon Payee": "Amazon Payee.png",
+      "Apple": "apple.png",
+      "AT&T": "AT&T.png",
+      "Bill": "bill.png",
+      "Facturaxion": "Facturaxion.png",
+      "Fieldglass": "Fieldglass.png",
+      "iSupplier": "iSupplier.png",
+      "KissFlow": "KissFlow.png",
+      "Qualcomm": "Qualcomm.png",
+      "Sainsburys": "Sainsburys.png",
+      "Segment": "Segment.png",
+      "Shopify": "shopify.png",
+      "StoreNext": "StoreNext.png",
+      "Taulia": "taulia.png",
+      "Teradata": "Teradata.png",
+      "Tungsten": "tungsten.png",
+      "Walmart": "walmart.png",
+    };
+    return `/portal-logos/${logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png'}`;
+  };
+
   const handleViewFullDetails = () => {
-    navigate('/smart-connections');
+    navigate('/payments-relationships');
   };
 
   return (
@@ -44,10 +70,10 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
             <div>
               <span className="text-gray-500 text-sm">Portal:</span>
               <p className="font-medium text-gray-900 mt-1 flex items-center gap-2">
-                <span className="w-6 h-6 bg-orange-500 text-white text-xs font-bold rounded flex items-center justify-center">
-                  C
+                <span className="w-6 h-6 rounded-full flex items-center justify-center overflow-hidden">
+                  <img src={getPortalLogoUrl(connection.portal.type)} alt={`${connection.portal.type} logo`} className="w-full h-full object-cover" />
                 </span>
-                Coupa
+                {connection.portal.type}
               </p>
             </div>
             <div>

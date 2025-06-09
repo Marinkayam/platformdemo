@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -19,6 +18,35 @@ interface InvoiceTableRowProps {
   onRemoveAssignee: (invoiceId: string) => void;
   onExclude: (invoiceId: string) => void;
 }
+
+const getPortalLogoUrl = (portalName: string): string => {
+  const logoMap: { [key: string]: string } = {
+    "SAP Ariba": "ariba.png",
+    "Coupa": "coupa.png",
+    "Oracle Procurement": "oracle.png",
+    "Tipalti": "tipalti.png",
+    "Amazon Payee": "Amazon Payee.png",
+    "Apple": "apple.png",
+    "AT&T": "AT&T.png",
+    "Bill.com": "bill.png",
+    "SAP": "default.png",
+    "Facturaxion": "Facturaxion.png",
+    "Fieldglass": "Fieldglass.png",
+    "iSupplier": "iSupplier.png",
+    "KissFlow": "KissFlow.png",
+    "Qualcomm": "Qualcomm.png",
+    "Sainsburys": "Sainsburys.png",
+    "Segment": "Segment.png",
+    "Shopify": "Shopify.png",
+    "StoreNext": "StoreNext.png",
+    "Taulia": "taulia.png",
+    "Teradata": "Teradata.png",
+    "Tungsten": "tungsten.png",
+    "Walmart": "walmart.png",
+  };
+  const fileName = logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png';
+  return `/portal-logos/${fileName}`;
+};
 
 // Helper function to extract name from owner field
 const formatOwnerName = (owner: string): string => {
@@ -89,8 +117,24 @@ export function InvoiceTableRow({
         <UniversalStatusBadge status={invoice.status} />
       </TableCell>
       
-      <TableCell className="truncate">
-        {getRandomPortalName()}
+      <TableCell className="truncate flex items-center gap-2">
+        {(() => {
+          const resolvedPortalName = invoice.portal || getRandomPortalName();
+          return (
+            <>
+              <img 
+                src={getPortalLogoUrl(resolvedPortalName)} 
+                alt={`${resolvedPortalName} logo`}
+                className="w-5 h-5 object-contain rounded-full"
+                onError={(e) => {
+                  e.currentTarget.onerror = null; 
+                  e.currentTarget.src = '/portal-logos/default.png';
+                }}
+              />
+              <span>{resolvedPortalName}</span>
+            </>
+          );
+        })()}
       </TableCell>
       
       <TableCell className="font-medium">

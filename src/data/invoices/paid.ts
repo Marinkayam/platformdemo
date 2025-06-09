@@ -1,4 +1,3 @@
-
 import { getBasicInvoiceData } from "./types";
 
 export const paidInvoices = [
@@ -10,7 +9,10 @@ export const paidInvoices = [
     "Paid",
     45000.00,
     "09/15/2024",
-    "Lady Gaga"
+    "Lady Gaga",
+    {
+      portal: "Amazon Payee"
+    }
   ),
   getBasicInvoiceData(
     "7",
@@ -20,7 +22,10 @@ export const paidInvoices = [
     "Paid",
     32150.75,
     "09/15/2024",
-    "Lady Gaga"
+    "Lady Gaga",
+    {
+      portal: "Apple"
+    }
   ),
   getBasicInvoiceData(
     "8",
@@ -30,6 +35,9 @@ export const paidInvoices = [
     "Paid",
     28900.45,
     "09/15/2024",
-    "Madona"
+    "Madona",
+    {
+      portal: "SAP Ariba"
+    }
   )
 ];

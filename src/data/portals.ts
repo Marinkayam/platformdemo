@@ -1,4 +1,3 @@
-
 export interface PortalOption {
   id: string;
   name: string;
@@ -7,12 +6,13 @@ export interface PortalOption {
 
 const portals: PortalOption[] = [
   { id: "sap-ariba", name: "SAP Ariba", category: "Enterprise ERP" },
-  { id: "sap-concur", name: "SAP Concur", category: "Enterprise ERP" },
+  { id: "amazon-payee", name: "Amazon Payee", category: "Enterprise ERP" },
   { id: "coupa", name: "Coupa", category: "Enterprise ERP" },
   { id: "oracle-erp", name: "Oracle ERP Cloud", category: "Enterprise ERP" },
   { id: "workday", name: "Workday", category: "Enterprise ERP" },
   { id: "netsuite", name: "NetSuite", category: "Mid-Market" },
   { id: "sage-intacct", name: "Sage Intacct", category: "Mid-Market" },
+  { id: "tipalti", name: "Tipalti", category: "Mid-Market" },
 ];
 
 export function getPortalsByCategory() {

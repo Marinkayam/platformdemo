@@ -2,14 +2,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainLayout } from "./components/layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Invoices from "./pages/Invoices";
 import InvoiceDetail from "./pages/InvoiceDetail";
-import SmartConnections from "./pages/SmartConnections";
 import AddAgent from "./pages/AddAgent";
-import NewSmartConnection from "./pages/NewSmartConnection";
 import PurchaseOrders from "./pages/PurchaseOrders";
 import PurchaseOrderDetail from "./pages/PurchaseOrderDetail";
 import PortalRecords from "./pages/PortalRecords";
@@ -19,7 +17,9 @@ import Login from "./pages/Login";
 import Welcome from "./pages/Welcome";
 import DesignSystemPlayground from "./pages/DesignSystemPlayground";
 import Onboarding from "./pages/Onboarding";
-import WeatherDashboard from "./pages/WeatherDashboard";
+import PaymentsRelationships from "./pages/PaymentsRelationships";
+import NewPaymentsRelationship from "./pages/NewPaymentsRelationship";
+import PortalUserDetail from "./pages/PortalUserDetail";
 import { NotificationsProvider } from "./context/NotificationsContext";
 
 const queryClient = new QueryClient();
@@ -32,98 +32,30 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Welcome />} />
+            {/* Public routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/design-system" element={<DesignSystemPlayground />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <MainLayout>
-                  <Dashboard />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/invoices" 
-              element={
-                <MainLayout>
-                  <Invoices />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/invoices/:id" 
-              element={
-                <MainLayout>
-                  <InvoiceDetail />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/smart-connections" 
-              element={
-                <MainLayout>
-                  <SmartConnections />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/smart-connections/add-agent" 
-              element={
-                <MainLayout>
-                  <AddAgent />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/smart-connections/new-connection" 
-              element={
-                <MainLayout>
-                  <NewSmartConnection />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/purchase-orders" 
-              element={
-                <MainLayout>
-                  <PurchaseOrders />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/purchase-orders/:id" 
-              element={
-                <MainLayout>
-                  <PurchaseOrderDetail />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/portal-records" 
-              element={
-                <MainLayout>
-                  <PortalRecords />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/settings" 
-              element={
-                <MainLayout>
-                  <Settings />
-                </MainLayout>
-              } 
-            />
-            <Route 
-              path="/weather" 
-              element={
-                <MainLayout>
-                  <WeatherDashboard />
-                </MainLayout>
-              } 
-            />
+            <Route path="/welcome" element={<Welcome />} />
+
+            {/* Routes requiring MainLayout */}
+            <Route element={<MainLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="/invoices" element={<Invoices />} />
+              <Route path="/invoices/:id" element={<InvoiceDetail />} />
+              <Route path="/portal-records" element={<PortalRecords />} />
+              <Route path="/payments-relationships" element={<PaymentsRelationships />} />
+              <Route path="/payments-relationships/new" element={<NewPaymentsRelationship />} />
+              <Route path="/purchase-orders" element={<PurchaseOrders />} />
+              <Route path="/purchase-orders/:id" element={<PurchaseOrderDetail />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/design-system" element={<DesignSystemPlayground />} />
+              {/* Placeholder for RequestToPayTransaction, assuming it's a page component */}
+              <Route path="/request-to-pay-transaction/:id" element={<div>RequestToPayTransaction Page Placeholder</div>} />
+              <Route path="/payments-relationships/add-agent" element={<AddAgent />} />
+              <Route path="/portal-records/:id" element={<PortalUserDetail />} />
+            </Route>
+
+            {/* Fallback for undefined routes */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>

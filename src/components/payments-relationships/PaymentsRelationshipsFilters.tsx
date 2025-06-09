@@ -1,16 +1,47 @@
-
 import { Search, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { SmartConnectionFilters } from "@/types/smartConnection";
 import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
+import { PaymentsRelationshipStatusBadge } from "@/components/payments-relationships/PaymentsRelationshipStatusBadge";
 
-interface SmartConnectionsFiltersProps {
+interface PaymentsRelationshipsFiltersProps {
   filters: SmartConnectionFilters;
-  onFilterChange: (key: keyof SmartConnectionFilters, value: any) => void;
-  onResetFilters: () => void;
+  onFilterChange: (newFilters: SmartConnectionFilters) => void;
+  onClearFilters: () => void;
 }
+
+const getPortalLogoUrl = (portalName: string): string => {
+  const logoMap: { [key: string]: string } = {
+    "SAP Ariba": "ariba.png",
+    "Coupa": "coupa.png",
+    "Oracle Procurement": "oracle.png",
+    "Tipalti": "tipalti.png",
+    "Amazon Payee": "Amazon Payee.png",
+    "Apple": "apple.png",
+    "AT&T": "AT&T.png",
+    "Bill.com": "bill.png",
+    "SAP": "default.png",
+    "Facturaxion": "Facturaxion.png",
+    "Fieldglass": "Fieldglass.png",
+    "iSupplier": "iSupplier.png",
+    "KissFlow": "KissFlow.png",
+    "Qualcomm": "Qualcomm.png",
+    "Sainsburys": "Sainsburys.png",
+    "Segment": "Segment.png",
+    "Shopify": "Shopify.png",
+    "StoreNext": "StoreNext.png",
+    "Taulia": "taulia.png",
+    "Teradata": "Teradata.png",
+    "Tungsten": "tungsten.png",
+    "Walmart": "walmart.png",
+  };
+  // Use a more robust mapping for portals, handling potential variations or lack of direct match
+  // This ensures a default image if no specific logo is found
+  const fileName = logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png';
+  return `/portal-logos/${fileName}`;
+};
 
 const statusOptions = [
   { label: "Active", value: "Active" },
@@ -38,18 +69,33 @@ const payableOptions = [
 ];
 
 const portalOptions = [
-  { label: "SAP Ariba", value: "Ariba" },
+  { label: "SAP Ariba", value: "SAP Ariba" },
   { label: "Coupa", value: "Coupa" },
-  { label: "Oracle Portal", value: "Oracle" },
+  { label: "Oracle Procurement", value: "Oracle Procurement" },
   { label: "Tradeshift", value: "Tradeshift" },
   { label: "Workday", value: "Workday" },
+  { label: "Tipalti", value: "Tipalti" },
+  { label: "Amazon Payee", value: "Amazon Payee" },
+  { label: "Apple", value: "Apple" },
+  { label: "AT&T", value: "AT&T" },
+  { label: "Bill.com", value: "Bill.com" },
+  { label: "SAP", value: "SAP" },
+  { label: "Facturaxion", value: "Facturaxion" },
+  { label: "Fieldglass", value: "Fieldglass" },
+  { label: "iSupplier", value: "iSupplier" },
+  { label: "KissFlow", value: "KissFlow" },
+  { label: "Qualcomm", value: "Qualcomm" },
+  { label: "Sainsburys", value: "Sainsburys" },
+  { label: "Segment", value: "Segment" },
+  { label: "Shopify", value: "Shopify" },
+  { label: "StoreNext", value: "StoreNext" },
+  { label: "Taulia", value: "Taulia" },
+  { label: "Teradata", value: "Teradata" },
+  { label: "Tungsten", value: "Tungsten" },
+  { label: "Walmart", value: "Walmart" },
 ];
 
-export function SmartConnectionsFilters({ 
-  filters, 
-  onFilterChange, 
-  onResetFilters 
-}: SmartConnectionsFiltersProps) {
+export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearFilters }: PaymentsRelationshipsFiltersProps) {
   
   const getActiveFilters = () => {
     const active = [];
@@ -80,18 +126,18 @@ export function SmartConnectionsFilters({
   const handleRemoveFilter = (filterKey: string, type: string) => {
     if (type === 'status') {
       const value = filterKey.replace('status-', '');
-      onFilterChange('status', filters.status.filter(s => s !== value));
+      onFilterChange({ ...filters, status: filters.status.filter(s => s !== value) });
     } else if (type === 'receivableEntity') {
       const value = filterKey.replace('receivable-', '');
-      onFilterChange('receivableEntity', filters.receivableEntity.filter(r => r !== value));
+      onFilterChange({ ...filters, receivableEntity: filters.receivableEntity.filter(r => r !== value) });
     } else if (type === 'payable') {
       const value = filterKey.replace('payable-', '');
-      onFilterChange('payable', filters.payable.filter(p => p !== value));
+      onFilterChange({ ...filters, payable: filters.payable.filter(p => p !== value) });
     } else if (type === 'portal') {
       const value = filterKey.replace('portal-', '');
-      onFilterChange('portal', filters.portal.filter(p => p !== value));
+      onFilterChange({ ...filters, portal: filters.portal.filter(p => p !== value) });
     } else if (type === 'viewInactive') {
-      onFilterChange('viewInactive', false);
+      onFilterChange({ ...filters, viewInactive: false });
     }
   };
 
@@ -105,7 +151,10 @@ export function SmartConnectionsFilters({
             label="SC Status" 
             value={filters.status} 
             options={statusOptions.map(opt => opt.value)}
-            onSelect={(value) => onFilterChange("status", value)}
+            onSelect={(value) => onFilterChange({ 
+              ...filters, 
+              status: Array.isArray(value) ? value : [value] 
+            })}
             multiSelect
           />
           
@@ -113,7 +162,10 @@ export function SmartConnectionsFilters({
             label="Receivable Entity" 
             value={filters.receivableEntity} 
             options={receivableEntityOptions.map(opt => opt.value)}
-            onSelect={(value) => onFilterChange("receivableEntity", value)}
+            onSelect={(value) => onFilterChange({ 
+              ...filters, 
+              receivableEntity: Array.isArray(value) ? value : [value] 
+            })}
             multiSelect
             searchable
           />
@@ -122,7 +174,10 @@ export function SmartConnectionsFilters({
             label="Payable" 
             value={filters.payable} 
             options={payableOptions.map(opt => opt.value)}
-            onSelect={(value) => onFilterChange("payable", value)}
+            onSelect={(value) => onFilterChange({ 
+              ...filters, 
+              payable: Array.isArray(value) ? value : [value] 
+            })}
             multiSelect
             searchable
           />
@@ -131,16 +186,33 @@ export function SmartConnectionsFilters({
             label="Portal" 
             value={filters.portal} 
             options={portalOptions.map(opt => opt.value)}
-            onSelect={(value) => onFilterChange("portal", value)}
+            onSelect={(value) => onFilterChange({ 
+              ...filters, 
+              portal: Array.isArray(value) ? value : [value] 
+            })}
             multiSelect
             searchable
+            renderOption={(option) => (
+              <div className="flex items-center gap-2">
+                <img 
+                  src={getPortalLogoUrl(option)} 
+                  alt={`${option} logo`}
+                  className="w-5 h-5 object-contain rounded-full"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null; // Prevent infinite loop
+                    e.currentTarget.src = '/portal-logos/default.png'; // Fallback to a default image
+                  }}
+                />
+                <span>{option}</span>
+              </div>
+            )}
           />
 
           <div className="flex items-center space-x-2">
             <Switch
               id="view-inactive"
               checked={filters.viewInactive}
-              onCheckedChange={(checked) => onFilterChange("viewInactive", checked)}
+              onCheckedChange={(checked) => onFilterChange({ ...filters, viewInactive: checked })}
             />
             <label htmlFor="view-inactive" className="text-sm font-medium">
               View Inactive Connections
@@ -156,14 +228,14 @@ export function SmartConnectionsFilters({
               placeholder="Search..." 
               className="pl-9 pr-4 h-9 border rounded-md w-[160px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[220px] transition-all duration-300 ease-in-out text-[14px]"
               value={filters.search}
-              onChange={(e) => onFilterChange("search", e.target.value)}
+              onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
             />
           </div>
           <Button 
             variant="ghost" 
             size="sm" 
             className="h-9 flex items-center gap-1"
-            onClick={onResetFilters}
+            onClick={onClearFilters}
           >
             <RefreshCw className="h-3 w-3" />
             <span className="text-[14px]">Reset All</span>

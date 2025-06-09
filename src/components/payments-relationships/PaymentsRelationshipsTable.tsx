@@ -4,13 +4,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { SmartConnectionStatusBadge } from "./SmartConnectionStatusBadge";
+import { PaymentsRelationshipStatusBadge } from "./PaymentsRelationshipStatusBadge";
 import { ExpandedAgentCard } from "./ExpandedAgentCard";
-import { SmartConnectionsTableFooter } from "./SmartConnectionsTableFooter";
+import { PaymentsRelationshipsTableFooter } from "./PaymentsRelationshipsTableFooter";
 import { SmartConnection } from "@/types/smartConnection";
 import { useNavigate } from "react-router-dom";
 import { getConnectionIssues, getHighestSeverityIssue } from "@/utils/connectionIssues";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import React from "react";
 
 interface SmartConnectionsTableProps {
   connections: SmartConnection[];
@@ -21,7 +22,7 @@ const getRandomCompanyName = () => {
   return companies[Math.floor(Math.random() * companies.length)];
 };
 
-export function SmartConnectionsTable({ connections }: SmartConnectionsTableProps) {
+export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
 
@@ -43,7 +44,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
   };
 
   const handleAddAgent = (connectionId: string) => {
-    navigate(`/smart-connections/add-agent?connectionId=${connectionId}`);
+    navigate(`/payments-relationships/add-agent?connectionId=${connectionId}`);
   };
 
   if (connections.length === 0) {
@@ -58,24 +59,25 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
               <TableHead className="flex-1">Connection Status</TableHead>
               <TableHead className="flex-1">Issues</TableHead>
               <TableHead className="flex-1">Agents</TableHead>
+              <TableHead className="w-[80px] text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell colSpan={4} className="h-[200px] text-center">
+              <TableCell colSpan={5} className="h-[200px] text-center">
                 <div className="flex flex-col items-center justify-center space-y-3">
                   <div className="text-gray-400 text-lg">📁</div>
                   <div>
-                    <p className="text-gray-600 font-medium">No smart connections found</p>
-                    <p className="text-gray-400 text-sm">Add a new connection to get started</p>
+                    <p className="text-gray-600 font-medium">No payments relationships found</p>
+                    <p className="text-gray-400 text-sm">Add a new relationship to get started</p>
                   </div>
-                  <Button>Add a New Connection</Button>
+                  <Button>Add a New Relationship</Button>
                 </div>
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
-        <SmartConnectionsTableFooter totalConnections={0} />
+        <PaymentsRelationshipsTableFooter totalConnections={0} />
       </div>
     );
   }
@@ -92,6 +94,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
               <TableHead className="flex-1">Connection Status</TableHead>
               <TableHead className="flex-1">Issues</TableHead>
               <TableHead className="flex-1">Agents</TableHead>
+              <TableHead className="w-[80px] text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="divide-y divide-gray-100">
@@ -100,7 +103,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
               const highestIssue = getHighestSeverityIssue(issues);
               
               return (
-                <>
+                <React.Fragment key={connection.id}>
                   <TableRow 
                     key={connection.id}
                     className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
@@ -124,7 +127,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                       </div>
                     </TableCell>
                     <TableCell>
-                      <SmartConnectionStatusBadge status={connection.status} />
+                      <PaymentsRelationshipStatusBadge status={connection.status} />
                     </TableCell>
                     <TableCell>
                       {highestIssue && (
@@ -159,7 +162,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
-                              <DropdownMenuItem>Edit SC</DropdownMenuItem>
+                              <DropdownMenuItem>Edit Relationship</DropdownMenuItem>
                               <DropdownMenuItem onClick={() => handleAddAgent(connection.id)}>
                                 Add Agent
                               </DropdownMenuItem>
@@ -179,13 +182,13 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
                       </TableCell>
                     </TableRow>
                   )}
-                </>
+                </React.Fragment>
               );
             })}
           </TableBody>
         </Table>
       </div>
-      <SmartConnectionsTableFooter totalConnections={connections.length} />
+      <PaymentsRelationshipsTableFooter totalConnections={connections.length} />
     </div>
   );
 }

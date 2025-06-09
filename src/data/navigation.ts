@@ -177,7 +177,7 @@ export const navMain: NavItem[] = [
   },
   {
     title: "Payments Relationships",
-    href: "/smart-connections",
+    href: "/payments-relationships",
     icon: SmartConnectionsIcon,
   },
   {
@@ -189,11 +189,6 @@ export const navMain: NavItem[] = [
     title: "Portal Records",
     href: "/portal-records",
     icon: PortalRecordsIcon,
-  },
-  {
-    title: "Weather Dashboard",
-    href: "/weather",
-    icon: Cloud,
   },
   {
     title: "Design System",

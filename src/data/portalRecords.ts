@@ -2,7 +2,7 @@ import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
 
 // Portal names for variety
-const portals = ["Ariba", "Coupa", "Bill", "Tipalti", "Oracle", "SAP Fieldglass"];
+const portals = ["SAP Ariba", "Coupa", "Bill.com", "Tipalti", "Oracle", "SAP Fieldglass"];
 const statuses: PortalRecord['status'][] = ["Approved", "Paid", "Rejected", "Pending"];
 
 // Generate portal records for each invoice
@@ -66,7 +66,7 @@ export const portalRecordsData: PortalRecord[] = invoiceData.flatMap((invoice, i
 const manualRecords: PortalRecord[] = [
   {
     id: "PR-001",
-    portal: "Ariba",
+    portal: "SAP Ariba",
     status: "Approved",
     matchType: "Primary",
     updated: "2024-04-15",

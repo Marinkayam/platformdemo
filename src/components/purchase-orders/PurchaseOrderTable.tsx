@@ -1,4 +1,3 @@
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PurchaseOrder } from "@/types/purchaseOrder";
 import { formatCurrency } from "@/lib/utils";
@@ -12,6 +11,35 @@ import { useNavigate } from "react-router-dom";
 interface PurchaseOrderTableProps {
   purchaseOrders: PurchaseOrder[];
 }
+
+const getPortalLogoUrl = (portalName: string): string => {
+  const logoMap: { [key: string]: string } = {
+    "SAP Ariba": "ariba.png",
+    "Coupa": "coupa.png",
+    "Oracle Procurement": "oracle.png",
+    "Tipalti": "tipalti.png",
+    "Jaggaer": "jagger.png",
+    "Amazon Payee": "Amazon Payee.png",
+    "Apple": "apple.png",
+    "AT&T": "AT&T.png",
+    "Bill.com": "bill.png",
+    "Facturaxion": "Facturaxion.png",
+    "Fieldglass": "Fieldglass.png",
+    "iSupplier": "iSupplier.png",
+    "KissFlow": "KissFlow.png",
+    "Qualcomm": "Qualcomm.png",
+    "Sainsburys": "Sainsburys.png",
+    "Segment": "Segment.png",
+    "Shopify": "Shopify.png",
+    "StoreNext": "StoreNext.png",
+    "Taulia": "taulia.png",
+    "Teradata": "Teradata.png",
+    "Tungsten": "tungsten.png",
+    "Walmart": "walmart.png",
+  };
+  const fileName = logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png';
+  return `/portal-logos/${fileName}`;
+};
 
 export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) {
   const navigate = useNavigate();
@@ -81,7 +109,18 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <span className="truncate cursor-help">{po.portal}</span>
+                          <span className="truncate cursor-help flex items-center gap-2">
+                            <img 
+                              src={getPortalLogoUrl(po.portal)} 
+                              alt={`${po.portal} logo`}
+                              className="w-5 h-5 object-contain rounded-full"
+                              onError={(e) => {
+                                e.currentTarget.onerror = null; 
+                                e.currentTarget.src = '/portal-logos/default.png';
+                              }}
+                            />
+                            {po.portal}
+                          </span>
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>{po.portal}</p>

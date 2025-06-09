@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
+import { PaymentsRelationshipStatusBadge } from "@/components/payments-relationships/PaymentsRelationshipStatusBadge";
 import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
 import { ActiveFiltersList } from "@/components/invoices/filters/ActiveFiltersList";
 import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";

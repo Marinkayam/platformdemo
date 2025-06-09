@@ -1,12 +1,11 @@
-
 import { cn } from "@/lib/utils";
 
-interface SmartConnectionStatusBadgeProps {
+interface PaymentsRelationshipStatusBadgeProps {
   status: string;
   className?: string;
 }
 
-export function SmartConnectionStatusBadge({ status, className }: SmartConnectionStatusBadgeProps) {
+export function PaymentsRelationshipStatusBadge({ status, className }: PaymentsRelationshipStatusBadgeProps) {
   const getStatusStyles = (status: string) => {
     const lowerStatus = status.toLowerCase();
     

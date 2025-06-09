@@ -4,7 +4,7 @@ export const mockPortalUsers: PortalUser[] = [
   {
     id: "pu1",
     portal: "SAP Ariba",
-    username: "jo***@acme.com",
+    username: "john.doe@acme.com",
     status: "Connected",
     userType: "Monto",
     linkedSmartConnections: 3,
@@ -14,7 +14,7 @@ export const mockPortalUsers: PortalUser[] = [
   {
     id: "pu2",
     portal: "Coupa",
-    username: "pr***@target.com",
+    username: "peter.ross@target.com",
     status: "Connected",
     userType: "External",
     linkedSmartConnections: 2,
@@ -24,7 +24,7 @@ export const mockPortalUsers: PortalUser[] = [
   {
     id: "pu3",
     portal: "Oracle Procurement",
-    username: "fi***@google.com",
+    username: "fiona.king@google.com",
     status: "Validating",
     userType: "Monto",
     linkedSmartConnections: 1,

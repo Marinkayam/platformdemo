@@ -20,7 +20,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-001",
     requesterEmail: "requester@acme.com",
     documentType: "Invoice",
-    portal: "Ariba",
+    portal: "SAP Ariba",
     hasExceptions: true,
     rejectedBy: "Monto",
     exceptions: [
@@ -93,7 +93,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-003",
     requesterEmail: "billing@globalent.com",
     documentType: "Invoice",
-    portal: "Bill",
+    portal: "Bill.com",
     hasExceptions: true,
     isDuplicate: true,
     submitMethod: "ERP",
@@ -127,7 +127,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-006",
     requesterEmail: "procurement@newco.com",
     documentType: "Invoice",
-    portal: "Ariba",
+    portal: "SAP Ariba",
     hasExceptions: true,
     isDuplicate: true,
     submitMethod: "Email",
@@ -161,7 +161,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-004",
     requesterEmail: "finance@europartners.de",
     documentType: "Invoice",
-    portal: "Ariba",
+    portal: "SAP Ariba",
     hasExceptions: true,
     exceptions: [
       {
@@ -200,7 +200,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-005",
     requesterEmail: "accounting@espresso.com",
     documentType: "Invoice",
-    portal: "Ariba",
+    portal: "SAP Ariba",
     hasExceptions: false
   }
 ];

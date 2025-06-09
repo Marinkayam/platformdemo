@@ -1,4 +1,3 @@
-
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
@@ -17,7 +16,7 @@ export function AddAgentBreadcrumb() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/smart-connections" className="text-gray-600 hover:text-gray-900">
+              <Link to="/payments-relationships" className="text-gray-600 hover:text-gray-900">
                 Smart Connections
               </Link>
             </BreadcrumbLink>

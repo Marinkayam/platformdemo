@@ -1,4 +1,3 @@
-
 import React from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -16,15 +15,15 @@ export const SmartConnectionAlert = ({ exceptions }: SmartConnectionAlertProps) 
   const navigate = useNavigate();
   
   const handleNavigateToSmartConnection = () => {
-    navigate('/smart-connections');
+    navigate('/payments-relationships');
   };
   
   const handleResolveNow = () => {
     showWarningToast(
-      "Navigating to Smart Connections",
+      "Navigating to Payments Relationships",
       "Redirecting to resolve portal credential issues"
     );
-    navigate('/smart-connections');
+    navigate('/payments-relationships');
   };
   
   return (
