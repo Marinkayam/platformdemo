@@ -1,5 +1,5 @@
 import React from "react";
-import { Cloud } from "lucide-react";
+import { Cloud, Settings } from "lucide-react";
 
 // Custom SVG components for the navigation icons
 const DashboardIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
@@ -194,6 +194,11 @@ export const navMain: NavItem[] = [
     title: "Weather Dashboard",
     href: "/weather",
     icon: Cloud,
+  },
+  {
+    title: "Design System",
+    href: "/design-system",
+    icon: Settings,
   },
 ];
 

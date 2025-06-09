@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -28,11 +27,11 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: "border bg-background-paper text-grey-800",
-        destructive: "border-error-main bg-error-main text-white",
-        success: "border-success-main bg-success-main text-white",
-        warning: "border-warning-main bg-warning-main text-grey-900",
-        info: "border-info-main bg-info-main text-white",
+        default: "border border-primary-main bg-background-paper text-grey-800",
+        destructive: "border-error-main bg-error-lighter text-error-dark",
+        success: "border-success-main bg-success-lighter text-success-dark",
+        warning: "border-warning-main bg-warning-lighter text-warning-dark",
+        info: "border-info-main bg-info-lighter text-info-dark",
       },
     },
     defaultVariants: {
@@ -78,7 +77,7 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      "absolute right-2 top-2 rounded-md p-1 opacity-70 transition-opacity hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.warning]:text-grey-900 group-[.warning]:hover:text-grey-800",
+      "absolute right-2 top-2 rounded-md p-1 opacity-70 transition-opacity hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.warning]:text-warning-dark group-[.warning]:hover:text-warning-dark group-[.success]:text-success-dark group-[.info]:text-info-dark group-[.destructive]:text-error-dark",
       className
     )}
     toast-close=""
@@ -95,7 +94,7 @@ const ToastTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
-    className={cn("text-sm font-semibold font-sans group-[.warning]:text-grey-900", className)}
+    className={cn("text-sm font-semibold font-sans group-[.warning]:text-warning-dark group-[.success]:text-success-dark group-[.info]:text-info-dark group-[.destructive]:text-error-dark", className)}
     {...props}
   />
 ))
@@ -107,7 +106,7 @@ const ToastDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
-    className={cn("text-sm font-sans group-[.warning]:text-grey-900 group-[.warning]:opacity-90", className)}
+    className={cn("text-sm font-sans group-[.warning]:text-warning-dark group-[.warning]:opacity-90 group-[.success]:text-success-dark group-[.info]:text-info-dark group-[.destructive]:text-error-dark", className)}
     {...props}
   />
 ))

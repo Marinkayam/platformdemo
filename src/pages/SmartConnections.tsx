@@ -3,65 +3,57 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { SmartConnectionsHeader } from "@/components/smart-connections/SmartConnectionsHeader";
 import { SmartConnectionsFilters } from "@/components/smart-connections/SmartConnectionsFilters";
 import { SmartConnectionsTable } from "@/components/smart-connections/SmartConnectionsTable";
-import { PortalUsersTable } from "@/components/smart-connections/portal-users";
 import { DesignTabs } from "@/components/ui/design-tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { mockSmartConnections } from "@/data/smartConnections";
 import { mockPortalUsers } from "@/data/portalUsers";
 import { useSmartConnectionFiltering } from "@/hooks/useSmartConnectionFiltering";
-import { PortalUsersTable } from "@/components/smart-connections/portal-users/PortalUsersTable";
+import { PortalUser } from "@/types/portalUser";
+import { PortalUsersTable } from "@/components/smart-connections/portal-users";
 import { PortalUsersEmptyState } from "@/components/smart-connections/portal-users/PortalUsersEmptyState";
 import { AddPortalUserModal } from "@/components/smart-connections/portal-users/AddPortalUserModal";
 import { ConfirmRemoveModal } from "@/components/smart-connections/portal-users/ConfirmRemoveModal";
-import { DesignTabs } from "@/components/ui/design-tabs";
 import { Badge } from "@/components/ui/badge";
 
 // Mock data for Portal Users (for now)
-interface PortalUser {
-  id: string;
-  portal: string;
-  username: string;
-  password?: string;
-  portalUrl?: string;
-  status: string;
-  userType: "Monto User" | "Customer User";
-  linkedSmartConnections: string[];
-  lastUpdated: string;
-}
-
 const MOCK_PORTAL_USERS_INITIAL: PortalUser[] = [
   {
     id: "pu1",
     portal: "Coupa",
     username: "john.doe@coupa.com",
-    status: "ELIGIBLE",
-    userType: "Monto User",
-    linkedSmartConnections: ["SC1", "SC2"],
+    status: "Connected",
+    userType: "Monto",
+    linkedSmartConnections: 2,
     lastUpdated: "2h ago",
+    isReadOnly: false,
   },
   {
     id: "pu2",
     portal: "Ariba",
     username: "jane.smith@ariba.com",
-    status: "UNDER_CONSTRUCTION",
-    userType: "Customer User",
-    linkedSmartConnections: [],
+    status: "Validating",
+    userType: "External",
+    linkedSmartConnections: 0,
     lastUpdated: "1d ago",
+    isReadOnly: true,
   },
   {
     id: "pu3",
     portal: "Oracle",
     username: "mike.jones@oracle.com",
-    status: "INELIGIBLE",
-    userType: "Monto User",
-    linkedSmartConnections: ["SC3"],
+    status: "Disconnected",
+    userType: "Monto",
+    linkedSmartConnections: 1,
     lastUpdated: "3d ago",
+    isReadOnly: false,
   },
 ];
 
 export default function SmartConnections() {
   const [activeTab, setActiveTab] = useState("smart-connections");
   const [isAddPortalUserModalOpen, setIsAddPortalUserModalOpen] = useState(false);
+  const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
+  const [userToRemoveId, setUserToRemoveId] = useState<string | null>(null);
 
   const {
     filters,
@@ -74,6 +66,18 @@ export default function SmartConnections() {
     { id: "smart-connections", label: "Smart Connections", count: mockSmartConnections.length },
     { id: "portal-users", label: "Portal Users", count: mockPortalUsers.length }
   ];
+
+  const handleConfirmRemove = () => {
+    // Logic to remove the user
+    console.log(`Removing user with ID: ${userToRemoveId}`);
+    setIsConfirmRemoveModalOpen(false);
+    setUserToRemoveId(null);
+  };
+
+  const handleAddModalSubmit = (userData: Partial<PortalUser>) => {
+    console.log("Adding/editing user:", userData);
+    setIsAddPortalUserModalOpen(false);
+  };
 
   return (
     <TooltipProvider>
@@ -113,18 +117,17 @@ export default function SmartConnections() {
       </div>
 
       <AddPortalUserModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        mode={addModalMode}
-        initialData={selectedUserForEdit}
-        onSubmit={handleAddModalSubmit}
+        isOpen={isAddPortalUserModalOpen}
+        onClose={() => setIsAddPortalUserModalOpen(false)}
+        mode={"create"}
+        onSave={handleAddModalSubmit}
       />
 
       <ConfirmRemoveModal
         isOpen={isConfirmRemoveModalOpen}
         onClose={() => setIsConfirmRemoveModalOpen(false)}
         onConfirm={handleConfirmRemove}
-        itemName={portalUsers.find(user => user.id === userToRemoveId)?.username || "this portal user"}
+        itemName={MOCK_PORTAL_USERS_INITIAL.find(user => user.id === userToRemoveId)?.username || "this portal user"}
       />
     </TooltipProvider>
   );

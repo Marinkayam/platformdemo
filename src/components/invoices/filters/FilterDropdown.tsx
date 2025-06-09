@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,7 +27,7 @@ export function FilterDropdown({
   const displayValue = Array.isArray(value) && value.length > 0 
     ? value.length > 1 ? `${value[0]} +${value.length - 1}` : value[0]
     : value;
-  
+
   const filteredOptions = searchable && search 
     ? options.filter(option => option.toLowerCase().includes(search.toLowerCase())) 
     : options;
@@ -61,9 +60,9 @@ export function FilterDropdown({
     <div className="relative" ref={dropdownRef}>
       <div 
         onClick={() => setIsOpen(!isOpen)} 
-        className="flex items-center gap-2 border rounded-md px-3 h-9 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+        className="flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-background px-5 py-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-main focus-visible:border-primary-main disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 cursor-pointer hover:bg-grey-50 transition-colors"
       >
-        <span className="text-sm text-gray-500 whitespace-nowrap">{label}:</span>
+        <span className="text-sm text-grey-500 whitespace-nowrap mr-1">{label}:</span>
         <span className="text-sm font-medium truncate max-w-[100px]">
           {Array.isArray(value) 
             ? (value.length === 0 ? "All" : displayValue) 
@@ -72,7 +71,7 @@ export function FilterDropdown({
         </span>
         <ChevronDown 
           size={16} 
-          className={`text-gray-400 transition-transform duration-300 ease-in-out ${isOpen ? 'rotate-180' : ''}`} 
+          className={`text-gray-400 transition-transform duration-300 ease-in-out ml-4 ${isOpen ? 'rotate-180' : ''}`} 
         />
       </div>
       
@@ -91,7 +90,7 @@ export function FilterDropdown({
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-full text-sm border rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary transition-shadow duration-200"
+                  className="w-full text-sm border rounded-md px-2 py-1 focus-visible:outline-none focus-visible:border-primary-main transition-shadow duration-200"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   onClick={(e) => e.stopPropagation()}

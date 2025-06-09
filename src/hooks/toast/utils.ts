@@ -1,4 +1,3 @@
-
 import { ToastVariant } from "./types"
 
 let count = 0
@@ -13,16 +12,16 @@ export function getMontoClassName(variant: ToastVariant, className?: string): st
   
   switch (variant) {
     case "success":
-      montoClassName = `border-success-main bg-success-main text-white ${className || ""}`.trim()
+      montoClassName = `border-success-main bg-success-lighter text-success-dark ${className || ""}`.trim()
       break
     case "warning":
-      montoClassName = `border-warning-main bg-warning-main text-grey-900 ${className || ""}`.trim()
+      montoClassName = `border-warning-main bg-warning-lighter text-warning-dark ${className || ""}`.trim()
       break
     case "info":
-      montoClassName = `border-primary-lighter bg-primary-lighter text-primary-darker ${className || ""}`.trim()
+      montoClassName = `border-info-main bg-info-lighter text-info-dark ${className || ""}`.trim()
       break
     case "destructive":
-      montoClassName = `border-error-main bg-error-main text-white ${className || ""}`.trim()
+      montoClassName = `border-error-main bg-error-lighter text-error-dark ${className || ""}`.trim()
       break
     default:
       montoClassName = className || ""

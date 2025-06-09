@@ -5,5 +5,11 @@ alwaysApply: true
 ---
 When i type one of the following commands then do as it saids here
 
-[Run] - `npm run dev`
+// Notes for Dev: Run the app locally
+[Run] / [run] - `npm run dev`
+
+// Notes for dev: Before Leaving Cursor
 [Update] / [update] - Git add . -> Git commit -m "<YOUR MESSAGE>" -> git push
+
+// Notes for dev: When coming from Lovable to Cursor
+[fetch] / [Fetch] - git fetch -> git pull 

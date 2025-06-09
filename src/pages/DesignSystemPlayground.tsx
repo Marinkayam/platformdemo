@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -58,6 +57,7 @@ import {
 import { MontoLogo } from "@/components/MontoLogo";
 import MontoIcon from "@/components/MontoIcon";
 import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface SidebarItem {
   id: string;
@@ -163,6 +163,11 @@ export default function DesignSystemPlayground() {
   // Form states
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedMultiple, setSelectedMultiple] = useState<string[]>([]);
+  const [selectedGenericOption, setSelectedGenericOption] = useState<string>("");
+  const [selectedSearchableOption, setSelectedSearchableOption] = useState<string | null>(null);
+  const [selectedRadioOption, setSelectedRadioOption] = useState<string>("left");
+
+  const navigate = useNavigate();
 
   const handleSort = (field: string) => {
     if (sortField === field) {
@@ -369,7 +374,7 @@ export default function DesignSystemPlayground() {
                 <span className="text-sm text-grey-600">{space.value} ({space.pixels})</span>
               </div>
               <div className="bg-grey-200 rounded-md p-2 border-2 border-dashed border-grey-400">
-                <div className={`bg-primary-light rounded-md ${space.class} border-2 border-dashed border-primary-main`}>
+                <div className={`bg-primary-lighter rounded-md ${space.class} border-2 border-dashed border-primary-main`}>
                   <div className="bg-primary-main rounded-md h-6 text-center text-primary-contrast-text text-xs leading-6 font-medium">
                     Content Area
                   </div>
@@ -616,7 +621,7 @@ export default function DesignSystemPlayground() {
   const renderTabNavigation = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice List Tabs (RTP Navigation)</h2>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Tabs</h2>
         <div className="bg-background-paper border border-grey-300 rounded-lg p-6">
           <InvoiceTabs
             tabs={[
@@ -634,73 +639,6 @@ export default function DesignSystemPlayground() {
               <strong>Active Tab:</strong> {activeInvoiceTab} - This matches the exact styling from the /invoices page with proper underlines, counts, and hover states.
             </p>
           </div>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Detail Tabs</h2>
-        <div className="bg-background-paper border border-grey-300 rounded-lg p-6">
-          <Tabs value={activeDetailTab} onValueChange={setActiveDetailTab} className="w-full">
-            <TabsList className="bg-grey-200">
-              <TabsTrigger value="financial" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                Financial Data
-              </TabsTrigger>
-              <TabsTrigger value="activity" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                Activity
-                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-info-lighter text-info-main">5</span>
-              </TabsTrigger>
-              <TabsTrigger value="exceptions" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                Exceptions
-                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-error-lighter text-error-main">2</span>
-              </TabsTrigger>
-              <TabsTrigger value="rtp" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                RTP Data
-              </TabsTrigger>
-              <TabsTrigger value="records" className="data-[state=active]:bg-primary-main data-[state=active]:text-primary-contrast-text">
-                Portal Records
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="financial" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Financial data and line items would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="activity" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Activity timeline and notes would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="exceptions" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Exception handling and resolution would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="rtp" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Request to Pay data and processing information would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="records" className="mt-6">
-              <Card>
-                <CardContent className="pt-6">
-                  <p>Portal records and submission history would be displayed here.</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
         </div>
       </div>
     </div>
@@ -911,7 +849,7 @@ export default function DesignSystemPlayground() {
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   placeholder="Enter your name" 
-                  className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main"
+                  className="border-grey-400 focus:border-primary-main"
                 />
               </div>
               <div className="space-y-2">
@@ -922,14 +860,14 @@ export default function DesignSystemPlayground() {
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   placeholder="Enter your email" 
-                  className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main"
+                  className="border-grey-400 focus:border-primary-main"
                 />
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
-                <SelectTrigger className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main">
+                <SelectTrigger className="border-grey-400 focus:border-primary-main">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -947,7 +885,7 @@ export default function DesignSystemPlayground() {
                 value={formData.message}
                 onChange={(e) => setFormData({...formData, message: e.target.value})}
                 placeholder="Enter your message" 
-                className="border-grey-400 focus:ring-1 focus:ring-primary-main focus:border-primary-main min-h-[100px]"
+                className="border-grey-400 focus:border-primary-main min-h-[100px]"
               />
             </div>
             <div className="flex items-center space-x-2">
@@ -981,12 +919,12 @@ export default function DesignSystemPlayground() {
           </div>
           <div className="space-y-2">
             <Label>Focus State (Single Border)</Label>
-            <Input placeholder="Focused input" className="border-primary-main ring-1 ring-primary-main" />
+            <Input placeholder="Focused input" className="border-primary-main" />
             <p className="text-xs text-grey-500">Active focus - single primary border</p>
           </div>
           <div className="space-y-2">
             <Label>Error State</Label>
-            <Input placeholder="Invalid input" className="border-error-main focus:ring-1 focus:ring-error-main focus:border-error-main" />
+            <Input placeholder="Invalid input" className="border-error-main focus:border-error-main" />
             <p className="text-xs text-error-main">This field is required</p>
           </div>
         </div>
@@ -1369,7 +1307,7 @@ export default function DesignSystemPlayground() {
   const renderBrandAssets = () => {
     const copyMontoLogoSVG = () => {
       const svg = `<svg viewBox="0 0 120 36" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 8h4v20H8V8zm8 0h4l6 12 6-12h4v20h-4V16l-6 12-6-12v12h-4V8zm28 0h4v16h8v4H44V8zm12 0h12v4h-8v4h6v4h-6v4h8v4H56V8zm20 0h4v20h-4V8z" fill="#7B59FF"/>
+        <path d="M8 8h4v20H8V8zm8 0h4l6 12 6-12h4v20h-4V16l-6 12-6-12v12h-4V8zm28 0h4v16h8v4H44V8zm12 0h12v4h-8v4h6v4h-6v4h8v4H56V8z" fill="#7B59FF"/>
       </svg>`;
       navigator.clipboard.writeText(svg);
       toast({ title: "Copied to clipboard", description: "Monto logo SVG copied!" });
@@ -1461,6 +1399,156 @@ export default function DesignSystemPlayground() {
     );
   };
 
+  const renderToastNotifications = () => (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Toast Notifications</h2>
+        <p className="text-grey-600 mb-4">Ephemeral messages providing feedback on an operation. They appear at the top right of the screen.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="bg-background-paper p-6">
+            <CardTitle className="mb-4">Default Toast</CardTitle>
+            <CardDescription className="mb-4">A standard toast notification.</CardDescription>
+            <Button
+              onClick={() => toast({ title: "Event Scheduled", description: "Your meeting has been successfully scheduled." })}
+              className="bg-primary-main text-primary-contrast-text hover:bg-primary-dark"
+            >
+              Show Default Toast
+            </Button>
+          </Card>
+          <Card className="bg-background-paper p-6">
+            <CardTitle className="mb-4">Success Toast</CardTitle>
+            <CardDescription className="mb-4">A toast indicating a successful operation.</CardDescription>
+            <Button
+              onClick={() => toast({ title: "Success!", description: "Changes saved successfully.", variant: "success" })}
+              className="bg-success-main text-primary-contrast-text hover:bg-success-dark"
+            >
+              Show Success Toast
+            </Button>
+          </Card>
+          <Card className="bg-background-paper p-6">
+            <CardTitle className="mb-4">Destructive Toast</CardTitle>
+            <CardDescription className="mb-4">A toast for destructive actions.</CardDescription>
+            <Button
+              onClick={() => toast({ title: "Account Deleted", description: "Your account has been permanently deleted.", variant: "destructive" })}
+              className="bg-error-main text-primary-contrast-text hover:bg-error-dark"
+            >
+              Show Destructive Toast
+            </Button>
+          </Card>
+          <Card className="bg-background-paper p-6">
+            <CardTitle className="mb-4">Info Toast</CardTitle>
+            <CardDescription className="mb-4">A toast providing informative messages.</CardDescription>
+            <Button
+              onClick={() => toast({ title: "Heads Up!", description: "New updates are available for download.", variant: "info" })}
+              className="bg-info-main text-primary-contrast-text hover:bg-info-dark"
+            >
+              Show Info Toast
+            </Button>
+          </Card>
+          <Card className="bg-background-paper p-6">
+            <CardTitle className="mb-4">Warning Toast</CardTitle>
+            <CardDescription className="mb-4">A toast for warning messages.</CardDescription>
+            <Button
+              onClick={() => toast({ title: "Warning!", description: "Some data might be incomplete.", variant: "warning" })}
+              className="bg-warning-main text-primary-contrast-text hover:bg-warning-dark"
+            >
+              Show Warning Toast
+            </Button>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderDropdowns = () => (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Dropdowns</h2>
+        <p className="text-grey-600 mb-4">Dropdown components for single and multiple selections.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="bg-background-paper p-6">
+            <CardTitle className="mb-4">Other Resolution Option Dropdown</CardTitle>
+            <CardDescription className="mb-4">A dropdown with specific resolution options.</CardDescription>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="other-resolution-option">Other Resolution Options</Label>
+              <Select onValueChange={setSelectedOption} value={selectedOption}>
+                <SelectTrigger id="other-resolution-option" className="w-full">
+                  <SelectValue placeholder="Select an option" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="option-a">Option A</SelectItem>
+                  <SelectItem value="option-b">Option B</SelectItem>
+                  <SelectItem value="other">Other Resolution Option</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </Card>
+          <Card className="bg-background-paper p-6">
+            <CardTitle className="mb-4">Generic Dropdown</CardTitle>
+            <CardDescription className="mb-4">A general purpose dropdown with various choices.</CardDescription>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="generic-dropdown">Choose an Item</Label>
+              <Select onValueChange={setSelectedGenericOption} value={selectedGenericOption}>
+                <SelectTrigger id="generic-dropdown" className="w-full">
+                  <SelectValue placeholder="Select an item" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="item-1">Item 1</SelectItem>
+                  <SelectItem value="item-2">Item 2</SelectItem>
+                  <SelectItem value="item-3">Item 3</SelectItem>
+                  <SelectItem value="item-4">Item 4</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </Card>
+          <Card className="bg-background-paper p-6">
+            <CardTitle className="mb-4">Searchable Dropdown</CardTitle>
+            <CardDescription className="mb-4">A dropdown with a search input for filtering options.</CardDescription>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="searchable-dropdown">Searchable Options</Label>
+              <FilterDropdown
+                label="Select a fruit"
+                value={selectedSearchableOption || ""}
+                options={["Apple", "Banana", "Cherry", "Date", "Grape", "Lemon", "Mango", "Orange", "Peach", "Pear", "Pineapple", "Strawberry", "Watermelon"]}
+                onSelect={(value) => setSelectedSearchableOption(value as string)}
+                multiSelect={false}
+                searchable
+              />
+            </div>
+          </Card>
+          <Card className="bg-background-paper p-6">
+            <CardTitle className="mb-4">Radio Button Dropdown</CardTitle>
+            <CardDescription className="mb-4">A dropdown that uses radio buttons for selection.</CardDescription>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="radio-dropdown">Select an alignment</Label>
+              <Select onValueChange={setSelectedRadioOption} value={selectedRadioOption}>
+                <SelectTrigger id="radio-dropdown" className="w-full">
+                  <SelectValue placeholder="Select an alignment" />
+                </SelectTrigger>
+                <SelectContent>
+                  <RadioGroup onValueChange={setSelectedRadioOption} value={selectedRadioOption} className="p-1">
+                    <div className="flex items-center space-x-2 p-1.5 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer">
+                      <RadioGroupItem value="left" id="left-radio" />
+                      <Label htmlFor="left-radio">Left</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 p-1.5 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer">
+                      <RadioGroupItem value="center" id="center-radio" />
+                      <Label htmlFor="center-radio">Center</Label>
+                    </div>
+                    <div className="flex items-center space-x-2 p-1.5 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer">
+                      <RadioGroupItem value="right" id="right-radio" />
+                      <Label htmlFor="right-radio">Right</Label>
+                    </div>
+                  </RadioGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderSection = () => {
     switch (activeSection) {
       case "color-palette": return renderColorPalette();
@@ -1478,6 +1566,8 @@ export default function DesignSystemPlayground() {
       case "breadcrumbs": return renderBreadcrumbs();
       case "modals": return renderModals();
       case "brand-assets": return renderBrandAssets();
+      case "toast-notifications": return renderToastNotifications();
+      case "dropdowns": return renderDropdowns();
       default: return renderColorPalette();
     }
   };
@@ -1511,6 +1601,12 @@ export default function DesignSystemPlayground() {
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         <div className="p-8">
+          <div className="mb-6 flex items-center gap-4">
+            <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h1 className="text-3xl font-bold text-grey-900">Design System Playground</h1>
+          </div>
           {renderSection()}
         </div>
       </div>

@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -47,7 +46,7 @@ export function SmartConnectionStatusBadge({ status, className }: SmartConnectio
         <TooltipTrigger asChild>
           <span
             className={cn(
-              "inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium whitespace-nowrap cursor-help border",
+              "inline-flex items-center px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap cursor-help border",
               getStatusStyles(),
               className
             )}
