@@ -5,7 +5,7 @@ import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
 import { PortalUsersEmptyState } from './PortalUsersEmptyState';
@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -78,6 +78,12 @@ export function PortalUsersTable({
     }
   ];
 
+  const getPortalLogoUrl = (portalName: string): string => {
+    // In a real application, you might have specific paths for each logo.
+    // For now, assume logos are named after the portal in lowercase, with .png extension.
+    return `/portal-logos/${portalName.toLowerCase()}.png`;
+  };
+
   const columns: Column[] = [
     {
       key: 'portal',
@@ -86,10 +92,19 @@ export function PortalUsersTable({
       sticky: true,
       render: (portal: string) => (
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-primary-light flex items-center justify-center">
-            <Building className="h-3 w-3 text-primary-main" />
+          <div className="w-6 h-6 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden">
+            <img src={getPortalLogoUrl(portal)} alt={`${portal} logo`} className="w-full h-full object-cover" />
           </div>
-          <span className="font-medium">{portal}</span>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="font-medium cursor-help">{portal}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{portal}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       )
     },
@@ -135,7 +150,7 @@ export function PortalUsersTable({
       key: 'linkedSmartConnections',
       label: 'Linked Smart Connections',
       sortable: true,
-      render: (count: number, portalUser: PortalUser) => (
+      render: (count: number) => (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -161,7 +176,7 @@ export function PortalUsersTable({
       sortable: true,
       render: (lastUpdated: string) => (
         <span className="text-grey-600">
-          {formatDistanceToNow(new Date(lastUpdated), { addSuffix: true })}
+          {format(new Date(lastUpdated), 'MMM dd, yyyy HH:mm')}
         </span>
       )
     },
@@ -173,7 +188,7 @@ export function PortalUsersTable({
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -224,7 +239,7 @@ export function PortalUsersTable({
               {portalUsers.map((user) => (
                 <TableRow key={user.id}>
                   {columns.map((column, index) => (
-                    <TableCell key={column.key as string || index}>
+                    <TableCell key={column.key as string || index} className={column.key === 'portal' ? 'sticky left-0 bg-white border-r border-gray-200' : ''}>
                       {column.render ? column.render((user as any)[column.key], user) : (user as any)[column.key]}
                     </TableCell>
                   ))}

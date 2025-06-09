@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 
 interface AgentStatusBadgeProps {
@@ -27,7 +26,7 @@ export function AgentStatusBadge({ status, className }: AgentStatusBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium whitespace-nowrap border",
+        "inline-flex items-center px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap border",
         getStatusStyles(),
         className
       )}

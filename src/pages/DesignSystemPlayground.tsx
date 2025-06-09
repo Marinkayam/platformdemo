@@ -52,12 +52,15 @@ import {
   MoreVertical,
   X,
   ArrowLeft,
-  Home
+  Home,
+  FileText,
+  Building
 } from 'lucide-react';
 import { MontoLogo } from "@/components/MontoLogo";
 import MontoIcon from "@/components/MontoIcon";
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { RequestToPayTransactionHeader } from "@/components/ui/request-to-pay-transaction-header";
 
 interface SidebarItem {
   id: string;
@@ -83,6 +86,7 @@ const sidebarItems: SidebarItem[] = [
   { id: "dropdowns", label: "Dropdowns", icon: <ChevronDown size={18} /> },
   { id: "breadcrumbs", label: "Breadcrumbs", icon: <Navigation2 size={18} /> },
   { id: "brand-assets", label: "Brand Assets", icon: <Zap size={18} /> },
+  { id: "portal-logos", label: "Portal Logos", icon: <Building size={18} /> },
 ];
 
 const ColorSwatch = ({ name, description, hex, className }: { name: string; description: string; hex: string; className: string }) => {
@@ -1399,216 +1403,342 @@ export default function DesignSystemPlayground() {
     );
   };
 
+  const renderPortalLogos = () => {
+    const portalLogos = [
+      { name: "Ariba", src: "/portal-logos/ariba.png" },
+      { name: "Bill", src: "/portal-logos/bill.png" },
+      { name: "Coupa", src: "/portal-logos/coupa.png" },
+      { name: "Oracle", src: "/portal-logos/oracle.png" },
+      { name: "Shopify", src: "/portal-logos/shopify.png" },
+      { name: "Apple", src: "/portal-logos/apple.png" },
+      { name: "Amazon", src: "/portal-logos/amazon.png" },
+      { name: "Walmart", src: "/portal-logos/walmart.png" },
+      { name: "Tradeshift", src: "/portal-logos/tradeshift.png" },
+      { name: "AT&T", src: "/portal-logos/att.png" },
+      { name: "Qualcomm", src: "/portal-logos/qualcomm.png" },
+      { name: "Generic A", src: "/portal-logos/generic-a.png" },
+      { name: "Generic Circles", src: "/portal-logos/generic-circles.png" },
+      { name: "Generic S", src: "/portal-logos/generic-s.png" },
+      { name: "Generic Connected Squares", src: "/portal-logos/generic-connected-squares.png" },
+      { name: "Generic Flower", src: "/portal-logos/generic-flower.png" },
+      { name: "Generic Hexagon", src: "/portal-logos/generic-hexagon.png" },
+      { name: "Generic T Arc", src: "/portal-logos/generic-t-arc.png" },
+      { name: "Generic Green S", src: "/portal-logos/generic-green-s.png" },
+      { name: "Generic Y", src: "/portal-logos/generic-y.png" },
+      { name: "Jagger", src: "/portal-logos/jagger.png" },
+    ];
+
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Portal Logos</h2>
+          <p className="text-sm text-grey-600 mb-4">These are the various portal logos used throughout the application.</p>
+        </div>
+        <Card className="shadow-none">
+          <CardContent className="p-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {portalLogos.map((logo, index) => (
+                <div key={index} className="flex flex-col items-center justify-center p-4 border border-grey-300 rounded-lg bg-background-paper">
+                  <img src={logo.src} alt={`${logo.name} logo`} className="h-12 w-12 object-contain mb-2" />
+                  <p className="text-sm font-medium text-grey-900 text-center">{logo.name}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
   const renderToastNotifications = () => (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Toast Notifications</h2>
-        <p className="text-grey-600 mb-4">Ephemeral messages providing feedback on an operation. They appear at the top right of the screen.</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="bg-background-paper p-6">
-            <CardTitle className="mb-4">Default Toast</CardTitle>
-            <CardDescription className="mb-4">A standard toast notification.</CardDescription>
-            <Button
-              onClick={() => toast({ title: "Event Scheduled", description: "Your meeting has been successfully scheduled." })}
-              className="bg-primary-main text-primary-contrast-text hover:bg-primary-dark"
-            >
-              Show Default Toast
-            </Button>
-          </Card>
-          <Card className="bg-background-paper p-6">
-            <CardTitle className="mb-4">Success Toast</CardTitle>
-            <CardDescription className="mb-4">A toast indicating a successful operation.</CardDescription>
-            <Button
-              onClick={() => toast({ title: "Success!", description: "Changes saved successfully.", variant: "success" })}
-              className="bg-success-main text-primary-contrast-text hover:bg-success-dark"
-            >
-              Show Success Toast
-            </Button>
-          </Card>
-          <Card className="bg-background-paper p-6">
-            <CardTitle className="mb-4">Destructive Toast</CardTitle>
-            <CardDescription className="mb-4">A toast for destructive actions.</CardDescription>
-            <Button
-              onClick={() => toast({ title: "Account Deleted", description: "Your account has been permanently deleted.", variant: "destructive" })}
-              className="bg-error-main text-primary-contrast-text hover:bg-error-dark"
-            >
-              Show Destructive Toast
-            </Button>
-          </Card>
-          <Card className="bg-background-paper p-6">
-            <CardTitle className="mb-4">Info Toast</CardTitle>
-            <CardDescription className="mb-4">A toast providing informative messages.</CardDescription>
-            <Button
-              onClick={() => toast({ title: "Heads Up!", description: "New updates are available for download.", variant: "info" })}
-              className="bg-info-main text-primary-contrast-text hover:bg-info-dark"
-            >
-              Show Info Toast
-            </Button>
-          </Card>
-          <Card className="bg-background-paper p-6">
-            <CardTitle className="mb-4">Warning Toast</CardTitle>
-            <CardDescription className="mb-4">A toast for warning messages.</CardDescription>
-            <Button
-              onClick={() => toast({ title: "Warning!", description: "Some data might be incomplete.", variant: "warning" })}
-              className="bg-warning-main text-primary-contrast-text hover:bg-warning-dark"
-            >
-              Show Warning Toast
-            </Button>
-          </Card>
-        </div>
+        <p className="text-sm text-grey-600 mb-4">Toasts provide brief, timely messages about app processes.</p>
       </div>
+      <Card className="shadow-none">
+        <CardContent className="p-6 space-y-4">
+          <div className="flex flex-wrap items-center gap-4">
+            <Button
+              variant="outline"
+              onClick={() =>
+                toast({
+                  title: "Default Toast",
+                  description: "This is a default toast notification.",
+                })
+              }
+            >
+              Default Toast
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() =>
+                toast({
+                  variant: "success",
+                  title: "Success!",
+                  description: "Your changes have been saved.",
+                })
+              }
+            >
+              Success Toast
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() =>
+                toast({
+                  variant: "info",
+                  title: "Information",
+                  description: "This is an informational message.",
+                })
+              }
+            >
+              Info Toast
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() =>
+                toast({
+                  variant: "warning",
+                  title: "Warning!",
+                  description: "Something might be wrong.",
+                })
+              }
+            >
+              Warning Toast
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() =>
+                toast({
+                  variant: "destructive",
+                  title: "Uh oh! Something went wrong.",
+                  description: "There was a problem with your request.",
+                })
+              }
+            >
+              Destructive Toast
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() =>
+                toast({
+                  title: "Action Required",
+                  description: "Please confirm your email address.",
+                  action: (
+                    <Button variant="link" onClick={() => console.log("Action clicked")}>Confirm</Button>
+                  ),
+                })
+              }
+            >
+              Toast with Action
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 
   const renderDropdowns = () => (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Dropdowns</h2>
-        <p className="text-grey-600 mb-4">Dropdown components for single and multiple selections.</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="bg-background-paper p-6">
-            <CardTitle className="mb-4">Other Resolution Option Dropdown</CardTitle>
-            <CardDescription className="mb-4">A dropdown with specific resolution options.</CardDescription>
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="other-resolution-option">Other Resolution Options</Label>
-              <Select onValueChange={setSelectedOption} value={selectedOption}>
-                <SelectTrigger id="other-resolution-option" className="w-full">
-                  <SelectValue placeholder="Select an option" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="option-a">Option A</SelectItem>
-                  <SelectItem value="option-b">Option B</SelectItem>
-                  <SelectItem value="other">Other Resolution Option</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </Card>
-          <Card className="bg-background-paper p-6">
-            <CardTitle className="mb-4">Generic Dropdown</CardTitle>
-            <CardDescription className="mb-4">A general purpose dropdown with various choices.</CardDescription>
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="generic-dropdown">Choose an Item</Label>
-              <Select onValueChange={setSelectedGenericOption} value={selectedGenericOption}>
-                <SelectTrigger id="generic-dropdown" className="w-full">
-                  <SelectValue placeholder="Select an item" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="item-1">Item 1</SelectItem>
-                  <SelectItem value="item-2">Item 2</SelectItem>
-                  <SelectItem value="item-3">Item 3</SelectItem>
-                  <SelectItem value="item-4">Item 4</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </Card>
-          <Card className="bg-background-paper p-6">
-            <CardTitle className="mb-4">Searchable Dropdown</CardTitle>
-            <CardDescription className="mb-4">A dropdown with a search input for filtering options.</CardDescription>
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="searchable-dropdown">Searchable Options</Label>
-              <FilterDropdown
-                label="Select a fruit"
-                value={selectedSearchableOption || ""}
-                options={["Apple", "Banana", "Cherry", "Date", "Grape", "Lemon", "Mango", "Orange", "Peach", "Pear", "Pineapple", "Strawberry", "Watermelon"]}
-                onSelect={(value) => setSelectedSearchableOption(value as string)}
-                multiSelect={false}
-                searchable
-              />
-            </div>
-          </Card>
-          <Card className="bg-background-paper p-6">
-            <CardTitle className="mb-4">Radio Button Dropdown</CardTitle>
-            <CardDescription className="mb-4">A dropdown that uses radio buttons for selection.</CardDescription>
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="radio-dropdown">Select an alignment</Label>
-              <Select onValueChange={setSelectedRadioOption} value={selectedRadioOption}>
-                <SelectTrigger id="radio-dropdown" className="w-full">
-                  <SelectValue placeholder="Select an alignment" />
-                </SelectTrigger>
-                <SelectContent>
-                  <RadioGroup onValueChange={setSelectedRadioOption} value={selectedRadioOption} className="p-1">
-                    <div className="flex items-center space-x-2 p-1.5 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer">
-                      <RadioGroupItem value="left" id="left-radio" />
-                      <Label htmlFor="left-radio">Left</Label>
-                    </div>
-                    <div className="flex items-center space-x-2 p-1.5 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer">
-                      <RadioGroupItem value="center" id="center-radio" />
-                      <Label htmlFor="center-radio">Center</Label>
-                    </div>
-                    <div className="flex items-center space-x-2 p-1.5 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer">
-                      <RadioGroupItem value="right" id="right-radio" />
-                      <Label htmlFor="right-radio">Right</Label>
-                    </div>
-                  </RadioGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </Card>
-        </div>
+        <p className="text-sm text-grey-600 mb-4">Dropdown components for single and multiple selections.</p>
       </div>
+      <Card className="shadow-none">
+        <CardContent className="p-6 space-y-6">
+          <div className="grid w-full items-center gap-1.5">
+            <Label htmlFor="other-resolution-option">Other Resolution Options</Label>
+            <Select onValueChange={setSelectedOption} value={selectedOption}>
+              <SelectTrigger id="other-resolution-option" className="w-full">
+                <SelectValue placeholder="Select an option" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="option-a">Option A</SelectItem>
+                <SelectItem value="option-b">Option B</SelectItem>
+                <SelectItem value="other">Other Resolution Option</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid w-full items-center gap-1.5">
+            <Label htmlFor="generic-dropdown">Choose an Item</Label>
+            <Select onValueChange={setSelectedGenericOption} value={selectedGenericOption}>
+              <SelectTrigger id="generic-dropdown" className="w-full">
+                <SelectValue placeholder="Select an item" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="item-1">Item 1</SelectItem>
+                <SelectItem value="item-2">Item 2</SelectItem>
+                <SelectItem value="item-3">Item 3</SelectItem>
+                <SelectItem value="item-4">Item 4</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid w-full items-center gap-1.5">
+            <Label htmlFor="searchable-dropdown">Searchable Options</Label>
+            <FilterDropdown
+              label="Select a fruit"
+              value={selectedSearchableOption || ""}
+              options={["Apple", "Banana", "Cherry", "Date", "Grape", "Lemon", "Mango", "Orange", "Peach", "Pear", "Pineapple", "Strawberry", "Watermelon"]}
+              onSelect={(value) => setSelectedSearchableOption(value as string)}
+              multiSelect={false}
+              searchable
+            />
+          </div>
+          <div className="grid w-full items-center gap-1.5">
+            <Label htmlFor="radio-dropdown">Select an alignment</Label>
+            <Select onValueChange={setSelectedRadioOption} value={selectedRadioOption}>
+              <SelectTrigger id="radio-dropdown" className="w-full">
+                <SelectValue placeholder="Select an alignment" />
+              </SelectTrigger>
+              <SelectContent>
+                <RadioGroup onValueChange={setSelectedRadioOption} value={selectedRadioOption} className="p-1">
+                  <div className="flex items-center space-x-2 p-1.5 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer">
+                    <RadioGroupItem value="left" id="left-radio" />
+                    <Label htmlFor="left-radio">Left</Label>
+                  </div>
+                  <div className="flex items-center space-x-2 p-1.5 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer">
+                    <RadioGroupItem value="center" id="center-radio" />
+                    <Label htmlFor="center-radio">Center</Label>
+                  </div>
+                  <div className="flex items-center space-x-2 p-1.5 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer">
+                    <RadioGroupItem value="right" id="right-radio" />
+                    <Label htmlFor="right-radio">Right</Label>
+                  </div>
+                </RadioGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const renderRequestToPayTransactionHeader = () => (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Request to Pay Transaction Header</h2>
+        <p className="text-sm text-grey-600 mb-4">
+          This component displays a summary header for Request to Pay (RTP) transactions,
+          such as invoices, with key details and action options.
+        </p>
+        <p className="text-sm text-grey-600 font-semibold">Component Name: <code className="font-mono text-primary-main">RequestToPayTransactionHeader</code></p>
+      </div>
+      <Card className="shadow-none">
+        <CardContent className="p-6">
+          <RequestToPayTransactionHeader
+            invoiceId="INV-10021111"
+            status="Paid"
+            buyer="Espresso Corp."
+            owner="maria.garcia@example.com"
+            transactionType="Invoice"
+            actions={[
+              { label: "View Details", onClick: () => toast({ title: "Action", description: "View Details clicked" }) },
+              { label: "Download PDF", onClick: () => toast({ title: "Action", description: "Download PDF clicked" }) },
+              { label: "Delete", onClick: () => toast({ title: "Action", description: "Delete clicked" }), isDestructive: true },
+            ]}
+          />
+        </CardContent>
+      </Card>
+      <Card className="shadow-none">
+        <CardContent className="p-6">
+          <RequestToPayTransactionHeader
+            invoiceId="INV-10021112"
+            status="Pending"
+            buyer="Global Widgets Ltd."
+            owner="john.doe@example.com"
+            transactionType="Invoice"
+            actions={[
+              { label: "Approve", onClick: () => toast({ title: "Action", description: "Approve clicked" }) },
+              { label: "Decline", onClick: () => toast({ title: "Action", description: "Decline clicked" }), isDestructive: true },
+            ]}
+          />
+        </CardContent>
+      </Card>
+      <Card className="shadow-none">
+        <CardContent className="p-6">
+          <RequestToPayTransactionHeader
+            invoiceId="INV-10021113"
+            status="Declined"
+            buyer="Tech Solutions Inc."
+            owner="jane.smith@example.com"
+            transactionType="Credit Memo"
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 
   const renderSection = () => {
     switch (activeSection) {
-      case "color-palette": return renderColorPalette();
-      case "typography": return renderTypography();
-      case "spacing-layout": return renderSpacingLayout();
-      case "buttons": return renderButtons();
-      case "status-badges": return renderStatusBadges();
-      case "tab-navigation": return renderTabNavigation();
-      case "filter-components": return renderFilterComponents();
-      case "table-system": return renderTableSystem();
-      case "form-elements": return renderFormElements();
-      case "layout-components": return renderLayoutComponents();
-      case "alerts": return renderAlerts();
-      case "progress": return renderProgress();
-      case "breadcrumbs": return renderBreadcrumbs();
-      case "modals": return renderModals();
-      case "brand-assets": return renderBrandAssets();
-      case "toast-notifications": return renderToastNotifications();
-      case "dropdowns": return renderDropdowns();
-      default: return renderColorPalette();
+      case "color-palette":
+        return renderColorPalette();
+      case "typography":
+        return renderTypography();
+      case "spacing-layout":
+        return renderSpacingLayout();
+      case "buttons":
+        return renderButtons();
+      case "status-badges":
+        return renderStatusBadges();
+      case "tab-navigation":
+        return renderTabNavigation();
+      case "filter-components":
+        return renderFilterComponents();
+      case "table-system":
+        return renderTableSystem();
+      case "form-elements":
+        return renderFormElements();
+      case "layout-components":
+        return renderLayoutComponents();
+      case "alerts":
+        return renderAlerts();
+      case "progress":
+        return renderProgress();
+      case "modals":
+        return renderModals();
+      case "toast-notifications":
+        return renderToastNotifications();
+      case "dropdowns":
+        return renderDropdowns();
+      case "breadcrumbs":
+        return renderBreadcrumbs();
+      case "brand-assets":
+        return renderBrandAssets();
+      case "portal-logos":
+        return renderPortalLogos();
+      default:
+        return null;
     }
   };
 
   return (
-    <div className="flex h-screen bg-background-default">
-      {/* Sidebar */}
-      <div className="w-64 bg-common-white border-r border-grey-300 flex flex-col">
-        <div className="p-6 border-b border-grey-300">
-          <h1 className="text-xl font-semibold text-grey-900">Design System</h1>
+    <div className="flex h-screen bg-gray-50">
+      <div className="w-64 flex-shrink-0 border-r bg-white">
+        <div className="p-4 flex items-center gap-2">
+          <button onClick={() => navigate(-1)} className="text-gray-500 hover:text-gray-700">
+            <ArrowLeft size={20} />
+          </button>
+          <MontoLogo className="h-6" />
         </div>
-        
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100%-72px)]">
           {sidebarItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveSection(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors text-left ${
-                activeSection === item.id 
-                  ? 'bg-primary-lighter text-primary-main font-medium' 
-                  : 'text-grey-700 hover:bg-grey-200'
+              className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors ${
+                activeSection === item.id
+                  ? "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
+                  : "text-[#3F4758] hover:bg-[#F4F4F7]"
               }`}
             >
               {item.icon}
-              {item.label}
+              <span className="font-medium">{item.label}</span>
             </button>
           ))}
         </nav>
       </div>
-
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-8">
-          <div className="mb-6 flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <h1 className="text-3xl font-bold text-grey-900">Design System Playground</h1>
-          </div>
-          {renderSection()}
-        </div>
+      <div className="flex-1 p-8 overflow-y-auto">
+        {renderSection()}
       </div>
     </div>
   );

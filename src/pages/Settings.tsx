@@ -1,4 +1,3 @@
-
 import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Building, Users, Shield, Bell, MoreHorizontal, Plus, Upload, Camera } from "lucide-react";
+import { Building, Users, Shield, Bell, MoreVertical, Plus, Upload, Camera } from "lucide-react";
 import { useState } from "react";
 
 const sidebarItems = [
@@ -201,7 +200,7 @@ export default function Settings() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <button className="text-gray-400 hover:text-gray-600">
-                              <MoreHorizontal size={16} />
+                              <MoreVertical size={16} />
                             </button>
                           </td>
                         </tr>

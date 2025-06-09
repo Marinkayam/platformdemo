@@ -1,4 +1,3 @@
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,7 @@ import { formatCurrency } from "@/lib/utils";
 import { Invoice } from "@/types/invoice";
 import { getRandomPortalName } from "@/lib/portalUtils";
 import { useNavigate } from "react-router-dom";
-import { MoreHorizontal } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 
 interface RecentInvoicesTableProps {
   invoices: Invoice[];
@@ -75,7 +74,7 @@ export function RecentInvoicesTable({ invoices }: RecentInvoicesTableProps) {
                 </TableCell>
                 <TableCell>
                   <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <MoreHorizontal className="h-4 w-4" />
+                    <MoreVertical className="h-4 w-4" />
                   </Button>
                 </TableCell>
               </TableRow>
