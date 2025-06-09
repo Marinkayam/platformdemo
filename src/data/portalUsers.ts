@@ -1,0 +1,55 @@
+
+import { PortalUser } from "@/types/portalUser";
+
+export const mockPortalUsers: PortalUser[] = [
+  {
+    id: "pu1",
+    portal: "SAP Ariba",
+    username: "jo***@acme.com",
+    status: "Connected",
+    userType: "Monto",
+    linkedSmartConnections: 3,
+    lastUpdated: "2025-05-12",
+    isReadOnly: true,
+  },
+  {
+    id: "pu2",
+    portal: "Coupa",
+    username: "pr***@target.com",
+    status: "Connected",
+    userType: "External",
+    linkedSmartConnections: 2,
+    lastUpdated: "2025-05-11",
+    isReadOnly: false,
+  },
+  {
+    id: "pu3",
+    portal: "Oracle Procurement",
+    username: "fi***@google.com",
+    status: "Validating",
+    userType: "Monto",
+    linkedSmartConnections: 1,
+    lastUpdated: "2025-05-10",
+    isReadOnly: true,
+  },
+  {
+    id: "pu4",
+    portal: "Jaggaer",
+    username: "ve***@amazon.com",
+    status: "Disconnected",
+    userType: "External",
+    linkedSmartConnections: 0,
+    lastUpdated: "2025-05-08",
+    isReadOnly: false,
+  },
+  {
+    id: "pu5",
+    portal: "SAP Concur",
+    username: "ad***@microsoft.com",
+    status: "Connected",
+    userType: "Monto",
+    linkedSmartConnections: 1,
+    lastUpdated: "2025-05-07",
+    isReadOnly: true,
+  },
+];

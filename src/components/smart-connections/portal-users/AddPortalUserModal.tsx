@@ -1,149 +1,144 @@
-import React, { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-// Mock portal options (replace with actual data later)
-const PORTAL_OPTIONS = ["Coupa", "Ariba", "Oracle", "SAP", "Workday"];
+import React, { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { PortalSelection } from '@/components/onboarding/PortalSelection';
+import { Eye, EyeOff } from 'lucide-react';
+import { PortalUser } from '@/types/portalUser';
 
 interface AddPortalUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  mode: "create" | "edit";
-  initialData?: { 
-    id?: string;
-    portal: string;
-    username: string;
-    password?: string;
-    portalUrl?: string;
-    userType: "Monto User" | "Customer User";
-  };
-  onSubmit: (data: any) => void;
+  mode: 'create' | 'edit';
+  portalUser?: PortalUser;
+  onSave: (portalUser: Partial<PortalUser>) => void;
 }
 
-export function AddPortalUserModal({
-  isOpen,
-  onClose,
-  mode,
-  initialData,
-  onSubmit,
+export function AddPortalUserModal({ 
+  isOpen, 
+  onClose, 
+  mode, 
+  portalUser, 
+  onSave 
 }: AddPortalUserModalProps) {
-  const [portal, setPortal] = useState(initialData?.portal || "");
-  const [username, setUsername] = useState(initialData?.username || "");
-  const [password, setPassword] = useState(initialData?.password || "");
-  const [portalUrl, setPortalUrl] = useState(initialData?.portalUrl || "");
+  const [formData, setFormData] = useState({
+    portal: portalUser?.portal || '',
+    username: portalUser?.username || '',
+    password: '',
+    portalUrl: ''
+  });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const isReadOnly = mode === "edit" && initialData?.userType === "Monto User";
+  const isReadOnly = mode === 'edit' && portalUser?.isReadOnly;
+  const isEdit = mode === 'edit';
 
-  useEffect(() => {
-    if (isOpen && initialData) {
-      setPortal(initialData.portal || "");
-      setUsername(initialData.username || "");
-      setPassword(initialData.password || "");
-      setPortalUrl(initialData.portalUrl || "");
-    } else if (!isOpen) {
-      // Reset form when modal closes
-      setPortal("");
-      setUsername("");
-      setPassword("");
-      setPortalUrl("");
-    }
-  }, [isOpen, initialData]);
-
-  const handleSubmit = () => {
-    // In a real app, you'd send this data to an API
-    onSubmit({
-      id: initialData?.id, // Keep ID for edit mode
-      portal,
-      username,
-      password,
-      portalUrl,
-      userType: initialData?.userType || "Customer User", // Default to Customer User for new ones
+  const handleSave = () => {
+    onSave({
+      portal: formData.portal,
+      username: formData.username,
+      status: 'Validating',
+      userType: 'External',
+      linkedSmartConnections: 0,
+      lastUpdated: new Date().toISOString().split('T')[0],
+      isReadOnly: false,
     });
     onClose();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>{mode === "create" ? "Add Portal User" : "Edit Portal User"}</DialogTitle>
-          <DialogDescription>
-            {mode === "create"
-              ? "Enter the details for the new portal user." 
-              : "Edit the details of the portal user."}
+          <DialogTitle className="flex items-center gap-2">
+            {isEdit ? 'Portal User Details' : 'Add Portal User'}
             {isReadOnly && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Badge variant="secondary" className="ml-2">
-                    Monto User
-                  </Badge>
-                </TooltipTrigger>
-                <TooltipContent>
-                  This user was added by Monto. You can view credentials but not edit them.
-                </TooltipContent>
-              </Tooltip>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge variant="secondary">Monto User</Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>This user was added by Monto. You can view but not edit.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
-          </DialogDescription>
+          </DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+
+        <div className="space-y-6">
+          <PortalSelection
+            value={formData.portal}
+            onChange={(value) => setFormData(prev => ({ ...prev, portal: value }))}
+          />
+
           <div className="space-y-2">
-            <Label htmlFor="portal">Portal</Label>
-            <Select value={portal} onValueChange={setPortal} disabled={isReadOnly}>
-              <SelectTrigger id="portal">
-                <SelectValue placeholder="Select a portal" />
-              </SelectTrigger>
-              <SelectContent>
-                {PORTAL_OPTIONS.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {option}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="username" className="text-sm font-medium text-grey-800">
+              Username
+            </Label>
             <Input
               id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              placeholder="e.g. jdoe@company.com"
+              value={formData.username}
+              onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
               disabled={isReadOnly}
             />
           </div>
+
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={isReadOnly}
-            />
+            <Label htmlFor="password" className="text-sm font-medium text-grey-800">
+              Password
+            </Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder={isEdit ? "••••••••" : "Enter your portal password"}
+                value={formData.password}
+                onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                disabled={isReadOnly}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowPassword(!showPassword)}
+                disabled={isReadOnly}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
+            </div>
           </div>
+
           <div className="space-y-2">
-            <Label htmlFor="portalUrl">Portal URL (Optional)</Label>
+            <Label htmlFor="portalUrl" className="text-sm font-medium text-grey-800">
+              Portal URL (optional)
+            </Label>
             <Input
               id="portalUrl"
-              value={portalUrl}
-              onChange={(e) => setPortalUrl(e.target.value)}
+              placeholder="Optional – custom login URL"
+              value={formData.portalUrl}
+              onChange={(e) => setFormData(prev => ({ ...prev, portalUrl: e.target.value }))}
               disabled={isReadOnly}
             />
           </div>
-        </div>
-        <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          {!isReadOnly && (
-            <Button onClick={handleSubmit}>
-              {mode === "create" ? "Add User" : "Save Changes"}
+
+          <div className="flex justify-end gap-3">
+            <Button variant="outline" onClick={onClose}>
+              {isReadOnly ? 'Close' : 'Cancel'}
             </Button>
-          )}
+            {!isReadOnly && (
+              <Button onClick={handleSave}>
+                {isEdit ? 'Update Portal User' : 'Add Portal User'}
+              </Button>
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

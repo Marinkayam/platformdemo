@@ -1,25 +1,30 @@
 
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export function SmartConnectionsHeader() {
+interface SmartConnectionsHeaderProps {
+  activeTab?: string;
+  onAddPortalUser?: () => void;
+}
+
+export function SmartConnectionsHeader({ activeTab = "smart-connections", onAddPortalUser }: SmartConnectionsHeaderProps) {
   const navigate = useNavigate();
 
-  const handleNewConnection = () => {
-    navigate("/smart-connections/new-connection");
-  };
+  if (activeTab === "portal-users") {
+    return (
+      <Button onClick={onAddPortalUser}>
+        <Plus className="w-4 h-4 mr-2" />
+        Add Portal User
+      </Button>
+    );
+  }
 
   return (
-    <div className="flex justify-end">
-      <Button 
-        onClick={handleNewConnection}
-        size="default"
-        className="flex items-center gap-2"
-      >
-        <Plus className="h-4 w-4" />
-        New Smart Connection
-      </Button>
-    </div>
+    <Button onClick={() => navigate("/smart-connections/new")}>
+      <Plus className="w-4 h-4 mr-2" />
+      New Smart Connection
+    </Button>
   );
 }

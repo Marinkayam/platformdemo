@@ -3,8 +3,11 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { SmartConnectionsHeader } from "@/components/smart-connections/SmartConnectionsHeader";
 import { SmartConnectionsFilters } from "@/components/smart-connections/SmartConnectionsFilters";
 import { SmartConnectionsTable } from "@/components/smart-connections/SmartConnectionsTable";
+import { PortalUsersTable } from "@/components/smart-connections/portal-users";
+import { DesignTabs } from "@/components/ui/design-tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { mockSmartConnections } from "@/data/smartConnections";
+import { mockPortalUsers } from "@/data/portalUsers";
 import { useSmartConnectionFiltering } from "@/hooks/useSmartConnectionFiltering";
 import { PortalUsersTable } from "@/components/smart-connections/portal-users/PortalUsersTable";
 import { PortalUsersEmptyState } from "@/components/smart-connections/portal-users/PortalUsersEmptyState";
@@ -58,11 +61,7 @@ const MOCK_PORTAL_USERS_INITIAL: PortalUser[] = [
 
 export default function SmartConnections() {
   const [activeTab, setActiveTab] = useState("smart-connections");
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [addModalMode, setAddModalMode] = useState<"create" | "edit">("create");
-  const [selectedUserForEdit, setSelectedUserForEdit] = useState<PortalUser | undefined>(undefined);
-  const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
-  const [userToRemoveId, setUserToRemoveId] = useState<string | null>(null);
+  const [isAddPortalUserModalOpen, setIsAddPortalUserModalOpen] = useState(false);
 
   const {
     filters,
@@ -71,60 +70,9 @@ export default function SmartConnections() {
     handleResetFilters
   } = useSmartConnectionFiltering(mockSmartConnections);
 
-  const [portalUsers, setPortalUsers] = useState<PortalUser[]>(MOCK_PORTAL_USERS_INITIAL);
-  const hasPortalUsers = portalUsers.length > 0;
-
-  const handleAddPortalUserClick = () => {
-    setAddModalMode("create");
-    setSelectedUserForEdit(undefined);
-    setIsAddModalOpen(true);
-  };
-
-  const handleEditPortalUser = (user: PortalUser) => {
-    setAddModalMode("edit");
-    setSelectedUserForEdit(user);
-    setIsAddModalOpen(true);
-  };
-
-  const handleRemovePortalUser = (id: string) => {
-    setUserToRemoveId(id);
-    setIsConfirmRemoveModalOpen(true);
-  };
-
-  const handleConfirmRemove = () => {
-    if (userToRemoveId) {
-      setPortalUsers(prevUsers => prevUsers.filter(user => user.id !== userToRemoveId));
-      setIsConfirmRemoveModalOpen(false);
-      setUserToRemoveId(null);
-    }
-  };
-
-  const handleAddModalSubmit = (userData: any) => {
-    if (addModalMode === "create") {
-      const newUser: PortalUser = {
-        ...userData,
-        id: `pu${portalUsers.length + 1}`,
-        status: "ELIGIBLE", // Default status for new users
-        userType: userData.userType || "Customer User",
-        linkedSmartConnections: [],
-        lastUpdated: "Just now",
-      };
-      setPortalUsers(prevUsers => [...prevUsers, newUser]);
-    } else if (addModalMode === "edit" && selectedUserForEdit) {
-      setPortalUsers(prevUsers =>
-        prevUsers.map(user =>
-          user.id === selectedUserForEdit.id
-            ? { ...user, ...userData, lastUpdated: "Just now" }
-            : user
-        )
-      );
-    }
-  };
-
-  // Tabs data for DesignTabs
   const tabs = [
-    { id: "smart-connections", label: "Smart Connections", count: filteredConnections.length },
-    { id: "portal-users", label: "Portal Users", count: portalUsers.length },
+    { id: "smart-connections", label: "Smart Connections", count: mockSmartConnections.length },
+    { id: "portal-users", label: "Portal Users", count: mockPortalUsers.length }
   ];
 
   return (
@@ -135,12 +83,15 @@ export default function SmartConnections() {
             title="Smart Connections" 
             subtitle="Sync and manage supplier connections across portals" 
           />
-          <SmartConnectionsHeader />
+          <SmartConnectionsHeader 
+            activeTab={activeTab}
+            onAddPortalUser={() => setIsAddPortalUserModalOpen(true)}
+          />
         </div>
         
-        <DesignTabs 
-          tabs={tabs} 
-          activeTab={activeTab} 
+        <DesignTabs
+          tabs={tabs}
+          activeTab={activeTab}
           onTabChange={setActiveTab}
         />
 
@@ -151,22 +102,13 @@ export default function SmartConnections() {
               onFilterChange={handleFilterChange}
               onResetFilters={handleResetFilters}
             />
+            
             <SmartConnectionsTable connections={filteredConnections} />
           </>
         )}
 
         {activeTab === "portal-users" && (
-          <>
-            {hasPortalUsers ? (
-              <PortalUsersTable 
-                portalUsers={portalUsers} 
-                onEditPortalUser={handleEditPortalUser}
-                onRemovePortalUser={handleRemovePortalUser}
-              />
-            ) : (
-              <PortalUsersEmptyState onAddPortalUser={handleAddPortalUserClick} />
-            )}
-          </>
+          <PortalUsersTable portalUsers={mockPortalUsers} />
         )}
       </div>
 
