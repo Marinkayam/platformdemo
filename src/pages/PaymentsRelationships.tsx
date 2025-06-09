@@ -49,8 +49,8 @@ const MOCK_PORTAL_USERS_INITIAL: PortalUser[] = [
   },
 ];
 
-export default function SmartConnections() {
-  const [activeTab, setActiveTab] = useState("smart-connections");
+export default function PaymentsRelationships() {
+  const [activeTab, setActiveTab] = useState("payments-relationships");
   const [isAddPortalUserModalOpen, setIsAddPortalUserModalOpen] = useState(false);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
   const [userToRemoveId, setUserToRemoveId] = useState<string | null>(null);
@@ -63,7 +63,7 @@ export default function SmartConnections() {
   } = useSmartConnectionFiltering(mockSmartConnections);
 
   const tabs = [
-    { id: "smart-connections", label: "Smart Connections", count: mockSmartConnections.length },
+    { id: "payments-relationships", label: "Smart Connections", count: mockSmartConnections.length },
     { id: "portal-users", label: "Portal Users", count: mockPortalUsers.length }
   ];
 
@@ -84,8 +84,8 @@ export default function SmartConnections() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <PageHeader 
-            title="Smart Connections" 
-            subtitle="Sync and manage supplier connections across portals" 
+            title="Payments Relationships" 
+            subtitle="Manage and monitor your payments relationships in real-time" 
           />
           <SmartConnectionsHeader 
             activeTab={activeTab}
@@ -99,7 +99,7 @@ export default function SmartConnections() {
           onTabChange={setActiveTab}
         />
 
-        {activeTab === "smart-connections" && (
+        {activeTab === "payments-relationships" && (
           <>
             <SmartConnectionsFilters
               filters={filters}

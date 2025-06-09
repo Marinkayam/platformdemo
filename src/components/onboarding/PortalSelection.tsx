@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -11,6 +10,37 @@ interface PortalOption {
   category: 'popular' | 'other';
 }
 
+const getPortalLogoUrl = (portalName: string): string => {
+  const logoMap: { [key: string]: string } = {
+    "Coupa": "coupa.png",
+    "SAP Ariba": "ariba.png",
+    "Oracle Procurement": "oracle.png",
+    "Jaggaer": "jagger.png",
+    "SAP Concur": "Amazon Payee.png", // This will now use the Amazon logo
+    "Workday": "generic-a.png", // Placeholder if no specific logo
+    "NetSuite": "generic-circles.png", // Placeholder if no specific logo
+    "Amazon Payee": "Amazon Payee.png",
+    "Apple": "apple.png",
+    "AT&T": "AT&T.png",
+    "Bill": "bill.png",
+    "Facturaxion": "Facturaxion.png",
+    "Fieldglass": "Fieldglass.png",
+    "iSupplier": "iSupplier.png",
+    "KissFlow": "KissFlow.png",
+    "Qualcomm": "Qualcomm.png",
+    "Sainsburys": "Sainsburys.png",
+    "Segment": "Segment.png",
+    "Shopify": "shopify.png",
+    "StoreNext": "StoreNext.png",
+    "Taulia": "taulia.png",
+    "Teradata": "Teradata.png",
+    "Tipalti": "tipalti.png",
+    "Tungsten": "tungsten.png",
+    "Walmart": "walmart.png",
+  };
+  return `/portal-logos/${logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png'}`;
+};
+
 const portals: PortalOption[] = [
   { id: 'coupa', name: 'Coupa', category: 'popular' },
   { id: 'sap-ariba', name: 'SAP Ariba', category: 'popular' },
@@ -19,6 +49,24 @@ const portals: PortalOption[] = [
   { id: 'sap-concur', name: 'SAP Concur', category: 'other' },
   { id: 'workday', name: 'Workday', category: 'other' },
   { id: 'netsuite', name: 'NetSuite', category: 'other' },
+  { id: 'amazon-payee', name: 'Amazon Payee', category: 'popular' },
+  { id: 'apple', name: 'Apple', category: 'other' },
+  { id: 'at-t', name: 'AT&T', category: 'other' },
+  { id: 'bill', name: 'Bill', category: 'other' },
+  { id: 'facturaxion', name: 'Facturaxion', category: 'other' },
+  { id: 'fieldglass', name: 'Fieldglass', category: 'other' },
+  { id: 'isupplier', name: 'iSupplier', category: 'other' },
+  { id: 'kissflow', name: 'KissFlow', category: 'other' },
+  { id: 'qualcomm', name: 'Qualcomm', category: 'other' },
+  { id: 'sainsburys', name: 'Sainsburys', category: 'other' },
+  { id: 'segment', name: 'Segment', category: 'other' },
+  { id: 'shopify', name: 'Shopify', category: 'other' },
+  { id: 'storenext', name: 'StoreNext', category: 'other' },
+  { id: 'taulia', name: 'Taulia', category: 'other' },
+  { id: 'teradata', name: 'Teradata', category: 'other' },
+  { id: 'tipalti', name: 'Tipalti', category: 'other' },
+  { id: 'tungsten', name: 'Tungsten', category: 'other' },
+  { id: 'walmart', name: 'Walmart', category: 'other' },
   { id: 'custom', name: 'Add Custom Portal', category: 'other' }
 ];
 
@@ -64,8 +112,8 @@ export function PortalSelection({ value, onChange }: PortalSelectionProps) {
               {popularPortals.map(portal => (
                 <SelectItem key={portal.id} value={portal.id} className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-primary-light flex items-center justify-center">
-                      <Building className="h-3 w-3 text-primary-main" />
+                    <div className="w-6 h-6 rounded-full bg-background-paper flex items-center justify-center overflow-hidden border border-grey-300">
+                      <img src={getPortalLogoUrl(portal.name)} alt={`${portal.name} logo`} className="w-full h-full object-contain" />
                     </div>
                     {portal.name}
                   </div>
@@ -81,8 +129,8 @@ export function PortalSelection({ value, onChange }: PortalSelectionProps) {
               {otherPortals.map(portal => (
                 <SelectItem key={portal.id} value={portal.id} className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-grey-200 flex items-center justify-center">
-                      <Building className="h-3 w-3 text-grey-600" />
+                    <div className="w-6 h-6 rounded-full bg-background-paper flex items-center justify-center overflow-hidden border border-grey-300">
+                      <img src={getPortalLogoUrl(portal.name)} alt={`${portal.name} logo`} className="w-full h-full object-contain" />
                     </div>
                     {portal.name}
                   </div>

@@ -79,9 +79,32 @@ export function PortalUsersTable({
   ];
 
   const getPortalLogoUrl = (portalName: string): string => {
-    // In a real application, you might have specific paths for each logo.
-    // For now, assume logos are named after the portal in lowercase, with .png extension.
-    return `/portal-logos/${portalName.toLowerCase()}.png`;
+    const logoMap: { [key: string]: string } = {
+      "SAP Ariba": "ariba.png",
+      "Coupa": "coupa.png",
+      "Oracle Procurement": "oracle.png",
+      "Jaggaer": "tipalti.png",
+      "SAP Concur": "Amazon Payee.png",
+      "Amazon Payee": "Amazon Payee.png",
+      "Apple": "apple.png",
+      "AT&T": "AT&T.png",
+      "Bill": "bill.png",
+      "Facturaxion": "Facturaxion.png",
+      "Fieldglass": "Fieldglass.png",
+      "iSupplier": "iSupplier.png",
+      "KissFlow": "KissFlow.png",
+      "Qualcomm": "Qualcomm.png",
+      "Sainsburys": "Sainsburys.png",
+      "Segment": "Segment.png",
+      "Shopify": "shopify.png",
+      "StoreNext": "StoreNext.png",
+      "Taulia": "taulia.png",
+      "Teradata": "Teradata.png",
+      "Tipalti": "tipalti.png",
+      "Tungsten": "tungsten.png",
+      "Walmart": "walmart.png",
+    };
+    return `/portal-logos/${logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png'}`;
   };
 
   const columns: Column[] = [
@@ -148,7 +171,7 @@ export function PortalUsersTable({
     },
     {
       key: 'linkedSmartConnections',
-      label: 'Linked Smart Connections',
+      label: 'Linked Agents',
       sortable: true,
       render: (count: number) => (
         <TooltipProvider>

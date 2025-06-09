@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -64,7 +63,7 @@ export function Sidebar({
           
           <SidebarItem href="/portal-management" icon={<Globe size={18} />} label="Portal Management" active={pathname === "/portal-management"} />
           
-          <SidebarItem href="/smart-connections" icon={<Brain size={18} />} label="Smart Connections" active={pathname === "/smart-connections"} />
+          <SidebarItem href="/payments-relationships" icon={<Brain size={18} />} label="Payments Relationships" active={pathname === "/payments-relationships"} />
           
           <SidebarItem href="/purchase-order" icon={<ShoppingCart size={18} />} label="Purchase Order" active={pathname === "/purchase-order"} />
           

@@ -176,7 +176,7 @@ export const navMain: NavItem[] = [
     ],
   },
   {
-    title: "Smart Connections",
+    title: "Payments Relationships",
     href: "/smart-connections",
     icon: SmartConnectionsIcon,
   },

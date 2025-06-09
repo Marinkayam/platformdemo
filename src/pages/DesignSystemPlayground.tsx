@@ -1405,27 +1405,28 @@ export default function DesignSystemPlayground() {
 
   const renderPortalLogos = () => {
     const portalLogos = [
+      { name: "Amazon Payee", src: "/portal-logos/Amazon Payee.png" },
+      { name: "Apple", src: "/portal-logos/apple.png" },
       { name: "Ariba", src: "/portal-logos/ariba.png" },
+      { name: "AT&T", src: "/portal-logos/AT&T.png" },
       { name: "Bill", src: "/portal-logos/bill.png" },
       { name: "Coupa", src: "/portal-logos/coupa.png" },
-      { name: "Oracle", src: "/portal-logos/oracle.png" },
-      { name: "Shopify", src: "/portal-logos/shopify.png" },
-      { name: "Apple", src: "/portal-logos/apple.png" },
-      { name: "Amazon", src: "/portal-logos/amazon.png" },
-      { name: "Walmart", src: "/portal-logos/walmart.png" },
-      { name: "Tradeshift", src: "/portal-logos/tradeshift.png" },
-      { name: "AT&T", src: "/portal-logos/att.png" },
-      { name: "Qualcomm", src: "/portal-logos/qualcomm.png" },
-      { name: "Generic A", src: "/portal-logos/generic-a.png" },
-      { name: "Generic Circles", src: "/portal-logos/generic-circles.png" },
-      { name: "Generic S", src: "/portal-logos/generic-s.png" },
-      { name: "Generic Connected Squares", src: "/portal-logos/generic-connected-squares.png" },
-      { name: "Generic Flower", src: "/portal-logos/generic-flower.png" },
-      { name: "Generic Hexagon", src: "/portal-logos/generic-hexagon.png" },
-      { name: "Generic T Arc", src: "/portal-logos/generic-t-arc.png" },
-      { name: "Generic Green S", src: "/portal-logos/generic-green-s.png" },
-      { name: "Generic Y", src: "/portal-logos/generic-y.png" },
+      { name: "Facturaxion", src: "/portal-logos/Facturaxion.png" },
+      { name: "Fieldglass", src: "/portal-logos/Fieldglass.png" },
+      { name: "iSupplier", src: "/portal-logos/iSupplier.png" },
       { name: "Jagger", src: "/portal-logos/jagger.png" },
+      { name: "KissFlow", src: "/portal-logos/KissFlow.png" },
+      { name: "Oracle", src: "/portal-logos/oracle.png" },
+      { name: "Qualcomm", src: "/portal-logos/Qualcomm.png" },
+      { name: "Sainsburys", src: "/portal-logos/Sainsburys.png" },
+      { name: "Segment", src: "/portal-logos/Segment.png" },
+      { name: "Shopify", src: "/portal-logos/shopify.png" },
+      { name: "StoreNext", src: "/portal-logos/StoreNext.png" },
+      { name: "Taulia", src: "/portal-logos/taulia.png" },
+      { name: "Teradata", src: "/portal-logos/Teradata.png" },
+      { name: "Tipalti", src: "/portal-logos/tipalti.png" },
+      { name: "Tungsten", src: "/portal-logos/tungsten.png" },
+      { name: "Walmart", src: "/portal-logos/walmart.png" },
     ];
 
     return (
@@ -1542,7 +1543,10 @@ export default function DesignSystemPlayground() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Dropdowns</h2>
-        <p className="text-sm text-grey-600 mb-4">Dropdown components for single and multiple selections.</p>
+        <p className="text-sm text-grey-600 mb-4">
+          A collection of various dropdown components demonstrating different use cases and styling.
+        </p>
+        <p className="text-sm text-grey-600 font-semibold">Component Name: <code className="font-mono text-primary-main">Select, FilterDropdown</code></p>
       </div>
       <Card className="shadow-none">
         <CardContent className="p-6 space-y-6">
@@ -1608,61 +1612,6 @@ export default function DesignSystemPlayground() {
               </SelectContent>
             </Select>
           </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
-  const renderRequestToPayTransactionHeader = () => (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Request to Pay Transaction Header</h2>
-        <p className="text-sm text-grey-600 mb-4">
-          This component displays a summary header for Request to Pay (RTP) transactions,
-          such as invoices, with key details and action options.
-        </p>
-        <p className="text-sm text-grey-600 font-semibold">Component Name: <code className="font-mono text-primary-main">RequestToPayTransactionHeader</code></p>
-      </div>
-      <Card className="shadow-none">
-        <CardContent className="p-6">
-          <RequestToPayTransactionHeader
-            invoiceId="INV-10021111"
-            status="Paid"
-            buyer="Espresso Corp."
-            owner="maria.garcia@example.com"
-            transactionType="Invoice"
-            actions={[
-              { label: "View Details", onClick: () => toast({ title: "Action", description: "View Details clicked" }) },
-              { label: "Download PDF", onClick: () => toast({ title: "Action", description: "Download PDF clicked" }) },
-              { label: "Delete", onClick: () => toast({ title: "Action", description: "Delete clicked" }), isDestructive: true },
-            ]}
-          />
-        </CardContent>
-      </Card>
-      <Card className="shadow-none">
-        <CardContent className="p-6">
-          <RequestToPayTransactionHeader
-            invoiceId="INV-10021112"
-            status="Pending"
-            buyer="Global Widgets Ltd."
-            owner="john.doe@example.com"
-            transactionType="Invoice"
-            actions={[
-              { label: "Approve", onClick: () => toast({ title: "Action", description: "Approve clicked" }) },
-              { label: "Decline", onClick: () => toast({ title: "Action", description: "Decline clicked" }), isDestructive: true },
-            ]}
-          />
-        </CardContent>
-      </Card>
-      <Card className="shadow-none">
-        <CardContent className="p-6">
-          <RequestToPayTransactionHeader
-            invoiceId="INV-10021113"
-            status="Declined"
-            buyer="Tech Solutions Inc."
-            owner="jane.smith@example.com"
-            transactionType="Credit Memo"
-          />
         </CardContent>
       </Card>
     </div>
