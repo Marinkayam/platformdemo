@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ChevronDown, ChevronRight, MoreVertical, AlertTriangle } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -82,7 +81,7 @@ export function SmartConnectionsTable({ connections }: SmartConnectionsTableProp
   }
 
   return (
-    <div className="rounded-xl border bg-white overflow-hidden">
+    <div className="rounded-xl border overflow-hidden bg-white">
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>

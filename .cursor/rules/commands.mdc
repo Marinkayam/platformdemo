@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+When i type one of the following commands then do as it saids here
+
+[Run] - `npm run dev`
+[Update] / [update] - Git add . -> Git commit -m "<YOUR MESSAGE>" -> git push

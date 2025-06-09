@@ -1,4 +1,3 @@
-
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -7,12 +6,14 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-x-auto">
-    <table
-      ref={ref}
-      className={cn("w-full caption-bottom text-sm font-normal font-sans", className)}
-      {...props}
-    />
+  <div className="rounded-xl border overflow-hidden bg-white">
+    <div className="relative w-full overflow-x-auto">
+      <table
+        ref={ref}
+        className={cn("w-full caption-bottom text-sm font-normal font-sans", className)}
+        {...props}
+      />
+    </div>
   </div>
 ))
 Table.displayName = "Table"
@@ -31,7 +32,7 @@ const TableBody = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
-    className={cn("[&_tr:last-child]:border-0", className)}
+    className={cn("divide-y divide-gray-100 [&_tr:last-child]:border-0", className)}
     {...props}
   />
 ))

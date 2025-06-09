@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,6 +19,7 @@ import Login from "./pages/Login";
 import Welcome from "./pages/Welcome";
 import DesignSystemPlayground from "./pages/DesignSystemPlayground";
 import Onboarding from "./pages/Onboarding";
+import WeatherDashboard from "./pages/WeatherDashboard";
 import { NotificationsProvider } from "./context/NotificationsContext";
 
 const queryClient = new QueryClient();
@@ -113,6 +113,14 @@ const App = () => (
               element={
                 <MainLayout>
                   <Settings />
+                </MainLayout>
+              } 
+            />
+            <Route 
+              path="/weather" 
+              element={
+                <MainLayout>
+                  <WeatherDashboard />
                 </MainLayout>
               } 
             />

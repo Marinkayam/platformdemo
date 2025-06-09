@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+**Design System** - The design system is defined under the `src/components/ui` and it contains basic components for building pages.
+**Design System Playground** - there is a playground that simulates storybook and is under the `src/pages/DesignSystemPlayground.tsx` file. This is where you can find how to use the different components from the design system. 
+
+Every time that in chat you alter or create code and you use something from the design system, use a purple heart at the beginning and end of the message in the chat to indicate that you did so.
