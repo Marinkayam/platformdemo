@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { PaymentsRelationshipsHeader } from "@/components/payments-relationships/PaymentsRelationshipsHeader";
@@ -104,7 +105,7 @@ export default function PaymentsRelationships() {
             <PaymentsRelationshipsFilters
               filters={filters}
               onFilterChange={handleFilterChange}
-              onResetFilters={handleResetFilters}
+              onClearFilters={handleResetFilters}
             />
             
             <PaymentsRelationshipsTable connections={filteredConnections} />

@@ -19,7 +19,7 @@ export const duplicateInvoices: Invoice[] = [
     hasExceptions: true,
     documentType: "Invoice",
     isDuplicate: true,
-    portal: "Ariba",
+    portal: "SAP Ariba",
     exceptions: [
       {
         id: "exc-duplicate-001",
@@ -67,7 +67,7 @@ export const duplicateInvoices: Invoice[] = [
     documentType: "Invoice",
     hasExceptions: true,
     isDuplicate: true,
-    portal: "Bill",
+    portal: "Bill.com",
     exceptions: [
       {
         id: "exc-duplicate-003",
@@ -104,7 +104,7 @@ export const duplicateInvoices: Invoice[] = [
     documentType: "Invoice",
     hasExceptions: true,
     isDuplicate: true,
-    portal: "Ariba",
+    portal: "SAP Ariba",
     exceptions: [
       {
         id: "exc-duplicate-004",
