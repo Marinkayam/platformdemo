@@ -1,0 +1,5 @@
+Portal,Username,Password,Portal Login URL,2FA Method,2FA Target
+Coupa,user@company.com,password123,,,
+SAP Ariba,user2@company.com,password456,https://custom.ariba.com,authenticator,
+Oracle Procurement,user3@oracle.com,password789,https://custom.oracle.com,sms,+15551234567
+Workday,user4@workday.com,password101,https://custom.workday.com,email,user4@company.com 
