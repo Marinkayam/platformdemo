@@ -140,7 +140,7 @@ export function SidebarSection({
                   ? item.icon({ size: 20, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]" })
                   : React.createElement(item.icon, { size: 20, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]" })
               )}
-              <span className="font-medium">{item.id === "chat-ai-nav" ? "Chat AI" : item.title}</span>
+              {item.title && <span className="font-medium">{item.title}</span>}
             </Link>
           );
         })}

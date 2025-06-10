@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Cloud, Settings } from "lucide-react";
 
@@ -202,7 +203,13 @@ export const navUser: NavItem[] = [
   {
     id: "chat-ai-nav",
     title: "",
-    icon: () => React.createElement('img', { src: "/chat-ai-logo.png", alt: "Chat AI", className: "w-6 h-6" }),
+    icon: ({ size = 20, className }: { size?: number; className?: string }) => 
+      React.createElement('img', { 
+        src: "/lovable-uploads/696c8592-7b02-48df-9915-22f0c069c535.png", 
+        alt: "AI Assistant", 
+        className: `${className || ""} w-${size/4} h-${size/4}`,
+        style: { width: `${size}px`, height: `${size}px` }
+      }),
   },
 ];
 
