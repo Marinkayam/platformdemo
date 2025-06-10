@@ -62,8 +62,8 @@ export function useSmartConnectionFiltering(connections: SmartConnection[]) {
     });
   }, [connections, filters]);
 
-  const handleFilterChange = (key: keyof SmartConnectionFilters, value: any) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+  const handleFilterChange = (newFilters: SmartConnectionFilters) => {
+    setFilters(newFilters);
   };
 
   const handleResetFilters = () => {
