@@ -19,7 +19,14 @@ interface InvoiceTableRowProps {
   onExclude: (invoiceId: string) => void;
 }
 
-const getPortalLogoUrl = (portalName: string): string => {
+// Helper to get portal logo URL, robustly handling undefined/null portal names
+const getPortalLogoUrl = (portalNameInput: string | undefined | null): string => {
+  const cleanedPortalName = String(portalNameInput || ''); // Ensure it's a string, default to empty
+
+  if (!cleanedPortalName) {
+    return '/portal-logos/default.png'; // Or a generic placeholder
+  }
+
   const logoMap: { [key: string]: string } = {
     "SAP Ariba": "ariba.png",
     "Coupa": "coupa.png",
@@ -44,8 +51,20 @@ const getPortalLogoUrl = (portalName: string): string => {
     "Tungsten": "tungsten.png",
     "Walmart": "walmart.png",
   };
-  const fileName = logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png';
-  return `/portal-logos/${fileName}`;
+
+  const fileName = logoMap[cleanedPortalName];
+  if (fileName) {
+    return `/portal-logos/${fileName}`;
+  } else {
+    // Fallback if no specific logo is found, use the cleaned name
+    // The typeof check is technically redundant here because cleanedPortalName is always a string,
+    // but it adds an extra layer of explicit safety if the initial String() conversion were to fail unexpectedly.
+    if (typeof cleanedPortalName === 'string' && cleanedPortalName.length > 0) {
+      return `/portal-logos/${cleanedPortalName.toLowerCase().replace(/\s/g, '-')}.png`;
+    } else {
+      return '/portal-logos/default.png'; // Fallback for unexpected non-string or empty value
+    }
+  }
 };
 
 // Helper function to extract name from owner field
@@ -88,16 +107,7 @@ export function InvoiceTableRow({
       </TableCell>
       
       <TableCell className="truncate">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="truncate cursor-help">{invoice.buyer}</span>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{invoice.buyer}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+          <span className="truncate cursor-help">{invoice.buyer}</span>
       </TableCell>
       
       {isPendingTab ? (

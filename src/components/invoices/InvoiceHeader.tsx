@@ -1,4 +1,3 @@
-
 import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
 import { InvoiceFilters } from "@/components/invoices/InvoiceFilters";
 import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";
@@ -28,7 +27,7 @@ export function InvoiceHeader({
     <>
       <PageHeader 
         title="RTPs" 
-        subtitle="RTPs (Real-Time Payments) in Monto are smart, trackable payment requests that sync invoice data across portals, enabling teams to monitor, validate, and settle transactions in real time." 
+        subtitle="RTPs (Request to Pay) in Monto are smart, trackable payment requests linked to invoices. They allow teams to sync data across portals, monitor approval status, and streamline the payment process — all in one place." 
       />
       
       <InvoiceTabs
