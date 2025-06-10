@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { PaymentsRelationshipsHeader } from "@/components/payments-relationships/PaymentsRelationshipsHeader";
@@ -55,6 +54,7 @@ export default function PaymentsRelationships() {
   const [isAddPortalUserModalOpen, setIsAddPortalUserModalOpen] = useState(false);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
   const [userToRemoveId, setUserToRemoveId] = useState<string | null>(null);
+  const [portalUsers, setPortalUsers] = useState<PortalUser[]>(mockPortalUsers);
 
   const {
     filters,
@@ -65,18 +65,34 @@ export default function PaymentsRelationships() {
 
   const tabs = [
     { id: "payments-relationships", label: "Payments Relationships", count: mockSmartConnections.length },
-    { id: "portal-users", label: "Portal Users", count: mockPortalUsers.length }
+    { id: "portal-users", label: "Portal Users", count: portalUsers.length }
   ];
 
   const handleConfirmRemove = () => {
-    // Logic to remove the user
-    console.log(`Removing user with ID: ${userToRemoveId}`);
-    setIsConfirmRemoveModalOpen(false);
-    setUserToRemoveId(null);
+    if (userToRemoveId) {
+      setPortalUsers(prev => prev.filter(user => user.id !== userToRemoveId));
+      setIsConfirmRemoveModalOpen(false);
+      setUserToRemoveId(null);
+    }
   };
 
   const handleAddModalSubmit = (userData: Partial<PortalUser>) => {
-    console.log("Adding/editing user:", userData);
+    const newUser: PortalUser = {
+      id: `pu${Date.now()}`, // Generate a unique ID
+      portal: userData.portal || '',
+      username: userData.username || '',
+      status: userData.status || 'Validating',
+      userType: userData.userType || 'External',
+      linkedSmartConnections: userData.linkedSmartConnections || 0,
+      lastUpdated: new Date().toISOString(),
+      isReadOnly: false,
+      twoFAMethod: userData.twoFAMethod,
+      phoneNumber: userData.phoneNumber,
+      verificationEmail: userData.verificationEmail,
+      issue: userData.issue
+    };
+
+    setPortalUsers(prev => [...prev, newUser]);
     setIsAddPortalUserModalOpen(false);
   };
 
@@ -113,14 +129,20 @@ export default function PaymentsRelationships() {
         )}
 
         {activeTab === "portal-users" && (
-          <PortalUsersTable portalUsers={mockPortalUsers} />
+          <PortalUsersTable 
+            portalUsers={portalUsers} 
+            onRemovePortalUser={(id) => {
+              setUserToRemoveId(id);
+              setIsConfirmRemoveModalOpen(true);
+            }}
+          />
         )}
       </div>
 
       <AddPortalUserModal
         isOpen={isAddPortalUserModalOpen}
         onClose={() => setIsAddPortalUserModalOpen(false)}
-        mode={"create"}
+        mode="create"
         onSave={handleAddModalSubmit}
       />
 
@@ -128,7 +150,7 @@ export default function PaymentsRelationships() {
         isOpen={isConfirmRemoveModalOpen}
         onClose={() => setIsConfirmRemoveModalOpen(false)}
         onConfirm={handleConfirmRemove}
-        itemName={MOCK_PORTAL_USERS_INITIAL.find(user => user.id === userToRemoveId)?.username || "this portal user"}
+        itemName={portalUsers.find(user => user.id === userToRemoveId)?.username || "this portal user"}
       />
     </TooltipProvider>
   );

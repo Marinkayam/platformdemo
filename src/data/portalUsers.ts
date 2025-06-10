@@ -34,7 +34,7 @@ export const mockPortalUsers: PortalUser[] = [
   {
     id: "pu4",
     portal: "Tipalti",
-    username: "ve***@amazon.com",
+    username: "ve@amazon.com",
     status: "Disconnected",
     userType: "External",
     linkedSmartConnections: 0,
@@ -44,7 +44,7 @@ export const mockPortalUsers: PortalUser[] = [
   {
     id: "pu5",
     portal: "Amazon Payee",
-    username: "ad***@microsoft.com",
+    username: "ad@microsoft.com",
     status: "Connected",
     userType: "Monto",
     linkedSmartConnections: 1,

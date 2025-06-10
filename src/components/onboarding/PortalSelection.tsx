@@ -73,6 +73,7 @@ const portals: PortalOption[] = [
 interface PortalSelectionProps {
   value: string;
   onChange: (value: string) => void;
+  className?: string;
 }
 
 export function PortalSelection({ value, onChange }: PortalSelectionProps) {

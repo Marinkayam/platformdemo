@@ -119,7 +119,7 @@ export function InvoiceTableRow({
       
       <TableCell className="truncate flex items-center gap-2">
         {(() => {
-          const resolvedPortalName = invoice.portal || getRandomPortalName();
+          const resolvedPortalName = invoice.portal;
           return (
             <>
               <img 

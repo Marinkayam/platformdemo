@@ -1,4 +1,3 @@
-
 export interface PortalUser {
   id: string;
   portal: string;
@@ -8,6 +7,10 @@ export interface PortalUser {
   linkedSmartConnections: number;
   lastUpdated: string;
   isReadOnly: boolean;
+  twoFAMethod?: 'authenticator' | 'sms' | 'email' | 'other';
+  phoneNumber?: string;
+  verificationEmail?: string;
+  issue?: string;
 }
 
 export interface PortalUserFilters {

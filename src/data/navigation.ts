@@ -1,6 +1,6 @@
-
 import React from "react";
 import { Cloud, Settings } from "lucide-react";
+import ChatAIIcon from "@/components/ui/chat-ai-icon";
 
 // Custom SVG components for the navigation icons
 const DashboardIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
@@ -203,13 +203,7 @@ export const navUser: NavItem[] = [
   {
     id: "chat-ai-nav",
     title: "",
-    icon: ({ size = 20, className }: { size?: number; className?: string }) => 
-      React.createElement('img', { 
-        src: "/lovable-uploads/696c8592-7b02-48df-9915-22f0c069c535.png", 
-        alt: "AI Assistant", 
-        className: `${className || ""} w-${size/4} h-${size/4}`,
-        style: { width: `${size}px`, height: `${size}px` }
-      }),
+    icon: ChatAIIcon,
   },
 ];
 

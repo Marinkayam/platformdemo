@@ -23,7 +23,6 @@ export function ChatAIModal({ isOpen, onClose }: ChatAIModalProps) {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <img src="/chat-ai-logo.png" alt="Chat AI" className="w-6 h-6" />
             Chat with AI Assistant
           </DialogTitle>
           <DialogDescription>

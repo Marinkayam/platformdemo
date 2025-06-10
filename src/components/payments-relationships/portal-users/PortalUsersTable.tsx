@@ -174,7 +174,7 @@ export function PortalUsersTable({
       sortable: true,
       render: (username: string) => (
         <div className="flex items-center gap-2">
-          <span className="font-mono text-sm">{username}</span>
+          <span className="text-sm">{username}</span>
           <Button
             variant="ghost"
             size="sm"
