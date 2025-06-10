@@ -156,6 +156,7 @@ export interface NavItem {
   href?: string;
   icon?: any;
   items?: NavItem[];
+  id?: string;
 }
 
 export const navMain: NavItem[] = [
@@ -199,8 +200,9 @@ export const navMain: NavItem[] = [
 
 export const navUser: NavItem[] = [
   {
-    title: "Need Help?",
-    icon: HelpIcon,
+    id: "chat-ai-nav",
+    title: "",
+    icon: () => React.createElement('img', { src: "/chat-ai-logo.png", alt: "Chat AI", className: "w-6 h-6" }),
   },
 ];
 

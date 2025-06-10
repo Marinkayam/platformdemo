@@ -5,6 +5,8 @@ import { useNavigate, Outlet } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { AppSidebar } from "./AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { useState } from "react";
+import { ChatAIModal } from "@/components/ui/ChatAIModal";
 
 interface MainLayoutProps {
   // children: React.ReactNode; // Removed children prop
@@ -13,6 +15,8 @@ export function MainLayout({
   // children // Removed children prop
 }: MainLayoutProps) {
   const navigate = useNavigate();
+  const [isChatAIModalOpen, setIsChatAIModalOpen] = useState(false);
+
   const handleLogout = () => {
     // In a real app, you would clear auth tokens/state here
     toast({
@@ -28,9 +32,13 @@ export function MainLayout({
   const handleLogoClick = () => {
     navigate("/design-system");
   };
+  const handleOpenChatAIModal = () => {
+    setIsChatAIModalOpen(true);
+  };
+
   return <SidebarProvider>
       <div className="flex h-screen w-full overflow-hidden">
-        <AppSidebar />
+        <AppSidebar onChatAIOpen={handleOpenChatAIModal} />
         
         <div className="flex-1 flex flex-col overflow-hidden">
           <header className="h-[64px] border-b px-4 flex items-center justify-between gap-3 bg-zinc-50 py-0 my-0">
@@ -78,5 +86,6 @@ export function MainLayout({
           </main>
         </div>
       </div>
+      <ChatAIModal isOpen={isChatAIModalOpen} onClose={() => setIsChatAIModalOpen(false)} />
     </SidebarProvider>;
 }

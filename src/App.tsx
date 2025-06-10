@@ -19,7 +19,6 @@ import DesignSystemPlayground from "./pages/DesignSystemPlayground";
 import Onboarding from "./pages/Onboarding";
 import PaymentsRelationships from "./pages/PaymentsRelationships";
 import NewPaymentsRelationship from "./pages/NewPaymentsRelationship";
-import PortalUserDetail from "./pages/PortalUserDetail";
 import { NotificationsProvider } from "./context/NotificationsContext";
 
 const queryClient = new QueryClient();
@@ -52,7 +51,6 @@ const App = () => (
               {/* Placeholder for RequestToPayTransaction, assuming it's a page component */}
               <Route path="/request-to-pay-transaction/:id" element={<div>RequestToPayTransaction Page Placeholder</div>} />
               <Route path="/payments-relationships/add-agent" element={<AddAgent />} />
-              <Route path="/portal-records/:id" element={<PortalUserDetail />} />
             </Route>
 
             {/* Fallback for undefined routes */}

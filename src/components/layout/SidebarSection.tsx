@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -8,16 +7,20 @@ interface SidebarSectionProps {
   title?: string;
   items: NavItem[];
   className?: string;
+  onChatAIOpen?: () => void;
 }
 
 export function SidebarSection({
   title,
   items,
-  className
+  className,
+  onChatAIOpen
 }: SidebarSectionProps) {
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  console.log("SidebarSection rendering. Items:", items);
 
   // Initialize Invoices as expanded if user is on invoices page
   useEffect(() => {
@@ -122,21 +125,22 @@ export function SidebarSection({
 
           return (
             <Link 
-              key={item.title} 
+              key={item.id || item.title} 
               to={item.href || "#"} 
               className={cn(
                 "flex items-center gap-3 px-3 py-3 text-sm rounded-md transition-colors w-full",
                 "text-[#3F4758] hover:bg-[#F4F4F7]",
-                isActive && "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
+                isActive && "bg-[#F0EDFF] text-[#7B59FF] font-semibold",
+                item.id === "chat-ai-nav" && "bg-blue-100 border border-blue-500"
               )}
+              onClick={item.id === "chat-ai-nav" && onChatAIOpen ? onChatAIOpen : undefined}
             >
               {item.icon && (
-                <item.icon 
-                  size={20} 
-                  className={isActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
-                />
+                typeof item.icon === 'function' 
+                  ? item.icon() 
+                  : React.createElement(item.icon, { size: 20, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]" })
               )}
-              <span className="font-medium">{item.title}</span>
+              <span className="font-medium">{item.id === "chat-ai-nav" ? "Chat AI" : item.title}</span>
             </Link>
           );
         })}
