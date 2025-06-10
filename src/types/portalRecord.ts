@@ -1,4 +1,3 @@
-
 export interface PortalRecord {
   id: string;
   portal: string;
@@ -13,4 +12,9 @@ export interface PortalRecord {
   supplierName: string;
   type: 'Primary' | 'Alternate' | 'Unmatched' | 'Conflict';
   currency?: string;
+  companyName: string;
+  accountName: string;
+  recordType: string;
+  connectionStatus: string;
+  lastSyncDate: string;
 }

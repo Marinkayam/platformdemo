@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Agent } from "@/types/smartConnection";
-import { AgentStatusBadge } from "@/components/ui/agent-status-badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from "@/components/ui/agent-user-type-badge";
 import { toast } from "@/hooks/use-toast";
 import { AccountTypeSection } from "./AccountTypeSection";
@@ -81,7 +80,7 @@ export function EditAgentModal({
             <DialogTitle className="text-lg font-semibold text-gray-900">
               Edit Agent
             </DialogTitle>
-            <AgentStatusBadge status={agent.status} />
+            <StatusBadge status={agent.status} />
             <AgentUserTypeBadge type={agent.type} />
           </div>
           

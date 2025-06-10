@@ -1,4 +1,3 @@
-
 import { MoreVertical, FileLock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Agent, SmartConnection } from "@/types/smartConnection";
 import { AgentIssueBanner } from "./AgentIssueBanner";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 interface AgentTableRowProps {
   agent: Agent;
@@ -15,23 +15,6 @@ interface AgentTableRowProps {
 }
 
 export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAgent }: AgentTableRowProps) {
-  const getAgentStatusColor = (status: string) => {
-    switch (status) {
-      case "Connected":
-        return "bg-green-50 text-green-700 border-green-200";
-      case "Disconnected":
-        return "bg-red-50 text-red-700 border-red-200";
-      case "Error":
-        return "bg-red-50 text-red-700 border-red-200";
-      case "Validating":
-        return "bg-blue-50 text-blue-700 border-blue-200";
-      case "Building":
-        return "bg-blue-50 text-blue-700 border-blue-200";
-      default:
-        return "bg-gray-50 text-gray-700 border-gray-200";
-    }
-  };
-
   const getUserTypeColor = (type: string) => {
     switch (type) {
       case "Monto":
@@ -62,12 +45,7 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
         </div>
       </TableCell>
       <TableCell className="px-6 py-3">
-        <Badge 
-          variant="outline"
-          className={`rounded-full px-2.5 py-1 text-xs font-medium ${getAgentStatusColor(agent.status)}`}
-        >
-          {agent.status}
-        </Badge>
+        <StatusBadge status={agent.status} />
       </TableCell>
       <TableCell className="px-6 py-3">
         <Badge 

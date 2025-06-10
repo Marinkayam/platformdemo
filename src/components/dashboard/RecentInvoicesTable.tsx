@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UniversalStatusBadge } from "@/components/ui/universal-status-badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { formatCurrency } from "@/lib/utils";
 import { Invoice } from "@/types/invoice";
 import { getRandomPortalName } from "@/lib/portalUtils";
@@ -68,9 +68,7 @@ export function RecentInvoicesTable({ invoices }: RecentInvoicesTableProps) {
                 <TableCell>{invoice.category}</TableCell>
                 <TableCell className="font-medium">{invoice.price}</TableCell>
                 <TableCell>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}>
-                    {invoice.status}
-                  </span>
+                  <StatusBadge status={invoice.status} />
                 </TableCell>
                 <TableCell>
                   <Button variant="ghost" size="sm" className="h-8 w-8 p-0">

@@ -11,6 +11,7 @@ import {
 import { MoreVertical, User, FileText } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 interface RequestToPayTransactionHeaderProps {
   invoiceId: string;
@@ -36,33 +37,13 @@ export function RequestToPayTransactionHeader({
   actions,
   className,
 }: RequestToPayTransactionHeaderProps) {
-  const getStatusStyles = (status: string) => {
-    switch (status) {
-      case "Paid":
-        return "bg-green-100 text-green-700 border-green-200";
-      case "Pending":
-        return "bg-yellow-100 text-yellow-700 border-yellow-200";
-      case "Declined":
-        return "bg-red-100 text-red-700 border-red-200";
-      default:
-        return "bg-gray-100 text-gray-700 border-gray-200";
-    }
-  };
-
   return (
     <Card className={cn("w-full shadow-sm", className)}>
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <span className="text-lg font-bold text-gray-900">{invoiceId}</span>
-            <Badge
-              className={cn(
-                "inline-flex items-center px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap border",
-                getStatusStyles(status)
-              )}
-            >
-              {status}
-            </Badge>
+            <StatusBadge status={status as any} />
           </div>
           {actions && actions.length > 0 && (
             <DropdownMenu>

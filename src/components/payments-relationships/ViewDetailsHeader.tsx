@@ -1,8 +1,7 @@
-
 import React from "react";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { AgentStatusBadge } from "@/components/ui/agent-status-badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from "@/components/ui/agent-user-type-badge";
 import { Agent } from "@/types/smartConnection";
 
@@ -21,7 +20,7 @@ export function ViewDetailsHeader({ agent, connectionInfo }: ViewDetailsHeaderPr
         <DialogTitle className="text-lg font-semibold text-gray-900">
           Agent Details
         </DialogTitle>
-        <AgentStatusBadge status={agent.status} />
+        <StatusBadge status={agent.status} />
         <AgentUserTypeBadge type={agent.type} />
       </div>
       

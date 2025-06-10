@@ -3,43 +3,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Search, Building } from 'lucide-react';
+import { getPortalLogoUrl } from "@/lib/utils";
 
 interface PortalOption {
   id: string;
   name: string;
   category: 'popular' | 'other';
 }
-
-const getPortalLogoUrl = (portalName: string): string => {
-  const logoMap: { [key: string]: string } = {
-    "Coupa": "coupa.png",
-    "SAP Ariba": "ariba.png",
-    "Oracle Procurement": "oracle.png",
-    "Jaggaer": "jagger.png",
-    "SAP Concur": "Amazon Payee.png", // This will now use the Amazon logo
-    "Workday": "generic-a.png", // Placeholder if no specific logo
-    "NetSuite": "generic-circles.png", // Placeholder if no specific logo
-    "Amazon Payee": "Amazon Payee.png",
-    "Apple": "apple.png",
-    "AT&T": "AT&T.png",
-    "Bill": "bill.png",
-    "Facturaxion": "Facturaxion.png",
-    "Fieldglass": "Fieldglass.png",
-    "iSupplier": "iSupplier.png",
-    "KissFlow": "KissFlow.png",
-    "Qualcomm": "Qualcomm.png",
-    "Sainsburys": "Sainsburys.png",
-    "Segment": "Segment.png",
-    "Shopify": "shopify.png",
-    "StoreNext": "StoreNext.png",
-    "Taulia": "taulia.png",
-    "Teradata": "Teradata.png",
-    "Tipalti": "tipalti.png",
-    "Tungsten": "tungsten.png",
-    "Walmart": "walmart.png",
-  };
-  return `/portal-logos/${logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png'}`;
-};
 
 const portals: PortalOption[] = [
   { id: 'coupa', name: 'Coupa', category: 'popular' },
@@ -114,7 +84,7 @@ export function PortalSelection({ value, onChange }: PortalSelectionProps) {
                 <SelectItem key={portal.id} value={portal.id} className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded-full bg-background-paper flex items-center justify-center overflow-hidden border border-grey-300">
-                      <img src={getPortalLogoUrl(portal.name)} alt={`${portal.name} logo`} className="w-full h-full object-contain" />
+                      <img src={getPortalLogoUrl(portal.name)} alt={`${portal.name} logo`} className="w-full h-full object-contain" width={24} height={24} />
                     </div>
                     {portal.name}
                   </div>
@@ -131,7 +101,7 @@ export function PortalSelection({ value, onChange }: PortalSelectionProps) {
                 <SelectItem key={portal.id} value={portal.id} className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded-full bg-background-paper flex items-center justify-center overflow-hidden border border-grey-300">
-                      <img src={getPortalLogoUrl(portal.name)} alt={`${portal.name} logo`} className="w-full h-full object-contain" />
+                      <img src={getPortalLogoUrl(portal.name)} alt={`${portal.name} logo`} className="w-full h-full object-contain" width={24} height={24} />
                     </div>
                     {portal.name}
                   </div>

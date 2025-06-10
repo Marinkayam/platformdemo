@@ -1,45 +1,16 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PurchaseOrder } from "@/types/purchaseOrder";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, getPortalLogoUrl } from "@/lib/utils";
 import { PurchaseOrderTableFooter } from "./table/PurchaseOrderTableFooter";
 import { PurchaseOrderTableHeader } from "./table/PurchaseOrderTableHeader";
 import { useSortedPurchaseOrders } from "@/hooks/useSortedPurchaseOrders";
-import { PurchaseOrderStatusBadge } from "./PurchaseOrderStatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigate } from "react-router-dom";
 
 interface PurchaseOrderTableProps {
   purchaseOrders: PurchaseOrder[];
 }
-
-const getPortalLogoUrl = (portalName: string): string => {
-  const logoMap: { [key: string]: string } = {
-    "SAP Ariba": "ariba.png",
-    "Coupa": "coupa.png",
-    "Oracle Procurement": "oracle.png",
-    "Tipalti": "tipalti.png",
-    "Jaggaer": "jagger.png",
-    "Amazon Payee": "Amazon Payee.png",
-    "Apple": "apple.png",
-    "AT&T": "AT&T.png",
-    "Bill.com": "bill.png",
-    "Facturaxion": "Facturaxion.png",
-    "Fieldglass": "Fieldglass.png",
-    "iSupplier": "iSupplier.png",
-    "KissFlow": "KissFlow.png",
-    "Qualcomm": "Qualcomm.png",
-    "Sainsburys": "Sainsburys.png",
-    "Segment": "Segment.png",
-    "Shopify": "Shopify.png",
-    "StoreNext": "StoreNext.png",
-    "Taulia": "taulia.png",
-    "Teradata": "Teradata.png",
-    "Tungsten": "tungsten.png",
-    "Walmart": "walmart.png",
-  };
-  const fileName = logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png';
-  return `/portal-logos/${fileName}`;
-};
 
 export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) {
   const navigate = useNavigate();
@@ -103,7 +74,7 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
                     </TooltipProvider>
                   </TableCell>
                   <TableCell>
-                    <PurchaseOrderStatusBadge status={po.status} />
+                    <StatusBadge status={po.status} />
                   </TableCell>
                   <TableCell className="truncate">
                     <TooltipProvider>
@@ -114,9 +85,11 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
                               src={getPortalLogoUrl(po.portal)} 
                               alt={`${po.portal} logo`}
                               className="w-5 h-5 object-contain rounded-full"
+                              width={20}
+                              height={20}
                               onError={(e) => {
                                 e.currentTarget.onerror = null; 
-                                e.currentTarget.src = '/portal-logos/default.png';
+                                e.currentTarget.src = '/portal-logos/placeholder.svg';
                               }}
                             />
                             {po.portal}

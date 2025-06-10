@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
 import { PaymentsRelationshipStatusBadge } from "@/components/payments-relationships/PaymentsRelationshipStatusBadge";
 import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
 import { ActiveFiltersList } from "@/components/invoices/filters/ActiveFiltersList";
@@ -62,6 +61,9 @@ import MontoIcon from "@/components/MontoIcon";
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { RequestToPayTransactionHeader } from "@/components/ui/request-to-pay-transaction-header";
+import { TableSystem } from "@/components/ui/TableSystem";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { formatCurrency, getPortalLogoUrl, formatOwnerName } from "@/lib/utils";
 
 interface SidebarItem {
   id: string;
@@ -154,7 +156,8 @@ export default function DesignSystemPlayground() {
     portal: [],
     transactionType: "All",
     owner: [],
-    search: ""
+    search: "",
+    userType: []
   });
 
   // Table sort state
@@ -173,6 +176,18 @@ export default function DesignSystemPlayground() {
   const [selectedRadioOption, setSelectedRadioOption] = useState<string>("left");
 
   const navigate = useNavigate();
+
+  // Preload portal logos
+  useEffect(() => {
+    const portalLogos = [
+      "SAP Ariba", "Coupa", "Bill", "Oracle Procurement", "Amazon Payee", "Apple", "Tipalti"
+    ];
+    
+    portalLogos.forEach(portal => {
+      const img = new Image();
+      img.src = getPortalLogoUrl(portal);
+    });
+  }, []);
 
   const handleSort = (field: string) => {
     if (sortField === field) {
@@ -251,70 +266,88 @@ export default function DesignSystemPlayground() {
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Status Colors</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <ColorSwatch 
-            name="success-main" 
-            description="Green for success states" 
-            hex="#007737" 
-            className="bg-success-main" 
+            name="Status: Success" 
+            description="For successful operations" 
+            hex="#10B981" 
+            className="bg-green-500" 
           />
           <ColorSwatch 
-            name="error-main" 
-            description="Red for error states" 
-            hex="#DF1C41" 
-            className="bg-error-main" 
+            name="Status: Warning" 
+            description="For warnings or caution" 
+            hex="#F59E0B" 
+            className="bg-yellow-500" 
           />
           <ColorSwatch 
-            name="warning-main" 
-            description="Orange for warning states" 
-            hex="#F2AE40" 
-            className="bg-warning-main" 
+            name="Status: Error" 
+            description="For errors or critical issues" 
+            hex="#EF4444" 
+            className="bg-red-500" 
           />
           <ColorSwatch 
-            name="info-main" 
-            description="Blue for information" 
-            hex="#375DFB" 
-            className="bg-info-main" 
+            name="Status: Info" 
+            description="For general information" 
+            hex="#3B82F6" 
+            className="bg-blue-500" 
           />
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Grey Scale</h2>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Grey Colors</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <ColorSwatch 
-            name="grey-900" 
-            description="Near black for maximum contrast" 
-            hex="#061237" 
-            className="bg-grey-900" 
-          />
-          <ColorSwatch 
-            name="grey-800" 
-            description="Very dark grey for primary text" 
-            hex="#38415F" 
-            className="bg-grey-800" 
-          />
-          <ColorSwatch 
-            name="grey-600" 
-            description="Darker grey for body text" 
-            hex="#818799" 
-            className="bg-grey-600" 
-          />
-          <ColorSwatch 
-            name="grey-400" 
-            description="Medium grey for borders" 
-            hex="#E6E7EB" 
-            className="bg-grey-400" 
+            name="grey-100" 
+            description="Lightest grey for backgrounds" 
+            hex="#F6F7F9" 
+            className="bg-grey-100" 
           />
           <ColorSwatch 
             name="grey-200" 
-            description="Light grey for backgrounds" 
-            hex="#F4F6F8" 
+            description="Light grey for borders and dividers" 
+            hex="#E6E7EB" 
             className="bg-grey-200" 
           />
           <ColorSwatch 
-            name="grey-0" 
-            description="Pure white" 
-            hex="#FFFFFF" 
-            className="bg-grey-0 border-2" 
+            name="grey-300" 
+            description="Medium grey for secondary text" 
+            hex="#D3D6DB" 
+            className="bg-grey-300" 
+          />
+          <ColorSwatch 
+            name="grey-400" 
+            description="Dark grey for text and icons" 
+            hex="#B6B9BF" 
+            className="bg-grey-400" 
+          />
+          <ColorSwatch 
+            name="grey-500" 
+            description="Darker grey for primary text" 
+            hex="#818799" 
+            className="bg-grey-500" 
+          />
+          <ColorSwatch 
+            name="grey-600" 
+            description="Darkest grey for headings" 
+            hex="#545B6D" 
+            className="bg-grey-600" 
+          />
+          <ColorSwatch 
+            name="grey-700" 
+            description="Very dark grey" 
+            hex="#363A45" 
+            className="bg-grey-700" 
+          />
+          <ColorSwatch 
+            name="grey-800" 
+            description="Almost black" 
+            hex="#1F2128" 
+            className="bg-grey-800" 
+          />
+          <ColorSwatch 
+            name="grey-900" 
+            description="True black" 
+            hex="#000000" 
+            className="bg-grey-900 text-white" 
           />
         </div>
       </div>
@@ -326,32 +359,30 @@ export default function DesignSystemPlayground() {
       <div>
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Headings</h2>
         <div className="space-y-4">
-          <TypographyExample variant="H1" example="The quick brown fox jumps" className="text-6xl font-medium text-grey-900" />
-          <TypographyExample variant="H2" example="The quick brown fox jumps" className="text-5xl font-medium text-grey-900" />
-          <TypographyExample variant="H3" example="The quick brown fox jumps" className="text-2xl font-medium text-grey-900" />
-          <TypographyExample variant="H4" example="The quick brown fox jumps" className="text-xl font-bold text-grey-900" />
-          <TypographyExample variant="H5" example="The quick brown fox jumps" className="text-lg font-semibold text-grey-900" />
-          <TypographyExample variant="H6" example="The quick brown fox jumps" className="text-base font-medium text-grey-900" />
+          <TypographyExample variant="H1" example="Heading 1 Example" className="text-5xl font-extrabold" />
+          <TypographyExample variant="H2" example="Heading 2 Example" className="text-4xl font-bold" />
+          <TypographyExample variant="H3" example="Heading 3 Example" className="text-3xl font-semibold" />
+          <TypographyExample variant="H4" example="Heading 4 Example" className="text-2xl font-semibold" />
+          <TypographyExample variant="H5" example="Heading 5 Example" className="text-xl font-semibold" />
+          <TypographyExample variant="H6" example="Heading 6 Example" className="text-lg font-semibold" />
         </div>
       </div>
 
       <div>
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Body Text</h2>
         <div className="space-y-4">
-          <TypographyExample variant="Body Large" example="The quick brown fox jumps over the lazy dog" className="text-lg font-normal text-grey-700" />
-          <TypographyExample variant="Body Default" example="The quick brown fox jumps over the lazy dog" className="text-base font-normal text-grey-700" />
-          <TypographyExample variant="Body Small" example="The quick brown fox jumps over the lazy dog" className="text-sm font-normal text-grey-700" />
-          <TypographyExample variant="Caption" example="The quick brown fox jumps over the lazy dog" className="text-xs font-normal text-grey-600" />
+          <TypographyExample variant="Lead" example="This is a lead paragraph for prominent text." className="text-xl text-grey-700" />
+          <TypographyExample variant="Paragraph" example="This is a standard paragraph for general content." className="text-base text-grey-600" />
+          <TypographyExample variant="Small" example="This is small text for secondary information." className="text-sm text-grey-500" />
+          <TypographyExample variant="Extra Small" example="This is extra small text for fine print or captions." className="text-xs text-grey-400" />
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Utility Text</h2>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Links</h2>
         <div className="space-y-4">
-          <TypographyExample variant="Label" example="Form Label" className="text-sm font-medium text-grey-800" />
-          <TypographyExample variant="Overline" example="CATEGORY LABEL" className="text-xs font-medium uppercase tracking-wide text-grey-600" />
-          <TypographyExample variant="Helper Text" example="This is helper text for forms" className="text-xs font-normal text-grey-500" />
-          <TypographyExample variant="Subheading" example="Section Subheading" className="text-lg font-semibold text-grey-800" />
+          <TypographyExample variant="Link" example="This is a primary link example" className="text-primary-main hover:underline cursor-pointer" />
+          <TypographyExample variant="Secondary Link" example="This is a secondary link example" className="text-grey-600 hover:text-primary-main hover:underline cursor-pointer" />
         </div>
       </div>
     </div>
@@ -360,137 +391,64 @@ export default function DesignSystemPlayground() {
   const renderSpacingLayout = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Spacing Scale</h2>
-        <div className="space-y-6">
-          {[
-            { name: "xs", value: "0.25rem", pixels: "4px", class: "p-1", token: "--space-xs" },
-            { name: "sm", value: "0.5rem", pixels: "8px", class: "p-2", token: "--space-sm" },
-            { name: "md", value: "1rem", pixels: "16px", class: "p-4", token: "--space-md" },
-            { name: "lg", value: "1.5rem", pixels: "24px", class: "p-6", token: "--space-lg" },
-            { name: "xl", value: "2rem", pixels: "32px", class: "p-8", token: "--space-xl" },
-            { name: "2xl", value: "3rem", pixels: "48px", class: "p-12", token: "--space-2xl" },
-          ].map((space) => (
-            <div key={space.name} className="border border-grey-300 rounded-lg p-4 bg-background-paper">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-grey-900">{space.name}</span>
-                  <span className="text-xs font-mono text-grey-600 bg-grey-200 px-2 py-1 rounded">{space.token}</span>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Basic Spacing</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-primary-lighter p-4 rounded-md text-primary-darker font-medium text-center">
+            <p className="mb-2">Small (p-4)</p>
+            <div className="w-12 h-12 bg-primary-light mx-auto rounded-md"></div>
                 </div>
-                <span className="text-sm text-grey-600">{space.value} ({space.pixels})</span>
+          <div className="bg-primary-lighter p-6 rounded-md text-primary-darker font-medium text-center">
+            <p className="mb-2">Medium (p-6)</p>
+            <div className="w-16 h-16 bg-primary-light mx-auto rounded-md"></div>
               </div>
-              <div className="bg-grey-200 rounded-md p-2 border-2 border-dashed border-grey-400">
-                <div className={`bg-primary-lighter rounded-md ${space.class} border-2 border-dashed border-primary-main`}>
-                  <div className="bg-primary-main rounded-md h-6 text-center text-primary-contrast-text text-xs leading-6 font-medium">
-                    Content Area
+          <div className="bg-primary-lighter p-8 rounded-md text-primary-darker font-medium text-center">
+            <p className="mb-2">Large (p-8)</p>
+            <div className="w-20 h-20 bg-primary-light mx-auto rounded-md"></div>
                   </div>
+          <div className="bg-primary-lighter p-10 rounded-md text-primary-darker font-medium text-center">
+            <p className="mb-2">Extra Large (p-10)</p>
+            <div className="w-24 h-24 bg-primary-light mx-auto rounded-md"></div>
                 </div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Grid Layout Examples</h2>
-        <div className="space-y-8">
-          {/* Single Item Grid */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Single Item Grid</CardTitle>
-              <CardDescription>grid-cols-1 with gap-4 spacing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
-                <div className="bg-primary-lighter border border-primary-light rounded-lg p-6 text-center text-primary-main font-medium relative">
-                  <span className="absolute top-2 left-2 text-xs bg-primary-main text-primary-contrast-text px-2 py-1 rounded">gap-4</span>
-                  Single Grid Item (100% width)
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Gap Spacing</h2>
+        <div className="space-y-4">
+          <p className="font-medium text-grey-800">Gap-2</p>
+          <div className="flex gap-2 p-4 bg-grey-100 rounded-md">
+            <div className="w-10 h-10 bg-primary-light rounded-md"></div>
+            <div className="w-10 h-10 bg-primary-light rounded-md"></div>
+            <div className="w-10 h-10 bg-primary-light rounded-md"></div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Two Items Grid */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Two Items Grid (50/50)</CardTitle>
-              <CardDescription>grid-cols-2 with gap-4 spacing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
-                {[1, 2].map((item) => (
-                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-6 text-center text-primary-main font-medium relative">
-                    {item === 1 && <span className="absolute top-2 left-2 text-xs bg-primary-main text-primary-contrast-text px-2 py-1 rounded">gap-4</span>}
-                    Item {item} (50% width)
+          <p className="font-medium text-grey-800">Gap-4</p>
+          <div className="flex gap-4 p-4 bg-grey-100 rounded-md">
+            <div className="w-10 h-10 bg-primary-light rounded-md"></div>
+            <div className="w-10 h-10 bg-primary-light rounded-md"></div>
+            <div className="w-10 h-10 bg-primary-light rounded-md"></div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Three Items Grid */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Three Items Grid (Equal Thirds)</CardTitle>
-              <CardDescription>grid-cols-3 with gap-4 spacing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-4 text-center text-primary-main font-medium relative">
-                    {item === 1 && <span className="absolute top-1 left-1 text-xs bg-primary-main text-primary-contrast-text px-1 py-0.5 rounded">gap-4</span>}
-                    Item {item}
+          <p className="font-medium text-grey-800">Gap-8</p>
+          <div className="flex gap-8 p-4 bg-grey-100 rounded-md">
+            <div className="w-10 h-10 bg-primary-light rounded-md"></div>
+            <div className="w-10 h-10 bg-primary-light rounded-md"></div>
+            <div className="w-10 h-10 bg-primary-light rounded-md"></div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Four Items Grid */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Four Items Grid</CardTitle>
-              <CardDescription>grid-cols-2 lg:grid-cols-4 with gap-4 spacing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 border-2 border-dashed border-grey-300 p-4 rounded-lg">
-                {[1, 2, 3, 4].map((item) => (
-                  <div key={item} className="bg-primary-lighter border border-primary-light rounded-lg p-4 text-center text-primary-main font-medium relative">
-                    {item === 1 && <span className="absolute top-1 left-1 text-xs bg-primary-main text-primary-contrast-text px-1 py-0.5 rounded">gap-4</span>}
-                    Item {item}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Card with Padding Visualization</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            { name: "Standard Card", padding: "p-6", token: "--space-6", pixels: "24px" },
-            { name: "Compact Card", padding: "p-4", token: "--space-4", pixels: "16px" },
-          ].map((card) => (
-            <Card key={card.name} className="border-2 border-dashed border-primary-light">
-              <CardHeader className={`${card.padding} border-2 border-dashed border-grey-400 bg-grey-100`}>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  {card.name}
-                  <span className="text-xs font-mono bg-primary-main text-primary-contrast-text px-2 py-1 rounded">
-                    {card.token}
-                  </span>
-                </CardTitle>
-                <CardDescription>
-                  Using {card.padding} class ({card.pixels} padding)
-                </CardDescription>
-              </CardHeader>
-              <CardContent className={`${card.padding} border-2 border-dashed border-success-light bg-success-lighter`}>
-                <p className="text-grey-700">
-                  Content area showing the visual padding space around text and elements.
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Margin Spacing</h2>
+        <div className="space-y-4">
+          <div className="bg-grey-100 p-4 rounded-md">
+            <div className="w-24 h-12 bg-primary-light rounded-md mx-auto mb-4"></div>
+            <p className="text-sm text-grey-700 text-center">Element with mb-4</p>
+          </div>
+          <div className="bg-grey-100 p-4 rounded-md">
+            <div className="w-24 h-12 bg-primary-light rounded-md mx-auto mt-6"></div>
+            <p className="text-sm text-grey-700 text-center">Element with mt-6</p>
+          </div>
         </div>
       </div>
     </div>
@@ -499,78 +457,38 @@ export default function DesignSystemPlayground() {
   const renderButtons = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Button Variants</h2>
-        <div className="flex flex-wrap gap-4">
-          <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="destructive">Destructive</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="link">Link</Button>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Primary Buttons</h2>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary Button</Button>
+          <Button disabled className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary Disabled</Button>
+          <Button variant="outline" className="border-primary-main text-primary-main hover:bg-primary-lighter">Primary Outline</Button>
+          <Button variant="ghost" className="text-primary-main hover:bg-primary-lighter">Primary Ghost</Button>
+          <Button variant="link" className="text-primary-main">Primary Link</Button>
+          <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Small Button</Button>
+          <Button size="lg" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Large Button</Button>
+          <Button size="icon" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text"><Search size={16} /></Button>
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Button Sizes</h2>
-        <div className="flex flex-wrap gap-4 items-center">
-          <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Small</Button>
-          <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Default</Button>
-          <Button size="lg" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Large</Button>
-          <Button size="icon" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text"><Settings /></Button>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Secondary Buttons</h2>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button className="bg-grey-700 hover:bg-grey-800 text-primary-contrast-text">Secondary Button</Button>
+          <Button disabled className="bg-grey-700 hover:bg-grey-800 text-primary-contrast-text">Secondary Disabled</Button>
+          <Button variant="outline" className="border-grey-400 text-grey-700 hover:bg-grey-100">Secondary Outline</Button>
+          <Button variant="ghost" className="text-grey-700 hover:bg-grey-100">Secondary Ghost</Button>
+          <Button variant="link" className="text-grey-700">Secondary Link</Button>
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Button Groups & Selection</h2>
-        
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-medium text-grey-800 mb-3">Simple Button Group</h3>
-            <div className="flex gap-2">
-              <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary</Button>
-              <Button variant="outline">Secondary</Button>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-medium text-grey-800 mb-3">Radio Button Selection</h3>
-            <RadioGroup value={selectedOption} onValueChange={setSelectedOption} className="flex gap-4">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option1" id="option1" />
-                <Label htmlFor="option1">Option 1</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option2" id="option2" />
-                <Label htmlFor="option2">Option 2</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option3" id="option3" />
-                <Label htmlFor="option3">Option 3</Label>
-              </div>
-            </RadioGroup>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-medium text-grey-800 mb-3">Multi-Selection</h3>
-            <div className="flex flex-wrap gap-2">
-              {["Option A", "Option B", "Option C", "Option D"].map((option) => (
-                <div key={option} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={option}
-                    checked={selectedMultiple.includes(option)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedMultiple([...selectedMultiple, option]);
-                      } else {
-                        setSelectedMultiple(selectedMultiple.filter(item => item !== option));
-                      }
-                    }}
-                  />
-                  <Label htmlFor={option}>{option}</Label>
-                </div>
-              ))}
-            </div>
-          </div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Destructive Buttons</h2>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button variant="destructive">Destructive Button</Button>
+          <Button disabled variant="destructive">Destructive Disabled</Button>
+          <Button variant="outline" className="border-red-500 text-red-500 hover:bg-red-50">Destructive Outline</Button>
+          <Button variant="ghost" className="text-red-500 hover:bg-red-50">Destructive Ghost</Button>
+          <Button variant="link" className="text-red-500">Destructive Link</Button>
         </div>
       </div>
     </div>
@@ -579,45 +497,35 @@ export default function DesignSystemPlayground() {
   const renderStatusBadges = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Status Badges</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {[
-            "Paid",
-            "Pending Action", 
-            "Settled",
-            "Rejected by Buyer",
-            "Rejected by Monto",
-            "Approved by Buyer",
-            "RTP Prepared",
-            "RTP Sent",
-            "Awaiting SC",
-            "External Submission",
-            "Partially Settled",
-            "Excluded"
-          ].map((status) => (
-            <div key={status} className="space-y-2 p-3 border border-grey-300 rounded-lg bg-background-paper">
-              <StatusBadge status={status as any} />
-              <p className="text-xs text-grey-600">{status}</p>
-            </div>
-          ))}
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Status Badges</h2>
+        <div className="flex flex-wrap items-center gap-4">
+          <StatusBadge status="Connected" />
+          <StatusBadge status="Validating" />
+          <StatusBadge status="Disconnected" />
+          <StatusBadge status="Paid" />
+          <StatusBadge status="Approved by Buyer" />
+          <StatusBadge status="Pending Action" />
+          <StatusBadge status="Awaiting SC" />
+          <StatusBadge status="Rejected by Buyer" />
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Smart Connection Status Badges</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {[
-            "Live",
-            "Inactive", 
-            "Disconnected",
-            "In Process",
-            "Unavailable"
-          ].map((status) => (
-            <div key={status} className="space-y-2 p-3 border border-grey-300 rounded-lg bg-background-paper">
-              <SmartConnectionStatusBadge status={status as "Live" | "Inactive" | "Disconnected" | "In Process" | "Unavailable"} />
-              <p className="text-xs text-grey-600">{status}</p>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Payments Relationship Status Badges</h2>
+        <div className="flex flex-wrap items-center gap-4">
+          <PaymentsRelationshipStatusBadge status="Live" />
+          <PaymentsRelationshipStatusBadge status="In Process" />
+          <PaymentsRelationshipStatusBadge status="Disconnected" />
             </div>
-          ))}
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Generic Badges</h2>
+        <div className="flex flex-wrap items-center gap-4">
+          <Badge>Default</Badge>
+          <Badge variant="secondary">Secondary</Badge>
+          <Badge variant="outline">Outline</Badge>
+          <Badge variant="destructive">Destructive</Badge>
         </div>
       </div>
     </div>
@@ -626,132 +534,239 @@ export default function DesignSystemPlayground() {
   const renderTabNavigation = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Tabs</h2>
-        <div className="bg-background-paper border border-grey-300 rounded-lg p-6">
-          <InvoiceTabs
-            tabs={[
-              { id: "all", label: "All RTPs", count: 1234 },
-              { id: "pending", label: "Pending Action", count: 43 },
-              { id: "overdue", label: "Overdue", count: 12 },
-              { id: "settled", label: "Settled", count: 856 },
-            ]}
-            activeTab={activeInvoiceTab}
-            onTabChange={setActiveInvoiceTab}
-          />
-          
-          <div className="mt-4 p-4 bg-grey-200 rounded-lg">
-            <p className="text-sm text-grey-700">
-              <strong>Active Tab:</strong> {activeInvoiceTab} - This matches the exact styling from the /invoices page with proper underlines, counts, and hover states.
-            </p>
-          </div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Standard Tabs</h2>
+        <Tabs defaultValue="tab1" className="w-[400px]">
+          <TabsList>
+            <TabsTrigger value="tab1">Overview</TabsTrigger>
+            <TabsTrigger value="tab2">Settings</TabsTrigger>
+            <TabsTrigger value="tab3">Activity</TabsTrigger>
+          </TabsList>
+          <TabsContent value="tab1" className="mt-4 text-grey-700">Content for Overview tab.</TabsContent>
+          <TabsContent value="tab2" className="mt-4 text-grey-700">Content for Settings tab.</TabsContent>
+          <TabsContent value="tab3" className="mt-4 text-grey-700">Content for Activity tab.</TabsContent>
+        </Tabs>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Tabs Example</h2>
+        <InvoiceTabs
+          activeTab={activeInvoiceTab} 
+          onTabChange={setActiveInvoiceTab}
+          tabs={[
+            { id: "all", label: "All RTPs", count: 1234 },
+            { id: "pending", label: "Pending Action", count: 43 },
+            { id: "overdue", label: "Overdue", count: 12 },
+            { id: "settled", label: "Settled", count: 856 },
+          ]}
+        />
+        <div className="p-6">
+          <p className="text-grey-700">Content for active invoice tab: {activeInvoiceTab}</p>
         </div>
       </div>
     </div>
   );
 
-  const renderFilterComponents = () => (
+  const renderFilterComponents = () => {
+    const mockOptions = ["Option 1", "Option 2", "Option 3"];
+    const mockPortals = ["SAP Ariba", "Coupa", "Bill", "Oracle Procurement"];
+    const mockStatuses = ["Connected", "Validating", "Disconnected"];
+    const mockUserTypes = ["Monto", "External"];
+    const mockOwners = ["John Doe", "Jane Smith", "Mike Johnson"];
+
+    return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Filter Components</h2>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Interactive Filter System</CardTitle>
-            <CardDescription>Functional filters with state management and removable chips</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Filter Controls */}
-            <div className="flex flex-wrap items-center gap-3">
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Filter Dropdowns</h2>
+          <div className="flex flex-wrap gap-4">
               <FilterDropdown
                 label="Status"
+              options={mockStatuses}
                 value={filters.status}
-                options={["All", "Paid", "Pending Action", "Settled", "Rejected by Buyer", "Approved by Buyer"]}
-                onSelect={(value) => handleFilterChange("status", value)}
+              onSelect={(value) => handleFilterChange('status', value)}
                 multiSelect
               />
-              
               <FilterDropdown
                 label="Portal"
+              options={mockPortals}
                 value={filters.portal}
-                options={["All", "Ariba", "Coupa", "Oracle", "Concur", "Bill"]}
-                onSelect={(value) => handleFilterChange("portal", value)}
+              onSelect={(value) => handleFilterChange('portal', value)}
                 multiSelect
                 searchable
               />
-              
               <FilterDropdown
-                label="Buyer"
-                value={filters.buyer}
-                options={["All", "Acme Corp", "Global Inc", "Tech Solutions", "Manufacturing Co"]}
-                onSelect={(value) => handleFilterChange("buyer", value)}
+              label="User Type"
+              options={mockUserTypes}
+              value={filters.userType as string[]}
+              onSelect={(value) => handleFilterChange('userType', value)}
                 multiSelect
-                searchable
               />
-              
               <FilterDropdown
                 label="Owner"
+              options={mockOwners}
                 value={filters.owner}
-                options={["All", "John Doe", "Jane Smith", "Mike Johnson", "Sarah Wilson"]}
-                onSelect={(value) => handleFilterChange("owner", value)}
-              />
-              
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-grey-400 h-4 w-4" />
-                <Input
-                  placeholder="Search invoices..."
-                  value={filters.search}
-                  onChange={(e) => handleFilterChange("search", e.target.value)}
-                  className="pl-10 w-64 h-9 border border-grey-400 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-main focus:border-primary-main"
+              onSelect={(value) => handleFilterChange('owner', value)}
+              multiSelect
+            />
+            <FilterDropdown 
+              label="Transaction Type"
+              options={["Invoice", "Credit Memo", "All"]}
+              value={filters.transactionType}
+              onSelect={(value) => handleFilterChange('transactionType', value)}
                 />
               </div>
             </div>
             
-            {/* Active Filters */}
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Active Filters List</h2>
             <ActiveFiltersList 
               filters={filters}
               onRemoveFilter={handleRemoveFilter}
             />
-            
-            {/* Filter Description */}
-            <div className="text-sm text-grey-600 bg-grey-200 p-4 rounded-lg">
-              <h4 className="font-medium text-grey-800 mb-2">How Filters Work:</h4>
-              <ul className="space-y-1">
-                <li>• Select multiple values in dropdown filters</li>
-                <li>• Use search to find specific invoices</li>
-                <li>• Click filter chips to remove them</li>
-                <li>• Filters are applied in real-time</li>
-                <li>• Combine multiple filters for precise results</li>
-              </ul>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
+  };
 
   const renderTableSystem = () => {
-    const sampleData = [
-      { id: 1, number: "INV-001", buyer: "Acme Corp", status: "Paid", portal: "Ariba", total: 250000, owner: "John Doe" },
-      { id: 2, number: "INV-002", buyer: "Global Inc", status: "Pending Action", portal: "Coupa", total: 150000, owner: "Jane Smith" },
-      { id: 3, number: "INV-003", buyer: "Tech Solutions", status: "Settled", portal: "Oracle", total: 350000, owner: "Mike Johnson" },
-      { id: 4, number: "INV-004", buyer: "Manufacturing Co", status: "Rejected by Buyer", portal: "Bill", total: 125000, owner: "Sarah Wilson" },
+    // Mock data for the table system, matching the RTP table structure
+    interface InvoiceData {
+      id: string;
+      number: string;
+      buyer: string;
+      dueDate: string;
+      status: "Paid" | "Pending Action" | "Awaiting SC" | "Rejected by Buyer" | "Settled";
+      portal: string;
+      total: number;
+      currency: string;
+      owner: string;
+      isPendingTab?: boolean;
+    }
+
+    const sampleInvoices: InvoiceData[] = [
+      {
+        id: "1", number: "INV-40230612", buyer: "European Partners GmbH", dueDate: "2024-06-05",
+        status: "Pending Action", portal: "SAP Ariba", total: 4250.80, currency: "EUR", owner: "Anna Mueller"
+      },
+      {
+        id: "2", number: "INV-30230522", buyer: "NewCo Inc", dueDate: "2024-06-10",
+        status: "Pending Action", portal: "SAP Ariba", total: 3350.00, currency: "USD", owner: "Jane Smith"
+      },
+      {
+        id: "3", number: "INV-30230522", buyer: "Global Enterprises", dueDate: "2024-05-10",
+        status: "Pending Action", portal: "Bill.com", total: 3200.75, currency: "USD", owner: "David Clark"
+      },
+      {
+        id: "4", number: "INV-20230402", buyer: "Tech Solutions Ltd", dueDate: "2024-04-20",
+        status: "Pending Action", portal: "Coupa", total: 1750.50, currency: "USD", owner: "Sarah Wilson"
+      },
+      {
+        id: "5", number: "INV-10021301", buyer: "Acme Corporation", dueDate: "2024-04-15",
+        status: "Pending Action", portal: "SAP Ariba", total: 2350.25, currency: "USD", owner: "John Doe"
+      },
+      {
+        id: "6", number: "INV-10032100", buyer: "Tesla", dueDate: "2024-03-01",
+        status: "Pending Action", portal: "Coupa", total: 18000.00, currency: "USD", owner: "Elon"
+      },
+      {
+        id: "7", number: "INV-100121311", buyer: "Google", dueDate: "09/16/2024",
+        status: "Awaiting SC", portal: "Tipalti", total: 15000.50, currency: "USD", owner: "Alice"
+      },
+      {
+        id: "8", number: "INV-100121301", buyer: "Google", dueDate: "09/15/2024",
+        status: "Paid", portal: "Amazon Payee", total: 45000.00, currency: "USD", owner: "Lady Gaga"
+      },
+      {
+        id: "9", number: "INV-100121302", buyer: "Microsoft", dueDate: "09/15/2024",
+        status: "Paid", portal: "Apple", total: 32150.75, currency: "USD", owner: "Lady Gaga"
+      },
     ];
 
-    const renderSortButton = (field: string, label: string) => {
-      const isActive = sortField === field;
-      const SortIcon = !isActive ? ArrowUpDown : sortDirection === 'asc' ? ArrowUp : ArrowDown;
-      
+    const columns = [
+      {
+        key: 'number',
+        label: 'Invoice Number',
+        sticky: true,
+        className: 'w-[180px]',
+        render: (item: InvoiceData) => (
+          <span className="font-semibold">{item.number}</span>
+        ),
+      },
+      {
+        key: 'buyer',
+        label: 'Buyer',
+        className: 'w-[180px]',
+        render: (item: InvoiceData) => item.buyer,
+      },
+      {
+        key: 'dueDate',
+        label: 'Due Date',
+        className: 'w-[150px]',
+        render: (item: InvoiceData) => item.dueDate,
+      },
+      {
+        key: 'status',
+        label: 'Status',
+        className: 'w-[120px] pr-4',
+        render: (item: InvoiceData) => <StatusBadge status={item.status as any} />,
+      },
+      {
+        key: 'portal',
+        label: 'Portal',
+        className: 'w-[200px]',
+        render: (item: InvoiceData) => {
+          const portalLogoUrl = getPortalLogoUrl(item.portal);
       return (
-        <button
-          onClick={() => handleSort(field)}
-          className="flex items-center gap-2 hover:text-grey-900 transition-colors"
-          aria-label={`Sort by ${label}`}
-        >
-          {label}
-          <SortIcon className="h-4 w-4" />
-        </button>
-      );
-    };
+            <div className="flex items-center gap-2">
+              <img
+                src={portalLogoUrl}
+                alt={`${item.portal} logo`}
+                className="w-5 h-5 object-contain rounded-full"
+                width={20}
+                height={20}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/portal-logos/placeholder.svg';
+                }}
+              />
+              <span className="font-medium text-gray-700">{item.portal}</span>
+            </div>
+          );
+        },
+      },
+      {
+        key: 'total',
+        label: 'Total',
+        className: 'w-[180px]',
+        render: (item: InvoiceData) => formatCurrency(item.total, item.currency),
+      },
+      {
+        key: 'owner',
+        label: 'Owner',
+        className: 'w-[150px]',
+        render: (item: InvoiceData) => (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="truncate cursor-help">{formatOwnerName(item.owner)}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{formatOwnerName(item.owner)}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ),
+      },
+      {
+        key: 'actions',
+        label: 'Actions',
+        className: 'w-[80px] text-center',
+        render: (item: InvoiceData) => (
+          <Button variant="ghost" size="sm">
+            <MoreVertical className="h-4 w-4" />
+          </Button>
+        ),
+      },
+    ];
 
     return (
       <div className="space-y-8">
@@ -764,69 +779,19 @@ export default function DesignSystemPlayground() {
               <CardDescription>Full-featured table with sorting, hover effects, and proper styling</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="rounded-xl border overflow-hidden bg-background-paper">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-                        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-grey-200">
-                          {renderSortButton('number', 'Invoice Number')}
-                        </TableHead>
-                        <TableHead>
-                          {renderSortButton('buyer', 'Buyer')}
-                        </TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Portal</TableHead>
-                        <TableHead>
-                          {renderSortButton('total', 'Total')}
-                        </TableHead>
-                        <TableHead>
-                          {renderSortButton('owner', 'Owner')}
-                        </TableHead>
-                        <TableHead className="w-[80px] text-center">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    
-                    <TableBody className="divide-y divide-grey-100">
-                      {sampleData.map((item) => (
-                        <TableRow key={item.id} className="h-[65px] hover:bg-grey-50 cursor-pointer transition-colors">
-                          <TableCell className="sticky left-0 z-10 bg-background-paper border-r border-grey-200 font-medium">
-                            {item.number}
-                          </TableCell>
-                          <TableCell>{item.buyer}</TableCell>
-                          <TableCell>
-                            <StatusBadge status={item.status as any} />
-                          </TableCell>
-                          <TableCell>
-                            <span className="px-2 py-1 bg-grey-200 text-grey-700 rounded text-xs font-medium">
-                              {item.portal}
-                            </span>
-                          </TableCell>
-                          <TableCell className="font-medium">
-                            ${item.total.toLocaleString()}
-                          </TableCell>
-                          <TableCell>{item.owner}</TableCell>
-                          <TableCell className="text-center">
-                            <Button variant="ghost" size="sm">
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
+              <TableSystem<InvoiceData> data={sampleInvoices} columns={columns} />
               
               <div className="mt-4 text-sm text-grey-600 bg-grey-200 p-4 rounded-lg">
                 <h4 className="font-medium text-grey-800 mb-2">Table Features:</h4>
-                <ul className="space-y-1">
-                  <li>• Sortable columns with visual indicators</li>
-                  <li>• Hover effects for better interactivity</li>
-                  <li>• Sticky first column for horizontal scrolling</li>
-                  <li>• Status badges with proper styling</li>
-                  <li>• Action buttons with vertical kebab menu (⋮)</li>
-                  <li>• Proper spacing and typography</li>
+                <ul className="space-y-1 pl-4 list-disc list-inside">
+                  <li>Sorting on Invoice Number, Buyer, Total, Owner</li>
+                  <li>Sticky first column (Invoice Number) for horizontal scrolling</li>
+                  <li>Dynamic status badges for visual clarity</li>
+                  <li>Portal icons with fallback to text/placeholder</li>
+                  <li>Tooltips for full owner names</li>
+                  <li>Hover effects for rows</li>
+                  <li>Consistent padding and typography across cells</li>
+                  <li>Adjustable column widths</li>
                 </ul>
               </div>
             </CardContent>
@@ -912,27 +877,6 @@ export default function DesignSystemPlayground() {
             </Button>
           </CardContent>
         </Card>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Input Focus States</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label>Default State</Label>
-            <Input placeholder="Default input" className="border-grey-400" />
-            <p className="text-xs text-grey-500">No focus - grey border</p>
-          </div>
-          <div className="space-y-2">
-            <Label>Focus State (Single Border)</Label>
-            <Input placeholder="Focused input" className="border-primary-main" />
-            <p className="text-xs text-grey-500">Active focus - single primary border</p>
-          </div>
-          <div className="space-y-2">
-            <Label>Error State</Label>
-            <Input placeholder="Invalid input" className="border-error-main focus:border-error-main" />
-            <p className="text-xs text-error-main">This field is required</p>
-          </div>
-        </div>
       </div>
     </div>
   );

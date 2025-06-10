@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { PaymentsRelationshipStatusBadge } from "./PaymentsRelationshipStatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { ExpandedAgentCard } from "./ExpandedAgentCard";
 import { PaymentsRelationshipsTableFooter } from "./PaymentsRelationshipsTableFooter";
 import { SmartConnection } from "@/types/smartConnection";
@@ -127,7 +127,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                       </div>
                     </TableCell>
                     <TableCell>
-                      <PaymentsRelationshipStatusBadge status={connection.status} />
+                      <StatusBadge status={connection.status} />
                     </TableCell>
                     <TableCell>
                       {highestIssue && (
@@ -148,7 +148,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                           {expandedRows.has(connection.id) ? (
                             <ChevronDown className="h-4 w-4 text-gray-600 transition-transform" />
                           ) : (
-                            <ChevronRight className="h-4 w-4 text-gray-600 transition-transform" />
+                            <ChevronRight className="h-4 w-4" />
                           )}
                           <span className="text-gray-600">
                             {connection.agents.length} agent{connection.agents.length !== 1 ? 's' : ''}

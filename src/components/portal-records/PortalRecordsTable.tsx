@@ -1,25 +1,68 @@
-
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
+import { useState } from "react";
+import { MoreVertical } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { PortalRecord } from "@/types/portalRecord";
-import { formatCurrency } from "@/lib/utils";
-import { PortalRecordStatusBadge } from "./PortalRecordStatusBadge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
 
 interface PortalRecordsTableProps {
-  portalRecords: PortalRecord[];
+  records: PortalRecord[];
 }
 
-export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
-  const formatInvoiceNumber = (invoiceNumber: string, type: string) => {
-    if (type === "Unmatched") {
-      return "-";
-    }
-    // Handle both old format (numbers) and new format (already formatted)
-    if (invoiceNumber.startsWith('INV-')) {
-      return invoiceNumber;
-    }
-    return `INV-${invoiceNumber.padStart(8, '0')}`;
+export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 10;
+
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
+
+  const totalPages = Math.ceil(records.length / recordsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
   };
+
+  if (records.length === 0) {
+    return (
+      <div className="rounded-xl border bg-white">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
+              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-1/5">Company Name</TableHead>
+              <TableHead className="w-1/5">Account Name</TableHead>
+              <TableHead className="w-[15%]">Record Type</TableHead>
+              <TableHead className="w-[15%]">Connection Status</TableHead>
+              <TableHead className="w-[15%]">Last Sync</TableHead>
+              <TableHead className="w-[10%] text-center">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={6} className="h-[200px] text-center">
+                <div className="flex flex-col items-center justify-center space-y-3">
+                  <div className="text-gray-400 text-lg">📁</div>
+                  <div>
+                    <p className="text-gray-600 font-medium">No portal records found</p>
+                    <p className="text-gray-400 text-sm">Add a new record to get started</p>
+                  </div>
+                  <Button>Add a New Record</Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <PortalRecordsTableFooter 
+          totalRecords={0}
+          currentPage={currentPage}
+          recordsPerPage={recordsPerPage}
+          onPageChange={handlePageChange}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-xl border overflow-hidden bg-white">
@@ -27,128 +70,53 @@ export function PortalRecordsTable({ portalRecords }: PortalRecordsTableProps) {
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 flex-1">
-                Portal Record ID
-              </TableHead>
-              <TableHead className="flex-1">Portal</TableHead>
-              <TableHead className="flex-1">Buyer</TableHead>
-              <TableHead className="flex-1">Portal Status</TableHead>
-              <TableHead className="flex-1">Invoice Number</TableHead>
-              <TableHead className="flex-1">Type</TableHead>
-              <TableHead className="flex-1">Total</TableHead>
-              <TableHead className="flex-1">PO Number</TableHead>
-              <TableHead className="flex-1">Supplier Name on Portal</TableHead>
+              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-1/5">Company Name</TableHead>
+              <TableHead className="w-1/5">Account Name</TableHead>
+              <TableHead className="w-[15%]">Record Type</TableHead>
+              <TableHead className="w-[15%]">Connection Status</TableHead>
+              <TableHead className="w-[15%]">Last Sync</TableHead>
+              <TableHead className="w-[10%] text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
-          
           <TableBody className="divide-y divide-gray-100">
-            {portalRecords.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={9} className="text-center text-sm text-gray-600 align-middle bg-white">
-                  No portal records match your filters.
+            {currentRecords.map((record) => (
+              <TableRow key={record.id} className="hover:bg-gray-50 transition-colors bg-white">
+                <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-medium text-gray-900 w-1/5">
+                  {record.companyName}
+                </TableCell>
+                <TableCell className="text-gray-600 w-1/5">{record.accountName}</TableCell>
+                <TableCell className="text-gray-600 w-[15%]">{record.recordType}</TableCell>
+                <TableCell className="w-[15%]">
+                  <StatusBadge status={record.connectionStatus} />
+                </TableCell>
+                <TableCell className="text-gray-600 w-[15%]">
+                  {record.lastSyncDate}
+                </TableCell>
+                <TableCell className="text-right w-[10%]">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
+                      <DropdownMenuItem>View Details</DropdownMenuItem>
+                      <DropdownMenuItem>Edit Record</DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600">Delete Record</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
               </TableRow>
-            ) : (
-              portalRecords.map((record) => (
-                <TableRow
-                  key={record.id}
-                  className="hover:bg-gray-50 transition-colors bg-white"
-                >
-                  <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-200 font-semibold">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="truncate cursor-help">{record.id}</span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{record.id}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </TableCell>
-                  <TableCell className="truncate">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="truncate cursor-help">{record.portal}</span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{record.portal}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </TableCell>
-                  <TableCell className="truncate">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="truncate cursor-help">{record.buyer}</span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{record.buyer}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </TableCell>
-                  <TableCell>
-                    <PortalRecordStatusBadge status={record.status} />
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {record.type === "Unmatched" ? (
-                      <span className="text-gray-400">-</span>
-                    ) : (
-                      formatInvoiceNumber(record.invoiceNumber, record.type)
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <span className={`text-sm font-normal ${
-                      record.conflict ? 'text-orange-600' : 'text-gray-800'
-                    }`}>
-                      {record.type}
-                      {record.conflict && ' ⚠️'}
-                    </span>
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {formatCurrency(record.total, record.currency)}
-                  </TableCell>
-                  <TableCell className="truncate">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="truncate cursor-help">{record.poNumber}</span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{record.poNumber}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </TableCell>
-                  <TableCell className="truncate">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="truncate cursor-help">{record.supplierName}</span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{record.supplierName}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
+            ))}
           </TableBody>
-
-          <TableFooter>
-            <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-              <TableCell colSpan={9} className="text-left text-sm text-muted-foreground bg-[#F6F7F9]">
-                Total Portal Records: {portalRecords.length}
-              </TableCell>
-            </TableRow>
-          </TableFooter>
         </Table>
       </div>
+      <PortalRecordsTableFooter 
+        totalRecords={records.length}
+        currentPage={currentPage}
+        recordsPerPage={recordsPerPage}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { Table, TableBody } from "@/components/ui/table";
 import { Invoice } from "@/types/invoice";
@@ -45,8 +44,11 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
     // TODO: Implement actual exclude logic when backend is ready
   };
 
+  // Determine the number of columns based on isPendingTab
+  const columnsCount = isPendingTab ? 7 : 8; // Adjust based on actual column count
+
   return (
-    <div className="rounded-xl border overflow-hidden bg-white">
+    <div className="rounded-xl border-gray-200 overflow-hidden bg-white">
       <div className="overflow-x-auto">
         <Table>
           <InvoiceTableHeader 
@@ -59,7 +61,7 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
           <TableBody className="divide-y divide-gray-100">
             {sortedInvoices.length === 0 ? (
               <tr>
-                <td colSpan={8} className="h-[65px] text-center text-sm text-gray-600 py-2 align-middle bg-white">
+                <td colSpan={columnsCount} className="h-[65px] text-center text-sm text-gray-600 py-2 align-middle bg-white">
                   No invoices found.
                 </td>
               </tr>
@@ -78,7 +80,7 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
             )}
           </TableBody>
           
-          <InvoiceTableFooter invoices={sortedInvoices} />
+          <InvoiceTableFooter invoices={sortedInvoices} columnsCount={columnsCount} />
         </Table>
       </div>
     </div>

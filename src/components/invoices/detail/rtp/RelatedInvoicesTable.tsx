@@ -1,4 +1,3 @@
-
 import React from "react";
 import { 
   Card, 
@@ -10,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { RelatedInvoiceProps } from "./types";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 export const RelatedInvoicesTable = ({ invoices }: { invoices?: RelatedInvoiceProps[] }) => {
   if (!invoices || invoices.length === 0) {
@@ -48,13 +48,7 @@ export const RelatedInvoicesTable = ({ invoices }: { invoices?: RelatedInvoicePr
                 <TableCell>{new Date(invoice.date).toLocaleDateString()}</TableCell>
                 <TableCell>${invoice.total.toLocaleString()}</TableCell>
                 <TableCell>
-                  <Badge className={cn(
-                    invoice.status === "Approved" ? "bg-green-100 text-green-600" :
-                    invoice.status === "Rejected" ? "bg-red-100 text-red-600" :
-                    "bg-yellow-100 text-yellow-600"
-                  )}>
-                    {invoice.status}
-                  </Badge>
+                  <StatusBadge status={invoice.status as any} />
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline" className={cn(

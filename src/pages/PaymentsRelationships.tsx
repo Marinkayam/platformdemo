@@ -71,8 +71,8 @@ export default function PaymentsRelationships() {
   const handleConfirmRemove = () => {
     if (userToRemoveId) {
       setPortalUsers(prev => prev.filter(user => user.id !== userToRemoveId));
-      setIsConfirmRemoveModalOpen(false);
-      setUserToRemoveId(null);
+    setIsConfirmRemoveModalOpen(false);
+    setUserToRemoveId(null);
     }
   };
 

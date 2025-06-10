@@ -1,4 +1,3 @@
-
 export interface SmartConnection {
   id: string;
   receivableEntity: string;
@@ -10,6 +9,9 @@ export interface SmartConnection {
   lastUpdated: string;
   isActive: boolean;
   agents: Agent[];
+  buyer: { name: string; };
+  supplier: { name: string; };
+  portal: { type: string; user: string; };
 }
 
 export interface Agent {

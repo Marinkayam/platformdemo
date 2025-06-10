@@ -1,4 +1,3 @@
-
 import { getBasicInvoiceData } from "./types";
 
 export const rtpInvoices = [
@@ -23,5 +22,16 @@ export const rtpInvoices = [
     42600.70,
     "09/15/2024",
     "Madona"
+  ),
+  // Awaiting SC
+  getBasicInvoiceData(
+    "16",
+    "INV-100121311",
+    "Google",
+    "09/16/2024",
+    "Awaiting SC",
+    15000.50,
+    "09/16/2024",
+    "Alice"
   )
 ];

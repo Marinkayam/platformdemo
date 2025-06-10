@@ -1,110 +1,46 @@
-
-import { PageHeader } from "@/components/common/PageHeader";
-import { AnalyticsCard } from "@/components/dashboard/AnalyticsCard";
-import { KPICard } from "@/components/dashboard/KPICard";
-import { ExceptionCard } from "@/components/dashboard/ExceptionCard";
-import { RecentInvoicesTable } from "@/components/dashboard/RecentInvoicesTable";
-import { 
-  calculateAnalyticsSummary, 
-  calculateKPIData, 
-  calculateExceptionData,
-  getRecentInvoices 
-} from "@/utils/dashboardAnalytics";
-import { FileText, DollarSign, TrendingUp, Clock, AlertTriangle } from "lucide-react";
+import { SparklesText } from "@/components/common/SparklesText";
+import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard = () => {
-  const analytics = calculateAnalyticsSummary();
-  const kpiData = calculateKPIData();
-  const exceptionData = calculateExceptionData();
-  const recentInvoices = getRecentInvoices();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate a loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 seconds delay
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <PageHeader 
-        title="Dashboard" 
-        subtitle="Your real-time overview of invoice and connection health" 
-      />
-      
-      {/* Analytics Cards - 5 Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-        <AnalyticsCard
-          title="Paid Invoices"
-          value={analytics.paid}
-          subtitle="Successfully processed"
-          type="paid"
-          icon={<DollarSign className="h-5 w-5" />}
-        />
-        <AnalyticsCard
-          title="Upcoming Invoices"
-          value={analytics.upcoming}
-          subtitle="Due for payment"
-          type="upcoming"
-          icon={<TrendingUp className="h-5 w-5" />}
-        />
-        <AnalyticsCard
-          title="Past Due Invoices"
-          value={analytics.pastDue}
-          subtitle="Overdue payments"
-          type="pastdue"
-          icon={<AlertTriangle className="h-5 w-5" />}
-        />
-        <AnalyticsCard
-          title="Portal Invoices"
-          value={analytics.totalInPortal}
-          subtitle="Found in portal systems"
-          type="portal"
-          icon={<FileText className="h-5 w-5" />}
-        />
-        <AnalyticsCard
-          title="Avg Time-to-Payment"
-          value={`${analytics.avgTimeToPayment} days`}
-          subtitle="Average processing time"
-          type="time"
-          icon={<Clock className="h-5 w-5" />}
-        />
-      </div>
-
-      {/* KPI Cards - Rejection Rate and Zero Touch */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <KPICard
-          title="Rejection Rate"
-          value={kpiData.rejectionRate}
-          subtitle="% of invoices rejected vs. submitted"
-          type="rejection"
-        />
-        <KPICard
-          title="Zero-Touch Processing"
-          value={kpiData.zeroTouchPercentage}
-          subtitle="Invoices auto-processed without manual intervention"
-          type="zerotouch"
-          showProgress={true}
-        />
-      </div>
-
-      {/* Recent Invoices Table */}
-      <div className="grid grid-cols-1 gap-6">
-        <RecentInvoicesTable invoices={recentInvoices} />
-      </div>
-
-      {/* Exception CTAs - 2 Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <ExceptionCard
-          title="RTP Exceptions"
-          subtitle="Invoices needing manual attention"
-          count={exceptionData.rtpExceptions.count}
-          amount={exceptionData.rtpExceptions.totalAmount}
-          type="rtp"
-        />
-        <ExceptionCard
-          title="Smart Connection Exceptions"
-          subtitle="Connection issues affecting invoices"
-          count={exceptionData.scExceptions.connectionCount}
-          affectedInvoices={exceptionData.scExceptions.affectedInvoices}
-          type="smartconnection"
-        />
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-4">
+      {isLoading ? (
+        <div className="w-full max-w-4xl space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Skeleton className="h-48 w-full" />
+            <Skeleton className="h-48 w-full" />
+            <Skeleton className="h-48 w-full" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+          </div>
+          <div className="space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-11/12" />
+            <Skeleton className="h-10 w-10/12" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </div>
+      ) : (
+        <SparklesText text="Creating the magic..." className="text-3xl" />
+      )}
     </div>
   );
 };
 
-export default Dashboard;
+export default Dashboard; 

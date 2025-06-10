@@ -5,43 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { SmartConnectionFilters } from "@/types/smartConnection";
 import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
 import { PaymentsRelationshipStatusBadge } from "@/components/payments-relationships/PaymentsRelationshipStatusBadge";
+import { getPortalLogoUrl } from "@/lib/utils";
 
 interface PaymentsRelationshipsFiltersProps {
   filters: SmartConnectionFilters;
   onFilterChange: (newFilters: SmartConnectionFilters) => void;
   onClearFilters: () => void;
 }
-
-const getPortalLogoUrl = (portalName: string): string => {
-  const logoMap: { [key: string]: string } = {
-    "SAP Ariba": "ariba.png",
-    "Coupa": "coupa.png",
-    "Oracle Procurement": "oracle.png",
-    "Tipalti": "tipalti.png",
-    "Amazon Payee": "Amazon Payee.png",
-    "Apple": "apple.png",
-    "AT&T": "AT&T.png",
-    "Bill.com": "bill.png",
-    "SAP": "default.png",
-    "Facturaxion": "Facturaxion.png",
-    "Fieldglass": "Fieldglass.png",
-    "iSupplier": "iSupplier.png",
-    "KissFlow": "KissFlow.png",
-    "Qualcomm": "Qualcomm.png",
-    "Sainsburys": "Sainsburys.png",
-    "Segment": "Segment.png",
-    "Shopify": "Shopify.png",
-    "StoreNext": "StoreNext.png",
-    "Taulia": "taulia.png",
-    "Teradata": "Teradata.png",
-    "Tungsten": "tungsten.png",
-    "Walmart": "walmart.png",
-  };
-  // Use a more robust mapping for portals, handling potential variations or lack of direct match
-  // This ensures a default image if no specific logo is found
-  const fileName = logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png';
-  return `/portal-logos/${fileName}`;
-};
 
 const statusOptions = [
   { label: "Active", value: "Active" },
@@ -198,9 +168,11 @@ export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearF
                   src={getPortalLogoUrl(option)} 
                   alt={`${option} logo`}
                   className="w-5 h-5 object-contain rounded-full"
+                  width={20}
+                  height={20}
                   onError={(e) => {
                     e.currentTarget.onerror = null; // Prevent infinite loop
-                    e.currentTarget.src = '/portal-logos/default.png'; // Fallback to a default image
+                    e.currentTarget.src = '/portal-logos/placeholder.svg'; // Fallback to a default image
                   }}
                 />
                 <span>{option}</span>

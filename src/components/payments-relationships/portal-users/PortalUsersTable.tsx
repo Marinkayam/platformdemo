@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Building, Eye, Edit, Trash2, Copy } from 'lucide-react';
-import { AgentStatusBadge } from '@/components/ui/agent-status-badge';
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -28,9 +27,12 @@ import {
 } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { getPortalLogoUrl } from "@/lib/utils";
+import { ValidationProgressIndicator } from './ValidationProgressIndicator';
 
 interface Column {
-  key: keyof PortalUser | 'actions';
+  key: keyof PortalUser | 'actions' | 'validation';
   label: string;
   sortable?: boolean;
   sticky?: boolean;
@@ -38,13 +40,15 @@ interface Column {
 }
 
 interface PortalUsersTableProps {
-  portalUsers: PortalUser[];
+  // Temporarily commenting out prop to use internal mock data for demonstration
+  // portalUsers: PortalUser[];
   onEditPortalUser?: (user: PortalUser) => void;
   onRemovePortalUser?: (id: string) => void;
 }
 
 export function PortalUsersTable({
-  portalUsers,
+  // Temporarily commenting out prop to use internal mock data for demonstration
+  // portalUsers,
   onEditPortalUser,
   onRemovePortalUser,
 }: PortalUsersTableProps) {
@@ -55,6 +59,72 @@ export function PortalUsersTable({
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedPortalUser, setSelectedPortalUser] = useState<PortalUser | null>(null);
   const navigate = useNavigate();
+
+  const [mockPortalUsers, setMockPortalUsers] = useState<PortalUser[]>([
+    {
+      id: "2",
+      portal: "Coupa",
+      username: "user2@coupa.com",
+      status: "Validating",
+      userType: "External",
+      linkedSmartConnections: 0,
+      lastUpdated: new Date(Date.now() - (50 * 1000)).toISOString(), // 50% progress
+      isReadOnly: false,
+    },
+    {
+      id: "4",
+      portal: "Bill",
+      username: "user4@bill.com",
+      status: "Validating",
+      userType: "External",
+      linkedSmartConnections: 0,
+      lastUpdated: new Date(Date.now() - (30 * 1000)).toISOString(), // 30% progress
+      isReadOnly: false,
+    },
+    {
+      id: "5",
+      portal: "Shopify",
+      username: "user5@shopify.com",
+      status: "Validating",
+      userType: "Monto",
+      linkedSmartConnections: 0,
+      lastUpdated: new Date(Date.now() - (10 * 1000)).toISOString(), // 10% progress
+      isReadOnly: true,
+    },
+    {
+      id: "1",
+      portal: "SAP Ariba",
+      username: "user1@ariba.com",
+      status: "Connected",
+      userType: "Monto",
+      linkedSmartConnections: 2,
+      lastUpdated: "2023-10-26T10:00:00Z",
+      isReadOnly: true,
+    },
+    {
+      id: "3",
+      portal: "Oracle Procurement",
+      username: "user3@oracle.com",
+      status: "Disconnected",
+      userType: "Monto",
+      linkedSmartConnections: 1,
+      lastUpdated: "2023-10-25T15:30:00Z",
+      isReadOnly: true,
+    },
+    {
+      id: "6",
+      portal: "Amazon Payee",
+      username: "user6@amazon.com",
+      status: "Connected",
+      userType: "External",
+      linkedSmartConnections: 3,
+      lastUpdated: "2023-10-20T11:00:00Z",
+      isReadOnly: false,
+    },
+  ]);
+
+  // Use mockPortalUsers for rendering
+  const portalUsers = mockPortalUsers; // Temporarily use internal state
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -117,31 +187,38 @@ export function PortalUsersTable({
     }
   ];
 
-  const getPortalLogoUrl = (portalName: string): string => {
-    const logoMap: { [key: string]: string } = {
-      "SAP Ariba": "ariba.png",
-      "Coupa": "coupa.png",
-      "Oracle Procurement": "oracle.png",
-      "Tipalti": "tipalti.png",
-      "Amazon Payee": "Amazon Payee.png",
-      "Apple": "apple.png",
-      "AT&T": "AT&T.png",
-      "Bill": "bill.png",
-      "Facturaxion": "Facturaxion.png",
-      "Fieldglass": "Fieldglass.png",
-      "iSupplier": "iSupplier.png",
-      "KissFlow": "KissFlow.png",
-      "Qualcomm": "Qualcomm.png",
-      "Sainsburys": "Sainsburys.png",
-      "Segment": "Segment.png",
-      "Shopify": "shopify.png",
-      "StoreNext": "StoreNext.png",
-      "Taulia": "taulia.png",
-      "Teradata": "Teradata.png",
-      "Tungsten": "tungsten.png",
-      "Walmart": "walmart.png",
+  const getValidationSteps = (portalUser: PortalUser) => {
+    // This would typically come from your backend/state management
+    // For now, we'll simulate some steps based on the portal
+    const baseSteps = [
+      { label: 'Connecting to portal', status: 'completed' as const },
+      { label: 'Validating credentials', status: 'in-progress' as const },
+      { label: 'Setting up secure connection', status: 'pending' as const },
+      { label: 'Testing data access', status: 'pending' as const }
+    ];
+
+    // Simulate progress based on lastUpdated timestamp
+    const now = new Date();
+    const lastUpdated = new Date(portalUser.lastUpdated);
+    const timeDiff = now.getTime() - lastUpdated.getTime();
+    const progress = Math.min(Math.floor(timeDiff / 1000), 85); // 1% per second, max 85% for validation
+
+    // Update step statuses based on progress
+    if (progress > 75) {
+      baseSteps[2].status = 'completed';
+      baseSteps[3].status = 'in-progress';
+    } else if (progress > 50) {
+      baseSteps[2].status = 'in-progress';
+    } else if (progress > 25) {
+      baseSteps[1].status = 'completed';
+      baseSteps[2].status = 'in-progress';
+    }
+
+    return {
+      steps: baseSteps,
+      progress,
+      status: 'Validating portal connection...'
     };
-    return `/portal-logos/${logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png'}`;
   };
 
   const columns: Column[] = [
@@ -193,7 +270,7 @@ export function PortalUsersTable({
       key: 'status',
       label: 'Status',
       sortable: true,
-      render: (status: PortalUser['status']) => <AgentStatusBadge status={status} />
+      render: (status: PortalUser['status']) => <StatusBadge status={status} />
     },
     {
       key: 'userType',
@@ -242,6 +319,26 @@ export function PortalUsersTable({
           </Tooltip>
         </TooltipProvider>
       )
+    },
+    {
+      key: 'validation',
+      label: 'Validation',
+      sortable: false,
+      render: (_, portalUser: PortalUser) => {
+        if (portalUser.status === 'Validating') {
+          const { steps, progress, status: validationStatus } = getValidationSteps(portalUser);
+          return (
+            <div className="w-[90%]">
+              <ValidationProgressIndicator
+                progress={progress}
+                status={validationStatus}
+                steps={steps}
+              />
+            </div>
+          );
+        }
+        return null;
+      }
     },
     {
       key: 'lastUpdated',
@@ -328,6 +425,11 @@ export function PortalUsersTable({
           isOpen={isDetailModalOpen}
           onClose={closeDetailModal}
           portalUser={selectedPortalUser}
+          onEditPortalUser={(user) => {
+            setEditingUser(user);
+            setIsAddModalOpen(true);
+            closeDetailModal(); // Close detail modal before opening edit modal
+          }}
         />
       )}
     </div>

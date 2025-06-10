@@ -4,69 +4,49 @@ import { Button } from "@/components/ui/button";
 import { PortalUser } from "@/types/portalUser";
 import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow, format } from 'date-fns';
-import { AgentStatusBadge } from '@/components/ui/agent-status-badge';
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Copy } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { getPortalLogoUrl } from "@/lib/utils";
 
 interface PortalUserDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   portalUser: PortalUser;
+  onEditPortalUser: (user: PortalUser) => void;
 }
 
-export function PortalUserDetailModal({ isOpen, onClose, portalUser }: PortalUserDetailModalProps) {
-  const getPortalLogoUrl = (portalName: string): string => {
-    const logoMap: { [key: string]: string } = {
-      "SAP Ariba": "ariba.png",
-      "Coupa": "coupa.png",
-      "Oracle Procurement": "oracle.png",
-      "Tipalti": "tipalti.png",
-      "Amazon Payee": "Amazon Payee.png",
-      "Apple": "apple.png",
-      "AT&T": "AT&T.png",
-      "Bill": "bill.png",
-      "Facturaxion": "Facturaxion.png",
-      "Fieldglass": "Fieldglass.png",
-      "iSupplier": "iSupplier.png",
-      "KissFlow": "KissFlow.png",
-      "Qualcomm": "Qualcomm.png",
-      "Sainsburys": "Sainsburys.png",
-      "Segment": "Segment.png",
-      "Shopify": "shopify.png",
-      "StoreNext": "StoreNext.png",
-      "Taulia": "taulia.png",
-      "Teradata": "Teradata.png",
-      "Tungsten": "tungsten.png",
-      "Walmart": "walmart.png",
-    };
-    return `/portal-logos/${logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png'}`;
-  };
-
+export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPortalUser }: PortalUserDetailModalProps) {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast({ title: "Copied to clipboard", description: `${text} copied!` });
   };
 
+  const lastUpdatedDate = new Date(portalUser.lastUpdated);
+  const relativeTime = formatDistanceToNow(lastUpdatedDate, { addSuffix: true });
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-[480px] p-6">
         <DialogHeader>
-          <DialogTitle>Portal User Details</DialogTitle>
-          <DialogDescription>
-            Comprehensive information about the selected portal user.
-          </DialogDescription>
+          <DialogTitle className="mb-2">Portal User Details</DialogTitle>
+          <DialogDescription className="mt-0">View connection and usage details for this portal user.</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4 text-sm">
-          <div className="flex items-center gap-4">
+        <div className="space-y-4 py-4 text-sm">
+          {/* Portal Identity Block */}
+          <div className="flex items-center gap-4 pb-4 border-b border-grey-200">
             <div className="w-12 h-12 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden flex-shrink-0">
-              <img src={getPortalLogoUrl(portalUser.portal)} alt={`${portalUser.portal} logo`} className="w-full h-full object-cover" />
+              <img src={getPortalLogoUrl(portalUser.portal)} alt={`${portalUser.portal} logo`} className="w-full h-full object-cover" width={48} height={48} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/portal-logos/placeholder.svg'; }} />
             </div>
             <div>
               <p className="font-medium text-lg text-grey-900">{portalUser.portal}</p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-baseline gap-2">
                 <p className="text-grey-600">{portalUser.username}</p>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -78,36 +58,83 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser }: PortalUse
                 >
                   <Copy className="h-3 w-3" />
                 </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Copy portal login</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </div>
           </div>
 
-          <div className="space-y-2">
+          {portalUser.status === "Disconnected" && portalUser.issue && (
+            <div className="bg-red-50 text-red-700 p-3 rounded-md text-sm mb-4">
+              <p className="font-medium">This user is currently disconnected.</p>
+              <p className="text-xs mt-1">Update credentials to restore sync.</p>
+            </div>
+          )}
+
+          {/* Status Section */}
+          <div>
             <p className="text-grey-500 font-medium">Status</p>
-            <AgentStatusBadge status={portalUser.status} />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <StatusBadge status={portalUser.status} />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>This user is currently {portalUser.status.toLowerCase()} to the portal.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
 
-          <div className="space-y-2">
+          {/* User Type Section */}
+          <div>
             <p className="text-grey-500 font-medium">User Type</p>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
             <AgentUserTypeBadge type={portalUser.userType} />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{portalUser.userType === "Monto" ? "Credentials managed by Monto" : "Customer-managed user. You can edit and remove this user."}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
 
-          <div className="space-y-2">
-            <p className="text-grey-500 font-medium">Linked Agents</p>
+          {/* Linked Smart Connections Section */}
+          <div>
+            <p className="text-grey-500 font-medium">Linked Smart Connections</p>
             <p className="text-grey-700">
               {portalUser.linkedSmartConnections > 0
-                ? `${portalUser.linkedSmartConnections} Payments Relationship${portalUser.linkedSmartConnections !== 1 ? 's' : ''} linked.`
-                : "No Payments Relationships linked."
+                ? `${portalUser.linkedSmartConnections} Smart Connection${portalUser.linkedSmartConnections !== 1 ? 's' : ''} linked.`
+                : "No Smart Connections linked."
               }
             </p>
           </div>
 
-          <div className="space-y-2">
+          {/* Last Updated Section */}
+          <div>
             <p className="text-grey-500 font-medium">Last Updated</p>
-            <p className="text-grey-700">{format(new Date(portalUser.lastUpdated), 'MMM dd, yyyy HH:mm')}</p>
+            <p className="text-grey-700">
+              {format(lastUpdatedDate, 'MMM dd, yyyy HH:mm')}
+              <span className="text-grey-500 ml-2">({relativeTime})</span>
+            </p>
           </div>
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end pt-4 border-t border-grey-200">
+          {!portalUser.isReadOnly && (
+            <Button onClick={() => onEditPortalUser(portalUser)} variant="secondary" className="mr-2">
+              Edit User
+            </Button>
+          )}
           <Button onClick={onClose}>Close</Button>
         </div>
       </DialogContent>

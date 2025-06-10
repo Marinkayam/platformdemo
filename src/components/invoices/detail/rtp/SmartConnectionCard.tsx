@@ -1,43 +1,17 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SmartConnectionStatusBadge } from "@/components/ui/smart-connection-status-badge";
-import { SmartConnectionProps } from "./types";
-import { ExternalLink } from "lucide-react";
+import { SmartConnection } from "@/types/smartConnection";
 import { useNavigate } from "react-router-dom";
+import { getPortalLogoUrl } from "@/lib/utils";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { ExternalLink } from "lucide-react";
 
 interface SmartConnectionCardProps {
-  connection: SmartConnectionProps;
+  connection: SmartConnection;
 }
 
 export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
   const navigate = useNavigate();
-
-  const getPortalLogoUrl = (portalName: string): string => {
-    const logoMap: { [key: string]: string } = {
-      "SAP Ariba": "ariba.png",
-      "Coupa": "coupa.png",
-      "Oracle Procurement": "oracle.png",
-      "Tipalti": "tipalti.png",
-      "Amazon Payee": "Amazon Payee.png",
-      "Apple": "apple.png",
-      "AT&T": "AT&T.png",
-      "Bill": "bill.png",
-      "Facturaxion": "Facturaxion.png",
-      "Fieldglass": "Fieldglass.png",
-      "iSupplier": "iSupplier.png",
-      "KissFlow": "KissFlow.png",
-      "Qualcomm": "Qualcomm.png",
-      "Sainsburys": "Sainsburys.png",
-      "Segment": "Segment.png",
-      "Shopify": "shopify.png",
-      "StoreNext": "StoreNext.png",
-      "Taulia": "taulia.png",
-      "Teradata": "Teradata.png",
-      "Tungsten": "tungsten.png",
-      "Walmart": "walmart.png",
-    };
-    return `/portal-logos/${logoMap[portalName] || portalName.toLowerCase().replace(/\s/g, '-') + '.png'}`;
-  };
 
   const handleViewFullDetails = () => {
     navigate('/payments-relationships');
@@ -48,7 +22,7 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold">Smart Connection</CardTitle>
-          <SmartConnectionStatusBadge status={connection.status} />
+          <StatusBadge status={connection.status} />
         </div>
       </CardHeader>
       <CardContent className="space-y-4">

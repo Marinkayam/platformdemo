@@ -1,4 +1,3 @@
-
 export interface InvoiceFilters {
   status: string[];
   total: string;
@@ -11,6 +10,7 @@ export interface InvoiceFilters {
   transactionType: string;
   owner: string[];
   search: string;
+  userType?: string[];
 }
 
 export const defaultFilters: InvoiceFilters = {

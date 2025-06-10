@@ -1,9 +1,9 @@
-
 import { Button } from "@/components/ui/button";
-import { PurchaseOrderStatusBadge } from "@/components/ui/purchase-order-status-badge";
 import { PurchaseOrder } from "@/types/purchaseOrder";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 interface PurchaseOrderDetailHeaderProps {
   purchaseOrder: PurchaseOrder;
@@ -39,7 +39,7 @@ export function PurchaseOrderDetailHeader({ purchaseOrder }: PurchaseOrderDetail
       <div className="flex items-center gap-6 p-4 bg-gray-50 rounded-lg">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-gray-600">Status:</span>
-          <PurchaseOrderStatusBadge status={purchaseOrder.status} />
+          <StatusBadge status={purchaseOrder.status} />
         </div>
         
         <div className="flex items-center gap-2">

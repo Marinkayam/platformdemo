@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Copy, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { POInformationProps } from "./types";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 interface POCardProps {
   po: POInformationProps;
@@ -19,15 +18,6 @@ export const POInformationCard = ({ po }: POCardProps) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Valid": return "bg-green-500 hover:bg-green-600";
-      case "Invalid": return "bg-red-500 hover:bg-red-600";
-      case "Pending": return "bg-amber-500 hover:bg-amber-600";
-      default: return "bg-gray-500 hover:bg-gray-600";
-    }
   };
 
   return (
@@ -68,9 +58,7 @@ export const POInformationCard = ({ po }: POCardProps) => {
           <div className="space-y-2">
             <label className="text-sm text-gray-500">Status</label>
             <div>
-              <Badge className={`${getStatusColor(po.status)}`}>
-                {po.status}
-              </Badge>
+              <StatusBadge status={po.status} />
             </div>
           </div>
           
