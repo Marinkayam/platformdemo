@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PurchaseOrder } from "@/types/purchaseOrder";
+import { PurchaseOrder } from "@/types/purchase-orders";
 import { Download, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
@@ -65,15 +65,17 @@ export function PurchaseOrderPdfViewer({ purchaseOrder }: PurchaseOrderPdfViewer
               </div>
             </div>
 
-            <div>
-              <h3 className="font-semibold mb-2 text-sm">Ship To Address</h3>
-              <div className="text-sm">
-                <p>{purchaseOrder.shipToAddress.line1}</p>
-                {purchaseOrder.shipToAddress.line2 && <p>{purchaseOrder.shipToAddress.line2}</p>}
-                <p>{purchaseOrder.shipToAddress.city}, {purchaseOrder.shipToAddress.state} {purchaseOrder.shipToAddress.zipCode}</p>
-                <p>{purchaseOrder.shipToAddress.country}</p>
+            {purchaseOrder.shipToAddress && (
+              <div>
+                <h3 className="font-semibold mb-2 text-sm">Ship To Address</h3>
+                <div className="text-sm">
+                  <p>{purchaseOrder.shipToAddress.line1}</p>
+                  {purchaseOrder.shipToAddress.line2 && <p>{purchaseOrder.shipToAddress.line2}</p>}
+                  <p>{purchaseOrder.shipToAddress.city}, {purchaseOrder.shipToAddress.state} {purchaseOrder.shipToAddress.zipCode}</p>
+                  <p>{purchaseOrder.shipToAddress.country}</p>
+                </div>
               </div>
-            </div>
+            )}
 
             <div>
               <h3 className="font-semibold mb-2 text-sm">Line Items</h3>

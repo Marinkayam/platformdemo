@@ -1,5 +1,4 @@
-
-import { PurchaseOrder } from "@/types/purchaseOrder";
+import { PurchaseOrder } from "@/types/purchase-orders";
 
 export const purchaseOrderData: PurchaseOrder[] = [
   {

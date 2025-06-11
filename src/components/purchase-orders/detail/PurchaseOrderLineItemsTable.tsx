@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PurchaseOrderLineItem } from "@/types/purchaseOrder";
+import { PurchaseOrderLineItem } from "@/types/purchase-orders";
 
 interface PurchaseOrderLineItemsTableProps {
   lineItems: PurchaseOrderLineItem[];

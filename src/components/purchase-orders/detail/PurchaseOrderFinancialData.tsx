@@ -1,5 +1,5 @@
 
-import { PurchaseOrder } from "@/types/purchaseOrder";
+import { PurchaseOrder } from "@/types/purchase-orders";
 import { PurchaseOrderFinancialFields } from "./financial/PurchaseOrderFinancialFields";
 import { PurchaseOrderShipToAddress } from "./financial/PurchaseOrderShipToAddress";
 

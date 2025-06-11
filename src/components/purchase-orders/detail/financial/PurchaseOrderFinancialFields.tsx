@@ -1,6 +1,6 @@
 
 import { Input } from "@/components/ui/input";
-import { PurchaseOrder } from "@/types/purchaseOrder";
+import { PurchaseOrder } from "@/types/purchase-orders";
 
 interface PurchaseOrderFinancialFieldsProps {
   purchaseOrder: PurchaseOrder;
@@ -68,13 +68,6 @@ export function PurchaseOrderFinancialFields({ purchaseOrder }: PurchaseOrderFin
         <label className="text-sm text-gray-500">Currency</label>
         <Input value={purchaseOrder.currency} readOnly className="bg-gray-50" />
       </div>
-
-      {purchaseOrder.shipmentNumbers && purchaseOrder.shipmentNumbers.length > 0 && (
-        <div className="space-y-2">
-          <label className="text-sm text-gray-500">Shipment Numbers</label>
-          <Input value={purchaseOrder.shipmentNumbers.join(", ")} readOnly className="bg-gray-50" />
-        </div>
-      )}
     </div>
   );
 }

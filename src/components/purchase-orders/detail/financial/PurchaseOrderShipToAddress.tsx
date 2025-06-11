@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { PurchaseOrder } from "@/types/purchaseOrder";
+import { PurchaseOrder } from "@/types/purchase-orders";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface PurchaseOrderShipToAddressProps {
@@ -10,6 +10,10 @@ interface PurchaseOrderShipToAddressProps {
 
 export function PurchaseOrderShipToAddress({ purchaseOrder }: PurchaseOrderShipToAddressProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  if (!purchaseOrder.shipToAddress) {
+    return null;
+  }
 
   return (
     <div className="bg-white rounded-lg p-6 border-0 shadow-none">

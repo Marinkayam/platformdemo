@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PurchaseOrder } from "@/types/purchaseOrder";
+import { PurchaseOrder } from "@/types/purchase-orders";
 import { PurchaseOrderLineItemsTable } from "./PurchaseOrderLineItemsTable";
 import { RelatedInvoicesSection } from "./RelatedInvoicesSection";
 
@@ -68,35 +68,31 @@ export function PurchaseOrderDetailContent({ purchaseOrder }: PurchaseOrderDetai
               <label className="text-sm font-medium text-gray-600">Currency</label>
               <p className="text-sm text-gray-900">{purchaseOrder.currency}</p>
             </div>
-            {purchaseOrder.shipmentNumbers && purchaseOrder.shipmentNumbers.length > 0 && (
-              <div>
-                <label className="text-sm font-medium text-gray-600">Shipment Numbers</label>
-                <p className="text-sm text-gray-900">{purchaseOrder.shipmentNumbers.join(", ")}</p>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Ship To Address</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-sm text-gray-900">
-            <p>{purchaseOrder.shipToAddress.line1}</p>
-            {purchaseOrder.shipToAddress.line2 && <p>{purchaseOrder.shipToAddress.line2}</p>}
-            <p>
-              {purchaseOrder.shipToAddress.city}, {purchaseOrder.shipToAddress.state} {purchaseOrder.shipToAddress.zipCode}
-            </p>
-            <p>{purchaseOrder.shipToAddress.country}</p>
-          </div>
-        </CardContent>
-      </Card>
+      {purchaseOrder.shipToAddress && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Ship To Address</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-sm text-gray-900">
+              <p>{purchaseOrder.shipToAddress.line1}</p>
+              {purchaseOrder.shipToAddress.line2 && <p>{purchaseOrder.shipToAddress.line2}</p>}
+              <p>
+                {purchaseOrder.shipToAddress.city}, {purchaseOrder.shipToAddress.state} {purchaseOrder.shipToAddress.zipCode}
+              </p>
+              <p>{purchaseOrder.shipToAddress.country}</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <PurchaseOrderLineItemsTable lineItems={purchaseOrder.lineItems} />
 
-      <RelatedInvoicesSection invoiceIds={purchaseOrder.relatedInvoices} />
+      <RelatedInvoicesSection invoiceIds={purchaseOrder.relatedInvoices || []} />
     </div>
   );
 }
