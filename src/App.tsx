@@ -48,7 +48,6 @@ const App = () => (
               <Route path="/purchase-orders/:id" element={<PurchaseOrderDetail />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/design-system" element={<DesignSystemPlayground />} />
-              {/* Placeholder for RequestToPayTransaction, assuming it's a page component */}
               <Route path="/request-to-pay-transaction/:id" element={<div>RequestToPayTransaction Page Placeholder</div>} />
               <Route path="/payments-relationships/add-agent" element={<AddAgent />} />
             </Route>

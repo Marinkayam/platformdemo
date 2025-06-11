@@ -1,47 +1,58 @@
-
+import { FileText, MessageSquareText } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-interface PurchaseOrderTab {
-  id: string;
-  label: string;
-  count?: number;
-}
+import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
+import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface PurchaseOrderTabsProps {
-  tabs: PurchaseOrderTab[];
   activeTab: string;
-  onTabChange: (tabId: string) => void;
+  onTabChange: (value: string) => void;
+  activityCount?: number;
 }
 
-export function PurchaseOrderTabs({ tabs, activeTab, onTabChange }: PurchaseOrderTabsProps) {
+export function PurchaseOrderTabs({ activeTab, onTabChange, activityCount = 0 }: PurchaseOrderTabsProps) {
+  const tabs = [
+    { id: "po-data", icon: <FileText className="h-4 w-4" />, label: "PO Data", tooltip: null },
+    { id: "activity", icon: <MessageSquareText className="h-4 w-4" />, label: "Activity Log", tooltip: null },
+  ];
+
   return (
-    <div className="border-b mb-6">
-      <div className="flex space-x-8">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={cn(
-              "py-3 px-1 relative font-medium text-sm",
-              activeTab === tab.id
-                ? "text-primary border-b-2 border-primary"
-                : "text-gray-600 hover:text-gray-900"
+    <TabsList>
+      {tabs.map((tab) => (
+        <TooltipProvider key={tab.id}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <TabsTrigger
+                value={tab.id}
+                onClick={() => onTabChange(tab.id)}
+                className={cn(
+                  "relative font-medium text-sm flex items-center gap-2 transition-colors px-4 py-2",
+                  "text-gray-600 hover:text-gray-900",
+                  "data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                )}
+              >
+                {tab.icon}
+                {tab.label}
+                {tab.id === "activity" && activityCount > 0 && (
+                  <Badge variant="secondary" className="ml-1 text-xs">
+                    {activityCount}
+                  </Badge>
+                )}
+              </TabsTrigger>
+            </TooltipTrigger>
+            {tab.tooltip && (
+              <TooltipContent className="max-w-sm">
+                <p>{tab.tooltip}</p>
+              </TooltipContent>
             )}
-          >
-            <div className="flex items-center">
-              {tab.label}
-              {tab.count !== undefined && (
-                <span className={cn(
-                  "ml-2 px-2 py-0.5 rounded-full text-xs",
-                  activeTab === tab.id ? "bg-primary/10 text-primary" : "bg-gray-100 text-gray-600"
-                )}>
-                  {tab.count}
-                </span>
-              )}
-            </div>
-          </button>
-        ))}
-      </div>
-    </div>
+          </Tooltip>
+        </TooltipProvider>
+      ))}
+    </TabsList>
   );
 }

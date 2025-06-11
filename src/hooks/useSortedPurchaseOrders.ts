@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from 'react';
-import { PurchaseOrder } from '@/types/purchaseOrder';
+import { PurchaseOrder } from '@/types/purchase-orders';
 
-type SortField = "poNumber" | "buyerName" | "status" | "portal" | "total" | "invoicedAmount" | "amountLeft" | "paymentTerms";
+type SortField = "poNumber" | "supplier" | "status" | "portal" | "totalAmount" | "invoicedAmount" | "amountLeft" | "dueDate";
 type SortDirection = 'asc' | 'desc';
 
 export function useSortedPurchaseOrders(purchaseOrders: PurchaseOrder[]) {

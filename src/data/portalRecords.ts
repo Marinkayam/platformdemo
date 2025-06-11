@@ -48,7 +48,12 @@ const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRec
       poNumber: `PO-${Math.floor(Math.random() * 99999) + 10000}`,
       supplierName: invoice.buyer,
       type: isConflict ? "Conflict" : (i === 0 ? "Primary" : "Alternate"),
-      currency: invoice.currency || "USD"
+      currency: invoice.currency || "USD",
+      connectionStatus: status === 'Approved' ? 'Connected' : 'Disconnected',
+      lastSyncDate: updatedDate.toISOString().split('T')[0],
+      companyName: invoice.buyer,
+      accountName: `${invoice.buyer} Account`,
+      recordType: i === 0 ? 'PO' : 'Invoice',
     };
     
     records.push(record);
@@ -77,7 +82,12 @@ const manualRecords: PortalRecord[] = [
     poNumber: "PO-88991",
     supplierName: "Acme Corporation",
     type: "Primary",
-    currency: "USD"
+    currency: "USD",
+    connectionStatus: "Connected",
+    accountName: "Acme Corp",
+    recordType: "PO",
+    lastSyncDate: "2024-04-15",
+    companyName: "Acme Corporation",
   },
   {
     id: "PR-002",
@@ -92,7 +102,12 @@ const manualRecords: PortalRecord[] = [
     poNumber: "PO-77825",
     supplierName: "Global Enterprises Inc",
     type: "Primary",
-    currency: "USD"
+    currency: "USD",
+    connectionStatus: "Connected",
+    accountName: "Global Ent. Primary",
+    recordType: "Invoice",
+    lastSyncDate: "2024-04-14",
+    companyName: "Global Enterprises",
   }
 ];
 

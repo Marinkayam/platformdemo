@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { PortalRecordsHeader } from "@/components/portal-records/PortalRecordsHeader";
 import { PortalRecordsFilters } from "@/components/portal-records/PortalRecordsFilters";
@@ -52,7 +51,7 @@ export default function PortalRecords() {
         onFilterChange={setFilters}
       />
       
-      <PortalRecordsTable portalRecords={filteredRecords} />
+      <PortalRecordsTable records={filteredRecords} />
     </div>
   );
 }

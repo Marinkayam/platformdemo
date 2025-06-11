@@ -20,8 +20,6 @@ export function SidebarSection({
   const navigate = useNavigate();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
-  console.log("SidebarSection rendering. Items:", items);
-
   // Initialize Invoices as expanded if user is on invoices page
   useEffect(() => {
     if (pathname.includes("/invoices")) {

@@ -1,10 +1,10 @@
-
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { PurchaseOrderHeader } from "@/components/purchase-orders/PurchaseOrderHeader";
 import { PurchaseOrderTable } from "@/components/purchase-orders/PurchaseOrderTable";
 import { purchaseOrderData } from "@/data/purchaseOrders";
 import { usePurchaseOrderFiltering } from "@/hooks/usePurchaseOrderFiltering";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 export default function PurchaseOrders() {
   const location = useLocation();
@@ -41,7 +41,7 @@ export default function PurchaseOrders() {
   ];
 
   return (
-    <div>
+    <Tabs value={activeTab} onValueChange={setActiveTab}>
       <PurchaseOrderHeader 
         tabs={tabsWithCounts}
         activeTab={activeTab}
@@ -50,9 +50,11 @@ export default function PurchaseOrders() {
         purchaseOrderCount={filteredPurchaseOrders.length}
       />
       
-      <PurchaseOrderTable 
-        purchaseOrders={filteredPurchaseOrders} 
-      />
-    </div>
+      <TabsContent value={activeTab}>
+        <PurchaseOrderTable 
+          purchaseOrders={filteredPurchaseOrders} 
+        />
+      </TabsContent>
+    </Tabs>
   );
 }

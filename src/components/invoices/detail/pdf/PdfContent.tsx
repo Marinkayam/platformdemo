@@ -1,4 +1,3 @@
-
 import { Invoice, LineItem } from "@/types/invoice";
 import { formatCurrency } from "@/lib/utils";
 import { useRef, useEffect, useState } from "react";
@@ -103,15 +102,15 @@ export function PdfContent({ invoice, lineItems, zoomLevel }: PdfContentProps) {
             <div className="w-64">
               <div className="flex justify-between py-1">
                 <span>Subtotal</span>
-                <span>{formatCurrency(invoice.subtotal || invoice.total * 0.9)}</span>
+                <span>{formatCurrency(invoice.subtotal || invoice.total * 0.9, "USD")}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-200">
                 <span>Tax</span>
-                <span>{formatCurrency(invoice.tax || invoice.total * 0.1)}</span>
+                <span>{formatCurrency(invoice.tax || invoice.total * 0.1, "USD")}</span>
               </div>
               <div className="flex justify-between py-2 font-bold">
                 <span>Total</span>
-                <span>{formatCurrency(invoice.total)}</span>
+                <span>{formatCurrency(invoice.total, "USD")}</span>
               </div>
             </div>
           </div>

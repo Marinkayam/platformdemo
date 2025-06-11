@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PurchaseOrder } from "@/types/purchaseOrder";
+import { PurchaseOrder } from "@/types/purchase-orders";
 import { formatCurrency, getPortalLogoUrl } from "@/lib/utils";
 import { PurchaseOrderTableFooter } from "./table/PurchaseOrderTableFooter";
 import { PurchaseOrderTableHeader } from "./table/PurchaseOrderTableHeader";
@@ -102,13 +102,13 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
                     </TooltipProvider>
                   </TableCell>
                   <TableCell className="font-medium">
-                    {formatCurrency(po.total)}
+                    {formatCurrency(po.total, po.currency)}
                   </TableCell>
                   <TableCell className="font-medium">
-                    {formatCurrency(po.invoicedAmount)}
+                    {formatCurrency(po.invoicedAmount, po.currency)}
                   </TableCell>
                   <TableCell className="font-medium">
-                    {formatCurrency(po.amountLeft)}
+                    {formatCurrency(po.amountLeft, po.currency)}
                   </TableCell>
                   <TableCell className="truncate">
                     <TooltipProvider>

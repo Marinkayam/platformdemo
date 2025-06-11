@@ -65,7 +65,7 @@ export function Sidebar({
           
           <SidebarItem href="/payments-relationships" icon={<Brain size={18} />} label="Payments Relationships" active={pathname === "/payments-relationships"} />
           
-          <SidebarItem href="/purchase-order" icon={<ShoppingCart size={18} />} label="Purchase Order" active={pathname === "/purchase-order"} />
+          <SidebarItem href="/purchase-orders" icon={<ShoppingCart size={18} />} label="Purchase Orders" active={pathname.includes("/purchase-orders")} />
           
           <SidebarItem href="/portal-records" icon={<FileBox size={18} />} label="Portal Records" active={pathname === "/portal-records"} />
         </nav>
