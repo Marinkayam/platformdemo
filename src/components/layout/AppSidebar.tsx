@@ -1,3 +1,4 @@
+
 import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter } from "@/components/ui/sidebar";
 import { MontoLogo } from "@/components/MontoLogo";
 import { SidebarSection } from "./SidebarSection";
@@ -8,10 +9,12 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
-  return <Sidebar variant="sidebar" className="w-64 bg-[#FAFAFA] border-r border-[#E4E5E9] transition-all duration-300">
+  return (
+    <Sidebar variant="sidebar" className="w-64 bg-[#FAFAFA] border-r border-[#E4E5E9] transition-all duration-300">
       <SidebarHeader className="border-b border-[#E4E5E9] px-3 h-[64px] flex items-center justify-start">
-        <div className="flex items-center">
-          <MontoLogo className="w-[94px] h-[28px] ml-[-0.3rem]" />
+        <div className="flex items-center h-full">
+          {/* Remove negative margin and set explicit size, allow room for logo */}
+          <MontoLogo className="w-[94px] h-[28px]" />
         </div>
       </SidebarHeader>
       
@@ -24,5 +27,6 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
       <SidebarFooter className="border-t border-[#E4E5E9] px-3 py-4 bg-[#FAFAFA]">
         <SidebarSection items={navUser} onChatAIOpen={onChatAIOpen} />
       </SidebarFooter>
-    </Sidebar>;
+    </Sidebar>
+  );
 }
