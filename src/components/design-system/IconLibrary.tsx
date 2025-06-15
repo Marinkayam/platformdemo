@@ -4,7 +4,16 @@ import dynamicIconImports from 'lucide-react/dynamicIconImports';
 import DynamicIcon, { IconName } from '../ui/DynamicIcon';
 import { Input } from '@/components/ui/input';
 
-const allIconNames = Object.keys(dynamicIconImports) as IconName[];
+const usedIconNames: IconName[] = [
+    'palette', 'type', 'layout-grid', 'mouse-pointer-click', 'badge', 'tabs',
+    'filter', 'table', 'clipboard-edit', 'layout-template', 'alert-triangle',
+    'hourglass', 'app-window', 'bell-ring', 'chevrons-up-down', 'more-horizontal',
+    'image', 'gallery-thumbnails', 'sparkles', 'chevron-left', 'clipboard',
+    'user-circle-2', 'x', 'check', 'download', 'edit', 'more-vertical',
+    'file-text', 'arrow-left', 'home', 'info'
+];
+
+const allIconNames = [...new Set(usedIconNames)].sort() as IconName[];
 
 const IconDisplay: React.FC<{ name: IconName }> = ({ name }) => (
   <div className="flex flex-col items-center justify-center gap-2 p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer">
@@ -27,6 +36,9 @@ const IconLibrary = () => {
 
   return (
     <div>
+      <p className="mb-4 text-sm text-muted-foreground">
+          Displaying a curated list of icons currently used throughout the application.
+      </p>
       <div className="mb-6">
         <Input
           type="text"

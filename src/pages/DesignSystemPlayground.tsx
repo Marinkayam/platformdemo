@@ -7,6 +7,11 @@ import PortalLogos from '@/components/design-system/PortalLogos';
 import ColorPalette from '@/components/design-system/ColorPalette';
 import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import ButtonsDemo from '@/components/design-system/ButtonsDemo';
+import StatusBadgesDemo from '@/components/design-system/StatusBadgesDemo';
+import AlertsDemo from '@/components/design-system/AlertsDemo';
+import BreadcrumbsDemo from '@/components/design-system/BreadcrumbsDemo';
+import BrandAssets from '@/components/design-system/BrandAssets';
 
 const DesignSystemPlayground = () => {
     const [activeItem, setActiveItem] = useState('color-palette');
@@ -27,6 +32,16 @@ const DesignSystemPlayground = () => {
                 );
             case 'color-palette':
                 return <ColorPalette />;
+            case 'buttons':
+                return <ButtonsDemo />;
+            case 'status-badges':
+                return <StatusBadgesDemo />;
+            case 'alerts':
+                return <AlertsDemo />;
+            case 'breadcrumbs':
+                return <BreadcrumbsDemo />;
+            case 'brand-assets':
+                return <BrandAssets />;
             default:
                 const item = designSystemNavItems.find(i => i.id === activeItem);
                 return (
