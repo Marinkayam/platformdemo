@@ -130,9 +130,9 @@ export default function PaymentsRelationships() {
         )}
 
         {activeTab === "portal-users" && (
-          // Pass correct prop expected by PortalUsersTable (should be "users")
+          // Pass correct prop expected by PortalUsersTable (should be "portalUsers")
           <PortalUsersTable 
-            users={portalUsers} 
+            portalUsers={portalUsers} 
             onRemovePortalUser={(id) => {
               setUserToRemoveId(id);
               setIsConfirmRemoveModalOpen(true);
