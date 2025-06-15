@@ -25,20 +25,20 @@ export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
 const Typography = React.forwardRef<HTMLElement, TypographyProps>(
   ({ className, variant = "body1", component, children, ...props }, ref) => {
     const variantClasses = {
-      h1: "text-4xl md:text-5xl lg:text-6xl font-medium text-grey-900",
-      h2: "text-3xl md:text-4xl lg:text-5xl font-medium text-grey-900", 
-      h3: "text-2xl font-medium text-grey-900",
-      h4: "text-xl font-bold text-grey-800",
-      h5: "text-lg font-semibold text-grey-800",
-      h6: "text-base font-medium text-grey-800",
-      subtitle1: "text-base font-semibold text-grey-800",
-      subtitle2: "text-sm font-normal text-grey-600",
-      body1: "text-base font-normal text-grey-700",
-      body2: "text-sm font-normal text-grey-600",
-      body3: "text-sm font-light text-grey-700",
-      caption: "text-xs font-normal text-grey-500",
+      h1: "text-4xl md:text-5xl lg:text-6xl font-medium text-grey-900", // 36px, 48px, 60px
+      h2: "text-3xl md:text-4xl lg:text-5xl font-medium text-grey-900", // 30px, 36px, 48px
+      h3: "text-2xl font-medium text-grey-900", // 24px
+      h4: "text-xl font-bold text-grey-800", // 20px
+      h5: "text-lg font-semibold text-grey-800", // 18px
+      h6: "text-base font-medium text-grey-800", // 16px
+      subtitle1: "text-base font-semibold text-grey-800", // 16px
+      subtitle2: "text-sm font-normal text-grey-600", // 14px
+      body1: "text-base font-normal text-grey-700", // 16px
+      body2: "text-sm font-normal text-grey-600", // 14px
+      body3: "text-sm font-light text-grey-700", // 14px
+      caption: "text-xs font-normal text-grey-500", // 12px
       overline: "text-overline font-medium uppercase tracking-wide text-grey-600",
-      button: "text-xs font-medium",
+      button: "text-xs font-medium", // 12px
       smallText: "text-small-text font-normal text-grey-500"
     }
 
