@@ -1,7 +1,6 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import IconLibrary from "@/components/design-system/IconLibrary";
-import NotificationsTester from "@/components/notifications/NotificationsTester";
+import { NotificationsTester } from "@/components/notifications/NotificationsTester";
 
 const PortalLogos = () => {
     const logos = [
