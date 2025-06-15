@@ -15,22 +15,22 @@ const sidebarTabs = [
   {
     id: "company",
     label: "Company Information",
-    icon: <Building size={24} />,
+    icon: <Building size={20} className="mr-2" />,
   },
   {
     id: "team",
     label: "Team",
-    icon: <Users size={24} />,
+    icon: <Users size={20} className="mr-2" />,
   },
   {
     id: "security",
     label: "Security",
-    icon: <Shield size={24} />,
+    icon: <Shield size={20} className="mr-2" />,
   },
   {
     id: "notifications",
     label: "Notifications",
-    icon: <Bell size={24} />,
+    icon: <Bell size={20} className="mr-2" />,
   },
 ];
 
@@ -73,10 +73,10 @@ export default function Workspace() {
                     <Camera size={28} className="text-gray-400" />
                     <Button
                       variant="outline"
-                      className="flex items-center gap-2 border-gray-300 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-xs font-medium px-3 py-2"
+                      className="flex items-center gap-2 border-gray-300 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-xs font-medium px-3 py-2 transition-all"
                       style={{ minWidth: 96 }}
                     >
-                      <Upload size={16} />
+                      <Upload size={16} className="mr-1" />
                       <span>Upload Logo</span>
                     </Button>
                   </div>
@@ -227,15 +227,14 @@ export default function Workspace() {
         subtitle="Manage your account preferences and application settings"
       />
       <div className="mt-6 rounded-2xl bg-white border border-[#ececec] flex shadow-none overflow-hidden">
-        {/* Sidebar replaced with TabsNav */}
-        <aside className="w-80 border-r border-[#ececec] bg-[#fafbfc] py-10 px-4">
+        <aside className="w-80 border-r border-[#ececec] bg-[#fafbfc] py-10 px-0 flex flex-col">
+          {/* Standardized vertical TabsNav for sidebar, styled for icon/label/layout fidelity */}
           <TabsNav
             tabs={sidebarTabs}
             activeTab={activeTab}
             onTabChange={setActiveTab}
           />
         </aside>
-        {/* Main Content */}
         <section className="flex-1 p-12">
           {renderContent()}
         </section>
@@ -243,3 +242,4 @@ export default function Workspace() {
     </div>
   );
 }
+// ... end of file
