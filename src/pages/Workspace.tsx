@@ -235,8 +235,8 @@ export default function Workspace() {
       />
       <div className="mt-6 rounded-2xl bg-white border border-[#ececec] flex shadow-none overflow-hidden">
         <aside className="w-80 border-r border-[#ececec] bg-[#fafbfc] py-10 px-0 flex flex-col">
-          {/* Add pb-4 for bottom padding to separate the vertical tabs from content area */}
-          <div className="pb-4">
+          {/* Sidebar: Add pb-6 to create separation below tab triggers */}
+          <div className="pb-6">
             {/* TabsNav tab trigger should use relative z-10 for stacking */}
             <TabsNav
               tabs={sidebarTabs}
@@ -246,7 +246,169 @@ export default function Workspace() {
           </div>
         </aside>
         <section className="flex-1 p-12">
-          {renderContent()}
+          {/* Add a wrapper for all tab content to ensure headers have space from TabsNav */}
+          <div>
+            {activeTab === "company" && (
+              <div className="pt-6">
+                <div className="z-20 relative">
+                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative">Company Information</h6>
+                  <p className="text-base text-gray-600 mb-6">
+                    Manage your company details and preferences.
+                  </p>
+                </div>
+                <Card className="shadow-none border border-[#ececec] rounded-xl">
+                  <CardContent className="p-10 space-y-7">
+                    <div className="flex items-start gap-5">
+                      <div className="relative w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
+                        <Camera size={28} className="text-gray-400" />
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2 border-gray-300 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-xs font-medium px-3 py-2 transition-all"
+                          style={{ minWidth: 96 }}
+                        >
+                          <Upload size={16} className="mr-1" />
+                          <span>Upload Logo</span>
+                        </Button>
+                      </div>
+                      <div className="flex-1 flex items-center">
+                        {/* Empty space reserved */}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-[15px] mb-2 font-medium text-gray-800">Company Name</label>
+                      <Input className="h-12 bg-white text-base font-normal" defaultValue="Monto Technologies" />
+                    </div>
+                    <div>
+                      <label className="block text-[15px] mb-2 font-medium text-gray-800">Admin Email</label>
+                      <Input className="h-12 bg-gray-100 text-base" value="admin@monto.tech" disabled />
+                    </div>
+                    <div>
+                      <label className="block text-[15px] mb-2 font-medium text-gray-800">Timezone</label>
+                      <Select defaultValue="utc-8">
+                        <SelectTrigger className="h-12 bg-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="utc-8">UTC-8 (Pacific Standard Time)</SelectItem>
+                          <SelectItem value="utc-5">UTC-5 (Eastern Standard Time)</SelectItem>
+                          <SelectItem value="utc+0">UTC+0 (Greenwich Mean Time)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="text-right pt-2">
+                      <Button className="px-8 h-11 bg-[#7b61ff] hover:bg-[#6b53e6] text-white font-semibold">
+                        Save Changes
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+            {activeTab === "team" && (
+              <div className="pt-6">
+                <div className="z-20 relative">
+                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative">Team</h6>
+                  <p className="text-base text-gray-600 mb-6">
+                    Invite teammates to collaborate. Admins can manage users, connections, and settings.<br />
+                    Users can view and edit.
+                  </p>
+                </div>
+                <Card className="shadow-none border border-[#ececec] rounded-xl">
+                  <CardContent className="p-0">
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="bg-gray-50 border-b">
+                          <tr>
+                            <th className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
+                            <th className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
+                            <th className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-100">
+                          {teamMembers.map((member, index) => (
+                            <tr key={index} className="hover:bg-gray-50">
+                              <td className="px-8 py-5 whitespace-nowrap text-base text-gray-900">{member.email}</td>
+                              <td className="px-8 py-5 whitespace-nowrap">
+                                <Badge
+                                  variant={member.role === "Admin" ? "default" : "secondary"}
+                                  className={member.role === "Admin"
+                                    ? "bg-[#efefff] text-[#6b53e6] font-medium"
+                                    : "bg-gray-100 text-gray-700"
+                                  }
+                                >
+                                  {member.role}
+                                </Badge>
+                              </td>
+                              <td className="px-8 py-5 whitespace-nowrap text-gray-400">
+                                <button>
+                                  <MoreVertical size={20} />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="px-7 py-7 border-t">
+                      <Button className="bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold h-11 px-6">
+                        <Plus size={18} className="mr-2" />
+                        Add New Member
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+            {activeTab === "security" && (
+              <div className="pt-6">
+                <div className="z-20 relative">
+                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative">Security</h6>
+                  <p className="text-base text-gray-600 mb-6">Manage security settings and access controls.</p>
+                </div>
+                <Card className="shadow-none border border-[#ececec] rounded-xl">
+                  <CardContent className="flex items-center justify-center min-h-[180px]">
+                    <span className="text-gray-500 text-lg">Security settings coming soon...</span>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+            {activeTab === "notifications" && (
+              <div className="pt-6">
+                <div className="z-20 relative">
+                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative">Notifications</h6>
+                  <p className="text-base text-gray-600 mb-6">Configure your notification preferences.</p>
+                </div>
+                <Card className="shadow-none border border-[#ececec] rounded-xl">
+                  <CardContent className="p-0">
+                    {notifications.map((n, i) => (
+                      <div key={n.id}>
+                        <div className="flex items-center justify-between px-7 py-6">
+                          <div>
+                            <h3 className="text-base font-medium text-gray-900 mb-0.5">{n.title}</h3>
+                            <p className="text-sm text-gray-500">{n.description}</p>
+                          </div>
+                          <Switch
+                            checked={n.enabled}
+                            onCheckedChange={() => toggleNotification(n.id)}
+                            className="data-[state=checked]:bg-[#7b61ff] scale-110"
+                          />
+                        </div>
+                        {i < notifications.length - 1 && <Separator className="mx-7" />}
+                      </div>
+                    ))}
+                    <div className="flex justify-between items-center px-7 py-6 border-t">
+                      <Button variant="outline" className="border-gray-300 font-normal text-gray-800">
+                        Dismiss All
+                      </Button>
+                      <Button className="h-11 px-8 bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold">
+                        Save Settings
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
         </section>
       </div>
     </div>
