@@ -1,3 +1,5 @@
+
+import { useState } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,82 +9,34 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Building, Users, Shield, Bell, MoreVertical, Plus, Upload, Camera } from "lucide-react";
-import { useState } from "react";
 
 const sidebarItems = [
-  {
-    id: "company",
-    label: "Company Information",
-    icon: Building,
-  },
-  {
-    id: "team",
-    label: "Team",
-    icon: Users,
-  },
-  {
-    id: "security",
-    label: "Security",
-    icon: Shield,
-  },
-  {
-    id: "notifications",
-    label: "Notifications",
-    icon: Bell,
-  },
+  { id: "company", label: "Company Information", icon: <Building size={18} />, },
+  { id: "team", label: "Team", icon: <Users size={18} />, },
+  { id: "security", label: "Security", icon: <Shield size={18} />, },
+  { id: "notifications", label: "Notifications", icon: <Bell size={18} />, },
 ];
 
 const teamMembers = [
-  {
-    email: "sarah@monto.tech",
-    role: "Admin",
-  },
-  {
-    email: "mike@monto.tech",
-    role: "User",
-  },
-  {
-    email: "lisa@monto.tech",
-    role: "User",
-  },
+  { email: "sarah@monto.tech", role: "Admin" },
+  { email: "mike@monto.tech", role: "User" },
+  { email: "lisa@monto.tech", role: "User" },
 ];
 
 const notificationSettings = [
-  {
-    id: "daily_activity",
-    title: "Daily activity",
-    description: "Get a daily recap of workspace events",
-    enabled: true,
-  },
-  {
-    id: "new_invoice_uploads",
-    title: "New invoice uploads",
-    description: "Be notified when new invoices appear",
-    enabled: false,
-  },
-  {
-    id: "comments",
-    title: "Comments",
-    description: "Replies or mentions on shared items",
-    enabled: true,
-  },
-  {
-    id: "new_attachments",
-    title: "New attachments",
-    description: "When a file is added to a record",
-    enabled: true,
-  },
+  { id: "daily_activity", title: "Daily activity", description: "Get a daily recap of workspace events", enabled: true, },
+  { id: "new_invoice_uploads", title: "New invoice uploads", description: "Be notified when new invoices appear", enabled: false, },
+  { id: "comments", title: "Comments", description: "Replies or mentions on shared items", enabled: true, },
+  { id: "new_attachments", title: "New attachments", description: "When a file is added to a record", enabled: true, },
 ];
 
-export default function Settings() {
-  const [activeTab, setActiveTab] = useState("team");
+export default function Workspace() {
+  const [activeTab, setActiveTab] = useState("company");
   const [notifications, setNotifications] = useState(notificationSettings);
 
   const toggleNotification = (id: string) => {
-    setNotifications(prev => 
-      prev.map(item => 
-        item.id === id ? { ...item, enabled: !item.enabled } : item
-      )
+    setNotifications(prev =>
+      prev.map(item => item.id === id ? { ...item, enabled: !item.enabled } : item)
     );
   };
 
@@ -90,51 +44,34 @@ export default function Settings() {
     switch (activeTab) {
       case "company":
         return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-medium text-gray-900 mb-2">Company Information</h2>
-              <p className="text-sm text-gray-600">Manage your company details and preferences.</p>
-            </div>
-            
-            <Card className="shadow-none">
-              <CardContent className="p-6 space-y-6">
-                {/* Logo Upload Section */}
-                <div className="flex items-start gap-4">
-                  <div className="w-24 h-24 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
-                    <Camera size={24} className="text-gray-400" />
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-1">Company Information</h2>
+            <p className="text-sm text-gray-600 mb-6">Manage your company details and preferences.</p>
+            <Card className="shadow-none border border-[#ececec] rounded-xl">
+              <CardContent className="p-10 space-y-7">
+                <div className="flex items-start gap-5">
+                  <div className="w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
+                    <Camera size={28} className="text-gray-400" />
                   </div>
-                  <div className="flex-1">
-                    <Button variant="outline" className="flex items-center gap-2">
-                      <Upload size={16} />
-                      Upload Logo
+                  <div className="flex-1 flex items-center">
+                    <Button variant="outline" className="flex items-center gap-2 border-gray-300">
+                      <Upload size={18} />
+                      <span className="font-medium">Upload Logo</span>
                     </Button>
                   </div>
                 </div>
-
-                {/* Company Name */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Company Name</label>
-                  <Input 
-                    defaultValue="Monto Technologies"
-                    className="bg-white"
-                  />
+                <div>
+                  <label className="block text-[15px] mb-2 font-medium text-gray-800">Company Name</label>
+                  <Input className="h-12 bg-white text-base font-normal" defaultValue="Monto Technologies" />
                 </div>
-
-                {/* Admin Email */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Admin Email</label>
-                  <Input 
-                    defaultValue="admin@monto.tech"
-                    className="bg-gray-100"
-                    disabled
-                  />
+                <div>
+                  <label className="block text-[15px] mb-2 font-medium text-gray-800">Admin Email</label>
+                  <Input className="h-12 bg-gray-100 text-base" value="admin@monto.tech" disabled />
                 </div>
-
-                {/* Timezone */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Timezone</label>
+                <div>
+                  <label className="block text-[15px] mb-2 font-medium text-gray-800">Timezone</label>
                   <Select defaultValue="utc-8">
-                    <SelectTrigger className="bg-white">
+                    <SelectTrigger className="h-12 bg-white">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -144,10 +81,8 @@ export default function Settings() {
                     </SelectContent>
                   </Select>
                 </div>
-
-                {/* Save Button */}
-                <div className="flex justify-end pt-4">
-                  <Button className="bg-monto-purple hover:bg-purple-700 text-white">
+                <div className="text-right pt-2">
+                  <Button className="px-8 h-11 bg-[#7b61ff] hover:bg-[#6b53e6] text-white font-semibold">
                     Save Changes
                   </Button>
                 </div>
@@ -157,50 +92,41 @@ export default function Settings() {
         );
       case "team":
         return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-medium text-gray-900 mb-2">Team</h2>
-              <p className="text-sm text-gray-600">
-                Invite teammates to collaborate. Admins can manage users, connections, and settings.
-                <br />
-                Users can view and edit.
-              </p>
-            </div>
-            
-            <Card className="shadow-none">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-1">Team</h2>
+            <p className="text-sm text-gray-600 mb-6">
+              Invite teammates to collaborate. Admins can manage users, connections, and settings.<br />
+              Users can view and edit.
+            </p>
+            <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-gray-50 border-b">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Email
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Role
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Action
-                        </th>
+                        <th className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
+                        <th className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
+                        <th className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-gray-100">
                       {teamMembers.map((member, index) => (
                         <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {member.email}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <Badge 
+                          <td className="px-8 py-5 whitespace-nowrap text-base text-gray-900">{member.email}</td>
+                          <td className="px-8 py-5 whitespace-nowrap">
+                            <Badge
                               variant={member.role === "Admin" ? "default" : "secondary"}
-                              className={member.role === "Admin" ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-700"}
+                              className={member.role === "Admin"
+                                ? "bg-[#efefff] text-[#6b53e6] font-medium"
+                                : "bg-gray-100 text-gray-700"
+                              }
                             >
                               {member.role}
                             </Badge>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <button className="text-gray-400 hover:text-gray-600">
-                              <MoreVertical size={16} />
+                          <td className="px-8 py-5 whitespace-nowrap text-gray-400">
+                            <button>
+                              <MoreVertical size={20} />
                             </button>
                           </td>
                         </tr>
@@ -208,10 +134,9 @@ export default function Settings() {
                     </tbody>
                   </table>
                 </div>
-                
-                <div className="p-6 border-t">
-                  <Button className="bg-monto-purple hover:bg-purple-700 text-white">
-                    <Plus size={16} className="mr-2" />
+                <div className="px-7 py-7 border-t">
+                  <Button className="bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold h-11 px-6">
+                    <Plus size={18} className="mr-2" />
                     Add New Member
                   </Button>
                 </div>
@@ -221,55 +146,44 @@ export default function Settings() {
         );
       case "security":
         return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-medium text-gray-900 mb-2">Security</h2>
-              <p className="text-sm text-gray-600">Manage security settings and access controls.</p>
-            </div>
-            <div className="text-center py-12">
-              <p className="text-gray-500">Security settings coming soon...</p>
-            </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-1">Security</h2>
+            <p className="text-sm text-gray-600 mb-6">Manage security settings and access controls.</p>
+            <Card className="shadow-none border border-[#ececec] rounded-xl">
+              <CardContent className="flex items-center justify-center min-h-[180px]">
+                <span className="text-gray-500 text-lg">Security settings coming soon...</span>
+              </CardContent>
+            </Card>
           </div>
         );
       case "notifications":
         return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-medium text-gray-900 mb-2">Notifications</h2>
-              <p className="text-sm text-gray-600">Configure your notification preferences.</p>
-            </div>
-            
-            <Card className="shadow-none">
-              <CardContent className="p-6 space-y-6">
-                {notifications.map((notification, index) => (
-                  <div key={notification.id}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <h3 className="text-sm font-medium text-gray-900 mb-1">
-                          {notification.title}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {notification.description}
-                        </p>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-1">Notifications</h2>
+            <p className="text-sm text-gray-600 mb-6">Configure your notification preferences.</p>
+            <Card className="shadow-none border border-[#ececec] rounded-xl">
+              <CardContent className="p-0">
+                {notifications.map((n, i) => (
+                  <div key={n.id}>
+                    <div className="flex items-center justify-between px-7 py-6">
+                      <div>
+                        <h3 className="text-base font-medium text-gray-900 mb-0.5">{n.title}</h3>
+                        <p className="text-sm text-gray-500">{n.description}</p>
                       </div>
                       <Switch
-                        checked={notification.enabled}
-                        onCheckedChange={() => toggleNotification(notification.id)}
-                        className="data-[state=checked]:bg-monto-purple"
+                        checked={n.enabled}
+                        onCheckedChange={() => toggleNotification(n.id)}
+                        className="data-[state=checked]:bg-[#7b61ff] scale-110"
                       />
                     </div>
-                    {index < notifications.length - 1 && (
-                      <Separator className="mt-6" />
-                    )}
+                    {i < notifications.length - 1 && <Separator className="mx-7" />}
                   </div>
                 ))}
-
-                {/* Action Buttons */}
-                <div className="flex justify-between items-center pt-6 border-t">
-                  <Button variant="outline" className="text-gray-600">
+                <div className="flex justify-between items-center px-7 py-6 border-t">
+                  <Button variant="outline" className="border-gray-300 font-normal text-gray-800">
                     Dismiss All
                   </Button>
-                  <Button className="bg-monto-purple hover:bg-purple-700 text-white">
+                  <Button className="h-11 px-8 bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold">
                     Save Settings
                   </Button>
                 </div>
@@ -283,40 +197,41 @@ export default function Settings() {
   };
 
   return (
-    <div>
-      <PageHeader 
-        title="My Workspace" 
-        subtitle="Manage your account preferences and application settings" 
+    <div className="px-8 py-10">
+      <PageHeader
+        title="Settings"
+        subtitle="Manage your account preferences and application settings"
       />
-      
-      <Card className="mt-6 shadow-none">
-        <CardContent className="p-0">
-          {/* REMOVE sidebar! */}
-          {/* <div className="flex">
-            <div className="w-64 flex-shrink-0 border-r bg-gray-50">
-              <nav className="p-4 space-y-1">
-                {sidebarItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveTab(item.id)}
-                      className={...}
-                    >
-                      <Icon size={18} />
-                      <span className="font-medium">{item.label}</span>
-                    </button>
-                  );
-                })}
-              </nav>
-            </div> */}
-            {/* Main Content */}
-            <div className="flex-1 p-8">
-              {renderContent()}
-            </div>
-          {/* </div> */}
-        </CardContent>
-      </Card>
+      <div className="mt-6 rounded-2xl bg-white border border-[#ececec] flex shadow-none overflow-hidden">
+        {/* Sidebar */}
+        <aside className="w-64 border-r border-[#ececec] bg-[#fafbfc] py-10 px-4">
+          <nav>
+            <ul className="flex flex-col gap-1">
+              {sidebarItems.map(item => (
+                <li key={item.id}>
+                  <button
+                    className={`flex items-center gap-3 w-full px-5 py-3 rounded-lg font-medium text-base transition
+                      ${activeTab === item.id
+                        ? "bg-[#f5f3ff] text-[#7b61ff]"
+                        : "text-gray-800 hover:bg-gray-100"
+                      }`}
+                    onClick={() => setActiveTab(item.id)}
+                  >
+                    <span className={`transition-colors ${
+                      activeTab === item.id ? "text-[#7b61ff]" : "text-gray-500"
+                    }`}>{item.icon}</span>
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+        {/* Main Content */}
+        <section className="flex-1 p-12">
+          {renderContent()}
+        </section>
+      </div>
     </div>
   );
 }
