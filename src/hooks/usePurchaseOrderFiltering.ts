@@ -1,6 +1,6 @@
 
 import { useState, useMemo } from "react";
-import { PurchaseOrder } from "@/types/purchaseOrder";
+import { PurchaseOrder } from "@/types/purchase-orders";
 import { PurchaseOrderFilters } from "@/components/purchase-orders/filters/types";
 
 export function usePurchaseOrderFiltering(purchaseOrders: PurchaseOrder[], activeTab: string) {

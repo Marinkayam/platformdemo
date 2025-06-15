@@ -1,5 +1,6 @@
-import { StatusBadge } from "@/components/ui/status-badge";
-import { PurchaseOrderStatus } from "@/types/purchaseOrder";
+
+import { StatusBadge } from "@/components/common/StatusBadge";
+import { PurchaseOrderStatus } from "@/types/purchase-orders";
 
 interface PurchaseOrderStatusBadgeProps {
   status: PurchaseOrderStatus;
