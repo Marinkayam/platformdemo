@@ -242,7 +242,6 @@ export default function Workspace() {
               tabs={sidebarTabs}
               activeTab={activeTab}
               onTabChange={setActiveTab}
-              tabTriggerClass="relative z-10" // Custom class to TabsTrigger if TabsNav supports
             />
           </div>
         </aside>
