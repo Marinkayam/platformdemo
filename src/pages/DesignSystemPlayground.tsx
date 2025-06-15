@@ -396,19 +396,19 @@ export default function DesignSystemPlayground() {
           <div className="bg-primary-lighter p-4 rounded-md text-primary-darker font-medium text-center">
             <p className="mb-2">Small (p-4)</p>
             <div className="w-12 h-12 bg-primary-light mx-auto rounded-md"></div>
-                </div>
+          </div>
           <div className="bg-primary-lighter p-6 rounded-md text-primary-darker font-medium text-center">
             <p className="mb-2">Medium (p-6)</p>
             <div className="w-16 h-16 bg-primary-light mx-auto rounded-md"></div>
-              </div>
+          </div>
           <div className="bg-primary-lighter p-8 rounded-md text-primary-darker font-medium text-center">
             <p className="mb-2">Large (p-8)</p>
             <div className="w-20 h-20 bg-primary-light mx-auto rounded-md"></div>
-                  </div>
+          </div>
           <div className="bg-primary-lighter p-10 rounded-md text-primary-darker font-medium text-center">
             <p className="mb-2">Extra Large (p-10)</p>
             <div className="w-24 h-24 bg-primary-light mx-auto rounded-md"></div>
-                </div>
+          </div>
         </div>
       </div>
 
@@ -420,21 +420,21 @@ export default function DesignSystemPlayground() {
             <div className="w-10 h-10 bg-primary-light rounded-md"></div>
             <div className="w-10 h-10 bg-primary-light rounded-md"></div>
             <div className="w-10 h-10 bg-primary-light rounded-md"></div>
-                </div>
+          </div>
 
           <p className="font-medium text-grey-800">Gap-4</p>
           <div className="flex gap-4 p-4 bg-grey-100 rounded-md">
             <div className="w-10 h-10 bg-primary-light rounded-md"></div>
             <div className="w-10 h-10 bg-primary-light rounded-md"></div>
             <div className="w-10 h-10 bg-primary-light rounded-md"></div>
-                  </div>
+          </div>
 
           <p className="font-medium text-grey-800">Gap-8</p>
           <div className="flex gap-8 p-4 bg-grey-100 rounded-md">
             <div className="w-10 h-10 bg-primary-light rounded-md"></div>
             <div className="w-10 h-10 bg-primary-light rounded-md"></div>
             <div className="w-10 h-10 bg-primary-light rounded-md"></div>
-                  </div>
+          </div>
         </div>
       </div>
 
@@ -454,45 +454,120 @@ export default function DesignSystemPlayground() {
     </div>
   );
 
-  const renderButtons = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Primary Buttons</h2>
-        <div className="flex flex-wrap items-center gap-4">
-          <Button className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary Button</Button>
-          <Button disabled className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Primary Disabled</Button>
-          <Button variant="outline" className="border-primary-main text-primary-main hover:bg-primary-lighter">Primary Outline</Button>
-          <Button variant="ghost" className="text-primary-main hover:bg-primary-lighter">Primary Ghost</Button>
-          <Button variant="link" className="text-primary-main">Primary Link</Button>
-          <Button size="sm" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Small Button</Button>
-          <Button size="lg" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text">Large Button</Button>
-          <Button size="icon" className="bg-primary-main hover:bg-primary-dark text-primary-contrast-text"><Search size={16} /></Button>
-        </div>
-      </div>
+  const renderButtons = () => {
+    const copyToClipboard = (text: string) => {
+      navigator.clipboard.writeText(text);
+      toast({ title: "Copied to clipboard", description: `Code copied!` });
+    };
 
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Secondary Buttons</h2>
-        <div className="flex flex-wrap items-center gap-4">
-          <Button className="bg-grey-700 hover:bg-grey-800 text-primary-contrast-text">Secondary Button</Button>
-          <Button disabled className="bg-grey-700 hover:bg-grey-800 text-primary-contrast-text">Secondary Disabled</Button>
-          <Button variant="outline" className="border-grey-400 text-grey-700 hover:bg-grey-100">Secondary Outline</Button>
-          <Button variant="ghost" className="text-grey-700 hover:bg-grey-100">Secondary Ghost</Button>
-          <Button variant="link" className="text-grey-700">Secondary Link</Button>
-        </div>
+    const CodeBlock = ({ code }: { code: string }) => (
+      <div className="relative bg-grey-100 rounded-md p-3 border border-grey-200 mt-3">
+        <pre className="text-xs text-grey-800 font-mono overflow-x-auto whitespace-pre-wrap pr-8">
+          <code>{code}</code>
+        </pre>
+        <button
+          onClick={() => copyToClipboard(code)}
+          className="absolute top-1.5 right-1.5 p-1 hover:bg-grey-200 rounded-md transition-colors"
+        >
+          <Copy size={14} className="text-grey-500" />
+        </button>
       </div>
+    );
+    
+    return (
+      <div className="space-y-12">
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Primary Buttons</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
+            <div>
+              <Button>Primary Button</Button>
+              <CodeBlock code={`<Button>Primary Button</Button>`} />
+            </div>
+            <div>
+              <Button disabled>Primary Disabled</Button>
+              <CodeBlock code={`<Button disabled>Primary Disabled</Button>`} />
+            </div>
+            <div>
+              <Button variant="outline" className="border-primary-main text-primary-main hover:bg-primary-lighter hover:text-primary-main">Primary Outline</Button>
+              <CodeBlock code={`<Button variant="outline" className="border-primary-main text-primary-main hover:bg-primary-lighter hover:text-primary-main">\n  Primary Outline\n</Button>`} />
+            </div>
+            <div>
+              <Button variant="ghost" className="text-primary-main hover:bg-primary-lighter">Primary Ghost</Button>
+              <CodeBlock code={`<Button variant="ghost" className="text-primary-main hover:bg-primary-lighter">\n  Primary Ghost\n</Button>`} />
+            </div>
+            <div>
+              <Button variant="link">Primary Link</Button>
+              <CodeBlock code={`<Button variant="link">Primary Link</Button>`} />
+            </div>
+            <div>
+              <Button size="sm">Small Button</Button>
+              <CodeBlock code={`<Button size="sm">Small Button</Button>`} />
+            </div>
+            <div>
+              <Button size="lg">Large Button</Button>
+              <CodeBlock code={`<Button size="lg">Large Button</Button>`} />
+            </div>
+            <div>
+              <Button size="icon"><Search /></Button>
+              <CodeBlock code={`<Button size="icon">\n  <Search />\n</Button>`} />
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Secondary Buttons</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
+            <div>
+              <Button variant="secondary">Secondary Button</Button>
+              <CodeBlock code={`<Button variant="secondary">\n  Secondary Button\n</Button>`} />
+            </div>
+            <div>
+              <Button variant="secondary" disabled>Secondary Disabled</Button>
+              <CodeBlock code={`<Button variant="secondary" disabled>\n  Secondary Disabled\n</Button>`} />
+            </div>
+            <div>
+              <Button variant="outline">Secondary Outline</Button>
+              <CodeBlock code={`<Button variant="outline">\n  Secondary Outline\n</Button>`} />
+            </div>
+            <div>
+              <Button variant="ghost">Secondary Ghost</Button>
+              <CodeBlock code={`<Button variant="ghost">Secondary Ghost</Button>`} />
+            </div>
+            <div>
+              <Button variant="link" className="text-grey-700">Secondary Link</Button>
+              <CodeBlock code={`<Button variant="link" className="text-grey-700">\n  Secondary Link\n</Button>`} />
+            </div>
+          </div>
+        </div>
 
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Destructive Buttons</h2>
-        <div className="flex flex-wrap items-center gap-4">
-          <Button variant="destructive">Destructive Button</Button>
-          <Button disabled variant="destructive">Destructive Disabled</Button>
-          <Button variant="outline" className="border-red-500 text-red-500 hover:bg-red-50">Destructive Outline</Button>
-          <Button variant="ghost" className="text-red-500 hover:bg-red-50">Destructive Ghost</Button>
-          <Button variant="link" className="text-red-500">Destructive Link</Button>
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Destructive Buttons</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
+            <div>
+              <Button variant="destructive">Destructive Button</Button>
+              <CodeBlock code={`<Button variant="destructive">\n  Destructive Button\n</Button>`} />
+            </div>
+            <div>
+              <Button variant="destructive" disabled>Destructive Disabled</Button>
+              <CodeBlock code={`<Button variant="destructive" disabled>\n  Destructive Disabled\n</Button>`} />
+            </div>
+            <div>
+              <Button variant="outline" className="border-red-500 text-red-500 hover:bg-red-50 hover:text-red-500">Destructive Outline</Button>
+              <CodeBlock code={`<Button variant="outline" className="border-red-500 text-red-500 hover:bg-red-50 hover:text-red-500">\n  Destructive Outline\n</Button>`} />
+            </div>
+            <div>
+              <Button variant="ghost" className="text-red-500 hover:bg-red-50">Destructive Ghost</Button>
+              <CodeBlock code={`<Button variant="ghost" className="text-red-500 hover:bg-red-50">\n  Destructive Ghost\n</Button>`} />
+            </div>
+            <div>
+              <Button variant="link" className="text-red-500">Destructive Link</Button>
+              <CodeBlock code={`<Button variant="link" className="text-red-500">\n  Destructive Link\n</Button>`} />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderStatusBadges = () => (
     <div className="space-y-8">
@@ -516,7 +591,7 @@ export default function DesignSystemPlayground() {
           <PaymentsRelationshipStatusBadge status="Live" />
           <PaymentsRelationshipStatusBadge status="In Process" />
           <PaymentsRelationshipStatusBadge status="Disconnected" />
-            </div>
+        </div>
       </div>
 
       <div>
