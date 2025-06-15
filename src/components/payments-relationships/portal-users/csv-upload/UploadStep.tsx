@@ -67,9 +67,12 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
 
   return (
     <div className="space-y-4">
+      <p className="text-sm text-gray-600 text-center mb-4">
+        Upload a CSV or Excel file with your portal users. We’ll help you map the data and show a preview before importing.
+      </p>
       <div
         className={cn(
-          "flex flex-col items-center justify-center gap-4 border-2 border-dashed rounded-lg p-10 text-center transition-colors cursor-pointer",
+          "flex flex-col items-center justify-center gap-4 border border-dashed rounded-lg p-10 text-center transition-colors cursor-pointer",
           isDragging ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-gray-400'
         )}
         onDragEnter={handleDragEnter}
