@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useRef } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -49,6 +50,23 @@ const notificationSettings = [
 export default function Workspace() {
   const [activeTab, setActiveTab] = useState("company");
   const [notifications, setNotifications] = useState(notificationSettings);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setLogoUrl(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click();
+  };
 
   const toggleNotification = (id: string) => {
     setNotifications(prev =>
@@ -70,16 +88,29 @@ export default function Workspace() {
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-10 space-y-7">
                 <div className="flex items-start gap-5">
-                  <div className="relative w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
-                    <Camera size={28} className="text-gray-400" />
-                    <Button
-                      variant="outline"
-                      className="flex items-center gap-2 border-gray-300 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-xs font-medium px-3 py-2 transition-all"
-                      style={{ minWidth: 96 }}
-                    >
-                      <Upload size={16} className="mr-1" />
-                      <span>Upload Logo</span>
-                    </Button>
+                  <div 
+                    className="relative w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors overflow-hidden"
+                    onClick={triggerFileUpload}
+                  >
+                    {logoUrl ? (
+                      <img 
+                        src={logoUrl} 
+                        alt="Company logo" 
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center">
+                        <Upload size={24} className="text-gray-400 mb-1" />
+                        <span className="text-xs text-gray-500 text-center px-2">Click to upload logo</span>
+                      </div>
+                    )}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      className="hidden"
+                    />
                   </div>
                   <div className="flex-1 flex items-center">
                     {/* Empty space reserved */}
@@ -234,7 +265,7 @@ export default function Workspace() {
         subtitle="Manage your account preferences and application settings"
       />
       <div className="mt-6 rounded-2xl bg-white border border-[#ececec] flex shadow-none overflow-hidden min-h-[600px]">
-        <aside className="w-80 border-r border-[#ececec] bg-[#fafbfc] py-8">
+        <aside className="w-80 border-r border-[#ececec] bg-[#fafbfc]">
           <TabsNav
             tabs={sidebarTabs}
             activeTab={activeTab}
