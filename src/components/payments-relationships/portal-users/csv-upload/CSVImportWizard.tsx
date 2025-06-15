@@ -35,6 +35,7 @@ export const MONTO_FIELDS: { key: keyof PortalUser | 'password'; label: string; 
 export interface ValidatedUser extends Partial<PortalUser> {
   _row: number;
   _errors: string[];
+  _warnings: string[];
   _status: 'valid' | 'warning' | 'error';
 }
 
@@ -93,16 +94,29 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
       parseFile(file);
     } else if (currentStep === 'mapping') {
       const newValidatedData = data.map((row, index) => {
-          const user: ValidatedUser = { _row: index + 2, _errors: [], _status: 'valid' };
+          const user: ValidatedUser = { _row: index + 2, _errors: [], _warnings: [], _status: 'valid' };
+          
           MONTO_FIELDS.forEach(field => {
               const mappedHeader = mappings[field.key];
-              if (mappedHeader && row[mappedHeader]) {
-                  (user as any)[field.key] = row[mappedHeader];
-              } else if (field.required) {
-                  user._errors.push(`Missing required field: ${field.label}`);
+              const value = mappedHeader && mappedHeader !== 'skip' ? row[mappedHeader] : undefined;
+
+              if (value) {
+                  (user as any)[field.key] = value;
+              } else {
+                  if (field.required) {
+                      user._errors.push(`Missing required field: ${field.label}`);
+                  } else {
+                      user._warnings.push(`Missing optional field: ${field.label}`);
+                  }
               }
           });
-          if(user._errors.length > 0) user._status = 'error';
+
+          if (user._errors.length > 0) {
+              user._status = 'error';
+          } else if (user._warnings.length > 0) {
+              user._status = 'warning';
+          }
+          
           return user;
       });
       setValidatedData(newValidatedData);
@@ -121,7 +135,7 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
   const handleImport = () => {
     const usersToImport = validatedData
         .filter(user => user._status !== 'error')
-        .map(({ _row, _errors, _status, ...user }) => user);
+        .map(({ _row, _errors, _warnings, _status, ...user }) => user);
     onImport(usersToImport);
     onComplete();
   }

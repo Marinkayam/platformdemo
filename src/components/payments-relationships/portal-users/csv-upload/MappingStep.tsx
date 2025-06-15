@@ -36,6 +36,16 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
 
   const unmappedRequiredFields = MONTO_FIELDS.filter(f => f.required && !mappings[f.key]).map(f => f.label);
 
+  const mappedValues = Object.values(mappings).filter(val => val && val !== 'skip');
+  const valueCounts = mappedValues.reduce((acc, val) => {
+      acc[val] = (acc[val] || 0) + 1;
+      return acc;
+  }, {} as { [key: string]: number });
+
+  const duplicateMappings = Object.entries(valueCounts)
+      .filter(([, count]) => count > 1)
+      .map(([value]) => value);
+
   return (
     <TooltipProvider>
       <div className="space-y-4">
@@ -45,6 +55,12 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
         {unmappedRequiredFields.length > 0 && (
             <div className="p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-md text-sm">
                 <strong>Warning:</strong> The following required fields are not mapped: {unmappedRequiredFields.join(', ')}.
+            </div>
+        )}
+        
+        {duplicateMappings.length > 0 && (
+             <div className="p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-md text-sm">
+                <strong>Warning:</strong> The following columns are mapped to more than one field: {duplicateMappings.join(', ')}.
             </div>
         )}
 

@@ -67,11 +67,23 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
                     <Tooltip>
                       <TooltipTrigger>{getStatusIcon(user._status)}</TooltipTrigger>
                       <TooltipContent>
-                        {user._errors.length > 0 ? (
-                          <ul className="list-disc list-inside">
-                            {user._errors.map((e, i) => <li key={i}>{e}</li>)}
-                          </ul>
-                        ) : 'Looks good!'}
+                        {user._status === 'valid' && '✅ All good! Ready to import.'}
+                        {user._status === 'warning' && (
+                          <div className="p-1">
+                            <p className="font-medium text-yellow-600">Warnings (row will be imported):</p>
+                            <ul className="list-disc list-inside text-sm">
+                              {user._warnings.map((w, i) => <li key={i}>{w}</li>)}
+                            </ul>
+                          </div>
+                        )}
+                        {user._status === 'error' && (
+                           <div className="p-1">
+                            <p className="font-medium text-red-600">Errors (row will be skipped):</p>
+                            <ul className="list-disc list-inside text-sm">
+                              {user._errors.map((e, i) => <li key={i}>{e}</li>)}
+                            </ul>
+                          </div>
+                        )}
                       </TooltipContent>
                     </Tooltip>
                   </TableCell>

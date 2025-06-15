@@ -15,7 +15,8 @@ export function SummaryStep({ data }: SummaryStepProps) {
     error: data.filter(d => d._status === 'error').length,
     warning: data.filter(d => d._status === 'warning').length,
   };
-  const skipped = stats.error + stats.warning;
+  const imported = stats.valid + stats.warning;
+  const skipped = stats.error;
 
   return (
     <div className="space-y-4">
@@ -30,7 +31,7 @@ export function SummaryStep({ data }: SummaryStepProps) {
           <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
             <CheckCircle className="h-8 w-8 text-green-500" />
             <div>
-              <p className="text-2xl font-bold">{stats.valid}</p>
+              <p className="text-2xl font-bold">{imported}</p>
               <p className="text-sm text-gray-600">New Users to Import</p>
             </div>
           </div>
