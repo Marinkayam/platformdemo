@@ -26,8 +26,7 @@ const IconLibrary = () => {
   }, [search]);
 
   return (
-    <div className="p-4 border rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Icon Library</h2>
+    <div>
       <div className="mb-6">
         <Input
           type="text"
