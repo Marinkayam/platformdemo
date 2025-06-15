@@ -1,10 +1,10 @@
 
 import React, { useState, useMemo } from 'react';
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
-import DynamicIcon, { IconName } from '../ui/DynamicIcon';
+import DynamicIcon from '../ui/DynamicIcon';
 import { Input } from '@/components/ui/input';
 
-const usedIconNames: IconName[] = [
+const usedIconNames: string[] = [
     'palette', 'type', 'layout-grid', 'mouse-pointer-click', 'badge', 'layout-list',
     'filter', 'table', 'clipboard-list', 'layout-template', 'alert-triangle',
     'hourglass', 'app-window', 'bell-ring', 'chevrons-up-down', 'ellipsis',
@@ -13,9 +13,9 @@ const usedIconNames: IconName[] = [
     'file-text', 'arrow-left', 'info'
 ];
 
-const allIconNames = [...new Set(usedIconNames)].sort() as IconName[];
+const allIconNames = [...new Set(usedIconNames)].sort();
 
-const IconDisplay: React.FC<{ name: IconName }> = ({ name }) => (
+const IconDisplay: React.FC<{ name: string }> = ({ name }) => (
   <div className="flex flex-col items-center justify-center gap-2 p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer">
     <DynamicIcon name={name} size={32} />
     <span className="text-xs text-center text-gray-600 break-all">{name}</span>

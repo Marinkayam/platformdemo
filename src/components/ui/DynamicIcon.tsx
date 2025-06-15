@@ -8,12 +8,12 @@ const fallback = <div className="bg-gray-200 rounded-md animate-pulse" style={{ 
 export type IconName = keyof typeof dynamicIconImports;
 
 interface IconProps extends Omit<LucideProps, 'ref'> {
-  name: IconName;
+  name: string;
 }
 
 const DynamicIcon = ({ name, ...props }: IconProps) => {
-  const LucideIcon = name && dynamicIconImports[name] 
-    ? lazy(dynamicIconImports[name])
+  const LucideIcon = name && (dynamicIconImports as any)[name] 
+    ? lazy((dynamicIconImports as any)[name])
     : null;
 
   if (!LucideIcon) {
