@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -27,11 +28,11 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: "border border-primary-main bg-background-paper text-grey-800",
-        destructive: "border-error-main bg-error-lighter text-error-dark",
-        success: "border-success-main bg-success-lighter text-success-dark",
-        warning: "border-warning-main bg-warning-lighter text-warning-dark",
-        info: "border-info-main bg-info-lighter text-info-dark",
+        default: "border border-primary-main bg-white text-grey-800",
+        destructive: "border-error-main bg-white text-error-dark",
+        success: "border-success-main bg-white text-success-dark",
+        warning: "border-warning-main bg-white text-warning-dark",
+        info: "border-info-main bg-white text-info-dark",
       },
     },
     defaultVariants: {

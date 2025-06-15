@@ -1,3 +1,4 @@
+
 import { ToastVariant } from "./types"
 
 let count = 0
@@ -7,25 +8,8 @@ export function genId() {
   return count.toString()
 }
 
-export function getMontoClassName(variant: ToastVariant, className?: string): string {
-  let montoClassName = className || ""
-  
-  switch (variant) {
-    case "success":
-      montoClassName = `border-success-main bg-success-lighter text-success-dark ${className || ""}`.trim()
-      break
-    case "warning":
-      montoClassName = `border-warning-main bg-warning-lighter text-warning-dark ${className || ""}`.trim()
-      break
-    case "info":
-      montoClassName = `border-info-main bg-info-lighter text-info-dark ${className || ""}`.trim()
-      break
-    case "destructive":
-      montoClassName = `border-error-main bg-error-lighter text-error-dark ${className || ""}`.trim()
-      break
-    default:
-      montoClassName = className || ""
-  }
-
-  return montoClassName
+export function getMontoClassName(_variant: ToastVariant, className?: string): string {
+  // The variant styles are now handled by CVA in `src/components/ui/toast.tsx`.
+  // This function now just passes through any extra class names.
+  return className || ""
 }
