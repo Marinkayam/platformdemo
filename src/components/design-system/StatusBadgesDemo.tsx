@@ -1,18 +1,18 @@
 
 import { StatusBadge } from "@/components/common/StatusBadge";
+import { PurchaseOrderStatus } from "@/types/purchase-orders";
 
 const StatusBadgesDemo = () => {
-  const statuses = [
+  const statuses: PurchaseOrderStatus[] = [
     'new',
-    'pending',
+    'pending_approval',
     'approved',
     'rejected',
-    'paid',
-    'settled',
-    'awaiting_payment',
-    'partially_paid',
-    'overdue',
-    'processing'
+    'cancelled',
+    'completed',
+    'New',
+    'Partially Invoiced',
+    'Fully Invoiced'
   ];
 
   return (

@@ -1,4 +1,3 @@
-
 import { cn } from '@/lib/utils';
 import DynamicIcon, { IconName } from '@/components/ui/DynamicIcon';
 
@@ -8,17 +7,17 @@ export const designSystemNavItems = [
   { id: 'spacing-layout', label: 'Spacing & Layout', icon: 'layout-grid' as IconName },
   { id: 'buttons', label: 'Buttons', icon: 'mouse-pointer-click' as IconName },
   { id: 'status-badges', label: 'Status Badges', icon: 'badge' as IconName },
-  { id: 'tab-navigation', label: 'Tab Navigation', icon: 'tabs' as IconName },
+  { id: 'tab-navigation', label: 'Tab Navigation', icon: 'layout-list' as IconName },
   { id: 'filter-components', label: 'Filter Components', icon: 'filter' as IconName },
   { id: 'table-system', label: 'Table System', icon: 'table' as IconName },
-  { id: 'form-elements', label: 'Form Elements', icon: 'clipboard-edit' as IconName },
+  { id: 'form-elements', label: 'Form Elements', icon: 'clipboard-list' as IconName },
   { id: 'layout-components', label: 'Layout Components', icon: 'layout-template' as IconName },
-  { id: 'alerts', label: 'Alerts', icon: 'alert-triangle' as IconName },
+  { id: 'alerts', label: 'Alerts', icon: 'alert-circle' as IconName },
   { id: 'progress', label: 'Progress', icon: 'hourglass' as IconName },
   { id: 'modals', label: 'Modals', icon: 'app-window' as IconName },
   { id: 'toast-notifications', label: 'Toast Notifications', icon: 'bell-ring' as IconName },
   { id: 'dropdowns', label: 'Dropdowns', icon: 'chevrons-up-down' as IconName },
-  { id: 'breadcrumbs', label: 'Breadcrumbs', icon: 'more-horizontal' as IconName },
+  { id: 'breadcrumbs', label: 'Breadcrumbs', icon: 'ellipsis' as IconName },
   { id: 'brand-assets', label: 'Brand Assets', icon: 'image' as IconName },
   { id: 'portal-logos', label: 'Portal Logos', icon: 'gallery-thumbnails' as IconName },
   { id: 'icons', label: 'Icons', icon: 'sparkles' as IconName },
