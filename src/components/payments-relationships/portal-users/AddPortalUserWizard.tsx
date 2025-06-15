@@ -209,9 +209,9 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
         />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 flex justify-center">
         {filteredPortals.length > 0 ? (
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-6 gap-6">
             {filteredPortals.map((portal) => (
               <Card
                 key={portal.id}
