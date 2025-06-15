@@ -48,7 +48,7 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
   const columnsCount = isPendingTab ? 7 : 8; // Adjust based on actual column count
 
   return (
-    <div className="rounded-xl border-gray-200 overflow-hidden bg-white">
+    <div className="rounded-xl border border-gray-200 overflow-hidden bg-white">
       <div className="overflow-x-auto">
         <Table>
           <InvoiceTableHeader 

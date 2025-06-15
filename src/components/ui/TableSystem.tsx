@@ -27,7 +27,7 @@ interface TableSystemProps<T> {
 
 export function TableSystem<T>({ data, columns, className, rowClassName }: TableSystemProps<T>) {
   return (
-    <div className={cn("rounded-xl border-[0.75px] border-gray-200 overflow-hidden bg-white", className)}>
+    <div className={cn("rounded-xl border border-gray-200 overflow-hidden bg-white", className)}>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
