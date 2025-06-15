@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
@@ -164,7 +163,7 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Progress value={progress} />
+        <Progress value={progress} className="h-2" />
         <div className="flex justify-between text-sm font-medium text-gray-600">
           {WIZARD_STEPS.map((step, index) => (
             <span key={step.id} className={currentStepIndex >= index ? 'text-primary' : ''}>
@@ -174,7 +173,7 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
         </div>
       </div>
       
-      <div className="min-h-[400px]">
+      <div>
         {renderStepContent()}
       </div>
 
