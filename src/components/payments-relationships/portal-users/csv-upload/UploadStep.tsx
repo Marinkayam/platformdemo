@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload, Download, X, File as FileIcon } from 'lucide-react';
+import { Download, X, File as FileIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -78,8 +78,8 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
       >
-        <Upload className="h-12 w-12 text-gray-400" />
-        <h4 className="font-semibold text-gray-900 text-lg">Drop your file here or click to upload</h4>
+        <img src="/lovable-uploads/f38987db-daaa-460a-b748-137cf3e679b8.png" alt="Upload file illustration" className="h-24" />
+        <h4 className="font-semibold text-gray-900 text-base">Drop your file here or click to upload</h4>
         <p className="text-sm text-gray-500">Supported formats: CSV, XLSX • Up to 500 users</p>
         <input
           type="file"
