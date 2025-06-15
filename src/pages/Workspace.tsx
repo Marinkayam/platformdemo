@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -8,8 +7,9 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Building, Users, Shield, Bell, Upload, Camera, MoreVertical, Plus } from "lucide-react";
+import { Building, Users, Shield, Bell, Upload, Camera, MoreVertical, Plus, Loader2, Check } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
+import { showSuccessToast } from "@/lib/toast-helpers";
 
 const sidebarTabs = [
   {
@@ -51,6 +51,7 @@ export default function Workspace() {
   const [activeTab, setActiveTab] = useState("company");
   const [notifications, setNotifications] = useState(notificationSettings);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +75,22 @@ export default function Workspace() {
     );
   };
 
+  const handleSaveChanges = async () => {
+    setIsLoading(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setIsLoading(false);
+    showSuccessToast("Settings saved successfully", "Your company information has been updated.");
+  };
+
+  const handleSaveNotifications = async () => {
+    setIsLoading(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setIsLoading(false);
+    showSuccessToast("Notification settings saved", "Your preferences have been updated.");
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case "company":
@@ -88,29 +105,34 @@ export default function Workspace() {
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-10 space-y-7">
                 <div className="flex items-start gap-5">
-                  <div 
-                    className="relative w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors overflow-hidden"
-                    onClick={triggerFileUpload}
-                  >
-                    {logoUrl ? (
-                      <img 
-                        src={logoUrl} 
-                        alt="Company logo" 
-                        className="w-full h-full object-cover rounded-full"
+                  <div className="flex flex-col items-center">
+                    <div 
+                      className="relative w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors overflow-hidden mb-2"
+                      onClick={triggerFileUpload}
+                    >
+                      {logoUrl ? (
+                        <img 
+                          src={logoUrl} 
+                          alt="Company logo" 
+                          className="w-full h-full object-cover rounded-full"
+                        />
+                      ) : (
+                        <div className="flex flex-col items-center">
+                          <Upload size={24} className="text-gray-400 mb-1" />
+                          <span className="text-xs text-gray-500 text-center px-2">Click to upload logo</span>
+                        </div>
+                      )}
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoUpload}
+                        className="hidden"
                       />
-                    ) : (
-                      <div className="flex flex-col items-center">
-                        <Upload size={24} className="text-gray-400 mb-1" />
-                        <span className="text-xs text-gray-500 text-center px-2">Click to upload logo</span>
-                      </div>
-                    )}
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleLogoUpload}
-                      className="hidden"
-                    />
+                    </div>
+                    <p className="text-xs text-gray-500 text-center">
+                      Supports PNG/JPG · Max size: 5MB
+                    </p>
                   </div>
                   <div className="flex-1 flex items-center">
                     {/* Empty space reserved */}
@@ -131,15 +153,37 @@ export default function Workspace() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="utc-8">UTC-8 (Pacific Standard Time)</SelectItem>
-                      <SelectItem value="utc-5">UTC-5 (Eastern Standard Time)</SelectItem>
-                      <SelectItem value="utc+0">UTC+0 (Greenwich Mean Time)</SelectItem>
+                      <SelectItem value="utc-8">🇺🇸 UTC-8 (Pacific Standard Time)</SelectItem>
+                      <SelectItem value="utc-5">🇺🇸 UTC-5 (Eastern Standard Time)</SelectItem>
+                      <SelectItem value="utc+0">🇬🇧 UTC+0 (Greenwich Mean Time)</SelectItem>
                     </SelectContent>
                   </Select>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Used for syncing timestamps from your portals and documents.
+                  </p>
                 </div>
+                
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-800">
+                    <span className="font-medium">Your company portal will be accessible at:</span><br />
+                    <span className="font-mono text-blue-900">montotechnologies.monto.com</span>
+                  </p>
+                </div>
+
                 <div className="text-right pt-2">
-                  <Button className="px-8 h-11 bg-[#7b61ff] hover:bg-[#6b53e6] text-white font-semibold">
-                    Save Changes
+                  <Button 
+                    className="px-8 h-11 bg-[#7b61ff] hover:bg-[#6b53e6] text-white font-semibold"
+                    onClick={handleSaveChanges}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 size={16} className="mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      "Save Changes"
+                    )}
                   </Button>
                 </div>
               </CardContent>
@@ -245,8 +289,19 @@ export default function Workspace() {
                   <Button variant="outline" className="border-gray-300 font-normal text-gray-800">
                     Dismiss All
                   </Button>
-                  <Button className="h-11 px-8 bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold">
-                    Save Settings
+                  <Button 
+                    className="h-11 px-8 bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold"
+                    onClick={handleSaveNotifications}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 size={16} className="mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      "Save Settings"
+                    )}
                   </Button>
                 </div>
               </CardContent>
