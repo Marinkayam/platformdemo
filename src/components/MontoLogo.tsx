@@ -1,4 +1,3 @@
-
 import * as React from "react";
 
 interface MontoLogoProps {
@@ -9,7 +8,7 @@ const MontoLogo = (props: MontoLogoProps) => (
   <svg
     width={1327}
     height={395}
-    viewBox="0 0 1327 395"
+    viewBox="150 0 1177 395"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}

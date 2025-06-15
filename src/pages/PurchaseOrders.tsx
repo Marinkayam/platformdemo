@@ -4,7 +4,6 @@ import { PurchaseOrderHeader } from "@/components/purchase-orders/PurchaseOrderH
 import { PurchaseOrderTable } from "@/components/purchase-orders/PurchaseOrderTable";
 import { purchaseOrderData } from "@/data/purchaseOrders";
 import { usePurchaseOrderFiltering } from "@/hooks/usePurchaseOrderFiltering";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 export default function PurchaseOrders() {
   const location = useLocation();
@@ -41,7 +40,7 @@ export default function PurchaseOrders() {
   ];
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab}>
+    <div>
       <PurchaseOrderHeader 
         tabs={tabsWithCounts}
         activeTab={activeTab}
@@ -50,11 +49,9 @@ export default function PurchaseOrders() {
         purchaseOrderCount={filteredPurchaseOrders.length}
       />
       
-      <TabsContent value={activeTab}>
-        <PurchaseOrderTable 
-          purchaseOrders={filteredPurchaseOrders} 
-        />
-      </TabsContent>
-    </Tabs>
+      <PurchaseOrderTable 
+        purchaseOrders={filteredPurchaseOrders} 
+      />
+    </div>
   );
 }

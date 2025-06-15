@@ -1,4 +1,4 @@
-import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
+import { TabsNav } from "@/components/common/TabsNav";
 import { InvoiceFilters } from "@/components/invoices/InvoiceFilters";
 import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";
 import { InvoiceActions } from "@/components/invoices/InvoiceActions";
@@ -30,7 +30,7 @@ export function InvoiceHeader({
         subtitle="RTPs (Request to Pay) in Monto are smart, trackable payment requests linked to invoices. They allow teams to sync data across portals, monitor approval status, and streamline the payment process — all in one place." 
       />
       
-      <InvoiceTabs
+      <TabsNav
         tabs={tabs}
         activeTab={activeTab}
         onTabChange={onTabChange}

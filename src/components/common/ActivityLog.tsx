@@ -1,7 +1,5 @@
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow, format } from "date-fns";
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import { Card } from "@/components/ui/card";
 import { Notes } from "@/components/common/Notes";
 import { CheckCircle2, FileText, FolderOpen, MessageSquareText, RefreshCcw } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -73,8 +71,8 @@ export function ActivityLog({ entityId, entityType, className }: ActivityLogProp
   }, [entityId, entityType]);
 
   return (
-    <ResizablePanelGroup direction="horizontal" className="min-h-[700px] rounded-xl border border-[#E4E5E9] overflow-hidden">
-      <ResizablePanel defaultSize={50} className="p-6 bg-white">
+    <div className="grid grid-cols-2 gap-6">
+      <div>
         <h3 className="text-lg font-semibold mb-4">Activity Timeline</h3>
         
         <div className="relative pl-5">
@@ -102,11 +100,10 @@ export function ActivityLog({ entityId, entityType, className }: ActivityLogProp
             </div>
           ))}
         </div>
-      </ResizablePanel>
-      <ResizableHandle />
-      <ResizablePanel defaultSize={50} className="p-6 border-l border-[#E4E5E9] bg-white">
+      </div>
+      <div>
         <Notes entityId={entityId} entityType={entityType} />
-      </ResizablePanel>
-    </ResizablePanelGroup>
+      </div>
+    </div>
   );
 } 

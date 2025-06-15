@@ -18,7 +18,6 @@ import { PaymentsRelationshipStatusBadge } from "@/components/payments-relations
 import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
 import { ActiveFiltersList } from "@/components/invoices/filters/ActiveFiltersList";
 import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";
-import { InvoiceTabs } from "@/components/invoices/InvoiceTabs";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -64,6 +63,7 @@ import { RequestToPayTransactionHeader } from "@/components/ui/request-to-pay-tr
 import { TableSystem } from "@/components/ui/TableSystem";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { formatCurrency, getPortalLogoUrl, formatOwnerName } from "@/lib/utils";
+import { TabsNav } from "@/components/common/TabsNav";
 
 interface SidebarItem {
   id: string;
@@ -534,33 +534,21 @@ export default function DesignSystemPlayground() {
   const renderTabNavigation = () => (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Standard Tabs</h2>
-        <Tabs defaultValue="tab1" className="w-[400px]">
-          <TabsList>
-            <TabsTrigger value="tab1">Overview</TabsTrigger>
-            <TabsTrigger value="tab2">Settings</TabsTrigger>
-            <TabsTrigger value="tab3">Activity</TabsTrigger>
-          </TabsList>
-          <TabsContent value="tab1" className="mt-4 text-grey-700">Content for Overview tab.</TabsContent>
-          <TabsContent value="tab2" className="mt-4 text-grey-700">Content for Settings tab.</TabsContent>
-          <TabsContent value="tab3" className="mt-4 text-grey-700">Content for Activity tab.</TabsContent>
-        </Tabs>
-      </div>
+        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Tab Navigation</h2>
+        <p className="text-sm text-grey-600 mb-4">❇️ TabsNav - The standardized navigation component for tabs across the application.</p>
 
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Invoice Tabs Example</h2>
-        <InvoiceTabs
-          activeTab={activeInvoiceTab} 
-          onTabChange={setActiveInvoiceTab}
-          tabs={[
-            { id: "all", label: "All RTPs", count: 1234 },
-            { id: "pending", label: "Pending Action", count: 43 },
-            { id: "overdue", label: "Overdue", count: 12 },
-            { id: "settled", label: "Settled", count: 856 },
-          ]}
-        />
-        <div className="p-6">
-          <p className="text-grey-700">Content for active invoice tab: {activeInvoiceTab}</p>
+        {/* Restored Invoice Tabs Example using TabsNav */}
+        <div>
+          <TabsNav
+            activeTab={activeInvoiceTab}
+            onTabChange={setActiveInvoiceTab}
+            tabs={[
+              { id: "all", label: "All RTPs", count: 22 },
+              { id: "pending", label: "Pending Action", count: 6 },
+              { id: "overdue", label: "Overdue", count: 22 },
+              { id: "settled", label: "Settled", count: 7 },
+            ]}
+          />
         </div>
       </div>
     </div>

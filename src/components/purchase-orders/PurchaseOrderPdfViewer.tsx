@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Download, Search, ZoomIn, ZoomOut } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { format } from "date-fns";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowDownToLine, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PurchaseOrderPdfViewerProps {
   purchaseOrder: PurchaseOrder;
@@ -20,10 +23,10 @@ export function PurchaseOrderPdfViewer({
   onZoomOut,
 }: PurchaseOrderPdfViewerProps) {
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex justify-between items-center mb-4">
+    <>
+      <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold">PO Preview</h2>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" className="flex items-center gap-1">
             <Download className="h-4 w-4" />
           </Button>
@@ -40,7 +43,7 @@ export function PurchaseOrderPdfViewer({
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-4 border border-gray-200 rounded-lg">
+      <div className="flex-1 overflow-auto border border-gray-200 rounded-lg">
         <div className="text-center border-b pb-4 mb-4">
           <h2 className="text-xl font-bold">PURCHASE ORDER</h2>
           <p className="text-lg text-gray-600 mb-4">PO-{purchaseOrder.poNumber || "N/A"}</p>
@@ -98,6 +101,6 @@ export function PurchaseOrderPdfViewer({
           Total: {formatCurrency(purchaseOrder.total || 0, purchaseOrder.currency || "USD")}
         </div>
       </div>
-    </div>
+    </>
   );
 } 

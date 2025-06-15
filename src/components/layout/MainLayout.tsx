@@ -23,8 +23,8 @@ export function MainLayout({
       title: "Logged out",
       description: "You have been successfully logged out."
     });
-    // Redirect to homepage or login page
-    navigate("/");
+    // Redirect to login page
+    navigate("/login");
   };
   const handleSettingsClick = () => {
     navigate("/settings");

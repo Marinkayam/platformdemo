@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Eye, EyeOff, Upload, Download, Check, ArrowLeft, ArrowRight, Building, Users, Shield, FileSpreadsheet, ChevronsUpDown } from 'lucide-react';
+import { Eye, EyeOff, Upload, Download, Check, ArrowLeft, ArrowRight, Building, Users, Shield, FileSpreadsheet, ChevronsUpDown, X, Search } from 'lucide-react';
 import { PortalUser } from '@/types/portalUser';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
@@ -56,6 +56,26 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   const [isDedicatedUserConfirmed, setIsDedicatedUserConfirmed] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [validationLoading, setValidationLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const filteredPortals = AVAILABLE_PORTALS.filter((portal) =>
+    portal.name.toLowerCase().includes(searchQuery.toLowerCase())
+  ).sort((a, b) => {
+    const aName = a.name.toLowerCase();
+    const bName = b.name.toLowerCase();
+    const query = searchQuery.toLowerCase();
+
+    // Exact match first
+    if (aName === query && bName !== query) return -1;
+    if (bName === query && aName !== query) return 1;
+
+    // Then alphabetical for partial matches
+    return aName.localeCompare(bName);
+  });
 
   const steps = [
     { id: 'portal', label: 'Portal Selection' },
@@ -118,92 +138,146 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.type !== 'text/csv') {
+      if (file.type !== 'text/csv' && file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
         toast({
           variant: "destructive",
           title: "Invalid File Type",
-          description: "Please upload a CSV file.",
+          description: "Please upload a CSV or XLSX file.",
         });
         return;
       }
       setSelectedFile(file);
-      // Here you would typically process the CSV file
-      toast({
-        title: "File Uploaded",
-        description: "Processing CSV file...",
-      });
+      setValidationLoading(true);
+      setValidationErrors([]); // Clear previous errors
+
+      // Simulate API call for validation
+      setTimeout(() => {
+        const errors: string[] = [];
+        // Mock validation checks
+        if (Math.random() < 0.3) {
+          errors.push("Missing required fields in some rows.");
+        }
+        if (Math.random() < 0.3) {
+          errors.push("Duplicate emails found.");
+        }
+        if (Math.random() < 0.3) {
+          errors.push("Some portals are not supported.");
+        }
+        if (Math.random() < 0.3) {
+          errors.push("Invalid password format detected.");
+        }
+
+        if (errors.length > 0) {
+          setValidationErrors(errors);
+          toast({
+            variant: "destructive",
+            title: "Validation Failed",
+            description: "Please review the issues before proceeding.",
+          });
+        } else {
+          toast({
+            title: "File Validated",
+            description: "CSV/XLSX file is ready for import.",
+          });
+        }
+        setValidationLoading(false);
+      }, 2000); // Simulate 2-second validation process
     }
   };
 
   const renderPortalStep = () => (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <Label>Select Portal</Label>
+      <div className="space-y-4">
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal={false}>
           <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              className="w-full justify-between"
-              onClick={() => setIsPopoverOpen(true)}
-            >
-              {selectedPortal ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center overflow-hidden">
-                    <img 
-                      src={getPortalLogoUrl(selectedPortal)} 
-                      alt={`${selectedPortal} logo`} 
-                      className="w-full h-full object-cover"
+            <div className="flex items-center border border-grey-300 rounded-md px-3 py-2 cursor-pointer">
+              <Search className="h-4 w-4 text-grey-500 mr-2" />
+              <Input
+                placeholder="Search Portal or paste portal unique link"
+                className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="w-full p-0" align="start" onPointerDownOutside={(e) => e.preventDefault()}>
+            <Command>
+              <CommandInput placeholder="Search portals..." value={searchQuery} onValueChange={setSearchQuery} />
+              {filteredPortals.length === 0 ? (
+                <div className="text-center p-4">
+                  <p className="text-sm text-grey-600 mb-2">No Portals found</p>
+                  <Button variant="outline" className="mt-2">
+                    Add Portal Manually
+                  </Button>
+                </div>
+              ) : (
+                <CommandGroup className="max-h-[300px] overflow-auto">
+                  {filteredPortals.map((portal) => (
+                    <CommandItem
+                      key={portal.id}
+                      value={portal.name}
+                      onSelect={() => {
+                        handlePortalSelect(portal.name);
+                        setSearchQuery(portal.name); // Keep search query updated with selected item
+                        setIsPopoverOpen(false);
+                      }}
+                      className={cn(
+                        "flex items-center gap-2 p-3 cursor-pointer",
+                        selectedPortal === portal.name && "bg-primary-lighter"
+                      )}
+                    >
+                      <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                        <img
+                          src={getPortalLogoUrl(portal.name)}
+                          alt={`${portal.name} logo`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/portal-logos/placeholder.svg';
+                          }}
+                        />
+                      </div>
+                      <span className="font-medium">{portal.name}</span>
+                      {selectedPortal === portal.name && (
+                        <Check className="ml-auto h-4 w-4 text-primary-main" />
+                      )}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+            </Command>
+          </PopoverContent>
+        </Popover>
+        <div className="space-y-2 mt-4">
+          <p className="text-sm font-medium text-grey-600">Popular Portals</p>
+          <div className="grid grid-cols-6 gap-4">
+            {filteredPortals.map((portal) => (
+              <Card
+                key={portal.id}
+                className={cn(
+                  "cursor-pointer transition-all hover:border-primary-main w-[100px] h-[100px] p-0",
+                  selectedPortal === portal.name && "border-primary-main bg-primary-lighter"
+                )}
+                onClick={() => handlePortalSelect(portal.name)}
+              >
+                <CardContent className="flex flex-col items-center justify-center h-full p-0">
+                  <div className="w-full h-full flex items-center justify-center overflow-hidden mb-1 rounded-full">
+                    <img
+                      src={getPortalLogoUrl(portal.name)}
+                      alt={`${portal.name} logo`}
+                      className="w-12 h-12 object-contain"
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = '/portal-logos/placeholder.svg';
                       }}
                     />
                   </div>
-                  <span>{selectedPortal}</span>
-                </div>
-              ) : (
-                "Search for a portal..."
-              )}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start" onPointerDownOutside={(e) => e.preventDefault()}>
-            <Command>
-              <CommandInput placeholder="Search portals..." />
-              <CommandEmpty>No portal found.</CommandEmpty>
-              <CommandGroup className="max-h-[300px] overflow-auto">
-                {AVAILABLE_PORTALS.map((portal) => (
-                  <CommandItem
-                    key={portal.id}
-                    value={portal.name}
-                    onSelect={() => {
-                      handlePortalSelect(portal.name);
-                      setIsPopoverOpen(false);
-                    }}
-                    className="flex items-center gap-2 p-2"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center overflow-hidden">
-                      <img 
-                        src={getPortalLogoUrl(portal.name)} 
-                        alt={`${portal.name} logo`} 
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = '/portal-logos/placeholder.svg';
-                        }}
-                      />
-                    </div>
-                    <span>{portal.name}</span>
-                    {selectedPortal === portal.name && (
-                      <Check className="ml-auto h-4 w-4" />
-                    )}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </Command>
-          </PopoverContent>
-        </Popover>
+                  <span className="text-xs font-normal text-grey-900 text-center mb-2">{portal.name}</span>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -390,31 +464,58 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
 
   const renderCSVUpload = () => (
     <div className="space-y-6">
-      <div className="border-2 border-dashed border-grey-200 rounded-lg p-8 text-center">
-        <div className="flex flex-col items-center gap-4">
-          <FileSpreadsheet className="h-12 w-12 text-grey-400" />
-          <div>
-            <p className="font-medium text-grey-900">Drag and drop your CSV file here</p>
-            <p className="text-sm text-grey-600">or</p>
-          </div>
-          <div className="flex gap-4">
-            <Button variant="outline" onClick={() => window.open('/templates/portal-users.csv', '_blank')}>
-              <Download className="h-4 w-4 mr-2" />
-              Download Template
-            </Button>
-            <Button>
-              <Upload className="h-4 w-4 mr-2" />
-              Choose File
-              <input
-                type="file"
-                accept=".csv"
-                className="hidden"
-                onChange={handleFileUpload}
-              />
-            </Button>
-          </div>
+      <div className="flex flex-col items-center gap-4 bg-grey-50 p-8 rounded-lg text-center">
+        <FileSpreadsheet className="h-12 w-12 text-grey-400" />
+        <h4 className="font-semibold text-grey-900 text-lg">Upload Multiple Users (CSV)</h4>
+        <p className="text-sm text-grey-600 max-w-sm">
+          Use our template to upload multiple users at once.
+          We'll validate the format and show you a preview before importing.
+        </p>
+        <div className="flex gap-4">
+          <Button variant="outline" onClick={() => window.open('/templates/portal-users.csv', '_blank')}>
+            <Download className="h-4 w-4 mr-2" />
+            Download Template
+          </Button>
+          <Button onClick={() => fileInputRef.current?.click()}>
+            <Upload className="h-4 w-4 mr-2" />
+            Upload File
+            <input
+              type="file"
+              accept=".csv,.xlsx"
+              className="hidden"
+              onChange={handleFileUpload}
+              ref={fileInputRef}
+            />
+          </Button>
         </div>
+        <p className="text-xs text-grey-500 mt-2">Supported formats: CSV, XLSX • Up to 500 users</p>
       </div>
+      {validationLoading && (
+        <div className="flex flex-col items-center justify-center p-8 bg-grey-50 rounded-lg">
+          <svg className="animate-spin h-8 w-8 text-primary-main" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p className="mt-4 text-sm text-grey-600">Validating file, please wait...</p>
+        </div>
+      )}
+      {validationErrors.length > 0 && (
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg space-y-2">
+          <p className="font-medium">Validation Errors:</p>
+          <ul className="list-disc list-inside">
+            {validationErrors.map((error, index) => (
+              <li key={index} className="text-sm">{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {selectedFile && !validationLoading && validationErrors.length === 0 && (
+        <div className="flex justify-end">
+          <Button>
+            Import Users
+          </Button>
+        </div>
+      )}
       <div className="bg-grey-50 p-4 rounded-lg">
         <h4 className="font-medium text-grey-900 mb-2">CSV Requirements</h4>
         <ul className="text-sm text-grey-600 space-y-1 list-disc list-inside">
@@ -427,11 +528,6 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
     </div>
   );
 
-  const tabItems = [
-    { id: 'singular', label: 'Singular Upload' },
-    { id: 'csv', label: 'Upload CSV File' },
-  ];
-
   return (
     <Dialog
       open={isOpen}
@@ -441,81 +537,57 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
         }
       }}
     >
-      <DialogContent
-        className="max-w-2xl"
-        onInteractOutside={(e) => {
-          if (e.target instanceof HTMLElement && e.target.closest('[data-radix-popper-content]')) {
-            e.preventDefault();
-          }
-        }}
-      >
-        <DialogHeader>
-          <DialogTitle>Add Portal Users</DialogTitle>
+      <DialogContent className="w-[772px] p-0 overflow-hidden rounded-xl max-w-none">
+        <DialogHeader className="p-6 pb-0">
+          <DialogTitle className="text-xl font-semibold text-grey-900">Add Portal Users</DialogTitle>
         </DialogHeader>
-
-        <DesignTabs
-          tabs={tabItems}
-          activeTab={activeTab}
-          onTabChange={(id) => setActiveTab(id as 'singular' | 'csv')}
-          className="mt-0 -mb-4"
-        />
-
-        {activeTab === 'singular' && (
-          <div className="space-y-6 pt-4">
-            <div className="space-y-2">
-              <div className="flex items-center">
-                <span className="text-sm font-medium text-grey-700">
-                  Step {currentStepIndex + 1} of {steps.length}: {steps[currentStepIndex].label}
-                </span>
-              </div>
-              <Progress value={progress} className="h-2" />
-            </div>
-
-            {currentStep === 'portal' && renderPortalStep()}
-            {currentStep === 'userType' && renderUserTypeStep()}
-            {currentStep === 'setup' && (
-              selectedUserType === 'existing' ? renderExistingUserSetup() : renderDedicatedUserSetup()
-            )}
-
-            <div className="flex justify-between pt-4">
-              {currentStep !== 'portal' && (
-                <Button variant="outline" onClick={handleBack}>
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
+        <div className="px-6 pt-0">
+          <DesignTabs
+            tabs={[
+              { id: 'singular', label: 'Singular Upload' },
+              { id: 'csv', label: 'Upload Bulk CSV File' },
+            ]}
+            activeTab={activeTab}
+            onTabChange={(id) => setActiveTab(id as 'singular' | 'csv')}
+            className="mb-4"
+          />
+        </div>
+        <div className="p-6 pt-0">
+          {activeTab === 'singular' && (
+            <div className="space-y-6">
+              {currentStep === 'portal' && renderPortalStep()}
+              {currentStep === 'userType' && renderUserTypeStep()}
+              {currentStep === 'setup' && (
+                selectedUserType === 'existing' ? renderExistingUserSetup() : renderDedicatedUserSetup()
               )}
-              <div className="flex gap-2 ml-auto">
-                <Button variant="outline" onClick={onClose}>
-                  Cancel
-                </Button>
-                {currentStep === 'setup' ? (
-                  <Button onClick={handleSubmit}>
-                    Add Portal User
-                  </Button>
-                ) : (
-                  <Button onClick={handleNext}>
-                    Continue
-                    <ArrowRight className="h-4 w-4 ml-2" />
+
+              <div className="flex justify-between pt-4">
+                {currentStep !== 'portal' && (
+                  <Button variant="outline" onClick={handleBack}>
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back
                   </Button>
                 )}
+                <div className="flex gap-2 ml-auto">
+                  <Button variant="outline" onClick={onClose}>
+                    Cancel
+                  </Button>
+                  {currentStep === 'setup' ? (
+                    <Button onClick={handleSubmit}>
+                      Add Portal User
+                    </Button>
+                  ) : (
+                    <Button onClick={handleNext} disabled={!selectedPortal}>
+                      Continue
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {activeTab === 'csv' && (
-          <div className="space-y-6 pt-4">
-            {renderCSVUpload()}
-            <div className="flex justify-end pt-4">
-              <Button variant="outline" onClick={onClose} className="mr-2">
-                Cancel
-              </Button>
-              <Button disabled={!selectedFile}>
-                Upload Users
-              </Button>
-            </div>
-          </div>
-        )}
+          )}
+          {activeTab === 'csv' && renderCSVUpload()}
+        </div>
       </DialogContent>
     </Dialog>
   );
