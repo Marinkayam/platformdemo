@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -61,11 +60,13 @@ export default function Workspace() {
     switch (activeTab) {
       case "company":
         return (
-          <div>
-            <h6 className="text-lg font-semibold text-gray-900 mb-1">Company Information</h6>
-            <p className="text-base text-gray-600 mb-6">
-              Manage your company details and preferences.
-            </p>
+          <div className="pt-4">
+            <div className="z-20 relative">
+              <h6 className="text-lg font-semibold text-gray-900 mb-1">Company Information</h6>
+              <p className="text-base text-gray-600 mb-6">
+                Manage your company details and preferences.
+              </p>
+            </div>
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-10 space-y-7">
                 <div className="flex items-start gap-5">
@@ -116,12 +117,14 @@ export default function Workspace() {
         );
       case "team":
         return (
-          <div>
-            <h6 className="text-lg font-semibold text-gray-900 mb-1">Team</h6>
-            <p className="text-base text-gray-600 mb-6">
-              Invite teammates to collaborate. Admins can manage users, connections, and settings.<br />
-              Users can view and edit.
-            </p>
+          <div className="pt-4">
+            <div className="z-20 relative">
+              <h6 className="text-lg font-semibold text-gray-900 mb-1">Team</h6>
+              <p className="text-base text-gray-600 mb-6">
+                Invite teammates to collaborate. Admins can manage users, connections, and settings.<br />
+                Users can view and edit.
+              </p>
+            </div>
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
@@ -170,9 +173,11 @@ export default function Workspace() {
         );
       case "security":
         return (
-          <div>
-            <h6 className="text-lg font-semibold text-gray-900 mb-1">Security</h6>
-            <p className="text-base text-gray-600 mb-6">Manage security settings and access controls.</p>
+          <div className="pt-4">
+            <div className="z-20 relative">
+              <h6 className="text-lg font-semibold text-gray-900 mb-1">Security</h6>
+              <p className="text-base text-gray-600 mb-6">Manage security settings and access controls.</p>
+            </div>
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="flex items-center justify-center min-h-[180px]">
                 <span className="text-gray-500 text-lg">Security settings coming soon...</span>
@@ -182,9 +187,11 @@ export default function Workspace() {
         );
       case "notifications":
         return (
-          <div>
-            <h6 className="text-lg font-semibold text-gray-900 mb-1">Notifications</h6>
-            <p className="text-base text-gray-600 mb-6">Configure your notification preferences.</p>
+          <div className="pt-4">
+            <div className="z-20 relative">
+              <h6 className="text-lg font-semibold text-gray-900 mb-1">Notifications</h6>
+              <p className="text-base text-gray-600 mb-6">Configure your notification preferences.</p>
+            </div>
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-0">
                 {notifications.map((n, i) => (
@@ -228,12 +235,16 @@ export default function Workspace() {
       />
       <div className="mt-6 rounded-2xl bg-white border border-[#ececec] flex shadow-none overflow-hidden">
         <aside className="w-80 border-r border-[#ececec] bg-[#fafbfc] py-10 px-0 flex flex-col">
-          {/* Standardized vertical TabsNav for sidebar, styled for icon/label/layout fidelity */}
-          <TabsNav
-            tabs={sidebarTabs}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-          />
+          {/* Add pb-4 for bottom padding to separate the vertical tabs from content area */}
+          <div className="pb-4">
+            {/* TabsNav tab trigger should use relative z-10 for stacking */}
+            <TabsNav
+              tabs={sidebarTabs}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              tabTriggerClass="relative z-10" // Custom class to TabsTrigger if TabsNav supports
+            />
+          </div>
         </aside>
         <section className="flex-1 p-12">
           {renderContent()}
@@ -242,4 +253,3 @@ export default function Workspace() {
     </div>
   );
 }
-// ... end of file
