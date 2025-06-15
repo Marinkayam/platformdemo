@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Building, Eye, Edit, Trash2, Copy } from 'lucide-react';
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
@@ -228,7 +229,7 @@ export function PortalUsersTable({
       sticky: true,
       render: (portal: string) => (
         <div className="flex items-center gap-2">
-          <div className="w-12 h-12 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden">
+          <div className="w-8 h-8 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden">
             <img src={getPortalLogoUrl(portal)} alt={`${portal} logo`} className="w-full h-full object-contain" />
           </div>
           <TooltipProvider>
