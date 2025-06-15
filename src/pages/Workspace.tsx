@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -252,11 +251,7 @@ export default function Workspace() {
 
   return (
     <div className="px-8 py-10">
-      <PageHeader
-        title="Company Settings"
-        subtitle="Manage your account preferences and application settings"
-      />
-      <div className="mt-6">
+      <div>
         <TabsNav
           tabs={headerTabs}
           activeTab={activeTab}

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -151,7 +152,7 @@ export function TeamTab() {
                         {member.role}
                       </Badge>
                     </TableCell>
-                    <TableCell className="px-8 py-5 whitespace-nowrap">
+                    <TableCell className="px-8 py-5 whitespace-nowrap text-right">
                        <TableActions actions={memberActions(member)} />
                     </TableCell>
                   </TableRow>
@@ -159,7 +160,7 @@ export function TeamTab() {
               </TableBody>
             </Table>
           </div>
-          <div className="px-7 py-7 border-t">
+          <div className="px-7 py-7 border-t flex justify-end">
             <Button onClick={handleAddNewMember} className="bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold h-11 px-6">
               <Plus size={18} className="mr-2" />
               Add New Member
