@@ -37,10 +37,15 @@ const Dashboard = () => {
           </div>
         </div>
       ) : (
-        <SparklesText text="Creating the magic..." className="text-3xl" />
+        <div className="flex flex-col items-center">
+          <SparklesText text="Creating the magic..." className="text-3xl" />
+          <span className="text-xs text-gray-500 mt-1">
+            we are building it...hold on...
+          </span>
+        </div>
       )}
     </div>
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

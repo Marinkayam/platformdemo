@@ -1,4 +1,3 @@
-
 import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter } from "@/components/ui/sidebar";
 import { MontoLogo } from "@/components/MontoLogo";
 import { SidebarSection } from "./SidebarSection";
@@ -13,8 +12,8 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
     <Sidebar variant="sidebar" className="w-64 bg-[#FAFAFA] border-r border-[#E4E5E9] transition-all duration-300">
       <SidebarHeader className="border-b border-[#E4E5E9] px-3 h-[64px] flex items-center justify-start">
         <div className="flex items-center h-full">
-          {/* Remove negative margin and set explicit size, allow room for logo */}
-          <MontoLogo className="w-[94px] h-[28px]" />
+          {/* Center logo vertically to align with sidebar icons */}
+          <MontoLogo className="w-[94px] h-[28px] my-auto" />
         </div>
       </SidebarHeader>
       
