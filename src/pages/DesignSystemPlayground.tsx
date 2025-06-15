@@ -461,7 +461,7 @@ export default function DesignSystemPlayground() {
     };
 
     const CodeBlock = ({ code }: { code: string }) => (
-      <div className="relative bg-grey-100 rounded-md p-3 border border-grey-200 mt-3">
+      <div className="relative bg-white rounded-md p-3 border border-grey-200 mt-3">
         <pre className="text-xs text-grey-800 font-mono overflow-x-auto whitespace-pre-wrap pr-8">
           <code>{code}</code>
         </pre>
