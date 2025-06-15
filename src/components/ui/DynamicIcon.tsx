@@ -17,6 +17,7 @@ const DynamicIcon = ({ name, ...props }: IconProps) => {
     : null;
 
   if (!LucideIcon) {
+    console.error(`Icon with name "${name}" not found.`);
     return fallback;
   }
 
