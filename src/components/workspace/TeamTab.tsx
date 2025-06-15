@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -131,7 +132,7 @@ export function TeamTab() {
           Editors can view and edit. Viewers can only view.
         </p>
       </div>
-      <Card className="shadow-none border-[0.5px] border-[#ececec] rounded-xl">
+      <Card className="shadow-none border-[0.75px] border-[#ececec] rounded-xl">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <Table>

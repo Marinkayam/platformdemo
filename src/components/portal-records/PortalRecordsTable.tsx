@@ -27,7 +27,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
 
   if (records.length === 0) {
     return (
-      <div className="rounded-xl border-[0.5px] bg-white">
+      <div className="rounded-xl border-[0.75px] bg-white">
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
@@ -65,7 +65,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   }
 
   return (
-    <div className="rounded-xl border-[0.5px] overflow-hidden bg-white">
+    <div className="rounded-xl border-[0.75px] overflow-hidden bg-white">
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
