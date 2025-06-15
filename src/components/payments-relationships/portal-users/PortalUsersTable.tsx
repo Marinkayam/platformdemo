@@ -40,15 +40,13 @@ interface Column {
 }
 
 interface PortalUsersTableProps {
-  // Temporarily commenting out prop to use internal mock data for demonstration
-  // portalUsers: PortalUser[];
+  portalUsers?: PortalUser[];  // <-- FIX: accept portalUsers as a prop if provided
   onEditPortalUser?: (user: PortalUser) => void;
   onRemovePortalUser?: (id: string) => void;
 }
 
 export function PortalUsersTable({
-  // Temporarily commenting out prop to use internal mock data for demonstration
-  // portalUsers,
+  portalUsers: propPortalUsers,    // <-- Destructure the prop as propPortalUsers
   onEditPortalUser,
   onRemovePortalUser,
 }: PortalUsersTableProps) {
@@ -60,6 +58,7 @@ export function PortalUsersTable({
   const [selectedPortalUser, setSelectedPortalUser] = useState<PortalUser | null>(null);
   const navigate = useNavigate();
 
+  // (leave state for mock/standalone demo, but only use if prop is NOT provided)
   const [mockPortalUsers, setMockPortalUsers] = useState<PortalUser[]>([
     {
       id: "2",
@@ -123,8 +122,8 @@ export function PortalUsersTable({
     },
   ]);
 
-  // Use mockPortalUsers for rendering
-  const portalUsers = mockPortalUsers; // Temporarily use internal state
+  // Use prop if it exists, otherwise fall back to mock internal state for demos/stories
+  const portalUsers = propPortalUsers || mockPortalUsers;
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -434,4 +433,4 @@ export function PortalUsersTable({
       )}
     </div>
   );
-} 
+}
