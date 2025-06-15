@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -45,19 +44,28 @@ export default function Workspace() {
       case "company":
         return (
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-1">Company Information</h2>
-            <p className="text-sm text-gray-600 mb-6">Manage your company details and preferences.</p>
+            {/* Heading and paragraph using new typography rules */}
+            <h6 className="text-lg font-semibold text-gray-900 mb-1">Company Information</h6>
+            <p className="text-base text-gray-600 mb-6">
+              Manage your company details and preferences.
+            </p>
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-10 space-y-7">
                 <div className="flex items-start gap-5">
-                  <div className="w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
+                  {/* Photo Circle - Upload Logo inside */}
+                  <div className="relative w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
                     <Camera size={28} className="text-gray-400" />
+                    <Button
+                      variant="outline"
+                      className="flex items-center gap-2 border-gray-300 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/70 hover:bg-white px-3 py-2 text-xs font-medium"
+                      style={{ minWidth: 96 }}
+                    >
+                      <Upload size={16} />
+                      <span>Upload Logo</span>
+                    </Button>
                   </div>
                   <div className="flex-1 flex items-center">
-                    <Button variant="outline" className="flex items-center gap-2 border-gray-300">
-                      <Upload size={18} />
-                      <span className="font-medium">Upload Logo</span>
-                    </Button>
+                    {/* Remove Upload Logo button from here */}
                   </div>
                 </div>
                 <div>
@@ -93,8 +101,8 @@ export default function Workspace() {
       case "team":
         return (
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-1">Team</h2>
-            <p className="text-sm text-gray-600 mb-6">
+            <h6 className="text-lg font-semibold text-gray-900 mb-1">Team</h6>
+            <p className="text-base text-gray-600 mb-6">
               Invite teammates to collaborate. Admins can manage users, connections, and settings.<br />
               Users can view and edit.
             </p>
@@ -147,8 +155,8 @@ export default function Workspace() {
       case "security":
         return (
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-1">Security</h2>
-            <p className="text-sm text-gray-600 mb-6">Manage security settings and access controls.</p>
+            <h6 className="text-lg font-semibold text-gray-900 mb-1">Security</h6>
+            <p className="text-base text-gray-600 mb-6">Manage security settings and access controls.</p>
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="flex items-center justify-center min-h-[180px]">
                 <span className="text-gray-500 text-lg">Security settings coming soon...</span>
@@ -159,8 +167,8 @@ export default function Workspace() {
       case "notifications":
         return (
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-1">Notifications</h2>
-            <p className="text-sm text-gray-600 mb-6">Configure your notification preferences.</p>
+            <h6 className="text-lg font-semibold text-gray-900 mb-1">Notifications</h6>
+            <p className="text-base text-gray-600 mb-6">Configure your notification preferences.</p>
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-0">
                 {notifications.map((n, i) => (
