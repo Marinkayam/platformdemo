@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -7,13 +8,30 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Building, Users, Shield, Bell, MoreVertical, Plus, Upload, Camera } from "lucide-react";
+import { Building, Users, Shield, Bell, Upload, Camera, MoreVertical, Plus } from "lucide-react";
+import { TabsNav } from "@/components/common/TabsNav";
 
-const sidebarItems = [
-  { id: "company", label: "Company Information", icon: <Building size={18} />, },
-  { id: "team", label: "Team", icon: <Users size={18} />, },
-  { id: "security", label: "Security", icon: <Shield size={18} />, },
-  { id: "notifications", label: "Notifications", icon: <Bell size={18} />, },
+const sidebarTabs = [
+  {
+    id: "company",
+    label: "Company Information",
+    icon: <Building size={24} />,
+  },
+  {
+    id: "team",
+    label: "Team",
+    icon: <Users size={24} />,
+  },
+  {
+    id: "security",
+    label: "Security",
+    icon: <Shield size={24} />,
+  },
+  {
+    id: "notifications",
+    label: "Notifications",
+    icon: <Bell size={24} />,
+  },
 ];
 
 const teamMembers = [
@@ -44,7 +62,6 @@ export default function Workspace() {
       case "company":
         return (
           <div>
-            {/* Heading and paragraph using new typography rules */}
             <h6 className="text-lg font-semibold text-gray-900 mb-1">Company Information</h6>
             <p className="text-base text-gray-600 mb-6">
               Manage your company details and preferences.
@@ -52,12 +69,11 @@ export default function Workspace() {
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-10 space-y-7">
                 <div className="flex items-start gap-5">
-                  {/* Photo Circle - Upload Logo inside */}
                   <div className="relative w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
                     <Camera size={28} className="text-gray-400" />
                     <Button
                       variant="outline"
-                      className="flex items-center gap-2 border-gray-300 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/70 hover:bg-white px-3 py-2 text-xs font-medium"
+                      className="flex items-center gap-2 border-gray-300 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-xs font-medium px-3 py-2"
                       style={{ minWidth: 96 }}
                     >
                       <Upload size={16} />
@@ -65,7 +81,7 @@ export default function Workspace() {
                     </Button>
                   </div>
                   <div className="flex-1 flex items-center">
-                    {/* Remove Upload Logo button from here */}
+                    {/* Empty space reserved */}
                   </div>
                 </div>
                 <div>
@@ -211,29 +227,13 @@ export default function Workspace() {
         subtitle="Manage your account preferences and application settings"
       />
       <div className="mt-6 rounded-2xl bg-white border border-[#ececec] flex shadow-none overflow-hidden">
-        {/* Sidebar */}
-        <aside className="w-64 border-r border-[#ececec] bg-[#fafbfc] py-10 px-4">
-          <nav>
-            <ul className="flex flex-col gap-1">
-              {sidebarItems.map(item => (
-                <li key={item.id}>
-                  <button
-                    className={`flex items-center gap-3 w-full px-5 py-3 rounded-lg font-medium text-base transition
-                      ${activeTab === item.id
-                        ? "bg-[#f5f3ff] text-[#7b61ff]"
-                        : "text-gray-800 hover:bg-gray-100"
-                      }`}
-                    onClick={() => setActiveTab(item.id)}
-                  >
-                    <span className={`transition-colors ${
-                      activeTab === item.id ? "text-[#7b61ff]" : "text-gray-500"
-                    }`}>{item.icon}</span>
-                    {item.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
+        {/* Sidebar replaced with TabsNav */}
+        <aside className="w-80 border-r border-[#ececec] bg-[#fafbfc] py-10 px-4">
+          <TabsNav
+            tabs={sidebarTabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
         </aside>
         {/* Main Content */}
         <section className="flex-1 p-12">
