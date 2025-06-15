@@ -22,7 +22,6 @@ export function TableActions({ onClearSelection, onExcludeAll, onConfirmSelectio
       <Button 
         onClick={onConfirmSelection}
         variant="default"
-        className="bg-primary hover:bg-primary-600"
       >
         <Check className="h-4 w-4 mr-1" />
         Confirm Selection

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -39,12 +40,12 @@ const Welcome = () => {
           <p className="text-base font-sans text-grey-600 mb-6">
             Press any key to get started, or explore our platform features.
           </p>
-          <button
+          <Button
             onClick={handleGetStarted}
-            className="bg-primary-main text-primary-contrast-text px-8 py-3 rounded-lg font-sans font-medium hover:bg-primary-dark transition-colors"
+            size="lg"
           >
             Get Started
-          </button>
+          </Button>
         </div>
       </div>
     </div>

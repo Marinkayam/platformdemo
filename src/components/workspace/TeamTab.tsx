@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -42,7 +41,6 @@ import {
 } from "@/components/ui/select";
 import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { showSuccessToast } from "@/lib/toast-helpers";
-
 
 const initialTeamMembers = [
   { id: 1, email: "sarah@monto.tech", role: "Admin" as const },
@@ -161,7 +159,7 @@ export function TeamTab() {
             </Table>
           </div>
           <div className="px-7 py-7 border-t flex justify-end">
-            <Button onClick={handleAddNewMember} className="bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold h-11 px-6">
+            <Button onClick={handleAddNewMember} size="lg">
               <Plus size={18} className="mr-2" />
               Add New Member
             </Button>
@@ -212,7 +210,7 @@ export function TeamTab() {
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="button" onClick={handleSaveMember} className="bg-[#7b61ff] hover:bg-[#634edc] text-white">
+            <Button type="button" onClick={handleSaveMember}>
               {memberToEdit ? "Save Changes" : "Send Invite"}
             </Button>
           </DialogFooter>

@@ -23,8 +23,7 @@ export function ViewDetailsTwoFactor({ credentials, onConfigureSettings }: ViewD
         {credentials.twoFA === "Disabled" && (
           <Button 
             onClick={onConfigureSettings}
-            className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1"
-            size="sm"
+            size="xs"
           >
             Setup Required
           </Button>

@@ -162,7 +162,7 @@ export default function Workspace() {
 
                 <div className="text-right pt-2">
                   <Button 
-                    className="px-8 h-11 bg-[#7b61ff] hover:bg-[#6b53e6] text-white font-semibold"
+                    size="lg"
                     onClick={handleSaveChanges}
                     disabled={isLoading}
                   >
@@ -226,7 +226,7 @@ export default function Workspace() {
                     Dismiss All
                   </Button>
                   <Button 
-                    className="h-11 px-8 bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold"
+                    size="lg"
                     onClick={handleSaveNotifications}
                     disabled={isLoading}
                   >

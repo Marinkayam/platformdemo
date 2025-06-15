@@ -29,7 +29,6 @@ export function FooterActions({ onBack, onExcludeAll, onContinue, isSelectionVal
         <Button 
           onClick={onContinue} 
           disabled={!isSelectionValid}
-          className="bg-primary hover:bg-primary-700"
         >
           <Check className="mr-1 h-4 w-4" /> Select This Invoice
         </Button>

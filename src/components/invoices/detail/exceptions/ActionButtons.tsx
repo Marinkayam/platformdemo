@@ -24,7 +24,6 @@ export function ActionButtons({ attachmentsCount, onForceSubmit, onMarkAsResolve
         <Button 
           disabled={attachmentsCount === 0}
           onClick={onMarkAsResolved}
-          className={`${attachmentsCount === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           Mark as Solved
         </Button>
