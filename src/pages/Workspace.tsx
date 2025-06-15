@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +9,7 @@ import { Building, Users, Shield, Bell, CloudUpload, Loader2 } from "lucide-reac
 import { TabsNav } from "@/components/common/TabsNav";
 import { showSuccessToast } from "@/lib/toast-helpers";
 import { TeamTab } from "@/components/workspace/TeamTab";
+import { ConfirmRemoveModal } from "@/components/payments-relationships/portal-users/ConfirmRemoveModal";
 
 const headerTabs = [
   {
@@ -47,6 +47,7 @@ export default function Workspace() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -191,8 +192,11 @@ export default function Workspace() {
               <p className="text-base text-gray-600">Manage security settings and access controls.</p>
             </div>
             <Card className="shadow-none border border-[#ececec] rounded-xl">
-              <CardContent className="flex items-center justify-center min-h-[180px]">
+              <CardContent className="flex flex-col items-center justify-center min-h-[180px] gap-4">
                 <span className="text-gray-500 text-lg">Security settings coming soon...</span>
+                <Button variant="destructive" onClick={() => setIsRemoveModalOpen(true)}>
+                  Test Remove Modal
+                </Button>
               </CardContent>
             </Card>
           </div>
@@ -260,6 +264,15 @@ export default function Workspace() {
         />
         {renderContent()}
       </div>
+      <ConfirmRemoveModal
+        isOpen={isRemoveModalOpen}
+        onClose={() => setIsRemoveModalOpen(false)}
+        onConfirm={() => {
+          setIsRemoveModalOpen(false);
+          showSuccessToast("Confirmed!", "The modal is working as expected.");
+        }}
+        itemName="Test Item"
+      />
     </div>
   );
 }
