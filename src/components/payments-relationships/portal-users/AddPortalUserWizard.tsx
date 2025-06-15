@@ -202,32 +202,27 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-grey-500" />
         <Input
-          placeholder="Search a platform or paste a direct portal login link (optional)"
+          placeholder="Search portal by name or paste login URL…"
           className="pl-9"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-8">
         {filteredPortals.length > 0 ? (
           <div className="grid grid-cols-6 gap-4">
             {filteredPortals.map((portal) => (
               <Card
                 key={portal.id}
                 className={cn(
-                  "cursor-pointer transition-all hover:border-primary-main w-[100px] h-[100px] p-0 relative",
+                  "cursor-pointer transition-all hover:border-primary-main w-[100px] h-[90px] p-0 relative",
                   selectedPortal === portal.name && "border-primary-main bg-primary/10"
                 )}
                 onClick={() => handlePortalSelect(portal.name)}
               >
-                {selectedPortal === portal.name && (
-                  <div className="absolute top-1.5 right-1.5 bg-primary text-primary-foreground rounded-full p-0.5 flex items-center justify-center">
-                    <Check className="h-3 w-3" />
-                  </div>
-                )}
-                <CardContent className="flex flex-col items-center justify-center h-full p-0">
-                  <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mb-1">
+                <CardContent className="flex flex-col items-center justify-center h-full p-2">
+                  <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center mb-2">
                     <img
                       src={getPortalLogoUrl(portal.name)}
                       alt={`${portal.name} logo`}
@@ -238,7 +233,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                       }}
                     />
                   </div>
-                  <span className="text-xs font-normal text-grey-900 text-center mb-2">{portal.name}</span>
+                  <span className="text-xs font-normal text-grey-900 text-center">{portal.name}</span>
                 </CardContent>
               </Card>
             ))}
