@@ -495,7 +495,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
         <div className="px-6 pt-0">
           <DesignTabs
             tabs={[
-              { id: 'singular', label: 'Singular Upload' },
+              { id: 'singular', label: 'Manual Entry' },
               { id: 'csv', label: 'Upload Bulk CSV File' },
             ]}
             activeTab={activeTab}
