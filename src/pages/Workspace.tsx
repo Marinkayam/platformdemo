@@ -313,7 +313,7 @@ export default function Workspace() {
   return (
     <div className="px-8 py-10">
       <PageHeader
-        title="Settings"
+        title="Company Settings"
         subtitle="Manage your account preferences and application settings"
       />
       <div className="mt-6">
