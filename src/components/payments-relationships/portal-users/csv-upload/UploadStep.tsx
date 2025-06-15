@@ -1,8 +1,8 @@
-
 import React, { useState, useRef, useCallback } from 'react';
-import { Download, X, File as FileIcon } from 'lucide-react';
+import { X, File as FileIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { Download } from 'lucide-react';
 
 interface UploadStepProps {
   onFileSelect: (file: File | null) => void;
@@ -65,11 +65,27 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
     }
   };
 
+  const handleDownloadTemplate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    window.open('/templates/portal-users.csv', '_blank');
+  };
+
   return (
     <div className="space-y-4">
-      <p className="text-sm text-gray-600 text-center mb-4">
-        Upload a CSV or Excel file with your portal users. We’ll help you map the data and show a preview before importing.
-      </p>
+      {error ? (
+        <p className="text-sm text-red-600 text-center mb-4">
+          ⚠️ There was an issue with your file. Please check the format and try again.
+        </p>
+      ) : selectedFile ? (
+        <p className="text-sm text-gray-600 text-center mb-4">
+          ✅ File uploaded. Continue to map fields and preview your data.
+        </p>
+      ) : (
+        <p className="text-sm text-gray-600 text-center mb-4">
+          Upload your list of portal users. We’ll guide you through mapping and validation — or{" "}
+          <button type="button" onClick={handleDownloadTemplate} className="text-primary underline font-medium">download our template</button> to get started quickly.
+        </p>
+      )}
       <div
         className={cn(
           "flex flex-col items-center justify-center gap-4 border border-dashed rounded-lg p-10 text-center transition-colors cursor-pointer",
@@ -115,13 +131,6 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
           </Button>
         </div>
       )}
-
-      <div className="text-center">
-        <Button variant="link" onClick={() => window.open('/templates/portal-users.csv', '_blank')}>
-          <Download className="h-4 w-4 mr-2" />
-          Download Monto's CSV Template
-        </Button>
-      </div>
     </div>
   );
 }
