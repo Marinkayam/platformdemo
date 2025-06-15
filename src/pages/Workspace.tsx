@@ -28,8 +28,8 @@ const headerTabs = [
     icon: <Shield size={16} />,
   },
   {
-    id: "notifications",
-    label: "Notifications",
+    id: "platform-settings",
+    label: "Platform Settings",
     icon: <Bell size={16} />,
   },
 ];
@@ -78,12 +78,12 @@ export default function Workspace() {
     showSuccessToast("Settings saved successfully", "Your company information has been updated.");
   };
 
-  const handleSaveNotifications = async () => {
+  const handleSavePlatformSettings = async () => {
     setIsLoading(true);
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     setIsLoading(false);
-    showSuccessToast("Notification settings saved", "Your preferences have been updated.");
+    showSuccessToast("Platform settings saved", "Your preferences have been updated.");
   };
 
   const renderContent = () => {
@@ -201,12 +201,12 @@ export default function Workspace() {
             </Card>
           </div>
         );
-      case "notifications":
+      case "platform-settings":
         return (
           <div className="space-y-6">
             <div>
-              <h6 className="text-lg font-semibold text-gray-900 mb-1">Notifications</h6>
-              <p className="text-base text-gray-600">Configure your notification preferences.</p>
+              <h6 className="text-lg font-semibold text-gray-900 mb-1">Platform Settings</h6>
+              <p className="text-base text-gray-600">Configure your platform settings and preferences.</p>
             </div>
             <Card className="shadow-none border border-[#ececec] rounded-xl">
               <CardContent className="p-0">
@@ -230,9 +230,9 @@ export default function Workspace() {
                   <Button variant="outline" className="border-gray-300 font-normal text-gray-800">
                     Dismiss All
                   </Button>
-                  <Button 
+                  <Button
                     size="lg"
-                    onClick={handleSaveNotifications}
+                    onClick={handleSavePlatformSettings}
                     disabled={isLoading}
                   >
                     {isLoading ? (

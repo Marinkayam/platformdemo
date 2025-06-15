@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -136,9 +137,9 @@ export function TeamTab() {
             <Table>
               <TableHeader className="bg-gray-50 border-b">
                 <TableRow>
-                  <TableHead className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</TableHead>
+                  <TableHead className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Email</TableHead>
                   <TableHead className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</TableHead>
-                  <TableHead className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Action</TableHead>
+                  <TableHead className="px-8 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white divide-y divide-gray-100">
@@ -150,8 +151,8 @@ export function TeamTab() {
                         {member.role}
                       </Badge>
                     </TableCell>
-                    <TableCell className="px-8 py-5 whitespace-nowrap text-right">
-                       <TableActions actions={memberActions(member)} />
+                    <TableCell className="px-8 py-5 whitespace-nowrap">
+                       <TableActions actions={memberActions(member)} className="mx-auto" />
                     </TableCell>
                   </TableRow>
                 ))}
