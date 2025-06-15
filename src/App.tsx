@@ -11,7 +11,7 @@ import AddAgent from "./pages/AddAgent";
 import PurchaseOrders from "./pages/PurchaseOrders";
 import PurchaseOrderDetail from "./pages/PurchaseOrderDetail";
 import PortalRecords from "./pages/PortalRecords";
-import Settings from "./pages/Settings";
+import Workspace from "./pages/Workspace";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
 import Welcome from "./pages/Welcome";
@@ -46,7 +46,7 @@ const App = () => (
               <Route path="/payments-relationships/new" element={<NewPaymentsRelationship />} />
               <Route path="/purchase-orders" element={<PurchaseOrders />} />
               <Route path="/purchase-orders/:id" element={<PurchaseOrderDetail />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/workspace" element={<Workspace />} />
               <Route path="/design-system" element={<DesignSystemPlayground />} />
               <Route path="/request-to-pay-transaction/:id" element={<div>RequestToPayTransaction Page Placeholder</div>} />
               <Route path="/payments-relationships/add-agent" element={<AddAgent />} />

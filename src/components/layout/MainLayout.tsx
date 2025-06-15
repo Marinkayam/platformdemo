@@ -27,7 +27,8 @@ export function MainLayout({
     navigate("/login");
   };
   const handleMyWorkspaceClick = () => {
-    navigate("/settings");
+    // Update the navigation to point to "/workspace" instead of "/settings"
+    navigate("/workspace");
   };
   const handleLogoClick = () => {
     navigate("/design-system");
