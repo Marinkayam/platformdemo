@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, File, UserRoundCheck, MoreVertical, ArrowLeft } from "lucide-react";
@@ -107,7 +106,7 @@ export function InvoiceHeader({
                   <div className="text-lg font-semibold text-[#01173E]">
                     {localInvoice.number}
                   </div>
-                  <StatusBadge status={localInvoice.status} dueDate={localInvoice.dueDate} />
+                  <StatusBadge status={localInvoice.status} />
                   {localInvoice.isDuplicate && (
                     <Badge className="bg-red-100 text-red-700 border-red-200 text-xs">
                       Duplication

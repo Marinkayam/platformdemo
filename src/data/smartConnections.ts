@@ -1,4 +1,3 @@
-
 import { SmartConnection } from "@/types/smartConnection";
 
 // Helper function to calculate Smart Connection status based on agent statuses
@@ -51,7 +50,10 @@ export const mockSmartConnections: SmartConnection[] = [
         portalUser: "jane.smith@apple.com",
         role: "Monitor Invoice"
       }
-    ]
+    ],
+    buyer: { name: "Apple Inc." },
+    supplier: { name: "Microsoft Corp." },
+    portal: { type: "SAP Ariba", user: "john.doe@microsoft.com" }
   },
   {
     id: "2",
@@ -80,7 +82,10 @@ export const mockSmartConnections: SmartConnection[] = [
         portalUser: "setup@google.com",
         role: "Submit Invoice"
       }
-    ]
+    ],
+    buyer: { name: "Google LLC" },
+    supplier: { name: "Amazon Inc." },
+    portal: { type: "Oracle Portal", user: "admin@amazon.com" }
   },
   {
     id: "3",
@@ -101,7 +106,10 @@ export const mockSmartConnections: SmartConnection[] = [
         portalUser: "finance@tesla.com",
         role: "Monitor Invoice"
       }
-    ]
+    ],
+    buyer: { name: "Meta Platforms" },
+    supplier: { name: "Tesla Inc." },
+    portal: { type: "SAP Ariba", user: "finance@tesla.com" }
   },
   {
     id: "4",
@@ -130,7 +138,10 @@ export const mockSmartConnections: SmartConnection[] = [
         portalUser: "billing@netflix.com",
         role: "Submit Invoice"
       }
-    ]
+    ],
+    buyer: { name: "Netflix Inc." },
+    supplier: { name: "Spotify AB" },
+    portal: { type: "Coupa", user: "support@spotify.com" }
   },
   {
     id: "5",
@@ -159,7 +170,10 @@ export const mockSmartConnections: SmartConnection[] = [
         portalUser: "finance@acme.com",
         role: "Monitor Invoice"
       }
-    ]
+    ],
+    buyer: { name: "ACME Inc." },
+    supplier: { name: "Target Corp" },
+    portal: { type: "SAP Ariba", user: "procurement@target.com" }
   },
   {
     id: "6",
@@ -180,7 +194,10 @@ export const mockSmartConnections: SmartConnection[] = [
         portalUser: "vendor@walmart.com",
         role: "Both"
       }
-    ]
+    ],
+    buyer: { name: "TechSoft LLC" },
+    supplier: { name: "Walmart Inc." },
+    portal: { type: "Tradeshift", user: "vendor@walmart.com" }
   },
   {
     id: "7",
@@ -209,7 +226,10 @@ export const mockSmartConnections: SmartConnection[] = [
         portalUser: "vendor@samsung.com",
         role: "Monitor Invoice"
       }
-    ]
+    ],
+    buyer: { name: "Samsung Electronics" },
+    supplier: { name: "Best Buy Co." },
+    portal: { type: "SAP Ariba", user: "procurement@bestbuy.com" }
   },
   {
     id: "8",
@@ -230,7 +250,10 @@ export const mockSmartConnections: SmartConnection[] = [
         portalUser: "finance@hp.com",
         role: "Both"
       }
-    ]
+    ],
+    buyer: { name: "IBM Corp" },
+    supplier: { name: "HP Inc." },
+    portal: { type: "Coupa", user: "finance@hp.com" }
   }
 ];
 
