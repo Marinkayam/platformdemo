@@ -130,9 +130,6 @@ export default function Workspace() {
                         className="hidden"
                       />
                     </div>
-                    <p className="text-xs text-gray-500 text-center">
-                      Supports PNG/JPG · Max size: 5MB
-                    </p>
                   </div>
                   <div className="flex-1 flex items-center">
                     {/* Empty space reserved */}
