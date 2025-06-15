@@ -236,7 +236,7 @@ export default function Workspace() {
       <div className="mt-6 rounded-2xl bg-white border border-[#ececec] flex shadow-none overflow-hidden">
         <aside className="w-80 border-r border-[#ececec] bg-[#fafbfc] py-10 px-0 flex flex-col">
           {/* Sidebar: Add pb-6 to create separation below tab triggers */}
-          <div className="pb-6">
+          <div className="relative z-0 pb-6">
             {/* TabsNav tab trigger should use relative z-10 for stacking */}
             <TabsNav
               tabs={sidebarTabs}
@@ -249,9 +249,12 @@ export default function Workspace() {
           {/* Add a wrapper for all tab content to ensure headers have space from TabsNav */}
           <div>
             {activeTab === "company" && (
-              <div className="pt-6">
-                <div className="z-20 relative">
-                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative">Company Information</h6>
+              <div className="pt-0">
+                {/* Header wrapper with relative and z-10 for stacking, heading gets z-20 */}
+                <div className="relative z-10">
+                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative pt-6">
+                    Company Information
+                  </h6>
                   <p className="text-base text-gray-600 mb-6">
                     Manage your company details and preferences.
                   </p>
@@ -305,9 +308,11 @@ export default function Workspace() {
               </div>
             )}
             {activeTab === "team" && (
-              <div className="pt-6">
-                <div className="z-20 relative">
-                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative">Team</h6>
+              <div className="pt-0">
+                <div className="relative z-10">
+                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative pt-6">
+                    Team
+                  </h6>
                   <p className="text-base text-gray-600 mb-6">
                     Invite teammates to collaborate. Admins can manage users, connections, and settings.<br />
                     Users can view and edit.
@@ -360,9 +365,11 @@ export default function Workspace() {
               </div>
             )}
             {activeTab === "security" && (
-              <div className="pt-6">
-                <div className="z-20 relative">
-                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative">Security</h6>
+              <div className="pt-0">
+                <div className="relative z-10">
+                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative pt-6">
+                    Security
+                  </h6>
                   <p className="text-base text-gray-600 mb-6">Manage security settings and access controls.</p>
                 </div>
                 <Card className="shadow-none border border-[#ececec] rounded-xl">
@@ -373,9 +380,11 @@ export default function Workspace() {
               </div>
             )}
             {activeTab === "notifications" && (
-              <div className="pt-6">
-                <div className="z-20 relative">
-                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative">Notifications</h6>
+              <div className="pt-0">
+                <div className="relative z-10">
+                  <h6 className="text-lg font-semibold text-gray-900 mb-1 z-20 relative pt-6">
+                    Notifications
+                  </h6>
                   <p className="text-base text-gray-600 mb-6">Configure your notification preferences.</p>
                 </div>
                 <Card className="shadow-none border border-[#ececec] rounded-xl">
