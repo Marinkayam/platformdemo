@@ -1,3 +1,4 @@
+
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Building, Users, Shield, Bell, Upload, Loader2 } from "lucide-react";
+import { Building, Users, Shield, Bell, CloudUpload, Loader2 } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
 import { showSuccessToast } from "@/lib/toast-helpers";
 import { TeamTab } from "@/components/workspace/TeamTab";
@@ -111,7 +112,7 @@ export default function Workspace() {
                         />
                       ) : (
                         <div className="flex flex-col items-center">
-                          <Upload size={24} className="text-gray-400 mb-1" />
+                          <CloudUpload size={24} className="text-primary mb-1" />
                           <span className="text-xs text-gray-500 text-center px-2">Click to upload logo</span>
                         </div>
                       )}
@@ -130,7 +131,7 @@ export default function Workspace() {
                 </div>
                 <div>
                   <label className="block text-[15px] mb-2 font-medium text-gray-800">Company Name</label>
-                  <Input className="h-12 bg-white text-base font-normal" defaultValue="Monto Technologies" />
+                  <Input className="h-12 bg-gray-100 text-base font-normal" value="Monto Technologies" disabled />
                 </div>
                 <div>
                   <label className="block text-[15px] mb-2 font-medium text-gray-800">Admin Email</label>
@@ -153,10 +154,10 @@ export default function Workspace() {
                   </p>
                 </div>
                 
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <p className="text-sm text-blue-800">
+                <div className="bg-[#EFEBFF] p-4 rounded-lg border border-purple-200">
+                  <p className="text-sm text-purple-800">
                     <span className="font-medium">Your company portal will be accessible at:</span><br />
-                    <span className="font-mono text-blue-900">montotechnologies.monto.com</span>
+                    <span className="font-mono text-purple-900">montotechnologies.monto.com</span>
                   </p>
                 </div>
 
