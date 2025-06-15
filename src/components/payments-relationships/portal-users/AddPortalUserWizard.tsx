@@ -56,7 +56,6 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   const [showPassword, setShowPassword] = useState(false);
   const [isDedicatedUserConfirmed, setIsDedicatedUserConfirmed] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [validationLoading, setValidationLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -200,79 +199,33 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
 
   const renderPortalStep = () => (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal={false}>
-          <PopoverTrigger asChild>
-            <div className="flex items-center border border-grey-300 rounded-md px-3 py-2 cursor-pointer">
-              <Search className="h-4 w-4 text-grey-500 mr-2" />
-              <Input
-                placeholder="Search Portal or paste portal unique link"
-                className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start" onPointerDownOutside={(e) => e.preventDefault()}>
-            <Command>
-              <CommandInput placeholder="Search portals..." value={searchQuery} onValueChange={setSearchQuery} />
-              {filteredPortals.length === 0 ? (
-                <div className="text-center p-4">
-                  <p className="text-sm text-grey-600 mb-2">No Portals found</p>
-                  <Button variant="outline" className="mt-2">
-                    Add Portal Manually
-                  </Button>
-                </div>
-              ) : (
-                <CommandGroup className="max-h-[300px] overflow-auto">
-                  {filteredPortals.map((portal) => (
-                    <CommandItem
-                      key={portal.id}
-                      value={portal.name}
-                      onSelect={() => {
-                        handlePortalSelect(portal.name);
-                        setSearchQuery(portal.name); // Keep search query updated with selected item
-                        setIsPopoverOpen(false);
-                      }}
-                      className={cn(
-                        "flex items-center gap-2 p-3 cursor-pointer",
-                        selectedPortal === portal.name && "bg-primary-lighter"
-                      )}
-                    >
-                      <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center overflow-hidden">
-                        <img
-                          src={getPortalLogoUrl(portal.name)}
-                          alt={`${portal.name} logo`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = '/portal-logos/placeholder.svg';
-                          }}
-                        />
-                      </div>
-                      <span className="font-medium">{portal.name}</span>
-                      {selectedPortal === portal.name && (
-                        <Check className="ml-auto h-4 w-4 text-primary-main" />
-                      )}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              )}
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <div className="space-y-2 mt-4">
-          <p className="text-sm font-medium text-grey-600">Popular Portals</p>
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-grey-500" />
+        <Input
+          placeholder="Search a platform or paste a direct portal login link (optional)"
+          className="pl-9"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
+      <div className="mt-6">
+        {filteredPortals.length > 0 ? (
           <div className="grid grid-cols-6 gap-4">
             {filteredPortals.map((portal) => (
               <Card
                 key={portal.id}
                 className={cn(
-                  "cursor-pointer transition-all hover:border-primary-main w-[100px] h-[100px] p-0",
-                  selectedPortal === portal.name && "border-primary-main bg-primary-lighter"
+                  "cursor-pointer transition-all hover:border-primary-main w-[100px] h-[100px] p-0 relative",
+                  selectedPortal === portal.name && "border-primary-main bg-primary/10"
                 )}
                 onClick={() => handlePortalSelect(portal.name)}
               >
+                {selectedPortal === portal.name && (
+                  <div className="absolute top-1.5 right-1.5 bg-primary text-primary-foreground rounded-full p-0.5 flex items-center justify-center">
+                    <Check className="h-3 w-3" />
+                  </div>
+                )}
                 <CardContent className="flex flex-col items-center justify-center h-full p-0">
                   <div className="w-full h-full flex items-center justify-center overflow-hidden mb-1 rounded-full">
                     <img
@@ -290,7 +243,14 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
               </Card>
             ))}
           </div>
-        </div>
+        ) : (
+          <div className="text-center py-10 border border-dashed rounded-lg">
+            <p className="text-grey-600">🔍 No matching portals found.</p>
+            <Button variant="link" className="text-primary mt-1">
+              Want to add a new one? Click here.
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
