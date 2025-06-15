@@ -1,7 +1,8 @@
+
 const PORTAL_NAMES = [
   'Bill.com',
   'Tipalti',
-  'Amazon Payee',
+  'Amazon',
   'SAP Ariba',
   'Coupa',
   'Apple',

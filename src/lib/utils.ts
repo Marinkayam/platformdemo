@@ -26,12 +26,12 @@ export const getPortalLogoUrl = (portalName: string): string => {
   const logoMap: { [key: string]: string } = {
     "SAP Ariba": "ariba.png",
     "Coupa": "coupa.png",
-    "Oracle Procurement": "oracle.png",
+    "Oracle": "oracle.png",
     "Tipalti": "tipalti.png",
-    "Amazon Payee": "Amazon Payee.png",
+    "Amazon": "amazon.png",
     "Apple": "apple.png",
     "AT&T": "AT&T.png",
-    "Bill": "bill.png",
+    "Bill.com": "bill.png",
     "Facturaxion": "Facturaxion.png",
     "Fieldglass": "Fieldglass.png",
     "iSupplier": "iSupplier.png",
@@ -45,6 +45,7 @@ export const getPortalLogoUrl = (portalName: string): string => {
     "Teradata": "Teradata.png",
     "Tungsten": "tungsten.png",
     "Walmart": "walmart.png",
+    "Workday": "workday.png",
   };
   
   const fileName = logoMap[portalName];

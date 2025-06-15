@@ -102,7 +102,7 @@ export function PortalUsersTable({
     },
     {
       id: "3",
-      portal: "Oracle Procurement",
+      portal: "Oracle",
       username: "user3@oracle.com",
       status: "Disconnected",
       userType: "Monto",
@@ -112,7 +112,7 @@ export function PortalUsersTable({
     },
     {
       id: "6",
-      portal: "Amazon Payee",
+      portal: "Amazon",
       username: "user6@amazon.com",
       status: "Connected",
       userType: "External",
