@@ -285,14 +285,14 @@ export default function Settings() {
   return (
     <div>
       <PageHeader 
-        title="Settings" 
+        title="My Workspace" 
         subtitle="Manage your account preferences and application settings" 
       />
       
       <Card className="mt-6 shadow-none">
         <CardContent className="p-0">
-          <div className="flex">
-            {/* Sidebar */}
+          {/* REMOVE sidebar! */}
+          {/* <div className="flex">
             <div className="w-64 flex-shrink-0 border-r bg-gray-50">
               <nav className="p-4 space-y-1">
                 {sidebarItems.map((item) => {
@@ -301,11 +301,7 @@ export default function Settings() {
                     <button
                       key={item.id}
                       onClick={() => setActiveTab(item.id)}
-                      className={`w-full flex items-center gap-3 px-3 py-3 text-sm rounded-md transition-colors ${
-                        activeTab === item.id
-                          ? "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
-                          : "text-[#3F4758] hover:bg-[#F4F4F7]"
-                      }`}
+                      className={...}
                     >
                       <Icon size={18} />
                       <span className="font-medium">{item.label}</span>
@@ -313,13 +309,12 @@ export default function Settings() {
                   );
                 })}
               </nav>
-            </div>
-
+            </div> */}
             {/* Main Content */}
             <div className="flex-1 p-8">
               {renderContent()}
             </div>
-          </div>
+          {/* </div> */}
         </CardContent>
       </Card>
     </div>
