@@ -228,8 +228,8 @@ export function PortalUsersTable({
       sticky: true,
       render: (portal: string) => (
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden">
-            <img src={getPortalLogoUrl(portal)} alt={`${portal} logo`} className="w-full h-full object-cover" />
+          <div className="w-12 h-12 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden">
+            <img src={getPortalLogoUrl(portal)} alt={`${portal} logo`} className="w-full h-full object-contain" />
           </div>
           <TooltipProvider>
             <Tooltip>

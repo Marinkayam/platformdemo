@@ -227,11 +227,11 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                   </div>
                 )}
                 <CardContent className="flex flex-col items-center justify-center h-full p-0">
-                  <div className="w-full h-full flex items-center justify-center overflow-hidden mb-1 rounded-full">
+                  <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mb-1">
                     <img
                       src={getPortalLogoUrl(portal.name)}
                       alt={`${portal.name} logo`}
-                      className="w-12 h-12 object-contain"
+                      className="w-full h-full object-contain"
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = '/portal-logos/placeholder.svg';

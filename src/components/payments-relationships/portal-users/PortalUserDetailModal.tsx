@@ -38,7 +38,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
           {/* Portal Identity Block */}
           <div className="flex items-center gap-4 pb-4 border-b border-grey-200">
             <div className="w-12 h-12 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden flex-shrink-0">
-              <img src={getPortalLogoUrl(portalUser.portal)} alt={`${portalUser.portal} logo`} className="w-full h-full object-cover" width={48} height={48} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/portal-logos/placeholder.svg'; }} />
+              <img src={getPortalLogoUrl(portalUser.portal)} alt={`${portalUser.portal} logo`} className="w-full h-full object-contain" width={48} height={48} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/portal-logos/placeholder.svg'; }} />
             </div>
             <div>
               <p className="font-medium text-lg text-grey-900">{portalUser.portal}</p>
@@ -140,4 +140,4 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
       </DialogContent>
     </Dialog>
   );
-} 
+}
