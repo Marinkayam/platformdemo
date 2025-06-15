@@ -1,8 +1,7 @@
 
 import React, { useState } from 'react';
 import { ValidatedUser } from './CSVImportWizard';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, SkipForward } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { SkippedRowsModal } from './SkippedRowsModal';
@@ -28,19 +27,14 @@ export function SummaryStep({ data }: SummaryStepProps) {
         <p className="text-sm text-gray-600">You are about to import the following users.</p>
         
         <Card>
-          <CardHeader>
-            <CardTitle>Import Summary</CardTitle>
-          </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-4">
-            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-              <CheckCircle className="h-8 w-8 text-green-500" />
+          <CardContent className="grid grid-cols-2 gap-4 p-6">
+            <div className="p-4 bg-gray-50 rounded-lg">
               <div>
                 <p className="text-2xl font-bold">{imported}</p>
                 <p className="text-sm text-gray-600">New Users to Import</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-              <SkipForward className="h-8 w-8 text-yellow-600" />
+            <div className="p-4 bg-gray-50 rounded-lg">
               <div>
                 <p className="text-2xl font-bold">{skippedRows.length}</p>
                 <p className="text-sm text-gray-600">Rows to be Skipped</p>
