@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { PaymentsRelationshipsHeader } from "@/components/payments-relationships/PaymentsRelationshipsHeader";
@@ -71,8 +72,8 @@ export default function PaymentsRelationships() {
   const handleConfirmRemove = () => {
     if (userToRemoveId) {
       setPortalUsers(prev => prev.filter(user => user.id !== userToRemoveId));
-    setIsConfirmRemoveModalOpen(false);
-    setUserToRemoveId(null);
+      setIsConfirmRemoveModalOpen(false);
+      setUserToRemoveId(null);
     }
   };
 
@@ -129,8 +130,9 @@ export default function PaymentsRelationships() {
         )}
 
         {activeTab === "portal-users" && (
+          // Pass correct prop expected by PortalUsersTable (should be "users")
           <PortalUsersTable 
-            portalUsers={portalUsers} 
+            users={portalUsers} 
             onRemovePortalUser={(id) => {
               setUserToRemoveId(id);
               setIsConfirmRemoveModalOpen(true);

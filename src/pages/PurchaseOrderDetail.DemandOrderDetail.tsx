@@ -1,9 +1,11 @@
+
 import { useParams, useLocation } from "react-router-dom";
 import { purchaseOrderData } from "@/data/purchaseOrders";
 import { PurchaseOrder } from "@/types/purchase-orders";
 import { PurchaseOrderDetailHeader } from "@/components/purchase-orders/PurchaseOrderDetailHeader";
 import { PurchaseOrderInformation } from "@/components/purchase-orders/PurchaseOrderInformation";
-import { PurchaseOrderShipToAddress } from "@/components/purchase-orders/PurchaseOrderShipToAddress";
+// Fix import path here!
+import { PurchaseOrderShipToAddress } from "@/components/purchase-orders/detail/financial/PurchaseOrderShipToAddress";
 import { PurchaseOrderLineItems } from "@/components/purchase-orders/PurchaseOrderLineItems";
 import { PurchaseOrderRelatedInvoices } from "@/components/purchase-orders/PurchaseOrderRelatedInvoices";
 import { PurchaseOrderPdfViewer } from "@/components/purchase-orders/PurchaseOrderPdfViewer";
@@ -14,9 +16,16 @@ import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 
-// Mock data - in a real app, this would come from an API
-const getPurchaseOrderById = async (id: string): Promise<PurchaseOrder> => {
-// ... existing code ...
+export default function PurchaseOrderDetailDemandOrderDetail() {
+  const { id } = useParams<{ id: string }>();
+  // Try to find the PO by id
+  const purchaseOrder = purchaseOrderData.find(po => po.id === id) || purchaseOrderData[0];
+  const [activeTab, setActiveTab] = useState("po-data");
+  const [zoomLevel, setZoomLevel] = useState(1);
+
+  const handleZoomIn = () => setZoomLevel(z => Math.min(z + 0.1, 2));
+  const handleZoomOut = () => setZoomLevel(z => Math.max(z - 0.1, 0.5));
+
   return (
     <div className="container mx-auto px-4 py-6">
       <PurchaseOrderDetailHeader purchaseOrder={purchaseOrder} className="mb-6" />
