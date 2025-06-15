@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import { getPortalLogoUrl } from '@/lib/utils';
 import { DesignTabs } from '@/components/ui/design-tabs';
+import { CSVImportWizard } from './csv-upload/CSVImportWizard';
 
 interface AddPortalUserWizardProps {
   isOpen: boolean;
@@ -183,6 +184,18 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
         setValidationLoading(false);
       }, 2000); // Simulate 2-second validation process
     }
+  };
+
+  const handleBulkImport = (users: Partial<PortalUser>[]) => {
+    // In a real scenario, you'd likely have a different handler for bulk saves.
+    // For now, let's just log them and show a success toast.
+    console.log("Importing users:", users);
+    toast({
+      title: "Import Successful",
+      description: `${users.length} users have been imported.`,
+    })
+    // In a real app, you would probably call a different `onSave` prop for bulk creation
+    // and then call `onClose`.
   };
 
   const renderPortalStep = () => (
@@ -463,69 +476,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   );
 
   const renderCSVUpload = () => (
-    <div className="space-y-6">
-      <div className="flex flex-col items-center gap-4 bg-grey-50 p-8 rounded-lg text-center">
-        <FileSpreadsheet className="h-12 w-12 text-grey-400" />
-        <h4 className="font-semibold text-grey-900 text-lg">Upload Multiple Users (CSV)</h4>
-        <p className="text-sm text-grey-600 max-w-sm">
-          Use our template to upload multiple users at once.
-          We'll validate the format and show you a preview before importing.
-        </p>
-        <div className="flex gap-4">
-          <Button variant="outline" onClick={() => window.open('/templates/portal-users.csv', '_blank')}>
-            <Download className="h-4 w-4 mr-2" />
-            Download Template
-          </Button>
-          <Button onClick={() => fileInputRef.current?.click()}>
-            <Upload className="h-4 w-4 mr-2" />
-            Upload File
-            <input
-              type="file"
-              accept=".csv,.xlsx"
-              className="hidden"
-              onChange={handleFileUpload}
-              ref={fileInputRef}
-            />
-          </Button>
-        </div>
-        <p className="text-xs text-grey-500 mt-2">Supported formats: CSV, XLSX • Up to 500 users</p>
-      </div>
-      {validationLoading && (
-        <div className="flex flex-col items-center justify-center p-8 bg-grey-50 rounded-lg">
-          <svg className="animate-spin h-8 w-8 text-primary-main" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <p className="mt-4 text-sm text-grey-600">Validating file, please wait...</p>
-        </div>
-      )}
-      {validationErrors.length > 0 && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg space-y-2">
-          <p className="font-medium">Validation Errors:</p>
-          <ul className="list-disc list-inside">
-            {validationErrors.map((error, index) => (
-              <li key={index} className="text-sm">{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {selectedFile && !validationLoading && validationErrors.length === 0 && (
-        <div className="flex justify-end">
-          <Button>
-            Import Users
-          </Button>
-        </div>
-      )}
-      <div className="bg-grey-50 p-4 rounded-lg">
-        <h4 className="font-medium text-grey-900 mb-2">CSV Requirements</h4>
-        <ul className="text-sm text-grey-600 space-y-1 list-disc list-inside">
-          <li>File must be in CSV format</li>
-          <li>Include columns: Portal, Username, Password</li>
-          <li>Maximum 100 users per upload</li>
-          <li>File size limit: 5MB</li>
-        </ul>
-      </div>
-    </div>
+    <CSVImportWizard onComplete={onClose} onImport={handleBulkImport} />
   );
 
   return (
@@ -591,4 +542,4 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
       </DialogContent>
     </Dialog>
   );
-} 
+}
