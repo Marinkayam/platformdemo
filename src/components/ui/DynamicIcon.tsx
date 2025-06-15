@@ -12,7 +12,13 @@ interface IconProps extends Omit<LucideProps, 'ref'> {
 }
 
 const DynamicIcon = ({ name, ...props }: IconProps) => {
-  const LucideIcon = lazy(dynamicIconImports[name]);
+  const LucideIcon = name && dynamicIconImports[name] 
+    ? lazy(dynamicIconImports[name])
+    : null;
+
+  if (!LucideIcon) {
+    return fallback;
+  }
 
   return (
     <Suspense fallback={fallback}>
