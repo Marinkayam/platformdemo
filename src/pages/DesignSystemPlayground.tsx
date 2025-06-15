@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import IconLibrary from "@/components/design-system/IconLibrary";
 import { NotificationsTester } from "@/components/notifications/NotificationsTester";
 
@@ -12,7 +12,7 @@ const PortalLogos = () => {
     ];
 
     return (
-        <div className="p-4 border rounded-lg mt-2">
+        <div className="p-4 border rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Portal Logos</h2>
             <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
                 {logos.map(logo => (
@@ -28,26 +28,14 @@ const PortalLogos = () => {
 
 const DesignSystemPlayground = () => {
   return (
-    <main className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-6">Design System</h1>
-      <Tabs defaultValue="icons" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="logos">Portal Logos</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="icons">Icons</TabsTrigger>
-        </TabsList>
-        <TabsContent value="logos">
-            <PortalLogos />
-        </TabsContent>
-        <TabsContent value="notifications">
-            <div className="p-4 border rounded-lg mt-2">
-                <NotificationsTester />
-            </div>
-        </TabsContent>
-        <TabsContent value="icons">
-            <IconLibrary />
-        </TabsContent>
-      </Tabs>
+    <main className="container mx-auto py-8 px-4 space-y-8">
+      <h1 className="text-3xl font-bold">Design System</h1>
+      <PortalLogos />
+      <IconLibrary />
+      <div className="p-4 border rounded-lg">
+        <h2 className="text-xl font-semibold mb-4">Notifications Tester</h2>
+        <NotificationsTester />
+      </div>
     </main>
   );
 };
