@@ -2,14 +2,14 @@ import { useState, useRef } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Building, Users, Shield, Bell, Upload, MoreVertical, Plus, Loader2 } from "lucide-react";
+import { Building, Users, Shield, Bell, Upload, Loader2 } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
 import { showSuccessToast } from "@/lib/toast-helpers";
+import { TeamTab } from "@/components/workspace/TeamTab";
 
 const headerTabs = [
   {
@@ -32,12 +32,6 @@ const headerTabs = [
     label: "Notifications",
     icon: <Bell size={16} />,
   },
-];
-
-const teamMembers = [
-  { email: "sarah@monto.tech", role: "Admin" },
-  { email: "mike@monto.tech", role: "User" },
-  { email: "lisa@monto.tech", role: "User" },
 ];
 
 const notificationSettings = [
@@ -188,61 +182,7 @@ export default function Workspace() {
           </div>
         );
       case "team":
-        return (
-          <div className="space-y-6">
-            <div>
-              <h6 className="text-lg font-semibold text-gray-900 mb-1">Team</h6>
-              <p className="text-base text-gray-600">
-                Invite teammates to collaborate. Admins can manage users, connections, and settings.<br />
-                Users can view and edit.
-              </p>
-            </div>
-            <Card className="shadow-none border border-[#ececec] rounded-xl">
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-50 border-b">
-                      <tr>
-                        <th className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-                        <th className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
-                        <th className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-100">
-                      {teamMembers.map((member, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-8 py-5 whitespace-nowrap text-base text-gray-900">{member.email}</td>
-                          <td className="px-8 py-5 whitespace-nowrap">
-                            <Badge
-                              variant={member.role === "Admin" ? "default" : "secondary"}
-                              className={member.role === "Admin"
-                                ? "bg-[#efefff] text-[#6b53e6] font-medium"
-                                : "bg-gray-100 text-gray-700"
-                              }
-                            >
-                              {member.role}
-                            </Badge>
-                          </td>
-                          <td className="px-8 py-5 whitespace-nowrap text-gray-400">
-                            <button>
-                              <MoreVertical size={20} />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="px-7 py-7 border-t">
-                  <Button className="bg-[#7b61ff] hover:bg-[#634edc] text-white font-semibold h-11 px-6">
-                    <Plus size={18} className="mr-2" />
-                    Add New Member
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        );
+        return <TeamTab />;
       case "security":
         return (
           <div className="space-y-6">
