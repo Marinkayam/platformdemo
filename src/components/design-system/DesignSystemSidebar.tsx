@@ -1,3 +1,4 @@
+
 import { cn } from '@/lib/utils';
 import DynamicIcon, { IconName } from '@/components/ui/DynamicIcon';
 
@@ -12,7 +13,7 @@ export const designSystemNavItems = [
   { id: 'table-system', label: 'Table System', icon: 'table' as IconName },
   { id: 'form-elements', label: 'Form Elements', icon: 'clipboard-list' as IconName },
   { id: 'layout-components', label: 'Layout Components', icon: 'layout-template' as IconName },
-  { id: 'alerts', label: 'Alerts', icon: 'alert-circle' as IconName },
+  { id: 'alerts', label: 'Alerts', icon: 'alert-triangle' as IconName },
   { id: 'progress', label: 'Progress', icon: 'hourglass' as IconName },
   { id: 'modals', label: 'Modals', icon: 'app-window' as IconName },
   { id: 'toast-notifications', label: 'Toast Notifications', icon: 'bell-ring' as IconName },

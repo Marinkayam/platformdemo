@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
 import DynamicIcon, { IconName } from '../ui/DynamicIcon';
@@ -5,10 +6,10 @@ import { Input } from '@/components/ui/input';
 
 const usedIconNames: IconName[] = [
     'palette', 'type', 'layout-grid', 'mouse-pointer-click', 'badge', 'layout-list',
-    'filter', 'table', 'clipboard-list', 'layout-template', 'alert-circle',
+    'filter', 'table', 'clipboard-list', 'layout-template', 'alert-triangle',
     'hourglass', 'app-window', 'bell-ring', 'chevrons-up-down', 'ellipsis',
     'image', 'gallery-thumbnails', 'sparkles', 'chevron-left', 'clipboard',
-    'user-circle', 'x', 'check', 'download', 'pencil', 'ellipsis-vertical',
+    'user-circle-2', 'x', 'check', 'download', 'pencil', 'ellipsis-vertical',
     'file-text', 'arrow-left', 'info'
 ];
 
