@@ -7,30 +7,30 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Building, Users, Shield, Bell, Upload, Camera, MoreVertical, Plus, Loader2, Check } from "lucide-react";
+import { Building, Users, Shield, Bell, Upload, MoreVertical, Plus, Loader2 } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
 import { showSuccessToast } from "@/lib/toast-helpers";
 
-const sidebarTabs = [
+const headerTabs = [
   {
     id: "company",
     label: "Company Information",
-    icon: <Building size={20} className="mr-2" />,
+    icon: <Building size={16} />,
   },
   {
     id: "team",
     label: "Team",
-    icon: <Users size={20} className="mr-2" />,
+    icon: <Users size={16} />,
   },
   {
     id: "security",
     label: "Security",
-    icon: <Shield size={20} className="mr-2" />,
+    icon: <Shield size={16} />,
   },
   {
     id: "notifications",
     label: "Notifications",
-    icon: <Bell size={20} className="mr-2" />,
+    icon: <Bell size={16} />,
   },
 ];
 
@@ -319,18 +319,13 @@ export default function Workspace() {
         title="Settings"
         subtitle="Manage your account preferences and application settings"
       />
-      <div className="mt-6 rounded-2xl bg-white border border-[#ececec] flex shadow-none overflow-hidden min-h-[600px]">
-        <aside className="w-80 border-r border-[#ececec] bg-[#fafbfc]">
-          <TabsNav
-            tabs={sidebarTabs}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            variant="sidebar"
-          />
-        </aside>
-        <main className="flex-1 p-12">
-          {renderContent()}
-        </main>
+      <div className="mt-6">
+        <TabsNav
+          tabs={headerTabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
+        {renderContent()}
       </div>
     </div>
   );
