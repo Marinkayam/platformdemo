@@ -5,14 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { ActiveFiltersList } from "./filters/ActiveFiltersList";
 import { usePortalRecordFiltersState } from "@/hooks/usePortalRecordFiltersState";
-import { Button } from "@/components/ui/button";
 
 interface PortalRecordsFiltersProps {
   onFilterChange: (filters: PortalRecordFilters) => void;
   needsAttentionCount: number;
 }
 
-export function PortalRecordsFilters({ onFilterChange, needsAttentionCount }: PortalRecordsFiltersProps) {
+export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersProps) {
   const { 
     filters, 
     handleFilterChange,
@@ -23,10 +22,6 @@ export function PortalRecordsFilters({ onFilterChange, needsAttentionCount }: Po
   const portalOptions = ["All", "Ariba", "Coupa", "Bill", "Tipalti", "Oracle"];
   const buyerOptions = ["All", "Acme Corporation", "Global Enterprises", "European Partners GmbH", "Tech Solutions Ltd", "Retail Chain Inc", "Manufacturing Co"];
   const statusOptions = ["All", "Approved", "Paid", "Rejected", "Pending"];
-
-  const handleNeedsAttentionToggle = () => {
-    handleFilterChange("needsAttention", !filters.needsAttention);
-  };
 
   return (
     <div className="space-y-4">
@@ -55,14 +50,6 @@ export function PortalRecordsFilters({ onFilterChange, needsAttentionCount }: Po
           options={statusOptions}
           onSelect={(value) => handleFilterChange("status", value)}
         />
-
-        <Button
-          variant={filters.needsAttention ? "default" : "outline"}
-          onClick={handleNeedsAttentionToggle}
-          className="flex items-center gap-2"
-        >
-          Needs Attention {needsAttentionCount > 0 && `(${needsAttentionCount})`}
-        </Button>
         
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />

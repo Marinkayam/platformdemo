@@ -27,7 +27,6 @@ export default function PortalRecords() {
     alternate: allPortalRecords.filter(r => r.type === "Alternate").length,
     unmatched: allPortalRecords.filter(r => r.type === "Unmatched").length,
     conflict: allPortalRecords.filter(r => r.type === "Conflict").length,
-    needsAttention: needsAttentionCount,
   };
 
   const tabs = [
@@ -36,7 +35,6 @@ export default function PortalRecords() {
     { id: "alternate", label: "Alternate", count: tabCounts.alternate },
     { id: "unmatched", label: "Unmatched", count: tabCounts.unmatched },
     { id: "conflict", label: "Conflicts", count: tabCounts.conflict },
-    { id: "needsAttention", label: "Needs Attention", count: tabCounts.needsAttention },
   ];
 
   return (

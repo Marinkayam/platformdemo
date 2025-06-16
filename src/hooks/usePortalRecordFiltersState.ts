@@ -28,8 +28,6 @@ export function usePortalRecordFiltersState(onFilterChange: (filters: PortalReco
       newFilters.type = "All";
     } else if (key === "search") {
       newFilters.search = "";
-    } else if (key === "needsAttention") {
-      newFilters.needsAttention = false;
     }
     
     setFilters(newFilters);
