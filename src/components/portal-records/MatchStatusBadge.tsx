@@ -9,6 +9,8 @@ interface MatchStatusBadgeProps {
 
 export function MatchStatusBadge({ status, className }: MatchStatusBadgeProps) {
   const getTooltipContent = (status: string) => {
+    if (!status) return "Match status information";
+    
     switch (status.toLowerCase()) {
       case 'matched':
         return "Invoice successfully matched with ERP records";
@@ -24,6 +26,8 @@ export function MatchStatusBadge({ status, className }: MatchStatusBadgeProps) {
   };
 
   const getDisplayText = (status: string) => {
+    if (!status) return "—";
+    
     switch (status.toLowerCase()) {
       case 'matched':
         return "✅ Matched";

@@ -8,7 +8,7 @@ interface LastSyncedCellProps {
 
 export function LastSyncedCell({ lastSynced, className }: LastSyncedCellProps) {
   const getTooltipContent = (lastSynced: string) => {
-    if (lastSynced === "—" || lastSynced === "In Progress") {
+    if (!lastSynced || lastSynced === "—" || lastSynced === "In Progress") {
       return "No sync data available";
     }
     
@@ -21,6 +21,8 @@ export function LastSyncedCell({ lastSynced, className }: LastSyncedCellProps) {
   };
 
   const getDisplayText = (lastSynced: string) => {
+    if (!lastSynced) return "—";
+    
     if (lastSynced === "In Progress") {
       return "⏳ In Progress";
     }
