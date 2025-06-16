@@ -5,6 +5,7 @@ export interface PortalRecordFilters {
   status: string;
   type: string;
   search: string;
+  needsAttention: boolean;
 }
 
 export const defaultPortalRecordFilters: PortalRecordFilters = {
@@ -12,5 +13,6 @@ export const defaultPortalRecordFilters: PortalRecordFilters = {
   buyer: [],
   status: "All",
   type: "All",
-  search: ""
+  search: "",
+  needsAttention: false
 };

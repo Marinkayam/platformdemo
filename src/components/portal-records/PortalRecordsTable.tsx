@@ -1,9 +1,10 @@
+
 import { useState } from "react";
 import { MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { StatusBadge } from "@/components/ui/status-badge";
+import { ConnectionStatusBadge } from "./ConnectionStatusBadge";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
 
@@ -87,7 +88,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
                 <TableCell className="text-gray-600 w-1/5">{record.accountName}</TableCell>
                 <TableCell className="text-gray-600 w-[15%]">{record.recordType}</TableCell>
                 <TableCell className="w-[15%]">
-                  <StatusBadge status={record.connectionStatus} />
+                  <ConnectionStatusBadge status={record.connectionStatus} />
                 </TableCell>
                 <TableCell className="text-gray-600 w-[15%]">
                   {record.lastSyncDate}

@@ -14,7 +14,7 @@ export function PortalRecordsHeader({
     <div className="flex items-center justify-between">
       <PageHeader 
         title="Portal Records" 
-        subtitle={`Track synced records and their invoice statuses across portals (${recordCount} total records)`}
+        subtitle="Monto is actively syncing documents from your portals. Use this view to monitor account connections, status, and history."
       />
       
       <Button className="flex items-center gap-2">

@@ -7,8 +7,25 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
   const [filters, setFilters] = useState<PortalRecordFilters>(defaultPortalRecordFilters);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const needsAttentionRecords = useMemo(() => {
+    return data.filter(record => 
+      record.connectionStatus === 'Disconnected' ||
+      record.type === 'Conflict' ||
+      record.type === 'Unmatched'
+    );
+  }, [data]);
+
   const filteredRecords = useMemo(() => {
     let filtered = [...data];
+
+    // Apply needs attention filter first
+    if (filters.needsAttention) {
+      filtered = filtered.filter(record => 
+        record.connectionStatus === 'Disconnected' ||
+        record.type === 'Conflict' ||
+        record.type === 'Unmatched'
+      );
+    }
 
     // Filter by active tab (type)
     if (activeTab !== "all") {
@@ -66,6 +83,7 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
     setSearchTerm,
     filters,
     setFilters,
-    clearAllFilters
+    clearAllFilters,
+    needsAttentionCount: needsAttentionRecords.length
   };
 }

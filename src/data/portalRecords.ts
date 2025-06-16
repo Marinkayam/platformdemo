@@ -1,9 +1,11 @@
+
 import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
 
 // Portal names for variety
 const portals = ["SAP Ariba", "Coupa", "Bill.com", "Tipalti", "Oracle", "SAP Fieldglass"];
 const statuses: PortalRecord['status'][] = ["Approved", "Paid", "Rejected", "Pending"];
+const connectionStatuses = ["Connected", "Disconnected", "Partial"];
 
 // Generate portal records for each invoice
 const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRecord[] => {
@@ -12,7 +14,18 @@ const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRec
   
   for (let i = 0; i < numRecords; i++) {
     const isConflict = Math.random() < 0.15; // 15% chance of conflict
+    const isUnmatched = Math.random() < 0.10; // 10% chance of unmatched
     const portal = portals[Math.floor(Math.random() * portals.length)];
+    
+    // Determine connection status
+    let connectionStatus: string;
+    if (Math.random() < 0.15) {
+      connectionStatus = "Disconnected";
+    } else if (Math.random() < 0.10) {
+      connectionStatus = "Partial";
+    } else {
+      connectionStatus = "Connected";
+    }
     
     // Determine status based on invoice status
     let status: PortalRecord['status'];
@@ -35,6 +48,15 @@ const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRec
     const updatedDate = new Date();
     updatedDate.setDate(updatedDate.getDate() - daysAgo);
     
+    let recordType: PortalRecord['type'];
+    if (isConflict) {
+      recordType = "Conflict";
+    } else if (isUnmatched) {
+      recordType = "Unmatched";
+    } else {
+      recordType = i === 0 ? "Primary" : "Alternate";
+    }
+    
     const record: PortalRecord = {
       id: `PR-${String(index * 10 + i + 1).padStart(3, '0')}`,
       portal,
@@ -47,9 +69,9 @@ const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRec
       total: Math.round(amount * 100) / 100,
       poNumber: `PO-${Math.floor(Math.random() * 99999) + 10000}`,
       supplierName: invoice.buyer,
-      type: isConflict ? "Conflict" : (i === 0 ? "Primary" : "Alternate"),
+      type: recordType,
       currency: invoice.currency || "USD",
-      connectionStatus: status === 'Approved' ? 'Connected' : 'Disconnected',
+      connectionStatus,
       lastSyncDate: updatedDate.toISOString().split('T')[0],
       companyName: invoice.buyer,
       accountName: `${invoice.buyer} Account`,
@@ -103,7 +125,7 @@ const manualRecords: PortalRecord[] = [
     supplierName: "Global Enterprises Inc",
     type: "Primary",
     currency: "USD",
-    connectionStatus: "Connected",
+    connectionStatus: "Disconnected",
     accountName: "Global Ent. Primary",
     recordType: "Invoice",
     lastSyncDate: "2024-04-14",
