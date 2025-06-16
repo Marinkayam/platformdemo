@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useCallback } from 'react';
 import { X, File as FileIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -81,10 +82,13 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
           ✅ File uploaded. Continue to map fields and preview your data.
         </p>
       ) : (
-        <p className="text-sm text-gray-600 text-center mb-4">
-          Upload your list of portal users. We’ll guide you through mapping and validation — or{" "}
-          <button type="button" onClick={handleDownloadTemplate} className="text-primary underline font-medium">download our template</button> to get started quickly.
-        </p>
+        <div className="text-sm text-gray-600 text-center mb-4">
+          <p>Upload your list of portal users. We'll guide you through mapping and validation —</p>
+          <p>or{" "}
+            <button type="button" onClick={handleDownloadTemplate} className="text-primary underline font-medium">download our template</button>{" "}
+            to get started quickly.
+          </p>
+        </div>
       )}
       <div
         className={cn(

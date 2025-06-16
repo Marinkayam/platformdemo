@@ -162,9 +162,9 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
+      <div className="space-y-4">
         <Progress value={progress} className="h-2" />
-        <div className="flex justify-between text-sm font-medium text-gray-600">
+        <div className="flex justify-between text-sm font-normal text-gray-600">
           {WIZARD_STEPS.map((step, index) => (
             <span key={step.id} className={currentStepIndex >= index ? 'text-primary' : ''}>
               {step.name}
