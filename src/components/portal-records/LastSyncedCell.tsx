@@ -24,7 +24,7 @@ export function LastSyncedCell({ lastSynced, className }: LastSyncedCellProps) {
     if (!lastSynced) return "—";
     
     if (lastSynced === "In Progress") {
-      return "⏳ In Progress";
+      return "In Progress";
     }
     return lastSynced;
   };

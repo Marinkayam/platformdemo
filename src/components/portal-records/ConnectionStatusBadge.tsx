@@ -26,13 +26,13 @@ export function ConnectionStatusBadge({ status, className }: ConnectionStatusBad
   const getDisplayText = (status: string) => {
     switch (status.toLowerCase()) {
       case 'connected':
-        return "✅ Connected";
+        return "Connected";
       case 'disconnected':
-        return "❌ Disconnected";
+        return "Disconnected";
       case 'syncing':
-        return "⏳ Syncing";
+        return "Syncing";
       case 'partial':
-        return "⚠️ Partial";
+        return "Partial";
       default:
         return status;
     }

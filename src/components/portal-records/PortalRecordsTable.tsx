@@ -1,9 +1,7 @@
 
 import { useState } from "react";
-import { MoreVertical } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { TableSystem } from "@/components/ui/TableSystem";
+import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { ConnectionStatusBadge } from "./ConnectionStatusBadge";
 import { MatchStatusBadge } from "./MatchStatusBadge";
 import { PortalLogo } from "./PortalLogo";
@@ -29,36 +27,117 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     setCurrentPage(pageNumber);
   };
 
+  const handleView = (recordId: string) => {
+    console.log('View record:', recordId);
+  };
+
+  const handleRetry = (recordId: string) => {
+    console.log('Retry record:', recordId);
+  };
+
+  const handleEdit = (recordId: string) => {
+    console.log('Edit record:', recordId);
+  };
+
+  const handleRemove = (recordId: string) => {
+    console.log('Remove record:', recordId);
+  };
+
+  const columns = [
+    {
+      key: "portal",
+      label: "Portal",
+      className: "w-[15%]",
+      render: (record: PortalRecord) => (
+        <PortalLogo portalName={record.portal} />
+      )
+    },
+    {
+      key: "invoiceNumber",
+      label: "Invoice #",
+      className: "w-[12%]",
+      render: (record: PortalRecord) => (
+        <span className="text-gray-600">{record.invoiceNumber}</span>
+      )
+    },
+    {
+      key: "poNumber",
+      label: "PO #",
+      className: "w-[12%]",
+      render: (record: PortalRecord) => (
+        <span className="text-gray-600">{record.poNumber}</span>
+      )
+    },
+    {
+      key: "buyer",
+      label: "Buyer",
+      className: "w-[15%]",
+      render: (record: PortalRecord) => (
+        <span className="text-gray-600">{record.buyer}</span>
+      )
+    },
+    {
+      key: "matchStatus",
+      label: "Match Status",
+      className: "w-[12%]",
+      render: (record: PortalRecord) => (
+        <MatchStatusBadge status={record.matchStatus} />
+      )
+    },
+    {
+      key: "connectionStatus",
+      label: "Connection",
+      className: "w-[12%]",
+      render: (record: PortalRecord) => (
+        <ConnectionStatusBadge status={record.connectionStatus} />
+      )
+    },
+    {
+      key: "lastSynced",
+      label: "Last Synced",
+      className: "w-[15%] text-right",
+      render: (record: PortalRecord) => (
+        <LastSyncedCell lastSynced={record.lastSynced} />
+      )
+    },
+    {
+      key: "actions",
+      label: "Actions",
+      className: "w-[7%] text-center",
+      render: (record: PortalRecord) => (
+        <TableActions
+          actions={[
+            commonActions.view(() => handleView(record.id)),
+            {
+              label: "Retry",
+              onClick: () => handleRetry(record.id)
+            },
+            commonActions.edit(() => handleEdit(record.id)),
+            {
+              label: "Remove",
+              onClick: () => handleRemove(record.id),
+              variant: "destructive" as const
+            }
+          ]}
+        />
+      )
+    }
+  ];
+
   if (records.length === 0) {
     return (
       <div className="rounded-xl border border-gray-200 bg-white">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-              <TableHead className="w-[15%]">Portal</TableHead>
-              <TableHead className="w-[12%]">Invoice #</TableHead>
-              <TableHead className="w-[12%]">PO #</TableHead>
-              <TableHead className="w-[15%]">Buyer</TableHead>
-              <TableHead className="w-[12%]">Match Status</TableHead>
-              <TableHead className="w-[12%]">Connection</TableHead>
-              <TableHead className="w-[15%] text-right">Last Synced</TableHead>
-              <TableHead className="w-[7%] text-center">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan={8} className="h-[200px] text-center">
-                <div className="flex flex-col items-center justify-center space-y-3">
-                  <div className="text-gray-400 text-lg">📁</div>
-                  <div>
-                    <p className="text-gray-600 font-medium">No portal records found</p>
-                    <p className="text-gray-400 text-sm">Records will appear here when portals are connected</p>
-                  </div>
-                </div>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <TableSystem 
+          data={[]}
+          columns={columns}
+        />
+        <div className="h-[200px] flex flex-col items-center justify-center space-y-3">
+          <div className="text-gray-400 text-lg">📁</div>
+          <div>
+            <p className="text-gray-600 font-medium">No portal records found</p>
+            <p className="text-gray-400 text-sm">Records will appear here when portals are connected</p>
+          </div>
+        </div>
         <PortalRecordsTableFooter 
           totalRecords={0}
           currentPage={currentPage}
@@ -70,65 +149,11 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 overflow-hidden bg-white">
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-              <TableHead className="w-[15%]">Portal</TableHead>
-              <TableHead className="w-[12%]">Invoice #</TableHead>
-              <TableHead className="w-[12%]">PO #</TableHead>
-              <TableHead className="w-[15%]">Buyer</TableHead>
-              <TableHead className="w-[12%]">Match Status</TableHead>
-              <TableHead className="w-[12%]">Connection</TableHead>
-              <TableHead className="w-[15%] text-right">Last Synced</TableHead>
-              <TableHead className="w-[7%] text-center">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody className="divide-y divide-gray-100">
-            {currentRecords.map((record) => (
-              <TableRow key={record.id} className="hover:bg-gray-50 transition-colors bg-white">
-                <TableCell className="font-medium">
-                  <PortalLogo portalName={record.portal} />
-                </TableCell>
-                <TableCell className="text-gray-600">
-                  {record.invoiceNumber}
-                </TableCell>
-                <TableCell className="text-gray-600">
-                  {record.poNumber}
-                </TableCell>
-                <TableCell className="text-gray-600">
-                  {record.buyer}
-                </TableCell>
-                <TableCell>
-                  <MatchStatusBadge status={record.matchStatus} />
-                </TableCell>
-                <TableCell>
-                  <ConnectionStatusBadge status={record.connectionStatus} />
-                </TableCell>
-                <TableCell className="text-right">
-                  <LastSyncedCell lastSynced={record.lastSynced} />
-                </TableCell>
-                <TableCell className="text-center">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
-                      <DropdownMenuItem>View</DropdownMenuItem>
-                      <DropdownMenuItem>Retry</DropdownMenuItem>
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600">Remove</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+    <div className="space-y-0">
+      <TableSystem 
+        data={currentRecords}
+        columns={columns}
+      />
       <PortalRecordsTableFooter 
         totalRecords={records.length}
         currentPage={currentPage}

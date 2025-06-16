@@ -30,11 +30,11 @@ export function MatchStatusBadge({ status, className }: MatchStatusBadgeProps) {
     
     switch (status.toLowerCase()) {
       case 'matched':
-        return "✅ Matched";
+        return "Matched";
       case 'unmatched':
-        return "❌ Unmatched";
+        return "Unmatched";
       case 'conflicted':
-        return "⚠️ Conflicted";
+        return "Conflicted";
       case 'pending':
         return "—";
       default:

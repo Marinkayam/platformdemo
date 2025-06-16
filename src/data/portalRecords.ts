@@ -1,10 +1,11 @@
+
 import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
 
 // Portal names for variety
 const portals = ["SAP Ariba", "Coupa", "Bill.com", "Tipalti", "Oracle", "SAP Fieldglass"];
 const statuses: PortalRecord['status'][] = ["Approved", "Paid", "Rejected", "Pending"];
-const connectionStatuses = ["Connected", "Disconnected", "Partial"];
+const connectionStatuses: PortalRecord['connectionStatus'][] = ["Connected", "Disconnected", "Syncing"];
 
 // Generate portal records for each invoice
 const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRecord[] => {
@@ -17,11 +18,11 @@ const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRec
     const portal = portals[Math.floor(Math.random() * portals.length)];
     
     // Determine connection status
-    let connectionStatus: string;
+    let connectionStatus: PortalRecord['connectionStatus'];
     if (Math.random() < 0.15) {
       connectionStatus = "Disconnected";
     } else if (Math.random() < 0.10) {
-      connectionStatus = "Partial";
+      connectionStatus = "Syncing";
     } else {
       connectionStatus = "Connected";
     }
@@ -75,6 +76,8 @@ const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRec
       companyName: invoice.buyer,
       accountName: `${invoice.buyer} Account`,
       recordType: i === 0 ? 'PO' : 'Invoice',
+      matchStatus: isConflict ? "Conflicted" : (isUnmatched ? "Unmatched" : "Matched"),
+      lastSynced: `Jun 15, 2025 — ${String(Math.floor(Math.random() * 24)).padStart(2, '0')}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`
     };
     
     records.push(record);
@@ -88,51 +91,7 @@ export const portalRecordsData: PortalRecord[] = invoiceData.flatMap((invoice, i
   generatePortalRecordsForInvoice(invoice, index)
 );
 
-// Original manual records (keeping a few for consistency)
-const manualRecords: PortalRecord[] = [
-  {
-    id: "PR-001",
-    portal: "SAP Ariba",
-    status: "Approved",
-    matchType: "Primary",
-    updated: "2024-04-15",
-    conflict: false,
-    invoiceNumber: "10021301",
-    buyer: "Acme Corporation",
-    total: 2350.00,
-    poNumber: "PO-88991",
-    supplierName: "Acme Corporation",
-    type: "Primary",
-    currency: "USD",
-    connectionStatus: "Connected",
-    accountName: "Acme Corp",
-    recordType: "PO",
-    lastSyncDate: "2024-04-15",
-    companyName: "Acme Corporation",
-  },
-  {
-    id: "PR-002",
-    portal: "Coupa",
-    status: "Paid",
-    matchType: "Primary",
-    updated: "2024-04-14",
-    conflict: false,
-    invoiceNumber: "10021302",
-    buyer: "Global Enterprises",
-    total: 1875.50,
-    poNumber: "PO-77825",
-    supplierName: "Global Enterprises Inc",
-    type: "Primary",
-    currency: "USD",
-    connectionStatus: "Disconnected",
-    accountName: "Global Ent. Primary",
-    recordType: "Invoice",
-    lastSyncDate: "2024-04-14",
-    companyName: "Global Enterprises",
-  }
-];
-
-// New demo-focused portal records for onboarding clarity
+// Demo-focused portal records for onboarding clarity
 const demoRecords: PortalRecord[] = [
   {
     id: "PR-001",
@@ -251,5 +210,5 @@ const demoRecords: PortalRecord[] = [
   }
 ];
 
-// Combine generated and manual records
-export const allPortalRecords = [...demoRecords, ...manualRecords];
+// Export demo records for consistency
+export const allPortalRecords = demoRecords;
