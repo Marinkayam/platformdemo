@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ChevronDown, ChevronUp, TriangleAlert } from "lucide-react";
-import { allPortalRecords } from "@/data/portalRecords";
 import { invoiceSpecificRecords } from "@/data/portalRecords/invoiceSpecificData";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "@/components/portal-records/PortalLogo";
@@ -26,9 +25,8 @@ const Field = ({ label, value }: { label: string; value: string }) => (
 export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // Combine both data sources and filter for current invoice
-  const allRecords = [...allPortalRecords, ...invoiceSpecificRecords];
-  const relevantRecords = allRecords.filter(record => {
+  // Only use invoice-specific records to avoid duplicates
+  const relevantRecords = invoiceSpecificRecords.filter(record => {
     // Direct match with invoice ID
     if (record.invoiceNumber === invoiceId) return true;
     
@@ -39,7 +37,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   });
 
   console.log('Invoice ID:', invoiceId);
-  console.log('All Records:', allRecords.length);
+  console.log('Invoice Specific Records:', invoiceSpecificRecords.length);
   console.log('Relevant Records:', relevantRecords);
 
   // Auto-expand Primary record on mount

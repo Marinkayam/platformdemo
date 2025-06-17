@@ -36,7 +36,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     connectionStatus: "Connected",
     lastSynced: "May 20, 2025  10:15",
     status: "Paid",
-    matchType: "Alternate", // This should be Alternate, not Primary
+    matchType: "Alternate", // This is Alternate, not Primary
     updated: "2025-05-20",
     conflict: false,
     total: 2850.00,
