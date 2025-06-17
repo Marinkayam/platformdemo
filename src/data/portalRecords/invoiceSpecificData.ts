@@ -3,11 +3,11 @@ import { PortalRecord } from "@/types/portalRecord";
 
 // Specific portal records for demo invoices
 export const invoiceSpecificRecords: PortalRecord[] = [
-  // INV-10021111 records
+  // Invoice ID "5" records (this matches the current route /invoices/5)
   {
     id: "PR-081",
     portal: "Coupa",
-    invoiceNumber: "INV-10021111",
+    invoiceNumber: "5", // Match the invoice ID from route
     poNumber: "PO-7890",
     buyer: "TechCorp",
     matchStatus: "Matched",
@@ -29,8 +29,53 @@ export const invoiceSpecificRecords: PortalRecord[] = [
   {
     id: "PR-082",
     portal: "Coupa",
-    invoiceNumber: "INV-10021111",
+    invoiceNumber: "5", // Match the invoice ID from route
     poNumber: "PO-7891",
+    buyer: "TechCorp",
+    matchStatus: "Matched",
+    connectionStatus: "Connected",
+    lastSynced: "May 20, 2025  10:15",
+    status: "Paid",
+    matchType: "Alternate",
+    updated: "2025-05-20",
+    conflict: false,
+    total: 2850.00,
+    supplierName: "TechCorp",
+    type: "Alternate",
+    currency: "USD",
+    companyName: "TechCorp",
+    accountName: "TechCorp Account",
+    recordType: "Invoice",
+    lastSyncDate: "2025-05-20"
+  },
+  // INV-10021111 records
+  {
+    id: "PR-083",
+    portal: "Coupa",
+    invoiceNumber: "INV-10021111",
+    poNumber: "PO-7892",
+    buyer: "TechCorp",
+    matchStatus: "Matched",
+    connectionStatus: "Connected",
+    lastSynced: "Jun 15, 2025  14:23",
+    status: "Paid",
+    matchType: "Primary",
+    updated: "2025-06-15",
+    conflict: false,
+    total: 2850.00,
+    supplierName: "TechCorp",
+    type: "Primary",
+    currency: "USD",
+    companyName: "TechCorp",
+    accountName: "TechCorp Account",
+    recordType: "Invoice",
+    lastSyncDate: "2025-06-15"
+  },
+  {
+    id: "PR-084",
+    portal: "Coupa",
+    invoiceNumber: "INV-10021111",
+    poNumber: "PO-7893",
     buyer: "TechCorp",
     matchStatus: "Matched",
     connectionStatus: "Connected",

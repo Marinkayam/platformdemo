@@ -29,10 +29,18 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
   // Combine both data sources and filter for current invoice
   const allRecords = [...allPortalRecords, ...invoiceSpecificRecords];
   const relevantRecords = allRecords.filter(record => {
+    // Direct match with invoice ID
+    if (record.invoiceNumber === invoiceId) return true;
+    
+    // Match with invoice number patterns
     return record.invoiceNumber === invoiceId || 
            record.invoiceNumber === invoiceId.replace('INV-', '').replace(/^0+/, '') ||
            record.invoiceNumber.padStart(8, '0') === invoiceId.replace('INV-', '');
   });
+
+  console.log('Invoice ID:', invoiceId);
+  console.log('All Records:', allRecords.length);
+  console.log('Relevant Records:', relevantRecords);
 
   // Auto-expand Primary record on mount
   useEffect(() => {
