@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
 import { PortalUsersEmptyState } from './PortalUsersEmptyState';
@@ -17,11 +17,15 @@ import { toast } from "@/hooks/use-toast";
 import { mockPortalUsersForTable } from '@/data/portalUsersForTable';
 import { getColumns } from './PortalUsersTable.columns';
 
-
 interface PortalUsersTableProps {
   portalUsers?: PortalUser[];
   onEditPortalUser?: (user: PortalUser) => void;
   onRemovePortalUser?: (id: string) => void;
+}
+
+interface GroupedUsers {
+  portal: string;
+  users: PortalUser[];
 }
 
 export function PortalUsersTable({
@@ -37,6 +41,33 @@ export function PortalUsersTable({
   const [selectedPortalUser, setSelectedPortalUser] = useState<PortalUser | null>(null);
 
   const portalUsers = propPortalUsers || mockPortalUsersForTable;
+
+  // Group users by portal and sort
+  const groupedUsers = useMemo(() => {
+    const groups = portalUsers.reduce((acc, user) => {
+      const portal = user.portal;
+      if (!acc[portal]) {
+        acc[portal] = [];
+      }
+      acc[portal].push(user);
+      return acc;
+    }, {} as Record<string, PortalUser[]>);
+
+    // Sort portals alphabetically, then users within each group
+    return Object.keys(groups)
+      .sort()
+      .map(portal => ({
+        portal,
+        users: groups[portal].sort((a, b) => {
+          // Sort by status (Connected first), then by username
+          if (a.status !== b.status) {
+            const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
+            return statusOrder[a.status] - statusOrder[b.status];
+          }
+          return a.username.localeCompare(b.username);
+        })
+      }));
+  }, [portalUsers]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -56,10 +87,8 @@ export function PortalUsersTable({
   const handleSavePortalUser = (userData: Partial<PortalUser>) => {
     if (editingUser) {
       console.log('Editing portal user:', userData);
-      // In a real application, you'd send this to an API to update
     } else {
       console.log('Adding portal user:', userData);
-      // In a real application, you'd send this to an API to create
     }
   };
 
@@ -74,7 +103,6 @@ export function PortalUsersTable({
     } else {
       if (confirm('Are you sure you want to remove this portal user?\nThis may affect Smart Connections that depend on it.')) {
         console.log('Removing portal user:', id);
-        // In a real application, you'd send this to an API
       }
     }
   };
@@ -106,21 +134,53 @@ export function PortalUsersTable({
         <TableHeader>
           <TableRow className="bg-grey-50 hover:bg-grey-50">
             {columns.map(column => (
-              <TableHead key={column.key} className={column.sticky ? "sticky left-0 bg-grey-50 z-10 border-r border-grey-200" : ""}>
+              <TableHead 
+                key={column.key} 
+                className={`
+                  ${column.sticky ? "sticky left-0 bg-grey-50 z-10 border-r border-grey-200" : ""}
+                  ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
+                  ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
+                  ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
+                `}
+              >
                 {column.label}
               </TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {portalUsers.map((portalUser) => (
-            <TableRow key={portalUser.id} className="h-[65px] hover:bg-grey-50 cursor-pointer transition-colors" onClick={() => handleRowClick(portalUser)}>
-              {columns.map(column => (
-                <TableCell key={column.key} className={column.sticky ? "sticky left-0 bg-background-paper z-10 border-r border-grey-200" : ""}>
-                  {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
-                </TableCell>
+          {groupedUsers.map((group, groupIndex) => (
+            <React.Fragment key={group.portal}>
+              {groupIndex > 0 && (
+                <TableRow className="border-t-2 border-grey-100">
+                  <TableCell colSpan={columns.length} className="h-0 p-0" />
+                </TableRow>
+              )}
+              {group.users.map((portalUser, userIndex) => (
+                <TableRow 
+                  key={portalUser.id} 
+                  className={`
+                    h-[65px] hover:bg-grey-50 cursor-pointer transition-colors
+                    ${userIndex === 0 ? 'border-t border-grey-200' : ''}
+                  `}
+                  onClick={() => handleRowClick(portalUser)}
+                >
+                  {columns.map(column => (
+                    <TableCell 
+                      key={column.key} 
+                      className={`
+                        ${column.sticky ? "sticky left-0 bg-background-paper z-10 border-r border-grey-200" : ""}
+                        ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
+                        ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
+                        ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
+                      `}
+                    >
+                      {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
+                    </TableCell>
+                  ))}
+                </TableRow>
               ))}
-            </TableRow>
+            </React.Fragment>
           ))}
         </TableBody>
       </Table>

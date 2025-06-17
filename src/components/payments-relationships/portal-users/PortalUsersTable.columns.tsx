@@ -58,14 +58,14 @@ export const getColumns = ({ onEdit, onRemove, onView2FA, copyToClipboard }: Get
     sortable: true,
     sticky: true,
     render: (portal: string) => (
-      <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden">
+      <div className="flex items-center gap-3">
+        <div className="w-6 h-6 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden flex-shrink-0">
           <img src={getPortalLogoUrl(portal)} alt={`${portal} logo`} className="w-full h-full object-contain" />
         </div>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <span className="font-medium cursor-help">{portal}</span>
+              <span className="font-medium cursor-help truncate max-w-[120px]">{portal}</span>
             </TooltipTrigger>
             <TooltipContent>
               <p>{portal}</p>
@@ -80,12 +80,21 @@ export const getColumns = ({ onEdit, onRemove, onView2FA, copyToClipboard }: Get
     label: 'Username',
     sortable: true,
     render: (username: string) => (
-      <div className="flex items-center gap-2">
-        <span className="text-sm">{username}</span>
+      <div className="flex items-center gap-2 min-w-0">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="text-sm truncate max-w-[160px] cursor-help">{username}</span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{username}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <Button
           variant="ghost"
           size="sm"
-          className="h-6 w-6 p-0 text-gray-400 hover:text-gray-600"
+          className="h-6 w-6 p-0 text-gray-400 hover:text-gray-600 flex-shrink-0"
           onClick={(e) => {
             e.stopPropagation();
             copyToClipboard(username);
@@ -134,7 +143,7 @@ export const getColumns = ({ onEdit, onRemove, onView2FA, copyToClipboard }: Get
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <span className="cursor-help">
+            <span className="cursor-help text-sm">
               {count > 0 ? `${count}` : '—'}
             </span>
           </TooltipTrigger>
@@ -158,7 +167,7 @@ export const getColumns = ({ onEdit, onRemove, onView2FA, copyToClipboard }: Get
       if (portalUser.status === 'Validating') {
         const { steps, progress, status: validationStatus } = getValidationSteps(portalUser);
         return (
-          <div className="w-[90%]">
+          <div className="w-[90%] min-w-[120px]">
             <ValidationProgressIndicator
               progress={progress}
               status={validationStatus}
@@ -175,7 +184,7 @@ export const getColumns = ({ onEdit, onRemove, onView2FA, copyToClipboard }: Get
     label: 'Last Updated',
     sortable: true,
     render: (lastUpdated: string) => (
-      <span className="text-sm text-grey-700">
+      <span className="text-sm text-grey-700 whitespace-nowrap">
         {format(new Date(lastUpdated), 'MMM dd, yyyy HH:mm')}
       </span>
     )
@@ -190,7 +199,7 @@ export const getColumns = ({ onEdit, onRemove, onView2FA, copyToClipboard }: Get
             <MoreVertical className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="z-50">
           {getRowActions(portalUser, { onEdit, onRemove, onView2FA }).map((action, index) => (
             <DropdownMenuItem
               key={index}
