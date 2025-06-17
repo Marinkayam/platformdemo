@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
@@ -161,7 +160,7 @@ export function PortalUsersTable({
                   key={portalUser.id} 
                   className={`
                     h-[65px] hover:bg-grey-50 cursor-pointer transition-colors
-                    ${userIndex === 0 ? 'border-t border-grey-200' : ''}
+                    ${groupIndex > 0 && userIndex === 0 ? 'border-t-2 border-grey-200' : ''}
                   `}
                   onClick={() => handleRowClick(portalUser)}
                 >
