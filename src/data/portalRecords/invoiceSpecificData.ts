@@ -14,7 +14,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     connectionStatus: "Connected",
     lastSynced: "Jun 15, 2025  14:23",
     status: "Paid",
-    matchType: "Primary",
+    matchType: "Primary", // Only one Primary per invoice
     updated: "2025-06-15",
     conflict: false,
     total: 2850.00,
@@ -36,7 +36,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     connectionStatus: "Connected",
     lastSynced: "May 20, 2025  10:15",
     status: "Paid",
-    matchType: "Alternate",
+    matchType: "Alternate", // This should be Alternate, not Primary
     updated: "2025-05-20",
     conflict: false,
     total: 2850.00,
@@ -59,7 +59,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     connectionStatus: "Connected",
     lastSynced: "Jun 15, 2025  14:23",
     status: "Paid",
-    matchType: "Primary",
+    matchType: "Primary", // Primary for INV-10021111
     updated: "2025-06-15",
     conflict: false,
     total: 2850.00,
@@ -81,7 +81,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     connectionStatus: "Connected",
     lastSynced: "May 20, 2025  10:15",
     status: "Paid",
-    matchType: "Alternate",
+    matchType: "Alternate", // Alternate for INV-10021111
     updated: "2025-05-20",
     conflict: false,
     total: 2850.00,
@@ -104,7 +104,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     connectionStatus: "Connected",
     lastSynced: "Jun 14, 2025  16:42",
     status: "Paid",
-    matchType: "Primary",
+    matchType: "Primary", // Primary for INV-100121305
     updated: "2025-06-14",
     conflict: false,
     total: 4200.00,
@@ -126,7 +126,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     connectionStatus: "Connected",
     lastSynced: "Jun 01, 2025  09:30",
     status: "Paid",
-    matchType: "Alternate",
+    matchType: "Alternate", // Alternate for INV-100121305
     updated: "2025-06-01",
     conflict: false,
     total: 4200.00,
@@ -148,7 +148,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     connectionStatus: "Connected",
     lastSynced: "May 28, 2025  14:20",
     status: "Paid",
-    matchType: "Alternate",
+    matchType: "Alternate", // Alternate (conflict) for INV-100121305
     updated: "2025-05-28",
     conflict: true,
     total: 4150.00, // Slightly different amount to show conflict
