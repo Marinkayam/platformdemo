@@ -8,20 +8,101 @@ interface MatchStatusBadgeProps {
 }
 
 export function MatchStatusBadge({ status, className }: MatchStatusBadgeProps) {
+  const handleMockLink = (action: string) => {
+    alert(`Mock link: ${action}`);
+  };
+
   const getTooltipContent = (status: string) => {
-    if (!status || status === "—") return "Match status unknown or unavailable";
+    if (!status || status === "—") {
+      return (
+        <div className="text-center">
+          <p>Match status unknown or unavailable</p>
+        </div>
+      );
+    }
     
     switch (status.toLowerCase()) {
       case 'matched':
-        return "Invoice successfully matched with ERP records";
+        return (
+          <div className="space-y-2">
+            <p className="font-medium">PO and Invoice successfully linked.</p>
+            <div className="space-y-1">
+              <p className="text-xs text-gray-300">View:</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleMockLink("View Invoice")}
+                  className="text-blue-400 hover:text-blue-300 underline text-xs"
+                >
+                  🔗 View Invoice
+                </button>
+                <button
+                  onClick={() => handleMockLink("View PO")}
+                  className="text-blue-400 hover:text-blue-300 underline text-xs"
+                >
+                  🔗 View PO
+                </button>
+              </div>
+            </div>
+          </div>
+        );
       case 'unmatched':
-        return "No matching ERP record found for this invoice";
+        return (
+          <div className="space-y-2">
+            <p className="font-medium">No matching ERP record found for this invoice</p>
+            <div className="space-y-1">
+              <p className="text-xs text-gray-300">Actions:</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleMockLink("Manual Match")}
+                  className="text-blue-400 hover:text-blue-300 underline text-xs"
+                >
+                  🔍 Manual Match
+                </button>
+                <button
+                  onClick={() => handleMockLink("Create PO")}
+                  className="text-blue-400 hover:text-blue-300 underline text-xs"
+                >
+                  ➕ Create PO
+                </button>
+              </div>
+            </div>
+          </div>
+        );
       case 'conflicted':
-        return "This invoice matches multiple ERP records. Review needed.";
+        return (
+          <div className="space-y-2">
+            <p className="font-medium">Data conflict: Invoice and PO don't fully match.</p>
+            <div className="space-y-1">
+              <p className="text-xs text-gray-300">Actions:</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleMockLink("Review Invoice")}
+                  className="text-blue-400 hover:text-blue-300 underline text-xs"
+                >
+                  🔍 Review Invoice
+                </button>
+                <button
+                  onClick={() => handleMockLink("Fix Match")}
+                  className="text-blue-400 hover:text-blue-300 underline text-xs"
+                >
+                  🛠 Fix Match
+                </button>
+              </div>
+            </div>
+          </div>
+        );
       case 'pending':
-        return "Match status is being processed";
+        return (
+          <div className="text-center">
+            <p>Match status is being processed</p>
+          </div>
+        );
       default:
-        return "Match status information";
+        return (
+          <div className="text-center">
+            <p>Match status information</p>
+          </div>
+        );
     }
   };
 
@@ -53,7 +134,7 @@ export function MatchStatusBadge({ status, className }: MatchStatusBadgeProps) {
             <span className="text-gray-400 cursor-help">—</span>
           </TooltipTrigger>
           <TooltipContent>
-            <p>{getTooltipContent(status)}</p>
+            {getTooltipContent(status)}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -69,7 +150,7 @@ export function MatchStatusBadge({ status, className }: MatchStatusBadgeProps) {
           </div>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{getTooltipContent(status)}</p>
+          {getTooltipContent(status)}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
