@@ -6,18 +6,18 @@ interface PortalLogoProps {
   className?: string;
 }
 
-export function PortalLogo({ portalName, className = "w-6 h-6" }: PortalLogoProps) {
+export function PortalLogo({ portalName, className = "w-5 h-5" }: PortalLogoProps) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       <img 
         src={getPortalLogoUrl(portalName)} 
         alt={`${portalName} logo`}
-        className={className}
+        className={`${className} object-contain rounded-full`}
         onError={(e) => {
           e.currentTarget.src = '/portal-logos/placeholder.svg';
         }}
       />
-      <span className="font-medium">{portalName}</span>
+      <span className="font-medium text-gray-900">{portalName}</span>
     </div>
   );
 }

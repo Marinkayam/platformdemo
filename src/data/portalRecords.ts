@@ -77,7 +77,7 @@ const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRec
       accountName: `${invoice.buyer} Account`,
       recordType: i === 0 ? 'PO' : 'Invoice',
       matchStatus: isConflict ? "Conflicted" : (isUnmatched ? "Unmatched" : "Matched"),
-      lastSynced: `Jun 15, 2025 — ${String(Math.floor(Math.random() * 24)).padStart(2, '0')}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`
+      lastSynced: `Jun 15, 2025  ${String(Math.floor(Math.random() * 24)).padStart(2, '0')}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`
     };
     
     records.push(record);
@@ -101,7 +101,7 @@ const demoRecords: PortalRecord[] = [
     buyer: "BuyerCo",
     matchStatus: "Matched",
     connectionStatus: "Connected",
-    lastSynced: "Jun 15, 2025 — 14:23",
+    lastSynced: "Jun 15, 2025  14:23",
     // Legacy compatibility fields
     status: "Approved",
     matchType: "Primary",
@@ -124,7 +124,7 @@ const demoRecords: PortalRecord[] = [
     buyer: "FastBuy",
     matchStatus: "Unmatched",
     connectionStatus: "Connected",
-    lastSynced: "Jun 15, 2025 — 13:10",
+    lastSynced: "Jun 15, 2025  13:10",
     // Legacy compatibility fields
     status: "Pending",
     matchType: "Primary",
@@ -147,7 +147,7 @@ const demoRecords: PortalRecord[] = [
     buyer: "OceanMart",
     matchStatus: "Conflicted",
     connectionStatus: "Connected",
-    lastSynced: "Jun 15, 2025 — 11:02",
+    lastSynced: "Jun 15, 2025  11:02",
     // Legacy compatibility fields
     status: "Pending",
     matchType: "Primary",

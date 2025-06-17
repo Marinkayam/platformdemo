@@ -31,16 +31,8 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     console.log('View record:', recordId);
   };
 
-  const handleRetry = (recordId: string) => {
-    console.log('Retry record:', recordId);
-  };
-
-  const handleEdit = (recordId: string) => {
-    console.log('Edit record:', recordId);
-  };
-
-  const handleRemove = (recordId: string) => {
-    console.log('Remove record:', recordId);
+  const handleDelete = (recordId: string) => {
+    console.log('Delete record:', recordId);
   };
 
   const columns = [
@@ -108,16 +100,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
         <TableActions
           actions={[
             commonActions.view(() => handleView(record.id)),
-            {
-              label: "Retry",
-              onClick: () => handleRetry(record.id)
-            },
-            commonActions.edit(() => handleEdit(record.id)),
-            {
-              label: "Remove",
-              onClick: () => handleRemove(record.id),
-              variant: "destructive" as const
-            }
+            commonActions.delete(() => handleDelete(record.id))
           ]}
         />
       )
