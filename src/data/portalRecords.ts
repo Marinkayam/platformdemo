@@ -91,8 +91,9 @@ export const portalRecordsData: PortalRecord[] = invoiceData.flatMap((invoice, i
   generatePortalRecordsForInvoice(invoice, index)
 );
 
-// Demo-focused portal records for onboarding clarity
+// Demo-focused portal records for onboarding clarity - Following the exact mockup rules
 const demoRecords: PortalRecord[] = [
+  // ✅ Matched Example - Show both Invoice # and PO #, with full buyer + connection info
   {
     id: "PR-001",
     portal: "Coupa",
@@ -116,11 +117,12 @@ const demoRecords: PortalRecord[] = [
     recordType: "Invoice",
     lastSyncDate: "2024-06-15"
   },
+  // ⚠️ Unmatched Example (Invoice Only) - Show either Invoice OR PO (not both)
   {
     id: "PR-002",
     portal: "SAP Ariba",
     invoiceNumber: "INV-9999",
-    poNumber: "PO-2134",
+    poNumber: "—",
     buyer: "FastBuy",
     matchStatus: "Unmatched",
     connectionStatus: "Connected",
@@ -139,6 +141,7 @@ const demoRecords: PortalRecord[] = [
     recordType: "Invoice",
     lastSyncDate: "2024-06-15"
   },
+  // 🚫 Conflicted Example - Show both Invoice + PO, but status badge = Conflicted
   {
     id: "PR-003",
     portal: "Bill.com",
@@ -162,13 +165,14 @@ const demoRecords: PortalRecord[] = [
     recordType: "Invoice",
     lastSyncDate: "2024-06-15"
   },
+  // 🟡 In Progress Example - Show invoice/PO if pulled, set status to — if linking not done yet
   {
     id: "PR-004",
     portal: "Coupa",
     invoiceNumber: "INV-7777",
     poNumber: "PO-4040",
     buyer: "DataMax",
-    matchStatus: "Pending",
+    matchStatus: "—",
     connectionStatus: "Syncing",
     lastSynced: "In Progress",
     // Legacy compatibility fields
@@ -185,13 +189,14 @@ const demoRecords: PortalRecord[] = [
     recordType: "Invoice",
     lastSyncDate: "2024-06-15"
   },
+  // ❌ Disconnected Example - Show only portal name, all other fields —
   {
     id: "PR-005",
     portal: "SAP Ariba",
     invoiceNumber: "—",
     poNumber: "—",
     buyer: "—",
-    matchStatus: "Pending",
+    matchStatus: "—",
     connectionStatus: "Disconnected",
     lastSynced: "—",
     // Legacy compatibility fields

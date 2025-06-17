@@ -16,6 +16,8 @@ export function ConnectionStatusBadge({ status, className }: ConnectionStatusBad
         return "User login failed. Update credentials to resume sync.";
       case 'syncing':
         return "Currently syncing data from portal";
+      case 'in progress':
+        return "Sync operation in progress";
       case 'partial':
         return "Only some records syncing — review details";
       default:
@@ -31,6 +33,8 @@ export function ConnectionStatusBadge({ status, className }: ConnectionStatusBad
         return "Disconnected";
       case 'syncing':
         return "Syncing";
+      case 'in progress':
+        return "In Progress";
       case 'partial':
         return "Partial";
       default:

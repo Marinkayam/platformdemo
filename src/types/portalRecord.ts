@@ -5,7 +5,7 @@ export interface PortalRecord {
   invoiceNumber: string;
   poNumber: string;
   buyer: string;
-  matchStatus: 'Matched' | 'Unmatched' | 'Conflicted' | 'Pending';
+  matchStatus: 'Matched' | 'Unmatched' | 'Conflicted' | 'Pending' | '—';
   connectionStatus: 'Connected' | 'Disconnected' | 'Syncing';
   lastSynced: string;
   // Legacy fields kept for compatibility

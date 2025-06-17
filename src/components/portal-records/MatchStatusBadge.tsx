@@ -9,7 +9,7 @@ interface MatchStatusBadgeProps {
 
 export function MatchStatusBadge({ status, className }: MatchStatusBadgeProps) {
   const getTooltipContent = (status: string) => {
-    if (!status) return "Match status information";
+    if (!status || status === "—") return "Match status unknown or unavailable";
     
     switch (status.toLowerCase()) {
       case 'matched':
@@ -26,7 +26,7 @@ export function MatchStatusBadge({ status, className }: MatchStatusBadgeProps) {
   };
 
   const getDisplayText = (status: string) => {
-    if (!status) return "—";
+    if (!status || status === "—") return "—";
     
     switch (status.toLowerCase()) {
       case 'matched':
@@ -36,18 +36,36 @@ export function MatchStatusBadge({ status, className }: MatchStatusBadgeProps) {
       case 'conflicted':
         return "Conflicted";
       case 'pending':
-        return "—";
+        return "Pending";
       default:
         return status;
     }
   };
+
+  const displayText = getDisplayText(status);
+
+  // For "—" status, show as plain text instead of badge
+  if (displayText === "—") {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="text-gray-400 cursor-help">—</span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{getTooltipContent(status)}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <div>
-            <StatusBadge status={getDisplayText(status)} className={className} />
+            <StatusBadge status={displayText} className={className} />
           </div>
         </TooltipTrigger>
         <TooltipContent>

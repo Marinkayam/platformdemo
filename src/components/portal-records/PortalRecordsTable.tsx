@@ -35,6 +35,24 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     console.log('Delete record:', recordId);
   };
 
+  // Helper function to determine if a field should show data or "—"
+  const getDisplayValue = (record: PortalRecord, field: string): string => {
+    // Disconnected records show only portal name, everything else is "—"
+    if (record.connectionStatus === 'Disconnected' && field !== 'portal') {
+      return "—";
+    }
+
+    // Get the actual field value
+    const value = record[field as keyof PortalRecord] as string;
+    
+    // Return "—" if value is explicitly set to "—" or empty
+    if (!value || value === "—") {
+      return "—";
+    }
+
+    return value;
+  };
+
   const columns = [
     {
       key: "portal",
@@ -48,33 +66,49 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
       key: "invoiceNumber",
       label: "Invoice #",
       className: "w-[12%]",
-      render: (record: PortalRecord) => (
-        <span className="text-gray-600">{record.invoiceNumber}</span>
-      )
+      render: (record: PortalRecord) => {
+        const value = getDisplayValue(record, 'invoiceNumber');
+        return (
+          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
+            {value}
+          </span>
+        );
+      }
     },
     {
       key: "poNumber",
       label: "PO #",
       className: "w-[12%]",
-      render: (record: PortalRecord) => (
-        <span className="text-gray-600">{record.poNumber}</span>
-      )
+      render: (record: PortalRecord) => {
+        const value = getDisplayValue(record, 'poNumber');
+        return (
+          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
+            {value}
+          </span>
+        );
+      }
     },
     {
       key: "buyer",
       label: "Buyer",
       className: "w-[15%]",
-      render: (record: PortalRecord) => (
-        <span className="text-gray-600">{record.buyer}</span>
-      )
+      render: (record: PortalRecord) => {
+        const value = getDisplayValue(record, 'buyer');
+        return (
+          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
+            {value}
+          </span>
+        );
+      }
     },
     {
       key: "matchStatus",
       label: "Match Status",
       className: "w-[12%]",
-      render: (record: PortalRecord) => (
-        <MatchStatusBadge status={record.matchStatus} />
-      )
+      render: (record: PortalRecord) => {
+        const status = getDisplayValue(record, 'matchStatus');
+        return <MatchStatusBadge status={status} />;
+      }
     },
     {
       key: "connectionStatus",
@@ -88,9 +122,10 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
       key: "lastSynced",
       label: "Last Synced",
       className: "w-[15%] text-right",
-      render: (record: PortalRecord) => (
-        <LastSyncedCell lastSynced={record.lastSynced} />
-      )
+      render: (record: PortalRecord) => {
+        const value = getDisplayValue(record, 'lastSynced');
+        return <LastSyncedCell lastSynced={value} />;
+      }
     },
     {
       key: "actions",
