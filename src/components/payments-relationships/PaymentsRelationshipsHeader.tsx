@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -23,7 +24,7 @@ export function PaymentsRelationshipsHeader({ activeTab = "smart-connections", o
   return (
     <Button onClick={() => navigate("/payments-relationships/new")}>
       <Plus className="w-4 h-4 mr-2" />
-      New Payments Relationship
+      Add Smart Connection
     </Button>
   );
 }

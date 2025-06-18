@@ -9,64 +9,37 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { mockSmartConnections } from "@/data/smartConnections";
 import { mockPortalUsers } from "@/data/portalUsers";
 import { useSmartConnectionFiltering } from "@/hooks/useSmartConnectionFiltering";
-import { PortalUser } from "@/types/portalUser";
+import { PortalUser, PortalUserFilters, defaultPortalUserFilters } from "@/types/portalUser";
 import { PortalUsersTable } from "@/components/payments-relationships/portal-users";
-import { PortalUsersEmptyState } from "@/components/payments-relationships/portal-users/PortalUsersEmptyState";
+import { PortalUsersFilters } from "@/components/payments-relationships/portal-users/PortalUsersFilters";
 import { AddPortalUserModal } from "@/components/payments-relationships/portal-users/AddPortalUserModal";
 import { ConfirmRemoveModal } from "@/components/payments-relationships/portal-users/ConfirmRemoveModal";
-import { Badge } from "@/components/ui/badge";
-
-// Mock data for Portal Users (for now)
-const MOCK_PORTAL_USERS_INITIAL: PortalUser[] = [
-  {
-    id: "pu1",
-    portal: "Coupa",
-    username: "john.doe@coupa.com",
-    status: "Connected",
-    userType: "Monto",
-    linkedSmartConnections: 2,
-    lastUpdated: "2h ago",
-    isReadOnly: false,
-  },
-  {
-    id: "pu2",
-    portal: "Ariba",
-    username: "jane.smith@ariba.com",
-    status: "Validating",
-    userType: "External",
-    linkedSmartConnections: 0,
-    lastUpdated: "1d ago",
-    isReadOnly: true,
-  },
-  {
-    id: "pu3",
-    portal: "Oracle",
-    username: "mike.jones@oracle.com",
-    status: "Disconnected",
-    userType: "Monto",
-    linkedSmartConnections: 1,
-    lastUpdated: "3d ago",
-    isReadOnly: false,
-  },
-];
+import { usePortalUserFiltering } from "@/hooks/usePortalUserFiltering";
 
 export default function PaymentsRelationships() {
-  const [activeTab, setActiveTab] = useState("payments-relationships");
+  const [activeTab, setActiveTab] = useState("smart-connections");
   const [isAddPortalUserModalOpen, setIsAddPortalUserModalOpen] = useState(false);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
   const [userToRemoveId, setUserToRemoveId] = useState<string | null>(null);
   const [portalUsers, setPortalUsers] = useState<PortalUser[]>(mockPortalUsers);
 
   const {
-    filters,
+    filters: smartConnectionFilters,
     filteredConnections,
-    handleFilterChange,
-    handleResetFilters
+    handleFilterChange: handleSmartConnectionFilterChange,
+    handleResetFilters: handleResetSmartConnectionFilters
   } = useSmartConnectionFiltering(mockSmartConnections);
 
+  const {
+    filters: portalUserFilters,
+    filteredUsers,
+    handleFilterChange: handlePortalUserFilterChange,
+    handleResetFilters: handleResetPortalUserFilters
+  } = usePortalUserFiltering(portalUsers);
+
   const tabs = [
-    { id: "payments-relationships", label: "Payments Relationships", count: mockSmartConnections.length },
-    { id: "portal-users", label: "Portal Users", count: portalUsers.length }
+    { id: "smart-connections", label: "Smart Connections", count: filteredConnections.length },
+    { id: "portal-users", label: "Portal Users", count: filteredUsers.length }
   ];
 
   const handleConfirmRemove = () => {
@@ -79,7 +52,7 @@ export default function PaymentsRelationships() {
 
   const handleAddModalSubmit = (userData: Partial<PortalUser>) => {
     const newUser: PortalUser = {
-      id: `pu${Date.now()}`, // Generate a unique ID
+      id: `pu${Date.now()}`,
       portal: userData.portal || '',
       username: userData.username || '',
       status: userData.status || 'Validating',
@@ -117,12 +90,12 @@ export default function PaymentsRelationships() {
           onTabChange={setActiveTab}
         />
 
-        {activeTab === "payments-relationships" && (
+        {activeTab === "smart-connections" && (
           <>
             <PaymentsRelationshipsFilters
-              filters={filters}
-              onFilterChange={handleFilterChange}
-              onClearFilters={handleResetFilters}
+              filters={smartConnectionFilters}
+              onFilterChange={handleSmartConnectionFilterChange}
+              onClearFilters={handleResetSmartConnectionFilters}
             />
             
             <PaymentsRelationshipsTable connections={filteredConnections} />
@@ -130,14 +103,21 @@ export default function PaymentsRelationships() {
         )}
 
         {activeTab === "portal-users" && (
-          // Pass correct prop expected by PortalUsersTable (should be "portalUsers")
-          <PortalUsersTable 
-            portalUsers={portalUsers} 
-            onRemovePortalUser={(id) => {
-              setUserToRemoveId(id);
-              setIsConfirmRemoveModalOpen(true);
-            }}
-          />
+          <>
+            <PortalUsersFilters
+              filters={portalUserFilters}
+              onFilterChange={handlePortalUserFilterChange}
+              onClearFilters={handleResetPortalUserFilters}
+            />
+            
+            <PortalUsersTable 
+              portalUsers={filteredUsers} 
+              onRemovePortalUser={(id) => {
+                setUserToRemoveId(id);
+                setIsConfirmRemoveModalOpen(true);
+              }}
+            />
+          </>
         )}
       </div>
 
