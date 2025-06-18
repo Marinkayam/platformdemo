@@ -16,7 +16,9 @@ export function PortalColumn({ portal }: PortalColumnProps) {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <span className="font-medium cursor-help truncate max-w-[120px]">{portal}</span>
+            <div className="bg-[#F3F3F9] px-3 py-1 rounded-full border border-[#E5E7EB]">
+              <span className="font-medium text-sm text-gray-700 cursor-help">{portal}</span>
+            </div>
           </TooltipTrigger>
           <TooltipContent>
             <p>{portal}</p>
