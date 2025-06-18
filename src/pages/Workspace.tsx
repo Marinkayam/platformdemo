@@ -1,12 +1,13 @@
 
 import { useState } from "react";
-import { Building, Users, Shield, Bell, FileText } from "lucide-react";
+import { Building, Users, Shield, Bell, FileText, Settings } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
 import { TeamTab } from "@/components/workspace/TeamTab";
 import { CompanyTab } from "@/components/workspace/CompanyTab";
 import { SecurityTab } from "@/components/workspace/SecurityTab";
 import { PlatformSettingsTab } from "@/components/workspace/PlatformSettingsTab";
 import { LicenseTab } from "@/components/workspace/LicenseTab";
+import { DuplicationPolicyTab } from "@/components/workspace/DuplicationPolicyTab";
 
 const headerTabs = [
   {
@@ -18,6 +19,11 @@ const headerTabs = [
     id: "license",
     label: "License",
     icon: <FileText size={16} />,
+  },
+  {
+    id: "duplication-policy",
+    label: "Duplication Policy",
+    icon: <Settings size={16} />,
   },
   {
     id: "team",
@@ -45,6 +51,8 @@ export default function Workspace() {
         return <CompanyTab />;
       case "license":
         return <LicenseTab />;
+      case "duplication-policy":
+        return <DuplicationPolicyTab />;
       case "team":
         return <TeamTab />;
       case "security":
