@@ -81,10 +81,6 @@ export function CompanyTab() {
             <Input className="h-12 bg-gray-100 text-base font-normal" value="Monto Technologies" disabled />
           </div>
           <div>
-            <label className="block text-[15px] mb-2 font-medium text-gray-800">Admin Email</label>
-            <Input className="h-12 bg-gray-100 text-base" value="admin@monto.tech" disabled />
-          </div>
-          <div>
             <label className="block text-[15px] mb-2 font-medium text-gray-800">Timezone</label>
             <Select defaultValue="utc-8">
               <SelectTrigger className="h-12 bg-white">
