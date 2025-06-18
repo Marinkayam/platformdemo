@@ -2,20 +2,11 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Info } from "lucide-react";
-import { showSuccessToast } from "@/lib/toast-helpers";
 
 export function DuplicationPolicyTab() {
   const [autoReplace, setAutoReplace] = useState(true);
-
-  const handleSavePolicy = () => {
-    showSuccessToast(
-      "Your duplication policy has been saved and is now active."
-    );
-  };
 
   return (
     <div className="space-y-6">
@@ -64,8 +55,11 @@ export function DuplicationPolicyTab() {
                   }
                 </p>
                 {autoReplace && (
-                  <div className="text-xs text-grey-500 bg-grey-200 p-3 rounded-lg font-mono">
-                    Example: INV-0098 → INV-0098 (Submitted)
+                  <div className="text-xs text-grey-500 bg-grey-200 p-3 rounded-lg">
+                    <div className="font-mono mb-1">Example: INV-0098 → INV-0098 (Submitted)</div>
+                    <div className="text-grey-600">
+                      When a duplicate is found, the older version (Invalid/Rejected) gets automatically replaced by the newer version with an updated status.
+                    </div>
                   </div>
                 )}
               </div>
@@ -91,35 +85,6 @@ export function DuplicationPolicyTab() {
           </CardContent>
         </Card>
       )}
-
-      {/* Save Section with Confirmation Dialog */}
-      <div className="text-right">
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button size="lg">
-              Save Policy
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Save Duplication Policy?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This will update how Monto handles duplicate invoices from your portals. 
-                {autoReplace 
-                  ? ' Automatic replacement will be enabled for Invalid/Rejected invoices.'
-                  : ' Manual review will be required for all duplicate invoices.'
-                }
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleSavePolicy}>
-                Save Policy
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
     </div>
   );
 }

@@ -42,7 +42,7 @@ export function TabsNav({ tabs, activeTab, onTabChange, variant = "horizontal" }
                     )}
                   >
                     {tab.icon}
-                    <span className="flex-1">{tab.label}</span>
+                    <span className="flex-1 text-left">{tab.label}</span>
                     {tab.count !== undefined && (
                       <span className={cn(
                         "ml-2 px-2 py-0.5 rounded-full text-xs",
@@ -76,14 +76,14 @@ export function TabsNav({ tabs, activeTab, onTabChange, variant = "horizontal" }
                 <button
                   onClick={() => onTabChange(tab.id)}
                   className={cn(
-                    "py-3 px-1 relative font-medium text-sm flex items-center gap-2 transition-colors",
+                    "py-3 px-1 relative font-medium text-sm flex items-center gap-2 transition-colors text-left",
                     activeTab === tab.id
                       ? "text-primary border-b-2 border-primary"
                       : "text-gray-600 hover:text-gray-900"
                   )}
                 >
                   {tab.icon}
-                  {tab.label}
+                  <span className="text-left">{tab.label}</span>
                   {tab.count !== undefined && (
                     <span className={cn(
                       "ml-2 px-2 py-0.5 rounded-full text-xs",

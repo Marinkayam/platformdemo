@@ -14,6 +14,11 @@ const headerTabs = [
     icon: <Building size={16} />,
   },
   {
+    id: "team",
+    label: "Team",
+    icon: <Users size={16} />,
+  },
+  {
     id: "license",
     label: "License",
     icon: <FileText size={16} />,
@@ -32,11 +37,6 @@ const headerTabs = [
     id: "company-entities",
     label: "Company Entities",
     icon: <Building2 size={16} />,
-  },
-  {
-    id: "team",
-    label: "Team",
-    icon: <Users size={16} />,
   },
 ];
 
@@ -80,6 +80,8 @@ export default function Workspace() {
     switch (activeTab) {
       case "company":
         return <CompanyTab />;
+      case "team":
+        return <TeamTab />;
       case "license":
         return <LicenseTab />;
       case "duplication-policy":
@@ -88,8 +90,6 @@ export default function Workspace() {
         return <ConnectorsTab />;
       case "company-entities":
         return <CompanyEntitiesTab />;
-      case "team":
-        return <TeamTab />;
       default:
         return null;
     }
