@@ -16,6 +16,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { mockPortalUsersForTable } from '@/data/portalUsersForTable';
 import { getColumns } from './PortalUsersTable.columns';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface PortalUsersTableProps {
   portalUsers?: PortalUser[];
@@ -26,6 +27,8 @@ interface PortalUsersTableProps {
 interface GroupedUsers {
   portal: string;
   users: PortalUser[];
+  isExpanded: boolean;
+  visibleUsers: PortalUser[];
 }
 
 export function PortalUsersTable({
@@ -39,6 +42,7 @@ export function PortalUsersTable({
   const [selected2FAUserId, setSelected2FAUserId] = useState<string | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedPortalUser, setSelectedPortalUser] = useState<PortalUser | null>(null);
+  const [expandedPortals, setExpandedPortals] = useState<Set<string>>(new Set());
 
   const portalUsers = propPortalUsers || mockPortalUsersForTable;
 
@@ -56,18 +60,41 @@ export function PortalUsersTable({
     // Sort portals alphabetically, then users within each group
     return Object.keys(groups)
       .sort()
-      .map(portal => ({
-        portal,
-        users: groups[portal].sort((a, b) => {
+      .map(portal => {
+        const sortedUsers = groups[portal].sort((a, b) => {
           // Sort by status (Connected first), then by username
           if (a.status !== b.status) {
             const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
             return statusOrder[a.status] - statusOrder[b.status];
           }
           return a.username.localeCompare(b.username);
-        })
-      }));
-  }, [portalUsers]);
+        });
+
+        const isExpanded = expandedPortals.has(portal);
+        const maxVisibleUsers = 4;
+        
+        return {
+          portal,
+          users: sortedUsers,
+          isExpanded: isExpanded || sortedUsers.length <= maxVisibleUsers,
+          visibleUsers: isExpanded || sortedUsers.length <= maxVisibleUsers 
+            ? sortedUsers 
+            : sortedUsers.slice(0, maxVisibleUsers)
+        };
+      });
+  }, [portalUsers, expandedPortals]);
+
+  const togglePortalExpansion = (portal: string) => {
+    setExpandedPortals(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(portal)) {
+        newSet.delete(portal);
+      } else {
+        newSet.add(portal);
+      }
+      return newSet;
+    });
+  };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -170,12 +197,56 @@ export function PortalUsersTable({
                   <TableCell colSpan={columns.length} className="h-0 p-0" />
                 </TableRow>
               )}
-              {group.users.map((portalUser, userIndex) => (
+              
+              {/* Portal Header Row - only show if there are multiple groups or users */}
+              {(groupedUsers.length > 1 || group.users.length > 1) && (
+                <TableRow className="bg-[#FAFAFF] border-b border-grey-100 hover:bg-[#FAFAFF]">
+                  <TableCell 
+                    colSpan={columns.length} 
+                    className="py-3 px-4 font-medium text-gray-900"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-semibold">{group.portal}</span>
+                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                          {group.users.length} user{group.users.length > 1 ? 's' : ''}
+                        </span>
+                      </div>
+                      
+                      {group.users.length > 4 && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            togglePortalExpansion(group.portal);
+                          }}
+                          className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                        >
+                          {group.isExpanded ? (
+                            <>
+                              <ChevronUp className="h-3 w-3" />
+                              Collapse
+                            </>
+                          ) : (
+                            <>
+                              <ChevronDown className="h-3 w-3" />
+                              +{group.users.length - 4} more
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+
+              {/* User Rows */}
+              {group.visibleUsers.map((portalUser, userIndex) => (
                 <TableRow 
                   key={portalUser.id} 
                   className={`
                     h-[65px] hover:bg-grey-50 cursor-pointer transition-colors
-                    ${groupIndex > 0 && userIndex === 0 ? 'border-t-2 border-grey-200' : ''}
+                    ${(groupedUsers.length > 1 || group.users.length > 1) ? 'bg-[#FAFAFF]/30' : ''}
+                    ${userIndex === 0 && groupIndex > 0 ? 'border-t-2 border-grey-200' : ''}
                   `}
                   onClick={() => handleRowClick(portalUser)}
                 >
@@ -187,6 +258,7 @@ export function PortalUsersTable({
                         ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
                         ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
                         ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
+                        ${(groupedUsers.length > 1 || group.users.length > 1) ? 'bg-[#FAFAFF]/30' : ''}
                       `}
                     >
                       {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
