@@ -20,22 +20,6 @@ export function LicenseTab() {
           Overview of your Monto plan and features.
         </p>
       </div>
-      <Card className="shadow-none border border-grey-400 rounded-xl">
-        <CardContent className="p-10 space-y-7">
-          <div>
-            <label className="block text-[15px] mb-2 font-medium text-grey-800">Smart Connects (SC)</label>
-            <Input className="h-12 bg-grey-200 text-base font-normal" value="Up to 50" disabled />
-          </div>
-          <div>
-            <label className="block text-[15px] mb-2 font-medium text-grey-800">Users (Monto + View Only)</label>
-            <Input className="h-12 bg-grey-200 text-base font-normal" value="10 Monto / 5 View Only" disabled />
-          </div>
-          <div>
-            <label className="block text-[15px] mb-2 font-medium text-grey-800">Invoices Tracked</label>
-            <Input className="h-12 bg-grey-200 text-base font-normal" value="Up to 2,000" disabled />
-          </div>
-        </CardContent>
-      </Card>
 
       <Card className="shadow-none border border-grey-400 rounded-xl">
         <CardContent className="p-10">
@@ -114,6 +98,23 @@ export function LicenseTab() {
             <button className="bg-primary-main text-primary-contrast-text px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium">
               Contact Us
             </button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="shadow-none border border-grey-400 rounded-xl">
+        <CardContent className="p-10 space-y-7">
+          <div>
+            <label className="block text-[15px] mb-2 font-medium text-grey-800">Smart Connects (SC)</label>
+            <Input className="h-12 bg-grey-200 text-base font-normal" value="Up to 50" disabled />
+          </div>
+          <div>
+            <label className="block text-[15px] mb-2 font-medium text-grey-800">Users (Monto + View Only)</label>
+            <Input className="h-12 bg-grey-200 text-base font-normal" value="10 Monto / 5 View Only" disabled />
+          </div>
+          <div>
+            <label className="block text-[15px] mb-2 font-medium text-grey-800">Invoices Tracked</label>
+            <Input className="h-12 bg-grey-200 text-base font-normal" value="Up to 2,000" disabled />
           </div>
         </CardContent>
       </Card>
