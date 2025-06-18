@@ -160,7 +160,7 @@ export function PortalUsersTable({
                   </TableRow>
                 )}
                 <TableRow 
-                  className="h-[65px] hover:bg-grey-50 cursor-pointer transition-colors"
+                  className="hover:bg-grey-50 cursor-pointer transition-colors"
                   onClick={() => handleRowClick(portalUser)}
                 >
                   {columns.map(column => (
