@@ -14,23 +14,23 @@ interface PortalUsersFiltersProps {
 
 export function PortalUsersFilters({ filters, onFilterChange, onClearFilters }: PortalUsersFiltersProps) {
   const portalOptions = [
-    { value: "SAP Ariba", label: "SAP Ariba" },
-    { value: "Coupa", label: "Coupa" },
-    { value: "Oracle Procurement", label: "Oracle Procurement" },
-    { value: "Tipalti", label: "Tipalti" },
-    { value: "Amazon Payee", label: "Amazon Payee" },
-    { value: "Bill.com", label: "Bill.com" },
+    "SAP Ariba",
+    "Coupa", 
+    "Oracle Procurement",
+    "Tipalti",
+    "Amazon Payee",
+    "Bill.com"
   ];
 
   const statusOptions = [
-    { value: "Connected", label: "Connected" },
-    { value: "Validating", label: "Validating" },
-    { value: "Disconnected", label: "Disconnected" },
+    "Connected",
+    "Validating", 
+    "Disconnected"
   ];
 
   const userTypeOptions = [
-    { value: "Monto", label: "Monto User" },
-    { value: "External", label: "Customer User" },
+    "Monto",
+    "External"
   ];
 
   const hasActiveFilters = filters.portal.length > 0 || filters.status.length > 0 || filters.userType.length > 0 || filters.search.length > 0;
@@ -42,24 +42,24 @@ export function PortalUsersFilters({ filters, onFilterChange, onClearFilters }: 
           label="Portal"
           value={filters.portal}
           options={portalOptions}
-          onChange={(value) => onFilterChange("portal", value)}
-          placeholder="All"
+          onSelect={(value) => onFilterChange("portal", value)}
+          multiSelect={true}
         />
 
         <DesignFilterDropdown
           label="Status"
           value={filters.status}
           options={statusOptions}
-          onChange={(value) => onFilterChange("status", value)}
-          placeholder="All"
+          onSelect={(value) => onFilterChange("status", value)}
+          multiSelect={true}
         />
 
         <DesignFilterDropdown
           label="User Type"
           value={filters.userType}
           options={userTypeOptions}
-          onChange={(value) => onFilterChange("userType", value)}
-          placeholder="All"
+          onSelect={(value) => onFilterChange("userType", value)}
+          multiSelect={true}
         />
 
         <div className="relative flex-1 max-w-sm">
