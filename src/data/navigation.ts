@@ -23,6 +23,29 @@ const DashboardIcon = ({ size = 20, className }: { size?: number; className?: st
   )
 );
 
+const CompanyIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
+  React.createElement('svg', {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    className: className
+  },
+  React.createElement('path', { d: "M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" }),
+  React.createElement('path', { d: "M6 12h4" }),
+  React.createElement('path', { d: "M6 8h4" }),
+  React.createElement('path', { d: "M16 8h2" }),
+  React.createElement('path', { d: "M16 12h2" }),
+  React.createElement('path', { d: "M16 16h2" }),
+  React.createElement('path', { d: "M18 22V16h4" })
+  )
+);
+
 const InvoicesIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
   React.createElement('svg', {
     xmlns: "http://www.w3.org/2000/svg",
@@ -165,6 +188,11 @@ export const navMain: NavItem[] = [
     title: "Home Page",
     href: "/dashboard",
     icon: DashboardIcon,
+  },
+  {
+    title: "My Company",
+    href: "/workspace",
+    icon: CompanyIcon,
   },
   {
     title: "RTPs",
