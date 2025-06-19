@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
@@ -136,7 +135,6 @@ export function PortalUsersTable({
               <TableHead 
                 key={column.key} 
                 className={`
-                  ${column.sticky ? "sticky left-0 bg-grey-50 z-10 border-r border-grey-200" : ""}
                   ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
                   ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
                   ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
@@ -150,34 +148,30 @@ export function PortalUsersTable({
         <TableBody>
           {sortedUsers.map((portalUser, index) => {
             const prevUser = index > 0 ? sortedUsers[index - 1] : null;
-            const showDivider = prevUser && prevUser.portal !== portalUser.portal;
+            const isFirstOfPortal = prevUser && prevUser.portal !== portalUser.portal;
             
             return (
-              <React.Fragment key={portalUser.id}>
-                {showDivider && (
-                  <TableRow className="border-t border-grey-200">
-                    <TableCell colSpan={columns.length} className="h-0 p-0 border-0" />
-                  </TableRow>
-                )}
-                <TableRow 
-                  className="hover:bg-grey-50 cursor-pointer transition-colors"
-                  onClick={() => handleRowClick(portalUser)}
-                >
-                  {columns.map(column => (
-                    <TableCell 
-                      key={column.key} 
-                      className={`
-                        ${column.sticky ? "sticky left-0 bg-background-paper z-10 border-r border-grey-200" : ""}
-                        ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
-                        ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
-                        ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
-                      `}
-                    >
-                      {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </React.Fragment>
+              <TableRow 
+                key={portalUser.id}
+                className={`
+                  hover:bg-grey-50 cursor-pointer transition-colors
+                  ${isFirstOfPortal ? 'border-t-2 border-grey-200' : ''}
+                `}
+                onClick={() => handleRowClick(portalUser)}
+              >
+                {columns.map(column => (
+                  <TableCell 
+                    key={column.key} 
+                    className={`
+                      ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
+                      ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
+                      ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
+                    `}
+                  >
+                    {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
+                  </TableCell>
+                ))}
+              </TableRow>
             );
           })}
         </TableBody>

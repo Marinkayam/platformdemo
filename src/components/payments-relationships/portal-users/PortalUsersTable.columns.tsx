@@ -16,7 +16,6 @@ interface Column {
   key: keyof PortalUser | 'actions' | 'validation';
   label: string;
   sortable?: boolean;
-  sticky?: boolean;
   render: (value: any, row: PortalUser) => React.ReactNode;
 }
 
@@ -32,7 +31,6 @@ export const getColumns = ({ onEdit, onRemove, onView2FA, copyToClipboard }: Get
     key: 'portal',
     label: 'Portal',
     sortable: true,
-    sticky: true,
     render: (portal: string) => <PortalColumn portal={portal} />
   },
   {
