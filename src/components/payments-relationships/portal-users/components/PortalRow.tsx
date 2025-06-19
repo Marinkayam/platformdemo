@@ -7,12 +7,11 @@ import { LinkedAgentsColumn } from '../columns/LinkedAgentsColumn';
 import { ValidationColumn } from '../columns/ValidationColumn';
 import { ActionsColumn } from '../columns/ActionsColumn';
 import { StatusBadge } from '@/components/ui/status-badge';
+import { getPortalLogoUrl } from '@/lib/utils';
 import { 
   PortalGroup, 
   getPortalSummaryStatus, 
-  getPortalSummaryUserType,
-  getPortalInitials,
-  getPortalColor
+  getPortalSummaryUserType
 } from '../utils/groupPortalUsers';
 
 interface PortalRowProps {
@@ -74,9 +73,21 @@ export function PortalRow({
             </button>
           )}
           
-          {/* Portal Avatar */}
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-medium text-sm flex-shrink-0 ${getPortalColor(portalName)}`}>
-            {getPortalInitials(portalName)}
+          {/* Portal Photo Icon */}
+          <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0 bg-gray-100 border border-gray-200">
+            <img 
+              src={getPortalLogoUrl(portalName)} 
+              alt={`${portalName} logo`} 
+              className="w-full h-full object-contain p-1"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = `<span class="text-sm font-semibold text-gray-600">${portalName.split(' ').map(word => word.charAt(0)).join('').toUpperCase().slice(0, 2)}</span>`;
+                }
+              }}
+            />
           </div>
           
           <div className="flex flex-col min-w-0">
@@ -84,7 +95,7 @@ export function PortalRow({
               {portalName}
             </span>
             {!isSingleUser && (
-              <span className="text-sm text-gray-500 leading-tight">
+              <span className="text-sm text-gray-500 leading-tight font-normal">
                 {userCount} user{userCount !== 1 ? 's' : ''}
               </span>
             )}
@@ -95,7 +106,7 @@ export function PortalRow({
         <div className="flex items-center gap-2">
           {isSingleUser && singleUser && (
             <>
-              <span className="text-sm font-mono text-gray-700 truncate">
+              <span className="text-sm font-mono text-gray-700 truncate font-medium">
                 {singleUser.username}
               </span>
               <button
@@ -177,7 +188,7 @@ export function PortalRow({
 
               {/* Username Column */}
               <div className="flex items-center gap-2">
-                <span className="text-sm font-mono text-gray-700 truncate">
+                <span className="text-sm font-mono text-gray-700 truncate font-medium">
                   {user.username}
                 </span>
                 <button
