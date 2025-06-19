@@ -7,7 +7,7 @@ interface UserTypeColumnProps {
 }
 
 export function UserTypeColumn({ userType }: UserTypeColumnProps) {
-  const isMontoUser = userType === 'Monto User';
+  const isMontoUser = userType === 'Monto';
   
   return (
     <span 
