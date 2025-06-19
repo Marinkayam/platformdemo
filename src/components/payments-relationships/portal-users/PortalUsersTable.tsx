@@ -1,13 +1,20 @@
-
 import React, { useState, useMemo } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
+import { PortalUsersEmptyState } from './PortalUsersEmptyState';
 import { View2FAModal } from './View2FAModal';
 import { PortalUserDetailModal } from './PortalUserDetailModal';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
 import { mockPortalUsersForTable } from '@/data/portalUsersForTable';
-import { groupPortalUsers, PortalGroup } from './utils/groupPortalUsers';
-import { PortalRow } from './components/PortalRow';
+import { getColumns } from './PortalUsersTable.columns';
 
 interface PortalUsersTableProps {
   portalUsers?: PortalUser[];
@@ -26,12 +33,24 @@ export function PortalUsersTable({
   const [selected2FAUserId, setSelected2FAUserId] = useState<string | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedPortalUser, setSelectedPortalUser] = useState<PortalUser | null>(null);
-  const [expandedPortals, setExpandedPortals] = useState<Set<string>>(new Set());
 
   const portalUsers = propPortalUsers || mockPortalUsersForTable;
 
-  const portalGroups = useMemo(() => {
-    return groupPortalUsers(portalUsers);
+  // Sort users by portal first, then by status, then by username
+  const sortedUsers = useMemo(() => {
+    return [...portalUsers].sort((a, b) => {
+      // First sort by portal
+      if (a.portal !== b.portal) {
+        return a.portal.localeCompare(b.portal);
+      }
+      // Then by status (Connected first)
+      if (a.status !== b.status) {
+        const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
+        return statusOrder[a.status] - statusOrder[b.status];
+      }
+      // Finally by username
+      return a.username.localeCompare(b.username);
+    });
   }, [portalUsers]);
 
   const copyToClipboard = (text: string) => {
@@ -82,17 +101,12 @@ export function PortalUsersTable({
     setSelected2FAUserId(null);
   };
 
-  const togglePortalExpansion = (portalName: string) => {
-    setExpandedPortals(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(portalName)) {
-        newSet.delete(portalName);
-      } else {
-        newSet.add(portalName);
-      }
-      return newSet;
-    });
-  };
+  const columns = getColumns({
+    onEdit: handleEdit,
+    onRemove: handleRemove,
+    onView2FA: handleView2FA,
+    copyToClipboard,
+  });
 
   if (portalUsers.length === 0) {
     return (
@@ -113,38 +127,55 @@ export function PortalUsersTable({
   }
 
   return (
-    <div className="rounded-xl border overflow-hidden bg-white">
-      <div className="overflow-x-auto">
-        {/* Table Header */}
-        <div 
-          className="grid grid-cols-7 gap-4 p-4 bg-gray-50 border-b border-gray-200 font-medium text-gray-700 text-sm"
-          style={{ gridTemplateColumns: '3fr 2fr 1fr 2fr 1fr 2fr 1fr' }}
-        >
-          <div className="sticky left-0 bg-gray-50 z-20 border-r border-gray-200 min-w-[200px]">Portal</div>
-          <div>Username</div>
-          <div>Status</div>
-          <div>User Type</div>
-          <div className="hidden md:block">Linked Agents</div>
-          <div className="hidden lg:block">Validation</div>
-          <div>Actions</div>
-        </div>
-
-        {/* Portal Groups */}
-        <div>
-          {portalGroups.map((portalGroup) => (
-            <PortalRow
-              key={portalGroup.portalName}
-              portalGroup={portalGroup}
-              isExpanded={expandedPortals.has(portalGroup.portalName)}
-              onToggleExpansion={() => togglePortalExpansion(portalGroup.portalName)}
-              onEdit={handleEdit}
-              onRemove={handleRemove}
-              onView2FA={handleView2FA}
-              copyToClipboard={copyToClipboard}
-            />
-          ))}
-        </div>
-      </div>
+    <div className="rounded-xl border overflow-hidden">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-grey-50 hover:bg-grey-50">
+            {columns.map(column => (
+              <TableHead 
+                key={column.key} 
+                className={`
+                  ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
+                  ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
+                  ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
+                `}
+              >
+                {column.label}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {sortedUsers.map((portalUser, index) => {
+            const prevUser = index > 0 ? sortedUsers[index - 1] : null;
+            const isFirstOfPortal = prevUser && prevUser.portal !== portalUser.portal;
+            
+            return (
+              <TableRow 
+                key={portalUser.id}
+                className={`
+                  hover:bg-grey-50 cursor-pointer transition-colors
+                  ${isFirstOfPortal ? 'border-t-2 border-grey-200' : ''}
+                `}
+                onClick={() => handleRowClick(portalUser)}
+              >
+                {columns.map(column => (
+                  <TableCell 
+                    key={column.key} 
+                    className={`
+                      ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
+                      ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
+                      ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
+                    `}
+                  >
+                    {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
+                  </TableCell>
+                ))}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
 
       <AddPortalUserModal
         isOpen={isAddModalOpen}
