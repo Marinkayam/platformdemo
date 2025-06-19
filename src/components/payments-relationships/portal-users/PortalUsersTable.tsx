@@ -113,14 +113,14 @@ export function PortalUsersTable({
   }
 
   return (
-    <div className="rounded-xl border overflow-hidden bg-white shadow-sm">
+    <div className="rounded-xl border overflow-hidden bg-white">
       <div className="overflow-x-auto">
         {/* Table Header */}
         <div 
-          className="grid grid-cols-7 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200 font-medium text-gray-700 text-sm"
+          className="grid grid-cols-7 gap-4 p-4 bg-gray-50 border-b border-gray-200 font-medium text-gray-700 text-sm"
           style={{ gridTemplateColumns: '3fr 2fr 1fr 2fr 1fr 2fr 1fr' }}
         >
-          <div className="sticky left-0 bg-gray-50 z-20 border-r border-gray-200 min-w-[200px] pr-4">Portal</div>
+          <div className="sticky left-0 bg-gray-50 z-20 border-r border-gray-200 min-w-[200px]">Portal</div>
           <div>Username</div>
           <div>Status</div>
           <div>User Type</div>

@@ -1,18 +1,15 @@
 
 import React from 'react';
-import { ChevronRight, ChevronDown, Copy } from 'lucide-react';
+import { ChevronRight, ChevronDown } from 'lucide-react';
 import { PortalUser } from '@/types/portalUser';
+import { PortalColumn } from '../columns/PortalColumn';
+import { UsernameColumn } from '../columns/UsernameColumn';
 import { UserTypeColumn } from '../columns/UserTypeColumn';
 import { LinkedAgentsColumn } from '../columns/LinkedAgentsColumn';
 import { ValidationColumn } from '../columns/ValidationColumn';
 import { ActionsColumn } from '../columns/ActionsColumn';
 import { StatusBadge } from '@/components/ui/status-badge';
-import { getPortalLogoUrl } from '@/lib/utils';
-import { 
-  PortalGroup, 
-  getPortalSummaryStatus, 
-  getPortalSummaryUserType
-} from '../utils/groupPortalUsers';
+import { PortalGroup, getPortalSummaryStatus, getPortalSummaryUserType } from '../utils/groupPortalUsers';
 
 interface PortalRowProps {
   portalGroup: PortalGroup;
@@ -45,26 +42,21 @@ export function PortalRow({
     }
   };
 
-  const handleCopyUsername = (username: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    copyToClipboard(username);
-  };
-
   return (
     <div className="portal-group">
       {/* Main Portal Row */}
       <div 
         className={`
-          grid grid-cols-7 gap-4 p-6 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200 min-h-[48px] items-center
-          ${!isSingleUser ? 'cursor-pointer bg-gray-25' : 'bg-white'}
+          grid grid-cols-7 gap-4 p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200
+          ${!isSingleUser ? 'cursor-pointer' : ''}
         `}
         style={{ gridTemplateColumns: '3fr 2fr 1fr 2fr 1fr 2fr 1fr' }}
         onClick={handleRowClick}
       >
         {/* Portal Column */}
-        <div className="flex items-center gap-4 sticky left-0 bg-inherit hover:bg-gray-50 z-10 border-r border-gray-200 min-w-[200px] pr-4">
+        <div className="flex items-center gap-3 sticky left-0 bg-white hover:bg-gray-50 z-10 border-r border-gray-200 min-w-[200px]">
           {!isSingleUser && (
-            <button className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 flex-shrink-0">
+            <button className="p-1 hover:bg-gray-200 rounded transition-colors duration-200">
               {isExpanded ? (
                 <ChevronDown className="h-4 w-4 text-gray-500" />
               ) : (
@@ -72,50 +64,18 @@ export function PortalRow({
               )}
             </button>
           )}
-          
-          {/* Portal Photo Icon */}
-          <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0 bg-gray-100 border border-gray-200">
-            <img 
-              src={getPortalLogoUrl(portalName)} 
-              alt={`${portalName} logo`} 
-              className="w-full h-full object-contain p-1"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                const parent = target.parentElement;
-                if (parent) {
-                  parent.innerHTML = `<span class="text-sm font-semibold text-gray-600">${portalName.split(' ').map(word => word.charAt(0)).join('').toUpperCase().slice(0, 2)}</span>`;
-                }
-              }}
-            />
-          </div>
-          
-          <div className="flex flex-col min-w-0">
-            <span className="font-semibold text-gray-900 text-base leading-tight truncate">
-              {portalName}
+          <PortalColumn portal={portalName} />
+          {!isSingleUser && (
+            <span className="text-sm text-gray-500 ml-2">
+              {userCount} user{userCount !== 1 ? 's' : ''}
             </span>
-            {!isSingleUser && (
-              <span className="text-sm text-gray-500 leading-tight font-normal">
-                {userCount} user{userCount !== 1 ? 's' : ''}
-              </span>
-            )}
-          </div>
+          )}
         </div>
 
         {/* Username Column */}
-        <div className="flex items-center gap-2">
+        <div>
           {isSingleUser && singleUser && (
-            <>
-              <span className="text-sm font-mono text-gray-700 truncate font-medium">
-                {singleUser.username}
-              </span>
-              <button
-                onClick={(e) => handleCopyUsername(singleUser.username, e)}
-                className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <Copy className="h-3 w-3" />
-              </button>
-            </>
+            <UsernameColumn username={singleUser.username} onCopy={copyToClipboard} />
           )}
         </div>
 
@@ -124,11 +84,9 @@ export function PortalRow({
           {isSingleUser && singleUser ? (
             <StatusBadge status={singleUser.status} />
           ) : (
-            <div className="flex gap-1">
-              {summaryStatuses.map(status => (
-                <StatusBadge key={status} status={status} className="text-xs px-2 py-1" />
-              ))}
-            </div>
+            summaryStatuses.map(status => (
+              <StatusBadge key={status} status={status} className="text-xs" />
+            ))
           )}
         </div>
 
@@ -171,15 +129,15 @@ export function PortalRow({
 
       {/* Expanded User Rows */}
       {isExpanded && !isSingleUser && (
-        <div className="bg-gray-50 animate-accordion-down">
+        <div className="bg-gray-100/50">
           {users.map((user, index) => (
             <div
               key={user.id}
-              className="grid grid-cols-7 gap-4 p-4 pl-20 border-b border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors duration-200 min-h-[40px] items-center"
+              className="grid grid-cols-7 gap-4 p-3 pl-16 border-b border-gray-100 bg-gray-100/50 hover:bg-gray-100 transition-colors duration-200"
               style={{ gridTemplateColumns: '3fr 2fr 1fr 2fr 1fr 2fr 1fr' }}
             >
               {/* Portal Column - User Label */}
-              <div className="flex items-center gap-3 sticky left-0 bg-gray-50 hover:bg-gray-100 z-10 border-r border-gray-200 min-w-[200px] pr-4">
+              <div className="flex items-center gap-3 sticky left-0 bg-gray-100/50 hover:bg-gray-100 z-10 border-r border-gray-200 min-w-[200px]">
                 <div className="w-2 h-2 bg-gray-400 rounded-full flex-shrink-0"></div>
                 <span className="text-sm font-medium text-gray-700">
                   User {index + 1}
@@ -187,16 +145,8 @@ export function PortalRow({
               </div>
 
               {/* Username Column */}
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-mono text-gray-700 truncate font-medium">
-                  {user.username}
-                </span>
-                <button
-                  onClick={(e) => handleCopyUsername(user.username, e)}
-                  className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  <Copy className="h-3 w-3" />
-                </button>
+              <div>
+                <UsernameColumn username={user.username} onCopy={copyToClipboard} />
               </div>
 
               {/* Status Column */}

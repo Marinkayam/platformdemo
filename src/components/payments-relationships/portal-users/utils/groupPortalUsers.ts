@@ -34,28 +34,3 @@ export function getPortalSummaryUserType(users: PortalUser[]): string | null {
   const userTypes = [...new Set(users.map(user => user.userType))];
   return userTypes.length === 1 ? userTypes[0] : null;
 }
-
-export function getPortalInitials(portalName: string): string {
-  return portalName
-    .split(' ')
-    .map(word => word.charAt(0))
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-}
-
-export function getPortalColor(portalName: string): string {
-  const colors = [
-    'bg-blue-500',
-    'bg-green-500', 
-    'bg-purple-500',
-    'bg-orange-500',
-    'bg-red-500',
-    'bg-indigo-500',
-    'bg-pink-500',
-    'bg-teal-500'
-  ];
-  
-  const hash = portalName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  return colors[hash % colors.length];
-}
