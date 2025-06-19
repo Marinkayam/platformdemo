@@ -128,54 +128,58 @@ export function PortalUsersTable({
 
   return (
     <div className="rounded-xl border overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow className="bg-grey-50 hover:bg-grey-50">
-            {columns.map(column => (
-              <TableHead 
-                key={column.key} 
-                className={`
-                  ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
-                  ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
-                  ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
-                `}
-              >
-                {column.label}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sortedUsers.map((portalUser, index) => {
-            const prevUser = index > 0 ? sortedUsers[index - 1] : null;
-            const isFirstOfPortal = prevUser && prevUser.portal !== portalUser.portal;
-            
-            return (
-              <TableRow 
-                key={portalUser.id}
-                className={`
-                  hover:bg-grey-50 cursor-pointer transition-colors
-                  ${isFirstOfPortal ? 'border-t-2 border-grey-200' : ''}
-                `}
-                onClick={() => handleRowClick(portalUser)}
-              >
-                {columns.map(column => (
-                  <TableCell 
-                    key={column.key} 
-                    className={`
-                      ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
-                      ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
-                      ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
-                    `}
-                  >
-                    {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
-                  </TableCell>
-                ))}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-grey-50 hover:bg-grey-50">
+              {columns.map(column => (
+                <TableHead 
+                  key={column.key} 
+                  className={`
+                    ${column.sticky ? "sticky left-0 bg-grey-50 z-20 border-r border-grey-200 min-w-[200px]" : ""}
+                    ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
+                    ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
+                    ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
+                  `}
+                >
+                  {column.label}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sortedUsers.map((portalUser, index) => {
+              const prevUser = index > 0 ? sortedUsers[index - 1] : null;
+              const isFirstOfPortal = prevUser && prevUser.portal !== portalUser.portal;
+              
+              return (
+                <TableRow 
+                  key={portalUser.id}
+                  className={`
+                    hover:bg-grey-50 cursor-pointer transition-colors
+                    ${isFirstOfPortal ? 'border-t-2 border-grey-200' : ''}
+                  `}
+                  onClick={() => handleRowClick(portalUser)}
+                >
+                  {columns.map(column => (
+                    <TableCell 
+                      key={column.key} 
+                      className={`
+                        ${column.sticky ? "sticky left-0 bg-white hover:bg-grey-50 z-10 border-r border-grey-200 min-w-[200px]" : ""}
+                        ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
+                        ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
+                        ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
+                      `}
+                    >
+                      {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
 
       <AddPortalUserModal
         isOpen={isAddModalOpen}
