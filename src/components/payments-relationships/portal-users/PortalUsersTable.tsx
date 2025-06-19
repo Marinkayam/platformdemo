@@ -155,8 +155,8 @@ export function PortalUsersTable({
             return (
               <React.Fragment key={portalUser.id}>
                 {showDivider && (
-                  <TableRow className="border-t-2 border-grey-100">
-                    <TableCell colSpan={columns.length} className="h-0 p-0" />
+                  <TableRow className="border-t border-grey-200">
+                    <TableCell colSpan={columns.length} className="h-0 p-0 border-0" />
                   </TableRow>
                 )}
                 <TableRow 

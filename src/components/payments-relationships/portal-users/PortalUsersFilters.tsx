@@ -36,7 +36,7 @@ export function PortalUsersFilters({ filters, onFilterChange, onClearFilters }: 
   const hasActiveFilters = filters.portal.length > 0 || filters.status.length > 0 || filters.userType.length > 0 || filters.search.length > 0;
 
   return (
-    <div className="flex flex-wrap items-center gap-4 p-4 bg-white rounded-lg border">
+    <div className="flex flex-wrap items-center gap-4">
       <div className="flex items-center gap-4 flex-1">
         <DesignFilterDropdown
           label="Portal"
