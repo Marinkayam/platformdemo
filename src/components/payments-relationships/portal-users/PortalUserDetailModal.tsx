@@ -35,12 +35,12 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     twoFAMethod: portalUser.twoFAMethod || "authenticator"
   };
 
-  // Mock linked connections data
-  const mockLinkedConnections = [
-    { id: "sc1", name: "Acme Corp Invoice Processing", url: "/payments-relationships?filter=acme" },
-    { id: "sc2", name: "Supplier Onboarding Flow", url: "/payments-relationships?filter=supplier" },
-    { id: "sc3", name: "Payment Reconciliation", url: "/payments-relationships?filter=payment" },
-  ].slice(0, portalUser.linkedSmartConnections);
+  // Mock linked connections data with simplified names
+  const mockLinkedConnections = Array.from({ length: portalUser.linkedSmartConnections }, (_, index) => ({
+    id: `sc${index + 1}`,
+    name: `Smart Connection ${index + 1}`,
+    url: `/payments-relationships?filter=connection${index + 1}`
+  }));
 
   const handleConnectionClick = (url: string) => {
     console.log("Navigate to:", url);
@@ -51,13 +51,11 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle>Portal User Details</DialogTitle>
-            <div className="flex items-center gap-2">
-              <StatusBadge status={portalUser.status} />
-              <AgentUserTypeBadge type={portalUser.userType} />
-            </div>
-          </div>
+          <DialogTitle className="flex items-center gap-3">
+            <span>Portal User Details</span>
+            <StatusBadge status={portalUser.status} />
+            <AgentUserTypeBadge type={portalUser.userType} />
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 py-4">

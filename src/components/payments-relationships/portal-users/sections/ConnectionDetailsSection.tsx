@@ -20,31 +20,27 @@ export function ConnectionDetailsSection({
   handleConnectionClick 
 }: ConnectionDetailsSectionProps) {
   return (
-    <div className="space-y-4">
-      <h3 className="text-sm font-semibold text-gray-900 border-b pb-2">Connection Details</h3>
-      
-      <div className="space-y-2">
-        <Label>Linked Smart Connections</Label>
-        {mockLinkedConnections.length > 0 ? (
-          <div className="space-y-2">
-            {mockLinkedConnections.map((connection) => (
-              <button
-                key={connection.id}
-                onClick={() => handleConnectionClick(connection.url)}
-                className="w-full h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left text-sm text-blue-600 hover:bg-gray-100 transition-colors flex items-center"
-              >
-                {connection.name}
-              </button>
-            ))}
-          </div>
-        ) : (
-          <Input 
-            value="No linked connections" 
-            readOnly 
-            className="bg-gray-50 text-gray-500" 
-          />
-        )}
-      </div>
+    <div className="space-y-2">
+      <Label className="text-sm">Linked Smart Connections</Label>
+      {mockLinkedConnections.length > 0 ? (
+        <div className="space-y-2">
+          {mockLinkedConnections.map((connection) => (
+            <button
+              key={connection.id}
+              onClick={() => handleConnectionClick(connection.url)}
+              className="w-full h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left text-sm text-blue-600 hover:bg-gray-100 transition-colors flex items-center"
+            >
+              {connection.name}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <Input 
+          value="No linked connections" 
+          readOnly 
+          className="bg-gray-50 text-gray-500 h-10 text-sm" 
+        />
+      )}
     </div>
   );
 }
