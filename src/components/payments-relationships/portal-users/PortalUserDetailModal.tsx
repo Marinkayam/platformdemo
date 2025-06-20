@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -84,6 +85,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     
     onEditPortalUser(updatedUser);
     setIsEditMode(false);
+    onClose(); // Close modal and return to table
     toast({ 
       title: "Portal User Updated", 
       description: "Changes have been saved successfully." 

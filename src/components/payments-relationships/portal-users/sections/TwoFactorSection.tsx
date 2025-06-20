@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Eye } from "lucide-react";
+import { Eye, Shield, Smartphone, Mail } from "lucide-react";
 import { View2FAModal } from "../View2FAModal";
 import { ConfirmRemoveModal } from "../ConfirmRemoveModal";
 
@@ -76,6 +76,19 @@ export function TwoFactorSection({
     }
   };
 
+  const getMethodIcon = (method: string) => {
+    switch (method) {
+      case 'authenticator':
+        return <Shield className="h-4 w-4" />;
+      case 'sms':
+        return <Smartphone className="h-4 w-4" />;
+      case 'email':
+        return <Mail className="h-4 w-4" />;
+      default:
+        return <Shield className="h-4 w-4" />;
+    }
+  };
+
   return (
     <>
       <div className="space-y-4">
@@ -88,8 +101,9 @@ export function TwoFactorSection({
               </span>
             </div>
             {currentTwoFAEnabled && (
-              <div className="text-xs text-gray-500">
-                Method: {getMethodDisplayName(currentTwoFAMethod)}
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                {getMethodIcon(currentTwoFAMethod)}
+                <span>Method: {getMethodDisplayName(currentTwoFAMethod)}</span>
               </div>
             )}
           </div>
@@ -108,13 +122,31 @@ export function TwoFactorSection({
                   <div className="flex items-center gap-2">
                     <Label className="text-xs">Method</Label>
                     <Select value={currentTwoFAMethod} onValueChange={handleMethodChange}>
-                      <SelectTrigger className="w-[140px] h-8">
-                        <SelectValue />
+                      <SelectTrigger className="w-[160px] h-8">
+                        <div className="flex items-center gap-2">
+                          {getMethodIcon(currentTwoFAMethod)}
+                          <SelectValue />
+                        </div>
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="authenticator">Authenticator</SelectItem>
-                        <SelectItem value="sms">SMS</SelectItem>
-                        <SelectItem value="email">Email</SelectItem>
+                        <SelectItem value="authenticator">
+                          <div className="flex items-center gap-2">
+                            <Shield className="h-4 w-4" />
+                            <span>Authenticator</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="sms">
+                          <div className="flex items-center gap-2">
+                            <Smartphone className="h-4 w-4" />
+                            <span>SMS</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="email">
+                          <div className="flex items-center gap-2">
+                            <Mail className="h-4 w-4" />
+                            <span>Email</span>
+                          </div>
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

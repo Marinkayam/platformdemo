@@ -1,11 +1,12 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Copy } from 'lucide-react';
-import { getPortalLogoUrl } from "@/lib/utils";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Copy, ChevronDown, Check } from 'lucide-react';
+import { getPortalLogoUrl, cn } from "@/lib/utils";
 import { PortalUser } from "@/types/portalUser";
 
 interface PortalIdentitySectionProps {
@@ -34,6 +35,7 @@ export function PortalIdentitySection({
   editFormData,
   onFormChange
 }: PortalIdentitySectionProps) {
+  const [open, setOpen] = useState(false);
   const currentPortal = isEditMode ? editFormData?.portal || portalUser.portal : portalUser.portal;
   const currentUsername = isEditMode ? editFormData?.username || portalUser.username : portalUser.username;
 
@@ -56,21 +58,63 @@ export function PortalIdentitySection({
             />
           </div>
           {isEditMode ? (
-            <Select 
-              value={currentPortal} 
-              onValueChange={(value) => onFormChange?.('portal', value)}
-            >
-              <SelectTrigger className="pl-10 h-10 text-sm">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {availablePortals.map((portal) => (
-                  <SelectItem key={portal} value={portal}>
-                    {portal}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-full justify-between pl-10 h-10 text-sm"
+                >
+                  {currentPortal}
+                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0" align="start">
+                <Command>
+                  <CommandInput 
+                    placeholder="Search portals..." 
+                    className="h-9"
+                  />
+                  <CommandList>
+                    <CommandEmpty>No portal found.</CommandEmpty>
+                    <CommandGroup>
+                      {availablePortals.map((portal) => (
+                        <CommandItem
+                          key={portal}
+                          value={portal}
+                          onSelect={() => {
+                            onFormChange?.('portal', portal);
+                            setOpen(false);
+                          }}
+                        >
+                          <div className="flex items-center gap-2 w-full">
+                            <img 
+                              src={getPortalLogoUrl(portal)} 
+                              alt={`${portal} logo`} 
+                              className="w-4 h-4 object-contain" 
+                              width={16} 
+                              height={16} 
+                              onError={(e) => { 
+                                e.currentTarget.onerror = null; 
+                                e.currentTarget.src = '/portal-logos/placeholder.svg'; 
+                              }} 
+                            />
+                            <span className="flex-1">{portal}</span>
+                            <Check
+                              className={cn(
+                                "h-4 w-4",
+                                currentPortal === portal ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                          </div>
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           ) : (
             <Input 
               id="portal" 
