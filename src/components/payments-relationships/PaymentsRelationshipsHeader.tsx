@@ -24,7 +24,7 @@ export function PaymentsRelationshipsHeader({ activeTab = "smart-connections", o
   return (
     <Button onClick={() => navigate("/payments-relationships/new")}>
       <Plus className="w-4 h-4 mr-2" />
-      Add Smart Connection
+      Add new SC
     </Button>
   );
 }

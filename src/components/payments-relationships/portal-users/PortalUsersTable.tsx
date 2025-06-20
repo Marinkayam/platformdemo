@@ -4,6 +4,7 @@ import { AddPortalUserModal } from './AddPortalUserModal';
 import { PortalUsersEmptyState } from './PortalUsersEmptyState';
 import { View2FAModal } from './View2FAModal';
 import { PortalUserDetailModal } from './PortalUserDetailModal';
+import { PortalUsersTableFooter } from './PortalUsersTableFooter';
 import {
   Table,
   TableHeader,
@@ -122,6 +123,7 @@ export function PortalUsersTable({
             Add Portal User
           </button>
         </div>
+        <PortalUsersTableFooter totalUsers={0} />
       </div>
     );
   }
@@ -176,6 +178,8 @@ export function PortalUsersTable({
           })}
         </TableBody>
       </Table>
+
+      <PortalUsersTableFooter totalUsers={portalUsers.length} />
 
       <AddPortalUserModal
         isOpen={isAddModalOpen}
