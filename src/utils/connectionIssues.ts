@@ -20,20 +20,16 @@ export function getConnectionIssues(connection: SmartConnection): ConnectionIssu
     return issues;
   }
 
-  const externalDisconnectedAgents = connection.agents.filter(
-    agent => agent.type === "External" && agent.status === "Disconnected"
+  const regularDisconnectedAgents = connection.agents.filter(
+    agent => agent.type === "Regular" && agent.status === "Disconnected"
   );
   
   const montoDisconnectedAgents = connection.agents.filter(
     agent => agent.type === "Monto" && agent.status === "Disconnected"
   );
-  
-  const errorAgents = connection.agents.filter(
-    agent => agent.status === "Error"
-  );
 
   // Missing Credentials (highest priority)
-  if (externalDisconnectedAgents.length > 0) {
+  if (regularDisconnectedAgents.length > 0) {
     issues.push({
       type: "missing-credentials",
       message: "Missing Credentials",
@@ -47,15 +43,6 @@ export function getConnectionIssues(connection: SmartConnection): ConnectionIssu
       type: "authentication-failed", 
       message: "Authentication Failed",
       severity: 2
-    });
-  }
-  
-  // Configuration Error (lower priority)
-  if (errorAgents.length > 0) {
-    issues.push({
-      type: "configuration-error",
-      message: "Configuration Error", 
-      severity: 1
     });
   }
 
@@ -77,15 +64,11 @@ export function getAgentIssueMessage(agent: Agent): string | null {
   }
   
   if (agent.status === "Disconnected") {
-    if (agent.type === "External") {
+    if (agent.type === "Regular") {
       return "Login failed. Please verify username and password.";
     } else {
       return "Authentication failed. Please check account permissions.";
     }
-  }
-  
-  if (agent.status === "Error") {
-    return "Configuration error detected. Please review agent settings.";
   }
   
   return null;
