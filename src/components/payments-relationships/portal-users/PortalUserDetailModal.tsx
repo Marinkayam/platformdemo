@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,10 +52,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
       <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <div>
-              <DialogTitle className="mb-1">Portal User Details</DialogTitle>
-              <DialogDescription className="mt-0">View and manage portal user connection details.</DialogDescription>
-            </div>
+            <DialogTitle>Portal User Details</DialogTitle>
             <div className="flex items-center gap-2">
               <StatusBadge status={portalUser.status} />
               <AgentUserTypeBadge type={portalUser.userType} />
@@ -72,13 +69,13 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
               <div className="space-y-2">
                 <Label htmlFor="portal">Portal Name</Label>
                 <div className="relative">
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden flex-shrink-0">
                     <img 
                       src={getPortalLogoUrl(portalUser.portal)} 
                       alt={`${portalUser.portal} logo`} 
                       className="w-full h-full object-contain" 
-                      width={20} 
-                      height={20} 
+                      width={16} 
+                      height={16} 
                       onError={(e) => { 
                         e.currentTarget.onerror = null; 
                         e.currentTarget.src = '/portal-logos/placeholder.svg'; 
@@ -114,18 +111,16 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-gray-900 border-b pb-2">Credentials</h3>
             
-            <div className="grid grid-cols-1 gap-4">
+            <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="portal-url">Portal URL</Label>
                 <div className="flex gap-2">
-                  <div className="flex-1 relative">
-                    <button
-                      onClick={() => window.open(mockCredentials.portalUrl, '_blank')}
-                      className="w-full h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left font-mono text-sm text-blue-600 hover:bg-gray-100 transition-colors"
-                    >
-                      {mockCredentials.portalUrl}
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => window.open(mockCredentials.portalUrl, '_blank')}
+                    className="flex-1 h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left font-mono text-sm text-blue-600 hover:bg-gray-100 transition-colors flex items-center"
+                  >
+                    {mockCredentials.portalUrl}
+                  </button>
                   <Button
                     variant="outline"
                     size="sm"
@@ -211,7 +206,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
                     <button
                       key={connection.id}
                       onClick={() => handleConnectionClick(connection.url)}
-                      className="w-full h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left text-sm text-blue-600 hover:bg-gray-100 transition-colors"
+                      className="w-full h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left text-sm text-blue-600 hover:bg-gray-100 transition-colors flex items-center"
                     >
                       {connection.name}
                     </button>
@@ -239,11 +234,9 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
           <Button variant="ghost" onClick={onClose}>
             Close
           </Button>
-          {!portalUser.isReadOnly && (
-            <Button onClick={() => onEditPortalUser(portalUser)}>
-              Edit Portal User
-            </Button>
-          )}
+          <Button onClick={() => onEditPortalUser(portalUser)}>
+            Edit Portal User
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
