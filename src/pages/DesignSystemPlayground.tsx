@@ -269,7 +269,7 @@ export default function DesignSystemPlayground() {
               <div className="space-y-2">
                 <h4 className="font-medium">Component Usage:</h4>
                 <code className="text-sm bg-gray-100 px-2 py-1 rounded">
-                  {`<AddPortalUserModal isOpen={isOpen} onClose={onClose} mode="create" onSave={onSave} />`}
+                  {'<AddPortalUserModal isOpen={isOpen} onClose={onClose} mode="create" onSave={onSave} />'}
                 </code>
               </div>
               
@@ -277,10 +277,10 @@ export default function DesignSystemPlayground() {
                 <h4 className="font-medium">Props:</h4>
                 <ul className="text-sm space-y-1 text-muted-foreground">
                   <li>• <strong>isOpen:</strong> boolean - Controls modal visibility</li>
-                  <li>• <strong>onClose:</strong> () => void - Callback when modal closes</li>
+                  <li>• <strong>onClose:</strong> () =&gt; void - Callback when modal closes</li>
                   <li>• <strong>mode:</strong> 'create' | 'edit' - Modal operation mode</li>
                   <li>• <strong>portalUser?:</strong> PortalUser - User data for edit mode</li>
-                  <li>• <strong>onSave:</strong> (data: Partial&lt;PortalUser&gt;) => void - Callback with form data</li>
+                  <li>• <strong>onSave:</strong> (data: Partial&lt;PortalUser&gt;) =&gt; void - Callback with form data</li>
                 </ul>
               </div>
 
