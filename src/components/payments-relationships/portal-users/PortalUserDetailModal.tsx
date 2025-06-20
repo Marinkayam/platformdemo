@@ -5,11 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PortalUser } from "@/types/portalUser";
-import { formatDistanceToNow, format } from 'date-fns';
 import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Copy, Eye, EyeOff } from 'lucide-react';
+import { Copy, Eye, EyeOff, ExternalLink } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { getPortalLogoUrl } from "@/lib/utils";
 
@@ -28,24 +26,41 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     toast({ title: "Copied to clipboard", description: `${text} copied!` });
   };
 
-  const lastUpdatedDate = new Date(portalUser.lastUpdated);
-  const relativeTime = formatDistanceToNow(lastUpdatedDate, { addSuffix: true });
-
   // Mock credentials data
   const mockCredentials = {
     username: portalUser.username,
-    password: "••••••••••••",
+    password: "SecurePassword123!",
     portalUrl: `https://${portalUser.portal.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: portalUser.status !== "Disconnected",
     twoFAMethod: portalUser.twoFAMethod || "authenticator"
+  };
+
+  // Mock linked connections data
+  const mockLinkedConnections = [
+    { id: "sc1", name: "Acme Corp Invoice Processing", url: "/payments-relationships?filter=acme" },
+    { id: "sc2", name: "Supplier Onboarding Flow", url: "/payments-relationships?filter=supplier" },
+    { id: "sc3", name: "Payment Reconciliation", url: "/payments-relationships?filter=payment" },
+  ].slice(0, portalUser.linkedSmartConnections);
+
+  const handleConnectionClick = (url: string) => {
+    console.log("Navigate to:", url);
+    // In a real app, this would use navigation
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="mb-2">Portal User Details</DialogTitle>
-          <DialogDescription className="mt-0">View and manage portal user connection details.</DialogDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <DialogTitle className="mb-1">Portal User Details</DialogTitle>
+              <DialogDescription className="mt-0">View and manage portal user connection details.</DialogDescription>
+            </div>
+            <div className="flex items-center gap-2">
+              <StatusBadge status={portalUser.status} />
+              <AgentUserTypeBadge type={portalUser.userType} />
+            </div>
+          </div>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
@@ -56,21 +71,26 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="portal">Portal Name</Label>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden flex-shrink-0">
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 rounded-full bg-primary-lighter flex items-center justify-center overflow-hidden flex-shrink-0">
                     <img 
                       src={getPortalLogoUrl(portalUser.portal)} 
                       alt={`${portalUser.portal} logo`} 
                       className="w-full h-full object-contain" 
-                      width={32} 
-                      height={32} 
+                      width={20} 
+                      height={20} 
                       onError={(e) => { 
                         e.currentTarget.onerror = null; 
                         e.currentTarget.src = '/portal-logos/placeholder.svg'; 
                       }} 
                     />
                   </div>
-                  <Input id="portal" value={portalUser.portal} readOnly className="bg-gray-50" />
+                  <Input 
+                    id="portal" 
+                    value={portalUser.portal} 
+                    readOnly 
+                    className="bg-gray-50 pl-10" 
+                  />
                 </div>
               </div>
               
@@ -88,22 +108,6 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
                 </div>
               </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Status</Label>
-                <div className="flex items-center h-10 px-3 border rounded-md bg-gray-50">
-                  <StatusBadge status={portalUser.status} />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label>User Type</Label>
-                <div className="flex items-center h-10 px-3 border rounded-md bg-gray-50">
-                  <AgentUserTypeBadge type={portalUser.userType} />
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Credentials Section */}
@@ -114,12 +118,21 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
               <div className="space-y-2">
                 <Label htmlFor="portal-url">Portal URL</Label>
                 <div className="flex gap-2">
-                  <Input 
-                    id="portal-url" 
-                    value={mockCredentials.portalUrl} 
-                    readOnly 
-                    className="bg-gray-50 font-mono text-sm" 
-                  />
+                  <div className="flex-1 relative">
+                    <button
+                      onClick={() => window.open(mockCredentials.portalUrl, '_blank')}
+                      className="w-full h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left font-mono text-sm text-blue-600 hover:bg-gray-100 transition-colors"
+                    >
+                      {mockCredentials.portalUrl}
+                    </button>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open(mockCredentials.portalUrl, '_blank')}
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
                   <Button
                     variant="outline"
                     size="sm"
@@ -136,7 +149,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
                   <Input 
                     id="password" 
                     type={showPassword ? "text" : "password"}
-                    value={showPassword ? "SecurePassword123!" : mockCredentials.password} 
+                    value={showPassword ? mockCredentials.password : "••••••••••••"} 
                     readOnly 
                     className="bg-gray-50 font-mono" 
                   />
@@ -146,6 +159,13 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => copyToClipboard(mockCredentials.password)}
+                  >
+                    <Copy className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
@@ -183,26 +203,27 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-gray-900 border-b pb-2">Connection Details</h3>
             
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="linked-connections">Linked Smart Connections</Label>
+            <div className="space-y-2">
+              <Label>Linked Smart Connections</Label>
+              {mockLinkedConnections.length > 0 ? (
+                <div className="space-y-2">
+                  {mockLinkedConnections.map((connection) => (
+                    <button
+                      key={connection.id}
+                      onClick={() => handleConnectionClick(connection.url)}
+                      className="w-full h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left text-sm text-blue-600 hover:bg-gray-100 transition-colors"
+                    >
+                      {connection.name}
+                    </button>
+                  ))}
+                </div>
+              ) : (
                 <Input 
-                  id="linked-connections" 
-                  value={`${portalUser.linkedSmartConnections} Connection${portalUser.linkedSmartConnections !== 1 ? 's' : ''}`} 
+                  value="No linked connections" 
                   readOnly 
-                  className="bg-gray-50" 
+                  className="bg-gray-50 text-gray-500" 
                 />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="last-updated">Last Updated</Label>
-                <Input 
-                  id="last-updated" 
-                  value={`${format(lastUpdatedDate, 'MMM dd, yyyy HH:mm')} (${relativeTime})`} 
-                  readOnly 
-                  className="bg-gray-50 text-sm" 
-                />
-              </div>
+              )}
             </div>
           </div>
 
