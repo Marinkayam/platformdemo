@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Eye, Shield, Smartphone, Mail } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Eye, Shield, Smartphone, Mail, AlertCircle } from "lucide-react";
 import { View2FAModal } from "../View2FAModal";
 import { ConfirmRemoveModal } from "../ConfirmRemoveModal";
 import { TwoFactorMethodDetails } from "./TwoFactorMethodDetails";
@@ -43,7 +43,6 @@ export function TwoFactorSection({
   const handleToggle2FA = (enabled: boolean) => {
     if (isEditMode) {
       if (!enabled && currentTwoFAEnabled) {
-        // Show confirmation modal when disabling 2FA
         setIsConfirmModalOpen(true);
       } else {
         onFormChange?.('twoFAEnabled', enabled);
@@ -69,13 +68,13 @@ export function TwoFactorSection({
   const getMethodDisplayName = (method: string) => {
     switch (method) {
       case 'authenticator':
-        return 'Google Authenticator';
+        return 'Authenticator App';
       case 'sms':
-        return 'SMS';
+        return 'SMS Verification';
       case 'email':
-        return 'Email';
+        return 'Email Verification';
       default:
-        return 'Google Authenticator';
+        return 'Authenticator App';
     }
   };
 
@@ -92,100 +91,158 @@ export function TwoFactorSection({
     }
   };
 
+  const getMethodDescription = (method: string) => {
+    switch (method) {
+      case 'authenticator':
+        return 'Use an authenticator app like Google Authenticator or Authy';
+      case 'sms':
+        return 'Receive verification codes via text message';
+      case 'email':
+        return 'Receive verification codes via email';
+      default:
+        return 'Use an authenticator app like Google Authenticator or Authy';
+    }
+  };
+
+  const methodOptions = [
+    { value: 'authenticator', label: 'Authenticator App', icon: Shield, description: 'Most secure option using apps like Google Authenticator' },
+    { value: 'sms', label: 'SMS Verification', icon: Smartphone, description: 'Receive codes via text message to your phone' },
+    { value: 'email', label: 'Email Verification', icon: Mail, description: 'Receive codes via email to your inbox' }
+  ];
+
   return (
     <>
-      <div className="space-y-4">
-        <div className="flex items-center justify-between p-3 bg-gray-50 border rounded-md">
-          <div className="space-y-1">
-            <div className="text-sm font-medium">Two-Factor Authentication</div>
-            <div className="text-xs text-gray-600">
-              Status: <span className={currentTwoFAEnabled ? "text-green-600" : "text-red-600"}>
-                {currentTwoFAEnabled ? "Enabled" : "Disabled"}
-              </span>
-            </div>
-            {currentTwoFAEnabled && (
-              <div className="flex items-center gap-1 text-xs text-gray-500">
-                {getMethodIcon(currentTwoFAMethod)}
-                <span>Method: {getMethodDisplayName(currentTwoFAMethod)}</span>
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            <Shield className="h-4 w-4 text-blue-600" />
+            Two-Factor Authentication
+          </CardTitle>
+          <CardDescription>
+            Add an extra layer of security to this portal user account
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Status and Toggle Section */}
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
+            <div className="space-y-1">
+              <div className="text-sm font-medium">Current Status</div>
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${currentTwoFAEnabled ? 'bg-green-500' : 'bg-red-500'}`} />
+                <span className={`text-xs font-medium ${currentTwoFAEnabled ? 'text-green-700' : 'text-red-700'}`}>
+                  {currentTwoFAEnabled ? 'Enabled' : 'Disabled'}
+                </span>
               </div>
-            )}
-          </div>
-          <div className="flex gap-2 items-center">
-            {isEditMode ? (
-              <div className="flex items-center gap-4">
+              {currentTwoFAEnabled && (
+                <div className="flex items-center gap-1 text-xs text-gray-600">
+                  {getMethodIcon(currentTwoFAMethod)}
+                  <span>{getMethodDisplayName(currentTwoFAMethod)}</span>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex items-center gap-3">
+              {isEditMode ? (
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="2fa-toggle" className="text-xs">Enable 2FA</Label>
+                  <Label htmlFor="2fa-toggle" className="text-sm font-medium">
+                    {currentTwoFAEnabled ? 'Disable' : 'Enable'} 2FA
+                  </Label>
                   <Switch 
                     id="2fa-toggle"
                     checked={currentTwoFAEnabled}
                     onCheckedChange={handleToggle2FA}
                   />
                 </div>
-                {currentTwoFAEnabled && (
-                  <div className="flex items-center gap-2">
-                    <Label className="text-xs">Method</Label>
-                    <Select value={currentTwoFAMethod} onValueChange={handleMethodChange}>
-                      <SelectTrigger className="w-[160px] h-8">
-                        <div className="flex items-center gap-2">
-                          {getMethodIcon(currentTwoFAMethod)}
-                          <SelectValue />
-                        </div>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="authenticator">
-                          <div className="flex items-center gap-2">
-                            <Shield className="h-4 w-4" />
-                            <span>Authenticator</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="sms">
-                          <div className="flex items-center gap-2">
-                            <Smartphone className="h-4 w-4" />
-                            <span>SMS</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="email">
-                          <div className="flex items-center gap-2">
-                            <Mail className="h-4 w-4" />
-                            <span>Email</span>
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <>
-                {currentTwoFAEnabled && (
-                  <Button 
-                    onClick={handleView2FACode}
-                    variant="outline"
-                    size="sm"
-                    className="h-8"
-                  >
-                    <Eye className="h-3 w-3 mr-1" />
-                    View Code
-                  </Button>
-                )}
-              </>
-            )}
+              ) : (
+                <>
+                  {currentTwoFAEnabled && (
+                    <Button 
+                      onClick={handleView2FACode}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Eye className="h-4 w-4 mr-2" />
+                      View Code
+                    </Button>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Method Details Section - Only show in edit mode when 2FA is enabled */}
-        {isEditMode && currentTwoFAEnabled && editFormData && (
-          <TwoFactorMethodDetails 
-            method={currentTwoFAMethod}
-            editFormData={{
-              twoFAMethod: editFormData.twoFAMethod,
-              phoneNumber: editFormData.phoneNumber,
-              verificationEmail: editFormData.verificationEmail
-            }}
-            onFormChange={onFormChange!}
-          />
-        )}
-      </div>
+          {/* Method Selection - Only in Edit Mode when 2FA is Enabled */}
+          {isEditMode && currentTwoFAEnabled && (
+            <div className="space-y-3">
+              <div>
+                <Label className="text-sm font-medium">Choose Verification Method</Label>
+                <p className="text-xs text-gray-500 mt-1">Select how you want to receive verification codes</p>
+              </div>
+              
+              <div className="grid gap-3">
+                {methodOptions.map((option) => {
+                  const IconComponent = option.icon;
+                  const isSelected = currentTwoFAMethod === option.value;
+                  
+                  return (
+                    <div
+                      key={option.value}
+                      className={`relative p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                        isSelected 
+                          ? 'border-blue-500 bg-blue-50' 
+                          : 'border-gray-200 hover:border-gray-300 bg-white'
+                      }`}
+                      onClick={() => handleMethodChange(option.value)}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`p-2 rounded-md ${isSelected ? 'bg-blue-100' : 'bg-gray-100'}`}>
+                          <IconComponent className={`h-4 w-4 ${isSelected ? 'text-blue-600' : 'text-gray-600'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-medium ${isSelected ? 'text-blue-900' : 'text-gray-900'}`}>
+                              {option.label}
+                            </span>
+                            {isSelected && (
+                              <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                            )}
+                          </div>
+                          <p className={`text-xs mt-1 ${isSelected ? 'text-blue-700' : 'text-gray-500'}`}>
+                            {option.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Warning for Disabled 2FA */}
+          {!currentTwoFAEnabled && (
+            <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+              <AlertCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+              <div className="text-xs text-amber-800">
+                <div className="font-medium">Security Notice</div>
+                <div className="mt-1">Two-factor authentication is disabled. Enable it to add an extra layer of security to this account.</div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Method Details Section - Only show in edit mode when 2FA is enabled */}
+      {isEditMode && currentTwoFAEnabled && editFormData && (
+        <TwoFactorMethodDetails 
+          method={currentTwoFAMethod}
+          editFormData={{
+            twoFAMethod: editFormData.twoFAMethod,
+            phoneNumber: editFormData.phoneNumber,
+            verificationEmail: editFormData.verificationEmail
+          }}
+          onFormChange={onFormChange!}
+        />
+      )}
 
       <View2FAModal 
         isOpen={isView2FAModalOpen}
