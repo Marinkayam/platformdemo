@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -188,25 +187,22 @@ export function TwoFactorSection({
                       key={option.value}
                       className={`relative p-3 rounded-lg border-2 cursor-pointer transition-all ${
                         isSelected 
-                          ? 'border-blue-500 bg-blue-50' 
+                          ? 'border-primary bg-primary/5' 
                           : 'border-gray-200 hover:border-gray-300 bg-white'
                       }`}
                       onClick={() => handleMethodChange(option.value)}
                     >
                       <div className="flex items-start gap-3">
-                        <div className={`p-2 rounded-md ${isSelected ? 'bg-blue-100' : 'bg-gray-100'}`}>
-                          <IconComponent className={`h-4 w-4 ${isSelected ? 'text-blue-600' : 'text-gray-600'}`} />
+                        <div className={`p-2 rounded-md ${isSelected ? 'bg-primary/10' : 'bg-gray-100'}`}>
+                          <IconComponent className={`h-4 w-4 ${isSelected ? 'text-primary' : 'text-gray-600'}`} />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <span className={`text-sm font-medium ${isSelected ? 'text-blue-900' : 'text-gray-900'}`}>
+                            <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-gray-900'}`}>
                               {option.label}
                             </span>
-                            {isSelected && (
-                              <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                            )}
                           </div>
-                          <p className={`text-xs mt-1 ${isSelected ? 'text-blue-700' : 'text-gray-500'}`}>
+                          <p className={`text-xs mt-1 ${isSelected ? 'text-primary/70' : 'text-gray-500'}`}>
                             {option.description}
                           </p>
                         </div>

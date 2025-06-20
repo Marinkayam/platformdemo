@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -161,10 +160,9 @@ export function TwoFactorMethodDetails({ method, editFormData, onFormChange }: T
           {/* Phone Number Input */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-medium">1</div>
               <Label className="text-sm font-medium">Enter Phone Number</Label>
             </div>
-            <div className="pl-8 space-y-2">
+            <div className="space-y-2">
               <Input
                 type="tel"
                 value={editFormData.phoneNumber || ""}
@@ -182,10 +180,9 @@ export function TwoFactorMethodDetails({ method, editFormData, onFormChange }: T
           {editFormData.phoneNumber && (
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-medium">2</div>
                 <Label className="text-sm font-medium">Test Verification</Label>
               </div>
-              <div className="pl-8 space-y-3">
+              <div className="space-y-3">
                 {!isCodeSent ? (
                   <div>
                     <p className="text-sm text-gray-600 mb-3">
@@ -256,10 +253,9 @@ export function TwoFactorMethodDetails({ method, editFormData, onFormChange }: T
           {/* Email Input */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-xs font-medium">1</div>
               <Label className="text-sm font-medium">Enter Email Address</Label>
             </div>
-            <div className="pl-8 space-y-2">
+            <div className="space-y-2">
               <Input
                 type="email"
                 value={editFormData.verificationEmail || ""}
@@ -277,10 +273,9 @@ export function TwoFactorMethodDetails({ method, editFormData, onFormChange }: T
           {editFormData.verificationEmail && (
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-xs font-medium">2</div>
                 <Label className="text-sm font-medium">Test Verification</Label>
               </div>
-              <div className="pl-8 space-y-3">
+              <div className="space-y-3">
                 {!isCodeSent ? (
                   <div>
                     <p className="text-sm text-gray-600 mb-3">
