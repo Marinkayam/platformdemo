@@ -10,6 +10,8 @@ import { PortalIdentitySection } from './sections/PortalIdentitySection';
 import { CredentialsSection } from './sections/CredentialsSection';
 import { TwoFactorSection } from './sections/TwoFactorSection';
 import { ConnectionDetailsSection } from './sections/ConnectionDetailsSection';
+import { DedicatedMontoUserSetup } from './sections/DedicatedMontoUserSetup';
+import { DisconnectedUserAlert } from './sections/DisconnectedUserAlert';
 
 interface PortalUserDetailModalProps {
   isOpen: boolean;
@@ -21,6 +23,7 @@ interface PortalUserDetailModalProps {
 export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPortalUser }: PortalUserDetailModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [setupConfirmed, setSetupConfirmed] = useState(false);
   const [editFormData, setEditFormData] = useState({
     portal: portalUser.portal,
     username: portalUser.username,
@@ -30,6 +33,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     twoFAMethod: portalUser.twoFAMethod || "authenticator",
     phoneNumber: portalUser.phoneNumber || "",
     verificationEmail: portalUser.verificationEmail || "",
+    userType: portalUser.userType,
   });
   
   const copyToClipboard = (text: string) => {
@@ -64,6 +68,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
 
   const handleCancel = () => {
     setIsEditMode(false);
+    setSetupConfirmed(false);
     // Reset form data to original values
     setEditFormData({
       portal: portalUser.portal,
@@ -74,16 +79,38 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
       twoFAMethod: portalUser.twoFAMethod || "authenticator",
       phoneNumber: portalUser.phoneNumber || "",
       verificationEmail: portalUser.verificationEmail || "",
+      userType: portalUser.userType,
     });
   };
 
   const handleSave = () => {
+    // Business rule: Monto users cannot be disconnected
+    let finalStatus = portalUser.status;
+    if (editFormData.userType === "Monto" && portalUser.status === "Disconnected") {
+      finalStatus = "Connected";
+      toast({ 
+        title: "Status Updated", 
+        description: "Dedicated Monto Users cannot be disconnected. Status set to Connected." 
+      });
+    }
+
+    // For Dedicated Monto Users, require setup confirmation
+    if (editFormData.userType === "Monto" && portalUser.userType !== "Monto" && !setupConfirmed) {
+      toast({ 
+        title: "Setup Required", 
+        description: "Please confirm you have completed the setup instructions for Dedicated Monto User.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     // Update the portal user with new data
     const updatedUser: PortalUser = {
       ...portalUser,
       portal: editFormData.portal,
       username: editFormData.username,
-      status: editFormData.twoFAEnabled ? "Connected" : "Disconnected",
+      status: finalStatus,
+      userType: editFormData.userType,
       twoFAMethod: editFormData.twoFAMethod as 'authenticator' | 'sms' | 'email' | 'other',
       phoneNumber: editFormData.phoneNumber,
       verificationEmail: editFormData.verificationEmail,
@@ -91,7 +118,8 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     
     onEditPortalUser(updatedUser);
     setIsEditMode(false);
-    onClose(); // Close modal and return to table
+    setSetupConfirmed(false);
+    onClose();
     toast({ 
       title: "Portal User Updated", 
       description: "Changes have been saved successfully." 
@@ -105,16 +133,23 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     }));
   };
 
+  const showDisconnectedAlert = portalUser.status === "Disconnected" && portalUser.userType === "Regular";
+  const showSetupInstructions = isEditMode && editFormData.userType === "Monto" && portalUser.userType !== "Monto";
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-3">
+          <DialogTitle className="flex items-center justify-between">
             <span>Portal User Details</span>
-            <StatusBadge status={portalUser.status} />
-            <AgentUserTypeBadge type={portalUser.userType} />
+            <div className="flex items-center gap-2">
+              <StatusBadge status={portalUser.status} />
+              <AgentUserTypeBadge type={portalUser.userType} />
+            </div>
           </DialogTitle>
         </DialogHeader>
+
+        {showDisconnectedAlert && <DisconnectedUserAlert />}
 
         <div className="space-y-6 py-4">
           <PortalIdentitySection 
@@ -124,6 +159,13 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
             editFormData={editFormData}
             onFormChange={handleFormChange}
           />
+
+          {showSetupInstructions && (
+            <DedicatedMontoUserSetup 
+              portalName={editFormData.portal}
+              onConfirmationChange={setSetupConfirmed}
+            />
+          )}
 
           <CredentialsSection
             mockCredentials={mockCredentials}
@@ -148,13 +190,6 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
             mockLinkedConnections={mockLinkedConnections}
             handleConnectionClick={handleConnectionClick}
           />
-
-          {portalUser.status === "Disconnected" && portalUser.issue && (
-            <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md text-sm">
-              <p className="font-medium">Connection Issue</p>
-              <p className="text-xs mt-1">This user is currently disconnected. Update credentials to restore sync.</p>
-            </div>
-          )}
         </div>
 
         <div className="flex justify-end gap-2 pt-4 border-t">

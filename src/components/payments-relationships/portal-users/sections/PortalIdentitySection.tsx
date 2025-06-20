@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Copy, ChevronDown, Check } from 'lucide-react';
@@ -19,6 +20,7 @@ interface PortalIdentitySectionProps {
     password: string;
     portalUrl: string;
     twoFAEnabled: boolean;
+    userType: "Monto" | "Regular";
   };
   onFormChange?: (field: string, value: string | boolean) => void;
 }
@@ -38,9 +40,10 @@ export function PortalIdentitySection({
   const [open, setOpen] = useState(false);
   const currentPortal = isEditMode ? editFormData?.portal || portalUser.portal : portalUser.portal;
   const currentUsername = isEditMode ? editFormData?.username || portalUser.username : portalUser.username;
+  const currentUserType = isEditMode ? editFormData?.userType || portalUser.userType : portalUser.userType;
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-3 gap-4">
       <div className="space-y-2">
         <Label htmlFor="portal" className="text-sm">Portal Name</Label>
         <div className="relative">
@@ -145,6 +148,31 @@ export function PortalIdentitySection({
             <Copy className="h-4 w-4" />
           </Button>
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="userType" className="text-sm">User Type</Label>
+        {isEditMode ? (
+          <Select 
+            value={currentUserType} 
+            onValueChange={(value: "Monto" | "Regular") => onFormChange?.('userType', value)}
+          >
+            <SelectTrigger className="h-10 text-sm">
+              <SelectValue placeholder="Select user type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Regular">Regular User</SelectItem>
+              <SelectItem value="Monto">Dedicated Monto User</SelectItem>
+            </SelectContent>
+          </Select>
+        ) : (
+          <Input 
+            id="userType" 
+            value={currentUserType === "Monto" ? "Dedicated Monto User" : "Regular User"} 
+            readOnly 
+            className="bg-gray-50 h-10 text-sm" 
+          />
+        )}
       </div>
     </div>
   );

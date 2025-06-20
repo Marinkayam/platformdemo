@@ -1,3 +1,4 @@
+
 import { PortalUser } from "@/types/portalUser";
 
 export const mockPortalUsers: PortalUser[] = [
@@ -16,7 +17,7 @@ export const mockPortalUsers: PortalUser[] = [
     portal: "Coupa",
     username: "peter.ross@target.com",
     status: "Connected",
-    userType: "External",
+    userType: "Regular",
     linkedSmartConnections: 2,
     lastUpdated: "2025-05-11",
     isReadOnly: false,
@@ -36,7 +37,7 @@ export const mockPortalUsers: PortalUser[] = [
     portal: "Tipalti",
     username: "ve@amazon.com",
     status: "Disconnected",
-    userType: "External",
+    userType: "Regular",
     linkedSmartConnections: 0,
     lastUpdated: "2025-05-08",
     isReadOnly: false,
