@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -52,8 +53,8 @@ export function ViewDetailsModal({
     onClose();
   };
 
-  // Only show credentials for Regular User types
-  const shouldShowCredentials = agent.type === "Regular";
+  // Only show credentials for Customer User types
+  const shouldShowCredentials = agent.type === "External";
   
   // Only show account type details for Monto users
   const shouldShowAccountTypeDetails = agent.type === "Monto";
@@ -76,12 +77,12 @@ export function ViewDetailsModal({
         <ViewDetailsHeader agent={agent} connectionInfo={connectionInfo} />
         
         <div className="space-y-4 mt-6">
-          {/* Credentials Section - only for Regular User */}
+          {/* Credentials Section - only for Customer User */}
           {shouldShowCredentials && (
             <ViewDetailsCredentials credentials={credentials} />
           )}
           
-          {/* Two-Factor Authentication Section - only for Regular User */}
+          {/* Two-Factor Authentication Section - only for Customer User */}
           {shouldShowCredentials && (
             <ViewDetailsTwoFactor 
               credentials={credentials} 

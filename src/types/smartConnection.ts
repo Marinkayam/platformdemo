@@ -1,40 +1,26 @@
+export interface SmartConnection {
+  id: string;
+  receivableEntity: string;
+  payableEntity: string;
+  receivableErp: string;
+  payableErp: string;
+  status: "Live" | "In Process" | "Unavailable" | "Disconnected" | "Inactive";
+  agentCount: number;
+  lastUpdated: string;
+  isActive: boolean;
+  agents: Agent[];
+  buyer: { name: string; };
+  supplier: { name: string; };
+  portal: { type: string; user: string; };
+}
 
 export interface Agent {
   id: string;
   portalName: string;
+  type: "Monto" | "External";
+  status: "Connected" | "Disconnected" | "Error" | "Validating" | "Building";
   portalUser: string;
-  status: "Connected" | "Disconnected" | "Validating";
-  type: "Monto" | "Regular";
-  lastSync: string;
-  issueCount: number;
-  issues?: string[];
-}
-
-export interface SmartConnection {
-  id: string;
-  receivableCompany: string;
-  payableCompany: string;
-  receivableEntity: string;
-  payableEntity: string;
-  receivableErp?: string;
-  payableErp?: string;
-  status: "Connected" | "Disconnected" | "Validating" | "Unavailable";
-  lastSync: string;
-  agents: Agent[];
-  isActive?: boolean;
-  buyer?: {
-    name: string;
-    id: string;
-  };
-  supplier?: {
-    name: string;
-    id: string;
-  };
-  portal?: {
-    type: string;
-    reference: string;
-    user?: string;
-  };
+  role: "Submit Invoice" | "Monitor Invoice" | "Both";
 }
 
 export interface SmartConnectionFilters {
@@ -52,12 +38,29 @@ export const defaultSmartConnectionFilters: SmartConnectionFilters = {
   payable: [],
   portal: [],
   search: "",
-  viewInactive: true
+  viewInactive: false,
 };
 
-export function getSmartConnectionStatusCategory(connection: SmartConnection): string {
-  if (connection.status === "Connected") return "Active";
-  if (connection.status === "Disconnected" || connection.status === "Unavailable") return "Inactive";
-  if (connection.status === "Validating") return "Needs Review";
-  return "Failed";
-}
+// Helper function to get user-friendly status categories
+export const getSmartConnectionStatusCategory = (connection: SmartConnection): string => {
+  if (!connection.isActive) return "Inactive";
+  
+  const agentStatuses = connection.agents.map(agent => agent.status);
+  
+  // Failed: All agents are disconnected or in error
+  if (agentStatuses.length > 0 && agentStatuses.every(status => status === "Disconnected" || status === "Error")) {
+    return "Failed";
+  }
+  
+  // Needs Review: Mixed states with at least one disconnected/error
+  if (agentStatuses.some(status => status === "Disconnected" || status === "Error")) {
+    return "Needs Review";
+  }
+  
+  // Active: Live or In Process
+  if (connection.status === "Live" || connection.status === "In Process") {
+    return "Active";
+  }
+  
+  return "Active";
+};

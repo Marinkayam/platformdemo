@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
@@ -66,7 +65,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
     onSave({
       portal: selectedPortal,
       username: formData.username,
-      userType: selectedUserType === 'dedicated' ? 'Monto' : 'Regular',
+      userType: selectedUserType === 'dedicated' ? 'Monto' : 'External',
       status: 'Validating',
       linkedSmartConnections: 0,
       lastUpdated: new Date().toISOString(),

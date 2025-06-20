@@ -1,168 +1,267 @@
-
 import { SmartConnection } from "@/types/smartConnection";
+
+// Helper function to calculate Smart Connection status based on agent statuses
+const calculateSmartConnectionStatus = (agents: any[]): "Live" | "In Process" | "Unavailable" | "Disconnected" | "Inactive" => {
+  if (agents.length === 0) return "Unavailable";
+  
+  // Check if any agent is disconnected/error
+  if (agents.some(agent => agent.status === "Disconnected" || agent.status === "Error")) {
+    return "Unavailable";
+  }
+  
+  // Check if any agent is in process (validating or building)
+  if (agents.some(agent => agent.status === "Validating" || agent.status === "Building")) {
+    return "In Process";
+  }
+  
+  // If all agents are connected
+  if (agents.every(agent => agent.status === "Connected")) {
+    return "Live";
+  }
+  
+  return "Unavailable";
+};
 
 export const mockSmartConnections: SmartConnection[] = [
   {
     id: "1",
-    receivableCompany: "Acme Corp",
-    payableCompany: "Supplier A",
-    receivableEntity: "Acme Corp",
-    payableEntity: "Supplier A",
-    receivableErp: "SAP",
-    payableErp: "Oracle",
-    status: "Connected",
-    lastSync: "2023-10-26T10:00:00Z",
+    receivableEntity: "Apple Inc.",
+    payableEntity: "Microsoft Corp.",
+    receivableErp: "NetSuite",
+    payableErp: "SAP",
+    status: "Live",
+    agentCount: 2,
+    lastUpdated: "2025-05-12",
     isActive: true,
-    buyer: {
-      name: "Acme Corp",
-      id: "buyer-1"
-    },
-    supplier: {
-      name: "Supplier A",
-      id: "supplier-1"
-    },
-    portal: {
-      type: "SAP Ariba",
-      reference: "ref-1",
-      user: "user1@ariba.com"
-    },
     agents: [
       {
-        id: "agent1",
+        id: "a1",
         portalName: "SAP Ariba",
-        portalUser: "user1@ariba.com",
-        status: "Connected",
         type: "Monto",
-        lastSync: "2023-10-26T10:00:00Z",
-        issueCount: 0,
+        status: "Connected",
+        portalUser: "john.doe@microsoft.com",
+        role: "Submit Invoice"
       },
       {
-        id: "agent2",
+        id: "a2",
         portalName: "Coupa",
-        portalUser: "user2@coupa.com",
-        status: "Validating",
-        type: "Regular",
-        lastSync: "2023-10-26T09:30:00Z",
-        issueCount: 0,
-      },
+        type: "Monto",
+        status: "Connected",
+        portalUser: "jane.smith@apple.com",
+        role: "Monitor Invoice"
+      }
     ],
+    buyer: { name: "Apple Inc." },
+    supplier: { name: "Microsoft Corp." },
+    portal: { type: "SAP Ariba", user: "john.doe@microsoft.com" }
   },
   {
     id: "2",
-    receivableCompany: "Tech Solutions",
-    payableCompany: "Vendor B",
-    receivableEntity: "Tech Solutions",
-    payableEntity: "Vendor B",
+    receivableEntity: "Google LLC",
+    payableEntity: "Amazon Inc.",
     receivableErp: "Oracle",
-    payableErp: "SAP",
-    status: "Disconnected",
-    lastSync: "2023-10-25T15:30:00Z",
-    isActive: false,
-    buyer: {
-      name: "Tech Solutions",
-      id: "buyer-2"
-    },
-    supplier: {
-      name: "Vendor B",
-      id: "supplier-2"
-    },
-    portal: {
-      type: "Oracle",
-      reference: "ref-2",
-      user: "user3@oracle.com"
-    },
+    payableErp: "Workday",
+    status: "In Process",
+    agentCount: 2,
+    lastUpdated: "2025-05-10",
+    isActive: true,
     agents: [
       {
-        id: "agent3",
-        portalName: "Oracle",
-        portalUser: "user3@oracle.com",
-        status: "Disconnected",
-        type: "Regular",
-        lastSync: "2023-10-25T15:30:00Z",
-        issueCount: 2,
-        issues: ["Invalid credentials", "Portal API timeout"],
+        id: "a3",
+        portalName: "Oracle Portal",
+        type: "External",
+        status: "Connected",
+        portalUser: "admin@amazon.com",
+        role: "Both"
       },
+      {
+        id: "a4",
+        portalName: "Tradeshift",
+        type: "Monto",
+        status: "Validating",
+        portalUser: "setup@google.com",
+        role: "Submit Invoice"
+      }
     ],
+    buyer: { name: "Google LLC" },
+    supplier: { name: "Amazon Inc." },
+    portal: { type: "Oracle Portal", user: "admin@amazon.com" }
   },
   {
     id: "3",
-    receivableCompany: "Global Industries",
-    payableCompany: "Service Provider C",
-    receivableEntity: "Global Industries",
-    payableEntity: "Service Provider C",
-    receivableErp: "Workday",
-    payableErp: "NetSuite",
-    status: "Connected",
-    lastSync: "2023-10-24T14:20:00Z",
+    receivableEntity: "Meta Platforms",
+    payableEntity: "Tesla Inc.",
+    receivableErp: "Sage",
+    payableErp: "QuickBooks",
+    status: "Unavailable",
+    agentCount: 1,
+    lastUpdated: "2025-05-08",
     isActive: true,
-    buyer: {
-      name: "Global Industries",
-      id: "buyer-3"
-    },
-    supplier: {
-      name: "Service Provider C",
-      id: "supplier-3"
-    },
-    portal: {
-      type: "Tipalti",
-      reference: "ref-3",
-      user: "user4@tipalti.com"
-    },
     agents: [
       {
-        id: "agent4",
-        portalName: "Tipalti",
-        portalUser: "user4@tipalti.com",
-        status: "Connected",
-        type: "Regular",
-        lastSync: "2023-10-24T14:20:00Z",
-        issueCount: 0,
-      },
-      {
-        id: "agent5",
-        portalName: "Amazon Payee",
-        portalUser: "user5@amazon.com",
-        status: "Connected",
+        id: "a5",
+        portalName: "SAP Ariba",
         type: "Monto",
-        lastSync: "2023-10-24T14:15:00Z",
-        issueCount: 0,
-      },
+        status: "Disconnected",
+        portalUser: "finance@tesla.com",
+        role: "Monitor Invoice"
+      }
     ],
+    buyer: { name: "Meta Platforms" },
+    supplier: { name: "Tesla Inc." },
+    portal: { type: "SAP Ariba", user: "finance@tesla.com" }
   },
   {
     id: "4",
-    receivableCompany: "Manufacturing Co",
-    payableCompany: "Raw Materials Ltd",
-    receivableEntity: "Manufacturing Co",
-    payableEntity: "Raw Materials Ltd",
-    receivableErp: "Microsoft Dynamics",
-    payableErp: "QuickBooks",
-    status: "Connected",
-    lastSync: "2023-10-20T11:00:00Z",
+    receivableEntity: "Netflix Inc.",
+    payableEntity: "Spotify AB",
+    receivableErp: "Xero",
+    payableErp: "FreshBooks",
+    status: "In Process",
+    agentCount: 2,
+    lastUpdated: "2025-05-05",
     isActive: true,
-    buyer: {
-      name: "Manufacturing Co",
-      id: "buyer-4"
-    },
-    supplier: {
-      name: "Raw Materials Ltd",
-      id: "supplier-4"
-    },
-    portal: {
-      type: "Bill",
-      reference: "ref-4",
-      user: "user6@bill.com"
-    },
     agents: [
       {
-        id: "agent6",
-        portalName: "Bill",
-        portalUser: "user6@bill.com",
-        status: "Connected",
-        type: "Regular",
-        lastSync: "2023-10-20T11:00:00Z",
-        issueCount: 0,
+        id: "a6",
+        portalName: "Coupa",
+        type: "Monto",
+        status: "Building",
+        portalUser: "support@spotify.com",
+        role: "Monitor Invoice"
       },
+      {
+        id: "a7",
+        portalName: "Oracle Portal",
+        type: "Monto",
+        status: "Building",
+        portalUser: "billing@netflix.com",
+        role: "Submit Invoice"
+      }
     ],
+    buyer: { name: "Netflix Inc." },
+    supplier: { name: "Spotify AB" },
+    portal: { type: "Coupa", user: "support@spotify.com" }
   },
+  {
+    id: "5",
+    receivableEntity: "ACME Inc.",
+    payableEntity: "Target Corp",
+    receivableErp: "NetSuite",
+    payableErp: "SAP",
+    status: "Unavailable",
+    agentCount: 2,
+    lastUpdated: "2025-05-06",
+    isActive: true,
+    agents: [
+      {
+        id: "a8",
+        portalName: "SAP Ariba",
+        type: "Monto",
+        status: "Connected",
+        portalUser: "procurement@target.com",
+        role: "Submit Invoice"
+      },
+      {
+        id: "a9",
+        portalName: "Coupa",
+        type: "Monto",
+        status: "Disconnected",
+        portalUser: "finance@acme.com",
+        role: "Monitor Invoice"
+      }
+    ],
+    buyer: { name: "ACME Inc." },
+    supplier: { name: "Target Corp" },
+    portal: { type: "SAP Ariba", user: "procurement@target.com" }
+  },
+  {
+    id: "6",
+    receivableEntity: "TechSoft LLC",
+    payableEntity: "Walmart Inc.",
+    receivableErp: "Oracle",
+    payableErp: "Workday",
+    status: "Inactive",
+    agentCount: 1,
+    lastUpdated: "2025-05-01",
+    isActive: false,
+    agents: [
+      {
+        id: "a10",
+        portalName: "Tradeshift",
+        type: "Monto",
+        status: "Connected",
+        portalUser: "vendor@walmart.com",
+        role: "Both"
+      }
+    ],
+    buyer: { name: "TechSoft LLC" },
+    supplier: { name: "Walmart Inc." },
+    portal: { type: "Tradeshift", user: "vendor@walmart.com" }
+  },
+  {
+    id: "7",
+    receivableEntity: "Samsung Electronics",
+    payableEntity: "Best Buy Co.",
+    receivableErp: "SAP",
+    payableErp: "Oracle",
+    status: "Unavailable",
+    agentCount: 2,
+    lastUpdated: "2025-05-03",
+    isActive: true,
+    agents: [
+      {
+        id: "a11",
+        portalName: "SAP Ariba",
+        type: "External",
+        status: "Disconnected",
+        portalUser: "procurement@bestbuy.com",
+        role: "Submit Invoice"
+      },
+      {
+        id: "a12",
+        portalName: "Oracle Commerce",
+        type: "External",
+        status: "Disconnected",
+        portalUser: "vendor@samsung.com",
+        role: "Monitor Invoice"
+      }
+    ],
+    buyer: { name: "Samsung Electronics" },
+    supplier: { name: "Best Buy Co." },
+    portal: { type: "SAP Ariba", user: "procurement@bestbuy.com" }
+  },
+  {
+    id: "8",
+    receivableEntity: "IBM Corp",
+    payableEntity: "HP Inc.",
+    receivableErp: "Workday",
+    payableErp: "NetSuite",
+    status: "Unavailable",
+    agentCount: 1,
+    lastUpdated: "2025-05-02",
+    isActive: true,
+    agents: [
+      {
+        id: "a13",
+        portalName: "Coupa",
+        type: "External",
+        status: "Disconnected",
+        portalUser: "finance@hp.com",
+        role: "Both"
+      }
+    ],
+    buyer: { name: "IBM Corp" },
+    supplier: { name: "HP Inc." },
+    portal: { type: "Coupa", user: "finance@hp.com" }
+  }
 ];
+
+// Update statuses based on agent statuses
+mockSmartConnections.forEach(connection => {
+  if (connection.isActive) {
+    connection.status = calculateSmartConnectionStatus(connection.agents);
+  } else {
+    connection.status = "Inactive";
+  }
+});

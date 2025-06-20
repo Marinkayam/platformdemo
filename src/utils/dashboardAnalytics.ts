@@ -106,7 +106,7 @@ export function calculateExceptionData(): ExceptionData {
 
   // Smart Connection Exceptions
   const scExceptions = mockSmartConnections.filter(connection => 
-    connection.status === 'Disconnected' || connection.status === 'Unavailable'
+    connection.status === 'Unavailable' || connection.status === 'Disconnected'
   );
 
   const affectedInvoices = invoiceData.filter(invoice => 

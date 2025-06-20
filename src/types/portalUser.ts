@@ -4,7 +4,7 @@ export interface PortalUser {
   portal: string;
   username: string;
   status: "Connected" | "Validating" | "Disconnected";
-  userType: "Monto" | "Regular";
+  userType: "Monto" | "External";
   linkedSmartConnections: number;
   lastUpdated: string;
   isReadOnly: boolean;

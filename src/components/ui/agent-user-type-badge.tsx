@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 interface AgentUserTypeBadgeProps {
-  type: "Monto" | "Regular";
+  type: "Monto" | "External";
   className?: string;
 }
 
@@ -12,7 +12,7 @@ export function AgentUserTypeBadge({ type, className }: AgentUserTypeBadgeProps)
     switch (type) {
       case "Monto":
         return "bg-purple-50 text-purple-700 border-purple-200";
-      case "Regular":
+      case "External":
         return "bg-gray-50 text-gray-700 border-gray-200";
       default:
         return "bg-gray-50 text-gray-700 border-gray-200";
@@ -22,11 +22,11 @@ export function AgentUserTypeBadge({ type, className }: AgentUserTypeBadgeProps)
   const getDisplayText = () => {
     switch (type) {
       case "Monto":
-        return "Dedicated Monto User";
-      case "Regular":
-        return "Regular User";
+        return "Monto User";
+      case "External":
+        return "Customer User";
       default:
-        return "Regular User";
+        return "Customer User";
     }
   };
 
