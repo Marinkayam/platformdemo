@@ -1,3 +1,4 @@
+
 export interface PortalUser {
   id: string;
   portal: string;

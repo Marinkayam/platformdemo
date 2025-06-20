@@ -28,6 +28,8 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     portalUrl: `https://${portalUser.portal.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: portalUser.status !== "Disconnected",
     twoFAMethod: portalUser.twoFAMethod || "authenticator",
+    phoneNumber: portalUser.phoneNumber || "",
+    verificationEmail: portalUser.verificationEmail || "",
   });
   
   const copyToClipboard = (text: string) => {
@@ -70,6 +72,8 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
       portalUrl: `https://${portalUser.portal.toLowerCase().replace(/\s+/g, '')}.com`,
       twoFAEnabled: portalUser.status !== "Disconnected",
       twoFAMethod: portalUser.twoFAMethod || "authenticator",
+      phoneNumber: portalUser.phoneNumber || "",
+      verificationEmail: portalUser.verificationEmail || "",
     });
   };
 
@@ -81,6 +85,8 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
       username: editFormData.username,
       status: editFormData.twoFAEnabled ? "Connected" : "Disconnected",
       twoFAMethod: editFormData.twoFAMethod as 'authenticator' | 'sms' | 'email' | 'other',
+      phoneNumber: editFormData.phoneNumber,
+      verificationEmail: editFormData.verificationEmail,
     };
     
     onEditPortalUser(updatedUser);

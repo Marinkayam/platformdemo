@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Eye, Shield, Smartphone, Mail } from "lucide-react";
 import { View2FAModal } from "../View2FAModal";
 import { ConfirmRemoveModal } from "../ConfirmRemoveModal";
+import { TwoFactorMethodDetails } from "./TwoFactorMethodDetails";
 
 interface TwoFactorSectionProps {
   mockCredentials: {
@@ -20,6 +21,8 @@ interface TwoFactorSectionProps {
     portalUrl: string;
     twoFAEnabled: boolean;
     twoFAMethod?: string;
+    phoneNumber?: string;
+    verificationEmail?: string;
   };
   onFormChange?: (field: string, value: string | boolean) => void;
   portalUserId?: string;
@@ -169,6 +172,15 @@ export function TwoFactorSection({
             )}
           </div>
         </div>
+
+        {/* Method Details Section - Only show in edit mode when 2FA is enabled */}
+        {isEditMode && currentTwoFAEnabled && editFormData && (
+          <TwoFactorMethodDetails 
+            method={currentTwoFAMethod}
+            editFormData={editFormData}
+            onFormChange={onFormChange!}
+          />
+        )}
       </div>
 
       <View2FAModal 
