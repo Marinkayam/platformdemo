@@ -132,16 +132,11 @@ export function TwoFactorSection({
             
             <div className="flex items-center gap-3">
               {isEditMode ? (
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="2fa-toggle" className="text-sm font-medium">
-                    {currentTwoFAEnabled ? 'Disable' : 'Enable'} 2FA
-                  </Label>
-                  <Switch 
-                    id="2fa-toggle"
-                    checked={currentTwoFAEnabled}
-                    onCheckedChange={handleToggle2FA}
-                  />
-                </div>
+                <Switch 
+                  id="2fa-toggle"
+                  checked={currentTwoFAEnabled}
+                  onCheckedChange={handleToggle2FA}
+                />
               ) : (
                 <>
                   {currentTwoFAEnabled && (
