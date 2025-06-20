@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertTriangle } from "lucide-react";
 import { PortalUser } from "@/types/portalUser";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
@@ -78,15 +80,17 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
   };
 
   const handleSave = () => {
-    // Update the portal user with new data
+    // Update the portal user with new data and set to validating
     const updatedUser: PortalUser = {
       ...portalUser,
       portal: editFormData.portal,
       username: editFormData.username,
-      status: editFormData.twoFAEnabled ? "Connected" : "Disconnected",
+      status: "Validating", // Always set to validating after save
       twoFAMethod: editFormData.twoFAMethod as 'authenticator' | 'sms' | 'email' | 'other',
       phoneNumber: editFormData.phoneNumber,
       verificationEmail: editFormData.verificationEmail,
+      issue: undefined, // Clear the issue when updating
+      lastUpdated: new Date().toISOString(),
     };
     
     onEditPortalUser(updatedUser);
@@ -94,7 +98,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     onClose(); // Close modal and return to table
     toast({ 
       title: "Portal User Updated", 
-      description: "Changes have been saved successfully." 
+      description: "Changes have been saved and validation has started." 
     });
   };
 
@@ -103,6 +107,15 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
       ...prev,
       [field]: value
     }));
+  };
+
+  // Get disconnection reason from the portalUser.issue field
+  const getDisconnectionReason = () => {
+    if (portalUser.issue) {
+      return portalUser.issue;
+    }
+    // Default reasons based on common scenarios
+    return "Authentication failed. Please verify your credentials.";
   };
 
   return (
@@ -115,6 +128,16 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
             <AgentUserTypeBadge type={portalUser.userType} />
           </DialogTitle>
         </DialogHeader>
+
+        {/* Disconnection Alert Banner */}
+        {portalUser.status === "Disconnected" && (
+          <Alert variant="destructive" className="mt-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Connection Failed:</strong> {getDisconnectionReason()} Please edit your credentials and save to retry validation.
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="space-y-6 py-4">
           <PortalIdentitySection 
@@ -148,13 +171,6 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
             mockLinkedConnections={mockLinkedConnections}
             handleConnectionClick={handleConnectionClick}
           />
-
-          {portalUser.status === "Disconnected" && portalUser.issue && (
-            <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md text-sm">
-              <p className="font-medium">Connection Issue</p>
-              <p className="text-xs mt-1">This user is currently disconnected. Update credentials to restore sync.</p>
-            </div>
-          )}
         </div>
 
         <div className="flex justify-end gap-2 pt-4 border-t">

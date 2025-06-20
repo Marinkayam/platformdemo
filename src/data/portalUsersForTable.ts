@@ -51,6 +51,7 @@ export const mockPortalUsersForTable: PortalUser[] = [
     linkedSmartConnections: 1,
     lastUpdated: "2023-10-25T15:30:00Z",
     isReadOnly: true,
+    issue: "Invalid password. Login credentials have expired.",
   },
   {
     id: "6",
@@ -61,5 +62,16 @@ export const mockPortalUsersForTable: PortalUser[] = [
     linkedSmartConnections: 3,
     lastUpdated: "2023-10-20T11:00:00Z",
     isReadOnly: false,
+  },
+  {
+    id: "7",
+    portal: "Tipalti",
+    username: "user7@tipalti.com",
+    status: "Disconnected",
+    userType: "External",
+    linkedSmartConnections: 0,
+    lastUpdated: "2023-10-19T14:20:00Z",
+    isReadOnly: false,
+    issue: "Portal URL has changed. Please update the connection settings.",
   },
 ];
