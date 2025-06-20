@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Eye } from "lucide-react";
 import { View2FAModal } from "../View2FAModal";
+import { ConfirmRemoveModal } from "../ConfirmRemoveModal";
 
 interface TwoFactorSectionProps {
   mockCredentials: {
@@ -17,6 +19,7 @@ interface TwoFactorSectionProps {
     password: string;
     portalUrl: string;
     twoFAEnabled: boolean;
+    twoFAMethod?: string;
   };
   onFormChange?: (field: string, value: string | boolean) => void;
   portalUserId?: string;
@@ -30,30 +33,47 @@ export function TwoFactorSection({
   portalUserId = "default-id"
 }: TwoFactorSectionProps) {
   const [isView2FAModalOpen, setIsView2FAModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const currentTwoFAEnabled = isEditMode ? editFormData?.twoFAEnabled ?? mockCredentials.twoFAEnabled : mockCredentials.twoFAEnabled;
-
-  const handleSetup2FA = () => {
-    console.log("Setup 2FA clicked");
-    if (isEditMode) {
-      onFormChange?.('twoFAEnabled', true);
-    }
-  };
-
-  const handleDisable2FA = () => {
-    console.log("Disable 2FA clicked");
-    if (isEditMode) {
-      onFormChange?.('twoFAEnabled', false);
-    }
-  };
+  const currentTwoFAMethod = isEditMode ? editFormData?.twoFAMethod ?? 'authenticator' : 'authenticator';
 
   const handleToggle2FA = (enabled: boolean) => {
     if (isEditMode) {
-      onFormChange?.('twoFAEnabled', enabled);
+      if (!enabled && currentTwoFAEnabled) {
+        // Show confirmation modal when disabling 2FA
+        setIsConfirmModalOpen(true);
+      } else {
+        onFormChange?.('twoFAEnabled', enabled);
+      }
+    }
+  };
+
+  const handleConfirmDisable = () => {
+    onFormChange?.('twoFAEnabled', false);
+    setIsConfirmModalOpen(false);
+  };
+
+  const handleMethodChange = (method: string) => {
+    if (isEditMode) {
+      onFormChange?.('twoFAMethod', method);
     }
   };
 
   const handleView2FACode = () => {
     setIsView2FAModalOpen(true);
+  };
+
+  const getMethodDisplayName = (method: string) => {
+    switch (method) {
+      case 'authenticator':
+        return 'Google Authenticator';
+      case 'sms':
+        return 'SMS';
+      case 'email':
+        return 'Email';
+      default:
+        return 'Google Authenticator';
+    }
   };
 
   return (
@@ -68,49 +88,50 @@ export function TwoFactorSection({
               </span>
             </div>
             {currentTwoFAEnabled && (
-              <div className="text-xs text-gray-500">Method: Google Authenticator</div>
+              <div className="text-xs text-gray-500">
+                Method: {getMethodDisplayName(currentTwoFAMethod)}
+              </div>
             )}
           </div>
           <div className="flex gap-2 items-center">
             {isEditMode ? (
-              <div className="flex items-center gap-2">
-                <Label htmlFor="2fa-toggle" className="text-xs">Enable 2FA</Label>
-                <Switch 
-                  id="2fa-toggle"
-                  checked={currentTwoFAEnabled}
-                  onCheckedChange={handleToggle2FA}
-                />
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="2fa-toggle" className="text-xs">Enable 2FA</Label>
+                  <Switch 
+                    id="2fa-toggle"
+                    checked={currentTwoFAEnabled}
+                    onCheckedChange={handleToggle2FA}
+                  />
+                </div>
+                {currentTwoFAEnabled && (
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs">Method</Label>
+                    <Select value={currentTwoFAMethod} onValueChange={handleMethodChange}>
+                      <SelectTrigger className="w-[140px] h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="authenticator">Authenticator</SelectItem>
+                        <SelectItem value="sms">SMS</SelectItem>
+                        <SelectItem value="email">Email</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
               </div>
             ) : (
               <>
-                {!currentTwoFAEnabled ? (
+                {currentTwoFAEnabled && (
                   <Button 
-                    onClick={handleSetup2FA}
+                    onClick={handleView2FACode}
+                    variant="outline"
                     size="sm"
                     className="h-8"
                   >
-                    Setup Required
+                    <Eye className="h-3 w-3 mr-1" />
+                    View Code
                   </Button>
-                ) : (
-                  <div className="flex gap-2">
-                    <Button 
-                      onClick={handleView2FACode}
-                      variant="outline"
-                      size="sm"
-                      className="h-8"
-                    >
-                      <Eye className="h-3 w-3 mr-1" />
-                      View Code
-                    </Button>
-                    <Button 
-                      onClick={handleDisable2FA}
-                      variant="outline"
-                      size="sm"
-                      className="h-8"
-                    >
-                      Disable
-                    </Button>
-                  </div>
                 )}
               </>
             )}
@@ -122,6 +143,13 @@ export function TwoFactorSection({
         isOpen={isView2FAModalOpen}
         onClose={() => setIsView2FAModalOpen(false)}
         portalUserId={portalUserId}
+      />
+
+      <ConfirmRemoveModal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleConfirmDisable}
+        itemName="Two-Factor Authentication"
       />
     </>
   );

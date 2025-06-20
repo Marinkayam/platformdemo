@@ -8,6 +8,8 @@ interface ConfirmRemoveModalProps {
   onClose: () => void;
   onConfirm: () => void;
   itemName: string;
+  title?: string;
+  description?: string;
 }
 
 export function ConfirmRemoveModal({
@@ -15,14 +17,24 @@ export function ConfirmRemoveModal({
   onClose,
   onConfirm,
   itemName,
+  title,
+  description,
 }: ConfirmRemoveModalProps) {
+  const defaultTitle = itemName === "Two-Factor Authentication" 
+    ? `Are you sure you want to disable ${itemName}?`
+    : `Are you sure you want to remove ${itemName}?`;
+    
+  const defaultDescription = itemName === "Two-Factor Authentication"
+    ? "Disabling two-factor authentication will make this account less secure."
+    : "This action cannot be undone. This may affect Smart Connections that depend on it.";
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure you want to remove {itemName}?</AlertDialogTitle>
+          <AlertDialogTitle>{title || defaultTitle}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This may affect Smart Connections that depend on it.
+            {description || defaultDescription}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

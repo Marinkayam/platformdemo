@@ -26,6 +26,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     password: "SecurePassword123!",
     portalUrl: `https://${portalUser.portal.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: portalUser.status !== "Disconnected",
+    twoFAMethod: portalUser.twoFAMethod || "authenticator",
   });
   
   const copyToClipboard = (text: string) => {
@@ -67,6 +68,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
       password: "SecurePassword123!",
       portalUrl: `https://${portalUser.portal.toLowerCase().replace(/\s+/g, '')}.com`,
       twoFAEnabled: portalUser.status !== "Disconnected",
+      twoFAMethod: portalUser.twoFAMethod || "authenticator",
     });
   };
 
@@ -77,6 +79,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
       portal: editFormData.portal,
       username: editFormData.username,
       status: editFormData.twoFAEnabled ? "Connected" : "Disconnected",
+      twoFAMethod: editFormData.twoFAMethod as 'authenticator' | 'sms' | 'email' | 'other',
     };
     
     onEditPortalUser(updatedUser);
