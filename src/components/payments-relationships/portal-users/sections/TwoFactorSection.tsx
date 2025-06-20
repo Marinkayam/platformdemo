@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -117,9 +118,6 @@ export function TwoFactorSection({
             <Shield className="h-4 w-4 text-blue-600" />
             Two-Factor Authentication
           </CardTitle>
-          <CardDescription>
-            Add an extra layer of security to this portal user account
-          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Status and Toggle Section */}
@@ -128,9 +126,6 @@ export function TwoFactorSection({
               <div className="text-sm font-medium">Current Status</div>
               <div className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full ${currentTwoFAEnabled ? 'bg-green-500' : 'bg-red-500'}`} />
-                <span className={`text-xs font-medium ${currentTwoFAEnabled ? 'text-green-700' : 'text-red-700'}`}>
-                  {currentTwoFAEnabled ? 'Enabled' : 'Disabled'}
-                </span>
               </div>
               {currentTwoFAEnabled && (
                 <div className="flex items-center gap-1 text-xs text-gray-600">
