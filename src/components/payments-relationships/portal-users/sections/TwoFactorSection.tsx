@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -123,10 +122,6 @@ export function TwoFactorSection({
           {/* Status and Toggle Section */}
           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
             <div className="space-y-1">
-              <div className="text-sm font-medium">Current Status</div>
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${currentTwoFAEnabled ? 'bg-green-500' : 'bg-red-500'}`} />
-              </div>
               {currentTwoFAEnabled && (
                 <div className="flex items-center gap-1 text-xs text-gray-600">
                   {getMethodIcon(currentTwoFAMethod)}
