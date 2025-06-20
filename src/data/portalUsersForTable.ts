@@ -7,7 +7,7 @@ export const mockPortalUsersForTable: PortalUser[] = [
     portal: "Coupa",
     username: "user2@coupa.com",
     status: "Validating",
-    userType: "External",
+    userType: "Regular",
     linkedSmartConnections: 0,
     lastUpdated: new Date(Date.now() - (50 * 1000)).toISOString(), // 50% progress
     isReadOnly: false,
@@ -17,7 +17,7 @@ export const mockPortalUsersForTable: PortalUser[] = [
     portal: "Bill",
     username: "user4@bill.com",
     status: "Validating",
-    userType: "External",
+    userType: "Regular",
     linkedSmartConnections: 0,
     lastUpdated: new Date(Date.now() - (30 * 1000)).toISOString(), // 30% progress
     isReadOnly: false,
@@ -57,7 +57,7 @@ export const mockPortalUsersForTable: PortalUser[] = [
     portal: "Amazon",
     username: "user6@amazon.com",
     status: "Connected",
-    userType: "External",
+    userType: "Regular",
     linkedSmartConnections: 3,
     lastUpdated: "2023-10-20T11:00:00Z",
     isReadOnly: false,

@@ -56,7 +56,7 @@ export default function PaymentsRelationships() {
       portal: userData.portal || '',
       username: userData.username || '',
       status: userData.status || 'Validating',
-      userType: userData.userType || 'External',
+      userType: userData.userType || 'Regular',
       linkedSmartConnections: userData.linkedSmartConnections || 0,
       lastUpdated: new Date().toISOString(),
       isReadOnly: false,

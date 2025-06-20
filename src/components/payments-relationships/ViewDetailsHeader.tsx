@@ -1,3 +1,4 @@
+
 import React from "react";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
@@ -21,7 +22,7 @@ export function ViewDetailsHeader({ agent, connectionInfo }: ViewDetailsHeaderPr
           Agent Details
         </DialogTitle>
         <StatusBadge status={agent.status} />
-        <AgentUserTypeBadge type={agent.type} />
+        <AgentUserTypeBadge type={agent.type === "Regular" ? "Regular" : "Monto"} />
       </div>
       
       <div className="text-sm text-gray-600 mt-6 text-left">
