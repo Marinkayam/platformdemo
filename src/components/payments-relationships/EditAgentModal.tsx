@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -82,7 +81,7 @@ export function EditAgentModal({
               Edit Agent
             </DialogTitle>
             <StatusBadge status={agent.status} />
-            <AgentUserTypeBadge type={agent.type === "Regular" ? "Regular" : "Monto"} />
+            <AgentUserTypeBadge type={agent.type} />
           </div>
           
           <div className="text-sm text-gray-600 mt-6 text-left">
