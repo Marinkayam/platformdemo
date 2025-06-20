@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PortalUser } from "@/types/portalUser";
@@ -19,7 +19,15 @@ interface PortalUserDetailModalProps {
 }
 
 export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPortalUser }: PortalUserDetailModalProps) {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    portal: portalUser.portal,
+    username: portalUser.username,
+    password: "SecurePassword123!",
+    portalUrl: `https://${portalUser.portal.toLowerCase().replace(/\s+/g, '')}.com`,
+    twoFAEnabled: portalUser.status !== "Disconnected",
+  });
   
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -47,6 +55,46 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     // In a real app, this would use navigation
   };
 
+  const handleEdit = () => {
+    setIsEditMode(true);
+  };
+
+  const handleCancel = () => {
+    setIsEditMode(false);
+    // Reset form data to original values
+    setEditFormData({
+      portal: portalUser.portal,
+      username: portalUser.username,
+      password: "SecurePassword123!",
+      portalUrl: `https://${portalUser.portal.toLowerCase().replace(/\s+/g, '')}.com`,
+      twoFAEnabled: portalUser.status !== "Disconnected",
+    });
+  };
+
+  const handleSave = () => {
+    // Update the portal user with new data
+    const updatedUser: PortalUser = {
+      ...portalUser,
+      portal: editFormData.portal,
+      username: editFormData.username,
+      status: editFormData.twoFAEnabled ? "Connected" : "Disconnected",
+    };
+    
+    onEditPortalUser(updatedUser);
+    setIsEditMode(false);
+    toast({ 
+      title: "Portal User Updated", 
+      description: "Changes have been saved successfully." 
+    });
+  };
+
+  const handleFormChange = (field: string, value: string | boolean) => {
+    setEditFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
@@ -62,6 +110,9 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
           <PortalIdentitySection 
             portalUser={portalUser}
             copyToClipboard={copyToClipboard}
+            isEditMode={isEditMode}
+            editFormData={editFormData}
+            onFormChange={handleFormChange}
           />
 
           <CredentialsSection
@@ -69,10 +120,16 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
             showPassword={showPassword}
             setShowPassword={setShowPassword}
             copyToClipboard={copyToClipboard}
+            isEditMode={isEditMode}
+            editFormData={editFormData}
+            onFormChange={handleFormChange}
           />
 
           <TwoFactorSection
             mockCredentials={mockCredentials}
+            isEditMode={isEditMode}
+            editFormData={editFormData}
+            onFormChange={handleFormChange}
           />
 
           <ConnectionDetailsSection
@@ -90,12 +147,25 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
         </div>
 
         <div className="flex justify-end gap-2 pt-4 border-t">
-          <Button variant="ghost" onClick={onClose}>
-            Close
-          </Button>
-          <Button onClick={() => onEditPortalUser(portalUser)}>
-            Edit Portal User
-          </Button>
+          {isEditMode ? (
+            <>
+              <Button variant="ghost" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button onClick={handleSave}>
+                Save Changes
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" onClick={onClose}>
+                Close
+              </Button>
+              <Button onClick={handleEdit}>
+                Edit Portal User
+              </Button>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

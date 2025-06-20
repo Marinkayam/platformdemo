@@ -13,29 +13,52 @@ interface CredentialsSectionProps {
   showPassword: boolean;
   setShowPassword: (show: boolean) => void;
   copyToClipboard: (text: string) => void;
+  isEditMode?: boolean;
+  editFormData?: {
+    portal: string;
+    username: string;
+    password: string;
+    portalUrl: string;
+    twoFAEnabled: boolean;
+  };
+  onFormChange?: (field: string, value: string | boolean) => void;
 }
 
 export function CredentialsSection({ 
   mockCredentials, 
   showPassword, 
   setShowPassword, 
-  copyToClipboard 
+  copyToClipboard,
+  isEditMode = false,
+  editFormData,
+  onFormChange
 }: CredentialsSectionProps) {
+  const currentPortalUrl = isEditMode ? editFormData?.portalUrl || mockCredentials.portalUrl : mockCredentials.portalUrl;
+  const currentPassword = isEditMode ? editFormData?.password || mockCredentials.password : mockCredentials.password;
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="portal-url" className="text-sm">Portal URL</Label>
         <div className="flex gap-2">
-          <button
-            onClick={() => window.open(mockCredentials.portalUrl, '_blank')}
-            className="flex-1 h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left font-mono text-sm text-blue-600 hover:bg-gray-100 transition-colors flex items-center"
-          >
-            {mockCredentials.portalUrl}
-          </button>
+          {isEditMode ? (
+            <Input
+              value={currentPortalUrl}
+              onChange={(e) => onFormChange?.('portalUrl', e.target.value)}
+              className="flex-1 h-10 font-mono text-sm"
+            />
+          ) : (
+            <button
+              onClick={() => window.open(currentPortalUrl, '_blank')}
+              className="flex-1 h-10 px-3 py-2 bg-gray-50 border border-input rounded-md text-left font-mono text-sm text-blue-600 hover:bg-gray-100 transition-colors flex items-center"
+            >
+              {currentPortalUrl}
+            </button>
+          )}
           <Button
             variant="outline"
             size="sm"
-            onClick={() => window.open(mockCredentials.portalUrl, '_blank')}
+            onClick={() => window.open(currentPortalUrl, '_blank')}
             className="h-10"
           >
             <ExternalLink className="h-4 w-4" />
@@ -43,7 +66,7 @@ export function CredentialsSection({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => copyToClipboard(mockCredentials.portalUrl)}
+            onClick={() => copyToClipboard(currentPortalUrl)}
             className="h-10"
           >
             <Copy className="h-4 w-4" />
@@ -57,9 +80,10 @@ export function CredentialsSection({
           <Input 
             id="password" 
             type={showPassword ? "text" : "password"}
-            value={showPassword ? mockCredentials.password : "••••••••••••"} 
-            readOnly 
-            className="bg-gray-50 font-mono h-10 text-sm" 
+            value={showPassword ? currentPassword : "••••••••••••"} 
+            readOnly={!isEditMode}
+            onChange={(e) => isEditMode && showPassword && onFormChange?.('password', e.target.value)}
+            className={`${isEditMode ? 'bg-white' : 'bg-gray-50'} font-mono h-10 text-sm`} 
           />
           <Button
             variant="outline"
@@ -72,7 +96,7 @@ export function CredentialsSection({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => copyToClipboard(mockCredentials.password)}
+            onClick={() => copyToClipboard(currentPassword)}
             className="h-10"
           >
             <Copy className="h-4 w-4" />
