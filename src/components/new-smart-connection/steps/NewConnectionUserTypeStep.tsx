@@ -28,7 +28,7 @@ export function NewConnectionUserTypeStep() {
 
         <UserTypeCard
           type="dedicated"
-          title="Create a Dedicated Monto User"
+          title="Create a Monto User"
           description="Set up a separate user in your AP portal exclusively for Monto."
           selected={state.userType?.type === "dedicated"}
           onSelect={() => handleUserTypeSelect("dedicated")}
