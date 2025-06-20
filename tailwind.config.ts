@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -21,7 +20,7 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['"Studio Feixen Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-				mono: ['Roboto Mono', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace']
+				mono: ['"Studio Feixen Sans"', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace']
 			},
 			colors: {
 				'primary-lighter': '#EFEBFF',

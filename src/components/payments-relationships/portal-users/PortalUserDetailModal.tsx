@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -130,6 +129,7 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
             isEditMode={isEditMode}
             editFormData={editFormData}
             onFormChange={handleFormChange}
+            portalUserId={portalUser.id}
           />
 
           <ConnectionDetailsSection
