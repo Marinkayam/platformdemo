@@ -126,24 +126,13 @@ export function TwoFactorSection({
               Two-Factor Authentication
             </Label>
             <div className="flex items-center gap-2">
-              <div className="flex-1 relative">
-                <Input
-                  id="2fa-status"
-                  type="text"
-                  readOnly
-                  value={currentTwoFAEnabled ? `Verification Method: ${getMethodDisplayName(currentTwoFAMethod)}` : 'Disabled'}
-                  className={`${currentTwoFAEnabled ? 'text-gray-900' : 'text-gray-500'}`}
-                />
-                {isEditMode && (
-                  <div className="absolute right-2 top-1/2 -translate-y-1/2">
-                    <Switch 
-                      id="2fa-toggle"
-                      checked={currentTwoFAEnabled}
-                      onCheckedChange={handleToggle2FA}
-                    />
-                  </div>
-                )}
-              </div>
+              <Input
+                id="2fa-status"
+                type="text"
+                readOnly
+                value={currentTwoFAEnabled ? `Verification Method: ${getMethodDisplayName(currentTwoFAMethod)}` : 'Disabled'}
+                className={`flex-1 ${currentTwoFAEnabled ? 'text-gray-900' : 'text-gray-500'}`}
+              />
               {!isEditMode && currentTwoFAEnabled && (
                 <Button 
                   onClick={handleView2FACode}
@@ -153,6 +142,13 @@ export function TwoFactorSection({
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
+              )}
+              {isEditMode && (
+                <Switch 
+                  id="2fa-toggle"
+                  checked={currentTwoFAEnabled}
+                  onCheckedChange={handleToggle2FA}
+                />
               )}
             </div>
           </div>
