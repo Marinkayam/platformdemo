@@ -1,7 +1,9 @@
+
 import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye, Shield, Smartphone, Mail, AlertCircle } from "lucide-react";
 import { View2FAModal } from "../View2FAModal";
@@ -119,38 +121,40 @@ export function TwoFactorSection({
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Status and Toggle Section */}
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
-            <div className="space-y-1">
-              {currentTwoFAEnabled && (
-                <div className="flex items-center gap-1 text-xs text-gray-600">
-                  {getMethodIcon(currentTwoFAMethod)}
-                  <span>{getMethodDisplayName(currentTwoFAMethod)}</span>
-                </div>
-              )}
-            </div>
-            
-            <div className="flex items-center gap-3">
-              {isEditMode ? (
-                <Switch 
-                  id="2fa-toggle"
-                  checked={currentTwoFAEnabled}
-                  onCheckedChange={handleToggle2FA}
-                />
-              ) : (
-                <>
-                  {currentTwoFAEnabled && (
+          {/* Two-Factor Authentication Input Field */}
+          <div className="space-y-2">
+            <Label htmlFor="2fa-status" className="text-sm font-medium">
+              Two-Factor Authentication
+            </Label>
+            <div className="relative">
+              <Input
+                id="2fa-status"
+                type="text"
+                readOnly
+                value={currentTwoFAEnabled ? `Enabled (${getMethodDisplayName(currentTwoFAMethod)})` : 'Disabled'}
+                className={`pr-24 ${currentTwoFAEnabled ? 'text-green-700' : 'text-gray-500'}`}
+              />
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                {isEditMode ? (
+                  <Switch 
+                    id="2fa-toggle"
+                    checked={currentTwoFAEnabled}
+                    onCheckedChange={handleToggle2FA}
+                  />
+                ) : (
+                  currentTwoFAEnabled && (
                     <Button 
                       onClick={handleView2FACode}
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
+                      className="h-6 px-2 text-xs"
                     >
-                      <Eye className="h-4 w-4 mr-2" />
+                      <Eye className="h-3 w-3 mr-1" />
                       View Code
                     </Button>
-                  )}
-                </>
-              )}
+                  )
+                )}
+              </div>
             </div>
           </div>
 
