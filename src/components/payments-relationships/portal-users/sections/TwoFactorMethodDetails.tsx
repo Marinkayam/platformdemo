@@ -9,7 +9,7 @@ import { toast } from '@/hooks/use-toast';
 interface TwoFactorMethodDetailsProps {
   method: string;
   editFormData: {
-    twoFAMethod: string;
+    twoFAMethod?: string;
     phoneNumber?: string;
     verificationEmail?: string;
   };

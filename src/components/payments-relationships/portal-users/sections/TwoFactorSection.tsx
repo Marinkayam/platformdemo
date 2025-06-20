@@ -177,7 +177,11 @@ export function TwoFactorSection({
         {isEditMode && currentTwoFAEnabled && editFormData && (
           <TwoFactorMethodDetails 
             method={currentTwoFAMethod}
-            editFormData={editFormData}
+            editFormData={{
+              twoFAMethod: editFormData.twoFAMethod,
+              phoneNumber: editFormData.phoneNumber,
+              verificationEmail: editFormData.verificationEmail
+            }}
             onFormChange={onFormChange!}
           />
         )}
