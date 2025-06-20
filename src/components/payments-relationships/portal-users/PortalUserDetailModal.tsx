@@ -109,18 +109,14 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-lg font-semibold">
-              Portal User Details
-            </DialogTitle>
-            <div className="flex items-center gap-3">
-              <StatusBadge status={portalUser.status} className="px-3 py-1.5" />
-              <AgentUserTypeBadge type={portalUser.userType} className="px-3 py-1.5" />
-            </div>
-          </div>
+          <DialogTitle className="flex items-center gap-3">
+            <span>Portal User Details</span>
+            <StatusBadge status={portalUser.status} />
+            <AgentUserTypeBadge type={portalUser.userType} />
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-8 py-4">
+        <div className="space-y-6 py-4">
           <PortalIdentitySection 
             portalUser={portalUser}
             copyToClipboard={copyToClipboard}
@@ -129,35 +125,29 @@ export function PortalUserDetailModal({ isOpen, onClose, portalUser, onEditPorta
             onFormChange={handleFormChange}
           />
 
-          <div className="pt-2">
-            <CredentialsSection
-              mockCredentials={mockCredentials}
-              showPassword={showPassword}
-              setShowPassword={setShowPassword}
-              copyToClipboard={copyToClipboard}
-              isEditMode={isEditMode}
-              editFormData={editFormData}
-              onFormChange={handleFormChange}
-            />
-          </div>
+          <CredentialsSection
+            mockCredentials={mockCredentials}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            copyToClipboard={copyToClipboard}
+            isEditMode={isEditMode}
+            editFormData={editFormData}
+            onFormChange={handleFormChange}
+          />
 
-          <div className="pt-2">
-            <TwoFactorSection
-              mockCredentials={mockCredentials}
-              isEditMode={isEditMode}
-              editFormData={editFormData}
-              onFormChange={handleFormChange}
-              portalUserId={portalUser.id}
-            />
-          </div>
+          <TwoFactorSection
+            mockCredentials={mockCredentials}
+            isEditMode={isEditMode}
+            editFormData={editFormData}
+            onFormChange={handleFormChange}
+            portalUserId={portalUser.id}
+          />
 
-          <div className="pt-2">
-            <ConnectionDetailsSection
-              portalUser={portalUser}
-              mockLinkedConnections={mockLinkedConnections}
-              handleConnectionClick={handleConnectionClick}
-            />
-          </div>
+          <ConnectionDetailsSection
+            portalUser={portalUser}
+            mockLinkedConnections={mockLinkedConnections}
+            handleConnectionClick={handleConnectionClick}
+          />
 
           {portalUser.status === "Disconnected" && portalUser.issue && (
             <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md text-sm">
