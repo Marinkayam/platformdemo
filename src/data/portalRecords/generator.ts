@@ -23,6 +23,16 @@ export const generatePortalRecordsForInvoice = (invoice: any, index: number): Po
       connectionStatus = "Connected";
     }
     
+    // Determine portal status
+    let portalStatus: PortalRecord['portalStatus'];
+    if (connectionStatus === 'Disconnected') {
+      portalStatus = 'Error';
+    } else if (connectionStatus === 'Syncing') {
+      portalStatus = 'Pending';
+    } else {
+      portalStatus = Math.random() < 0.8 ? 'Active' : 'Inactive';
+    }
+    
     // Determine status based on invoice status
     let status: PortalRecord['status'];
     if (invoice.status === 'Paid' || invoice.status === 'Settled') {
@@ -55,25 +65,29 @@ export const generatePortalRecordsForInvoice = (invoice: any, index: number): Po
     
     const record: PortalRecord = {
       id: `PR-${String(index * 10 + i + 1).padStart(3, '0')}`,
+      portalRecordId: `PRC-2025-${String(index * 10 + i + 1).padStart(3, '0')}`,
       portal,
-      status,
-      matchType: i === 0 ? "Primary" : "Alternate",
-      updated: updatedDate.toISOString().split('T')[0],
-      conflict: isConflict,
-      invoiceNumber: invoice.id,
       buyer: invoice.buyer,
+      portalStatus,
+      invoiceNumber: invoice.id,
+      matchType: i === 0 ? "Primary" : "Alternate",
       total: Math.round(amount * 100) / 100,
+      currency: invoice.currency || "USD",
       poNumber: `PO-${Math.floor(Math.random() * 99999) + 10000}`,
       supplierName: invoice.buyer,
-      type: recordType,
-      currency: invoice.currency || "USD",
       connectionStatus,
-      lastSyncDate: updatedDate.toISOString().split('T')[0],
+      lastSynced: `Jun 15, 2025  ${String(Math.floor(Math.random() * 24)).padStart(2, '0')}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`,
+      
+      // Legacy compatibility fields
+      status,
+      updated: updatedDate.toISOString().split('T')[0],
+      conflict: isConflict,
+      type: recordType,
       companyName: invoice.buyer,
       accountName: `${invoice.buyer} Account`,
       recordType: i === 0 ? 'PO' : 'Invoice',
       matchStatus: isConflict ? "Conflicted" : (isUnmatched ? "Unmatched" : "Matched"),
-      lastSynced: `Jun 15, 2025  ${String(Math.floor(Math.random() * 24)).padStart(2, '0')}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`
+      lastSyncDate: updatedDate.toISOString().split('T')[0]
     };
     
     records.push(record);

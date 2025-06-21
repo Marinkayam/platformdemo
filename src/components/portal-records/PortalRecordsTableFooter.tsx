@@ -1,13 +1,14 @@
 
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { PortalRecord } from "@/types/portalRecord";
 
 interface PortalRecordsTableFooterProps {
   totalRecords: number;
   currentPage: number;
   recordsPerPage: number;
   onPageChange: (page: number) => void;
-  records?: any[]; // Optional for mixed currency totals
+  records?: PortalRecord[];
 }
 
 export function PortalRecordsTableFooter({
@@ -23,7 +24,7 @@ export function PortalRecordsTableFooter({
 
   // Calculate totals by currency
   const currencyTotals = records.reduce((acc, record) => {
-    if (record.total > 0 && record.connectionStatus !== 'Disconnected') {
+    if (typeof record.total === 'number' && record.total > 0 && record.connectionStatus !== 'Disconnected') {
       acc[record.currency] = (acc[record.currency] || 0) + record.total;
     }
     return acc;
@@ -129,4 +130,4 @@ export function PortalRecordsTableFooter({
       )}
     </div>
   );
-} 
+}
