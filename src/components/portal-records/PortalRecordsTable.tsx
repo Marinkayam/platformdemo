@@ -3,9 +3,9 @@ import { useState } from "react";
 import { TableSystem } from "@/components/ui/TableSystem";
 import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { ConnectionStatusBadge } from "./ConnectionStatusBadge";
-import { MatchStatusBadge } from "./MatchStatusBadge";
+import { PortalStatusBadge } from "./PortalStatusBadge";
+import { MatchTypeBadge } from "./MatchTypeBadge";
 import { PortalLogo } from "./PortalLogo";
-import { LastSyncedCell } from "./LastSyncedCell";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
 
@@ -21,29 +21,28 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
   const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
 
-  const totalPages = Math.ceil(records.length / recordsPerPage);
-
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  const handleView = (recordId: string) => {
-    console.log('View record:', recordId);
+  const handleViewDetails = (recordId: string) => {
+    console.log('Navigate to portal record detail:', recordId);
+    // TODO: Navigation will be implemented in Phase 3
   };
 
-  const handleDelete = (recordId: string) => {
-    console.log('Delete record:', recordId);
+  const handleAction = (recordId: string, action: string) => {
+    console.log(`${action} action for record:`, recordId);
+    // TODO: Action-specific functionality will be implemented in Phase 4
   };
 
   // Helper function to determine if a field should show data or "—"
-  const getDisplayValue = (record: PortalRecord, field: string): string => {
-    // Disconnected records show only portal name, everything else is "—"
-    if (record.connectionStatus === 'Disconnected' && field !== 'portal') {
+  const getDisplayValue = (record: PortalRecord, field: keyof PortalRecord): string => {
+    // Disconnected records show only portal name and record ID, everything else is "—"
+    if (record.connectionStatus === 'Disconnected' && !['portal', 'portalRecordId'].includes(field)) {
       return "—";
     }
 
-    // Get the actual field value
-    const value = record[field as keyof PortalRecord] as string;
+    const value = record[field] as string;
     
     // Return "—" if value is explicitly set to "—" or empty
     if (!value || value === "—") {
@@ -53,45 +52,40 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     return value;
   };
 
+  const formatCurrency = (amount: number, currency: string): string => {
+    if (amount === 0) return "—";
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+    }).format(amount);
+  };
+
   const columns = [
+    {
+      key: "portalRecordId",
+      label: "Portal Record ID",
+      className: "w-[12%]",
+      render: (record: PortalRecord) => (
+        <button
+          onClick={() => handleViewDetails(record.id)}
+          className="text-blue-600 hover:text-blue-800 hover:underline font-medium cursor-pointer"
+        >
+          {record.portalRecordId}
+        </button>
+      )
+    },
     {
       key: "portal",
       label: "Portal",
-      className: "w-[15%]",
+      className: "w-[12%]",
       render: (record: PortalRecord) => (
         <PortalLogo portalName={record.portal} />
       )
     },
     {
-      key: "invoiceNumber",
-      label: "Invoice #",
-      className: "w-[12%]",
-      render: (record: PortalRecord) => {
-        const value = getDisplayValue(record, 'invoiceNumber');
-        return (
-          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
-            {value}
-          </span>
-        );
-      }
-    },
-    {
-      key: "poNumber",
-      label: "PO #",
-      className: "w-[12%]",
-      render: (record: PortalRecord) => {
-        const value = getDisplayValue(record, 'poNumber');
-        return (
-          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
-            {value}
-          </span>
-        );
-      }
-    },
-    {
       key: "buyer",
       label: "Buyer",
-      className: "w-[15%]",
+      className: "w-[12%]",
       render: (record: PortalRecord) => {
         const value = getDisplayValue(record, 'buyer');
         return (
@@ -102,43 +96,109 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
       }
     },
     {
-      key: "matchStatus",
-      label: "Match Status",
-      className: "w-[12%]",
+      key: "portalStatus",
+      label: "Portal Status",
+      className: "w-[10%]",
       render: (record: PortalRecord) => {
-        const status = getDisplayValue(record, 'matchStatus');
-        return <MatchStatusBadge status={status} />;
+        if (record.connectionStatus === 'Disconnected') {
+          return <span className="text-gray-400">—</span>;
+        }
+        return <PortalStatusBadge status={record.portalStatus} />;
       }
     },
     {
-      key: "connectionStatus",
-      label: "Connection",
-      className: "w-[12%]",
-      render: (record: PortalRecord) => (
-        <ConnectionStatusBadge status={record.connectionStatus} />
-      )
+      key: "invoiceNumber",
+      label: "Invoice #",
+      className: "w-[10%]",
+      render: (record: PortalRecord) => {
+        const value = getDisplayValue(record, 'invoiceNumber');
+        return (
+          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
+            {value}
+          </span>
+        );
+      }
     },
     {
-      key: "lastSynced",
-      label: "Last Synced",
-      className: "w-[15%] text-right",
+      key: "matchType",
+      label: "Match Type",
+      className: "w-[10%]",
       render: (record: PortalRecord) => {
-        const value = getDisplayValue(record, 'lastSynced');
-        return <LastSyncedCell lastSynced={value} />;
+        if (record.connectionStatus === 'Disconnected') {
+          return <span className="text-gray-400">—</span>;
+        }
+        return <MatchTypeBadge type={record.matchType} />;
+      }
+    },
+    {
+      key: "total",
+      label: "Total",
+      className: "w-[10%] text-right",
+      render: (record: PortalRecord) => {
+        if (record.connectionStatus === 'Disconnected' || record.total === 0) {
+          return <span className="text-gray-400">—</span>;
+        }
+        return (
+          <span className="text-gray-600 font-medium">
+            {formatCurrency(record.total, record.currency)}
+          </span>
+        );
+      }
+    },
+    {
+      key: "poNumber",
+      label: "PO #",
+      className: "w-[10%]",
+      render: (record: PortalRecord) => {
+        const value = getDisplayValue(record, 'poNumber');
+        return (
+          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
+            {value}
+          </span>
+        );
+      }
+    },
+    {
+      key: "supplierName",
+      label: "Supplier Name",
+      className: "w-[12%]",
+      render: (record: PortalRecord) => {
+        const value = getDisplayValue(record, 'supplierName');
+        return (
+          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
+            {value}
+          </span>
+        );
       }
     },
     {
       key: "actions",
       label: "Actions",
       className: "w-[7%] text-center",
-      render: (record: PortalRecord) => (
-        <TableActions
-          actions={[
-            commonActions.view(() => handleView(record.id)),
-            commonActions.delete(() => handleDelete(record.id))
-          ]}
-        />
-      )
+      render: (record: PortalRecord) => {
+        // Context-specific actions based on match type
+        const actions = [
+          commonActions.view(() => handleViewDetails(record.id))
+        ];
+
+        if (record.matchType === 'Unmatched') {
+          actions.push({
+            label: "Match Invoice",
+            onClick: () => handleAction(record.id, 'match'),
+            variant: "default" as const
+          });
+        } else if (record.matchType === 'Conflict') {
+          actions.push({
+            label: "Resolve Conflict",
+            onClick: () => handleAction(record.id, 'resolve'),
+            variant: "default" as const
+          });
+        }
+
+        return (
+          <TableActions actions={actions} />
+        );
+      }
     }
   ];
 

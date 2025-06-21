@@ -10,25 +10,20 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
   const needsAttentionRecords = useMemo(() => {
     return data.filter(record => 
       record.connectionStatus === 'Disconnected' ||
-      record.type === 'Conflict' ||
-      record.type === 'Unmatched'
+      record.matchType === 'Conflict' ||
+      record.matchType === 'Unmatched'
     );
   }, [data]);
 
   const filteredRecords = useMemo(() => {
     let filtered = [...data];
 
-    // Filter by active tab (type)
+    // Filter by active tab (simplified to 3 tabs)
     if (activeTab !== "all") {
-      const typeMap: Record<string, string> = {
-        "primary": "Primary",
-        "alternate": "Alternate", 
-        "unmatched": "Unmatched",
-        "conflict": "Conflict"
-      };
-      
-      if (typeMap[activeTab]) {
-        filtered = filtered.filter(record => record.type === typeMap[activeTab]);
+      if (activeTab === "unmatched") {
+        filtered = filtered.filter(record => record.matchType === "Unmatched");
+      } else if (activeTab === "conflict") {
+        filtered = filtered.filter(record => record.matchType === "Conflict");
       }
     }
 
@@ -42,26 +37,25 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
       filtered = filtered.filter(record => filters.buyer.includes(record.buyer));
     }
 
-    // Apply record type filter
+    // Apply record type filter (using matchType)
     if (filters.recordType.length > 0) {
-      filtered = filtered.filter(record => record.type && filters.recordType.includes(record.type));
+      filtered = filtered.filter(record => filters.recordType.includes(record.matchType));
     }
 
-    // Apply status filter
+    // Apply status filter (using portalStatus)
     if (filters.status !== "All") {
-      filtered = filtered.filter(record => record.status === filters.status);
+      filtered = filtered.filter(record => record.portalStatus === filters.status || filters.status === "All");
     }
 
     // Apply transaction type filter
     if (filters.transactionType !== "All") {
-      // Note: This assumes we add transactionType field to PortalRecord type
       filtered = filtered.filter(record => record.recordType === filters.transactionType || filters.transactionType === "All");
     }
 
     // Apply due date filter
     if (filters.dueDate.from || filters.dueDate.to) {
       filtered = filtered.filter(record => {
-        if (!record.lastSynced) return true;
+        if (!record.lastSynced || record.lastSynced === "—" || record.lastSynced === "In Progress") return true;
         const recordDate = new Date(record.lastSynced);
         const fromDate = filters.dueDate.from ? new Date(filters.dueDate.from) : null;
         const toDate = filters.dueDate.to ? new Date(filters.dueDate.to) : null;
@@ -78,11 +72,12 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
       const searchLower = searchValue.toLowerCase();
       filtered = filtered.filter(record =>
         record.id.toLowerCase().includes(searchLower) ||
+        record.portalRecordId.toLowerCase().includes(searchLower) ||
         record.portal.toLowerCase().includes(searchLower) ||
         record.buyer.toLowerCase().includes(searchLower) ||
-        record.invoiceNumber.toLowerCase().includes(searchLower) ||
+        (record.invoiceNumber && record.invoiceNumber.toLowerCase().includes(searchLower)) ||
         record.poNumber.toLowerCase().includes(searchLower) ||
-        (record.supplierName && record.supplierName.toLowerCase().includes(searchLower))
+        record.supplierName.toLowerCase().includes(searchLower)
       );
     }
 

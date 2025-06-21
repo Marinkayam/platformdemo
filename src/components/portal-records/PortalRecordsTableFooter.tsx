@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -6,6 +7,7 @@ interface PortalRecordsTableFooterProps {
   currentPage: number;
   recordsPerPage: number;
   onPageChange: (page: number) => void;
+  records?: any[]; // Optional for mixed currency totals
 }
 
 export function PortalRecordsTableFooter({
@@ -13,22 +15,51 @@ export function PortalRecordsTableFooter({
   currentPage,
   recordsPerPage,
   onPageChange,
+  records = []
 }: PortalRecordsTableFooterProps) {
   const totalPages = Math.ceil(totalRecords / recordsPerPage);
   const startRecord = totalRecords === 0 ? 0 : (currentPage - 1) * recordsPerPage + 1;
   const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
 
+  // Calculate totals by currency
+  const currencyTotals = records.reduce((acc, record) => {
+    if (record.total > 0 && record.connectionStatus !== 'Disconnected') {
+      acc[record.currency] = (acc[record.currency] || 0) + record.total;
+    }
+    return acc;
+  }, {} as Record<string, number>);
+
+  const formatCurrencyTotal = (amount: number, currency: string): string => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+    }).format(amount);
+  };
+
   return (
     <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white">
-      <div className="flex items-center text-sm text-gray-600">
-        {totalRecords > 0 ? (
-          <>
-            Showing <span className="font-medium mx-1">{startRecord}</span> to{" "}
-            <span className="font-medium mx-1">{endRecord}</span> of{" "}
-            <span className="font-medium mx-1">{totalRecords}</span> records
-          </>
-        ) : (
-          "No records to display"
+      <div className="flex items-center gap-6">
+        <div className="text-sm text-gray-600">
+          {totalRecords > 0 ? (
+            <>
+              Showing <span className="font-medium mx-1">{startRecord}</span> to{" "}
+              <span className="font-medium mx-1">{endRecord}</span> of{" "}
+              <span className="font-medium mx-1">{totalRecords}</span> records
+            </>
+          ) : (
+            "No records to display"
+          )}
+        </div>
+        
+        {Object.keys(currencyTotals).length > 0 && (
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-gray-500">Total:</span>
+            {Object.entries(currencyTotals).map(([currency, total]) => (
+              <span key={currency} className="text-sm font-medium text-gray-700">
+                {formatCurrencyTotal(total, currency)}
+              </span>
+            ))}
+          </div>
         )}
       </div>
       
@@ -47,7 +78,7 @@ export function PortalRecordsTableFooter({
           <div className="flex items-center space-x-1">
             {(() => {
               const pageButtons = [];
-              const maxPageButtons = 5; // Maximum number of page buttons to show
+              const maxPageButtons = 5;
               const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
               const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
 

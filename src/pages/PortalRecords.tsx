@@ -20,19 +20,15 @@ export default function PortalRecords() {
     needsAttentionCount
   } = usePortalRecordFiltering(allPortalRecords, activeTab);
 
-  // Calculate tab counts
+  // Calculate tab counts with new simplified structure
   const tabCounts = {
     all: allPortalRecords.length,
-    primary: allPortalRecords.filter(r => r.type === "Primary").length,
-    alternate: allPortalRecords.filter(r => r.type === "Alternate").length,
-    unmatched: allPortalRecords.filter(r => r.type === "Unmatched").length,
-    conflict: allPortalRecords.filter(r => r.type === "Conflict").length,
+    unmatched: allPortalRecords.filter(r => r.matchType === "Unmatched").length,
+    conflict: allPortalRecords.filter(r => r.matchType === "Conflict").length,
   };
 
   const tabs = [
     { id: "all", label: "All Records", count: tabCounts.all },
-    { id: "primary", label: "Primary", count: tabCounts.primary },
-    { id: "alternate", label: "Alternate", count: tabCounts.alternate },
     { id: "unmatched", label: "Unmatched", count: tabCounts.unmatched },
     { id: "conflict", label: "Conflicts", count: tabCounts.conflict },
   ];
