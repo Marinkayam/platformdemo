@@ -1,12 +1,11 @@
+
 import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { purchaseOrderData } from "@/data/purchaseOrders";
 import { PurchaseOrder } from "@/types/purchase-orders";
 import { PurchaseOrderDetailHeader } from "@/components/purchase-orders/PurchaseOrderDetailHeader";
-import { PurchaseOrderPdfViewer } from "@/components/purchase-orders/PurchaseOrderPdfViewer";
 import { ActivityLog } from "@/components/common/ActivityLog";
 import { TabsContent, Tabs } from "@/components/ui/tabs";
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { PurchaseOrderTabs } from "@/components/purchase-orders/PurchaseOrderTabs";
@@ -30,7 +29,6 @@ export default function PurchaseOrderDetail() {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const navigate = useNavigate();
-  const [zoomLevel, setZoomLevel] = useState(1.0);
   const [activeTab, setActiveTab] = useState("po-data");
   const [hasInitialized, setHasInitialized] = useState(false);
 
@@ -83,14 +81,6 @@ export default function PurchaseOrderDetail() {
     );
   }
 
-  const handleZoomIn = () => {
-    setZoomLevel(prev => Math.min(prev + 0.1, 2.0));
-  };
-
-  const handleZoomOut = () => {
-    setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
-  };
-
   const lineItems = purchaseOrder.lineItems || [];
   const activityCount = 4; // Placeholder, adjust as needed or fetch dynamic count
 
@@ -102,20 +92,9 @@ export default function PurchaseOrderDetail() {
         <PurchaseOrderTabs activeTab={activeTab} onTabChange={setActiveTab} activityCount={activityCount} />
 
         <TabsContent value="po-data">
-          <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
-            <ResizablePanel defaultSize={55} className="p-6 bg-white">
-              <PurchaseOrderInformation purchaseOrder={purchaseOrder} />
-            </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel defaultSize={45} className="p-6 border-l border-[#E4E5E9] bg-white">
-              <PurchaseOrderPdfViewer
-                purchaseOrder={purchaseOrder}
-                zoomLevel={zoomLevel}
-                onZoomIn={handleZoomIn}
-                onZoomOut={handleZoomOut}
-              />
-            </ResizablePanel>
-          </ResizablePanelGroup>
+          <Card className="p-6 rounded-xl shadow-sm">
+            <PurchaseOrderInformation purchaseOrder={purchaseOrder} />
+          </Card>
 
           <PurchaseOrderLineItems purchaseOrder={purchaseOrder} />
 

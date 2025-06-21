@@ -1,9 +1,11 @@
+
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { PurchaseOrderFilters } from "./PurchaseOrderFilters";
 import { PurchaseOrderFilters as PurchaseOrderFiltersType } from "./filters/types";
 import { TabsNav } from "@/components/common/TabsNav";
+import { PurchaseOrderActions } from "./PurchaseOrderActions";
 
 interface Tab {
   id: string;
@@ -41,7 +43,8 @@ export function PurchaseOrderHeader({
 
       <div className="flex justify-between items-center mb-6">
         <PurchaseOrderFilters onFilterChange={onFilterChange} />
+        <PurchaseOrderActions purchaseOrderCount={purchaseOrderCount} />
       </div>
     </>
   );
-} 
+}

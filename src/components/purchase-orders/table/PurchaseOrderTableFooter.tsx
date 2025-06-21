@@ -1,3 +1,4 @@
+
 import { TableCell, TableFooter, TableRow } from "@/components/ui/table";
 import { PurchaseOrder } from "@/types/purchase-orders";
 import { formatCurrency } from "@/lib/utils";
@@ -7,9 +8,27 @@ interface PurchaseOrderTableFooterProps {
 }
 
 export function PurchaseOrderTableFooter({ purchaseOrders }: PurchaseOrderTableFooterProps) {
-  const totalAmount = purchaseOrders.reduce((sum, po) => sum + po.total, 0);
   const totalPurchaseOrders = purchaseOrders.length;
-  const currency = purchaseOrders.length > 0 ? purchaseOrders[0].currency : "USD";
+  
+  // Calculate totals by currency
+  const currencyTotals = purchaseOrders.reduce((acc, po) => {
+    const currency = po.currency || "USD";
+    if (!acc[currency]) {
+      acc[currency] = 0;
+    }
+    acc[currency] += po.total || 0;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Format the total amounts display
+  const formatTotalAmounts = () => {
+    const entries = Object.entries(currencyTotals);
+    if (entries.length === 0) return formatCurrency(0, "USD");
+    
+    return entries
+      .map(([currency, amount]) => formatCurrency(amount, currency))
+      .join(" + ");
+  };
 
   return (
     <TableFooter>
@@ -24,7 +43,7 @@ export function PurchaseOrderTableFooter({ purchaseOrders }: PurchaseOrderTableF
         <TableCell className="font-semibold text-gray-700 bg-[#F6F7F9]">
           <div className="flex items-center gap-2">
             <span>Total Amount:</span>
-            <span className="font-bold text-gray-900">{formatCurrency(totalAmount, currency)}</span>
+            <span className="font-bold text-gray-900">{formatTotalAmounts()}</span>
           </div>
         </TableCell>
         <TableCell colSpan={3} className="bg-[#F6F7F9]"></TableCell>
