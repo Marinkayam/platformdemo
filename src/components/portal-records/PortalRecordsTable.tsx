@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TableSystem } from "@/components/ui/TableSystem";
@@ -8,6 +9,9 @@ import { MatchTypeBadge } from "./MatchTypeBadge";
 import { PortalLogo } from "./PortalLogo";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
+import { MatchInvoiceModal } from "./actions/MatchInvoiceModal";
+import { ResolveConflictModal } from "./actions/ResolveConflictModal";
+import { SyncRecordModal } from "./actions/SyncRecordModal";
 
 interface PortalRecordsTableProps {
   records: PortalRecord[];
@@ -17,6 +21,12 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 10;
+
+  // Modal states
+  const [matchModalOpen, setMatchModalOpen] = useState(false);
+  const [conflictModalOpen, setConflictModalOpen] = useState(false);
+  const [syncModalOpen, setSyncModalOpen] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<PortalRecord | null>(null);
 
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
@@ -30,9 +40,34 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     navigate(`/portal-records/${recordId}`);
   };
 
-  const handleAction = (recordId: string, action: string) => {
-    console.log(`${action} action for record:`, recordId);
-    // TODO: Action-specific functionality will be implemented in Phase 4
+  const handleMatchInvoice = (record: PortalRecord) => {
+    setSelectedRecord(record);
+    setMatchModalOpen(true);
+  };
+
+  const handleResolveConflict = (record: PortalRecord) => {
+    setSelectedRecord(record);
+    setConflictModalOpen(true);
+  };
+
+  const handleSyncRecord = (record: PortalRecord) => {
+    setSelectedRecord(record);
+    setSyncModalOpen(true);
+  };
+
+  const onInvoiceMatched = (invoiceId: string) => {
+    console.log(`Matched invoice ${invoiceId} with record ${selectedRecord?.id}`);
+    // TODO: Update record state in real implementation
+  };
+
+  const onConflictResolved = (resolution: string) => {
+    console.log(`Resolved conflict with option: ${resolution} for record ${selectedRecord?.id}`);
+    // TODO: Update record state in real implementation
+  };
+
+  const onRecordSynced = () => {
+    console.log(`Synced record ${selectedRecord?.id}`);
+    // TODO: Update record state in real implementation
   };
 
   // Helper function to determine if a field should show data or "—"
@@ -176,21 +211,30 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
       label: "Actions",
       className: "w-[7%] text-center",
       render: (record: PortalRecord) => {
-        // Context-specific actions based on match type
+        // Context-specific actions based on match type and connection status
         const actions = [
           commonActions.view(() => handleViewDetails(record.id))
         ];
 
-        if (record.matchType === 'Unmatched') {
+        if (record.connectionStatus === 'Connected') {
+          if (record.matchType === 'Unmatched') {
+            actions.push({
+              label: "Match Invoice",
+              onClick: () => handleMatchInvoice(record),
+              variant: "default" as const
+            });
+          } else if (record.matchType === 'Conflict') {
+            actions.push({
+              label: "Resolve Conflict",
+              onClick: () => handleResolveConflict(record),
+              variant: "default" as const
+            });
+          }
+          
+          // Add sync action for all connected records
           actions.push({
-            label: "Match Invoice",
-            onClick: () => handleAction(record.id, 'match'),
-            variant: "default" as const
-          });
-        } else if (record.matchType === 'Conflict') {
-          actions.push({
-            label: "Resolve Conflict",
-            onClick: () => handleAction(record.id, 'resolve'),
+            label: "Sync Record",
+            onClick: () => handleSyncRecord(record),
             variant: "default" as const
           });
         }
@@ -239,6 +283,32 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
         onPageChange={handlePageChange}
         records={records}
       />
+
+      {/* Action Modals */}
+      {selectedRecord && (
+        <>
+          <MatchInvoiceModal
+            isOpen={matchModalOpen}
+            onClose={() => setMatchModalOpen(false)}
+            record={selectedRecord}
+            onMatch={onInvoiceMatched}
+          />
+          
+          <ResolveConflictModal
+            isOpen={conflictModalOpen}
+            onClose={() => setConflictModalOpen(false)}
+            record={selectedRecord}
+            onResolve={onConflictResolved}
+          />
+          
+          <SyncRecordModal
+            isOpen={syncModalOpen}
+            onClose={() => setSyncModalOpen(false)}
+            record={selectedRecord}
+            onSync={onRecordSynced}
+          />
+        </>
+      )}
     </div>
   );
 }

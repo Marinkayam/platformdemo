@@ -7,6 +7,9 @@ import { PortalRecordTabs } from "@/components/portal-records/detail/PortalRecor
 import { RecordInformationTab } from "@/components/portal-records/detail/RecordInformationTab";
 import { ActivityLogTab } from "@/components/portal-records/detail/ActivityLogTab";
 import { RelatedInvoicesTab } from "@/components/portal-records/detail/RelatedInvoicesTab";
+import { MatchInvoiceModal } from "@/components/portal-records/actions/MatchInvoiceModal";
+import { ResolveConflictModal } from "@/components/portal-records/actions/ResolveConflictModal";
+import { SyncRecordModal } from "@/components/portal-records/actions/SyncRecordModal";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,6 +18,11 @@ export default function PortalRecordDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("information");
+  
+  // Modal states
+  const [matchModalOpen, setMatchModalOpen] = useState(false);
+  const [conflictModalOpen, setConflictModalOpen] = useState(false);
+  const [syncModalOpen, setSyncModalOpen] = useState(false);
 
   // Find the portal record by ID
   const portalRecord = allPortalRecords.find(record => record.id === id);
@@ -62,6 +70,49 @@ export default function PortalRecordDetail() {
     }
   };
 
+  const getActionButtons = () => {
+    const buttons = [];
+
+    if (portalRecord.connectionStatus === 'Connected') {
+      if (portalRecord.matchType === 'Unmatched') {
+        buttons.push(
+          <Button key="match" onClick={() => setMatchModalOpen(true)}>
+            Match Invoice
+          </Button>
+        );
+      } else if (portalRecord.matchType === 'Conflict') {
+        buttons.push(
+          <Button key="resolve" onClick={() => setConflictModalOpen(true)}>
+            Resolve Conflict
+          </Button>
+        );
+      }
+      
+      buttons.push(
+        <Button key="sync" variant="outline" onClick={() => setSyncModalOpen(true)}>
+          Sync Record
+        </Button>
+      );
+    }
+
+    return buttons;
+  };
+
+  const onInvoiceMatched = (invoiceId: string) => {
+    console.log(`Matched invoice ${invoiceId} with record ${portalRecord.id}`);
+    // TODO: Update record state and refresh data
+  };
+
+  const onConflictResolved = (resolution: string) => {
+    console.log(`Resolved conflict with option: ${resolution} for record ${portalRecord.id}`);
+    // TODO: Update record state and refresh data
+  };
+
+  const onRecordSynced = () => {
+    console.log(`Synced record ${portalRecord.id}`);
+    // TODO: Update record state and refresh data
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Breadcrumb Navigation */}
@@ -78,15 +129,18 @@ export default function PortalRecordDetail() {
           </BreadcrumbList>
         </Breadcrumb>
         
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate("/portal-records")}
-          className="text-gray-600 hover:text-gray-900"
-        >
-          <ChevronLeft className="h-4 w-4 mr-1" />
-          Back to Portal Records
-        </Button>
+        <div className="flex items-center gap-2">
+          {getActionButtons()}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/portal-records")}
+            className="text-gray-600 hover:text-gray-900 ml-2"
+          >
+            <ChevronLeft className="h-4 w-4 mr-1" />
+            Back to Portal Records
+          </Button>
+        </div>
       </div>
 
       {/* Header */}
@@ -103,6 +157,28 @@ export default function PortalRecordDetail() {
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         {renderTabContent()}
       </div>
+
+      {/* Action Modals */}
+      <MatchInvoiceModal
+        isOpen={matchModalOpen}
+        onClose={() => setMatchModalOpen(false)}
+        record={portalRecord}
+        onMatch={onInvoiceMatched}
+      />
+      
+      <ResolveConflictModal
+        isOpen={conflictModalOpen}
+        onClose={() => setConflictModalOpen(false)}
+        record={portalRecord}
+        onResolve={onConflictResolved}
+      />
+      
+      <SyncRecordModal
+        isOpen={syncModalOpen}
+        onClose={() => setSyncModalOpen(false)}
+        record={portalRecord}
+        onSync={onRecordSynced}
+      />
     </div>
   );
 }
