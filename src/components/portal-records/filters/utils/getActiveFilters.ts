@@ -28,6 +28,15 @@ export function getActiveFilters(filters: PortalRecordFilters): ActiveFilter[] {
     });
   });
 
+  // Record Type filters
+  filters.recordType.forEach(recordType => {
+    activeFilters.push({
+      key: `recordType-${recordType}`,
+      label: "Record Type",
+      value: recordType
+    });
+  });
+
   // Status filter
   if (filters.status !== "All") {
     activeFilters.push({
@@ -37,12 +46,39 @@ export function getActiveFilters(filters: PortalRecordFilters): ActiveFilter[] {
     });
   }
 
+  // Transaction Type filter
+  if (filters.transactionType !== "All") {
+    activeFilters.push({
+      key: "transactionType",
+      label: "Transaction Type",
+      value: filters.transactionType
+    });
+  }
+
   // Type filter
   if (filters.type !== "All") {
     activeFilters.push({
       key: "type",
       label: "Type",
       value: filters.type
+    });
+  }
+
+  // Due Date filter
+  if (filters.dueDate.from || filters.dueDate.to) {
+    let dateValue = "";
+    if (filters.dueDate.from && filters.dueDate.to) {
+      dateValue = `${filters.dueDate.from} - ${filters.dueDate.to}`;
+    } else if (filters.dueDate.from) {
+      dateValue = `From ${filters.dueDate.from}`;
+    } else if (filters.dueDate.to) {
+      dateValue = `Until ${filters.dueDate.to}`;
+    }
+    
+    activeFilters.push({
+      key: "dueDate",
+      label: "Due Date",
+      value: dateValue
     });
   }
 

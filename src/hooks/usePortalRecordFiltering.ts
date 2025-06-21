@@ -42,21 +42,47 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
       filtered = filtered.filter(record => filters.buyer.includes(record.buyer));
     }
 
+    // Apply record type filter
+    if (filters.recordType.length > 0) {
+      filtered = filtered.filter(record => record.type && filters.recordType.includes(record.type));
+    }
+
     // Apply status filter
     if (filters.status !== "All") {
       filtered = filtered.filter(record => record.status === filters.status);
     }
 
+    // Apply transaction type filter
+    if (filters.transactionType !== "All") {
+      // Note: This assumes we add transactionType field to PortalRecord type
+      filtered = filtered.filter(record => record.recordType === filters.transactionType || filters.transactionType === "All");
+    }
+
+    // Apply due date filter
+    if (filters.dueDate.from || filters.dueDate.to) {
+      filtered = filtered.filter(record => {
+        if (!record.lastSynced) return true;
+        const recordDate = new Date(record.lastSynced);
+        const fromDate = filters.dueDate.from ? new Date(filters.dueDate.from) : null;
+        const toDate = filters.dueDate.to ? new Date(filters.dueDate.to) : null;
+        
+        if (fromDate && recordDate < fromDate) return false;
+        if (toDate && recordDate > toDate) return false;
+        return true;
+      });
+    }
+
     // Apply search filter
-    if (searchTerm) {
-      const searchLower = searchTerm.toLowerCase();
+    if (filters.search || searchTerm) {
+      const searchValue = filters.search || searchTerm;
+      const searchLower = searchValue.toLowerCase();
       filtered = filtered.filter(record =>
         record.id.toLowerCase().includes(searchLower) ||
         record.portal.toLowerCase().includes(searchLower) ||
         record.buyer.toLowerCase().includes(searchLower) ||
         record.invoiceNumber.toLowerCase().includes(searchLower) ||
         record.poNumber.toLowerCase().includes(searchLower) ||
-        record.supplierName.toLowerCase().includes(searchLower)
+        (record.supplierName && record.supplierName.toLowerCase().includes(searchLower))
       );
     }
 

@@ -22,10 +22,16 @@ export function usePortalRecordFiltersState(onFilterChange: (filters: PortalReco
       newFilters.portal = newFilters.portal.filter(p => p !== value);
     } else if (key.startsWith("buyer-")) {
       newFilters.buyer = newFilters.buyer.filter(b => b !== value);
+    } else if (key.startsWith("recordType-")) {
+      newFilters.recordType = newFilters.recordType.filter(r => r !== value);
     } else if (key === "status") {
       newFilters.status = "All";
     } else if (key === "type") {
       newFilters.type = "All";
+    } else if (key === "transactionType") {
+      newFilters.transactionType = "All";
+    } else if (key === "dueDate") {
+      newFilters.dueDate = { from: "", to: "" };
     } else if (key === "search") {
       newFilters.search = "";
     }
