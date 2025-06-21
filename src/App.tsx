@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +12,7 @@ import AddAgent from "./pages/AddAgent";
 import PurchaseOrders from "./pages/PurchaseOrders";
 import PurchaseOrderDetail from "./pages/PurchaseOrderDetail";
 import PortalRecords from "./pages/PortalRecords";
+import PortalRecordDetail from "./pages/PortalRecordDetail";
 import Workspace from "./pages/Workspace";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
@@ -42,6 +44,7 @@ const App = () => (
               <Route path="/invoices" element={<Invoices />} />
               <Route path="/invoices/:id" element={<InvoiceDetail />} />
               <Route path="/portal-records" element={<PortalRecords />} />
+              <Route path="/portal-records/:id" element={<PortalRecordDetail />} />
               <Route path="/payments-relationships" element={<PaymentsRelationships />} />
               <Route path="/payments-relationships/new" element={<NewPaymentsRelationship />} />
               <Route path="/purchase-orders" element={<PurchaseOrders />} />

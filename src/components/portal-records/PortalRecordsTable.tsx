@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TableSystem } from "@/components/ui/TableSystem";
 import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { ConnectionStatusBadge } from "./ConnectionStatusBadge";
@@ -14,6 +14,7 @@ interface PortalRecordsTableProps {
 }
 
 export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 10;
 
@@ -26,8 +27,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   };
 
   const handleViewDetails = (recordId: string) => {
-    console.log('Navigate to portal record detail:', recordId);
-    // TODO: Navigation will be implemented in Phase 3
+    navigate(`/portal-records/${recordId}`);
   };
 
   const handleAction = (recordId: string, action: string) => {
@@ -237,6 +237,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
         currentPage={currentPage}
         recordsPerPage={recordsPerPage}
         onPageChange={handlePageChange}
+        records={records}
       />
     </div>
   );
