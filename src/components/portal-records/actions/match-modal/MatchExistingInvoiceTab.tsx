@@ -50,7 +50,7 @@ export function MatchExistingInvoiceTab({
   // Filter invoices with enhanced search
   const filteredInvoices = useMemo(() => {
     return invoiceData.filter(invoice => {
-      const matchesBuyer = invoice.buyer.toLowerCase().includes(selectedBuyer.toLowerCase());
+      const matchesBuyer = selectedBuyer === "all_buyers" || invoice.buyer.toLowerCase().includes(selectedBuyer.toLowerCase());
       const matchesSearch = debouncedSearchTerm === "" || 
         invoice.id.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
         invoice.buyer.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
@@ -89,7 +89,7 @@ export function MatchExistingInvoiceTab({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={record.buyer}>{record.buyer}</SelectItem>
-              <SelectItem value="">All Buyers</SelectItem>
+              <SelectItem value="all_buyers">All Buyers</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -148,7 +148,7 @@ export function MatchExistingInvoiceTab({
           </PopoverContent>
         </Popover>
         <p className="text-xs text-gray-500">
-          Only showing invoices from {selectedPortal} + {selectedBuyer}
+          Only showing invoices from {selectedPortal} + {selectedBuyer === "all_buyers" ? "All Buyers" : selectedBuyer}
         </p>
       </div>
 
