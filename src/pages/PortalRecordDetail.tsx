@@ -2,24 +2,24 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { allPortalRecords } from "@/data/portalRecords";
-import { PortalRecordHeader } from "@/components/portal-records/detail/PortalRecordHeader";
-import { PortalRecordTabs } from "@/components/portal-records/detail/PortalRecordTabs";
-import { RecordInformationTab } from "@/components/portal-records/detail/RecordInformationTab";
-import { ActivityLogTab } from "@/components/portal-records/detail/ActivityLogTab";
-import { RelatedInvoicesTab } from "@/components/portal-records/detail/RelatedInvoicesTab";
+import { PortalRecordDetailHeader } from "@/components/portal-records/detail/PortalRecordDetailHeader";
+import { PortalRecordInformation } from "@/components/portal-records/detail/PortalRecordInformation";
+import { PortalRecordActivityLog } from "@/components/portal-records/detail/PortalRecordActivityLog";
+import { PortalRecordPdfViewer } from "@/components/portal-records/detail/PortalRecordPdfViewer";
 import { MatchInvoiceModal } from "@/components/portal-records/actions/MatchInvoiceModal";
 import { ResolveConflictModal } from "@/components/portal-records/actions/ResolveConflictModal";
 import { SyncRecordModal } from "@/components/portal-records/actions/SyncRecordModal";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 export default function PortalRecordDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("information");
+  const [activeTab, setActiveTab] = useState("record-data");
+  const [zoomLevel, setZoomLevel] = useState(1);
   
   // Modal states
   const [matchModalOpen, setMatchModalOpen] = useState(false);
@@ -53,24 +53,8 @@ export default function PortalRecordDetail() {
     );
   }
 
-  const tabs = [
-    { id: "information", label: "Record Information" },
-    { id: "activity", label: "Activity Log" },
-    { id: "related", label: "Related Invoices" }
-  ];
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case "information":
-        return <RecordInformationTab record={portalRecord} />;
-      case "activity":
-        return <ActivityLogTab record={portalRecord} />;
-      case "related":
-        return <RelatedInvoicesTab record={portalRecord} />;
-      default:
-        return <RecordInformationTab record={portalRecord} />;
-    }
-  };
+  const handleZoomIn = () => setZoomLevel(z => Math.min(z + 0.1, 2));
+  const handleZoomOut = () => setZoomLevel(z => Math.max(z - 0.1, 0.5));
 
   const getActionButtons = () => {
     const buttons = [];
@@ -116,53 +100,37 @@ export default function PortalRecordDetail() {
   };
 
   return (
-    <div className="container mx-auto py-6">
-      {/* Breadcrumb Navigation */}
-      <div className="flex items-center gap-2 mb-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="h-8 w-8">
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/portal-records">Portal Records</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>All Records</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+    <div className="container mx-auto px-4 py-6">
+      <PortalRecordDetailHeader portalRecord={portalRecord} actionButtons={getActionButtons()} className="mb-6" />
 
-      {/* Header */}
-      <PortalRecordHeader record={portalRecord} actionButtons={getActionButtons()} />
-
-      {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <PortalRecordTabs
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
+        <TabsList className="mb-4">
+          <TabsTrigger value="record-data">Record Data</TabsTrigger>
+          <TabsTrigger value="activity-log">Activity Log</TabsTrigger>
+        </TabsList>
 
-        <TabsContent value="information" className="mt-6">
-          <Card className="p-6 rounded-xl shadow-sm">
-            <RecordInformationTab record={portalRecord} />
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="activity" className="mt-6">
-          <Card className="p-6 rounded-xl shadow-sm">
-            <ActivityLogTab record={portalRecord} />
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="related" className="mt-6">
-          <Card className="p-6 rounded-xl shadow-sm">
-            <RelatedInvoicesTab record={portalRecord} />
-          </Card>
-        </TabsContent>
+        {activeTab === "record-data" ? (
+          <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
+            <ResizablePanel defaultSize={55} className="p-6 bg-white space-y-6">
+              <PortalRecordInformation portalRecord={portalRecord} />
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={45} className="p-6 border-l border-[#E4E5E9] bg-white">
+              <PortalRecordPdfViewer
+                portalRecord={portalRecord}
+                zoomLevel={zoomLevel}
+                onZoomIn={handleZoomIn}
+                onZoomOut={handleZoomOut}
+              />
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        ) : (
+          <TabsContent value="activity-log" className="mt-6">
+            <Card className="p-6">
+              <PortalRecordActivityLog portalRecord={portalRecord} />
+            </Card>
+          </TabsContent>
+        )}
       </Tabs>
 
       {/* Action Modals */}
