@@ -40,6 +40,7 @@ export function PortalRecordDetailModals({
         onMatch={onInvoiceMatched}
         onIgnore={onRecordIgnored}
         onMatchAndCreateRTP={onMatchAndCreateRTP}
+        contextSource="detail-page"
       />
       
       <EnhancedResolveConflictModal
