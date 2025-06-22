@@ -1,4 +1,3 @@
-
 import { useState, useMemo, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -391,7 +390,7 @@ export function EnhancedMatchInvoiceModal({
                       <div className="flex items-center gap-2">
                         <Label className="text-base font-medium">Invoice PDF Upload</Label>
                         <span className="text-red-500">*</span>
-                        <AlertTriangle className="h-4 w-4 text-amber-500" title="PDF is required to proceed" />
+                        <AlertTriangle className="h-4 w-4 text-amber-500" />
                       </div>
                       
                       <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
