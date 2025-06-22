@@ -1,6 +1,7 @@
 
 import { PortalRecord } from "@/types/portalRecord";
 import { Button } from "@/components/ui/button";
+import { AlertCircle } from "lucide-react";
 
 interface PortalRecordActionInstructionsProps {
   portalRecord: PortalRecord;
@@ -63,17 +64,29 @@ export function PortalRecordActionInstructions({
     return null;
   }
 
+  // Use red banner for conflict records
+  const isConflict = portalRecord.matchType === 'Conflict';
+  const bannerStyle = isConflict 
+    ? "bg-red-50 border border-red-200" 
+    : "bg-[#EBF1FF] border border-[#C7D9FF]";
+  const iconStyle = isConflict ? "text-red-600" : "text-[#253EA7]";
+  const textStyle = isConflict ? "text-red-700" : "text-[#253EA7]";
+
   return (
-    <div className="bg-[#EBF1FF] border border-[#C7D9FF] rounded-lg p-4">
+    <div className={`${bannerStyle} rounded-lg p-4`}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start space-x-3 flex-1">
-          <div className="h-5 w-5 text-[#253EA7] mt-0.5 flex-shrink-0">
-            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-            </svg>
+          <div className={`h-5 w-5 ${iconStyle} mt-0.5 flex-shrink-0`}>
+            {isConflict ? (
+              <AlertCircle className="h-5 w-5" />
+            ) : (
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            )}
           </div>
           {instructionText && (
-            <p className="text-[#253EA7] text-sm leading-relaxed">{instructionText}</p>
+            <p className={`${textStyle} text-sm leading-relaxed`}>{instructionText}</p>
           )}
         </div>
         {actionButtons.length > 0 && (

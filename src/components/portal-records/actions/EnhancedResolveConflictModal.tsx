@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PortalRecord } from "@/types/portalRecord";
 import { toast } from "@/hooks/use-toast";
-import { CheckCircle, Circle, AlertCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface EnhancedResolveConflictModalProps {
@@ -83,7 +82,7 @@ export function EnhancedResolveConflictModal({
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">
-            Resolve Conflict - {record.portalRecordId}
+            Conflict Detected - {record.portalRecordId}
           </DialogTitle>
           <p className="text-sm text-gray-600 mt-2">
             Two portal records are linked to the same invoice. Select which record should be the primary match.
@@ -91,15 +90,6 @@ export function EnhancedResolveConflictModal({
         </DialogHeader>
         
         <div className="space-y-6">
-          <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
-            <div className="flex items-center gap-2">
-              <AlertCircle className="h-5 w-5 text-red-600" />
-              <p className="text-red-700 text-sm font-medium">
-                Multiple matches found for this record. Use Resolve Conflict to choose the correct match.
-              </p>
-            </div>
-          </div>
-
           <RadioGroup 
             value={selectedRecord || ""} 
             onValueChange={(value) => setSelectedRecord(value as 'current' | 'conflicting')}
