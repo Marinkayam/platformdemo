@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TableSystem } from "@/components/ui/TableSystem";
@@ -9,8 +8,9 @@ import { MatchTypeBadge } from "./MatchTypeBadge";
 import { PortalLogo } from "./PortalLogo";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
-import { MatchInvoiceModal } from "./actions/MatchInvoiceModal";
-import { ResolveConflictModal } from "./actions/ResolveConflictModal";
+import { EnhancedMatchInvoiceModal } from "./actions/EnhancedMatchInvoiceModal";
+import { EnhancedResolveConflictModal } from "./actions/EnhancedResolveConflictModal";
+import { IgnoreRecordModal } from "./actions/IgnoreRecordModal";
 import { SyncRecordModal } from "./actions/SyncRecordModal";
 
 interface PortalRecordsTableProps {
@@ -26,6 +26,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   const [matchModalOpen, setMatchModalOpen] = useState(false);
   const [conflictModalOpen, setConflictModalOpen] = useState(false);
   const [syncModalOpen, setSyncModalOpen] = useState(false);
+  const [ignoreModalOpen, setIgnoreModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<PortalRecord | null>(null);
 
   const indexOfLastRecord = currentPage * recordsPerPage;
@@ -55,19 +56,34 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     setSyncModalOpen(true);
   };
 
+  const handleIgnoreRecord = (record: PortalRecord) => {
+    setSelectedRecord(record);
+    setIgnoreModalOpen(true);
+  };
+
   const onInvoiceMatched = (invoiceId: string) => {
     console.log(`Matched invoice ${invoiceId} with record ${selectedRecord?.id}`);
     // TODO: Update record state in real implementation
   };
 
-  const onConflictResolved = (resolution: string) => {
-    console.log(`Resolved conflict with option: ${resolution} for record ${selectedRecord?.id}`);
+  const onConflictResolved = (selectedRecordId: string, action: 'primary' | 'alternate') => {
+    console.log(`Resolved conflict: ${selectedRecordId} set as ${action} for record ${selectedRecord?.id}`);
     // TODO: Update record state in real implementation
   };
 
   const onRecordSynced = () => {
     console.log(`Synced record ${selectedRecord?.id}`);
     // TODO: Update record state in real implementation
+  };
+
+  const onRecordIgnored = () => {
+    console.log(`Ignored record ${selectedRecord?.id}`);
+    // TODO: Remove record from state in real implementation
+  };
+
+  const onMatchAndCreateRTP = (pdfFile: File) => {
+    console.log(`Creating RTP for record ${selectedRecord?.id} with PDF:`, pdfFile.name);
+    // TODO: Implement RTP creation logic
   };
 
   // Helper function to determine if a field should show data or "—"
@@ -223,6 +239,11 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
               onClick: () => handleMatchInvoice(record),
               variant: "default" as const
             });
+            actions.push({
+              label: "Ignore Record",
+              onClick: () => handleIgnoreRecord(record),
+              variant: "destructive" as const
+            });
           } else if (record.matchType === 'Conflict') {
             actions.push({
               label: "Resolve Conflict",
@@ -231,7 +252,6 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
             });
           }
           
-          // Add sync action for all connected records
           actions.push({
             label: "Sync Record",
             onClick: () => handleSyncRecord(record),
@@ -284,21 +304,30 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
         records={records}
       />
 
-      {/* Action Modals */}
+      {/* Enhanced Action Modals */}
       {selectedRecord && (
         <>
-          <MatchInvoiceModal
+          <EnhancedMatchInvoiceModal
             isOpen={matchModalOpen}
             onClose={() => setMatchModalOpen(false)}
             record={selectedRecord}
             onMatch={onInvoiceMatched}
+            onIgnore={onRecordIgnored}
+            onMatchAndCreateRTP={onMatchAndCreateRTP}
           />
           
-          <ResolveConflictModal
+          <EnhancedResolveConflictModal
             isOpen={conflictModalOpen}
             onClose={() => setConflictModalOpen(false)}
             record={selectedRecord}
             onResolve={onConflictResolved}
+          />
+          
+          <IgnoreRecordModal
+            isOpen={ignoreModalOpen}
+            onClose={() => setIgnoreModalOpen(false)}
+            record={selectedRecord}
+            onIgnore={onRecordIgnored}
           />
           
           <SyncRecordModal
