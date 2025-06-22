@@ -80,7 +80,7 @@ export function EnhancedResolveConflictModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">
             Resolve Conflict - {record.portalRecordId}
@@ -91,101 +91,112 @@ export function EnhancedResolveConflictModal({
         </DialogHeader>
         
         <div className="space-y-6">
+          <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-red-600" />
+              <p className="text-red-700 text-sm font-medium">
+                Multiple matches found for this record. Use Resolve Conflict to choose the correct match.
+              </p>
+            </div>
+          </div>
+
           <RadioGroup 
             value={selectedRecord || ""} 
             onValueChange={(value) => setSelectedRecord(value as 'current' | 'conflicting')}
             className="space-y-4"
           >
-            {/* Current Primary Record */}
-            <div className="relative">
-              <Card className="border-2 transition-all hover:shadow-md">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem value="current" id="current" />
-                      <CardTitle className="text-lg text-gray-900">Current Primary</CardTitle>
-                      <Badge variant="default">Primary</Badge>
+            <div className="grid grid-cols-2 gap-6">
+              {/* Current Primary Record */}
+              <div className="relative">
+                <Card className="border-2 transition-all hover:shadow-md h-full">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <RadioGroupItem value="current" id="current" />
+                        <CardTitle className="text-lg text-gray-900">Current Primary</CardTitle>
+                        <Badge variant="default">Primary</Badge>
+                      </div>
+                      {selectedRecord === 'current' && (
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                      )}
                     </div>
-                    {selectedRecord === 'current' && (
-                      <CheckCircle className="h-5 w-5 text-green-600" />
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Portal Record ID</label>
-                      <div className="mt-1 p-2 bg-gray-50 rounded border">
-                        {record.portalRecordId}
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Portal Record ID</label>
+                        <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                          {record.portalRecordId}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Total Amount</label>
+                        <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                          {formatCurrency(record.total, record.currency)}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">PO Number</label>
+                        <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                          {record.poNumber}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Last Synced</label>
+                        <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                          {formatDate(record.lastSynced)}
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Total Amount</label>
-                      <div className="mt-1 p-2 bg-gray-50 rounded border">
-                        {formatCurrency(record.total, record.currency)}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">PO Number</label>
-                      <div className="mt-1 p-2 bg-gray-50 rounded border">
-                        {record.poNumber}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Last Synced</label>
-                      <div className="mt-1 p-2 bg-gray-50 rounded border">
-                        {formatDate(record.lastSynced)}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                  </CardContent>
+                </Card>
+              </div>
 
-            {/* Conflicting Record */}
-            <div className="relative">
-              <Card className="border-2 transition-all hover:shadow-md">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem value="conflicting" id="conflicting" />
-                      <CardTitle className="text-lg text-gray-900">Conflicting Record</CardTitle>
-                      <Badge variant="outline" className="border-gray-300">Conflicting</Badge>
+              {/* Conflicting Record */}
+              <div className="relative">
+                <Card className="border-2 transition-all hover:shadow-md h-full">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <RadioGroupItem value="conflicting" id="conflicting" />
+                        <CardTitle className="text-lg text-gray-900">Conflicting Record</CardTitle>
+                        <Badge variant="outline" className="border-gray-300">Conflicting</Badge>
+                      </div>
+                      {selectedRecord === 'conflicting' && (
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                      )}
                     </div>
-                    {selectedRecord === 'conflicting' && (
-                      <CheckCircle className="h-5 w-5 text-green-600" />
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Portal Record ID</label>
-                      <div className="mt-1 p-2 bg-gray-50 rounded border">
-                        {conflictingRecord.portalRecordId}
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Portal Record ID</label>
+                        <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                          {conflictingRecord.portalRecordId}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Total Amount</label>
+                        <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                          {formatCurrency(conflictingRecord.total, conflictingRecord.currency)}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">PO Number</label>
+                        <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                          {conflictingRecord.poNumber}
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Last Synced</label>
+                        <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                          {formatDate(conflictingRecord.lastSynced)}
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Total Amount</label>
-                      <div className="mt-1 p-2 bg-gray-50 rounded border">
-                        {formatCurrency(conflictingRecord.total, conflictingRecord.currency)}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">PO Number</label>
-                      <div className="mt-1 p-2 bg-gray-50 rounded border">
-                        {conflictingRecord.poNumber}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Last Synced</label>
-                      <div className="mt-1 p-2 bg-gray-50 rounded border">
-                        {formatDate(conflictingRecord.lastSynced)}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </RadioGroup>
 
