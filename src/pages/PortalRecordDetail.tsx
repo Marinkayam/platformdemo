@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { allPortalRecords } from "@/data/portalRecords";
@@ -6,6 +5,7 @@ import { PortalRecordDetailHeader } from "@/components/portal-records/detail/Por
 import { PortalRecordInformation } from "@/components/portal-records/detail/PortalRecordInformation";
 import { PortalRecordActivityLog } from "@/components/portal-records/detail/PortalRecordActivityLog";
 import { PortalRecordPdfViewer } from "@/components/portal-records/detail/PortalRecordPdfViewer";
+import { PortalRecordTabs } from "@/components/portal-records/detail/PortalRecordTabs";
 import { EnhancedMatchInvoiceModal } from "@/components/portal-records/actions/EnhancedMatchInvoiceModal";
 import { EnhancedResolveConflictModal } from "@/components/portal-records/actions/EnhancedResolveConflictModal";
 import { IgnoreRecordModal } from "@/components/portal-records/actions/IgnoreRecordModal";
@@ -13,7 +13,7 @@ import { SyncRecordModal } from "@/components/portal-records/actions/SyncRecordM
 import { ArrowLeft, Home, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 export default function PortalRecordDetail() {
@@ -168,10 +168,7 @@ export default function PortalRecordDetail() {
       <PortalRecordDetailHeader portalRecord={portalRecord} actionButtons={getActionButtons()} className="mb-6" />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="mb-4">
-          <TabsTrigger value="record-data">Record Data</TabsTrigger>
-          <TabsTrigger value="activity-log">Activity Log</TabsTrigger>
-        </TabsList>
+        <PortalRecordTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
         {activeTab === "record-data" ? (
           <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
