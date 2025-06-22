@@ -1,13 +1,11 @@
 
 import { PortalRecord } from "@/types/portalRecord";
-import { InfoBanner } from "@/components/add-agent/components/InfoBanner";
 import { Button } from "@/components/ui/button";
 
 interface PortalRecordActionInstructionsProps {
   portalRecord: PortalRecord;
   onMatchInvoice?: () => void;
   onResolveConflict?: () => void;
-  onSyncRecord?: () => void;
   onIgnoreRecord?: () => void;
 }
 
@@ -15,7 +13,6 @@ export function PortalRecordActionInstructions({
   portalRecord, 
   onMatchInvoice,
   onResolveConflict,
-  onSyncRecord,
   onIgnoreRecord
 }: PortalRecordActionInstructionsProps) {
   // Only show instructions for connected records that have available actions
@@ -25,11 +22,11 @@ export function PortalRecordActionInstructions({
 
   const getInstructionText = () => {
     if (portalRecord.matchType === 'Unmatched') {
-      return 'This portal record needs attention. You can match it to an existing invoice, sync to get updated data, or ignore it if it\'s not relevant to your business.';
+      return 'This portal record needs attention. You can match it to an existing invoice or ignore it if it\'s not relevant to your business.';
     } else if (portalRecord.matchType === 'Conflict') {
-      return 'Multiple matches found for this record. Use Resolve Conflict to choose the correct match, or sync the record to refresh data from the portal.';
+      return 'Multiple matches found for this record. Use Resolve Conflict to choose the correct match.';
     } else {
-      return 'Use Sync Record to refresh data from the portal if information appears outdated or if you need the latest updates.';
+      return null; // No instructions needed for matched records
     }
   };
 
@@ -54,15 +51,17 @@ export function PortalRecordActionInstructions({
         </Button>
       );
     }
-    
-    buttons.push(
-      <Button key="sync" variant="outline" onClick={onSyncRecord} size="sm">
-        Sync Record
-      </Button>
-    );
 
     return buttons;
   };
+
+  const instructionText = getInstructionText();
+  const actionButtons = getActionButtons();
+
+  // Don't render anything if there are no instructions or actions
+  if (!instructionText && actionButtons.length === 0) {
+    return null;
+  }
 
   return (
     <div className="bg-[#EBF1FF] border border-[#C7D9FF] rounded-lg p-4">
@@ -73,11 +72,15 @@ export function PortalRecordActionInstructions({
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
             </svg>
           </div>
-          <p className="text-[#253EA7] text-sm leading-relaxed">{getInstructionText()}</p>
+          {instructionText && (
+            <p className="text-[#253EA7] text-sm leading-relaxed">{instructionText}</p>
+          )}
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {getActionButtons()}
-        </div>
+        {actionButtons.length > 0 && (
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {actionButtons}
+          </div>
+        )}
       </div>
     </div>
   );

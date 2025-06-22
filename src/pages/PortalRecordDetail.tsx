@@ -21,7 +21,6 @@ export default function PortalRecordDetail() {
   // Modal states
   const [matchModalOpen, setMatchModalOpen] = useState(false);
   const [conflictModalOpen, setConflictModalOpen] = useState(false);
-  const [syncModalOpen, setSyncModalOpen] = useState(false);
   const [ignoreModalOpen, setIgnoreModalOpen] = useState(false);
 
   // Find the portal record by ID
@@ -38,11 +37,6 @@ export default function PortalRecordDetail() {
 
   const onConflictResolved = (selectedRecordId: string, action: 'primary' | 'alternate') => {
     console.log(`Resolved conflict: ${selectedRecordId} set as ${action} for record ${portalRecord.id}`);
-    // TODO: Update record state and refresh data
-  };
-
-  const onRecordSynced = () => {
-    console.log(`Synced record ${portalRecord.id}`);
     // TODO: Update record state and refresh data
   };
 
@@ -70,7 +64,6 @@ export default function PortalRecordDetail() {
         portalRecord={portalRecord}
         onMatchInvoice={() => setMatchModalOpen(true)}
         onResolveConflict={() => setConflictModalOpen(true)}
-        onSyncRecord={() => setSyncModalOpen(true)}
         onIgnoreRecord={() => setIgnoreModalOpen(true)}
       />
 
@@ -94,15 +87,12 @@ export default function PortalRecordDetail() {
         portalRecord={portalRecord}
         matchModalOpen={matchModalOpen}
         conflictModalOpen={conflictModalOpen}
-        syncModalOpen={syncModalOpen}
         ignoreModalOpen={ignoreModalOpen}
         onCloseMatchModal={() => setMatchModalOpen(false)}
         onCloseConflictModal={() => setConflictModalOpen(false)}
-        onCloseSyncModal={() => setSyncModalOpen(false)}
         onCloseIgnoreModal={() => setIgnoreModalOpen(false)}
         onInvoiceMatched={onInvoiceMatched}
         onConflictResolved={onConflictResolved}
-        onRecordSynced={onRecordSynced}
         onRecordIgnored={onRecordIgnored}
         onMatchAndCreateRTP={onMatchAndCreateRTP}
       />
