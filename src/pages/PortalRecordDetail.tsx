@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { allPortalRecords } from "@/data/portalRecords";
@@ -10,6 +9,7 @@ import { PortalRecordDetailBreadcrumb } from "@/components/portal-records/detail
 import { PortalRecordDetailNotFound } from "@/components/portal-records/detail/PortalRecordDetailNotFound";
 import { PortalRecordDetailActions } from "@/components/portal-records/detail/PortalRecordDetailActions";
 import { PortalRecordDetailModals } from "@/components/portal-records/detail/PortalRecordDetailModals";
+import { PortalRecordActionInstructions } from "@/components/portal-records/detail/PortalRecordActionInstructions";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
@@ -76,7 +76,9 @@ export default function PortalRecordDetail() {
         className="mb-6" 
       />
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <PortalRecordActionInstructions portalRecord={portalRecord} />
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">
         <PortalRecordTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
         <TabsContent value="record-data" className="mt-6">
