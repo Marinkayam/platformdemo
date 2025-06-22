@@ -18,9 +18,6 @@ export function MatchModalActions({
   activeTab,
   selectedInvoiceId,
   uploadedFile,
-  rtpInvoiceNumber,
-  rtpInvoiceDate,
-  onClose,
   onIgnore,
   onMatch,
   onMatchAndCreateRTP,
@@ -35,9 +32,6 @@ export function MatchModalActions({
         Ignore Record
       </Button>
       <div className="flex gap-3">
-        <Button variant="outline" onClick={onClose} className="text-gray-600">
-          Cancel
-        </Button>
         {activeTab === "match-existing" ? (
           <Button 
             onClick={onMatch}
@@ -49,7 +43,7 @@ export function MatchModalActions({
         ) : (
           <Button 
             onClick={onMatchAndCreateRTP}
-            disabled={!uploadedFile || !rtpInvoiceNumber.trim() || !rtpInvoiceDate}
+            disabled={!uploadedFile}
             className="bg-blue-600 hover:bg-blue-700"
           >
             Match & Create RTP

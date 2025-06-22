@@ -1,6 +1,5 @@
 
-import { useMemo } from "react";
-import { Input } from "@/components/ui/input";
+import { useMemo, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +7,11 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
 import { FileText, AlertTriangle } from "lucide-react";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface MatchExistingInvoiceTabProps {
   record: PortalRecord;
@@ -34,6 +38,8 @@ export function MatchExistingInvoiceTab({
   setSelectedBuyer,
   debouncedSearchTerm,
 }: MatchExistingInvoiceTabProps) {
+  const [open, setOpen] = useState(false);
+
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -77,47 +83,73 @@ export function MatchExistingInvoiceTab({
         </div>
         <div className="space-y-2">
           <Label htmlFor="buyer-filter">Buyer Filter</Label>
-          <Input
-            id="buyer-filter"
-            value={selectedBuyer}
-            onChange={(e) => setSelectedBuyer(e.target.value)}
-            placeholder="Search buyer name..."
-          />
+          <Select value={selectedBuyer} onValueChange={setSelectedBuyer}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={record.buyer}>{record.buyer}</SelectItem>
+              <SelectItem value="">All Buyers</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="search-invoices">Search Invoices</Label>
-        <Input
-          id="search-invoices"
-          placeholder="Search by invoice ID, number, or buyer..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <Label>Search and Select Invoice</Label>
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="w-full justify-between"
+            >
+              {selectedInvoiceId
+                ? `${selectedInvoice?.id} - ${selectedInvoice?.number}`
+                : "Search and select an invoice..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full p-0">
+            <Command>
+              <CommandInput 
+                placeholder="Search by invoice ID, number, or buyer..." 
+                value={searchTerm}
+                onValueChange={setSearchTerm}
+              />
+              <CommandEmpty>No invoices found.</CommandEmpty>
+              <CommandGroup>
+                {filteredInvoices.map((invoice) => (
+                  <CommandItem
+                    key={invoice.id}
+                    value={invoice.id}
+                    onSelect={(currentValue) => {
+                      setSelectedInvoiceId(currentValue === selectedInvoiceId ? "" : currentValue);
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        selectedInvoiceId === invoice.id ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-medium">{invoice.id} - {invoice.number}</span>
+                      <span className="text-xs text-gray-500">
+                        {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
+                      </span>
+                    </div>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </Command>
+          </PopoverContent>
+        </Popover>
         <p className="text-xs text-gray-500">
           Only showing invoices from {selectedPortal} + {selectedBuyer}
         </p>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="select-invoice">Select Invoice</Label>
-        <Select value={selectedInvoiceId} onValueChange={setSelectedInvoiceId}>
-          <SelectTrigger>
-            <SelectValue placeholder="Choose an invoice..." />
-          </SelectTrigger>
-          <SelectContent>
-            {filteredInvoices.map((invoice) => (
-              <SelectItem key={invoice.id} value={invoice.id}>
-                <div className="flex flex-col">
-                  <span className="font-medium">{invoice.id} - {invoice.number}</span>
-                  <span className="text-xs text-gray-500">
-                    {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
-                  </span>
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
 
       {/* Conflict Warning */}
