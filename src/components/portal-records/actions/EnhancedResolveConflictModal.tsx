@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PortalRecord } from "@/types/portalRecord";
 import { toast } from "@/hooks/use-toast";
-import { CheckCircle, Circle } from "lucide-react";
+import { CheckCircle, Circle, AlertCircle } from "lucide-react";
 
 interface EnhancedResolveConflictModalProps {
   isOpen: boolean;
@@ -77,40 +77,59 @@ export function EnhancedResolveConflictModal({
     onClose();
   };
 
-  const getFieldComparison = (field: string, currentValue: any, conflictingValue: any) => {
-    const isDifferent = currentValue !== conflictingValue;
-    
-    return {
-      isDifferent,
-      currentValue: currentValue || '—',
-      conflictingValue: conflictingValue || '—'
-    };
+  const getFieldComparison = (currentValue: any, conflictingValue: any) => {
+    return currentValue !== conflictingValue;
   };
+
+  const ComparisonField = ({ 
+    label, 
+    currentValue, 
+    conflictingValue, 
+    isDifferent 
+  }: { 
+    label: string; 
+    currentValue: string; 
+    conflictingValue: string; 
+    isDifferent: boolean; 
+  }) => (
+    <div className="grid grid-cols-3 gap-4 py-3 border-b border-gray-100 last:border-b-0">
+      <div className="flex items-center gap-2 font-medium text-gray-700">
+        {isDifferent && <AlertCircle className="h-4 w-4 text-amber-500" />}
+        <span>{label}</span>
+      </div>
+      <div className={`px-3 py-2 rounded-md text-sm ${
+        isDifferent ? 'bg-blue-50 border border-blue-200 font-semibold text-blue-900' : 'bg-gray-50 text-gray-900'
+      }`}>
+        {currentValue}
+      </div>
+      <div className={`px-3 py-2 rounded-md text-sm ${
+        isDifferent ? 'bg-orange-50 border border-orange-200 font-semibold text-orange-900' : 'bg-gray-50 text-gray-900'
+      }`}>
+        {conflictingValue}
+      </div>
+    </div>
+  );
 
   const fields = [
     { 
-      key: 'portalRecordId', 
       label: 'Portal Record ID',
       current: record.portalRecordId,
       conflicting: conflictingRecord.portalRecordId
     },
     { 
-      key: 'total', 
       label: 'Total Amount',
       current: formatCurrency(record.total, record.currency),
       conflicting: formatCurrency(conflictingRecord.total, conflictingRecord.currency)
     },
     { 
-      key: 'poNumber', 
       label: 'PO Number',
       current: record.poNumber,
       conflicting: conflictingRecord.poNumber
     },
     { 
-      key: 'lastSynced', 
       label: 'Last Synced',
-      current: record.lastSynced,
-      conflicting: conflictingRecord.lastSynced
+      current: formatDate(record.lastSynced),
+      conflicting: formatDate(conflictingRecord.lastSynced)
     }
   ];
 
@@ -129,13 +148,13 @@ export function EnhancedResolveConflictModal({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
-            {/* Current Primary Record */}
+          {/* Selection Cards */}
+          <div className="grid grid-cols-2 gap-4">
             <Card 
               className={`cursor-pointer transition-all ${
                 selectedRecord === 'current' 
                   ? 'ring-2 ring-blue-500 bg-blue-50' 
-                  : 'hover:shadow-md'
+                  : 'hover:shadow-md hover:border-blue-300'
               }`}
               onClick={() => setSelectedRecord('current')}
             >
@@ -152,27 +171,13 @@ export function EnhancedResolveConflictModal({
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-3">
-                {fields.map(field => {
-                  const comparison = getFieldComparison(field.key, field.current, field.conflicting);
-                  return (
-                    <div key={field.key} className="flex justify-between">
-                      <span className="text-sm font-medium text-gray-600">{field.label}:</span>
-                      <span className={`text-sm ${comparison.isDifferent ? 'font-semibold text-blue-900' : 'text-gray-900'}`}>
-                        {comparison.currentValue}
-                      </span>
-                    </div>
-                  );
-                })}
-              </CardContent>
             </Card>
 
-            {/* Conflicting Record */}
             <Card 
               className={`cursor-pointer transition-all ${
                 selectedRecord === 'conflicting' 
                   ? 'ring-2 ring-orange-500 bg-orange-50' 
-                  : 'hover:shadow-md'
+                  : 'hover:shadow-md hover:border-orange-300'
               }`}
               onClick={() => setSelectedRecord('conflicting')}
             >
@@ -189,46 +194,36 @@ export function EnhancedResolveConflictModal({
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-3">
-                {fields.map(field => {
-                  const comparison = getFieldComparison(field.key, field.current, field.conflicting);
-                  return (
-                    <div key={field.key} className="flex justify-between">
-                      <span className="text-sm font-medium text-gray-600">{field.label}:</span>
-                      <span className={`text-sm ${comparison.isDifferent ? 'font-semibold text-orange-900' : 'text-gray-900'}`}>
-                        {comparison.conflictingValue}
-                      </span>
-                    </div>
-                  );
-                })}
-              </CardContent>
             </Card>
           </div>
 
-          {/* Field Differences Summary */}
-          <Card className="bg-gray-50">
+          {/* Enhanced Comparison Table */}
+          <Card className="bg-white">
             <CardHeader>
-              <CardTitle className="text-base">Key Differences</CardTitle>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="font-semibold text-gray-900">Field</div>
+                <div className="font-semibold text-blue-900 flex items-center gap-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  Current Primary
+                </div>
+                <div className="font-semibold text-orange-900 flex items-center gap-2">
+                  <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                  Conflicting Record
+                </div>
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
+            <CardContent className="pt-0">
+              <div className="space-y-0">
                 {fields.map(field => {
-                  const comparison = getFieldComparison(field.key, field.current, field.conflicting);
-                  if (!comparison.isDifferent) return null;
-                  
+                  const isDifferent = getFieldComparison(field.current, field.conflicting);
                   return (
-                    <div key={field.key} className="flex items-center justify-between text-sm">
-                      <span className="font-medium text-gray-700">{field.label}:</span>
-                      <div className="flex items-center gap-4">
-                        <span className="text-blue-700 bg-blue-100 px-2 py-1 rounded">
-                          {comparison.currentValue}
-                        </span>
-                        <span className="text-gray-400">vs</span>
-                        <span className="text-orange-700 bg-orange-100 px-2 py-1 rounded">
-                          {comparison.conflictingValue}
-                        </span>
-                      </div>
-                    </div>
+                    <ComparisonField
+                      key={field.label}
+                      label={field.label}
+                      currentValue={field.current}
+                      conflictingValue={field.conflicting}
+                      isDifferent={isDifferent}
+                    />
                   );
                 })}
               </div>
