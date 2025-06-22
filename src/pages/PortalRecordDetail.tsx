@@ -1,10 +1,10 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { allPortalRecords } from "@/data/portalRecords";
 import { PortalRecordDetailHeader } from "@/components/portal-records/detail/PortalRecordDetailHeader";
 import { PortalRecordInformation } from "@/components/portal-records/detail/PortalRecordInformation";
 import { PortalRecordActivityLog } from "@/components/portal-records/detail/PortalRecordActivityLog";
-import { PortalRecordPdfViewer } from "@/components/portal-records/detail/PortalRecordPdfViewer";
 import { PortalRecordTabs } from "@/components/portal-records/detail/PortalRecordTabs";
 import { EnhancedMatchInvoiceModal } from "@/components/portal-records/actions/EnhancedMatchInvoiceModal";
 import { EnhancedResolveConflictModal } from "@/components/portal-records/actions/EnhancedResolveConflictModal";
@@ -14,13 +14,11 @@ import { ArrowLeft, Home, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 export default function PortalRecordDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("record-data");
-  const [zoomLevel, setZoomLevel] = useState(1);
   
   // Modal states
   const [matchModalOpen, setMatchModalOpen] = useState(false);
@@ -77,9 +75,6 @@ export default function PortalRecordDetail() {
       </div>
     );
   }
-
-  const handleZoomIn = () => setZoomLevel(z => Math.min(z + 0.1, 2));
-  const handleZoomOut = () => setZoomLevel(z => Math.max(z - 0.1, 0.5));
 
   const getActionButtons = () => {
     const buttons = [];
@@ -170,28 +165,17 @@ export default function PortalRecordDetail() {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <PortalRecordTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-        {activeTab === "record-data" ? (
-          <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
-            <ResizablePanel defaultSize={55} className="p-6 bg-white space-y-6">
-              <PortalRecordInformation portalRecord={portalRecord} />
-            </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel defaultSize={45} className="p-6 border-l border-[#E4E5E9] bg-white">
-              <PortalRecordPdfViewer
-                portalRecord={portalRecord}
-                zoomLevel={zoomLevel}
-                onZoomIn={handleZoomIn}
-                onZoomOut={handleZoomOut}
-              />
-            </ResizablePanel>
-          </ResizablePanelGroup>
-        ) : (
-          <TabsContent value="activity-log" className="mt-6">
-            <Card className="p-6">
-              <PortalRecordActivityLog portalRecord={portalRecord} />
-            </Card>
-          </TabsContent>
-        )}
+        <TabsContent value="record-data" className="mt-6">
+          <Card className="p-6">
+            <PortalRecordInformation portalRecord={portalRecord} />
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="activity-log" className="mt-6">
+          <Card className="p-6">
+            <PortalRecordActivityLog portalRecord={portalRecord} />
+          </Card>
+        </TabsContent>
       </Tabs>
 
       {/* Enhanced Action Modals */}
