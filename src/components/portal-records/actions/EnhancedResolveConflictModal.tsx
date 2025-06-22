@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { PortalRecord } from "@/types/portalRecord";
 import { toast } from "@/hooks/use-toast";
 import { CheckCircle, Circle, AlertCircle } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface EnhancedResolveConflictModalProps {
   isOpen: boolean;
@@ -77,161 +78,119 @@ export function EnhancedResolveConflictModal({
     onClose();
   };
 
-  const getFieldComparison = (currentValue: any, conflictingValue: any) => {
-    return currentValue !== conflictingValue;
-  };
-
-  const ComparisonField = ({ 
-    label, 
-    currentValue, 
-    conflictingValue, 
-    isDifferent 
-  }: { 
-    label: string; 
-    currentValue: string; 
-    conflictingValue: string; 
-    isDifferent: boolean; 
-  }) => (
-    <div className="grid grid-cols-3 gap-4 py-3 border-b border-gray-100 last:border-b-0">
-      <div className="flex items-center gap-2 font-medium text-gray-700">
-        {isDifferent && <AlertCircle className="h-4 w-4 text-amber-500" />}
-        <span>{label}</span>
-      </div>
-      <div className={`px-3 py-2 rounded-md text-sm ${
-        isDifferent ? 'bg-blue-50 border border-blue-200 font-semibold text-blue-900' : 'bg-gray-50 text-gray-900'
-      }`}>
-        {currentValue}
-      </div>
-      <div className={`px-3 py-2 rounded-md text-sm ${
-        isDifferent ? 'bg-orange-50 border border-orange-200 font-semibold text-orange-900' : 'bg-gray-50 text-gray-900'
-      }`}>
-        {conflictingValue}
-      </div>
-    </div>
-  );
-
-  const fields = [
-    { 
-      label: 'Portal Record ID',
-      current: record.portalRecordId,
-      conflicting: conflictingRecord.portalRecordId
-    },
-    { 
-      label: 'Total Amount',
-      current: formatCurrency(record.total, record.currency),
-      conflicting: formatCurrency(conflictingRecord.total, conflictingRecord.currency)
-    },
-    { 
-      label: 'PO Number',
-      current: record.poNumber,
-      conflicting: conflictingRecord.poNumber
-    },
-    { 
-      label: 'Last Synced',
-      current: formatDate(record.lastSynced),
-      conflicting: formatDate(conflictingRecord.lastSynced)
-    }
-  ];
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Resolve Conflict - {record.portalRecordId}</DialogTitle>
+          <DialogTitle className="text-xl">
+            Resolve Conflict - {record.portalRecordId}
+          </DialogTitle>
+          <p className="text-sm text-gray-600 mt-2">
+            Two portal records are linked to the same invoice. Select which record should be the primary match.
+          </p>
         </DialogHeader>
         
         <div className="space-y-6">
-          <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
-            <h3 className="font-medium text-red-900 mb-2">Conflict Detected</h3>
-            <p className="text-red-700 text-sm">
-              Two portal records are linked to the same invoice. Select which record should be the primary match.
-            </p>
-          </div>
-
-          {/* Selection Cards */}
-          <div className="grid grid-cols-2 gap-4">
-            <Card 
-              className={`cursor-pointer transition-all ${
-                selectedRecord === 'current' 
-                  ? 'ring-2 ring-blue-500 bg-blue-50' 
-                  : 'hover:shadow-md hover:border-blue-300'
-              }`}
-              onClick={() => setSelectedRecord('current')}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg text-blue-900">Current Primary</CardTitle>
-                  <div className="flex items-center gap-2">
-                    {selectedRecord === 'current' ? (
-                      <CheckCircle className="h-5 w-5 text-blue-600" />
-                    ) : (
-                      <Circle className="h-5 w-5 text-gray-400" />
+          <RadioGroup 
+            value={selectedRecord || ""} 
+            onValueChange={(value) => setSelectedRecord(value as 'current' | 'conflicting')}
+            className="space-y-4"
+          >
+            {/* Current Primary Record */}
+            <div className="relative">
+              <Card className="border-2 transition-all hover:shadow-md">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="current" id="current" />
+                      <CardTitle className="text-lg text-gray-900">Current Primary</CardTitle>
+                      <Badge variant="default">Primary</Badge>
+                    </div>
+                    {selectedRecord === 'current' && (
+                      <CheckCircle className="h-5 w-5 text-green-600" />
                     )}
-                    <Badge variant="default">Primary</Badge>
                   </div>
-                </div>
-              </CardHeader>
-            </Card>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Portal Record ID</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded border">
+                        {record.portalRecordId}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Total Amount</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded border">
+                        {formatCurrency(record.total, record.currency)}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">PO Number</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded border">
+                        {record.poNumber}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Last Synced</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded border">
+                        {formatDate(record.lastSynced)}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-            <Card 
-              className={`cursor-pointer transition-all ${
-                selectedRecord === 'conflicting' 
-                  ? 'ring-2 ring-orange-500 bg-orange-50' 
-                  : 'hover:shadow-md hover:border-orange-300'
-              }`}
-              onClick={() => setSelectedRecord('conflicting')}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg text-orange-900">Conflicting Record</CardTitle>
-                  <div className="flex items-center gap-2">
-                    {selectedRecord === 'conflicting' ? (
-                      <CheckCircle className="h-5 w-5 text-orange-600" />
-                    ) : (
-                      <Circle className="h-5 w-5 text-gray-400" />
+            {/* Conflicting Record */}
+            <div className="relative">
+              <Card className="border-2 transition-all hover:shadow-md">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="conflicting" id="conflicting" />
+                      <CardTitle className="text-lg text-gray-900">Conflicting Record</CardTitle>
+                      <Badge variant="outline" className="border-gray-300">Conflicting</Badge>
+                    </div>
+                    {selectedRecord === 'conflicting' && (
+                      <CheckCircle className="h-5 w-5 text-green-600" />
                     )}
-                    <Badge variant="outline" className="border-orange-300 text-orange-700">Conflicting</Badge>
                   </div>
-                </div>
-              </CardHeader>
-            </Card>
-          </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Portal Record ID</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded border">
+                        {conflictingRecord.portalRecordId}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Total Amount</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded border">
+                        {formatCurrency(conflictingRecord.total, conflictingRecord.currency)}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">PO Number</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded border">
+                        {conflictingRecord.poNumber}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Last Synced</label>
+                      <div className="mt-1 p-2 bg-gray-50 rounded border">
+                        {formatDate(conflictingRecord.lastSynced)}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </RadioGroup>
 
-          {/* Enhanced Comparison Table */}
-          <Card className="bg-white">
-            <CardHeader>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="font-semibold text-gray-900">Field</div>
-                <div className="font-semibold text-blue-900 flex items-center gap-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                  Current Primary
-                </div>
-                <div className="font-semibold text-orange-900 flex items-center gap-2">
-                  <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                  Conflicting Record
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-0">
-                {fields.map(field => {
-                  const isDifferent = getFieldComparison(field.current, field.conflicting);
-                  return (
-                    <ComparisonField
-                      key={field.label}
-                      label={field.label}
-                      currentValue={field.current}
-                      conflictingValue={field.conflicting}
-                      isDifferent={isDifferent}
-                    />
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-            <p className="text-blue-800 text-sm">
+          <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+            <p className="text-gray-700 text-sm">
               <strong>Note:</strong> The selected record will become the primary match and continue to be monitored. 
               The other record will become an alternate match and monitoring will stop.
             </p>
