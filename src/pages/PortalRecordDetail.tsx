@@ -6,12 +6,10 @@ import { PortalRecordDetailHeader } from "@/components/portal-records/detail/Por
 import { PortalRecordInformation } from "@/components/portal-records/detail/PortalRecordInformation";
 import { PortalRecordActivityLog } from "@/components/portal-records/detail/PortalRecordActivityLog";
 import { PortalRecordTabs } from "@/components/portal-records/detail/PortalRecordTabs";
-import { EnhancedMatchInvoiceModal } from "@/components/portal-records/actions/EnhancedMatchInvoiceModal";
-import { EnhancedResolveConflictModal } from "@/components/portal-records/actions/EnhancedResolveConflictModal";
-import { IgnoreRecordModal } from "@/components/portal-records/actions/IgnoreRecordModal";
-import { SyncRecordModal } from "@/components/portal-records/actions/SyncRecordModal";
-import { ArrowLeft, Home, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { PortalRecordDetailBreadcrumb } from "@/components/portal-records/detail/PortalRecordDetailBreadcrumb";
+import { PortalRecordDetailNotFound } from "@/components/portal-records/detail/PortalRecordDetailNotFound";
+import { PortalRecordDetailActions } from "@/components/portal-records/detail/PortalRecordDetailActions";
+import { PortalRecordDetailModals } from "@/components/portal-records/detail/PortalRecordDetailModals";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
@@ -30,84 +28,8 @@ export default function PortalRecordDetail() {
   const portalRecord = allPortalRecords.find(record => record.id === id);
 
   if (!portalRecord) {
-    return (
-      <div className="container mx-auto py-6">
-        {/* Breadcrumb Navigation */}
-        <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate("/")}
-            className="text-gray-600 hover:text-gray-900 p-0"
-          >
-            <Home className="h-4 w-4" />
-          </Button>
-          <ChevronRight className="h-4 w-4" />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate("/portal-records")}
-            className="text-gray-600 hover:text-gray-900 p-0"
-          >
-            Portal Records
-          </Button>
-          <ChevronRight className="h-4 w-4" />
-          <span className="text-gray-900">Record Not Found</span>
-        </div>
-
-        <div className="flex items-center gap-4 mb-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate("/portal-records")}
-            className="text-gray-600 hover:text-gray-900"
-          >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Back to Portal Records
-          </Button>
-        </div>
-        
-        <div className="text-center py-12">
-          <div className="text-gray-400 text-lg mb-4">📄</div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Portal Record Not Found</h2>
-          <p className="text-gray-600">The portal record you're looking for doesn't exist or may have been removed.</p>
-        </div>
-      </div>
-    );
+    return <PortalRecordDetailNotFound />;
   }
-
-  const getActionButtons = () => {
-    const buttons = [];
-
-    if (portalRecord.connectionStatus === 'Connected') {
-      if (portalRecord.matchType === 'Unmatched') {
-        buttons.push(
-          <Button key="match" onClick={() => setMatchModalOpen(true)}>
-            Match Invoice
-          </Button>
-        );
-        buttons.push(
-          <Button key="ignore" variant="outline" onClick={() => setIgnoreModalOpen(true)} className="text-red-600 hover:text-red-700">
-            Ignore Record
-          </Button>
-        );
-      } else if (portalRecord.matchType === 'Conflict') {
-        buttons.push(
-          <Button key="resolve" onClick={() => setConflictModalOpen(true)}>
-            Resolve Conflict
-          </Button>
-        );
-      }
-      
-      buttons.push(
-        <Button key="sync" variant="outline" onClick={() => setSyncModalOpen(true)}>
-          Sync Record
-        </Button>
-      );
-    }
-
-    return buttons;
-  };
 
   const onInvoiceMatched = (invoiceId: string) => {
     console.log(`Matched invoice ${invoiceId} with record ${portalRecord.id}`);
@@ -137,30 +59,22 @@ export default function PortalRecordDetail() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      {/* Breadcrumb Navigation */}
-      <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate("/")}
-          className="text-gray-600 hover:text-gray-900 p-0"
-        >
-          <Home className="h-4 w-4" />
-        </Button>
-        <ChevronRight className="h-4 w-4" />
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate("/portal-records")}
-          className="text-gray-600 hover:text-gray-900 p-0"
-        >
-          Portal Records
-        </Button>
-        <ChevronRight className="h-4 w-4" />
-        <span className="text-gray-900 font-medium">{portalRecord.portalRecordId}</span>
-      </div>
+      <PortalRecordDetailBreadcrumb portalRecordId={portalRecord.portalRecordId} />
 
-      <PortalRecordDetailHeader portalRecord={portalRecord} actionButtons={getActionButtons()} className="mb-6" />
+      <PortalRecordDetailHeader 
+        portalRecord={portalRecord} 
+        actionButtons={[
+          <PortalRecordDetailActions
+            key="actions"
+            portalRecord={portalRecord}
+            onMatchInvoice={() => setMatchModalOpen(true)}
+            onResolveConflict={() => setConflictModalOpen(true)}
+            onSyncRecord={() => setSyncModalOpen(true)}
+            onIgnoreRecord={() => setIgnoreModalOpen(true)}
+          />
+        ]}
+        className="mb-6" 
+      />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <PortalRecordTabs activeTab={activeTab} onTabChange={setActiveTab} />
@@ -178,35 +92,21 @@ export default function PortalRecordDetail() {
         </TabsContent>
       </Tabs>
 
-      {/* Enhanced Action Modals */}
-      <EnhancedMatchInvoiceModal
-        isOpen={matchModalOpen}
-        onClose={() => setMatchModalOpen(false)}
-        record={portalRecord}
-        onMatch={onInvoiceMatched}
-        onIgnore={onRecordIgnored}
+      <PortalRecordDetailModals
+        portalRecord={portalRecord}
+        matchModalOpen={matchModalOpen}
+        conflictModalOpen={conflictModalOpen}
+        syncModalOpen={syncModalOpen}
+        ignoreModalOpen={ignoreModalOpen}
+        onCloseMatchModal={() => setMatchModalOpen(false)}
+        onCloseConflictModal={() => setConflictModalOpen(false)}
+        onCloseSyncModal={() => setSyncModalOpen(false)}
+        onCloseIgnoreModal={() => setIgnoreModalOpen(false)}
+        onInvoiceMatched={onInvoiceMatched}
+        onConflictResolved={onConflictResolved}
+        onRecordSynced={onRecordSynced}
+        onRecordIgnored={onRecordIgnored}
         onMatchAndCreateRTP={onMatchAndCreateRTP}
-      />
-      
-      <EnhancedResolveConflictModal
-        isOpen={conflictModalOpen}
-        onClose={() => setConflictModalOpen(false)}
-        record={portalRecord}
-        onResolve={onConflictResolved}
-      />
-
-      <IgnoreRecordModal
-        isOpen={ignoreModalOpen}
-        onClose={() => setIgnoreModalOpen(false)}
-        record={portalRecord}
-        onIgnore={onRecordIgnored}
-      />
-      
-      <SyncRecordModal
-        isOpen={syncModalOpen}
-        onClose={() => setSyncModalOpen(false)}
-        record={portalRecord}
-        onSync={onRecordSynced}
       />
     </div>
   );
