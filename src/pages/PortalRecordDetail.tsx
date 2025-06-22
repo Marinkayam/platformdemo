@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { allPortalRecords } from "@/data/portalRecords";
@@ -7,7 +8,6 @@ import { PortalRecordActivityLog } from "@/components/portal-records/detail/Port
 import { PortalRecordTabs } from "@/components/portal-records/detail/PortalRecordTabs";
 import { PortalRecordDetailBreadcrumb } from "@/components/portal-records/detail/PortalRecordDetailBreadcrumb";
 import { PortalRecordDetailNotFound } from "@/components/portal-records/detail/PortalRecordDetailNotFound";
-import { PortalRecordDetailActions } from "@/components/portal-records/detail/PortalRecordDetailActions";
 import { PortalRecordDetailModals } from "@/components/portal-records/detail/PortalRecordDetailModals";
 import { PortalRecordActionInstructions } from "@/components/portal-records/detail/PortalRecordActionInstructions";
 import { Card } from "@/components/ui/card";
@@ -63,16 +63,6 @@ export default function PortalRecordDetail() {
 
       <PortalRecordDetailHeader 
         portalRecord={portalRecord} 
-        actionButtons={[
-          <PortalRecordDetailActions
-            key="actions"
-            portalRecord={portalRecord}
-            onMatchInvoice={() => setMatchModalOpen(true)}
-            onResolveConflict={() => setConflictModalOpen(true)}
-            onSyncRecord={() => setSyncModalOpen(true)}
-            onIgnoreRecord={() => setIgnoreModalOpen(true)}
-          />
-        ]}
         className="mb-6" 
       />
 
