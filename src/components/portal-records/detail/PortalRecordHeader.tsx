@@ -4,12 +4,16 @@ import { PortalLogo } from "../PortalLogo";
 import { PortalStatusBadge } from "../PortalStatusBadge";
 import { MatchTypeBadge } from "../MatchTypeBadge";
 import { ConnectionStatusBadge } from "../ConnectionStatusBadge";
+import { Card } from "@/components/ui/card";
+import { FileText } from "lucide-react";
+import { getPortalLogoUrl } from "@/lib/utils";
 
 interface PortalRecordHeaderProps {
   record: PortalRecord;
+  actionButtons?: React.ReactNode[];
 }
 
-export function PortalRecordHeader({ record }: PortalRecordHeaderProps) {
+export function PortalRecordHeader({ record, actionButtons = [] }: PortalRecordHeaderProps) {
   const formatCurrency = (amount: number, currency: string): string => {
     if (amount === 0) return "—";
     return new Intl.NumberFormat('en-US', {
@@ -18,57 +22,66 @@ export function PortalRecordHeader({ record }: PortalRecordHeaderProps) {
     }).format(amount);
   };
 
+  // Count related invoices (simplified - would be dynamic in real app)
+  const relatedInvoicesCount = record.invoiceNumber ? 1 : 0;
+
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <div className="flex items-start justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-            {record.portalRecordId}
-          </h1>
-          <div className="flex items-center gap-3">
-            <PortalLogo portalName={record.portal} />
-            <span className="text-gray-600">•</span>
-            <span className="text-gray-600">{record.buyer}</span>
+    <div className="mb-8">
+      <Card className="p-6 rounded-xl">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 px-2 py-1">
+                <div className="text-lg font-semibold text-[#01173E]">
+                  {record.portalRecordId}
+                </div>
+                <ConnectionStatusBadge status={record.connectionStatus} />
+                <PortalStatusBadge status={record.portalStatus} />
+                <MatchTypeBadge type={record.matchType} />
+              </div>
+
+              {actionButtons.length > 0 && (
+                <div className="flex items-center gap-2">
+                  {actionButtons}
+                </div>
+              )}
+            </div>
+
+            <div className="text-sm text-muted-foreground font-normal px-2 py-1">
+              Buyer: {record.buyer}
+            </div>
+          </div>
+
+          <div className="border-t border-[#E4E5E9] my-0"></div>
+
+          <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
+            <div className="flex items-center gap-2">
+              {record.portal && (
+                <img
+                  src={getPortalLogoUrl(record.portal)}
+                  alt={`${record.portal} logo`}
+                  className="w-4 h-4 object-contain rounded-full"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/portal-logos/placeholder.svg';
+                  }}
+                />
+              )}
+              <span>Portal: {record.portal || "N/A"}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <FileText className="h-4 w-4 text-gray-500" />
+              <span>Related invoices: {relatedInvoicesCount}</span>
+            </div>
+            <div>
+              <span>Total: {formatCurrency(record.total, record.currency)}</span>
+            </div>
+            <div>
+              <span>Last synced: {record.lastSynced}</span>
+            </div>
           </div>
         </div>
-        
-        <div className="flex items-center gap-2">
-          <ConnectionStatusBadge status={record.connectionStatus} />
-          <PortalStatusBadge status={record.portalStatus} />
-          <MatchTypeBadge type={record.matchType} />
-        </div>
-      </div>
-
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div>
-          <p className="text-sm font-medium text-gray-500 mb-1">Total Amount</p>
-          <p className="text-lg font-semibold text-gray-900">
-            {formatCurrency(record.total, record.currency)}
-          </p>
-        </div>
-        
-        <div>
-          <p className="text-sm font-medium text-gray-500 mb-1">Invoice Number</p>
-          <p className="text-lg font-semibold text-gray-900">
-            {record.invoiceNumber || "—"}
-          </p>
-        </div>
-        
-        <div>
-          <p className="text-sm font-medium text-gray-500 mb-1">PO Number</p>
-          <p className="text-lg font-semibold text-gray-900">
-            {record.poNumber || "—"}
-          </p>
-        </div>
-        
-        <div>
-          <p className="text-sm font-medium text-gray-500 mb-1">Last Synced</p>
-          <p className="text-lg font-semibold text-gray-900">
-            {record.lastSynced}
-          </p>
-        </div>
-      </div>
+      </Card>
     </div>
   );
 }

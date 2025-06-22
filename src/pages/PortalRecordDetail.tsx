@@ -11,8 +11,10 @@ import { MatchInvoiceModal } from "@/components/portal-records/actions/MatchInvo
 import { ResolveConflictModal } from "@/components/portal-records/actions/ResolveConflictModal";
 import { SyncRecordModal } from "@/components/portal-records/actions/SyncRecordModal";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { ChevronLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 export default function PortalRecordDetail() {
   const { id } = useParams<{ id: string }>();
@@ -29,15 +31,15 @@ export default function PortalRecordDetail() {
 
   if (!portalRecord) {
     return (
-      <div className="space-y-6 animate-fade-in">
-        <div className="flex items-center gap-4">
+      <div className="container mx-auto py-6">
+        <div className="flex items-center gap-4 mb-6">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate("/portal-records")}
             className="text-gray-600 hover:text-gray-900"
           >
-            <ChevronLeft className="h-4 w-4 mr-1" />
+            <ArrowLeft className="h-4 w-4 mr-1" />
             Back to Portal Records
           </Button>
         </div>
@@ -114,9 +116,12 @@ export default function PortalRecordDetail() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="container mx-auto py-6">
       {/* Breadcrumb Navigation */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2 mb-4">
+        <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="h-8 w-8">
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -124,39 +129,41 @@ export default function PortalRecordDetail() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{portalRecord.portalRecordId}</BreadcrumbPage>
+              <BreadcrumbPage>All Records</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        
-        <div className="flex items-center gap-2">
-          {getActionButtons()}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate("/portal-records")}
-            className="text-gray-600 hover:text-gray-900 ml-2"
-          >
-            <ChevronLeft className="h-4 w-4 mr-1" />
-            Back to Portal Records
-          </Button>
-        </div>
       </div>
 
       {/* Header */}
-      <PortalRecordHeader record={portalRecord} />
+      <PortalRecordHeader record={portalRecord} actionButtons={getActionButtons()} />
 
       {/* Tabs */}
-      <PortalRecordTabs
-        tabs={tabs}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-      />
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <PortalRecordTabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
 
-      {/* Tab Content */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        {renderTabContent()}
-      </div>
+        <TabsContent value="information" className="mt-6">
+          <Card className="p-6 rounded-xl shadow-sm">
+            <RecordInformationTab record={portalRecord} />
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="activity" className="mt-6">
+          <Card className="p-6 rounded-xl shadow-sm">
+            <ActivityLogTab record={portalRecord} />
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="related" className="mt-6">
+          <Card className="p-6 rounded-xl shadow-sm">
+            <RelatedInvoicesTab record={portalRecord} />
+          </Card>
+        </TabsContent>
+      </Tabs>
 
       {/* Action Modals */}
       <MatchInvoiceModal

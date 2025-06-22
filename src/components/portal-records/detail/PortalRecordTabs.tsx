@@ -1,5 +1,5 @@
 
-import { cn } from "@/lib/utils";
+import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface PortalRecordTab {
   id: string;
@@ -14,23 +14,12 @@ interface PortalRecordTabsProps {
 
 export function PortalRecordTabs({ tabs, activeTab, onTabChange }: PortalRecordTabsProps) {
   return (
-    <div className="border-b">
-      <div className="flex space-x-8">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={cn(
-              "py-3 px-1 relative font-medium text-sm transition-colors",
-              activeTab === tab.id
-                ? "text-primary border-b-2 border-primary"
-                : "text-gray-600 hover:text-gray-900"
-            )}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-    </div>
+    <TabsList className="mb-4">
+      {tabs.map((tab) => (
+        <TabsTrigger key={tab.id} value={tab.id}>
+          {tab.label}
+        </TabsTrigger>
+      ))}
+    </TabsList>
   );
 }
