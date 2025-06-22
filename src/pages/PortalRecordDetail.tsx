@@ -76,7 +76,13 @@ export default function PortalRecordDetail() {
         className="mb-6" 
       />
 
-      <PortalRecordActionInstructions portalRecord={portalRecord} />
+      <PortalRecordActionInstructions 
+        portalRecord={portalRecord}
+        onMatchInvoice={() => setMatchModalOpen(true)}
+        onResolveConflict={() => setConflictModalOpen(true)}
+        onSyncRecord={() => setSyncModalOpen(true)}
+        onIgnoreRecord={() => setIgnoreModalOpen(true)}
+      />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">
         <PortalRecordTabs activeTab={activeTab} onTabChange={setActiveTab} />
