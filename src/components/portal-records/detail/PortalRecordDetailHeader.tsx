@@ -1,8 +1,6 @@
 
 import { PortalRecord } from "@/types/portalRecord";
-import { PortalStatusBadge } from "../PortalStatusBadge";
-import { MatchTypeBadge } from "../MatchTypeBadge";
-import { ConnectionStatusBadge } from "../ConnectionStatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Card } from "@/components/ui/card";
 import { FileText } from "lucide-react";
 import { getPortalLogoUrl } from "@/lib/utils";
@@ -36,9 +34,7 @@ export function PortalRecordDetailHeader({ portalRecord, actionButtons = [], cla
                 <div className="text-lg font-semibold text-[#01173E]">
                   {portalRecord.portalRecordId}
                 </div>
-                <ConnectionStatusBadge status={portalRecord.connectionStatus} />
-                <PortalStatusBadge status={portalRecord.portalStatus} />
-                <MatchTypeBadge type={portalRecord.matchType} />
+                <StatusBadge status={portalRecord.portalStatus} />
               </div>
 
               {actionButtons.length > 0 && (

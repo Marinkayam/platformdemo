@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { TableSystem } from "@/components/ui/TableSystem";
 import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { ConnectionStatusBadge } from "./ConnectionStatusBadge";
-import { PortalStatusBadge } from "./PortalStatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { MatchTypeBadge } from "./MatchTypeBadge";
 import { PortalLogo } from "./PortalLogo";
 import { PortalRecord } from "@/types/portalRecord";
@@ -154,7 +154,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
         if (record.connectionStatus === 'Disconnected') {
           return <span className="text-gray-400">—</span>;
         }
-        return <PortalStatusBadge status={record.portalStatus} />;
+        return <StatusBadge status={record.portalStatus} />;
       }
     },
     {
