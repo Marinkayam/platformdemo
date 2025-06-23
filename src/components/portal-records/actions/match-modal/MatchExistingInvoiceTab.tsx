@@ -1,4 +1,3 @@
-
 import { useMemo, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -195,7 +194,6 @@ export function MatchExistingInvoiceTab({
                   </div>
                   
                   <div className="space-y-4">
-                    <div className="text-sm font-medium">Upload New RTP</div>
                     <div className="max-w-md mx-auto">
                       <UploadSection
                         uploadedFile={uploadedFile}

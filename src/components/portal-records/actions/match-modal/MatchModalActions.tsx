@@ -26,7 +26,7 @@ export function MatchModalActions({
   const canCreateRTP = uploadedFile;
 
   return (
-    <DialogFooter className="flex justify-between items-center pt-4 border-t bg-background">
+    <DialogFooter className="flex justify-between items-center pt-4 border-t">
       <Button 
         variant="outline" 
         onClick={onIgnore} 
