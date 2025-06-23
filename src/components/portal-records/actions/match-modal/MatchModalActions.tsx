@@ -36,7 +36,7 @@ export function MatchModalActions({
           <Button 
             onClick={onMatch}
             disabled={!selectedInvoiceId}
-            className="bg-primary hover:bg-primary/90"
+            className={selectedInvoiceId ? "bg-primary hover:bg-primary/90" : ""}
           >
             Match Invoice
           </Button>
@@ -44,7 +44,7 @@ export function MatchModalActions({
           <Button 
             onClick={onMatchAndCreateRTP}
             disabled={!uploadedFile}
-            className="bg-primary hover:bg-primary/90"
+            className={uploadedFile ? "bg-primary hover:bg-primary/90" : ""}
           >
             Match & Create RTP
           </Button>

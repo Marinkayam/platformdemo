@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
-import { FileText, AlertTriangle, Search } from "lucide-react";
+import { FileText, AlertTriangle, Search, ExternalLink } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface MatchExistingInvoiceTabProps {
   record: PortalRecord;
@@ -55,19 +57,29 @@ export function MatchExistingInvoiceTab({
 
   const selectedInvoice = filteredInvoices.find(inv => inv.id === selectedInvoiceId);
   
-  // Check for conflicts
+  // Check for conflicts - if invoice is already linked to another portal record
   const hasConflict = selectedInvoice && invoiceData.some(inv => 
     inv.id === selectedInvoiceId && inv.status !== 'Pending Action'
   );
+
+  const handlePreviewPdf = () => {
+    if (selectedInvoice) {
+      toast({
+        title: "Opening PDF Preview",
+        description: `Opening invoice ${selectedInvoice.number}.pdf`,
+      });
+      // In a real app, this would open the PDF preview
+    }
+  };
 
   return (
     <div className="space-y-6">
       {/* Filters Section */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="portal-filter" className="text-sm font-medium text-foreground">Portal Filter</Label>
+          <Label htmlFor="portal-filter" className="text-sm font-medium">Portal Filter</Label>
           <Select value={selectedPortal} onValueChange={setSelectedPortal}>
-            <SelectTrigger className="h-10 border-border bg-background">
+            <SelectTrigger className="h-10">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -77,9 +89,9 @@ export function MatchExistingInvoiceTab({
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="buyer-filter" className="text-sm font-medium text-foreground">Buyer Filter</Label>
+          <Label htmlFor="buyer-filter" className="text-sm font-medium">Buyer Filter</Label>
           <Select value={selectedBuyer} onValueChange={setSelectedBuyer}>
-            <SelectTrigger className="h-10 border-border bg-background">
+            <SelectTrigger className="h-10">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -93,14 +105,14 @@ export function MatchExistingInvoiceTab({
       {/* Search Section */}
       <div className="space-y-3">
         <div className="space-y-2">
-          <Label className="text-sm font-medium text-foreground">Search Invoices</Label>
+          <Label className="text-sm font-medium">Search Invoices</Label>
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search by invoice ID, number, or buyer..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 h-10 border-border bg-background"
+              className="pl-10 h-10"
             />
           </div>
           <p className="text-xs text-muted-foreground">
@@ -110,9 +122,9 @@ export function MatchExistingInvoiceTab({
 
         {/* Search Results */}
         {searchTerm && (
-          <div className="border border-border rounded-lg max-h-60 overflow-y-auto bg-background">
+          <div className="border rounded-lg max-h-60 overflow-y-auto">
             {filteredInvoices.length > 0 ? (
-              <div className="divide-y divide-border">
+              <div className="divide-y">
                 {filteredInvoices.map((invoice) => (
                   <button
                     key={invoice.id}
@@ -123,7 +135,7 @@ export function MatchExistingInvoiceTab({
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <div className="font-medium text-sm text-foreground">{invoice.id} - {invoice.number}</div>
+                        <div className="font-medium text-sm">{invoice.id} - {invoice.number}</div>
                         <div className="text-xs text-muted-foreground mt-1">
                           {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
                         </div>
@@ -152,45 +164,78 @@ export function MatchExistingInvoiceTab({
           <AlertTriangle className="h-4 w-4 text-amber-600" />
           <AlertDescription className="text-amber-800">
             <span className="font-medium">Conflict Detected:</span> This invoice is already linked to another portal record. 
-            Matching will replace the existing link and may create a conflict.
+            Matching will create a conflict that needs to be resolved.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Primary Match Info */}
+      {selectedInvoice && !hasConflict && (
+        <Alert className="border-green-200 bg-green-50">
+          <FileText className="h-4 w-4 text-green-600" />
+          <AlertDescription className="text-green-800">
+            <span className="font-medium">Primary Match:</span> This portal record will become the primary match for the selected invoice.
           </AlertDescription>
         </Alert>
       )}
 
       {/* Selected Invoice Details */}
       {selectedInvoice && (
-        <Card className="bg-primary/5 border-primary/20">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base flex items-center gap-2 text-foreground">
-              <FileText className="h-4 w-4" />
-              Selected Invoice Details
-            </CardTitle>
+        <Card>
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Selected Invoice Details
+              </CardTitle>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handlePreviewPdf}
+                className="flex items-center gap-2"
+              >
+                <ExternalLink className="h-4 w-4" />
+                Preview PDF
+              </Button>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm">
+          <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <span className="font-medium text-muted-foreground">Invoice ID:</span>
-                <p className="font-mono text-foreground">{selectedInvoice.id}</p>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-muted-foreground">Invoice ID</Label>
+                <Input value={selectedInvoice.id} readOnly className="bg-muted/50" />
               </div>
-              <div>
-                <span className="font-medium text-muted-foreground">Status:</span>
-                <p className="capitalize text-foreground">{selectedInvoice.status}</p>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-muted-foreground">Invoice Number</Label>
+                <Input value={selectedInvoice.number || ''} readOnly className="bg-muted/50" />
               </div>
-              <div>
-                <span className="font-medium text-muted-foreground">Amount:</span>
-                <p className="font-semibold text-foreground">{formatCurrency(selectedInvoice.total, selectedInvoice.currency || 'USD')}</p>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-muted-foreground">Status</Label>
+                <Input value={selectedInvoice.status} readOnly className="bg-muted/50 capitalize" />
               </div>
-              <div>
-                <span className="font-medium text-muted-foreground">Due Date:</span>
-                <p className="text-foreground">{selectedInvoice.dueDate}</p>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-muted-foreground">Amount</Label>
+                <Input 
+                  value={formatCurrency(selectedInvoice.total, selectedInvoice.currency || 'USD')} 
+                  readOnly 
+                  className="bg-muted/50 font-semibold" 
+                />
               </div>
-              <div>
-                <span className="font-medium text-muted-foreground">Buyer:</span>
-                <p className="text-foreground">{selectedInvoice.buyer}</p>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-muted-foreground">Due Date</Label>
+                <Input value={selectedInvoice.dueDate} readOnly className="bg-muted/50" />
               </div>
-              <div>
-                <span className="font-medium text-muted-foreground">Owner:</span>
-                <p className="text-foreground">{selectedInvoice.owner}</p>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-muted-foreground">Buyer</Label>
+                <Input value={selectedInvoice.buyer} readOnly className="bg-muted/50" />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-muted-foreground">Owner</Label>
+                <Input value={selectedInvoice.owner} readOnly className="bg-muted/50" />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-muted-foreground">Currency</Label>
+                <Input value={selectedInvoice.currency || 'USD'} readOnly className="bg-muted/50" />
               </div>
             </div>
           </CardContent>
