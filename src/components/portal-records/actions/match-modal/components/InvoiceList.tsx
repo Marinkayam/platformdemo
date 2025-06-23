@@ -83,14 +83,48 @@ export function InvoiceList({
             
             <div className="space-y-4">
               <div className="max-w-md mx-auto">
-                <UploadSection
-                  uploadedFile={uploadedFile}
-                  isUploading={false}
-                  uploadProgress={0}
-                  selectedAction="upload"
-                  onFileUpload={handleFileUpload}
-                  onFileRemoval={handleFileRemoval}
-                />
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <div className="space-y-4">
+                    <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Upload className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-900">Upload New RTP</h3>
+                      <p className="text-xs text-gray-500 mt-1">This invoice must include the corrected data</p>
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      Drag & drop a file here or{" "}
+                      <button 
+                        className="text-blue-600 hover:text-blue-700 underline"
+                        onClick={() => {
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = '.pdf';
+                          input.onchange = (e) => {
+                            const file = (e.target as HTMLInputElement).files?.[0];
+                            if (file) handleFileUpload(file);
+                          };
+                          input.click();
+                        }}
+                      >
+                        click to browse
+                      </button>
+                    </div>
+                    {uploadedFile && (
+                      <div className="mt-3 p-2 bg-white rounded border text-xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-700">{uploadedFile.name}</span>
+                          <button
+                            onClick={handleFileRemoval}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
               
               {uploadedFile && (
