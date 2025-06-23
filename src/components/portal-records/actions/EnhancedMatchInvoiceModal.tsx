@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TabsNav } from "@/components/common/TabsNav";
 import { PortalRecord } from "@/types/portalRecord";
 import { toast } from "@/hooks/use-toast";
-import { AlertTriangle } from "lucide-react";
 import { CompactSummaryBar } from "./match-modal/CompactSummaryBar";
 import { PortalRecordDetails } from "./match-modal/PortalRecordDetails";
 import { MatchExistingInvoiceTab } from "./match-modal/MatchExistingInvoiceTab";
@@ -137,28 +136,76 @@ export function EnhancedMatchInvoiceModal({
 
   const tabs = [
     { id: "match-existing", label: "Match Existing Invoice" },
-    { id: "create-rtp", label: "Create RTP", icon: <AlertTriangle className="h-3 w-3 text-amber-500" /> }
+    { id: "create-rtp", label: "Create RTP" }
   ];
 
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleCloseAttempt}>
-        <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-7xl'} max-h-[95vh] overflow-y-auto`}>
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">Match Portal Record - {record.portalRecordId}</DialogTitle>
+        <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[90vh] overflow-y-auto`}>
+          <DialogHeader className="border-b pb-4">
+            <DialogTitle className="text-xl font-semibold text-gray-900">
+              Match Portal Record - {record.portalRecordId}
+            </DialogTitle>
           </DialogHeader>
           
           {isCompactMode ? (
             // Compact mode layout for detail page
-            <div className="space-y-6">
+            <div className="space-y-6 p-6">
               <CompactSummaryBar record={record} />
 
               {/* Full-width Action Area */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Match Options</CardTitle>
-                </CardHeader>
-                <CardContent>
+              <div className="space-y-6">
+                <TabsNav 
+                  tabs={tabs}
+                  activeTab={activeTab}
+                  onTabChange={setActiveTab}
+                />
+
+                {activeTab === "match-existing" && (
+                  <MatchExistingInvoiceTab
+                    record={record}
+                    selectedInvoiceId={selectedInvoiceId}
+                    setSelectedInvoiceId={setSelectedInvoiceId}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    selectedPortal={selectedPortal}
+                    setSelectedPortal={setSelectedPortal}
+                    selectedBuyer={selectedBuyer}
+                    setSelectedBuyer={setSelectedBuyer}
+                    debouncedSearchTerm={debouncedSearchTerm}
+                  />
+                )}
+
+                {activeTab === "create-rtp" && (
+                  <CreateRTPTab
+                    record={record}
+                    uploadedFile={uploadedFile}
+                    setUploadedFile={setUploadedFile}
+                    rtpInvoiceNumber={rtpInvoiceNumber}
+                    setRtpInvoiceNumber={setRtpInvoiceNumber}
+                    rtpInvoiceDate={rtpInvoiceDate}
+                    setRtpInvoiceDate={setRtpInvoiceDate}
+                    rtpAmount={rtpAmount}
+                    setRtpAmount={setRtpAmount}
+                    rtpPoNumber={rtpPoNumber}
+                    setRtpPoNumber={setRtpPoNumber}
+                    onFileUpload={handleFileUpload}
+                  />
+                )}
+              </div>
+            </div>
+          ) : (
+            // Original two-column layout with improved styling
+            <div className="grid grid-cols-5 gap-8 p-6">
+              {/* Portal Record Details - Enhanced */}
+              <div className="col-span-2">
+                <PortalRecordDetails record={record} />
+              </div>
+
+              {/* Action Area - Enhanced */}
+              <div className="col-span-3">
+                <div className="space-y-6">
                   <TabsNav 
                     tabs={tabs}
                     activeTab={activeTab}
@@ -196,78 +243,24 @@ export function EnhancedMatchInvoiceModal({
                       onFileUpload={handleFileUpload}
                     />
                   )}
-                </CardContent>
-              </Card>
-            </div>
-          ) : (
-            // Original two-column layout for other contexts
-            <div className="grid grid-cols-5 gap-6">
-              {/* Portal Record Details - Enhanced */}
-              <div className="col-span-2">
-                <PortalRecordDetails record={record} />
-              </div>
-
-              {/* Action Area - Enhanced */}
-              <div className="col-span-3">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Match Options</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <TabsNav 
-                      tabs={tabs}
-                      activeTab={activeTab}
-                      onTabChange={setActiveTab}
-                    />
-
-                    {activeTab === "match-existing" && (
-                      <MatchExistingInvoiceTab
-                        record={record}
-                        selectedInvoiceId={selectedInvoiceId}
-                        setSelectedInvoiceId={setSelectedInvoiceId}
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
-                        selectedPortal={selectedPortal}
-                        setSelectedPortal={setSelectedPortal}
-                        selectedBuyer={selectedBuyer}
-                        setSelectedBuyer={setSelectedBuyer}
-                        debouncedSearchTerm={debouncedSearchTerm}
-                      />
-                    )}
-
-                    {activeTab === "create-rtp" && (
-                      <CreateRTPTab
-                        record={record}
-                        uploadedFile={uploadedFile}
-                        setUploadedFile={setUploadedFile}
-                        rtpInvoiceNumber={rtpInvoiceNumber}
-                        setRtpInvoiceNumber={setRtpInvoiceNumber}
-                        rtpInvoiceDate={rtpInvoiceDate}
-                        setRtpInvoiceDate={setRtpInvoiceDate}
-                        rtpAmount={rtpAmount}
-                        setRtpAmount={setRtpAmount}
-                        rtpPoNumber={rtpPoNumber}
-                        setRtpPoNumber={setRtpPoNumber}
-                        onFileUpload={handleFileUpload}
-                      />
-                    )}
-                  </CardContent>
-                </Card>
+                </div>
               </div>
             </div>
           )}
 
-          <MatchModalActions
-            activeTab={activeTab}
-            selectedInvoiceId={selectedInvoiceId}
-            uploadedFile={uploadedFile}
-            rtpInvoiceNumber={rtpInvoiceNumber}
-            rtpInvoiceDate={rtpInvoiceDate}
-            onClose={handleCloseAttempt}
-            onIgnore={handleIgnore}
-            onMatch={handleMatch}
-            onMatchAndCreateRTP={handleMatchAndCreateRTP}
-          />
+          <div className="border-t bg-gray-50 px-6 py-4">
+            <MatchModalActions
+              activeTab={activeTab}
+              selectedInvoiceId={selectedInvoiceId}
+              uploadedFile={uploadedFile}
+              rtpInvoiceNumber={rtpInvoiceNumber}
+              rtpInvoiceDate={rtpInvoiceDate}
+              onClose={handleCloseAttempt}
+              onIgnore={handleIgnore}
+              onMatch={handleMatch}
+              onMatchAndCreateRTP={handleMatchAndCreateRTP}
+            />
+          </div>
         </DialogContent>
       </Dialog>
 
@@ -277,20 +270,20 @@ export function EnhancedMatchInvoiceModal({
           <DialogHeader>
             <DialogTitle>Are you sure?</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-4 p-6">
             <p className="text-sm text-gray-600">
               You have unsaved changes. Are you sure you want to close without saving?
             </p>
             <div className="flex justify-end gap-3">
               <button 
                 onClick={() => setShowConfirmModal(false)}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800"
+                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 font-medium"
               >
                 Continue Editing
               </button>
               <button 
                 onClick={confirmClose}
-                className="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+                className="px-4 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 font-medium"
               >
                 Yes, Close
               </button>

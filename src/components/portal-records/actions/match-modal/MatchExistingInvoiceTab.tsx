@@ -1,17 +1,13 @@
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
-import { FileText, AlertTriangle } from "lucide-react";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { FileText, AlertTriangle, Search } from "lucide-react";
 
 interface MatchExistingInvoiceTabProps {
   record: PortalRecord;
@@ -38,8 +34,6 @@ export function MatchExistingInvoiceTab({
   setSelectedBuyer,
   debouncedSearchTerm,
 }: MatchExistingInvoiceTabProps) {
-  const [open, setOpen] = useState(false);
-
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -67,12 +61,13 @@ export function MatchExistingInvoiceTab({
   );
 
   return (
-    <div className="space-y-6 mt-6">
+    <div className="space-y-6">
+      {/* Filters Section */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="portal-filter">Portal Filter</Label>
+          <Label htmlFor="portal-filter" className="text-sm font-medium">Portal Filter</Label>
           <Select value={selectedPortal} onValueChange={setSelectedPortal}>
-            <SelectTrigger>
+            <SelectTrigger className="h-10">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -82,9 +77,9 @@ export function MatchExistingInvoiceTab({
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="buyer-filter">Buyer Filter</Label>
+          <Label htmlFor="buyer-filter" className="text-sm font-medium">Buyer Filter</Label>
           <Select value={selectedBuyer} onValueChange={setSelectedBuyer}>
-            <SelectTrigger>
+            <SelectTrigger className="h-10">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -95,61 +90,60 @@ export function MatchExistingInvoiceTab({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label>Search and Select Invoice</Label>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              className="w-full justify-between"
-            >
-              {selectedInvoiceId
-                ? `${selectedInvoice?.id} - ${selectedInvoice?.number}`
-                : "Search and select an invoice..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
-            <Command>
-              <CommandInput 
-                placeholder="Search by invoice ID, number, or buyer..." 
-                value={searchTerm}
-                onValueChange={setSearchTerm}
-              />
-              <CommandEmpty>No invoices found.</CommandEmpty>
-              <CommandGroup>
+      {/* Search Section */}
+      <div className="space-y-3">
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Search Invoices</Label>
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Input
+              placeholder="Search by invoice ID, number, or buyer..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 h-10"
+            />
+          </div>
+          <p className="text-xs text-gray-500">
+            Showing {filteredInvoices.length} invoices from {selectedPortal} • {selectedBuyer === "all_buyers" ? "All Buyers" : selectedBuyer}
+          </p>
+        </div>
+
+        {/* Search Results */}
+        {searchTerm && (
+          <div className="border rounded-lg max-h-60 overflow-y-auto">
+            {filteredInvoices.length > 0 ? (
+              <div className="divide-y">
                 {filteredInvoices.map((invoice) => (
-                  <CommandItem
+                  <button
                     key={invoice.id}
-                    value={invoice.id}
-                    onSelect={(currentValue) => {
-                      setSelectedInvoiceId(currentValue === selectedInvoiceId ? "" : currentValue);
-                      setOpen(false);
-                    }}
+                    onClick={() => setSelectedInvoiceId(invoice.id)}
+                    className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors ${
+                      selectedInvoiceId === invoice.id ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
+                    }`}
                   >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        selectedInvoiceId === invoice.id ? "opacity-100" : "opacity-0"
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <div className="font-medium text-sm">{invoice.id} - {invoice.number}</div>
+                        <div className="text-xs text-gray-500 mt-1">
+                          {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
+                        </div>
+                      </div>
+                      {selectedInvoiceId === invoice.id && (
+                        <div className="h-4 w-4 rounded-full bg-blue-500 flex items-center justify-center ml-2">
+                          <div className="h-2 w-2 bg-white rounded-full" />
+                        </div>
                       )}
-                    />
-                    <div className="flex flex-col">
-                      <span className="font-medium">{invoice.id} - {invoice.number}</span>
-                      <span className="text-xs text-gray-500">
-                        {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
-                      </span>
                     </div>
-                  </CommandItem>
+                  </button>
                 ))}
-              </CommandGroup>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <p className="text-xs text-gray-500">
-          Only showing invoices from {selectedPortal} + {selectedBuyer === "all_buyers" ? "All Buyers" : selectedBuyer}
-        </p>
+              </div>
+            ) : (
+              <div className="px-4 py-8 text-center text-gray-500 text-sm">
+                No invoices found matching your search
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Conflict Warning */}
@@ -157,7 +151,7 @@ export function MatchExistingInvoiceTab({
         <Alert className="border-amber-200 bg-amber-50">
           <AlertTriangle className="h-4 w-4 text-amber-600" />
           <AlertDescription className="text-amber-800">
-            <strong>Conflict Detected:</strong> This invoice is already linked to another portal record. 
+            <span className="font-medium">Conflict Detected:</span> This invoice is already linked to another portal record. 
             Matching will replace the existing link and may create a conflict.
           </AlertDescription>
         </Alert>

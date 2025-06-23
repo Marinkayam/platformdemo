@@ -1,7 +1,7 @@
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PortalRecord } from "@/types/portalRecord";
-import { AlertTriangle } from "lucide-react";
+import { FileText } from "lucide-react";
 import { UploadSection } from "@/components/invoices/detail/exceptions/extra-data/UploadSection";
 
 interface CreateRTPTabProps {
@@ -23,7 +23,6 @@ export function CreateRTPTab({
   record,
   uploadedFile,
   setUploadedFile,
-  onFileUpload,
 }: CreateRTPTabProps) {
   const handleFileUpload = (file: File) => {
     setUploadedFile(file);
@@ -34,7 +33,7 @@ export function CreateRTPTab({
   };
 
   return (
-    <div className="space-y-6 mt-6">
+    <div className="space-y-6">
       <UploadSection
         uploadedFile={uploadedFile}
         isUploading={false}
@@ -45,7 +44,7 @@ export function CreateRTPTab({
       />
 
       <Alert className="bg-blue-50 border-blue-200">
-        <AlertTriangle className="h-4 w-4 text-blue-600" />
+        <FileText className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-800">
           Creating an RTP will generate a new Request to Pay record that matches this portal record.
           Upload an invoice PDF to proceed.
