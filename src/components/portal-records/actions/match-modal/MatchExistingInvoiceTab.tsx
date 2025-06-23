@@ -1,3 +1,4 @@
+
 import { useMemo, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
-import { FileText, AlertTriangle, Search, ExternalLink, X } from "lucide-react";
+import { FileText, AlertTriangle, Search, ExternalLink, X, Upload } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface MatchExistingInvoiceTabProps {
@@ -23,6 +24,7 @@ interface MatchExistingInvoiceTabProps {
   setSelectedBuyer: (buyer: string) => void;
   debouncedSearchTerm: string;
   onMakePrimary?: () => void;
+  onMatchAndCreateRTP?: () => void;
 }
 
 export function MatchExistingInvoiceTab({
@@ -37,6 +39,7 @@ export function MatchExistingInvoiceTab({
   setSelectedBuyer,
   debouncedSearchTerm,
   onMakePrimary,
+  onMatchAndCreateRTP,
 }: MatchExistingInvoiceTabProps) {
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [showMakePrimaryConfirm, setShowMakePrimaryConfirm] = useState(false);
@@ -86,6 +89,12 @@ export function MatchExistingInvoiceTab({
       description: `${record.portalRecordId} is now the primary record.`,
     });
     setShowMakePrimaryConfirm(false);
+  };
+
+  const handleMatchAndCreateRTP = () => {
+    if (onMatchAndCreateRTP) {
+      onMatchAndCreateRTP();
+    }
   };
 
   return (
@@ -171,12 +180,13 @@ export function MatchExistingInvoiceTab({
                   No invoices found matching your search
                 </div>
                 <Button 
-                  onClick={handleMakePrimary}
+                  onClick={handleMatchAndCreateRTP}
                   variant="outline"
                   size="sm"
-                  className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10"
+                  className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10 flex items-center gap-2"
                 >
-                  Make {record.portalRecordId} Primary
+                  <Upload className="h-4 w-4" />
+                  Match & Create RTP
                 </Button>
               </div>
             )}
