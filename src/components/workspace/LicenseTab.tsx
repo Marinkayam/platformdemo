@@ -17,20 +17,17 @@ export function LicenseTab() {
     {
       label: "Smart Connects (SC)",
       value: "Up to 50",
-      icon: Link,
-      color: "text-primary-main"
+      icon: Link
     },
     {
       label: "Users (Monto + View Only)",
       value: "10 Monto / 5 View Only",
-      icon: UserCheck,
-      color: "text-success-main"
+      icon: UserCheck
     },
     {
       label: "Invoices Tracked",
       value: "Up to 2,000",
-      icon: Receipt,
-      color: "text-info-main"
+      icon: Receipt
     }
   ];
 
@@ -53,14 +50,14 @@ export function LicenseTab() {
           return (
             <Card 
               key={item.label} 
-              className="group border-grey-300 hover:border-primary-light transition-all duration-300 hover:shadow-sm"
+              className="group border-grey-300 hover:border-grey-400 transition-all duration-200 hover:shadow-sm"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <CardContent className="p-6 text-center space-y-4">
-                <div className={`w-12 h-12 mx-auto rounded-lg bg-grey-100 flex items-center justify-center group-hover:bg-primary-lighter transition-colors duration-300`}>
+                <div className="w-12 h-12 mx-auto rounded-lg bg-grey-100 flex items-center justify-center group-hover:bg-grey-200 transition-colors duration-200">
                   <IconComponent 
                     size={20} 
-                    className={`${item.color} group-hover:text-primary-main transition-colors duration-300`}
+                    className="text-grey-600 group-hover:text-grey-700 transition-colors duration-200"
                     strokeWidth={1.5}
                   />
                 </div>
@@ -98,7 +95,7 @@ export function LicenseTab() {
               return (
                 <Card 
                   key={feature.name} 
-                  className={`group transition-all duration-300 hover:scale-[1.02] ${
+                  className={`group transition-all duration-200 hover:scale-[1.02] ${
                     isLocked 
                       ? "border-grey-300 bg-grey-50 hover:border-grey-400" 
                       : "border-primary-main bg-primary-main hover:border-primary-dark hover:shadow-lg"
@@ -165,7 +162,7 @@ export function LicenseTab() {
           <Typography variant="body2" className="text-grey-600 mb-4">
             Interested in premium features?
           </Typography>
-          <Button className="bg-primary-main hover:bg-primary-dark text-white px-6 py-2 rounded-lg transition-all duration-300 hover:scale-105">
+          <Button className="bg-primary-main hover:bg-primary-dark text-white px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105">
             Contact Us
           </Button>
         </div>
