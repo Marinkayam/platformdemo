@@ -81,7 +81,13 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
       );
     }
 
-    return filtered;
+    // Sort filtered records to prioritize unmatched and conflict records
+    return filtered.sort((a, b) => {
+      const priorityOrder = { 'Unmatched': 0, 'Conflict': 1, 'Primary': 2, 'Alternate': 3 };
+      const aPriority = priorityOrder[a.matchType] ?? 4;
+      const bPriority = priorityOrder[b.matchType] ?? 4;
+      return aPriority - bPriority;
+    });
   }, [data, activeTab, filters, searchTerm]);
 
   const clearAllFilters = () => {

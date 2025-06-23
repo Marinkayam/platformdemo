@@ -20,13 +20,20 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   // Modal states
   const [matchModalOpen, setMatchModalOpen] = useState(false);
   const [conflictModalOpen, setConflictModalOpen] = useState(false);
-  const [syncModalOpen, setSyncModalOpen] = useState(false);
   const [ignoreModalOpen, setIgnoreModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<PortalRecord | null>(null);
 
+  // Sort records to prioritize unmatched and conflict records
+  const sortedRecords = [...records].sort((a, b) => {
+    const priorityOrder = { 'Unmatched': 0, 'Conflict': 1, 'Primary': 2, 'Alternate': 3 };
+    const aPriority = priorityOrder[a.matchType] ?? 4;
+    const bPriority = priorityOrder[b.matchType] ?? 4;
+    return aPriority - bPriority;
+  });
+
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
+  const currentRecords = sortedRecords.slice(indexOfFirstRecord, indexOfLastRecord);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -34,6 +41,10 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
 
   const handleViewDetails = (recordId: string) => {
     navigate(`/portal-records/${recordId}`);
+  };
+
+  const handleRowClick = (record: PortalRecord) => {
+    navigate(`/portal-records/${record.id}`);
   };
 
   const handleMatchInvoice = (record: PortalRecord) => {
@@ -44,11 +55,6 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   const handleResolveConflict = (record: PortalRecord) => {
     setSelectedRecord(record);
     setConflictModalOpen(true);
-  };
-
-  const handleSyncRecord = (record: PortalRecord) => {
-    setSelectedRecord(record);
-    setSyncModalOpen(true);
   };
 
   const handleIgnoreRecord = (record: PortalRecord) => {
@@ -63,11 +69,6 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
 
   const onConflictResolved = (selectedRecordId: string, action: 'primary' | 'alternate') => {
     console.log(`Resolved conflict: ${selectedRecordId} set as ${action} for record ${selectedRecord?.id}`);
-    // TODO: Update record state in real implementation
-  };
-
-  const onRecordSynced = () => {
-    console.log(`Synced record ${selectedRecord?.id}`);
     // TODO: Update record state in real implementation
   };
 
@@ -104,14 +105,15 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
       <TableSystem 
         data={currentRecords}
         columns={columns}
+        onRowClick={handleRowClick}
         rowClassName="hover:bg-gray-50 cursor-pointer"
       />
       <PortalRecordsTableFooter 
-        totalRecords={records.length}
+        totalRecords={sortedRecords.length}
         currentPage={currentPage}
         recordsPerPage={recordsPerPage}
         onPageChange={handlePageChange}
-        records={records}
+        records={sortedRecords}
       />
 
       <PortalRecordsModals
@@ -120,13 +122,10 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
         setMatchModalOpen={setMatchModalOpen}
         conflictModalOpen={conflictModalOpen}
         setConflictModalOpen={setConflictModalOpen}
-        syncModalOpen={syncModalOpen}
-        setSyncModalOpen={setSyncModalOpen}
         ignoreModalOpen={ignoreModalOpen}
         setIgnoreModalOpen={setIgnoreModalOpen}
         onInvoiceMatched={onInvoiceMatched}
         onConflictResolved={onConflictResolved}
-        onRecordSynced={onRecordSynced}
         onRecordIgnored={onRecordIgnored}
         onMatchAndCreateRTP={onMatchAndCreateRTP}
       />

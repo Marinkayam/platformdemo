@@ -38,7 +38,7 @@ export function TableSystem<T>({ data, columns, className, rowClassName, onRowCl
                   key={column.key}
                   className={cn(
                     "py-4", // Consistent padding
-                    column.sticky && "sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200",
+                    column.sticky && "sticky left-0 z-20 bg-[#F6F7F9] border-r border-gray-200 shadow-sm",
                     column.className
                   )}
                 >
@@ -66,7 +66,7 @@ export function TableSystem<T>({ data, columns, className, rowClassName, onRowCl
                       key={column.key}
                       className={cn(
                         "px-4 py-4", // Consistent padding from InvoiceTableRow
-                        column.sticky && "sticky left-0 z-10 bg-white border-r border-gray-100",
+                        column.sticky && "sticky left-0 z-10 bg-white border-r border-gray-100 shadow-sm",
                         column.className
                       )}
                     >

@@ -45,6 +45,7 @@ export function usePortalRecordsTableColumns({
     {
       key: "portalRecordId",
       label: "Portal Record ID",
+      sticky: true,
       className: "w-[12%]",
       render: (record: PortalRecord) => (
         <PortalRecordIdColumn record={record} />
@@ -106,7 +107,7 @@ export function usePortalRecordsTableColumns({
     {
       key: "total",
       label: "Total",
-      className: "w-[10%] text-right",
+      className: "w-[10%]",
       render: (record: PortalRecord) => {
         if (record.connectionStatus === 'Disconnected' || record.total === 0) {
           return <span className="text-gray-400">—</span>;
