@@ -7,42 +7,42 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/typography/typography";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { DuplicationResolutionModal } from "@/components/invoices/detail/exceptions/DuplicationResolutionModal";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
-type DuplicationMode = "auto-replace" | "stop-and-ask" | "manual-review";
+type DuplicationMode = "auto-replace" | "stop-and-ask";
 
 export function DuplicationPolicyTab() {
-  const [selectedMode, setSelectedMode] = useState<DuplicationMode>("auto-replace");
+  const [selectedMode, setSelectedMode] = useState<DuplicationMode>("stop-and-ask");
   const [expandedExamples, setExpandedExamples] = useState<Set<DuplicationMode>>(new Set());
   const [showSaveModal, setShowSaveModal] = useState(false);
 
   const duplicationOptions = [
     {
       id: "auto-replace" as DuplicationMode,
-      title: "Automatically Replace Invalid/Rejected",
-      badge: "Recommended for simple workflows",
+      title: "Auto Replacement",
+      badge: "Simple workflows",
       badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
-      description: "Monto will automatically replace duplicates if the original version is marked Invalid or Rejected.",
-      example: "INV-0098 (Rejected) → INV-0098 (Submitted)",
-      note: "No manual steps required."
+      description: "Monto will automatically replace older invoices if they're marked Invalid or Rejected.",
+      example: "INV-0098 (Rejected) ➝ INV-0098 (Submitted)",
+      note: "Replacement happens silently when original status is Invalid or Rejected."
     },
     {
       id: "stop-and-ask" as DuplicationMode,
       title: "Stop and Ask",
-      badge: "Recommended for complex approvals",
-      badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
-      description: "Monto auto-replaces rejected invoices, but asks you to decide if both are valid (e.g. Submitted vs. Approved).",
-      example: "INV-0098 (Submitted) ↔ INV-0098 (Approved)",
-      note: "You pick the one to track."
-    },
-    {
-      id: "manual-review" as DuplicationMode,
-      title: "Manual Review Required",
-      badge: "Full control",
-      badgeColor: "bg-red-50 text-red-700 border-red-200",
-      description: "Monto pauses for every duplicate, no matter its status. You always decide.",
-      example: "Every match must be reviewed",
-      note: "For organizations with strict invoice handling policies."
+      badge: "Recommended",
+      badgeColor: "bg-primary-50 text-primary-700 border-primary-200",
+      description: "Monto pauses and asks you to choose the valid invoice when both are in acceptable statuses.",
+      example: "INV-0098 (Submitted) ⟷ INV-0098 (Approved)\nYou choose which version to keep.",
+      note: "For when both invoices have valid statuses like Submitted, Approved, or Paid."
     }
   ];
 
@@ -65,9 +65,9 @@ export function DuplicationPolicyTab() {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-10 animate-fade-in">
       {/* Header */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         <Typography variant="h5" className="text-grey-900">
           Duplication Handling Policy
         </Typography>
@@ -78,7 +78,7 @@ export function DuplicationPolicyTab() {
 
       {/* Radio Group Cards */}
       <RadioGroup value={selectedMode} onValueChange={(value) => setSelectedMode(value as DuplicationMode)}>
-        <div className="space-y-6">
+        <div className="space-y-8">
           {duplicationOptions.map((option) => {
             const isSelected = selectedMode === option.id;
             const isExampleExpanded = expandedExamples.has(option.id);
@@ -93,17 +93,17 @@ export function DuplicationPolicyTab() {
                         : "border-grey-200 hover:border-grey-300 hover:shadow-sm"
                     }`}
                   >
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-5">
+                    <CardContent className="p-8">
+                      <div className="flex items-start gap-6">
                         {/* Radio Button */}
                         <div className="flex items-center pt-1">
                           <RadioGroupItem value={option.id} id={option.id} />
                         </div>
                         
                         {/* Content */}
-                        <div className="flex-1 space-y-4">
+                        <div className="flex-1 space-y-6">
                           <div className="flex items-start justify-between">
-                            <div className="space-y-2">
+                            <div className="space-y-3">
                               <Typography variant="h6" className="text-grey-900">
                                 {option.title}
                               </Typography>
@@ -123,7 +123,7 @@ export function DuplicationPolicyTab() {
                           </Typography>
                           
                           {/* Collapsible Example */}
-                          <div className="border-t border-grey-200 pt-4">
+                          <div className="border-t border-grey-200 pt-6">
                             <button
                               type="button"
                               onClick={(e) => {
@@ -141,8 +141,8 @@ export function DuplicationPolicyTab() {
                             </button>
                             
                             {isExampleExpanded && (
-                              <div className="mt-4 space-y-3">
-                                <Typography variant="body3" className="text-grey-700 font-mono bg-grey-50 px-4 py-3 rounded-md">
+                              <div className="mt-6 space-y-4">
+                                <Typography variant="body3" className="text-grey-700 font-mono bg-grey-50 px-4 py-3 rounded-md whitespace-pre-line">
                                   {option.example}
                                 </Typography>
                                 <Typography variant="caption" className="text-grey-500">
@@ -163,23 +163,33 @@ export function DuplicationPolicyTab() {
       </RadioGroup>
 
       {/* Save Button */}
-      <div className="pt-6 border-t border-grey-200">
+      <div className="pt-8 border-t border-grey-200 flex justify-end">
         <Button 
           onClick={() => setShowSaveModal(true)}
-          className="bg-primary-main hover:bg-primary-dark text-white px-6 py-2"
+          className="bg-primary-main hover:bg-primary-dark text-white px-8 py-2"
         >
           Save Policy
         </Button>
       </div>
 
       {/* Confirmation Modal */}
-      <DuplicationResolutionModal
-        open={showSaveModal}
-        onOpenChange={setShowSaveModal}
-        onConfirm={handleSave}
-        action="REPLACE"
-        invoiceNumber="duplication policy"
-      />
+      <AlertDialog open={showSaveModal} onOpenChange={setShowSaveModal}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Save Duplication Policy?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will update how Monto handles duplicate invoices across all your connected portals. 
+              The new policy will take effect immediately for all future duplicate detections.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleSave} className="bg-primary-main hover:bg-primary-dark">
+              Save Policy
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
