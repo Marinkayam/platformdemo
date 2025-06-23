@@ -3,13 +3,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Check, Lock } from "lucide-react";
+import { Check, Lock, BarChart3, Users, FileText } from "lucide-react";
 
 export function LicenseTab() {
   const premiumFeatures = [
-    { name: "PO Dashboard", status: "included" as const, icon: Check },
-    { name: "Connections", status: "locked" as const, icon: Lock },
-    { name: "Custom Divisions View", status: "locked" as const, icon: Lock },
+    { name: "PO Dashboard", status: "included" as const, icon: BarChart3 },
+    { name: "Connections", status: "locked" as const, icon: Users },
+    { name: "Custom Divisions View", status: "locked" as const, icon: FileText },
   ];
 
   const licenseInfo = [
@@ -62,96 +62,96 @@ export function LicenseTab() {
         ))}
       </div>
 
-      {/* Premium Features Section - Moved to bottom */}
+      {/* Premium Features Section - Solid Design */}
       <div className="mt-12 pt-8 border-t border-grey-300">
-        <Card className="shadow-none border border-grey-300 rounded-xl overflow-hidden">
-          <CardContent className="p-8">
-            <div className="mb-8 text-center">
-              <h6 className="text-lg font-semibold text-grey-900 mb-2">Premium Features</h6>
-              <p className="text-base text-grey-600">
-                Included in your plan:
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <TooltipProvider>
-                {premiumFeatures.map((feature, index) => {
-                  const IconComponent = feature.icon;
-                  const isLocked = feature.status === "locked";
-                  
-                  return (
-                    <div 
-                      key={feature.name} 
-                      className={`group relative p-6 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${
-                        isLocked 
-                          ? "border-grey-300 bg-grey-50 hover:border-grey-400" 
-                          : "border-primary-light bg-primary-lighter hover:border-primary-main hover:shadow-lg"
-                      }`}
-                      style={{ animationDelay: `${index * 150}ms` }}
-                    >
-                      <div className="flex flex-col items-center text-center space-y-4">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${
+        <div className="mb-8 text-center">
+          <h6 className="text-lg font-semibold text-grey-900 mb-2">Premium Features</h6>
+          <p className="text-base text-grey-600">
+            Included in your plan:
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <TooltipProvider>
+            {premiumFeatures.map((feature, index) => {
+              const IconComponent = feature.icon;
+              const isLocked = feature.status === "locked";
+              
+              return (
+                <div 
+                  key={feature.name} 
+                  className={`group relative overflow-hidden rounded-2xl transition-all duration-500 hover:scale-[1.02] ${
+                    isLocked 
+                      ? "bg-gradient-to-br from-grey-100 to-grey-200 border-2 border-grey-300 hover:border-grey-400" 
+                      : "bg-gradient-to-br from-primary-main to-primary-dark border-2 border-primary-main hover:border-primary-dark shadow-lg hover:shadow-xl"
+                  }`}
+                  style={{ animationDelay: `${index * 150}ms` }}
+                >
+                  <div className="p-8 text-center space-y-6">
+                    <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center transition-all duration-300 ${
+                      isLocked 
+                        ? "bg-white shadow-sm" 
+                        : "bg-white/20 backdrop-blur-sm shadow-lg"
+                    }`}>
+                      <IconComponent 
+                        size={28} 
+                        className={`transition-all duration-300 ${
                           isLocked 
-                            ? "bg-grey-300 group-hover:bg-grey-400" 
-                            : "bg-primary-light group-hover:bg-primary-main"
-                        }`}>
-                          <IconComponent 
-                            size={20} 
-                            className={`transition-colors duration-300 ${
-                              isLocked 
-                                ? "text-grey-600" 
-                                : "text-primary-main group-hover:text-white"
-                            }`} 
-                          />
-                        </div>
-                        
-                        <h6 className={`text-sm font-semibold transition-colors duration-300 ${
-                          isLocked ? "text-grey-600" : "text-grey-900 group-hover:text-primary-main"
-                        }`}>
-                          {feature.name}
-                        </h6>
-                        
-                        {isLocked ? (
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Badge variant="outline" className="bg-white text-grey-600 border-grey-400 cursor-help text-xs hover:border-grey-500 transition-colors duration-300">
-                                🔒 Locked
-                              </Badge>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>This feature is part of Monto's Premium Package</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        ) : (
-                          <Badge className="bg-success-main text-white border-success-main text-xs hover:bg-success-dark transition-colors duration-300">
-                            ✅ Included
-                          </Badge>
-                        )}
-                      </div>
-                      
-                      {isLocked && (
-                        <div className="absolute top-3 right-3">
-                          <div className="bg-primary-main text-primary-contrast-text text-xs px-2 py-1 rounded-full font-medium opacity-90 group-hover:opacity-100 transition-opacity duration-300">
-                            PREMIUM FEATURE
-                          </div>
+                            ? "text-grey-600" 
+                            : "text-white"
+                        }`} 
+                      />
+                    </div>
+                    
+                    <h6 className={`text-lg font-bold transition-colors duration-300 ${
+                      isLocked ? "text-grey-700" : "text-white"
+                    }`}>
+                      {feature.name}
+                    </h6>
+                    
+                    <div className="flex justify-center">
+                      {isLocked ? (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm cursor-help">
+                              <Lock size={14} className="text-grey-600" />
+                              <span className="text-sm font-medium text-grey-700">Locked</span>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>This feature is part of Monto's Premium Package</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      ) : (
+                        <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                          <Check size={14} className="text-white" />
+                          <span className="text-sm font-medium text-white">Included</span>
                         </div>
                       )}
                     </div>
-                  );
-                })}
-              </TooltipProvider>
-            </div>
+                  </div>
+                  
+                  {isLocked && (
+                    <div className="absolute top-4 right-4">
+                      <div className="bg-grey-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                        PREMIUM
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </TooltipProvider>
+        </div>
 
-            <div className="mt-8 pt-6 border-t border-grey-300 text-center">
-              <p className="text-sm text-grey-600 mb-4">
-                Interested in premium features?
-              </p>
-              <button className="bg-primary-main text-primary-contrast-text px-6 py-3 rounded-lg hover:bg-primary-dark transition-all duration-300 font-medium hover:scale-105 hover:shadow-lg">
-                Contact Us
-              </button>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="mt-10 pt-8 border-t border-grey-200 text-center">
+          <p className="text-sm text-grey-600 mb-6">
+            Interested in premium features?
+          </p>
+          <button className="bg-primary-main text-white px-8 py-4 rounded-xl hover:bg-primary-dark transition-all duration-300 font-semibold hover:scale-105 hover:shadow-lg">
+            Contact Us
+          </button>
+        </div>
       </div>
     </div>
   );
