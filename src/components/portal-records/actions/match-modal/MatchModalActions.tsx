@@ -27,7 +27,7 @@ export function MatchModalActions({
       <Button 
         variant="outline" 
         onClick={onIgnore} 
-        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+        className="text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/20"
       >
         Ignore Record
       </Button>
@@ -36,7 +36,7 @@ export function MatchModalActions({
           <Button 
             onClick={onMatch}
             disabled={!selectedInvoiceId}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-primary hover:bg-primary/90"
           >
             Match Invoice
           </Button>
@@ -44,7 +44,7 @@ export function MatchModalActions({
           <Button 
             onClick={onMatchAndCreateRTP}
             disabled={!uploadedFile}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-primary hover:bg-primary/90"
           >
             Match & Create RTP
           </Button>

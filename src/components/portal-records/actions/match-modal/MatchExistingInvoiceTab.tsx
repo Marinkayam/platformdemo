@@ -65,9 +65,9 @@ export function MatchExistingInvoiceTab({
       {/* Filters Section */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="portal-filter" className="text-sm font-medium">Portal Filter</Label>
+          <Label htmlFor="portal-filter" className="text-sm font-medium text-foreground">Portal Filter</Label>
           <Select value={selectedPortal} onValueChange={setSelectedPortal}>
-            <SelectTrigger className="h-10">
+            <SelectTrigger className="h-10 border-border bg-background">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -77,9 +77,9 @@ export function MatchExistingInvoiceTab({
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="buyer-filter" className="text-sm font-medium">Buyer Filter</Label>
+          <Label htmlFor="buyer-filter" className="text-sm font-medium text-foreground">Buyer Filter</Label>
           <Select value={selectedBuyer} onValueChange={setSelectedBuyer}>
-            <SelectTrigger className="h-10">
+            <SelectTrigger className="h-10 border-border bg-background">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -93,44 +93,44 @@ export function MatchExistingInvoiceTab({
       {/* Search Section */}
       <div className="space-y-3">
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Search Invoices</Label>
+          <Label className="text-sm font-medium text-foreground">Search Invoices</Label>
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search by invoice ID, number, or buyer..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 h-10"
+              className="pl-10 h-10 border-border bg-background"
             />
           </div>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             Showing {filteredInvoices.length} invoices from {selectedPortal} • {selectedBuyer === "all_buyers" ? "All Buyers" : selectedBuyer}
           </p>
         </div>
 
         {/* Search Results */}
         {searchTerm && (
-          <div className="border rounded-lg max-h-60 overflow-y-auto">
+          <div className="border border-border rounded-lg max-h-60 overflow-y-auto bg-background">
             {filteredInvoices.length > 0 ? (
-              <div className="divide-y">
+              <div className="divide-y divide-border">
                 {filteredInvoices.map((invoice) => (
                   <button
                     key={invoice.id}
                     onClick={() => setSelectedInvoiceId(invoice.id)}
-                    className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors ${
-                      selectedInvoiceId === invoice.id ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
+                    className={`w-full text-left px-4 py-3 hover:bg-muted/50 transition-colors ${
+                      selectedInvoiceId === invoice.id ? 'bg-primary/10 border-l-4 border-l-primary' : ''
                     }`}
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <div className="font-medium text-sm">{invoice.id} - {invoice.number}</div>
-                        <div className="text-xs text-gray-500 mt-1">
+                        <div className="font-medium text-sm text-foreground">{invoice.id} - {invoice.number}</div>
+                        <div className="text-xs text-muted-foreground mt-1">
                           {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
                         </div>
                       </div>
                       {selectedInvoiceId === invoice.id && (
-                        <div className="h-4 w-4 rounded-full bg-blue-500 flex items-center justify-center ml-2">
-                          <div className="h-2 w-2 bg-white rounded-full" />
+                        <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center ml-2">
+                          <div className="h-2 w-2 bg-primary-foreground rounded-full" />
                         </div>
                       )}
                     </div>
@@ -138,7 +138,7 @@ export function MatchExistingInvoiceTab({
                 ))}
               </div>
             ) : (
-              <div className="px-4 py-8 text-center text-gray-500 text-sm">
+              <div className="px-4 py-8 text-center text-muted-foreground text-sm">
                 No invoices found matching your search
               </div>
             )}
@@ -159,9 +159,9 @@ export function MatchExistingInvoiceTab({
 
       {/* Selected Invoice Details */}
       {selectedInvoice && (
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-primary/5 border-primary/20">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base flex items-center gap-2">
+            <CardTitle className="text-base flex items-center gap-2 text-foreground">
               <FileText className="h-4 w-4" />
               Selected Invoice Details
             </CardTitle>
@@ -169,28 +169,28 @@ export function MatchExistingInvoiceTab({
           <CardContent className="space-y-3 text-sm">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <span className="font-medium text-gray-700">Invoice ID:</span>
-                <p className="font-mono">{selectedInvoice.id}</p>
+                <span className="font-medium text-muted-foreground">Invoice ID:</span>
+                <p className="font-mono text-foreground">{selectedInvoice.id}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Status:</span>
-                <p className="capitalize">{selectedInvoice.status}</p>
+                <span className="font-medium text-muted-foreground">Status:</span>
+                <p className="capitalize text-foreground">{selectedInvoice.status}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Amount:</span>
-                <p className="font-semibold">{formatCurrency(selectedInvoice.total, selectedInvoice.currency || 'USD')}</p>
+                <span className="font-medium text-muted-foreground">Amount:</span>
+                <p className="font-semibold text-foreground">{formatCurrency(selectedInvoice.total, selectedInvoice.currency || 'USD')}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Due Date:</span>
-                <p>{selectedInvoice.dueDate}</p>
+                <span className="font-medium text-muted-foreground">Due Date:</span>
+                <p className="text-foreground">{selectedInvoice.dueDate}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Buyer:</span>
-                <p>{selectedInvoice.buyer}</p>
+                <span className="font-medium text-muted-foreground">Buyer:</span>
+                <p className="text-foreground">{selectedInvoice.buyer}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Owner:</span>
-                <p>{selectedInvoice.owner}</p>
+                <span className="font-medium text-muted-foreground">Owner:</span>
+                <p className="text-foreground">{selectedInvoice.owner}</p>
               </div>
             </div>
           </CardContent>

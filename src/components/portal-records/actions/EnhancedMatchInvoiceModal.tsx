@@ -5,11 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TabsNav } from "@/components/common/TabsNav";
 import { PortalRecord } from "@/types/portalRecord";
 import { toast } from "@/hooks/use-toast";
-import { CompactSummaryBar } from "./match-modal/CompactSummaryBar";
 import { PortalRecordDetails } from "./match-modal/PortalRecordDetails";
 import { MatchExistingInvoiceTab } from "./match-modal/MatchExistingInvoiceTab";
 import { CreateRTPTab } from "./match-modal/CreateRTPTab";
 import { MatchModalActions } from "./match-modal/MatchModalActions";
+import { ConfirmMatchModal } from "./match-modal/ConfirmMatchModal";
 
 interface EnhancedMatchInvoiceModalProps {
   isOpen: boolean;
@@ -37,6 +37,7 @@ export function EnhancedMatchInvoiceModal({
   const [activeTab, setActiveTab] = useState("match-existing");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showMatchConfirmModal, setShowMatchConfirmModal] = useState(false);
   
   // Create RTP form fields
   const [rtpInvoiceNumber, setRtpInvoiceNumber] = useState("");
@@ -63,9 +64,14 @@ export function EnhancedMatchInvoiceModal({
       });
       return;
     }
+    setShowMatchConfirmModal(true);
+  };
+
+  const confirmMatch = () => {
     onMatch(selectedInvoiceId);
     onClose();
     resetForm();
+    setShowMatchConfirmModal(false);
   };
 
   const handleIgnore = () => {
@@ -143,8 +149,8 @@ export function EnhancedMatchInvoiceModal({
     <>
       <Dialog open={isOpen} onOpenChange={handleCloseAttempt}>
         <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[90vh] overflow-y-auto`}>
-          <DialogHeader className="border-b pb-4">
-            <DialogTitle className="text-xl font-semibold text-gray-900">
+          <DialogHeader className="border-b border-border pb-4">
+            <DialogTitle className="text-xl font-semibold text-foreground">
               Match Portal Record - {record.portalRecordId}
             </DialogTitle>
           </DialogHeader>
@@ -152,8 +158,6 @@ export function EnhancedMatchInvoiceModal({
           {isCompactMode ? (
             // Compact mode layout for detail page
             <div className="space-y-6 p-6">
-              <CompactSummaryBar record={record} />
-
               {/* Full-width Action Area */}
               <div className="space-y-6">
                 <TabsNav 
@@ -248,7 +252,7 @@ export function EnhancedMatchInvoiceModal({
             </div>
           )}
 
-          <div className="border-t bg-gray-50 px-6 py-4">
+          <div className="border-t border-border bg-muted/30 px-6 py-4">
             <MatchModalActions
               activeTab={activeTab}
               selectedInvoiceId={selectedInvoiceId}
@@ -271,19 +275,19 @@ export function EnhancedMatchInvoiceModal({
             <DialogTitle>Are you sure?</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 p-6">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               You have unsaved changes. Are you sure you want to close without saving?
             </p>
             <div className="flex justify-end gap-3">
               <button 
                 onClick={() => setShowConfirmModal(false)}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 font-medium"
+                className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground font-medium"
               >
                 Continue Editing
               </button>
               <button 
                 onClick={confirmClose}
-                className="px-4 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 font-medium"
+                className="px-4 py-2 text-sm bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90 font-medium"
               >
                 Yes, Close
               </button>
@@ -291,6 +295,15 @@ export function EnhancedMatchInvoiceModal({
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Match Confirmation Modal */}
+      <ConfirmMatchModal
+        isOpen={showMatchConfirmModal}
+        onClose={() => setShowMatchConfirmModal(false)}
+        onConfirm={confirmMatch}
+        record={record}
+        selectedInvoiceId={selectedInvoiceId}
+      />
     </>
   );
 }
