@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -122,7 +121,6 @@ export function SidebarSection({
                       isExpanded ? "rotate-180" : "rotate-0",
                       isActive ? "text-[#7B59FF]" : "text-[#3F4758]"
                     )}
-                    strokeWidth={1.5}
                   />
                 </button>
                 
