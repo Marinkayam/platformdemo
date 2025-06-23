@@ -12,6 +12,8 @@ import { EnhancedMatchInvoiceModal } from "./actions/EnhancedMatchInvoiceModal";
 import { EnhancedResolveConflictModal } from "./actions/EnhancedResolveConflictModal";
 import { IgnoreRecordModal } from "./actions/IgnoreRecordModal";
 import { SyncRecordModal } from "./actions/SyncRecordModal";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Search, AlertTriangle, Ban } from "lucide-react";
 
 interface PortalRecordsTableProps {
   records: PortalRecord[];
@@ -111,6 +113,10 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     }).format(amount);
   };
 
+  const handleRowClick = (recordId: string) => {
+    navigate(`/portal-records/${recordId}`);
+  };
+
   const columns = [
     {
       key: "portalRecordId",
@@ -119,7 +125,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
       render: (record: PortalRecord) => (
         <button
           onClick={() => handleViewDetails(record.id)}
-          className="text-blue-600 hover:text-blue-800 hover:underline font-medium cursor-pointer"
+          className="text-black hover:text-blue-800 hover:underline font-medium cursor-pointer"
         >
           {record.portalRecordId}
         </button>
@@ -154,7 +160,20 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
         if (record.connectionStatus === 'Disconnected') {
           return <span className="text-gray-400">—</span>;
         }
-        return <StatusBadge status={record.portalStatus} />;
+        return (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <StatusBadge status={record.portalStatus} />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Portal Status: {record.portalStatus}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
       }
     },
     {
@@ -236,27 +255,24 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
           if (record.matchType === 'Unmatched') {
             actions.push({
               label: "Match Invoice",
+              icon: Search,
               onClick: () => handleMatchInvoice(record),
               variant: "default" as const
             });
             actions.push({
               label: "Ignore Record",
+              icon: Ban,
               onClick: () => handleIgnoreRecord(record),
               variant: "destructive" as const
             });
           } else if (record.matchType === 'Conflict') {
             actions.push({
               label: "Resolve Conflict",
+              icon: AlertTriangle,
               onClick: () => handleResolveConflict(record),
               variant: "default" as const
             });
           }
-          
-          actions.push({
-            label: "Sync Record",
-            onClick: () => handleSyncRecord(record),
-            variant: "default" as const
-          });
         }
 
         return (
@@ -295,6 +311,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
       <TableSystem 
         data={currentRecords}
         columns={columns}
+        rowClassName="hover:bg-gray-50 cursor-pointer"
       />
       <PortalRecordsTableFooter 
         totalRecords={records.length}

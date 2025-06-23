@@ -23,9 +23,10 @@ interface TableSystemProps<T> {
   columns: Column<T>[];
   className?: string;
   rowClassName?: string;
+  onRowClick?: (item: T, index: number) => void;
 }
 
-export function TableSystem<T>({ data, columns, className, rowClassName }: TableSystemProps<T>) {
+export function TableSystem<T>({ data, columns, className, rowClassName, onRowClick }: TableSystemProps<T>) {
   return (
     <div className={cn("rounded-xl border border-gray-200 overflow-hidden bg-white", className)}>
       <div className="overflow-x-auto">
@@ -58,6 +59,7 @@ export function TableSystem<T>({ data, columns, className, rowClassName }: Table
                 <TableRow
                   key={rowIndex} // Using rowIndex as a fallback key
                   className={cn("hover:bg-gray-50 cursor-pointer transition-colors bg-white", rowClassName)}
+                  onClick={onRowClick ? () => onRowClick(item, rowIndex) : undefined}
                 >
                   {columns.map((column) => (
                     <TableCell
