@@ -1,9 +1,10 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Check, Lock, BarChart3, Users, FileText } from "lucide-react";
+import { Typography } from "@/components/ui/typography/typography";
+import { Check, Lock, BarChart3, Users, FileText, Link, UserCheck, Receipt } from "lucide-react";
 
 export function LicenseTab() {
   const premiumFeatures = [
@@ -16,141 +17,157 @@ export function LicenseTab() {
     {
       label: "Smart Connects (SC)",
       value: "Up to 50",
-      icon: "🔗"
+      icon: Link,
+      color: "text-primary-main"
     },
     {
       label: "Users (Monto + View Only)",
       value: "10 Monto / 5 View Only",
-      icon: "👥"
+      icon: UserCheck,
+      color: "text-success-main"
     },
     {
       label: "Invoices Tracked",
       value: "Up to 2,000",
-      icon: "📄"
+      icon: Receipt,
+      color: "text-info-main"
     }
   ];
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <div>
-        <h6 className="text-lg font-semibold text-grey-900 mb-1">License & Package</h6>
-        <p className="text-base text-grey-600">
+      {/* Header */}
+      <div className="text-center">
+        <Typography variant="h5" className="text-grey-900 mb-2">
+          License & Package
+        </Typography>
+        <Typography variant="body2" className="text-grey-600">
           Overview of your Monto plan and features.
-        </p>
+        </Typography>
       </div>
 
       {/* License Information Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {licenseInfo.map((item, index) => (
-          <Card 
-            key={item.label} 
-            className="group shadow-none border border-grey-300 rounded-xl hover:shadow-md transition-all duration-300 hover:border-primary-light"
-            style={{ animationDelay: `${index * 100}ms` }}
-          >
-            <CardContent className="p-6 text-center">
-              <div className="mb-4 text-2xl group-hover:scale-110 transition-transform duration-300">
-                {item.icon}
-              </div>
-              <h6 className="text-sm font-medium text-grey-800 mb-3 leading-tight">
-                {item.label}
-              </h6>
-              <div className="text-lg font-semibold text-grey-900 group-hover:text-primary-main transition-colors duration-300">
-                {item.value}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {licenseInfo.map((item, index) => {
+          const IconComponent = item.icon;
+          return (
+            <Card 
+              key={item.label} 
+              className="group border-grey-300 hover:border-primary-light transition-all duration-300 hover:shadow-sm"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <CardContent className="p-6 text-center space-y-4">
+                <div className={`w-12 h-12 mx-auto rounded-lg bg-grey-100 flex items-center justify-center group-hover:bg-primary-lighter transition-colors duration-300`}>
+                  <IconComponent 
+                    size={20} 
+                    className={`${item.color} group-hover:text-primary-main transition-colors duration-300`}
+                    strokeWidth={1.5}
+                  />
+                </div>
+                <div>
+                  <Typography variant="caption" className="text-grey-600 uppercase tracking-wide mb-1 block">
+                    {item.label}
+                  </Typography>
+                  <Typography variant="h6" className="text-grey-900 font-semibold">
+                    {item.value}
+                  </Typography>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      {/* Premium Features Section - Solid Design */}
-      <div className="mt-12 pt-8 border-t border-grey-300">
-        <div className="mb-8 text-center">
-          <h6 className="text-lg font-semibold text-grey-900 mb-2">Premium Features</h6>
-          <p className="text-base text-grey-600">
+      {/* Premium Features Section */}
+      <div className="mt-16 pt-8 border-t border-grey-300">
+        <div className="text-center mb-8">
+          <Typography variant="h6" className="text-grey-900 mb-2">
+            Premium Features
+          </Typography>
+          <Typography variant="body2" className="text-grey-600">
             Included in your plan:
-          </p>
+          </Typography>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <TooltipProvider>
             {premiumFeatures.map((feature, index) => {
               const IconComponent = feature.icon;
               const isLocked = feature.status === "locked";
               
               return (
-                <div 
+                <Card 
                   key={feature.name} 
-                  className={`group relative overflow-hidden rounded-2xl transition-all duration-500 hover:scale-[1.02] ${
+                  className={`group transition-all duration-300 hover:scale-[1.02] ${
                     isLocked 
-                      ? "bg-gradient-to-br from-grey-100 to-grey-200 border-2 border-grey-300 hover:border-grey-400" 
-                      : "bg-gradient-to-br from-primary-main to-primary-dark border-2 border-primary-main hover:border-primary-dark shadow-lg hover:shadow-xl"
+                      ? "border-grey-300 bg-grey-50 hover:border-grey-400" 
+                      : "border-primary-main bg-primary-main hover:border-primary-dark hover:shadow-lg"
                   }`}
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
-                  <div className="p-8 text-center space-y-6">
-                    <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center transition-all duration-300 ${
+                  <CardContent className="p-6 text-center space-y-4">
+                    <div className={`w-12 h-12 mx-auto rounded-lg flex items-center justify-center ${
                       isLocked 
-                        ? "bg-white shadow-sm" 
-                        : "bg-white/20 backdrop-blur-sm shadow-lg"
+                        ? "bg-white border border-grey-200" 
+                        : "bg-white/20 backdrop-blur-sm"
                     }`}>
                       <IconComponent 
-                        size={28} 
-                        className={`transition-all duration-300 ${
-                          isLocked 
-                            ? "text-grey-600" 
-                            : "text-white"
-                        }`} 
+                        size={20} 
+                        className={isLocked ? "text-grey-600" : "text-white"} 
+                        strokeWidth={1.5}
                       />
                     </div>
                     
-                    <h6 className={`text-lg font-bold transition-colors duration-300 ${
-                      isLocked ? "text-grey-700" : "text-white"
-                    }`}>
+                    <Typography 
+                      variant="subtitle1" 
+                      className={isLocked ? "text-grey-700" : "text-white"}
+                    >
                       {feature.name}
-                    </h6>
+                    </Typography>
                     
                     <div className="flex justify-center">
                       {isLocked ? (
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm cursor-help">
-                              <Lock size={14} className="text-grey-600" />
-                              <span className="text-sm font-medium text-grey-700">Locked</span>
-                            </div>
+                            <Badge variant="secondary" className="bg-white border-grey-200 text-grey-700 hover:bg-grey-50">
+                              <Lock size={12} className="mr-1" />
+                              Locked
+                            </Badge>
                           </TooltipTrigger>
                           <TooltipContent>
                             <p>This feature is part of Monto's Premium Package</p>
                           </TooltipContent>
                         </Tooltip>
                       ) : (
-                        <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                          <Check size={14} className="text-white" />
-                          <span className="text-sm font-medium text-white">Included</span>
-                        </div>
+                        <Badge className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+                          <Check size={12} className="mr-1" />
+                          Included
+                        </Badge>
                       )}
                     </div>
-                  </div>
+                  </CardContent>
                   
                   {isLocked && (
-                    <div className="absolute top-4 right-4">
-                      <div className="bg-grey-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                    <div className="absolute top-3 right-3">
+                      <Badge variant="secondary" className="bg-grey-700 text-white text-xs hover:bg-grey-800">
                         PREMIUM
-                      </div>
+                      </Badge>
                     </div>
                   )}
-                </div>
+                </Card>
               );
             })}
           </TooltipProvider>
         </div>
 
-        <div className="mt-10 pt-8 border-t border-grey-200 text-center">
-          <p className="text-sm text-grey-600 mb-6">
+        {/* Contact Section */}
+        <div className="mt-8 pt-6 border-t border-grey-200 text-center">
+          <Typography variant="body2" className="text-grey-600 mb-4">
             Interested in premium features?
-          </p>
-          <button className="bg-primary-main text-white px-8 py-4 rounded-xl hover:bg-primary-dark transition-all duration-300 font-semibold hover:scale-105 hover:shadow-lg">
+          </Typography>
+          <Button className="bg-primary-main hover:bg-primary-dark text-white px-6 py-2 rounded-lg transition-all duration-300 hover:scale-105">
             Contact Us
-          </button>
+          </Button>
         </div>
       </div>
     </div>
