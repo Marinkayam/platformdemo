@@ -22,6 +22,7 @@ interface MatchExistingInvoiceTabProps {
   selectedBuyer: string;
   setSelectedBuyer: (buyer: string) => void;
   debouncedSearchTerm: string;
+  onMakePrimary?: () => void;
 }
 
 export function MatchExistingInvoiceTab({
@@ -35,6 +36,7 @@ export function MatchExistingInvoiceTab({
   selectedBuyer,
   setSelectedBuyer,
   debouncedSearchTerm,
+  onMakePrimary,
 }: MatchExistingInvoiceTabProps) {
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
@@ -70,6 +72,16 @@ export function MatchExistingInvoiceTab({
       });
       // In a real app, this would open the PDF preview
     }
+  };
+
+  const handleMakePrimary = () => {
+    if (onMakePrimary) {
+      onMakePrimary();
+    }
+    toast({
+      title: "Made Primary",
+      description: `${record.portalRecordId} is now the primary record.`,
+    });
   };
 
   return (
@@ -150,8 +162,18 @@ export function MatchExistingInvoiceTab({
                 ))}
               </div>
             ) : (
-              <div className="px-4 py-8 text-center text-muted-foreground text-sm">
-                No invoices found matching your search
+              <div className="px-4 py-8 text-center">
+                <div className="text-muted-foreground text-sm mb-4">
+                  No invoices found matching your search
+                </div>
+                <Button 
+                  onClick={handleMakePrimary}
+                  variant="outline"
+                  size="sm"
+                  className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10"
+                >
+                  Make {record.portalRecordId} Primary
+                </Button>
               </div>
             )}
           </div>

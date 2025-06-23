@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -112,6 +111,15 @@ export function EnhancedMatchInvoiceModal({
     resetForm();
   };
 
+  const handleMakePrimary = () => {
+    toast({
+      title: "Record Made Primary",
+      description: `${record.portalRecordId} has been made the primary record.`,
+    });
+    onClose();
+    resetForm();
+  };
+
   const resetForm = () => {
     setSelectedInvoiceId("");
     setSearchTerm("");
@@ -178,6 +186,7 @@ export function EnhancedMatchInvoiceModal({
                     selectedBuyer={selectedBuyer}
                     setSelectedBuyer={setSelectedBuyer}
                     debouncedSearchTerm={debouncedSearchTerm}
+                    onMakePrimary={handleMakePrimary}
                   />
                 )}
 
@@ -228,6 +237,7 @@ export function EnhancedMatchInvoiceModal({
                       selectedBuyer={selectedBuyer}
                       setSelectedBuyer={setSelectedBuyer}
                       debouncedSearchTerm={debouncedSearchTerm}
+                      onMakePrimary={handleMakePrimary}
                     />
                   )}
 
