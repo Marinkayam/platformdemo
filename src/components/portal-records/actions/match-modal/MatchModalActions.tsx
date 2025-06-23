@@ -26,7 +26,7 @@ export function MatchModalActions({
   const canCreateRTP = uploadedFile;
 
   return (
-    <DialogFooter className="flex justify-between pt-6">
+    <DialogFooter className="flex justify-between items-center pt-4 border-t bg-background">
       <Button 
         variant="outline" 
         onClick={onIgnore} 
@@ -54,6 +54,7 @@ export function MatchModalActions({
         {!canMatchInvoice && !canCreateRTP && (
           <Button 
             disabled
+            variant="outline"
             className="opacity-50 cursor-not-allowed"
           >
             Select an invoice or upload a PDF
