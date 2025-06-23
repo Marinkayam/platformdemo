@@ -127,43 +127,17 @@ export function EnhancedMatchInvoiceModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleCloseAttempt}>
-        <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[90vh] overflow-y-auto`}>
-          <DialogHeader className="border-b border-border pb-4">
+        <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[90vh] flex flex-col p-0`}>
+          <DialogHeader className="border-b border-border p-6 pb-4 flex-shrink-0">
             <DialogTitle className="text-xl font-semibold text-foreground">
               Match Portal Record - {record.portalRecordId}
             </DialogTitle>
           </DialogHeader>
           
-          {isCompactMode ? (
-            // Compact mode layout for detail page
-            <div className="space-y-6 p-6">
-              <MatchExistingInvoiceTab
-                record={record}
-                selectedInvoiceId={selectedInvoiceId}
-                setSelectedInvoiceId={setSelectedInvoiceId}
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                selectedPortal={selectedPortal}
-                setSelectedPortal={setSelectedPortal}
-                selectedBuyer={selectedBuyer}
-                setSelectedBuyer={setSelectedBuyer}
-                debouncedSearchTerm={debouncedSearchTerm}
-                uploadedFile={uploadedFile}
-                setUploadedFile={setUploadedFile}
-                onMakePrimary={handleMakePrimary}
-                onMatchAndCreateRTP={handleMatchAndCreateRTP}
-              />
-            </div>
-          ) : (
-            // Original two-column layout with improved styling
-            <div className="grid grid-cols-5 gap-8 p-6">
-              {/* Portal Record Details - Enhanced */}
-              <div className="col-span-2">
-                <PortalRecordDetails record={record} />
-              </div>
-
-              {/* Action Area - Enhanced */}
-              <div className="col-span-3">
+          <div className="flex-1 overflow-hidden">
+            {isCompactMode ? (
+              // Compact mode layout for detail page
+              <div className="h-full overflow-y-auto p-6">
                 <MatchExistingInvoiceTab
                   record={record}
                   selectedInvoiceId={selectedInvoiceId}
@@ -181,10 +155,38 @@ export function EnhancedMatchInvoiceModal({
                   onMatchAndCreateRTP={handleMatchAndCreateRTP}
                 />
               </div>
-            </div>
-          )}
+            ) : (
+              // Original two-column layout with improved styling
+              <div className="grid grid-cols-5 gap-8 h-full overflow-hidden p-6">
+                {/* Portal Record Details */}
+                <div className="col-span-2 overflow-y-auto">
+                  <PortalRecordDetails record={record} />
+                </div>
 
-          <div className="border-t border-border bg-muted/30 px-6 py-4">
+                {/* Action Area */}
+                <div className="col-span-3 overflow-y-auto">
+                  <MatchExistingInvoiceTab
+                    record={record}
+                    selectedInvoiceId={selectedInvoiceId}
+                    setSelectedInvoiceId={setSelectedInvoiceId}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    selectedPortal={selectedPortal}
+                    setSelectedPortal={setSelectedPortal}
+                    selectedBuyer={selectedBuyer}
+                    setSelectedBuyer={setSelectedBuyer}
+                    debouncedSearchTerm={debouncedSearchTerm}
+                    uploadedFile={uploadedFile}
+                    setUploadedFile={setUploadedFile}
+                    onMakePrimary={handleMakePrimary}
+                    onMatchAndCreateRTP={handleMatchAndCreateRTP}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="border-t border-border bg-muted/30 flex-shrink-0">
             <MatchModalActions
               activeTab="match-existing"
               selectedInvoiceId={selectedInvoiceId}
@@ -204,7 +206,7 @@ export function EnhancedMatchInvoiceModal({
       <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Are you sure?</DialogTitle>
+            <DialogTitle>Discard Changes?</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 p-6">
             <p className="text-sm text-muted-foreground">
@@ -221,7 +223,7 @@ export function EnhancedMatchInvoiceModal({
                 onClick={confirmClose}
                 className="px-4 py-2 text-sm bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90 font-medium"
               >
-                Yes, Close
+                Discard Changes
               </button>
             </div>
           </div>

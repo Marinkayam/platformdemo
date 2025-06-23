@@ -1,6 +1,5 @@
 
 import { Button } from "@/components/ui/button";
-import { DialogFooter } from "@/components/ui/dialog";
 
 interface MatchModalActionsProps {
   activeTab: string;
@@ -26,7 +25,7 @@ export function MatchModalActions({
   const canCreateRTP = uploadedFile;
 
   return (
-    <DialogFooter className="flex justify-between items-center pt-4 border-t">
+    <div className="flex justify-between items-center p-6">
       <Button 
         variant="outline" 
         onClick={onIgnore} 
@@ -48,7 +47,7 @@ export function MatchModalActions({
             onClick={onMatchAndCreateRTP}
             className="bg-primary hover:bg-primary/90"
           >
-            Match & Create RTP
+            Create RTP Record
           </Button>
         )}
         {!canMatchInvoice && !canCreateRTP && (
@@ -61,6 +60,6 @@ export function MatchModalActions({
           </Button>
         )}
       </div>
-    </DialogFooter>
+    </div>
   );
 }
