@@ -11,6 +11,7 @@ import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
 import { FileText, AlertTriangle, Search, ExternalLink, X, Upload } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { UploadSection } from "@/components/invoices/detail/exceptions/extra-data/UploadSection";
 
 interface MatchExistingInvoiceTabProps {
   record: PortalRecord;
@@ -23,6 +24,8 @@ interface MatchExistingInvoiceTabProps {
   selectedBuyer: string;
   setSelectedBuyer: (buyer: string) => void;
   debouncedSearchTerm: string;
+  uploadedFile: File | null;
+  setUploadedFile: (file: File | null) => void;
   onMakePrimary?: () => void;
   onMatchAndCreateRTP?: () => void;
 }
@@ -38,6 +41,8 @@ export function MatchExistingInvoiceTab({
   selectedBuyer,
   setSelectedBuyer,
   debouncedSearchTerm,
+  uploadedFile,
+  setUploadedFile,
   onMakePrimary,
   onMatchAndCreateRTP,
 }: MatchExistingInvoiceTabProps) {
@@ -95,6 +100,14 @@ export function MatchExistingInvoiceTab({
     if (onMatchAndCreateRTP) {
       onMatchAndCreateRTP();
     }
+  };
+
+  const handleFileUpload = (file: File) => {
+    setUploadedFile(file);
+  };
+
+  const handleFileRemoval = () => {
+    setUploadedFile(null);
   };
 
   return (
@@ -179,19 +192,50 @@ export function MatchExistingInvoiceTab({
                 <div className="text-muted-foreground text-sm mb-4">
                   No invoices found matching your search
                 </div>
-                <Button 
-                  onClick={handleMatchAndCreateRTP}
-                  variant="outline"
-                  size="sm"
-                  className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10 flex items-center gap-2"
-                >
-                  <Upload className="h-4 w-4" />
-                  Match & Create RTP
-                </Button>
               </div>
             )}
           </div>
         </div>
+
+        {/* Create RTP Section - Only show when no invoices found */}
+        {filteredInvoices.length === 0 && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-center">
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <div className="h-px bg-border flex-1" />
+                <span className="px-3">OR</span>
+                <div className="h-px bg-border flex-1" />
+              </div>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Upload className="h-5 w-5" />
+                  Create RTP
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <UploadSection
+                  uploadedFile={uploadedFile}
+                  isUploading={false}
+                  uploadProgress={0}
+                  selectedAction="upload"
+                  onFileUpload={handleFileUpload}
+                  onFileRemoval={handleFileRemoval}
+                />
+
+                <Alert className="bg-blue-50 border-blue-200">
+                  <FileText className="h-4 w-4 text-blue-600" />
+                  <AlertDescription className="text-blue-800">
+                    Creating an RTP will generate a new Request to Pay record that matches this portal record.
+                    Upload an invoice PDF to proceed.
+                  </AlertDescription>
+                </Alert>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Conflict Warning */}
         {hasConflict && (

@@ -15,13 +15,16 @@ interface MatchModalActionsProps {
 }
 
 export function MatchModalActions({
-  activeTab,
   selectedInvoiceId,
   uploadedFile,
   onIgnore,
   onMatch,
   onMatchAndCreateRTP,
 }: MatchModalActionsProps) {
+  // Determine which action to show based on available data
+  const canMatchInvoice = selectedInvoiceId;
+  const canCreateRTP = uploadedFile;
+
   return (
     <DialogFooter className="flex justify-between pt-6">
       <Button 
@@ -32,21 +35,28 @@ export function MatchModalActions({
         Ignore Record
       </Button>
       <div className="flex gap-3">
-        {activeTab === "match-existing" ? (
+        {canMatchInvoice && (
           <Button 
             onClick={onMatch}
-            disabled={!selectedInvoiceId}
-            className={selectedInvoiceId ? "bg-primary hover:bg-primary/90" : ""}
+            className="bg-primary hover:bg-primary/90"
           >
             Match Invoice
           </Button>
-        ) : (
+        )}
+        {canCreateRTP && (
           <Button 
             onClick={onMatchAndCreateRTP}
-            disabled={!uploadedFile}
-            className={uploadedFile ? "bg-primary hover:bg-primary/90" : ""}
+            className="bg-primary hover:bg-primary/90"
           >
             Match & Create RTP
+          </Button>
+        )}
+        {!canMatchInvoice && !canCreateRTP && (
+          <Button 
+            disabled
+            className="opacity-50 cursor-not-allowed"
+          >
+            Select an invoice or upload a PDF
           </Button>
         )}
       </div>

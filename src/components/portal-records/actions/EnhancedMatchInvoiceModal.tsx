@@ -1,12 +1,11 @@
+
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TabsNav } from "@/components/common/TabsNav";
 import { PortalRecord } from "@/types/portalRecord";
 import { toast } from "@/hooks/use-toast";
 import { PortalRecordDetails } from "./match-modal/PortalRecordDetails";
 import { MatchExistingInvoiceTab } from "./match-modal/MatchExistingInvoiceTab";
-import { CreateRTPTab } from "./match-modal/CreateRTPTab";
 import { MatchModalActions } from "./match-modal/MatchModalActions";
 import { ConfirmMatchModal } from "./match-modal/ConfirmMatchModal";
 
@@ -33,16 +32,9 @@ export function EnhancedMatchInvoiceModal({
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPortal, setSelectedPortal] = useState(record.portal);
   const [selectedBuyer, setSelectedBuyer] = useState(record.buyer);
-  const [activeTab, setActiveTab] = useState("match-existing");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showMatchConfirmModal, setShowMatchConfirmModal] = useState(false);
-  
-  // Create RTP form fields
-  const [rtpInvoiceNumber, setRtpInvoiceNumber] = useState("");
-  const [rtpInvoiceDate, setRtpInvoiceDate] = useState("");
-  const [rtpAmount, setRtpAmount] = useState(record.total.toString());
-  const [rtpPoNumber, setRtpPoNumber] = useState(record.poNumber);
 
   // Enhanced search with debounce
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
@@ -83,19 +75,6 @@ export function EnhancedMatchInvoiceModal({
     resetForm();
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file && file.type === 'application/pdf') {
-      setUploadedFile(file);
-    } else {
-      toast({
-        title: "Invalid File",
-        description: "Please upload a PDF file.",
-        variant: "destructive",
-      });
-    }
-  };
-
   const handleMatchAndCreateRTP = () => {
     if (!uploadedFile) {
       toast({
@@ -124,11 +103,8 @@ export function EnhancedMatchInvoiceModal({
     setSelectedInvoiceId("");
     setSearchTerm("");
     setUploadedFile(null);
-    setRtpInvoiceNumber("");
-    setRtpInvoiceDate("");
-    setRtpAmount(record.total.toString());
-    setRtpPoNumber(record.poNumber);
-    setActiveTab("match-existing");
+    setSelectedPortal(record.portal);
+    setSelectedBuyer(record.buyer);
   };
 
   const handleCloseAttempt = () => {
@@ -148,11 +124,6 @@ export function EnhancedMatchInvoiceModal({
   // Determine if we should show the compact layout
   const isCompactMode = contextSource === 'detail-page';
 
-  const tabs = [
-    { id: "match-existing", label: "Match Existing Invoice" },
-    { id: "create-rtp", label: "Create RTP" }
-  ];
-
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleCloseAttempt}>
@@ -166,47 +137,22 @@ export function EnhancedMatchInvoiceModal({
           {isCompactMode ? (
             // Compact mode layout for detail page
             <div className="space-y-6 p-6">
-              {/* Full-width Action Area */}
-              <div className="space-y-6">
-                <TabsNav 
-                  tabs={tabs}
-                  activeTab={activeTab}
-                  onTabChange={setActiveTab}
-                />
-
-                {activeTab === "match-existing" && (
-                  <MatchExistingInvoiceTab
-                    record={record}
-                    selectedInvoiceId={selectedInvoiceId}
-                    setSelectedInvoiceId={setSelectedInvoiceId}
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    selectedPortal={selectedPortal}
-                    setSelectedPortal={setSelectedPortal}
-                    selectedBuyer={selectedBuyer}
-                    setSelectedBuyer={setSelectedBuyer}
-                    debouncedSearchTerm={debouncedSearchTerm}
-                    onMakePrimary={handleMakePrimary}
-                  />
-                )}
-
-                {activeTab === "create-rtp" && (
-                  <CreateRTPTab
-                    record={record}
-                    uploadedFile={uploadedFile}
-                    setUploadedFile={setUploadedFile}
-                    rtpInvoiceNumber={rtpInvoiceNumber}
-                    setRtpInvoiceNumber={setRtpInvoiceNumber}
-                    rtpInvoiceDate={rtpInvoiceDate}
-                    setRtpInvoiceDate={setRtpInvoiceDate}
-                    rtpAmount={rtpAmount}
-                    setRtpAmount={setRtpAmount}
-                    rtpPoNumber={rtpPoNumber}
-                    setRtpPoNumber={setRtpPoNumber}
-                    onFileUpload={handleFileUpload}
-                  />
-                )}
-              </div>
+              <MatchExistingInvoiceTab
+                record={record}
+                selectedInvoiceId={selectedInvoiceId}
+                setSelectedInvoiceId={setSelectedInvoiceId}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                selectedPortal={selectedPortal}
+                setSelectedPortal={setSelectedPortal}
+                selectedBuyer={selectedBuyer}
+                setSelectedBuyer={setSelectedBuyer}
+                debouncedSearchTerm={debouncedSearchTerm}
+                uploadedFile={uploadedFile}
+                setUploadedFile={setUploadedFile}
+                onMakePrimary={handleMakePrimary}
+                onMatchAndCreateRTP={handleMatchAndCreateRTP}
+              />
             </div>
           ) : (
             // Original two-column layout with improved styling
@@ -218,57 +164,33 @@ export function EnhancedMatchInvoiceModal({
 
               {/* Action Area - Enhanced */}
               <div className="col-span-3">
-                <div className="space-y-6">
-                  <TabsNav 
-                    tabs={tabs}
-                    activeTab={activeTab}
-                    onTabChange={setActiveTab}
-                  />
-
-                  {activeTab === "match-existing" && (
-                    <MatchExistingInvoiceTab
-                      record={record}
-                      selectedInvoiceId={selectedInvoiceId}
-                      setSelectedInvoiceId={setSelectedInvoiceId}
-                      searchTerm={searchTerm}
-                      setSearchTerm={setSearchTerm}
-                      selectedPortal={selectedPortal}
-                      setSelectedPortal={setSelectedPortal}
-                      selectedBuyer={selectedBuyer}
-                      setSelectedBuyer={setSelectedBuyer}
-                      debouncedSearchTerm={debouncedSearchTerm}
-                      onMakePrimary={handleMakePrimary}
-                    />
-                  )}
-
-                  {activeTab === "create-rtp" && (
-                    <CreateRTPTab
-                      record={record}
-                      uploadedFile={uploadedFile}
-                      setUploadedFile={setUploadedFile}
-                      rtpInvoiceNumber={rtpInvoiceNumber}
-                      setRtpInvoiceNumber={setRtpInvoiceNumber}
-                      rtpInvoiceDate={rtpInvoiceDate}
-                      setRtpInvoiceDate={setRtpInvoiceDate}
-                      rtpAmount={rtpAmount}
-                      setRtpAmount={setRtpAmount}
-                      rtpPoNumber={rtpPoNumber}
-                      setRtpPoNumber={setRtpPoNumber}
-                      onFileUpload={handleFileUpload}
-                    />
-                  )}
-                </div>
+                <MatchExistingInvoiceTab
+                  record={record}
+                  selectedInvoiceId={selectedInvoiceId}
+                  setSelectedInvoiceId={setSelectedInvoiceId}
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  selectedPortal={selectedPortal}
+                  setSelectedPortal={setSelectedPortal}
+                  selectedBuyer={selectedBuyer}
+                  setSelectedBuyer={setSelectedBuyer}
+                  debouncedSearchTerm={debouncedSearchTerm}
+                  uploadedFile={uploadedFile}
+                  setUploadedFile={setUploadedFile}
+                  onMakePrimary={handleMakePrimary}
+                  onMatchAndCreateRTP={handleMatchAndCreateRTP}
+                />
               </div>
             </div>
           )}
 
           <div className="border-t border-border bg-muted/30 px-6 py-4">
             <MatchModalActions
-              activeTab={activeTab}
+              activeTab="match-existing"
               selectedInvoiceId={selectedInvoiceId}
               uploadedFile={uploadedFile}
-              rtpInvoiceNumber={rtpInvoiceNumber}
-              rtpInvoiceDate={rtpInvoiceDate}
+              rtpInvoiceNumber=""
+              rtpInvoiceDate=""
               onClose={handleCloseAttempt}
               onIgnore={handleIgnore}
               onMatch={handleMatch}
