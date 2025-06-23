@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -20,10 +21,16 @@ export function SidebarSection({
   const navigate = useNavigate();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
-  // Initialize Invoices as expanded if user is on invoices page
+  // Initialize expanded items based on current page
   useEffect(() => {
     if (pathname.includes("/invoices")) {
       setExpandedItems(prev => new Set(prev).add("RTPs"));
+    } else if (pathname.includes("/portal-records")) {
+      setExpandedItems(prev => new Set(prev).add("Portal Records"));
+    } else if (pathname.includes("/purchase-orders")) {
+      setExpandedItems(prev => new Set(prev).add("Purchase Orders"));
+    } else if (pathname.includes("/payments-relationships")) {
+      setExpandedItems(prev => new Set(prev).add("Payments Relationships"));
     }
   }, [pathname]);
 
@@ -39,9 +46,41 @@ export function SidebarSection({
     });
   };
 
-  const handleRTPsClick = () => {
-    toggleExpanded("RTPs");
-    navigate("/invoices");
+  const handleItemClick = (item: NavItem) => {
+    if (item.items && item.items.length > 0) {
+      toggleExpanded(item.title);
+      if (item.href) {
+        navigate(item.href);
+      }
+    }
+  };
+
+  const isItemActive = (item: NavItem) => {
+    if (item.href) {
+      return pathname === item.href || pathname.includes(item.href.split('?')[0]);
+    }
+    return false;
+  };
+
+  const getSubItemActiveState = (item: NavItem, subItem: NavItem) => {
+    const basePath = subItem.href?.split('?')[0] || '';
+    const query = subItem.href?.split('?')[1] || '';
+    
+    if (item.title === "RTPs") {
+      if (subItem.href === "/invoices" && pathname === "/invoices" && !search) return true;
+      if (query && search.includes(query.split('=')[1])) return true;
+    } else if (item.title === "Portal Records") {
+      if (subItem.href === "/portal-records" && pathname === "/portal-records" && !search) return true;
+      if (query && search.includes(query.split('=')[1])) return true;
+    } else if (item.title === "Purchase Orders") {
+      if (subItem.href === "/purchase-orders" && pathname === "/purchase-orders" && !search) return true;
+      if (query && search.includes(query.split('=')[1])) return true;
+    } else if (item.title === "Payments Relationships") {
+      if (subItem.href === "/payments-relationships" && pathname === "/payments-relationships" && !search) return true;
+      if (query && search.includes(query.split('=')[1])) return true;
+    }
+    
+    return false;
   };
 
   return (
@@ -50,25 +89,19 @@ export function SidebarSection({
       
       <div className="space-y-1">
         {items.map(item => {
-          const isActive = item.href ? pathname === item.href || pathname.includes(item.href) : false;
+          const isActive = isItemActive(item);
           const hasSubmenu = item.items && item.items.length > 0;
           const isExpanded = expandedItems.has(item.title);
 
           if (hasSubmenu) {
-            const isAllRTPsActive = pathname === "/invoices" && !search;
-            const isInvoicePendingActive = pathname === "/invoices" && search.includes("pending");
-            const isInvoiceOverdueActive = pathname === "/invoices" && search.includes("overdue");
-            const isInvoiceSettledActive = pathname === "/invoices" && search.includes("settled");
-            const isSubmenuActive = pathname.includes("/invoices");
-
             return (
               <div key={item.title}>
                 <button
-                  onClick={item.title === "RTPs" ? handleRTPsClick : () => toggleExpanded(item.title)}
+                  onClick={() => handleItemClick(item)}
                   className={cn(
                     "flex items-center justify-between gap-3 px-3 py-3 text-sm rounded-md transition-colors w-full",
                     "text-[#3F4758] hover:bg-[#F4F4F7]",
-                    isSubmenuActive && "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
+                    isActive && "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
                   )}
                   aria-expanded={isExpanded}
                 >
@@ -76,7 +109,7 @@ export function SidebarSection({
                     {item.icon && (
                       <item.icon 
                         size={20} 
-                        className={isSubmenuActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
+                        className={isActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
                       />
                     )}
                     <span className="font-medium">{item.title}</span>
@@ -86,7 +119,7 @@ export function SidebarSection({
                     className={cn(
                       "transition-transform duration-200",
                       isExpanded ? "rotate-180" : "rotate-0",
-                      isSubmenuActive ? "text-[#7B59FF]" : "text-[#3F4758]"
+                      isActive ? "text-[#7B59FF]" : "text-[#3F4758]"
                     )}
                   />
                 </button>
@@ -94,12 +127,7 @@ export function SidebarSection({
                 {isExpanded && (
                   <div className="ml-8 mt-1 space-y-1 transition-all duration-200">
                     {item.items?.map(subItem => {
-                      const isSubActive = pathname === "/invoices" && (
-                        (subItem.href === "/invoices" && isAllRTPsActive) ||
-                        (subItem.href?.includes("pending") && isInvoicePendingActive) ||
-                        (subItem.href?.includes("overdue") && isInvoiceOverdueActive) ||
-                        (subItem.href?.includes("settled") && isInvoiceSettledActive)
-                      );
+                      const isSubActive = getSubItemActiveState(item, subItem);
                       
                       return (
                         <Link 

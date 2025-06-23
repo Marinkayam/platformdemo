@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Cloud, Settings } from "lucide-react";
 import ChatAIIcon from "@/components/ui/chat-ai-icon";
@@ -190,11 +191,6 @@ export const navMain: NavItem[] = [
     icon: DashboardIcon,
   },
   {
-    title: "My Company",
-    href: "/workspace",
-    icon: CompanyIcon,
-  },
-  {
     title: "RTPs",
     href: "/invoices",
     icon: InvoicesIcon,
@@ -206,19 +202,38 @@ export const navMain: NavItem[] = [
     ],
   },
   {
-    title: "Payments Relationships",
-    href: "/payments-relationships",
-    icon: SmartConnectionsIcon,
+    title: "Portal Records",
+    href: "/portal-records",
+    icon: PortalRecordsIcon,
+    items: [
+      { title: "All Records", href: "/portal-records" },
+      { title: "Unmatched", href: "/portal-records?tab=unmatched" },
+      { title: "Conflicts", href: "/portal-records?tab=conflict" },
+    ],
   },
   {
     title: "Purchase Orders",
     href: "/purchase-orders",
     icon: PurchaseOrderIcon,
+    items: [
+      { title: "All POs", href: "/purchase-orders" },
+      { title: "New POs", href: "/purchase-orders?status=new" },
+      { title: "Low Funds", href: "/purchase-orders?status=low-funds" },
+    ],
   },
   {
-    title: "Portal Records",
-    href: "/portal-records",
-    icon: PortalRecordsIcon,
+    title: "Payments Relationships",
+    href: "/payments-relationships",
+    icon: SmartConnectionsIcon,
+    items: [
+      { title: "Smart Connections", href: "/payments-relationships" },
+      { title: "Portal Users", href: "/payments-relationships?tab=portal-users" },
+    ],
+  },
+  {
+    title: "My Company",
+    href: "/workspace",
+    icon: CompanyIcon,
   },
   {
     title: "Design System",
