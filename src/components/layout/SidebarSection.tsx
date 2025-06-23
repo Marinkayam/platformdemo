@@ -99,9 +99,9 @@ export function SidebarSection({
                 <button
                   onClick={() => handleItemClick(item)}
                   className={cn(
-                    "flex items-center justify-between gap-3 px-3 py-3 text-sm rounded-md transition-colors w-full",
+                    "flex items-center justify-between gap-3 px-3 py-3 text-sm font-normal rounded-md transition-colors w-full text-left",
                     "text-[#3F4758] hover:bg-[#F4F4F7]",
-                    isActive && "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
+                    isActive && "bg-[#F0EDFF] text-[#7B59FF] font-normal"
                   )}
                   aria-expanded={isExpanded}
                 >
@@ -110,9 +110,10 @@ export function SidebarSection({
                       <item.icon 
                         size={20} 
                         className={isActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
+                        strokeWidth={1.5}
                       />
                     )}
-                    <span className="font-medium">{item.title}</span>
+                    <span className="font-normal">{item.title}</span>
                   </div>
                   <ChevronDownIcon 
                     size={16} 
@@ -121,6 +122,7 @@ export function SidebarSection({
                       isExpanded ? "rotate-180" : "rotate-0",
                       isActive ? "text-[#7B59FF]" : "text-[#3F4758]"
                     )}
+                    strokeWidth={1.5}
                   />
                 </button>
                 
@@ -134,9 +136,9 @@ export function SidebarSection({
                           key={subItem.title} 
                           to={subItem.href || "#"} 
                           className={cn(
-                            "block px-3 py-2 text-sm rounded-md transition-colors",
+                            "block px-3 py-2 text-sm font-normal rounded-md transition-colors text-left",
                             "text-[#3F4758] hover:bg-[#F4F4F7]",
-                            isSubActive && "text-[#7B59FF] font-semibold bg-[#F0EDFF]"
+                            isSubActive && "text-[#7B59FF] font-normal bg-[#F0EDFF]"
                           )}
                         >
                           {subItem.title}
@@ -154,18 +156,18 @@ export function SidebarSection({
               key={item.id || item.title} 
               to={item.href || "#"} 
               className={cn(
-                "flex items-center gap-3 px-3 py-3 text-sm rounded-md transition-colors w-full",
+                "flex items-center gap-3 px-3 py-3 text-sm font-normal rounded-md transition-colors w-full text-left",
                 "text-[#3F4758] hover:bg-[#F4F4F7]",
-                isActive && "bg-[#F0EDFF] text-[#7B59FF] font-semibold"
+                isActive && "bg-[#F0EDFF] text-[#7B59FF] font-normal"
               )}
               onClick={item.id === "chat-ai-nav" && onChatAIOpen ? onChatAIOpen : undefined}
             >
               {item.icon && (
                 typeof item.icon === 'function' 
-                  ? item.icon({ size: 20, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]" })
-                  : React.createElement(item.icon, { size: 20, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]" })
+                  ? item.icon({ size: 20, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
+                  : React.createElement(item.icon, { size: 20, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
               )}
-              {item.title && <span className="font-medium">{item.title}</span>}
+              {item.title && <span className="font-normal">{item.title}</span>}
             </Link>
           );
         })}
