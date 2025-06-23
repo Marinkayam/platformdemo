@@ -132,52 +132,50 @@ export function MatchExistingInvoiceTab({
           </p>
         </div>
 
-        {/* Search Results */}
-        {searchTerm && (
-          <div className="border rounded-lg max-h-60 overflow-y-auto">
-            {filteredInvoices.length > 0 ? (
-              <div className="divide-y">
-                {filteredInvoices.map((invoice) => (
-                  <button
-                    key={invoice.id}
-                    onClick={() => setSelectedInvoiceId(invoice.id)}
-                    className={`w-full text-left px-4 py-3 hover:bg-muted/50 transition-colors ${
-                      selectedInvoiceId === invoice.id ? 'bg-primary/10 border-l-4 border-l-primary' : ''
-                    }`}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <div className="font-medium text-sm">{invoice.id} - {invoice.number}</div>
-                        <div className="text-xs text-muted-foreground mt-1">
-                          {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
-                        </div>
-                      </div>
-                      {selectedInvoiceId === invoice.id && (
-                        <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center ml-2">
-                          <div className="h-2 w-2 bg-primary-foreground rounded-full" />
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <div className="px-4 py-8 text-center">
-                <div className="text-muted-foreground text-sm mb-4">
-                  No invoices found matching your search
-                </div>
-                <Button 
-                  onClick={handleMakePrimary}
-                  variant="outline"
-                  size="sm"
-                  className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10"
+        {/* Search Results or No Results */}
+        <div className="border rounded-lg max-h-60 overflow-y-auto">
+          {filteredInvoices.length > 0 ? (
+            <div className="divide-y">
+              {filteredInvoices.map((invoice) => (
+                <button
+                  key={invoice.id}
+                  onClick={() => setSelectedInvoiceId(invoice.id)}
+                  className={`w-full text-left px-4 py-3 hover:bg-muted/50 transition-colors ${
+                    selectedInvoiceId === invoice.id ? 'bg-primary/10 border-l-4 border-l-primary' : ''
+                  }`}
                 >
-                  Make {record.portalRecordId} Primary
-                </Button>
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="font-medium text-sm">{invoice.id} - {invoice.number}</div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
+                      </div>
+                    </div>
+                    {selectedInvoiceId === invoice.id && (
+                      <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center ml-2">
+                        <div className="h-2 w-2 bg-primary-foreground rounded-full" />
+                      </div>
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="px-4 py-8 text-center">
+              <div className="text-muted-foreground text-sm mb-4">
+                No invoices found matching your search
               </div>
-            )}
-          </div>
-        )}
+              <Button 
+                onClick={handleMakePrimary}
+                variant="outline"
+                size="sm"
+                className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10"
+              >
+                Make {record.portalRecordId} Primary
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Conflict Warning */}
