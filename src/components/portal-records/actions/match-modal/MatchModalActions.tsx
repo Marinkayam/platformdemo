@@ -54,7 +54,7 @@ export function MatchModalActions({
           <Button 
             disabled
             variant="outline"
-            className="opacity-50 cursor-not-allowed"
+            className="opacity-50 cursor-not-allowed pointer-events-none"
           >
             Select an invoice or upload a PDF
           </Button>

@@ -1,7 +1,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
-import { UploadSection } from "@/components/invoices/detail/exceptions/extra-data/UploadSection";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { HelpCircle } from "lucide-react";
 
 interface Invoice {
   id: string;
@@ -77,46 +78,60 @@ export function InvoiceList({
       ) : (
         <div className="p-8">
           <div className="text-center space-y-6">
-            <div className="text-muted-foreground text-sm">
+            <div className="text-muted-foreground text-sm flex items-center justify-center gap-2">
               No invoices found. Upload an invoice PDF to create a new RTP record.
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="max-w-xs">
+                      When no matching invoices are found, you can upload a PDF file containing the corrected invoice data. 
+                      This will create a new Request to Pay (RTP) record with the updated information from your uploaded document.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
             
             <div className="space-y-4">
               <div className="max-w-md mx-auto">
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors">
+                <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center bg-muted/20 hover:bg-muted/30 transition-colors cursor-pointer"
+                     onClick={() => {
+                       const input = document.createElement('input');
+                       input.type = 'file';
+                       input.accept = '.pdf';
+                       input.onchange = (e) => {
+                         const file = (e.target as HTMLInputElement).files?.[0];
+                         if (file) handleFileUpload(file);
+                       };
+                       input.click();
+                     }}>
                   <div className="space-y-4">
-                    <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Upload className="h-6 w-6 text-blue-600" />
+                    <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Upload className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-medium text-gray-900">Upload New RTP</h3>
-                      <p className="text-xs text-gray-500 mt-1">This invoice must include the corrected data</p>
+                      <h3 className="text-sm font-medium text-foreground">Upload New RTP</h3>
+                      <p className="text-xs text-muted-foreground mt-1">This invoice must include the corrected data</p>
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-muted-foreground">
                       Drag & drop a file here or{" "}
-                      <button 
-                        className="text-blue-600 hover:text-blue-700 underline"
-                        onClick={() => {
-                          const input = document.createElement('input');
-                          input.type = 'file';
-                          input.accept = '.pdf';
-                          input.onchange = (e) => {
-                            const file = (e.target as HTMLInputElement).files?.[0];
-                            if (file) handleFileUpload(file);
-                          };
-                          input.click();
-                        }}
-                      >
+                      <span className="text-primary hover:text-primary/80 underline cursor-pointer">
                         click to browse
-                      </button>
+                      </span>
                     </div>
                     {uploadedFile && (
-                      <div className="mt-3 p-2 bg-white rounded border text-xs">
+                      <div className="mt-3 p-2 bg-background rounded border text-xs">
                         <div className="flex items-center justify-between">
-                          <span className="text-gray-700">{uploadedFile.name}</span>
+                          <span className="text-foreground">{uploadedFile.name}</span>
                           <button
-                            onClick={handleFileRemoval}
-                            className="text-red-500 hover:text-red-700"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleFileRemoval();
+                            }}
+                            className="text-destructive hover:text-destructive/80"
                           >
                             Remove
                           </button>
