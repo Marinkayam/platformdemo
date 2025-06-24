@@ -1,13 +1,18 @@
 
 import React, { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertTriangle } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 import { EditAgentModal } from "./EditAgentModal";
-import { ViewDetailsHeader } from "./ViewDetailsHeader";
-import { ViewDetailsCredentials } from "./ViewDetailsCredentials";
-import { ViewDetailsTwoFactor } from "./ViewDetailsTwoFactor";
-import { ViewDetailsMontoInfo } from "./ViewDetailsMontoInfo";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { AgentUserTypeBadge } from "@/components/ui/agent-user-type-badge";
+import { toast } from "@/hooks/use-toast";
+import { AgentIdentitySection } from "./agent-sections/AgentIdentitySection";
+import { AgentCredentialsSection } from "./agent-sections/AgentCredentialsSection";
+import { AgentTwoFactorSection } from "./agent-sections/AgentTwoFactorSection";
+import { AgentConnectionSection } from "./agent-sections/AgentConnectionSection";
 
 interface ViewDetailsModalProps {
   isOpen: boolean;
@@ -26,6 +31,14 @@ export function ViewDetailsModal({
   connectionInfo
 }: ViewDetailsModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    portalName: agent.portalName,
+    username: agent.portalUser,
+    password: "demo_password_123",
+    portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
+    twoFAEnabled: agent.status !== "Disconnected",
+    twoFAMethod: "authenticator",
+  });
 
   // Mock credentials for demo purposes
   const credentials = {
@@ -34,6 +47,11 @@ export function ViewDetailsModal({
     twoFA: agent.status === "Disconnected" ? "Disabled" : "Enabled",
     twoFAMethod: "Google Authenticator",
     portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast({ title: "Copied to clipboard", description: `${text} copied!` });
   };
 
   const handleEdit = () => {
@@ -51,6 +69,24 @@ export function ViewDetailsModal({
   const handleCloseEdit = () => {
     setIsEditMode(false);
     onClose();
+  };
+
+  const handleFormChange = (field: string, value: string | boolean) => {
+    setEditFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Get disconnection reason from the agent status
+  const getDisconnectionReason = () => {
+    if (agent.status === "Disconnected") {
+      return "Authentication failed. Please verify your credentials.";
+    }
+    if (agent.status === "Error") {
+      return "Connection error occurred. Please check your settings.";
+    }
+    return "";
   };
 
   // Only show credentials for Customer User types
@@ -73,38 +109,61 @@ export function ViewDetailsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
-        <ViewDetailsHeader agent={agent} connectionInfo={connectionInfo} />
-        
-        <div className="space-y-4 mt-6">
-          {/* Credentials Section - only for Customer User */}
+      <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-3">
+            <span>Agent Details</span>
+            <StatusBadge status={agent.status} />
+            <AgentUserTypeBadge type={agent.type} />
+          </DialogTitle>
+        </DialogHeader>
+
+        {/* Disconnection Alert Banner */}
+        {(agent.status === "Disconnected" || agent.status === "Error") && (
+          <Alert variant="destructive" className="mt-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Connection Failed:</strong> {getDisconnectionReason()} Please edit your agent settings and save to retry validation.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <div className="space-y-6 py-4">
+          <AgentIdentitySection 
+            agent={agent}
+            connectionInfo={connectionInfo}
+            copyToClipboard={copyToClipboard}
+            isEditMode={false}
+          />
+
           {shouldShowCredentials && (
-            <ViewDetailsCredentials credentials={credentials} />
-          )}
-          
-          {/* Two-Factor Authentication Section - only for Customer User */}
-          {shouldShowCredentials && (
-            <ViewDetailsTwoFactor 
-              credentials={credentials} 
-              onConfigureSettings={handleConfigureSettings}
+            <AgentCredentialsSection
+              credentials={credentials}
+              isEditMode={false}
+              copyToClipboard={copyToClipboard}
             />
           )}
 
-          {/* Account Type Information for Monto User */}
-          {shouldShowAccountTypeDetails && (
-            <ViewDetailsMontoInfo />
+          {shouldShowCredentials && (
+            <AgentTwoFactorSection
+              credentials={credentials}
+              isEditMode={false}
+              onConfigureSettings={handleConfigureSettings}
+              agentId={agent.id}
+            />
           )}
+
+          <AgentConnectionSection
+            agent={agent}
+            connectionInfo={connectionInfo}
+          />
         </div>
-          
-        {/* Footer with Edit Agent button */}
-        <div className="flex justify-end gap-2 pt-4 border-t mt-4">
+
+        <div className="flex justify-end gap-2 pt-4 border-t">
           <Button variant="ghost" onClick={onClose}>
             Close
           </Button>
-          <Button 
-            onClick={handleEdit} 
-            className="bg-[#7B59FF] text-white"
-          >
+          <Button onClick={handleEdit}>
             Edit Agent
           </Button>
         </div>
