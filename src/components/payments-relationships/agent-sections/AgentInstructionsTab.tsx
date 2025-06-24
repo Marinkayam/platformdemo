@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, MoreHorizontal, X } from "lucide-react";
+import { Plus, Edit, X } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 
 interface AgentInstructionsTabProps {
@@ -131,11 +131,11 @@ export function AgentInstructionsTab({
     <div className="space-y-6">
       {/* Add/Edit Instruction Form */}
       {showAddForm && (
-        <div className="border-2 border-[#7b61ff]/20 rounded-lg p-6 bg-white shadow-lg">
+        <div className="border rounded-lg p-6 bg-white">
           <div className="flex items-center gap-2 mb-6">
-            {editingId ? <MoreHorizontal className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+            {editingId ? <Edit className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
             <h3 className="text-lg font-semibold">
-              {editingId ? "Edit Instruction" : "Add New Instruction"}
+              {editingId ? "Update Instructions" : "Add Instructions"}
             </h3>
           </div>
           
@@ -192,7 +192,7 @@ export function AgentInstructionsTab({
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
-                {editingId ? "Update Instruction" : "Save Instruction"}
+                {editingId ? "Update Instructions" : "Save Instructions"}
               </Button>
             </div>
           </div>
@@ -217,7 +217,7 @@ export function AgentInstructionsTab({
                   onClick={() => handleEdit(instruction)}
                   className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
                 >
-                  <MoreHorizontal className="h-4 w-4" />
+                  <Edit className="h-4 w-4" />
                 </Button>
               </div>
             </CardHeader>

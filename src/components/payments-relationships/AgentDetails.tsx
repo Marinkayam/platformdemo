@@ -117,9 +117,9 @@ export function AgentDetails({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[1000px] p-0 h-[90vh] bg-white flex flex-col">
+        <DialogContent className="sm:max-w-[1000px] p-0 h-[90vh] bg-white flex flex-col overflow-hidden">
           {/* Fixed Header */}
-          <div className="flex-shrink-0 p-6 pb-4 bg-white">
+          <div className="flex-shrink-0 p-6 pb-0 bg-white">
             <DialogHeader className="mb-4">
               <DialogTitle className="flex items-center gap-3 text-xl">
                 <span>Agent Details</span>
@@ -166,7 +166,7 @@ export function AgentDetails({
             <AgentDisconnectionAlert agent={agent} />
 
             {/* Navigation Tabs */}
-            <div className="mt-4">
+            <div className="mt-2">
               <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
             </div>
           </div>
@@ -218,28 +218,30 @@ export function AgentDetails({
             )}
           </div>
 
-          {/* Fixed Footer */}
-          <div className="flex-shrink-0 flex justify-end gap-3 p-6 bg-white border-t">
-            {isEditMode ? (
-              <>
-                <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
-                  Cancel
-                </Button>
-                <Button onClick={handleSaveClick} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
-                  Save Changes
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button variant="ghost" onClick={onClose} className="min-w-[80px]">
-                  Close
-                </Button>
-                <Button onClick={handleEdit} className="min-w-[100px] bg-[#7b61ff] hover:bg-[#6b46ff]">
-                  Edit Agent
-                </Button>
-              </>
-            )}
-          </div>
+          {/* Fixed Footer - Only show for Details tab */}
+          {activeTab === "details" && (
+            <div className="flex-shrink-0 flex justify-end gap-3 p-6 bg-white border-t">
+              {isEditMode ? (
+                <>
+                  <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleSaveClick} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
+                    Save Changes
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" onClick={onClose} className="min-w-[80px]">
+                    Close
+                  </Button>
+                  <Button onClick={handleEdit} className="min-w-[100px] bg-[#7b61ff] hover:bg-[#6b46ff]">
+                    Edit Agent
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 
