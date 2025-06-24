@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -45,13 +44,15 @@ export function AgentDetails({
     toast({ title: "Copied to clipboard", description: `${text} copied!` });
   };
 
-  // Mock credentials for demo purposes
+  // Mock credentials for demo purposes - fixed to include all required properties
   const mockCredentials = {
     username: agent.portalUser,
     password: "demo_password_123",
+    portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
     portalUrl: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: agent.status !== "Disconnected",
-    twoFAMethod: "Google Authenticator"
+    twoFAMethod: "Google Authenticator",
+    twoFA: agent.status !== "Disconnected" ? "Enabled" : "Disabled"
   };
 
   const handleEdit = () => {

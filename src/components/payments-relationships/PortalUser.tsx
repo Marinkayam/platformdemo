@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangle } from "lucide-react";
-import { PortalUser } from "@/types/portalUser";
+import type { PortalUser as PortalUserType } from "@/types/portalUser";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
 import { toast } from '@/hooks/use-toast';
@@ -16,8 +15,8 @@ import { ConnectionDetailsSection } from './portal-users/sections/ConnectionDeta
 interface PortalUserProps {
   isOpen: boolean;
   onClose: () => void;
-  portalUser: PortalUser;
-  onEditPortalUser: (user: PortalUser) => void;
+  portalUser: PortalUserType;
+  onEditPortalUser: (user: PortalUserType) => void;
 }
 
 export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: PortalUserProps) {
@@ -81,7 +80,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
 
   const handleSave = () => {
     // Update the portal user with new data and set to validating
-    const updatedUser: PortalUser = {
+    const updatedUser: PortalUserType = {
       ...portalUser,
       portal: editFormData.portal,
       username: editFormData.username,
