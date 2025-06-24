@@ -27,26 +27,26 @@ export function AgentIdentitySection({
   onFormChange 
 }: AgentIdentitySectionProps) {
   return (
-    <div className="space-y-4">
-      <div className="space-y-4 max-w-md">
+    <div className="space-y-6">
+      <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-1">
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
             Portal Name
           </label>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {isEditMode ? (
               <input
                 type="text"
                 value={editFormData?.portalName || agent.portalName}
                 onChange={(e) => onFormChange?.('portalName', e.target.value)}
-                className="flex-1 p-2 bg-white border rounded text-sm"
+                className="flex-1 p-3 bg-white border rounded-md text-sm"
               />
             ) : (
               <input
                 type="text"
                 value={agent.portalName}
                 readOnly
-                className="flex-1 p-2 bg-gray-50 border rounded text-sm"
+                className="flex-1 p-3 bg-gray-50 border rounded-md text-sm"
               />
             )}
             <Button variant="outline" size="sm" onClick={() => copyToClipboard(agent.portalName)}>
@@ -56,15 +56,15 @@ export function AgentIdentitySection({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-1">
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
             Portal User
           </label>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <input
               type="text"
               value={agent.portalUser}
               readOnly
-              className="flex-1 p-2 bg-gray-50 border rounded text-sm"
+              className="flex-1 p-3 bg-gray-50 border rounded-md text-sm"
             />
             <Button variant="outline" size="sm" onClick={() => copyToClipboard(agent.portalUser)}>
               <Copy className="h-4 w-4" />

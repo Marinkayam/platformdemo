@@ -7,7 +7,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
 import { toast } from '@/hooks/use-toast';
 import { TabsNav } from '@/components/common/TabsNav';
-import { FileText, MessageSquareText, ArrowRight } from "lucide-react";
+import { FileText, MessageSquareText, Link, Plus } from "lucide-react";
 import { AgentIdentitySection } from './agent-sections/AgentIdentitySection';
 import { AgentCredentialsSection } from './agent-sections/AgentCredentialsSection';
 import { AgentTwoFactorSection } from './agent-sections/AgentTwoFactorSection';
@@ -97,8 +97,8 @@ export function AgentDetails({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[800px] p-0 max-h-[90vh] overflow-hidden">
-        <div className="p-6 border-b bg-white">
+      <DialogContent className="sm:max-w-[900px] p-0 max-h-[90vh] overflow-hidden bg-white">
+        <div className="p-6 bg-white">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3 text-xl">
               <span>Agent Details</span>
@@ -112,21 +112,33 @@ export function AgentDetails({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-[#7b61ff] rounded-lg flex items-center justify-center">
-                  <ArrowRight className="h-5 w-5 text-white" />
+                  <Link className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <div className="text-sm font-medium text-gray-600 mb-1">Smart Connection</div>
                   <div className="text-lg font-semibold text-gray-900">{mockSmartConnection.name}</div>
                 </div>
               </div>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleViewInstructions}
-                className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
-              >
-                View Instructions
-              </Button>
+              {activeTab === "details" ? (
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleViewInstructions}
+                  className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
+                >
+                  View Instructions
+                </Button>
+              ) : (
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => {}}
+                  className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Instructions
+                </Button>
+              )}
             </div>
           </div>
 
@@ -134,14 +146,14 @@ export function AgentDetails({
         </div>
 
         {/* Navigation Tabs */}
-        <div className="px-6 pt-4 bg-white border-b">
+        <div className="px-6 bg-white">
           <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
 
-        {/* Tab Content */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+        {/* Tab Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-6 bg-white">
           {activeTab === "details" && (
-            <div className="space-y-8 max-w-full">
+            <div className="space-y-6 max-w-full">
               <AgentIdentitySection 
                 agent={agent}
                 connectionInfo={connectionInfo}

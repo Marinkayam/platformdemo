@@ -154,7 +154,7 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
     <div className="space-y-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold text-gray-900">Agent Instructions</h3>
+        <div></div>
         {!showAddForm && (
           <Button 
             onClick={() => setShowAddForm(true)}
