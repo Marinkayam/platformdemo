@@ -1,4 +1,5 @@
-import { MoreVertical, FileLock } from "lucide-react";
+
+import { MoreVertical } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -58,10 +59,9 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
         <Button 
           variant="link" 
           size="sm" 
-          className="text-blue-600 p-0 h-auto underline-offset-4 hover:underline text-sm flex items-center gap-2"
+          className="text-blue-600 p-0 h-auto underline-offset-4 hover:underline text-sm"
           onClick={() => onViewDetails(agent)}
         >
-          <FileLock className="h-4 w-4" color="#01173E" strokeWidth={1} />
           View Details
         </Button>
       </TableCell>

@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { ChevronDown, ChevronRight, Plus, AlertTriangle, ExternalLink } from "lucide-react";
+import { ChevronDown, ChevronRight, Plus, AlertTriangle, ExternalLink, Edit, Trash2 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -90,7 +90,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
               <TableHead className="w-[140px]">Status</TableHead>
               <TableHead className="w-[200px]">Issues</TableHead>
               <TableHead className="w-[120px]">Agents</TableHead>
-              <TableHead className="w-[100px] text-center">Actions</TableHead>
+              <TableHead className="w-[100px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -125,7 +125,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
               <TableHead className="w-[140px] py-4">Status</TableHead>
               <TableHead className="w-[200px] py-4">Issues</TableHead>
               <TableHead className="w-[120px] py-4">Agents</TableHead>
-              <TableHead className="w-[100px] text-center py-4">Actions</TableHead>
+              <TableHead className="w-[100px] py-4"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="divide-y divide-gray-100">
@@ -142,11 +142,11 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                   >
                     <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 group-hover:bg-gray-50 py-6">
                       <div className="flex items-center gap-3">
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 p-1">
                           {isExpanded ? (
-                            <ChevronDown className="h-4 w-4 text-gray-500 transition-transform" />
+                            <ChevronDown className="h-5 w-5 text-gray-600 transition-all duration-200" />
                           ) : (
-                            <ChevronRight className="h-4 w-4 text-gray-500 transition-transform" />
+                            <ChevronRight className="h-5 w-5 text-gray-600 transition-all duration-200" />
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
@@ -208,7 +208,32 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                   {isExpanded && (
                     <TableRow>
                       <TableCell colSpan={5} className="p-0 bg-gray-50">
-                        <ExpandedAgentCard connection={connection} />
+                        <div className="p-6">
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-lg font-semibold text-gray-900">Agents</h3>
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditConnection(connection.id)}
+                                className="flex items-center gap-2 text-gray-700 hover:text-gray-900"
+                              >
+                                <Edit className="h-4 w-4" />
+                                Edit
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeactivateConnection(connection.id)}
+                                className="flex items-center gap-2 text-red-600 hover:text-red-700"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                Deactivate
+                              </Button>
+                            </div>
+                          </div>
+                          <ExpandedAgentCard connection={connection} />
+                        </div>
                       </TableCell>
                     </TableRow>
                   )}
