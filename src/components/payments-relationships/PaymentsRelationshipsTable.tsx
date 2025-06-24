@@ -1,10 +1,11 @@
+
 import { useState } from "react";
-import { ChevronDown, ChevronRight, MoreVertical, AlertTriangle } from "lucide-react";
+import { ChevronDown, ChevronRight, Plus, AlertTriangle, ExternalLink } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { ExpandedAgentCard } from "./ExpandedAgentCard";
 import { PaymentsRelationshipsTableFooter } from "./PaymentsRelationshipsTableFooter";
 import { SmartConnection } from "@/types/smartConnection";
@@ -37,7 +38,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
   };
 
   const handleRowClick = (connectionId: string, event: React.MouseEvent) => {
-    if ((event.target as HTMLElement).closest('.kebab-menu')) {
+    if ((event.target as HTMLElement).closest('.actions-cell')) {
       return;
     }
     toggleRow(connectionId);
@@ -47,31 +48,61 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
     navigate(`/payments-relationships/add-agent?connectionId=${connectionId}`);
   };
 
+  const handleEditConnection = (connectionId: string) => {
+    console.log('Edit connection:', connectionId);
+  };
+
+  const handleDeactivateConnection = (connectionId: string) => {
+    console.log('Deactivate connection:', connectionId);
+  };
+
+  const getConnectionActions = (connection: SmartConnection) => [
+    {
+      label: "View Agents",
+      icon: ExternalLink,
+      onClick: () => toggleRow(connection.id),
+      variant: "default" as const
+    },
+    {
+      label: "Add Agent",
+      icon: Plus,
+      onClick: () => handleAddAgent(connection.id),
+      variant: "default" as const
+    },
+    commonActions.edit(() => handleEditConnection(connection.id)),
+    {
+      label: "Deactivate",
+      icon: AlertTriangle,
+      onClick: () => handleDeactivateConnection(connection.id),
+      variant: "destructive" as const
+    }
+  ];
+
   if (connections.length === 0) {
     return (
       <div className="rounded-xl border bg-white">
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 flex-1">
-                SC
+              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[280px]">
+                Smart Connection
               </TableHead>
-              <TableHead className="flex-1">Connection Status</TableHead>
-              <TableHead className="flex-1">Issues</TableHead>
-              <TableHead className="flex-1">Agents</TableHead>
-              <TableHead className="w-[80px] text-center">Actions</TableHead>
+              <TableHead className="w-[140px]">Status</TableHead>
+              <TableHead className="w-[200px]">Issues</TableHead>
+              <TableHead className="w-[120px]">Agents</TableHead>
+              <TableHead className="w-[100px] text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
               <TableCell colSpan={5} className="h-[200px] text-center">
-                <div className="flex flex-col items-center justify-center space-y-3">
-                  <div className="text-gray-400 text-lg">📁</div>
-                  <div>
-                    <p className="text-gray-600 font-medium">No payments relationships found</p>
-                    <p className="text-gray-400 text-sm">Add a new relationship to get started</p>
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <div className="text-gray-400 text-4xl">📁</div>
+                  <div className="space-y-2">
+                    <p className="text-gray-900 font-semibold text-lg">No payments relationships found</p>
+                    <p className="text-gray-500 text-sm">Add a new relationship to get started</p>
                   </div>
-                  <Button>Add a New Relationship</Button>
+                  <Button className="mt-2">Add New Relationship</Button>
                 </div>
               </TableCell>
             </TableRow>
@@ -87,97 +118,96 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 flex-1">
-                SC
+            <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9] border-b border-gray-200">
+              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[280px] py-4">
+                Smart Connection
               </TableHead>
-              <TableHead className="flex-1">Connection Status</TableHead>
-              <TableHead className="flex-1">Issues</TableHead>
-              <TableHead className="flex-1">Agents</TableHead>
-              <TableHead className="w-[80px] text-center">Actions</TableHead>
+              <TableHead className="w-[140px] py-4">Status</TableHead>
+              <TableHead className="w-[200px] py-4">Issues</TableHead>
+              <TableHead className="w-[120px] py-4">Agents</TableHead>
+              <TableHead className="w-[100px] text-center py-4">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="divide-y divide-gray-100">
             {connections.map((connection) => {
               const issues = getConnectionIssues(connection);
               const highestIssue = getHighestSeverityIssue(issues);
+              const isExpanded = expandedRows.has(connection.id);
               
               return (
                 <React.Fragment key={connection.id}>
                   <TableRow 
-                    key={connection.id}
-                    className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
+                    className="hover:bg-gray-50 cursor-pointer transition-colors bg-white group"
                     onClick={(e) => handleRowClick(connection.id, e)}
                   >
-                    <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100">
-                      <div className="font-semibold text-gray-900">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <span className="truncate cursor-help">{connection.receivableEntity}</span>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>{connection.receivableEntity}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                      <div className="text-xs text-gray-500 mt-1">
-                        {getRandomCompanyName()}
+                    <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 group-hover:bg-gray-50 py-6">
+                      <div className="flex items-center gap-3">
+                        <div className="flex-shrink-0">
+                          {isExpanded ? (
+                            <ChevronDown className="h-4 w-4 text-gray-500 transition-transform" />
+                          ) : (
+                            <ChevronRight className="h-4 w-4 text-gray-500 transition-transform" />
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="font-semibold text-gray-900 text-base truncate">
+                                  {connection.receivableEntity}
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{connection.receivableEntity}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          <div className="text-sm text-gray-500 mt-1">
+                            {getRandomCompanyName()}
+                          </div>
+                        </div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    
+                    <TableCell className="py-6">
                       <StatusBadge status={connection.status} />
                     </TableCell>
-                    <TableCell>
-                      {highestIssue && (
-                        <div className="flex items-center gap-2 text-left">
+                    
+                    <TableCell className="py-6">
+                      {highestIssue ? (
+                        <div className="flex items-center gap-2">
                           <AlertTriangle className="h-4 w-4 text-red-500 flex-shrink-0" />
                           <Badge 
                             variant="outline" 
-                            className="text-red-700 border-red-300 bg-transparent truncate"
+                            className="text-red-700 border-red-200 bg-red-50 font-normal"
                           >
                             {highestIssue.message}
                           </Badge>
                         </div>
+                      ) : (
+                        <span className="text-gray-400 text-sm">No issues</span>
                       )}
                     </TableCell>
-                    <TableCell>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          {expandedRows.has(connection.id) ? (
-                            <ChevronDown className="h-4 w-4 text-gray-600 transition-transform" />
-                          ) : (
-                            <ChevronRight className="h-4 w-4" />
-                          )}
-                          <span className="text-gray-600">
-                            {connection.agents.length} agent{connection.agents.length !== 1 ? 's' : ''}
-                          </span>
-                        </div>
-                        <div className="kebab-menu">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
-                              <DropdownMenuItem>Edit Relationship</DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleAddAgent(connection.id)}>
-                                Add Agent
-                              </DropdownMenuItem>
-                              <DropdownMenuItem className="text-red-600">
-                                Deactivate
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
+                    
+                    <TableCell className="py-6">
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-700 font-medium">
+                          {connection.agents.length}
+                        </span>
+                        <span className="text-gray-500 text-sm">
+                          agent{connection.agents.length !== 1 ? 's' : ''}
+                        </span>
                       </div>
                     </TableCell>
+                    
+                    <TableCell className="py-6 actions-cell">
+                      <TableActions actions={getConnectionActions(connection)} />
+                    </TableCell>
                   </TableRow>
-                  {expandedRows.has(connection.id) && (
+                  
+                  {isExpanded && (
                     <TableRow>
-                      <TableCell colSpan={4} className="p-0">
+                      <TableCell colSpan={5} className="p-0 bg-gray-50">
                         <ExpandedAgentCard connection={connection} />
                       </TableCell>
                     </TableRow>
