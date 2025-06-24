@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -35,7 +34,7 @@ export function AgentDetails({
     portalName: agent.portalName,
     username: agent.portalUser,
     password: "demo_password_123",
-    portalUrl: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
+    portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: agent.status !== "Disconnected",
     twoFAMethod: "authenticator",
     phoneNumber: "",
@@ -81,7 +80,7 @@ export function AgentDetails({
       portalName: agent.portalName,
       username: agent.portalUser,
       password: "demo_password_123",
-      portalUrl: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
+      portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
       twoFAEnabled: agent.status !== "Disconnected",
       twoFAMethod: "authenticator",
       phoneNumber: "",
