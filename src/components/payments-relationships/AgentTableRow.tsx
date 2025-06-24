@@ -1,8 +1,7 @@
 
-import { MoreVertical } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Agent, SmartConnection } from "@/types/smartConnection";
 import { AgentIssueBanner } from "./AgentIssueBanner";
@@ -27,16 +26,26 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
     }
   };
 
+  const handleEditAgent = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log('Edit agent:', agent.id);
+  };
+
+  const handleDeactivateAgent = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDeactivateAgent(agent);
+  };
+
   return (
-    <TableRow className="hover:bg-gray-100/50 transition-colors bg-white">
+    <TableRow 
+      className="hover:bg-gray-100/50 transition-colors bg-white cursor-pointer"
+      onClick={() => onViewDetails(agent)}
+    >
       <TableCell className="px-6 py-3">
         <div>
-          <button
-            onClick={() => onViewDetails(agent)}
-            className="font-medium text-gray-900 text-base hover:text-blue-600 hover:underline transition-colors text-left"
-          >
+          <div className="font-medium text-gray-900 text-base">
             {agent.portalName}
-          </button>
+          </div>
           <AgentIssueBanner agent={agent} />
         </div>
       </TableCell>
@@ -56,32 +65,24 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
         </Badge>
       </TableCell>
       <TableCell className="px-6 py-3">
-        <Button 
-          variant="link" 
-          size="sm" 
-          className="text-blue-600 p-0 h-auto underline-offset-4 hover:underline text-sm"
-          onClick={() => onViewDetails(agent)}
-        >
-          View Details
-        </Button>
-      </TableCell>
-      <TableCell className="px-6 py-3">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-              <MoreVertical className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
-            <DropdownMenuItem>Edit Agent</DropdownMenuItem>
-            <DropdownMenuItem 
-              className="text-red-600"
-              onClick={() => onDeactivateAgent(agent)}
-            >
-              Deactivate Agent
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 hover:bg-gray-200"
+            onClick={handleEditAgent}
+          >
+            <Edit className="h-4 w-4 text-gray-600" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600"
+            onClick={handleDeactivateAgent}
+          >
+            <Trash2 className="h-4 w-4 text-gray-600 hover:text-red-600" />
+          </Button>
+        </div>
       </TableCell>
     </TableRow>
   );

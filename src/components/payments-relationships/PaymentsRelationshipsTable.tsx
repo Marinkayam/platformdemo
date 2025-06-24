@@ -144,9 +144,9 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0 p-1">
                           {isExpanded ? (
-                            <ChevronDown className="h-5 w-5 text-gray-600 transition-all duration-200" />
+                            <ChevronDown className="h-4 w-4 text-gray-600 transition-transform duration-200" />
                           ) : (
-                            <ChevronRight className="h-5 w-5 text-gray-600 transition-all duration-200" />
+                            <ChevronRight className="h-4 w-4 text-gray-600 transition-transform duration-200" />
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
