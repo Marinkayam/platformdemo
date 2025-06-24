@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react";
+import { Copy, Globe } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 
 interface AgentIdentitySectionProps {
@@ -30,7 +30,10 @@ export function AgentIdentitySection({
     <div className="space-y-6">
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-2">
+          <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-2">
+            <div className="w-4 h-4 bg-[#7b61ff] rounded-full flex items-center justify-center">
+              <Globe className="h-2.5 w-2.5 text-white" />
+            </div>
             Portal Name
           </label>
           <div className="flex items-center gap-3">

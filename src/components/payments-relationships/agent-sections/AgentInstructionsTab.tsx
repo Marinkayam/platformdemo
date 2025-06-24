@@ -77,15 +77,13 @@ export function AgentInstructionsTab({
   const [newInstruction, setNewInstruction] = useState({
     title: "",
     category: "",
-    description: "",
-    items: [""]
+    description: ""
   });
 
   // Check if form is valid for save button state
   const isFormValid = newInstruction.title.trim() !== "" && 
                      newInstruction.category !== "" && 
-                     newInstruction.description.trim() !== "" &&
-                     newInstruction.items.some(item => item.trim() !== "");
+                     newInstruction.description.trim() !== "";
 
   const handleSaveInstruction = () => {
     const instruction: Instruction = {
@@ -93,7 +91,7 @@ export function AgentInstructionsTab({
       title: newInstruction.title,
       category: newInstruction.category,
       description: newInstruction.description,
-      items: newInstruction.items.filter(item => item.trim() !== ""),
+      items: [],
       addedBy: "Current User",
       addedDate: new Date().toLocaleDateString('en-US', { 
         month: 'short', 
@@ -109,12 +107,12 @@ export function AgentInstructionsTab({
       setInstructions([...instructions, instruction]);
     }
 
-    setNewInstruction({ title: "", category: "", description: "", items: [""] });
+    setNewInstruction({ title: "", category: "", description: "" });
     onShowAddFormChange?.(false);
   };
 
   const handleCancel = () => {
-    setNewInstruction({ title: "", category: "", description: "", items: [""] });
+    setNewInstruction({ title: "", category: "", description: "" });
     onShowAddFormChange?.(false);
     setEditingId(null);
   };
@@ -123,35 +121,10 @@ export function AgentInstructionsTab({
     setNewInstruction({
       title: instruction.title,
       category: instruction.category,
-      description: instruction.description,
-      items: instruction.items
+      description: instruction.description
     });
     setEditingId(instruction.id);
     onShowAddFormChange?.(true);
-  };
-
-  const addNewItem = () => {
-    setNewInstruction({
-      ...newInstruction,
-      items: [...newInstruction.items, ""]
-    });
-  };
-
-  const updateItem = (index: number, value: string) => {
-    const updatedItems = [...newInstruction.items];
-    updatedItems[index] = value;
-    setNewInstruction({
-      ...newInstruction,
-      items: updatedItems
-    });
-  };
-
-  const removeItem = (index: number) => {
-    const updatedItems = newInstruction.items.filter((_, i) => i !== index);
-    setNewInstruction({
-      ...newInstruction,
-      items: updatedItems
-    });
   };
 
   return (
@@ -172,14 +145,15 @@ export function AgentInstructionsTab({
 
       {/* Add/Edit Instruction Form */}
       {showAddForm && (
-        <Card className="border-2 border-[#7b61ff]/20 shadow-lg">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg flex items-center gap-2">
-              {editingId ? <Edit2 className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+        <div className="border-2 border-[#7b61ff]/20 rounded-lg p-6 bg-white shadow-lg">
+          <div className="flex items-center gap-2 mb-6">
+            {editingId ? <Edit2 className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+            <h3 className="text-lg font-semibold">
               {editingId ? "Edit Instruction" : "Add New Instruction"}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
+            </h3>
+          </div>
+          
+          <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label className="text-sm font-medium">Title *</Label>
@@ -203,7 +177,6 @@ export function AgentInstructionsTab({
                     <SelectItem value="Delivery Instructions">Delivery Instructions</SelectItem>
                     <SelectItem value="Validation Rules">Validation Rules</SelectItem>
                     <SelectItem value="Data Requirements">Data Requirements</SelectItem>
-                    <SelectItem value="Behavioral Rules">Behavioral Rules</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -218,41 +191,6 @@ export function AgentInstructionsTab({
                 rows={3}
                 className="resize-none"
               />
-            </div>
-
-            <div className="space-y-3">
-              <Label className="text-sm font-medium">Instruction Items *</Label>
-              <div className="space-y-3">
-                {newInstruction.items.map((item, index) => (
-                  <div key={index} className="flex gap-3">
-                    <Input
-                      value={item}
-                      onChange={(e) => updateItem(index, e.target.value)}
-                      placeholder="Enter instruction item..."
-                      className="flex-1 h-10"
-                    />
-                    {newInstruction.items.length > 1 && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeItem(index)}
-                        className="h-10 w-10 p-0 hover:bg-red-50 hover:border-red-200 hover:text-red-600"
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                ))}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={addNewItem}
-                  className="h-9 text-sm"
-                >
-                  <Plus className="h-3 w-3 mr-1" />
-                  Add Item
-                </Button>
-              </div>
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t">
@@ -271,8 +209,8 @@ export function AgentInstructionsTab({
                 {editingId ? "Update Instruction" : "Save Instruction"}
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* Instruction Cards */}
