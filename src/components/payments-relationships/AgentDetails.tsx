@@ -1,8 +1,9 @@
+
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Copy } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
@@ -34,9 +35,11 @@ export function AgentDetails({
     portalName: agent.portalName,
     username: agent.portalUser,
     password: "demo_password_123",
-    portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
+    portalUrl: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: agent.status !== "Disconnected",
     twoFAMethod: "authenticator",
+    phoneNumber: "",
+    verificationEmail: "",
   });
   
   const copyToClipboard = (text: string) => {
@@ -55,6 +58,18 @@ export function AgentDetails({
     twoFA: agent.status !== "Disconnected" ? "Enabled" : "Disabled"
   };
 
+  // Mock smart connection data
+  const mockSmartConnection = {
+    id: "sc1",
+    name: `${connectionInfo.receivable} → ${connectionInfo.payable}`,
+    url: `/payments-relationships?filter=connection1`
+  };
+
+  const handleSmartConnectionClick = (url: string) => {
+    console.log("Navigate to:", url);
+    // In a real app, this would use navigation
+  };
+
   const handleEdit = () => {
     setIsEditMode(true);
   };
@@ -66,9 +81,11 @@ export function AgentDetails({
       portalName: agent.portalName,
       username: agent.portalUser,
       password: "demo_password_123",
-      portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
+      portalUrl: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
       twoFAEnabled: agent.status !== "Disconnected",
       twoFAMethod: "authenticator",
+      phoneNumber: "",
+      verificationEmail: "",
     });
   };
 
@@ -116,7 +133,7 @@ export function AgentDetails({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[700px] p-6 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <span>Agent Details</span>
@@ -165,6 +182,47 @@ export function AgentDetails({
               agentId={agent.id}
             />
           )}
+
+          {/* Smart Connection Details Section */}
+          <div className="space-y-4">
+            <div className="space-y-4 max-w-md">
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
+                  Smart Connection
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 p-2 bg-gray-50 border rounded text-sm text-gray-900">
+                    <div className="font-medium">{mockSmartConnection.name}</div>
+                    <div className="text-xs text-gray-600 mt-1">Active payment relationship</div>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => handleSmartConnectionClick(mockSmartConnection.url)}
+                  >
+                    View
+                  </Button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
+                  Role
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={agent.role}
+                    readOnly
+                    className="flex-1 p-2 bg-gray-50 border rounded text-sm"
+                  />
+                  <Button variant="outline" size="sm" onClick={() => copyToClipboard(agent.role)}>
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {shouldShowAccountTypeDetails && (
             <div className="space-y-4">
