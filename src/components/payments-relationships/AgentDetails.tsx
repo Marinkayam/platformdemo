@@ -51,7 +51,6 @@ export function AgentDetails({
     username: agent.portalUser,
     password: "demo_password_123",
     portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
-    portalUrl: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: agent.status !== "Disconnected",
     twoFAMethod: "Google Authenticator",
     twoFA: agent.status !== "Disconnected" ? "Enabled" : "Disabled"
