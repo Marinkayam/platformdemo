@@ -28,8 +28,6 @@ export function AgentIdentitySection({
 }: AgentIdentitySectionProps) {
   return (
     <div className="space-y-4">
-      <h4 className="text-base font-semibold text-primary">Agent Identity</h4>
-      
       <div className="space-y-4 max-w-md">
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-1">
@@ -54,15 +52,6 @@ export function AgentIdentitySection({
             <Button variant="outline" size="sm" onClick={() => copyToClipboard(agent.portalName)}>
               <Copy className="h-4 w-4" />
             </Button>
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-1">
-            Smart Connection
-          </label>
-          <div className="p-2 bg-gray-50 border rounded text-sm text-gray-600">
-            {connectionInfo.receivable} → {connectionInfo.payable}
           </div>
         </div>
 

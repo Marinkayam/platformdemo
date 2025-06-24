@@ -29,8 +29,6 @@ export function AgentTwoFactorSection({
 }: AgentTwoFactorSectionProps) {
   return (
     <div className="space-y-4">
-      <h4 className="text-base font-semibold text-primary">Two-Factor Authentication</h4>
-      
       {credentials.twoFA === "Disabled" && (
         <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
@@ -43,7 +41,7 @@ export function AgentTwoFactorSection({
       <div className="space-y-4 max-w-md">
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-1">
-            Status
+            Two-Factor Authentication
           </label>
           <div className="flex items-center justify-between p-2 bg-gray-50 border rounded text-sm">
             <div>

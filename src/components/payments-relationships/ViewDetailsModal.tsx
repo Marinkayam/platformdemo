@@ -12,7 +12,6 @@ import { toast } from "@/hooks/use-toast";
 import { AgentIdentitySection } from "./agent-sections/AgentIdentitySection";
 import { AgentCredentialsSection } from "./agent-sections/AgentCredentialsSection";
 import { AgentTwoFactorSection } from "./agent-sections/AgentTwoFactorSection";
-import { AgentConnectionSection } from "./agent-sections/AgentConnectionSection";
 
 interface ViewDetailsModalProps {
   isOpen: boolean;
@@ -109,7 +108,7 @@ export function ViewDetailsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[700px] p-6 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <span>Agent Details</span>
@@ -153,10 +152,16 @@ export function ViewDetailsModal({
             />
           )}
 
-          <AgentConnectionSection
-            agent={agent}
-            connectionInfo={connectionInfo}
-          />
+          {shouldShowAccountTypeDetails && (
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-md text-sm">
+                <p className="text-blue-800">
+                  This agent uses a dedicated Monto user account for portal access. 
+                  Credentials are managed independently by your organization.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="flex justify-end gap-2 pt-4 border-t">

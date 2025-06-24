@@ -30,8 +30,6 @@ export function AgentCredentialsSection({
 
   return (
     <div className="space-y-4">
-      <h4 className="text-base font-semibold text-primary">Credentials</h4>
-      
       <div className="space-y-4 max-w-md">
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-1">
