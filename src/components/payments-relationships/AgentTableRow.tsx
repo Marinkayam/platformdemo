@@ -38,10 +38,10 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
 
   return (
     <TableRow 
-      className="hover:bg-gray-100/50 transition-colors bg-white cursor-pointer"
+      className="hover:bg-gray-100/50 transition-colors bg-white cursor-pointer group"
       onClick={() => onViewDetails(agent)}
     >
-      <TableCell className="px-6 py-3">
+      <TableCell className="px-6 py-4">
         <div>
           <div className="font-medium text-gray-900 text-base">
             {agent.portalName}
@@ -49,23 +49,23 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
           <AgentIssueBanner agent={agent} />
         </div>
       </TableCell>
-      <TableCell className="px-6 py-3">
+      <TableCell className="px-6 py-4">
         <div className="text-gray-600 text-sm">
           {connection.receivableEntity} → {connection.payableEntity}
         </div>
       </TableCell>
-      <TableCell className="px-6 py-3">
+      <TableCell className="px-6 py-4">
         <StatusBadge status={agent.status} />
       </TableCell>
-      <TableCell className="px-6 py-3">
+      <TableCell className="px-6 py-4">
         <Badge 
           className={`rounded-full px-2.5 py-1 text-xs font-medium ${getUserTypeColor(agent.type)}`}
         >
           {agent.type === "Monto" ? "Monto User" : "Customer User"}
         </Badge>
       </TableCell>
-      <TableCell className="px-6 py-3">
-        <div className="flex items-center gap-2">
+      <TableCell className="px-6 py-4">
+        <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <Button
             variant="ghost"
             size="sm"

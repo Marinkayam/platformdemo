@@ -18,7 +18,7 @@ export function AgentTable({ connection, onViewDetails, onDeactivateAgent }: Age
 
   if (filteredAgents.length === 0) {
     return (
-      <div className="p-4 bg-gray-50">
+      <div className="p-4 bg-gray-50 rounded-lg">
         <div className="text-center text-gray-600">
           <p className="text-sm">No agents configured for this connection</p>
           <Button variant="outline" size="sm" className="mt-2">
@@ -30,25 +30,25 @@ export function AgentTable({ connection, onViewDetails, onDeactivateAgent }: Age
   }
 
   return (
-    <div className="bg-gray-50 py-2">
+    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="border-b border-gray-200 bg-gray-100">
-            <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
+          <TableRow className="border-b border-gray-200 bg-gray-50">
+            <TableHead className="h-10 px-6 text-left align-middle font-medium text-gray-600 text-xs">
               Portal Name
             </TableHead>
-            <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
+            <TableHead className="h-10 px-6 text-left align-middle font-medium text-gray-600 text-xs">
               Supplier → Buyer
             </TableHead>
-            <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
+            <TableHead className="h-10 px-6 text-left align-middle font-medium text-gray-600 text-xs">
               Status
             </TableHead>
-            <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
+            <TableHead className="h-10 px-6 text-left align-middle font-medium text-gray-600 text-xs">
               User Type
             </TableHead>
-            <TableHead className="h-12 px-6 text-left align-middle font-medium text-gray-600 text-sm">
+            <TableHead className="h-10 px-6 text-right align-middle font-medium text-gray-600 text-xs">
+              Actions
             </TableHead>
-            <TableHead className="w-12"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
