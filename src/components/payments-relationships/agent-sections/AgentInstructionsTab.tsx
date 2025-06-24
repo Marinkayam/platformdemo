@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { FileText, Plus } from "lucide-react";
+import { FileText, Plus, Edit2, X } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 
 interface AgentInstructionsTabProps {
@@ -69,6 +69,7 @@ const mockInstructions: Instruction[] = [
 export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
   const [instructions, setInstructions] = useState<Instruction[]>(mockInstructions);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [newInstruction, setNewInstruction] = useState({
     title: "",
     category: "",
@@ -76,9 +77,15 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
     items: [""]
   });
 
-  const handleAddInstruction = () => {
+  // Check if form is valid for save button state
+  const isFormValid = newInstruction.title.trim() !== "" && 
+                     newInstruction.category !== "" && 
+                     newInstruction.description.trim() !== "" &&
+                     newInstruction.items.some(item => item.trim() !== "");
+
+  const handleSaveInstruction = () => {
     const instruction: Instruction = {
-      id: Date.now().toString(),
+      id: editingId || Date.now().toString(),
       title: newInstruction.title,
       category: newInstruction.category,
       description: newInstruction.description,
@@ -91,7 +98,13 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
       })
     };
 
-    setInstructions([...instructions, instruction]);
+    if (editingId) {
+      setInstructions(instructions.map(inst => inst.id === editingId ? instruction : inst));
+      setEditingId(null);
+    } else {
+      setInstructions([...instructions, instruction]);
+    }
+
     setNewInstruction({ title: "", category: "", description: "", items: [""] });
     setShowAddForm(false);
   };
@@ -99,6 +112,18 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
   const handleCancel = () => {
     setNewInstruction({ title: "", category: "", description: "", items: [""] });
     setShowAddForm(false);
+    setEditingId(null);
+  };
+
+  const handleEdit = (instruction: Instruction) => {
+    setNewInstruction({
+      title: instruction.title,
+      category: instruction.category,
+      description: instruction.description,
+      items: instruction.items
+    });
+    setEditingId(instruction.id);
+    setShowAddForm(true);
   };
 
   const addNewItem = () => {
@@ -129,39 +154,45 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
     <div className="space-y-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900">Agent Instructions</h3>
-        <Button 
-          onClick={() => setShowAddForm(true)}
-          className="bg-[#7b61ff] hover:bg-[#6b46ff]"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Add Instruction
-        </Button>
+        <h3 className="text-xl font-semibold text-gray-900">Agent Instructions</h3>
+        {!showAddForm && (
+          <Button 
+            onClick={() => setShowAddForm(true)}
+            className="bg-[#7b61ff] hover:bg-[#6b46ff] text-white"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Instruction
+          </Button>
+        )}
       </div>
 
-      {/* Add Instruction Form */}
+      {/* Add/Edit Instruction Form */}
       {showAddForm && (
-        <Card className="border-2 border-[#7b61ff]/20">
-          <CardHeader>
-            <CardTitle className="text-base">Add New Instruction</CardTitle>
+        <Card className="border-2 border-[#7b61ff]/20 shadow-lg">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg flex items-center gap-2">
+              {editingId ? <Edit2 className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+              {editingId ? "Edit Instruction" : "Add New Instruction"}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label>Title</Label>
+                <Label className="text-sm font-medium">Title *</Label>
                 <Input
                   value={newInstruction.title}
                   onChange={(e) => setNewInstruction({...newInstruction, title: e.target.value})}
                   placeholder="e.g., Invoice Delivery Type"
+                  className="h-10"
                 />
               </div>
               <div className="space-y-2">
-                <Label>Category</Label>
+                <Label className="text-sm font-medium">Category *</Label>
                 <Select 
                   value={newInstruction.category} 
                   onValueChange={(value) => setNewInstruction({...newInstruction, category: value})}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-10">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -175,55 +206,65 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
             </div>
             
             <div className="space-y-2">
-              <Label>Description</Label>
+              <Label className="text-sm font-medium">Description *</Label>
               <Textarea
                 value={newInstruction.description}
                 onChange={(e) => setNewInstruction({...newInstruction, description: e.target.value})}
                 placeholder="Explain the purpose of this instruction..."
-                rows={2}
+                rows={3}
+                className="resize-none"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label>Instruction Items</Label>
-              {newInstruction.items.map((item, index) => (
-                <div key={index} className="flex gap-2">
-                  <Input
-                    value={item}
-                    onChange={(e) => updateItem(index, e.target.value)}
-                    placeholder="Enter instruction item..."
-                  />
-                  {newInstruction.items.length > 1 && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => removeItem(index)}
-                    >
-                      Remove
-                    </Button>
-                  )}
-                </div>
-              ))}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={addNewItem}
-                className="mt-2"
-              >
-                Add Item
-              </Button>
+            <div className="space-y-3">
+              <Label className="text-sm font-medium">Instruction Items *</Label>
+              <div className="space-y-3">
+                {newInstruction.items.map((item, index) => (
+                  <div key={index} className="flex gap-3">
+                    <Input
+                      value={item}
+                      onChange={(e) => updateItem(index, e.target.value)}
+                      placeholder="Enter instruction item..."
+                      className="flex-1 h-10"
+                    />
+                    {newInstruction.items.length > 1 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeItem(index)}
+                        className="h-10 w-10 p-0 hover:bg-red-50 hover:border-red-200 hover:text-red-600"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={addNewItem}
+                  className="h-9 text-sm"
+                >
+                  <Plus className="h-3 w-3 mr-1" />
+                  Add Item
+                </Button>
+              </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-4">
-              <Button variant="outline" onClick={handleCancel}>
+            <div className="flex justify-end gap-3 pt-4 border-t">
+              <Button variant="outline" onClick={handleCancel} className="min-w-[80px]">
                 Cancel
               </Button>
               <Button 
-                onClick={handleAddInstruction}
-                disabled={!newInstruction.title || !newInstruction.category || !newInstruction.description}
-                className="bg-[#7b61ff] hover:bg-[#6b46ff]"
+                onClick={handleSaveInstruction}
+                disabled={!isFormValid}
+                className={`min-w-[120px] ${
+                  isFormValid 
+                    ? "bg-[#7b61ff] hover:bg-[#6b46ff] text-white" 
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                }`}
               >
-                Save Instruction
+                {editingId ? "Update Instruction" : "Save Instruction"}
               </Button>
             </div>
           </CardContent>
@@ -242,26 +283,39 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
       {/* Instruction Cards */}
       <div className="space-y-4">
         {instructions.map((instruction) => (
-          <Card key={instruction.id} className="hover:shadow-sm transition-shadow">
-            <CardHeader className="pb-3">
+          <Card key={instruction.id} className="hover:shadow-md transition-shadow border border-gray-200">
+            <CardHeader className="pb-4">
               <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-base font-semibold">{instruction.title}</CardTitle>
-                  <p className="text-sm text-gray-600 mt-1">{instruction.description}</p>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CardTitle className="text-lg font-semibold text-gray-900">{instruction.title}</CardTitle>
+                    <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-md">
+                      {instruction.category}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600">{instruction.description}</p>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleEdit(instruction)}
+                  className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
               </div>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="space-y-2">
                 {instruction.items.map((item, index) => (
-                  <div key={index} className="flex items-start gap-2">
-                    <span className="text-gray-400 text-sm mt-0.5">•</span>
-                    <span className="text-sm text-gray-700">{item}</span>
+                  <div key={index} className="flex items-start gap-3">
+                    <span className="text-[#7b61ff] text-sm mt-0.5 font-medium">•</span>
+                    <span className="text-sm text-gray-700 leading-relaxed">{item}</span>
                   </div>
                 ))}
               </div>
               <div className="mt-4 pt-3 border-t text-xs text-gray-500">
-                Added by {instruction.addedBy} on {instruction.addedDate}
+                Added by <span className="font-medium">{instruction.addedBy}</span> on {instruction.addedDate}
               </div>
             </CardContent>
           </Card>

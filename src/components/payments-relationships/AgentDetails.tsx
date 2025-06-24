@@ -7,7 +7,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
 import { toast } from '@/hooks/use-toast';
 import { TabsNav } from '@/components/common/TabsNav';
-import { FileText, MessageSquareText } from "lucide-react";
+import { FileText, MessageSquareText, ArrowRight } from "lucide-react";
 import { AgentIdentitySection } from './agent-sections/AgentIdentitySection';
 import { AgentCredentialsSection } from './agent-sections/AgentCredentialsSection';
 import { AgentTwoFactorSection } from './agent-sections/AgentTwoFactorSection';
@@ -55,7 +55,7 @@ export function AgentDetails({
   const mockCredentials = {
     username: agent.portalUser,
     password: "demo_password_123",
-    portalUrl: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
+    portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: agent.status !== "Disconnected",
     twoFAMethod: "Google Authenticator",
     twoFA: agent.status !== "Disconnected" ? "Enabled" : "Disabled"
@@ -97,44 +97,51 @@ export function AgentDetails({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[700px] p-6 max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-3">
-            <span>Agent Details</span>
-            <StatusBadge status={agent.status} />
-            <AgentUserTypeBadge type={agent.type} />
-          </DialogTitle>
-        </DialogHeader>
+      <DialogContent className="sm:max-w-[800px] p-0 max-h-[90vh] overflow-hidden">
+        <div className="p-6 border-b bg-white">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3 text-xl">
+              <span>Agent Details</span>
+              <StatusBadge status={agent.status} />
+              <AgentUserTypeBadge type={agent.type} />
+            </DialogTitle>
+          </DialogHeader>
 
-        {/* Smart Connection Section */}
-        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-          <div className="flex items-center justify-between">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Smart Connection
-              </label>
-              <div className="text-sm text-gray-900 font-medium">{mockSmartConnection.name}</div>
-              <div className="text-xs text-gray-600">Active payment relationship</div>
+          {/* Smart Connection Section - Monto Style */}
+          <div className="mt-6 p-4 bg-gradient-to-r from-[#7b61ff]/5 to-[#6b46ff]/5 border border-[#7b61ff]/20 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#7b61ff] rounded-lg flex items-center justify-center">
+                  <ArrowRight className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-600 mb-1">Smart Connection</div>
+                  <div className="text-lg font-semibold text-gray-900">{mockSmartConnection.name}</div>
+                </div>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleViewInstructions}
+                className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
+              >
+                View Instructions
+              </Button>
             </div>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleViewInstructions}
-            >
-              View Instructions
-            </Button>
           </div>
+
+          <AgentDisconnectionAlert agent={agent} />
         </div>
 
-        <AgentDisconnectionAlert agent={agent} />
-
         {/* Navigation Tabs */}
-        <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+        <div className="px-6 pt-4 bg-white border-b">
+          <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+        </div>
 
         {/* Tab Content */}
-        <div className="py-4">
+        <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
           {activeTab === "details" && (
-            <div className="space-y-6">
+            <div className="space-y-8 max-w-full">
               <AgentIdentitySection 
                 agent={agent}
                 connectionInfo={connectionInfo}
@@ -180,22 +187,23 @@ export function AgentDetails({
           )}
         </div>
 
-        <div className="flex justify-end gap-2 pt-4 border-t">
+        {/* Footer Actions */}
+        <div className="flex justify-end gap-3 p-6 bg-white border-t">
           {isEditMode ? (
             <>
-              <Button variant="ghost" onClick={handleCancel}>
+              <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
                 Cancel
               </Button>
-              <Button onClick={handleSave}>
+              <Button onClick={handleSave} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
                 Save Changes
               </Button>
             </>
           ) : (
             <>
-              <Button variant="ghost" onClick={onClose}>
+              <Button variant="ghost" onClick={onClose} className="min-w-[80px]">
                 Close
               </Button>
-              <Button onClick={handleEdit}>
+              <Button onClick={handleEdit} className="min-w-[100px] bg-[#7b61ff] hover:bg-[#6b46ff]">
                 Edit Agent
               </Button>
             </>
