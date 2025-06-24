@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Copy, User } from "lucide-react";
+import { Copy, Building2 } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 
 interface AgentIdentitySectionProps {
@@ -54,7 +54,7 @@ export function AgentIdentitySection({
                   className="w-full p-3 pl-10 bg-gray-50 border rounded-md text-sm"
                 />
               )}
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#7b61ff]" />
+              <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#7b61ff]" />
             </div>
             <Button variant="outline" size="sm" onClick={() => copyToClipboard(agent.portalName)}>
               <Copy className="h-4 w-4" />
@@ -90,9 +90,6 @@ export function AgentIdentitySection({
               readOnly
               className="flex-1 p-3 bg-gray-50 border rounded-md text-sm"
             />
-            <Button variant="outline" size="sm" onClick={() => copyToClipboard(getUserTypeDisplay())}>
-              <Copy className="h-4 w-4" />
-            </Button>
           </div>
         </div>
       </div>

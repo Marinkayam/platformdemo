@@ -71,9 +71,6 @@ export function AgentDetails({
     twoFA: agent.status !== "Disconnected" ? "Enabled" : "Disabled"
   };
 
-  // Only show credentials for External User types
-  const shouldShowCredentials = agent.type === "External";
-
   // Mock smart connection data
   const mockSmartConnection = {
     id: "sc1",
@@ -119,7 +116,7 @@ export function AgentDetails({
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-[1000px] p-0 h-[90vh] bg-white flex flex-col overflow-hidden">
           {/* Fixed Header */}
-          <div className="flex-shrink-0 p-6 pb-0 bg-white">
+          <div className="flex-shrink-0 p-6 pb-2 bg-white">
             <DialogHeader className="mb-4">
               <DialogTitle className="flex items-center gap-3 text-xl">
                 <span>Agent Details</span>
@@ -166,9 +163,7 @@ export function AgentDetails({
             <AgentDisconnectionAlert agent={agent} />
 
             {/* Navigation Tabs */}
-            <div className="mt-2">
-              <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
-            </div>
+            <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
           {/* Scrollable Content */}
@@ -184,26 +179,22 @@ export function AgentDetails({
                   onFormChange={handleFormChange}
                 />
 
-                {shouldShowCredentials && (
-                  <AgentCredentialsSection
-                    credentials={mockCredentials}
-                    isEditMode={isEditMode}
-                    editFormData={editFormData}
-                    onFormChange={handleFormChange}
-                    copyToClipboard={copyToClipboard}
-                  />
-                )}
+                <AgentCredentialsSection
+                  credentials={mockCredentials}
+                  isEditMode={isEditMode}
+                  editFormData={editFormData}
+                  onFormChange={handleFormChange}
+                  copyToClipboard={copyToClipboard}
+                />
 
-                {shouldShowCredentials && (
-                  <AgentTwoFactorSection
-                    credentials={mockCredentials}
-                    isEditMode={isEditMode}
-                    editFormData={editFormData}
-                    onFormChange={handleFormChange}
-                    onConfigureSettings={handleEdit}
-                    agentId={agent.id}
-                  />
-                )}
+                <AgentTwoFactorSection
+                  credentials={mockCredentials}
+                  isEditMode={isEditMode}
+                  editFormData={editFormData}
+                  onFormChange={handleFormChange}
+                  onConfigureSettings={handleEdit}
+                  agentId={agent.id}
+                />
               </div>
             )}
 

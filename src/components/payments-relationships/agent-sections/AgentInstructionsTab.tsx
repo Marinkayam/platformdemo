@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Edit, X } from "lucide-react";
+import { Edit } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
+import { toast } from '@/hooks/use-toast';
 
 interface AgentInstructionsTabProps {
   agent: Agent;
@@ -103,8 +104,16 @@ export function AgentInstructionsTab({
     if (editingId) {
       setInstructions(instructions.map(inst => inst.id === editingId ? instruction : inst));
       setEditingId(null);
+      toast({ 
+        title: "Instructions Updated", 
+        description: "The instruction has been successfully updated." 
+      });
     } else {
       setInstructions([...instructions, instruction]);
+      toast({ 
+        title: "Instructions Added", 
+        description: "New instruction has been successfully added." 
+      });
     }
 
     setNewInstruction({ title: "", category: "", description: "" });
@@ -133,7 +142,6 @@ export function AgentInstructionsTab({
       {showAddForm && (
         <div className="border rounded-lg p-6 bg-white">
           <div className="flex items-center gap-2 mb-6">
-            {editingId ? <Edit className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
             <h3 className="text-lg font-semibold">
               {editingId ? "Update Instructions" : "Add Instructions"}
             </h3>
@@ -192,7 +200,7 @@ export function AgentInstructionsTab({
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
-                {editingId ? "Update Instructions" : "Save Instructions"}
+                {editingId ? "Update Instructions" : "Add Instructions"}
               </Button>
             </div>
           </div>
