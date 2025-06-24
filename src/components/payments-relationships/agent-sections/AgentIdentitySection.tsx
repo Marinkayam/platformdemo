@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Copy, Globe } from "lucide-react";
+import { Copy, ImageIcon } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 
 interface AgentIdentitySectionProps {
@@ -30,28 +30,28 @@ export function AgentIdentitySection({
     <div className="space-y-6">
       <div className="space-y-6">
         <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-2">
-            <div className="w-4 h-4 bg-[#7b61ff] rounded-full flex items-center justify-center">
-              <Globe className="h-2.5 w-2.5 text-white" />
-            </div>
+          <label className="block text-sm font-medium text-muted-foreground mb-3">
             Portal Name
           </label>
           <div className="flex items-center gap-3">
-            {isEditMode ? (
-              <input
-                type="text"
-                value={editFormData?.portalName || agent.portalName}
-                onChange={(e) => onFormChange?.('portalName', e.target.value)}
-                className="flex-1 p-3 bg-white border rounded-md text-sm"
-              />
-            ) : (
-              <input
-                type="text"
-                value={agent.portalName}
-                readOnly
-                className="flex-1 p-3 bg-gray-50 border rounded-md text-sm"
-              />
-            )}
+            <div className="relative flex-1">
+              {isEditMode ? (
+                <input
+                  type="text"
+                  value={editFormData?.portalName || agent.portalName}
+                  onChange={(e) => onFormChange?.('portalName', e.target.value)}
+                  className="w-full p-3 pl-10 bg-white border rounded-md text-sm"
+                />
+              ) : (
+                <input
+                  type="text"
+                  value={agent.portalName}
+                  readOnly
+                  className="w-full p-3 pl-10 bg-gray-50 border rounded-md text-sm"
+                />
+              )}
+              <ImageIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#7b61ff]" />
+            </div>
             <Button variant="outline" size="sm" onClick={() => copyToClipboard(agent.portalName)}>
               <Copy className="h-4 w-4" />
             </Button>
@@ -59,7 +59,7 @@ export function AgentIdentitySection({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-2">
+          <label className="block text-sm font-medium text-muted-foreground mb-3">
             Portal User
           </label>
           <div className="flex items-center gap-3">

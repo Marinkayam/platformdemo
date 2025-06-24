@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Edit2, X } from "lucide-react";
+import { Plus, MoreHorizontal, X } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 
 interface AgentInstructionsTabProps {
@@ -129,25 +129,11 @@ export function AgentInstructionsTab({
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <div className="flex items-center justify-between">
-        <div></div>
-        {!showAddForm && (
-          <Button 
-            onClick={() => onShowAddFormChange?.(true)}
-            className="bg-[#7b61ff] hover:bg-[#6b46ff] text-white"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Instruction
-          </Button>
-        )}
-      </div>
-
       {/* Add/Edit Instruction Form */}
       {showAddForm && (
         <div className="border-2 border-[#7b61ff]/20 rounded-lg p-6 bg-white shadow-lg">
           <div className="flex items-center gap-2 mb-6">
-            {editingId ? <Edit2 className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+            {editingId ? <MoreHorizontal className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
             <h3 className="text-lg font-semibold">
               {editingId ? "Edit Instruction" : "Add New Instruction"}
             </h3>
@@ -222,9 +208,6 @@ export function AgentInstructionsTab({
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <CardTitle className="text-lg font-semibold text-gray-900">{instruction.title}</CardTitle>
-                    <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-md">
-                      {instruction.category}
-                    </span>
                   </div>
                   <p className="text-sm text-gray-600">{instruction.description}</p>
                 </div>
@@ -234,7 +217,7 @@ export function AgentInstructionsTab({
                   onClick={() => handleEdit(instruction)}
                   className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
                 >
-                  <Edit2 className="h-4 w-4" />
+                  <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </div>
             </CardHeader>

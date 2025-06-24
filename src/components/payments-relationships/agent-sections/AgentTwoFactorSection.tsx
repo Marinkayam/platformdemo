@@ -38,12 +38,12 @@ export function AgentTwoFactorSection({
         </Alert>
       )}
       
-      <div className="space-y-4 max-w-md">
+      <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-1">
+          <label className="block text-sm font-medium text-muted-foreground mb-3">
             Two-Factor Authentication
           </label>
-          <div className="flex items-center justify-between p-2 bg-gray-50 border rounded text-sm">
+          <div className="flex items-center justify-between p-3 bg-gray-50 border rounded-md text-sm w-full">
             <div>
               <span className="text-gray-900">{credentials.twoFA}</span>
               <div className="text-xs text-gray-600 mt-1">Required by portal</div>
@@ -66,7 +66,7 @@ export function AgentTwoFactorSection({
         </div>
         
         {credentials.twoFA === "Enabled" && (
-          <div className="flex items-center gap-2 text-xs text-gray-600 p-2 bg-blue-50 border border-blue-200 rounded">
+          <div className="flex items-center gap-2 text-xs text-gray-600 p-3 bg-blue-50 border border-blue-200 rounded-md">
             <QrCode className="h-3 w-3" />
             <span>Set up during agent configuration with {credentials.twoFAMethod}</span>
           </div>
