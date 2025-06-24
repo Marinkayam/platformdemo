@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { ChevronDown, ChevronRight, Plus, AlertTriangle, ExternalLink, Edit, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Plus, AlertTriangle, ExternalLink } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -210,27 +209,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                       <TableCell colSpan={5} className="p-0 bg-gray-50">
                         <div className="p-6">
                           <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold text-gray-900">Agents</h3>
-                            <div className="flex items-center gap-2">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleEditConnection(connection.id)}
-                                className="flex items-center gap-2 text-gray-700 hover:text-gray-900"
-                              >
-                                <Edit className="h-4 w-4" />
-                                Edit
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleDeactivateConnection(connection.id)}
-                                className="flex items-center gap-2 text-red-600 hover:text-red-700"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                                Deactivate
-                              </Button>
-                            </div>
+                            <h3 className="text-sm font-normal text-gray-900">Agents</h3>
                           </div>
                           <ExpandedAgentCard connection={connection} />
                         </div>
