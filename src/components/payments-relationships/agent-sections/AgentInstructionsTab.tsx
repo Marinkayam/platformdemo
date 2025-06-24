@@ -6,12 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { FileText, Plus, Edit2, X } from "lucide-react";
+import { Plus, Edit2, X } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 
 interface AgentInstructionsTabProps {
   agent: Agent;
+  showAddForm?: boolean;
+  onShowAddFormChange?: (show: boolean) => void;
 }
 
 interface Instruction {
@@ -66,9 +67,12 @@ const mockInstructions: Instruction[] = [
   }
 ];
 
-export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
+export function AgentInstructionsTab({ 
+  agent, 
+  showAddForm = false, 
+  onShowAddFormChange 
+}: AgentInstructionsTabProps) {
   const [instructions, setInstructions] = useState<Instruction[]>(mockInstructions);
-  const [showAddForm, setShowAddForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newInstruction, setNewInstruction] = useState({
     title: "",
@@ -106,12 +110,12 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
     }
 
     setNewInstruction({ title: "", category: "", description: "", items: [""] });
-    setShowAddForm(false);
+    onShowAddFormChange?.(false);
   };
 
   const handleCancel = () => {
     setNewInstruction({ title: "", category: "", description: "", items: [""] });
-    setShowAddForm(false);
+    onShowAddFormChange?.(false);
     setEditingId(null);
   };
 
@@ -123,7 +127,7 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
       items: instruction.items
     });
     setEditingId(instruction.id);
-    setShowAddForm(true);
+    onShowAddFormChange?.(true);
   };
 
   const addNewItem = () => {
@@ -157,7 +161,7 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
         <div></div>
         {!showAddForm && (
           <Button 
-            onClick={() => setShowAddForm(true)}
+            onClick={() => onShowAddFormChange?.(true)}
             className="bg-[#7b61ff] hover:bg-[#6b46ff] text-white"
           >
             <Plus className="h-4 w-4 mr-2" />
@@ -270,15 +274,6 @@ export function AgentInstructionsTab({ agent }: AgentInstructionsTabProps) {
           </CardContent>
         </Card>
       )}
-
-      {/* Behavioral Rules Callout */}
-      <Alert className="bg-yellow-50 border-yellow-200">
-        <FileText className="h-4 w-4 text-yellow-600" />
-        <AlertDescription className="text-yellow-800">
-          <span className="font-medium">Behavioral Rules:</span> Monto-specific learned behaviors are automatically 
-          generated based on agent interactions and can be fine-tuned here.
-        </AlertDescription>
-      </Alert>
 
       {/* Instruction Cards */}
       <div className="space-y-4">

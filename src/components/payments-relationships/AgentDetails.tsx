@@ -36,6 +36,7 @@ export function AgentDetails({
   onEditAgent 
 }: AgentDetailsProps) {
   const [activeTab, setActiveTab] = useState("details");
+  const [showAddInstructionForm, setShowAddInstructionForm] = useState(false);
   
   const {
     isEditMode,
@@ -80,6 +81,11 @@ export function AgentDetails({
     setActiveTab("instructions");
   };
 
+  const handleAddInstruction = () => {
+    setActiveTab("instructions");
+    setShowAddInstructionForm(true);
+  };
+
   const tabs = [
     { 
       id: "details", 
@@ -98,128 +104,134 @@ export function AgentDetails({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[900px] p-0 max-h-[90vh] overflow-hidden bg-white">
-        <div className="p-6 bg-white">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-3 text-xl">
-              <span>Agent Details</span>
-              <StatusBadge status={agent.status} />
-              <AgentUserTypeBadge type={agent.type} />
-            </DialogTitle>
-          </DialogHeader>
+        <div className="flex flex-col h-full">
+          <div className="p-6 bg-white border-b">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3 text-xl">
+                <span>Agent Details</span>
+                <StatusBadge status={agent.status} />
+                <AgentUserTypeBadge type={agent.type} />
+              </DialogTitle>
+            </DialogHeader>
 
-          {/* Smart Connection Section - Monto Style */}
-          <div className="mt-6 p-4 bg-gradient-to-r from-[#7b61ff]/5 to-[#6b46ff]/5 border border-[#7b61ff]/20 rounded-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#7b61ff] rounded-lg flex items-center justify-center">
-                  <Link className="h-5 w-5 text-white" />
+            {/* Smart Connection Section - Monto Style */}
+            <div className="mt-6 p-4 bg-gradient-to-r from-[#7b61ff]/5 to-[#6b46ff]/5 border border-[#7b61ff]/20 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-[#7b61ff] rounded-lg flex items-center justify-center">
+                    <Link className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-gray-600 mb-1">Smart Connection</div>
+                    <div className="text-lg font-semibold text-gray-900">{mockSmartConnection.name}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-600 mb-1">Smart Connection</div>
-                  <div className="text-lg font-semibold text-gray-900">{mockSmartConnection.name}</div>
-                </div>
+                {activeTab === "details" ? (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={handleViewInstructions}
+                    className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
+                  >
+                    View Instructions
+                  </Button>
+                ) : (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={handleAddInstruction}
+                    className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Instructions
+                  </Button>
+                )}
               </div>
-              {activeTab === "details" ? (
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={handleViewInstructions}
-                  className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
-                >
-                  View Instructions
-                </Button>
-              ) : (
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => {}}
-                  className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Instructions
-                </Button>
-              )}
+            </div>
+
+            <AgentDisconnectionAlert agent={agent} />
+
+            {/* Navigation Tabs */}
+            <div className="mt-6">
+              <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
             </div>
           </div>
 
-          <AgentDisconnectionAlert agent={agent} />
-        </div>
-
-        {/* Navigation Tabs */}
-        <div className="px-6 bg-white">
-          <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
-        </div>
-
-        {/* Tab Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto p-6 bg-white">
-          {activeTab === "details" && (
-            <div className="space-y-6 max-w-full">
-              <AgentIdentitySection 
-                agent={agent}
-                connectionInfo={connectionInfo}
-                copyToClipboard={copyToClipboard}
-                isEditMode={isEditMode}
-                editFormData={editFormData}
-                onFormChange={handleFormChange}
-              />
-
-              {shouldShowCredentials && (
-                <AgentCredentialsSection
-                  credentials={mockCredentials}
+          {/* Tab Content - Scrollable */}
+          <div className="flex-1 overflow-y-auto p-6 bg-white">
+            {activeTab === "details" && (
+              <div className="space-y-6 max-w-full">
+                <AgentIdentitySection 
+                  agent={agent}
+                  connectionInfo={connectionInfo}
+                  copyToClipboard={copyToClipboard}
                   isEditMode={isEditMode}
                   editFormData={editFormData}
                   onFormChange={handleFormChange}
+                />
+
+                {shouldShowCredentials && (
+                  <AgentCredentialsSection
+                    credentials={mockCredentials}
+                    isEditMode={isEditMode}
+                    editFormData={editFormData}
+                    onFormChange={handleFormChange}
+                    copyToClipboard={copyToClipboard}
+                  />
+                )}
+
+                {shouldShowCredentials && (
+                  <AgentTwoFactorSection
+                    credentials={mockCredentials}
+                    isEditMode={isEditMode}
+                    editFormData={editFormData}
+                    onFormChange={handleFormChange}
+                    onConfigureSettings={handleEdit}
+                    agentId={agent.id}
+                  />
+                )}
+
+                <AgentSmartConnectionSection
+                  agent={agent}
+                  connectionInfo={connectionInfo}
                   copyToClipboard={copyToClipboard}
                 />
-              )}
 
-              {shouldShowCredentials && (
-                <AgentTwoFactorSection
-                  credentials={mockCredentials}
-                  isEditMode={isEditMode}
-                  editFormData={editFormData}
-                  onFormChange={handleFormChange}
-                  onConfigureSettings={handleEdit}
-                  agentId={agent.id}
-                />
-              )}
+                <AgentMontoAccountSection agent={agent} />
+              </div>
+            )}
 
-              <AgentSmartConnectionSection
-                agent={agent}
-                connectionInfo={connectionInfo}
-                copyToClipboard={copyToClipboard}
+            {activeTab === "instructions" && (
+              <AgentInstructionsTab 
+                agent={agent} 
+                showAddForm={showAddInstructionForm}
+                onShowAddFormChange={setShowAddInstructionForm}
               />
+            )}
+          </div>
 
-              <AgentMontoAccountSection agent={agent} />
-            </div>
-          )}
-
-          {activeTab === "instructions" && (
-            <AgentInstructionsTab agent={agent} />
-          )}
-        </div>
-
-        {/* Footer Actions */}
-        <div className="flex justify-end gap-3 p-6 bg-white border-t">
-          {isEditMode ? (
-            <>
-              <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
-                Cancel
-              </Button>
-              <Button onClick={handleSave} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
-                Save Changes
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="ghost" onClick={onClose} className="min-w-[80px]">
-                Close
-              </Button>
-              <Button onClick={handleEdit} className="min-w-[100px] bg-[#7b61ff] hover:bg-[#6b46ff]">
-                Edit Agent
-              </Button>
-            </>
-          )}
+          {/* Footer Actions */}
+          <div className="flex justify-end gap-3 p-6 bg-white border-t">
+            {isEditMode ? (
+              <>
+                <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
+                  Cancel
+                </Button>
+                <Button onClick={handleSave} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
+                  Save Changes
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" onClick={onClose} className="min-w-[80px]">
+                  Close
+                </Button>
+                <Button onClick={handleEdit} className="min-w-[100px] bg-[#7b61ff] hover:bg-[#6b46ff]">
+                  Edit Agent
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
