@@ -1,6 +1,13 @@
 
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 import { PortalRecord } from "@/types/portalRecord";
 
 interface InvoiceFiltersProps {
@@ -18,10 +25,13 @@ export function InvoiceFilters({
   selectedBuyer,
   setSelectedBuyer,
 }: InvoiceFiltersProps) {
+  const [fromDate, setFromDate] = useState<Date>();
+  const [toDate, setToDate] = useState<Date>();
+
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-3 gap-4">
       <div className="space-y-2">
-        <Label htmlFor="portal-filter" className="text-sm font-medium">Portal Filter</Label>
+        <Label htmlFor="portal-filter" className="text-sm font-medium">Portal</Label>
         <Select value={selectedPortal} onValueChange={setSelectedPortal}>
           <SelectTrigger className="h-10">
             <SelectValue />
@@ -33,7 +43,7 @@ export function InvoiceFilters({
         </Select>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="buyer-filter" className="text-sm font-medium">Buyer Filter</Label>
+        <Label htmlFor="buyer-filter" className="text-sm font-medium">Buyer</Label>
         <Select value={selectedBuyer} onValueChange={setSelectedBuyer}>
           <SelectTrigger className="h-10">
             <SelectValue />
@@ -43,6 +53,57 @@ export function InvoiceFilters({
             <SelectItem value="all_buyers">All Buyers</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+      <div className="space-y-2">
+        <Label className="text-sm font-medium">Date Range</Label>
+        <div className="flex gap-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "flex-1 justify-start text-left font-normal h-10",
+                  !fromDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {fromDate ? format(fromDate, "MM/dd") : "From"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={fromDate}
+                onSelect={setFromDate}
+                initialFocus
+                className="p-3 pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "flex-1 justify-start text-left font-normal h-10",
+                  !toDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {toDate ? format(toDate, "MM/dd") : "To"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={toDate}
+                onSelect={setToDate}
+                initialFocus
+                className="p-3 pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
     </div>
   );
