@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
@@ -5,17 +6,19 @@ import { PortalUsersEmptyState } from './PortalUsersEmptyState';
 import { View2FAModal } from './View2FAModal';
 import { PortalUserDetailModal } from './PortalUserDetailModal';
 import { PortalUsersTableFooter } from './PortalUsersTableFooter';
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-} from "@/components/ui/table";
+import { PortalGroupHeader } from './PortalGroupHeader';
+import { PortalRowGroup } from './PortalRowGroup';
+import { UserRow } from './UserRow';
 import { toast } from "@/hooks/use-toast";
 import { mockPortalUsersForTable } from '@/data/portalUsersForTable';
-import { getColumns } from './PortalUsersTable.columns';
+import { groupPortalUsers } from './utils/portalAggregation';
+import { PortalColumn } from './columns/PortalColumn';
+import { UsernameColumn } from './columns/UsernameColumn';
+import { UserTypeColumn } from './columns/UserTypeColumn';
+import { LinkedAgentsColumn } from './columns/LinkedAgentsColumn';
+import { ValidationColumn } from './columns/ValidationColumn';
+import { ActionsColumn } from './columns/ActionsColumn';
+import { StatusBadge } from '@/components/ui/status-badge';
 
 interface PortalUsersTableProps {
   portalUsers?: PortalUser[];
@@ -34,24 +37,42 @@ export function PortalUsersTable({
   const [selected2FAUserId, setSelected2FAUserId] = useState<string | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedPortalUser, setSelectedPortalUser] = useState<PortalUser | null>(null);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
   const portalUsers = propPortalUsers || mockPortalUsersForTable;
 
-  // Sort users by portal first, then by status, then by username
-  const sortedUsers = useMemo(() => {
-    return [...portalUsers].sort((a, b) => {
-      // First sort by portal
-      if (a.portal !== b.portal) {
-        return a.portal.localeCompare(b.portal);
-      }
-      // Then by status (Connected first)
-      if (a.status !== b.status) {
-        const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
-        return statusOrder[a.status] - statusOrder[b.status];
-      }
-      // Finally by username
-      return a.username.localeCompare(b.username);
+  // Group and sort portal users
+  const { individualPortals, groupedPortals } = useMemo(() => {
+    const grouped = groupPortalUsers(portalUsers);
+    
+    // Sort individual portals by portal name
+    grouped.individualPortals.sort((a, b) => a.portal.localeCompare(b.portal));
+    
+    // Sort grouped portals by portal name
+    grouped.groupedPortals.sort((a, b) => a.portal.localeCompare(b.portal));
+    
+    // Sort users within each portal
+    grouped.individualPortals.forEach(portal => {
+      portal.users.sort((a, b) => {
+        if (a.status !== b.status) {
+          const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
+          return statusOrder[a.status] - statusOrder[b.status];
+        }
+        return a.username.localeCompare(b.username);
+      });
     });
+    
+    grouped.groupedPortals.forEach(portal => {
+      portal.users.sort((a, b) => {
+        if (a.status !== b.status) {
+          const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
+          return statusOrder[a.status] - statusOrder[b.status];
+        }
+        return a.username.localeCompare(b.username);
+      });
+    });
+    
+    return grouped;
   }, [portalUsers]);
 
   const copyToClipboard = (text: string) => {
@@ -102,12 +123,15 @@ export function PortalUsersTable({
     setSelected2FAUserId(null);
   };
 
-  const columns = getColumns({
-    onEdit: handleEdit,
-    onRemove: handleRemove,
-    onView2FA: handleView2FA,
-    copyToClipboard,
-  });
+  const toggleGroup = (portalName: string) => {
+    const newExpanded = new Set(expandedGroups);
+    if (newExpanded.has(portalName)) {
+      newExpanded.delete(portalName);
+    } else {
+      newExpanded.add(portalName);
+    }
+    setExpandedGroups(newExpanded);
+  };
 
   if (portalUsers.length === 0) {
     return (
@@ -129,55 +153,77 @@ export function PortalUsersTable({
   }
 
   return (
-    <div className="rounded-xl border overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow className="bg-grey-50 hover:bg-grey-50">
-            {columns.map(column => (
-              <TableHead 
-                key={column.key} 
-                className={`
-                  ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
-                  ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
-                  ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
-                `}
-              >
-                {column.label}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sortedUsers.map((portalUser, index) => {
-            const prevUser = index > 0 ? sortedUsers[index - 1] : null;
-            const isFirstOfPortal = prevUser && prevUser.portal !== portalUser.portal;
-            
-            return (
-              <TableRow 
-                key={portalUser.id}
-                className={`
-                  hover:bg-grey-50 cursor-pointer transition-colors
-                  ${isFirstOfPortal ? 'border-t-2 border-grey-200' : ''}
-                `}
-                onClick={() => handleRowClick(portalUser)}
-              >
-                {columns.map(column => (
-                  <TableCell 
-                    key={column.key} 
-                    className={`
-                      ${column.key === 'validation' ? 'hidden lg:table-cell' : ''}
-                      ${column.key === 'linkedSmartConnections' ? 'hidden md:table-cell' : ''}
-                      ${column.key === 'lastUpdated' ? 'hidden xl:table-cell' : ''}
-                    `}
-                  >
-                    {column.render(portalUser[column.key as keyof PortalUser], portalUser)}
-                  </TableCell>
-                ))}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+    <div className="rounded-xl border overflow-hidden bg-white">
+      {/* Table Header */}
+      <div className="grid grid-cols-6 gap-4 px-6 py-4 bg-grey-50 border-b border-gray-200">
+        <div className="text-sm font-semibold text-gray-700">Portal</div>
+        <div className="text-sm font-semibold text-gray-700">Username</div>
+        <div className="text-sm font-semibold text-gray-700">Status</div>
+        <div className="text-sm font-semibold text-gray-700">User Type</div>
+        <div className="text-sm font-semibold text-gray-700">Linked Agents</div>
+        <div className="text-sm font-semibold text-gray-700">Validation</div>
+      </div>
+
+      {/* Table Body */}
+      <div className="divide-y divide-gray-100">
+        {/* Individual Portal Rows */}
+        {individualPortals.map(({ portal, users }) =>
+          users.map((user) => (
+            <div 
+              key={user.id}
+              className="grid grid-cols-6 gap-4 px-6 py-4 hover:bg-gray-50 cursor-pointer transition-colors"
+              onClick={() => handleRowClick(user)}
+            >
+              <div className="flex items-center">
+                <PortalColumn portal={user.portal} />
+              </div>
+              <div className="flex items-center">
+                <UsernameColumn username={user.username} onCopy={copyToClipboard} />
+              </div>
+              <div className="flex items-center">
+                <StatusBadge status={user.status} />
+              </div>
+              <div className="flex items-center">
+                <UserTypeColumn userType={user.userType} />
+              </div>
+              <div className="flex items-center">
+                <LinkedAgentsColumn count={user.linkedSmartConnections} />
+              </div>
+              <div className="flex items-center">
+                <ValidationColumn portalUser={user} />
+                <div className="ml-auto">
+                  <ActionsColumn
+                    portalUser={user}
+                    onEdit={handleEdit}
+                    onRemove={handleRemove}
+                    onView2FA={handleView2FA}
+                  />
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+
+        {/* Grouped Portal Rows */}
+        {groupedPortals.map((portalGroup) => (
+          <div key={portalGroup.portal}>
+            <PortalGroupHeader
+              portalGroup={portalGroup}
+              isExpanded={expandedGroups.has(portalGroup.portal)}
+              onToggle={() => toggleGroup(portalGroup.portal)}
+            />
+            <PortalRowGroup
+              users={portalGroup.users}
+              isExpanded={expandedGroups.has(portalGroup.portal)}
+              onEdit={handleEdit}
+              onRemove={handleRemove}
+              onView2FA={handleView2FA}
+              copyToClipboard={copyToClipboard}
+              onUserClick={handleRowClick}
+            />
+          </div>
+        ))}
+      </div>
 
       <PortalUsersTableFooter totalUsers={portalUsers.length} />
 
