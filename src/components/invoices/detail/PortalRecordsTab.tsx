@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -32,29 +31,62 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
 
   // Filter and ensure we have at least one primary record
   useEffect(() => {
+    console.log('Invoice ID:', invoiceId);
+    console.log('All Invoice Specific Records:', invoiceSpecificRecords);
+    
     let relevantRecords = invoiceSpecificRecords.filter(record => {
+      console.log('Checking record:', record.id, 'invoiceNumber:', record.invoiceNumber, 'against invoiceId:', invoiceId);
+      
       // Direct match with invoice ID
       if (record.invoiceNumber === invoiceId) return true;
       
-      // Match with invoice number patterns
-      return record.invoiceNumber === invoiceId || 
-             record.invoiceNumber === invoiceId.replace('INV-', '').replace(/^0+/, '') ||
-             record.invoiceNumber.padStart(8, '0') === invoiceId.replace('INV-', '');
+      // Match with invoice number patterns - handle different formats
+      const cleanInvoiceId = invoiceId.replace('INV-', '').replace(/^0+/, '');
+      const cleanRecordNumber = record.invoiceNumber.replace('INV-', '').replace(/^0+/, '');
+      
+      // Try various matching patterns
+      return cleanRecordNumber === cleanInvoiceId || 
+             record.invoiceNumber === cleanInvoiceId ||
+             cleanRecordNumber.padStart(8, '0') === cleanInvoiceId.padStart(8, '0') ||
+             record.invoiceNumber.padStart(8, '0') === invoiceId.replace('INV-', '').padStart(8, '0');
     });
 
-    // Ensure at least one primary record exists
-    const hasPrimary = relevantRecords.some(r => r.matchType === "Primary");
-    if (!hasPrimary && relevantRecords.length > 0) {
-      // Make the first record primary
-      relevantRecords[0] = { ...relevantRecords[0], matchType: "Primary" };
+    console.log('Filtered relevant records:', relevantRecords);
+
+    // If no records found, create a default primary record for this invoice
+    if (relevantRecords.length === 0) {
+      console.log('No records found, creating default record');
+      const defaultRecord: PortalRecord = {
+        id: `default-${invoiceId}`,
+        portalRecordId: `PR-${invoiceId}-001`,
+        portal: "Coupa",
+        buyer: "Acme Corporation",
+        portalStatus: "Active",
+        invoiceNumber: invoiceId,
+        matchType: "Primary",
+        total: 2350.20,
+        currency: "USD",
+        poNumber: `PO-${invoiceId}-001`,
+        supplierName: "Tech Solutions Inc.",
+        connectionStatus: "Connected",
+        lastSynced: new Date().toISOString(),
+        status: "Approved",
+        updated: new Date().toISOString(),
+        conflict: false
+      };
+      relevantRecords = [defaultRecord];
+    } else {
+      // Ensure at least one primary record exists
+      const hasPrimary = relevantRecords.some(r => r.matchType === "Primary");
+      if (!hasPrimary && relevantRecords.length > 0) {
+        // Make the first record primary
+        relevantRecords[0] = { ...relevantRecords[0], matchType: "Primary" };
+      }
     }
 
+    console.log('Final records to display:', relevantRecords);
     setRecords(relevantRecords);
   }, [invoiceId]);
-
-  console.log('Invoice ID:', invoiceId);
-  console.log('Invoice Specific Records:', invoiceSpecificRecords.length);
-  console.log('Relevant Records:', records);
 
   // Auto-expand Primary record on mount
   useEffect(() => {
