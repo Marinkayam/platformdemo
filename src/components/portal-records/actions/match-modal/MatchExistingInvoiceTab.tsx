@@ -1,5 +1,5 @@
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
 import { InvoiceFilters } from "./components/InvoiceFilters";
@@ -8,6 +8,7 @@ import { InvoiceList } from "./components/InvoiceList";
 import { ConflictAlerts } from "./components/ConflictAlerts";
 import { SelectedInvoiceDetails } from "./components/SelectedInvoiceDetails";
 import { InvoiceModals } from "./components/InvoiceModals";
+import { getInvoiceSuggestions, extractSearchTermFromPortalRecord, InvoiceMatch } from "@/utils/invoiceMatching";
 
 interface MatchExistingInvoiceTabProps {
   record: PortalRecord;
@@ -44,6 +45,22 @@ export function MatchExistingInvoiceTab({
 }: MatchExistingInvoiceTabProps) {
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [showMakePrimaryConfirm, setShowMakePrimaryConfirm] = useState(false);
+  const [suggestions, setSuggestions] = useState<InvoiceMatch[]>([]);
+  const [hasManualSearch, setHasManualSearch] = useState(false);
+
+  // Initialize search with portal record ID on mount
+  useEffect(() => {
+    if (!searchTerm && !hasManualSearch) {
+      const initialSearch = extractSearchTermFromPortalRecord(record.portalRecordId);
+      setSearchTerm(initialSearch);
+    }
+  }, [record.portalRecordId, searchTerm, setSearchTerm, hasManualSearch]);
+
+  // Generate suggestions when component mounts
+  useEffect(() => {
+    const invoiceSuggestions = getInvoiceSuggestions(record, invoiceData, 5);
+    setSuggestions(invoiceSuggestions);
+  }, [record]);
 
   // Filter invoices with enhanced search
   const filteredInvoices = useMemo(() => {
@@ -76,6 +93,22 @@ export function MatchExistingInvoiceTab({
     }
   };
 
+  const handleSuggestionSelect = (invoiceId: string) => {
+    setSelectedInvoiceId(invoiceId);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setHasManualSearch(true);
+  };
+
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    setHasManualSearch(false);
+  };
+
+  const showSuggestions = !hasManualSearch && suggestions.length > 0;
+
   return (
     <>
       <div className="space-y-6">
@@ -88,13 +121,17 @@ export function MatchExistingInvoiceTab({
           setSelectedBuyer={setSelectedBuyer}
         />
 
-        {/* Search Section */}
+        {/* Search Section with Suggestions */}
         <InvoiceSearchSection
           searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
+          setSearchTerm={handleSearchChange}
           selectedPortal={selectedPortal}
           selectedBuyer={selectedBuyer}
           filteredInvoicesCount={filteredInvoices.length}
+          suggestions={suggestions}
+          onSuggestionSelect={handleSuggestionSelect}
+          showSuggestions={showSuggestions}
+          onClearSearch={handleClearSearch}
         />
 
         {/* Invoice List */}
