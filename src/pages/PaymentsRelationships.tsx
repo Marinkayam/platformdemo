@@ -9,10 +9,14 @@ import { DesignTabs } from "@/components/ui/design-tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { mockSmartConnections } from "@/data/smartConnections";
 import { mockPortalUsers } from "@/data/portalUsers";
+import { mockInsights } from "@/data/insights";
 import { useSmartConnectionFiltering } from "@/hooks/useSmartConnectionFiltering";
+import { useInsightFiltering } from "@/hooks/useInsightFiltering";
 import { PortalUser, PortalUserFilters, defaultPortalUserFilters } from "@/types/portalUser";
 import { PortalUsersTable } from "@/components/payments-relationships/portal-users";
 import { PortalUsersFilters } from "@/components/payments-relationships/portal-users/PortalUsersFilters";
+import { InsightsTable } from "@/components/insights/InsightsTable";
+import { InsightsFilters } from "@/components/insights/InsightsFilters";
 import { AddPortalUserModal } from "@/components/payments-relationships/portal-users/AddPortalUserModal";
 import { ConfirmRemoveModal } from "@/components/payments-relationships/portal-users/ConfirmRemoveModal";
 import { usePortalUserFiltering } from "@/hooks/usePortalUserFiltering";
@@ -28,7 +32,7 @@ export default function PaymentsRelationships() {
   // Handle URL tab parameter
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam && (tabParam === 'smart-connections' || tabParam === 'portal-users')) {
+    if (tabParam && (tabParam === 'smart-connections' || tabParam === 'portal-users' || tabParam === 'insights')) {
       setActiveTab(tabParam);
     }
   }, [searchParams]);
@@ -57,9 +61,17 @@ export default function PaymentsRelationships() {
     handleResetFilters: handleResetPortalUserFilters
   } = usePortalUserFiltering(portalUsers);
 
+  const {
+    filters: insightFilters,
+    filteredInsights,
+    handleFilterChange: handleInsightFilterChange,
+    handleResetFilters: handleResetInsightFilters
+  } = useInsightFiltering(mockInsights);
+
   const tabs = [
     { id: "smart-connections", label: "Smart Connections", count: filteredConnections.length },
-    { id: "portal-users", label: "Portal Users", count: filteredUsers.length }
+    { id: "portal-users", label: "Portal Users", count: filteredUsers.length },
+    { id: "insights", label: "Insights", count: filteredInsights.length }
   ];
 
   const handleConfirmRemove = () => {
@@ -137,6 +149,18 @@ export default function PaymentsRelationships() {
                 setIsConfirmRemoveModalOpen(true);
               }}
             />
+          </>
+        )}
+
+        {activeTab === "insights" && (
+          <>
+            <InsightsFilters
+              filters={insightFilters}
+              onFilterChange={handleInsightFilterChange}
+              onClearFilters={handleResetInsightFilters}
+            />
+            
+            <InsightsTable insights={filteredInsights} />
           </>
         )}
       </div>
