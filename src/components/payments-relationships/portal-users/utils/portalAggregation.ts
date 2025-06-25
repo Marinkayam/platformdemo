@@ -11,7 +11,7 @@ export interface PortalGroup {
 }
 
 export function getPortalDisplayType(users: PortalUser[]): 'individual' | 'group' {
-  return users.length > 3 ? 'group' : 'individual';
+  return users.length > 1 ? 'group' : 'individual';
 }
 
 export function aggregateStatuses(users: PortalUser[]): string {
@@ -56,17 +56,17 @@ export function groupPortalUsers(portalUsers: PortalUser[]): {
     hasDisconnected: users.some(user => user.status === 'Disconnected')
   }));
 
-  // Sort with priority: Disconnected portals -> Connected/Validating groups -> Individuals
+  // Sort with priority: Disconnected portals first, then groups, then individuals
   const sortedPortalGroups = allPortalGroups.sort((a, b) => {
-    const aIsGroup = a.displayType === 'group';
-    const bIsGroup = b.displayType === 'group';
-
     // Priority 1: Disconnected portals first (any portal containing disconnected users)
     if (a.hasDisconnected && !b.hasDisconnected) return -1;
     if (!a.hasDisconnected && b.hasDisconnected) return 1;
     
-    // Priority 2: Among non-disconnected, groups before individuals
-    if (!a.hasDisconnected && !b.hasDisconnected) {
+    // Priority 2: Among portals with same disconnection status, groups before individuals
+    if (a.hasDisconnected === b.hasDisconnected) {
+      const aIsGroup = a.displayType === 'group';
+      const bIsGroup = b.displayType === 'group';
+      
       if (aIsGroup && !bIsGroup) return -1;
       if (!aIsGroup && bIsGroup) return 1;
     }
@@ -80,7 +80,7 @@ export function groupPortalUsers(portalUsers: PortalUser[]): {
   
   // Process sorted groups
   sortedPortalGroups.forEach(({ portal, users, displayType }) => {
-    // Sort users within each portal
+    // Sort users within each portal: Connected -> Validating -> Disconnected
     const sortedUsers = users.sort((a, b) => {
       if (a.status !== b.status) {
         const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
