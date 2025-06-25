@@ -2,23 +2,15 @@
 import React, { useState, useMemo } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
-import { PortalUsersEmptyState } from './PortalUsersEmptyState';
 import { View2FAModal } from './View2FAModal';
 import { PortalUserDetailModal } from './PortalUserDetailModal';
 import { PortalUsersTableFooter } from './PortalUsersTableFooter';
-import { PortalGroupHeader } from './PortalGroupHeader';
-import { PortalRowGroup } from './PortalRowGroup';
-import { UserRow } from './UserRow';
+import { PortalUsersTableHeader } from './PortalUsersTableHeader';
+import { PortalUsersTableBody } from './PortalUsersTableBody';
+import { PortalUsersFilteredEmptyState } from './PortalUsersFilteredEmptyState';
 import { toast } from "@/hooks/use-toast";
 import { mockPortalUsersForTable } from '@/data/portalUsersForTable';
 import { groupPortalUsers } from './utils/portalAggregation';
-import { PortalColumn } from './columns/PortalColumn';
-import { UsernameColumn } from './columns/UsernameColumn';
-import { UserTypeColumn } from './columns/UserTypeColumn';
-import { LinkedAgentsColumn } from './columns/LinkedAgentsColumn';
-import { ValidationColumn } from './columns/ValidationColumn';
-import { ActionsColumn } from './columns/ActionsColumn';
-import { StatusBadge } from '@/components/ui/status-badge';
 
 interface PortalUsersTableProps {
   portalUsers?: PortalUser[];
@@ -105,101 +97,23 @@ export function PortalUsersTable({
   };
 
   if (portalUsers.length === 0) {
-    return (
-      <div className="rounded-xl border bg-white">
-        <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="text-gray-400 text-4xl mb-4">👥</div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No portal users match this filter</h3>
-          <p className="text-gray-500 mb-6">Try changing your criteria.</p>
-          <button 
-            onClick={() => setIsAddModalOpen(true)}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90"
-          >
-            Add Portal User
-          </button>
-        </div>
-        <PortalUsersTableFooter totalUsers={0} />
-      </div>
-    );
+    return <PortalUsersFilteredEmptyState onAddPortalUser={() => setIsAddModalOpen(true)} />;
   }
 
   return (
     <div className="rounded-xl border overflow-hidden bg-white">
-      {/* Sticky Table Header */}
-      <div className="sticky top-0 z-10 grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-4 bg-[#4A90E2] border-b border-blue-300">
-        <div className="text-sm font-semibold text-white">Portal</div>
-        <div className="text-sm font-semibold text-white">Username</div>
-        <div className="text-sm font-semibold text-white">Status</div>
-        <div className="text-sm font-semibold text-white">User Type</div>
-        <div className="text-sm font-semibold text-white">Linked Agents</div>
-        <div className="text-sm font-semibold text-white">Validation</div>
-        <div className="text-sm font-semibold text-white text-center">Actions</div>
-      </div>
-
-      {/* Table Body - Now rendering in the correct sorted order */}
-      <div className="divide-y divide-gray-100">
-        {allPortals.map((portalDisplay) => (
-          <div key={portalDisplay.portal}>
-            {portalDisplay.displayType === 'individual' ? (
-              // Individual Portal Row
-              portalDisplay.users.map((user) => (
-                <div 
-                  key={user.id}
-                  className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-6 hover:bg-gray-50 cursor-pointer transition-colors min-h-[90px]"
-                  onClick={() => handleRowClick(user)}
-                >
-                  <div className="flex items-center">
-                    <PortalColumn portal={user.portal} />
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-sm truncate max-w-[160px]">{user.username}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <StatusBadge status={user.status} />
-                  </div>
-                  <div className="flex items-center">
-                    <UserTypeColumn userType={user.userType} />
-                  </div>
-                  <div className="flex items-center">
-                    <LinkedAgentsColumn count={user.linkedSmartConnections} />
-                  </div>
-                  <div className="flex items-center">
-                    <ValidationColumn portalUser={user} />
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <ActionsColumn
-                      portalUser={user}
-                      onEdit={handleEdit}
-                      onRemove={handleRemove}
-                      onView2FA={handleView2FA}
-                    />
-                  </div>
-                </div>
-              ))
-            ) : (
-              // Grouped Portal Row
-              portalDisplay.portalGroup && (
-                <>
-                  <PortalGroupHeader
-                    portalGroup={portalDisplay.portalGroup}
-                    isExpanded={expandedGroups.has(portalDisplay.portal)}
-                    onToggle={() => toggleGroup(portalDisplay.portal)}
-                  />
-                  <PortalRowGroup
-                    users={portalDisplay.users}
-                    isExpanded={expandedGroups.has(portalDisplay.portal)}
-                    onEdit={handleEdit}
-                    onRemove={handleRemove}
-                    onView2FA={handleView2FA}
-                    copyToClipboard={copyToClipboard}
-                    onUserClick={handleRowClick}
-                  />
-                </>
-              )
-            )}
-          </div>
-        ))}
-      </div>
+      <PortalUsersTableHeader />
+      
+      <PortalUsersTableBody
+        allPortals={allPortals}
+        expandedGroups={expandedGroups}
+        onToggleGroup={toggleGroup}
+        onEdit={handleEdit}
+        onRemove={handleRemove}
+        onView2FA={handleView2FA}
+        onRowClick={handleRowClick}
+        copyToClipboard={copyToClipboard}
+      />
 
       <PortalUsersTableFooter totalUsers={portalUsers.length} />
 
@@ -213,6 +127,7 @@ export function PortalUsersTable({
         portalUser={editingUser || undefined}
         mode={editingUser ? 'edit' : 'create'}
       />
+      
       {is2FAModalOpen && selected2FAUserId && (
         <View2FAModal
           isOpen={is2FAModalOpen}
@@ -220,6 +135,7 @@ export function PortalUsersTable({
           portalUserId={selected2FAUserId}
         />
       )}
+      
       {isDetailModalOpen && selectedPortalUser && (
         <PortalUserDetailModal
           isOpen={isDetailModalOpen}
