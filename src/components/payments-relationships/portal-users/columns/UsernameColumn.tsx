@@ -1,8 +1,6 @@
 
 import React from 'react';
-import { Copy } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
 
 interface UsernameColumnProps {
   username: string;
@@ -22,17 +20,6 @@ export function UsernameColumn({ username, onCopy }: UsernameColumnProps) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="h-6 w-6 p-0 text-gray-400 hover:text-gray-600 flex-shrink-0"
-        onClick={(e) => {
-          e.stopPropagation();
-          onCopy(username);
-        }}
-      >
-        <Copy className="h-3 w-3" />
-      </Button>
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
@@ -126,7 +125,7 @@ export function PortalUsersTable({
   return (
     <div className="rounded-xl border overflow-hidden bg-white">
       {/* Table Header */}
-      <div className="grid grid-cols-6 gap-4 px-6 py-4 bg-grey-50 border-b border-gray-200">
+      <div className="grid grid-cols-6 gap-4 px-6 py-4 bg-[#F6F7F9] border-b border-gray-200">
         <div className="text-sm font-semibold text-gray-700">Portal</div>
         <div className="text-sm font-semibold text-gray-700">Username</div>
         <div className="text-sm font-semibold text-gray-700">Status</div>
@@ -144,14 +143,14 @@ export function PortalUsersTable({
               portalDisplay.users.map((user) => (
                 <div 
                   key={user.id}
-                  className="grid grid-cols-6 gap-4 px-6 py-4 hover:bg-gray-50 cursor-pointer transition-colors"
+                  className="grid grid-cols-6 gap-4 px-6 py-5 hover:bg-gray-50 cursor-pointer transition-colors min-h-[80px]"
                   onClick={() => handleRowClick(user)}
                 >
                   <div className="flex items-center">
                     <PortalColumn portal={user.portal} />
                   </div>
                   <div className="flex items-center">
-                    <UsernameColumn username={user.username} onCopy={copyToClipboard} />
+                    <span className="text-sm truncate max-w-[160px]">{user.username}</span>
                   </div>
                   <div className="flex items-center">
                     <StatusBadge status={user.status} />
