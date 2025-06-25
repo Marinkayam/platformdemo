@@ -9,7 +9,6 @@ import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "@/components/portal-records/PortalLogo";
 import { MakePrimaryConfirmModal } from "./MakePrimaryConfirmModal";
 import { toast } from "@/hooks/use-toast";
-import { TableSystem } from "@/components/ui/TableSystem";
 
 interface PortalRecordsTabProps {
   invoiceId: string;
@@ -164,125 +163,132 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     );
   }
 
-  const columns = [
-    {
-      key: 'portalRecordId',
-      label: 'Portal Record ID',
-      render: (record: PortalRecord) => (
-        <div className="flex items-center gap-2">
-          {record.conflict && (
-            <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
-          )}
-          <button 
-            className="text-sm font-medium text-black hover:underline"
-            onClick={() => toggleExpanded(record.id)}
-          >
-            {record.portalRecordId}
-          </button>
-        </div>
-      )
-    },
-    {
-      key: 'portal',
-      label: 'Portal',
-      render: (record: PortalRecord) => (
-        <PortalLogo portalName={record.portal} className="w-4 h-4" />
-      )
-    },
-    {
-      key: 'status',
-      label: 'Status',
-      render: (record: PortalRecord) => getStatusBadge(record.status)
-    },
-    {
-      key: 'matchType',
-      label: 'Match Type',
-      render: (record: PortalRecord) => getMatchTypeDisplay(record.matchType)
-    },
-    {
-      key: 'updated',
-      label: 'Last Updated',
-      render: (record: PortalRecord) => (
-        <span className="text-sm text-gray-600">
-          {format(new Date(record.updated), "MMM d, yyyy")}
-        </span>
-      )
-    },
-    {
-      key: 'action',
-      label: 'Action',
-      className: 'text-right',
-      render: (record: PortalRecord) => (
-        <Button 
-          variant="outline" 
-          size="sm"
-          className="flex gap-1 items-center ml-auto pointer-events-none"
-        >
-          {expandedId === record.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          Details
-        </Button>
-      )
-    }
-  ];
-
   return (
     <>
-      <div className="space-y-4">
+      <div className="space-y-6">
         <p className="text-sm text-gray-600">
           These records were pulled from buyer portals and linked to this invoice. Each record displays key invoice attributes and its current status in the portal.
         </p>
         
-        <div className="space-y-0">
-          {records.map((record) => (
-            <div key={record.id}>
-              <TableSystem
-                data={[record]}
-                columns={columns}
-                onRowClick={() => toggleExpanded(record.id)}
-                className="border-b-0 last:border-b border-gray-200"
-              />
-
-              {/* Expanded Details */}
-              {expandedId === record.id && (
-                <div className="px-6 pt-6 pb-4 bg-white border-l border-r border-b border-gray-200 rounded-b-xl">
-                  {record.conflict && (
-                    <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4 border border-[#F2AE40]">
-                      ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
-                    </div>
-                  )}
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-semibold text-gray-900">Portal Record Details</h3>
-                      {record.matchType === "Alternate" && (
-                        <Button
-                          variant="outline"
+        {/* Single Table for All Records */}
+        <div className="rounded-xl border border-gray-200 overflow-hidden bg-white">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-[#F6F7F9] border-b border-gray-200">
+                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Portal Record ID
+                  </th>
+                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Portal
+                  </th>
+                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Status
+                  </th>
+                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Match Type
+                  </th>
+                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Last Updated
+                  </th>
+                  <th className="h-[65px] px-4 text-right align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {records.map((record, index) => (
+                  <>
+                    {/* Main Row */}
+                    <tr 
+                      key={record.id}
+                      className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
+                      onClick={() => toggleExpanded(record.id)}
+                    >
+                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                        <div className="flex items-center gap-2">
+                          {record.conflict && (
+                            <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
+                          )}
+                          <span className="text-sm font-medium text-black">
+                            {record.portalRecordId}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                        <PortalLogo portalName={record.portal} className="w-4 h-4" />
+                      </td>
+                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                        {getStatusBadge(record.status)}
+                      </td>
+                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                        {getMatchTypeDisplay(record.matchType)}
+                      </td>
+                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                        <span className="text-sm text-gray-600">
+                          {format(new Date(record.updated), "MMM d, yyyy")}
+                        </span>
+                      </td>
+                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans text-right">
+                        <Button 
+                          variant="outline" 
                           size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleMakePrimary(record);
-                          }}
-                          className="text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
+                          className="flex gap-1 items-center pointer-events-none"
                         >
-                          Make as Primary
+                          {expandedId === record.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                          Details
                         </Button>
-                      )}
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                      <Field label="Record ID" value={record.portalRecordId} />
-                      <Field label="Portal" value={record.portal} />
-                      <Field label="Buyer" value={record.buyer} />
-                      <Field label="Invoice Number" value={record.invoiceNumber} />
-                      <Field label="Total Amount" value={`${record.currency === 'EUR' ? '€' : record.currency === 'GBP' ? '£' : '$'}${record.total.toLocaleString()}`} />
-                      <Field label="Currency" value={record.currency || "USD"} />
-                      <Field label="PO Number" value={record.poNumber} />
-                      <Field label="Supplier Name" value={record.supplierName} />
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+                      </td>
+                    </tr>
+
+                    {/* Expanded Details Row */}
+                    {expandedId === record.id && (
+                      <tr>
+                        <td colSpan={6} className="bg-white border-t border-gray-100">
+                          <div className="px-6 pt-6 pb-4">
+                            {record.conflict && (
+                              <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4 border border-[#F2AE40]">
+                                ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
+                              </div>
+                            )}
+                            <div className="space-y-6">
+                              <div className="flex items-center justify-between">
+                                <h3 className="text-sm font-semibold text-gray-900">Portal Record Details</h3>
+                                {record.matchType === "Alternate" && (
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleMakePrimary(record);
+                                    }}
+                                    className="text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
+                                  >
+                                    Make as Primary
+                                  </Button>
+                                )}
+                              </div>
+                              
+                              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                                <Field label="Record ID" value={record.portalRecordId} />
+                                <Field label="Portal" value={record.portal} />
+                                <Field label="Buyer" value={record.buyer} />
+                                <Field label="Invoice Number" value={record.invoiceNumber} />
+                                <Field label="Total Amount" value={`${record.currency === 'EUR' ? '€' : record.currency === 'GBP' ? '£' : '$'}${record.total.toLocaleString()}`} />
+                                <Field label="Currency" value={record.currency || "USD"} />
+                                <Field label="PO Number" value={record.poNumber} />
+                                <Field label="Supplier Name" value={record.supplierName} />
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
