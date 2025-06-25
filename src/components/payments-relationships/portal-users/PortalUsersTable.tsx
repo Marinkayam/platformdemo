@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
@@ -124,14 +125,15 @@ export function PortalUsersTable({
 
   return (
     <div className="rounded-xl border overflow-hidden bg-white">
-      {/* Table Header */}
-      <div className="grid grid-cols-6 gap-4 px-6 py-4 bg-[#F6F7F9] border-b border-gray-200">
-        <div className="text-sm font-semibold text-gray-700">Portal</div>
-        <div className="text-sm font-semibold text-gray-700">Username</div>
-        <div className="text-sm font-semibold text-gray-700">Status</div>
-        <div className="text-sm font-semibold text-gray-700">User Type</div>
-        <div className="text-sm font-semibold text-gray-700">Linked Agents</div>
-        <div className="text-sm font-semibold text-gray-700">Validation</div>
+      {/* Sticky Table Header */}
+      <div className="sticky top-0 z-10 grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-4 bg-[#4A90E2] border-b border-blue-300">
+        <div className="text-sm font-semibold text-white">Portal</div>
+        <div className="text-sm font-semibold text-white">Username</div>
+        <div className="text-sm font-semibold text-white">Status</div>
+        <div className="text-sm font-semibold text-white">User Type</div>
+        <div className="text-sm font-semibold text-white">Linked Agents</div>
+        <div className="text-sm font-semibold text-white">Validation</div>
+        <div className="text-sm font-semibold text-white text-center">Actions</div>
       </div>
 
       {/* Table Body - Now rendering in the correct sorted order */}
@@ -143,7 +145,7 @@ export function PortalUsersTable({
               portalDisplay.users.map((user) => (
                 <div 
                   key={user.id}
-                  className="grid grid-cols-6 gap-4 px-6 py-5 hover:bg-gray-50 cursor-pointer transition-colors min-h-[80px]"
+                  className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-6 hover:bg-gray-50 cursor-pointer transition-colors min-h-[90px]"
                   onClick={() => handleRowClick(user)}
                 >
                   <div className="flex items-center">
@@ -163,14 +165,14 @@ export function PortalUsersTable({
                   </div>
                   <div className="flex items-center">
                     <ValidationColumn portalUser={user} />
-                    <div className="ml-auto">
-                      <ActionsColumn
-                        portalUser={user}
-                        onEdit={handleEdit}
-                        onRemove={handleRemove}
-                        onView2FA={handleView2FA}
-                      />
-                    </div>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <ActionsColumn
+                      portalUser={user}
+                      onEdit={handleEdit}
+                      onRemove={handleRemove}
+                      onView2FA={handleView2FA}
+                    />
                   </div>
                 </div>
               ))

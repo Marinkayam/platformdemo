@@ -5,28 +5,32 @@ import { ValidationProgressIndicator } from '../ValidationProgressIndicator';
 import { getValidationSteps } from '../utils';
 import { Button } from '@/components/ui/button';
 import { Sparkles } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 
 interface ValidationColumnProps {
   portalUser: PortalUser;
 }
 
 export function ValidationColumn({ portalUser }: ValidationColumnProps) {
-  const handleFetchedInsights = () => {
-    console.log('Fetched Insights clicked for user:', portalUser.id);
-    // TODO: Implement insights fetching logic
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleInsightsClick = () => {
+    console.log('Insights clicked for user:', portalUser.id);
+    searchParams.set('tab', 'insights');
+    setSearchParams(searchParams);
   };
 
   if (portalUser.status === 'Connected') {
     return (
-      <div className="flex items-center gap-2">
+      <div className="w-[90%] min-w-[120px] flex items-center">
         <Button
           variant="ghost"
           size="sm"
-          onClick={handleFetchedInsights}
+          onClick={handleInsightsClick}
           className="h-8 px-3 text-xs text-gray-600 hover:text-gray-800 hover:bg-gray-100"
         >
           <Sparkles className="h-4 w-4 mr-1.5" />
-          Fetched Insights
+          Insights
         </Button>
       </div>
     );
