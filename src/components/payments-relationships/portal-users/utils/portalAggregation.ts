@@ -10,6 +10,14 @@ export interface PortalGroup {
   totalAgents: number;
 }
 
+export interface PortalDisplay {
+  portal: string;
+  users: PortalUser[];
+  displayType: 'individual' | 'group';
+  hasDisconnected: boolean;
+  portalGroup?: PortalGroup;
+}
+
 export function getPortalDisplayType(users: PortalUser[]): 'individual' | 'group' {
   return users.length > 1 ? 'group' : 'individual';
 }
@@ -35,6 +43,7 @@ export function aggregateUserTypes(users: PortalUser[]): string {
 }
 
 export function groupPortalUsers(portalUsers: PortalUser[]): {
+  allPortals: PortalDisplay[];
   individualPortals: { portal: string; users: PortalUser[] }[];
   groupedPortals: PortalGroup[];
 } {
@@ -89,9 +98,10 @@ export function groupPortalUsers(portalUsers: PortalUser[]): {
 
   const individualPortals: { portal: string; users: PortalUser[] }[] = [];
   const groupedPortals: PortalGroup[] = [];
+  const allPortals: PortalDisplay[] = [];
   
   // Process sorted groups
-  sortedPortalGroups.forEach(({ portal, users, displayType }) => {
+  sortedPortalGroups.forEach(({ portal, users, displayType, hasDisconnected }) => {
     // Sort users within each portal: Connected -> Validating -> Disconnected
     const sortedUsers = users.sort((a, b) => {
       if (a.status !== b.status) {
@@ -102,21 +112,37 @@ export function groupPortalUsers(portalUsers: PortalUser[]): {
     });
 
     if (displayType === 'individual') {
-      individualPortals.push({ portal, users: sortedUsers });
+      const individualPortal = { portal, users: sortedUsers };
+      individualPortals.push(individualPortal);
+      allPortals.push({
+        portal,
+        users: sortedUsers,
+        displayType: 'individual',
+        hasDisconnected
+      });
     } else {
-      groupedPortals.push({
+      const portalGroup = {
         portal,
         users: sortedUsers,
         userCount: users.length,
         aggregatedStatus: aggregateStatuses(users),
         aggregatedTypes: aggregateUserTypes(users),
         totalAgents: users.reduce((sum, user) => sum + user.linkedSmartConnections, 0)
+      };
+      groupedPortals.push(portalGroup);
+      allPortals.push({
+        portal,
+        users: sortedUsers,
+        displayType: 'group',
+        hasDisconnected,
+        portalGroup
       });
     }
   });
   
   console.log('Final result - individualPortals:', individualPortals.map(p => p.portal));
   console.log('Final result - groupedPortals:', groupedPortals.map(p => p.portal));
+  console.log('Final result - allPortals:', allPortals.map(p => `${p.portal} (${p.displayType})`));
   
-  return { individualPortals, groupedPortals };
+  return { allPortals, individualPortals, groupedPortals };
 }

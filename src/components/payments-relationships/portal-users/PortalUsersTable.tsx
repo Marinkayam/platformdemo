@@ -41,8 +41,8 @@ export function PortalUsersTable({
 
   const portalUsers = propPortalUsers || mockPortalUsersForTable;
 
-  // Group and sort portal users - remove any additional sorting that might override the portalAggregation sorting
-  const { individualPortals, groupedPortals } = useMemo(() => {
+  // Group and sort portal users - get the properly sorted allPortals array
+  const { allPortals } = useMemo(() => {
     return groupPortalUsers(portalUsers);
   }, [portalUsers]);
 
@@ -135,63 +135,67 @@ export function PortalUsersTable({
         <div className="text-sm font-semibold text-gray-700">Validation</div>
       </div>
 
-      {/* Table Body */}
+      {/* Table Body - Now rendering in the correct sorted order */}
       <div className="divide-y divide-gray-100">
-        {/* Individual Portal Rows - these are already sorted by portalAggregation */}
-        {individualPortals.map(({ portal, users }) =>
-          users.map((user) => (
-            <div 
-              key={user.id}
-              className="grid grid-cols-6 gap-4 px-6 py-4 hover:bg-gray-50 cursor-pointer transition-colors"
-              onClick={() => handleRowClick(user)}
-            >
-              <div className="flex items-center">
-                <PortalColumn portal={user.portal} />
-              </div>
-              <div className="flex items-center">
-                <UsernameColumn username={user.username} onCopy={copyToClipboard} />
-              </div>
-              <div className="flex items-center">
-                <StatusBadge status={user.status} />
-              </div>
-              <div className="flex items-center">
-                <UserTypeColumn userType={user.userType} />
-              </div>
-              <div className="flex items-center">
-                <LinkedAgentsColumn count={user.linkedSmartConnections} />
-              </div>
-              <div className="flex items-center">
-                <ValidationColumn portalUser={user} />
-                <div className="ml-auto">
-                  <ActionsColumn
-                    portalUser={user}
+        {allPortals.map((portalDisplay) => (
+          <div key={portalDisplay.portal}>
+            {portalDisplay.displayType === 'individual' ? (
+              // Individual Portal Row
+              portalDisplay.users.map((user) => (
+                <div 
+                  key={user.id}
+                  className="grid grid-cols-6 gap-4 px-6 py-4 hover:bg-gray-50 cursor-pointer transition-colors"
+                  onClick={() => handleRowClick(user)}
+                >
+                  <div className="flex items-center">
+                    <PortalColumn portal={user.portal} />
+                  </div>
+                  <div className="flex items-center">
+                    <UsernameColumn username={user.username} onCopy={copyToClipboard} />
+                  </div>
+                  <div className="flex items-center">
+                    <StatusBadge status={user.status} />
+                  </div>
+                  <div className="flex items-center">
+                    <UserTypeColumn userType={user.userType} />
+                  </div>
+                  <div className="flex items-center">
+                    <LinkedAgentsColumn count={user.linkedSmartConnections} />
+                  </div>
+                  <div className="flex items-center">
+                    <ValidationColumn portalUser={user} />
+                    <div className="ml-auto">
+                      <ActionsColumn
+                        portalUser={user}
+                        onEdit={handleEdit}
+                        onRemove={handleRemove}
+                        onView2FA={handleView2FA}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              // Grouped Portal Row
+              portalDisplay.portalGroup && (
+                <>
+                  <PortalGroupHeader
+                    portalGroup={portalDisplay.portalGroup}
+                    isExpanded={expandedGroups.has(portalDisplay.portal)}
+                    onToggle={() => toggleGroup(portalDisplay.portal)}
+                  />
+                  <PortalRowGroup
+                    users={portalDisplay.users}
+                    isExpanded={expandedGroups.has(portalDisplay.portal)}
                     onEdit={handleEdit}
                     onRemove={handleRemove}
                     onView2FA={handleView2FA}
+                    copyToClipboard={copyToClipboard}
+                    onUserClick={handleRowClick}
                   />
-                </div>
-              </div>
-            </div>
-          ))
-        )}
-
-        {/* Grouped Portal Rows - these are already sorted by portalAggregation */}
-        {groupedPortals.map((portalGroup) => (
-          <div key={portalGroup.portal}>
-            <PortalGroupHeader
-              portalGroup={portalGroup}
-              isExpanded={expandedGroups.has(portalGroup.portal)}
-              onToggle={() => toggleGroup(portalGroup.portal)}
-            />
-            <PortalRowGroup
-              users={portalGroup.users}
-              isExpanded={expandedGroups.has(portalGroup.portal)}
-              onEdit={handleEdit}
-              onRemove={handleRemove}
-              onView2FA={handleView2FA}
-              copyToClipboard={copyToClipboard}
-              onUserClick={handleRowClick}
-            />
+                </>
+              )
+            )}
           </div>
         ))}
       </div>
