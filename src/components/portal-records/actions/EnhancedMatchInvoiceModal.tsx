@@ -127,17 +127,17 @@ export function EnhancedMatchInvoiceModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleCloseAttempt}>
-        <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[90vh] flex flex-col p-0`}>
+        <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[90vh] flex flex-col p-0 overflow-hidden`}>
           <DialogHeader className="border-b border-border p-6 pb-4 flex-shrink-0">
             <DialogTitle className="text-xl font-semibold text-foreground">
               Match Portal Record - {record.portalRecordId}
             </DialogTitle>
           </DialogHeader>
           
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-y-auto">
             {isCompactMode ? (
               // Compact mode layout for detail page
-              <div className="h-full overflow-y-auto p-6">
+              <div className="p-6">
                 <MatchExistingInvoiceTab
                   record={record}
                   selectedInvoiceId={selectedInvoiceId}
@@ -157,14 +157,14 @@ export function EnhancedMatchInvoiceModal({
               </div>
             ) : (
               // Original two-column layout with improved styling
-              <div className="grid grid-cols-5 gap-8 h-full overflow-hidden p-6">
+              <div className="grid grid-cols-5 gap-8 p-6">
                 {/* Portal Record Details */}
-                <div className="col-span-2 overflow-y-auto">
+                <div className="col-span-2">
                   <PortalRecordDetails record={record} />
                 </div>
 
                 {/* Action Area */}
-                <div className="col-span-3 overflow-y-auto">
+                <div className="col-span-3">
                   <MatchExistingInvoiceTab
                     record={record}
                     selectedInvoiceId={selectedInvoiceId}
