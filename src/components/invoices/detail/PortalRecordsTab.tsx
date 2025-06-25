@@ -58,7 +58,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
       console.log('No records found, creating default record');
       const defaultRecord: PortalRecord = {
         id: `default-${invoiceId}`,
-        portalRecordId: `PR-${invoiceId}-001`,
+        portalRecordId: `${Math.floor(Math.random() * 900000) + 100000}`, // Generate 6-digit number
         portal: "Coupa",
         buyer: "Acme Corporation",
         portalStatus: "Active",
@@ -145,7 +145,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
 
     toast({
       title: "Primary Record Updated",
-      description: `Portal record ${selectedRecord.id} is now the primary record for this invoice.`,
+      description: `Portal record ${selectedRecord.portalRecordId} is now the primary record for this invoice.`,
       variant: "default",
     });
   };
@@ -199,7 +199,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                     <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
                   )}
                   <button className="text-sm font-medium text-[#7B59FF] hover:underline">
-                    {record.id}
+                    {record.portalRecordId}
                   </button>
                 </div>
                 <div>
