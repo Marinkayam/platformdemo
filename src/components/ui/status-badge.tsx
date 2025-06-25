@@ -19,16 +19,17 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   return (
     <span
       className={cn(
-        "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border whitespace-nowrap",
+        "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border whitespace-nowrap min-w-0 flex-shrink-0",
         className
       )}
       style={{
         borderColor: colors.border,
         color: colors.text,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        minWidth: 'fit-content'
       }}
     >
-      {status}
+      <span className="truncate">{status}</span>
     </span>
   );
 };
