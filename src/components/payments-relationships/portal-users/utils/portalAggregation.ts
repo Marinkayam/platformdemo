@@ -48,16 +48,53 @@ export function groupPortalUsers(portalUsers: PortalUser[]): {
     portalMap.get(user.portal)!.push(user);
   });
   
+  // Convert to arrays for sorting
+  const allPortalGroups = Array.from(portalMap.entries()).map(([portal, users]) => ({
+    portal,
+    users,
+    displayType: getPortalDisplayType(users),
+    hasDisconnected: users.some(user => user.status === 'Disconnected')
+  }));
+
+  // Sort with priority: Disconnected portals -> Connected/Validating groups -> Individuals
+  const sortedPortalGroups = allPortalGroups.sort((a, b) => {
+    const aIsGroup = a.displayType === 'group';
+    const bIsGroup = b.displayType === 'group';
+
+    // Priority 1: Disconnected portals first (any portal containing disconnected users)
+    if (a.hasDisconnected && !b.hasDisconnected) return -1;
+    if (!a.hasDisconnected && b.hasDisconnected) return 1;
+    
+    // Priority 2: Among non-disconnected, groups before individuals
+    if (!a.hasDisconnected && !b.hasDisconnected) {
+      if (aIsGroup && !bIsGroup) return -1;
+      if (!aIsGroup && bIsGroup) return 1;
+    }
+    
+    // Same priority level: alphabetical by portal name
+    return a.portal.localeCompare(b.portal);
+  });
+
   const individualPortals: { portal: string; users: PortalUser[] }[] = [];
   const groupedPortals: PortalGroup[] = [];
   
-  portalMap.forEach((users, portal) => {
-    if (getPortalDisplayType(users) === 'individual') {
-      individualPortals.push({ portal, users });
+  // Process sorted groups
+  sortedPortalGroups.forEach(({ portal, users, displayType }) => {
+    // Sort users within each portal
+    const sortedUsers = users.sort((a, b) => {
+      if (a.status !== b.status) {
+        const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
+        return statusOrder[a.status] - statusOrder[b.status];
+      }
+      return a.username.localeCompare(b.username);
+    });
+
+    if (displayType === 'individual') {
+      individualPortals.push({ portal, users: sortedUsers });
     } else {
       groupedPortals.push({
         portal,
-        users,
+        users: sortedUsers,
         userCount: users.length,
         aggregatedStatus: aggregateStatuses(users),
         aggregatedTypes: aggregateUserTypes(users),
