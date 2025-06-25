@@ -42,7 +42,7 @@ export function InsightsTable({ insights }: InsightsTableProps) {
         {insights.map((insight) => (
           <div 
             key={insight.id}
-            className="grid grid-cols-6 gap-4 px-6 py-4 hover:bg-gray-50 transition-colors h-[65px]"
+            className="grid grid-cols-6 gap-4 px-6 py-5 hover:bg-gray-50 transition-colors min-h-[80px]"
           >
             <div className="flex items-center">
               <span className="text-sm font-medium text-gray-900 truncate">
@@ -54,7 +54,7 @@ export function InsightsTable({ insights }: InsightsTableProps) {
                 {insight.buyer}
               </span>
             </div>
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center gap-1">
               <span className="text-sm font-medium text-gray-900">
                 {insight.openPOs}
               </span>
@@ -62,7 +62,7 @@ export function InsightsTable({ insights }: InsightsTableProps) {
                 ${(insight.openPOs * 23750).toLocaleString()}
               </span>
             </div>
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center gap-1">
               <span className="text-sm font-medium text-gray-900">
                 {insight.approvedInvoices}
               </span>
@@ -70,7 +70,7 @@ export function InsightsTable({ insights }: InsightsTableProps) {
                 ${(insight.approvedInvoices * 6150).toLocaleString()}
               </span>
             </div>
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center gap-1">
               <span className="text-sm font-medium text-gray-900">
                 {insight.invoicesInRisk}
               </span>

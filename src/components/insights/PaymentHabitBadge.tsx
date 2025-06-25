@@ -23,7 +23,7 @@ export function PaymentHabitBadge({ paymentHabit }: PaymentHabitBadgeProps) {
   };
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <div className="text-xs text-gray-500">
         DSO: {paymentHabit.dso}d | {paymentHabit.terms}
       </div>
