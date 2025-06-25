@@ -92,7 +92,7 @@ export function MatchExistingInvoiceTab({
     setHasManualSearch(false);
   };
 
-  const showSuggestions = suggestions.length > 0;
+  const showSuggestions = suggestions.length > 0 && !hasManualSearch;
   const showInvoiceList = hasManualSearch && filteredInvoices.length > 0;
   const showUploadSection = hasManualSearch && filteredInvoices.length === 0;
 
@@ -108,7 +108,22 @@ export function MatchExistingInvoiceTab({
           setSelectedBuyer={setSelectedBuyer}
         />
 
-        {/* Monto's Suggestions */}
+        {/* Search Section - moved above suggestions */}
+        <InvoiceSearchSection
+          searchTerm={searchTerm}
+          setSearchTerm={handleSearchChange}
+          selectedPortal={selectedPortal}
+          selectedBuyer={selectedBuyer}
+          filteredInvoicesCount={filteredInvoices.length}
+          suggestions={[]}
+          onSuggestionSelect={() => {}}
+          showSuggestions={false}
+          onClearSearch={handleClearSearch}
+          selectedInvoiceId={selectedInvoiceId}
+          showSearchInput={true}
+        />
+
+        {/* Monto's Suggestions - now below search */}
         {showSuggestions && (
           <InvoiceSearchSection
             searchTerm=""
@@ -124,21 +139,6 @@ export function MatchExistingInvoiceTab({
             showSearchInput={false}
           />
         )}
-
-        {/* Search Section */}
-        <InvoiceSearchSection
-          searchTerm={searchTerm}
-          setSearchTerm={handleSearchChange}
-          selectedPortal={selectedPortal}
-          selectedBuyer={selectedBuyer}
-          filteredInvoicesCount={filteredInvoices.length}
-          suggestions={[]}
-          onSuggestionSelect={() => {}}
-          showSuggestions={false}
-          onClearSearch={handleClearSearch}
-          selectedInvoiceId={selectedInvoiceId}
-          showSearchInput={true}
-        />
 
         {/* Invoice List - only show when there's a manual search with results */}
         {showInvoiceList && (

@@ -80,25 +80,65 @@ export function InvoiceFilters({
               {formatDateRange()}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <div className="p-4 space-y-4">
-              <div>
-                <Label className="text-sm font-medium mb-2 block">From Date</Label>
-                <Calendar
-                  mode="single"
-                  selected={fromDate}
-                  onSelect={setFromDate}
-                  className="p-0 pointer-events-auto"
-                />
-              </div>
-              <div>
-                <Label className="text-sm font-medium mb-2 block">To Date</Label>
-                <Calendar
-                  mode="single"
-                  selected={toDate}
-                  onSelect={setToDate}
-                  className="p-0 pointer-events-auto"
-                />
+          <PopoverContent className="w-80 p-0" align="start">
+            <div className="p-3 space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs font-medium mb-1 block">From</Label>
+                  <Calendar
+                    mode="single"
+                    selected={fromDate}
+                    onSelect={setFromDate}
+                    className="p-0 pointer-events-auto w-full"
+                    classNames={{
+                      months: "flex w-full",
+                      month: "space-y-2 w-full",
+                      caption: "flex justify-center pt-1 relative items-center",
+                      caption_label: "text-xs font-medium",
+                      nav: "space-x-1 flex items-center",
+                      nav_button: "h-6 w-6 bg-transparent p-0 opacity-50 hover:opacity-100",
+                      nav_button_previous: "absolute left-1",
+                      nav_button_next: "absolute right-1",
+                      table: "w-full border-collapse space-y-1",
+                      head_row: "flex",
+                      head_cell: "text-muted-foreground rounded-md w-7 font-normal text-[0.7rem]",
+                      row: "flex w-full mt-1",
+                      cell: "h-7 w-7 text-center text-xs p-0 relative",
+                      day: "h-7 w-7 p-0 font-normal aria-selected:opacity-100",
+                      day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
+                      day_today: "bg-accent text-accent-foreground",
+                      day_outside: "text-muted-foreground opacity-50"
+                    }}
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs font-medium mb-1 block">To</Label>
+                  <Calendar
+                    mode="single"
+                    selected={toDate}
+                    onSelect={setToDate}
+                    className="p-0 pointer-events-auto w-full"
+                    classNames={{
+                      months: "flex w-full",
+                      month: "space-y-2 w-full",
+                      caption: "flex justify-center pt-1 relative items-center",
+                      caption_label: "text-xs font-medium",
+                      nav: "space-x-1 flex items-center",
+                      nav_button: "h-6 w-6 bg-transparent p-0 opacity-50 hover:opacity-100",
+                      nav_button_previous: "absolute left-1",
+                      nav_button_next: "absolute right-1",
+                      table: "w-full border-collapse space-y-1",
+                      head_row: "flex",
+                      head_cell: "text-muted-foreground rounded-md w-7 font-normal text-[0.7rem]",
+                      row: "flex w-full mt-1",
+                      cell: "h-7 w-7 text-center text-xs p-0 relative",
+                      day: "h-7 w-7 p-0 font-normal aria-selected:opacity-100",
+                      day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
+                      day_today: "bg-accent text-accent-foreground",
+                      day_outside: "text-muted-foreground opacity-50"
+                    }}
+                  />
+                </div>
               </div>
               <div className="flex justify-end gap-2 pt-2 border-t">
                 <Button 
