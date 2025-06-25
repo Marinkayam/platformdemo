@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PortalRecord } from "@/types/portalRecord";
 import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import { PortalRecordDetails } from "./match-modal/PortalRecordDetails";
 import { MatchExistingInvoiceTab } from "./match-modal/MatchExistingInvoiceTab";
 import { MatchModalActions } from "./match-modal/MatchModalActions";
@@ -28,6 +28,7 @@ export function EnhancedMatchInvoiceModal({
   onMatchAndCreateRTP,
   contextSource = 'table-row'
 }: EnhancedMatchInvoiceModalProps) {
+  const navigate = useNavigate();
   const [selectedInvoiceId, setSelectedInvoiceId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPortal, setSelectedPortal] = useState(record.portal);
@@ -60,6 +61,19 @@ export function EnhancedMatchInvoiceModal({
 
   const confirmMatch = () => {
     onMatch(selectedInvoiceId);
+    
+    // Show success toast
+    toast({
+      title: "Invoice Successfully Matched!",
+      description: `Portal record ${record.portalRecordId} has been matched with invoice ${selectedInvoiceId}.`,
+      variant: "success",
+    });
+    
+    // Navigate back to portal records table
+    setTimeout(() => {
+      navigate('/portal-records');
+    }, 1500);
+    
     onClose();
     resetForm();
     setShowMatchConfirmModal(false);
@@ -70,7 +84,14 @@ export function EnhancedMatchInvoiceModal({
     toast({
       title: "Record Ignored",
       description: `Portal record ${record.portalRecordId} will no longer be monitored.`,
+      variant: "warning",
     });
+    
+    // Navigate back to portal records table
+    setTimeout(() => {
+      navigate('/portal-records');
+    }, 1500);
+    
     onClose();
     resetForm();
   };
@@ -86,6 +107,18 @@ export function EnhancedMatchInvoiceModal({
     }
 
     onMatchAndCreateRTP(uploadedFile);
+    
+    toast({
+      title: "RTP Record Created!",
+      description: `New RTP record has been created from uploaded invoice.`,
+      variant: "success",
+    });
+    
+    // Navigate back to portal records table
+    setTimeout(() => {
+      navigate('/portal-records');
+    }, 1500);
+    
     onClose();
     resetForm();
   };
@@ -94,6 +127,7 @@ export function EnhancedMatchInvoiceModal({
     toast({
       title: "Record Made Primary",
       description: `${record.portalRecordId} has been made the primary record.`,
+      variant: "success",
     });
     onClose();
     resetForm();
@@ -128,7 +162,7 @@ export function EnhancedMatchInvoiceModal({
     <>
       <Dialog open={isOpen} onOpenChange={handleCloseAttempt}>
         <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[95vh] flex flex-col p-0 overflow-hidden`}>
-          <DialogHeader className="border-b border-border p-6 pb-4 flex-shrink-0">
+          <DialogHeader className="border-b border-border p-6 pb-4 flex-shrink-0 bg-gradient-to-r from-primary/5 to-primary/10">
             <DialogTitle className="text-xl font-semibold text-foreground">
               Match Portal Record - {record.portalRecordId}
             </DialogTitle>
