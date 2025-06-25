@@ -7,7 +7,7 @@ import { InvoiceSearchSection } from "./components/InvoiceSearchSection";
 import { InvoiceList } from "./components/InvoiceList";
 import { ConflictAlerts } from "./components/ConflictAlerts";
 import { InvoiceModals } from "./components/InvoiceModals";
-import { getInvoiceSuggestions, extractSearchTermFromPortalRecord, InvoiceMatch } from "@/utils/invoiceMatching";
+import { getInvoiceSuggestions, InvoiceMatch } from "@/utils/invoiceMatching";
 
 interface MatchExistingInvoiceTabProps {
   record: PortalRecord;
@@ -46,14 +46,6 @@ export function MatchExistingInvoiceTab({
   const [showMakePrimaryConfirm, setShowMakePrimaryConfirm] = useState(false);
   const [suggestions, setSuggestions] = useState<InvoiceMatch[]>([]);
   const [hasManualSearch, setHasManualSearch] = useState(false);
-
-  // Initialize search with portal record ID on mount
-  useEffect(() => {
-    if (!searchTerm && !hasManualSearch) {
-      const initialSearch = extractSearchTermFromPortalRecord(record.portalRecordId);
-      setSearchTerm(initialSearch);
-    }
-  }, [record.portalRecordId, searchTerm, setSearchTerm, hasManualSearch]);
 
   // Generate suggestions when component mounts
   useEffect(() => {
@@ -100,7 +92,9 @@ export function MatchExistingInvoiceTab({
     setHasManualSearch(false);
   };
 
-  const showSuggestions = !hasManualSearch && suggestions.length > 0;
+  const showSuggestions = suggestions.length > 0;
+  const showInvoiceList = hasManualSearch && filteredInvoices.length > 0;
+  const showUploadSection = hasManualSearch && filteredInvoices.length === 0;
 
   return (
     <>
@@ -114,29 +108,61 @@ export function MatchExistingInvoiceTab({
           setSelectedBuyer={setSelectedBuyer}
         />
 
-        {/* Search Section with Suggestions */}
+        {/* Monto's Suggestions */}
+        {showSuggestions && (
+          <InvoiceSearchSection
+            searchTerm=""
+            setSearchTerm={() => {}}
+            selectedPortal={selectedPortal}
+            selectedBuyer={selectedBuyer}
+            filteredInvoicesCount={0}
+            suggestions={suggestions}
+            onSuggestionSelect={handleSuggestionSelect}
+            showSuggestions={true}
+            onClearSearch={() => {}}
+            selectedInvoiceId={selectedInvoiceId}
+            showSearchInput={false}
+          />
+        )}
+
+        {/* Search Section */}
         <InvoiceSearchSection
           searchTerm={searchTerm}
           setSearchTerm={handleSearchChange}
           selectedPortal={selectedPortal}
           selectedBuyer={selectedBuyer}
           filteredInvoicesCount={filteredInvoices.length}
-          suggestions={suggestions}
-          onSuggestionSelect={handleSuggestionSelect}
-          showSuggestions={showSuggestions}
+          suggestions={[]}
+          onSuggestionSelect={() => {}}
+          showSuggestions={false}
           onClearSearch={handleClearSearch}
           selectedInvoiceId={selectedInvoiceId}
+          showSearchInput={true}
         />
 
-        {/* Invoice List */}
-        <InvoiceList
-          filteredInvoices={filteredInvoices}
-          selectedInvoiceId={selectedInvoiceId}
-          setSelectedInvoiceId={setSelectedInvoiceId}
-          uploadedFile={uploadedFile}
-          setUploadedFile={setUploadedFile}
-          onMatchAndCreateRTP={handleMatchAndCreateRTP}
-        />
+        {/* Invoice List - only show when there's a manual search with results */}
+        {showInvoiceList && (
+          <InvoiceList
+            filteredInvoices={filteredInvoices}
+            selectedInvoiceId={selectedInvoiceId}
+            setSelectedInvoiceId={setSelectedInvoiceId}
+            uploadedFile={uploadedFile}
+            setUploadedFile={setUploadedFile}
+            onMatchAndCreateRTP={handleMatchAndCreateRTP}
+          />
+        )}
+
+        {/* Upload Section - only show when there's a manual search with no results */}
+        {showUploadSection && (
+          <InvoiceList
+            filteredInvoices={[]}
+            selectedInvoiceId={selectedInvoiceId}
+            setSelectedInvoiceId={setSelectedInvoiceId}
+            uploadedFile={uploadedFile}
+            setUploadedFile={setUploadedFile}
+            onMatchAndCreateRTP={handleMatchAndCreateRTP}
+          />
+        )}
 
         {/* Conflict Alerts */}
         <ConflictAlerts 
