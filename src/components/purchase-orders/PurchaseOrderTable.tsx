@@ -1,3 +1,4 @@
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PurchaseOrder } from "@/types/purchase-orders";
 import { formatCurrency, getPortalLogoUrl } from "@/lib/utils";
@@ -73,8 +74,8 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
                       </Tooltip>
                     </TooltipProvider>
                   </TableCell>
-                  <TableCell>
-                    <StatusBadge status={po.status} />
+                  <TableCell className="whitespace-nowrap">
+                    <StatusBadge status={po.status} className="whitespace-nowrap" />
                   </TableCell>
                   <TableCell className="truncate">
                     <TooltipProvider>
