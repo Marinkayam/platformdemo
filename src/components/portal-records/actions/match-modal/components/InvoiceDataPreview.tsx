@@ -27,7 +27,7 @@ interface InvoiceDataPreviewProps {
 }
 
 export function InvoiceDataPreview({ selectedInvoice }: InvoiceDataPreviewProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true); // Start open by default
 
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
@@ -39,16 +39,19 @@ export function InvoiceDataPreview({ selectedInvoice }: InvoiceDataPreviewProps)
   if (!selectedInvoice) return null;
 
   return (
-    <Card>
+    <Card className="border-2 border-blue-200 bg-blue-50/30">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger asChild>
-          <CardHeader className="pb-4 cursor-pointer hover:bg-muted/50 transition-colors">
+          <CardHeader className="pb-4 cursor-pointer hover:bg-blue-100/50 transition-colors">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg flex items-center gap-2">
+              <CardTitle className="text-lg flex items-center gap-2 text-blue-900">
                 <FileText className="h-5 w-5" />
                 Financial Data Preview
+                <span className="text-sm text-blue-600 font-normal">
+                  (Click to {isOpen ? 'collapse' : 'expand'})
+                </span>
               </CardTitle>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-blue-700 hover:text-blue-900">
                 {isOpen ? (
                   <ChevronUp className="h-4 w-4" />
                 ) : (
