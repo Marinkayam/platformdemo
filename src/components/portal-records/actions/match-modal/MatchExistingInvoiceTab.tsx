@@ -132,6 +132,7 @@ export function MatchExistingInvoiceTab({
           onSuggestionSelect={handleSuggestionSelect}
           showSuggestions={showSuggestions}
           onClearSearch={handleClearSearch}
+          selectedInvoiceId={selectedInvoiceId}
         />
 
         {/* Invoice List */}

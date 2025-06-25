@@ -1,10 +1,12 @@
 
+import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Search, Sparkles, X } from "lucide-react";
+import { Search, Sparkles, X, Eye, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { InvoiceMatch } from "@/utils/invoiceMatching";
+import { InvoicePreviewModal } from "./InvoicePreviewModal";
 
 interface InvoiceSearchSectionProps {
   searchTerm: string;
@@ -16,6 +18,7 @@ interface InvoiceSearchSectionProps {
   onSuggestionSelect: (invoiceId: string) => void;
   showSuggestions: boolean;
   onClearSearch: () => void;
+  selectedInvoiceId?: string;
 }
 
 export function InvoiceSearchSection({
@@ -28,7 +31,11 @@ export function InvoiceSearchSection({
   onSuggestionSelect,
   showSuggestions,
   onClearSearch,
+  selectedInvoiceId,
 }: InvoiceSearchSectionProps) {
+  const [previewInvoice, setPreviewInvoice] = useState<any>(null);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+
   const getMatchReasonColor = (type: string) => {
     switch (type) {
       case 'partial-id':
@@ -51,6 +58,12 @@ export function InvoiceSearchSection({
     }).format(amount);
   };
 
+  const handlePreviewInvoice = (invoice: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPreviewInvoice(invoice);
+    setShowPreviewModal(true);
+  };
+
   return (
     <div className="space-y-4">
       {/* Monto's Suggestions */}
@@ -62,38 +75,54 @@ export function InvoiceSearchSection({
           </div>
           <div className="border rounded-lg p-3 bg-primary/5">
             <div className="space-y-2">
-              {suggestions.map((match) => (
-                <button
-                  key={match.invoice.id}
-                  onClick={() => onSuggestionSelect(match.invoice.id)}
-                  className="w-full text-left p-3 rounded-md border bg-white hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="font-medium text-sm">
-                        {match.invoice.id} - {match.invoice.number}
+              {suggestions.map((match) => {
+                const isSelected = selectedInvoiceId === match.invoice.id;
+                return (
+                  <div
+                    key={match.invoice.id}
+                    className={`relative p-3 rounded-md border transition-colors ${
+                      isSelected 
+                        ? 'bg-primary/10 border-primary ring-2 ring-primary/20' 
+                        : 'bg-white hover:bg-gray-50 cursor-pointer'
+                    }`}
+                    onClick={() => onSuggestionSelect(match.invoice.id)}
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <div className="font-medium text-sm flex items-center gap-2">
+                          {isSelected && <Check className="h-4 w-4 text-primary" />}
+                          {match.invoice.id} - {match.invoice.number}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {match.invoice.buyer} • {formatCurrency(match.invoice.total, match.invoice.currency || 'USD')} • {match.invoice.dueDate}
+                        </div>
+                        <div className="flex gap-1 mt-2">
+                          {match.matchReasons.map((reason, index) => (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className={`text-xs ${getMatchReasonColor(reason.type)}`}
+                            >
+                              {reason.label}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {match.invoice.buyer} • {formatCurrency(match.invoice.total, match.invoice.currency || 'USD')} • {match.invoice.dueDate}
+                      <div className="flex items-center gap-2 ml-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => handlePreviewInvoice(match.invoice, e)}
+                          className="h-6 px-2 text-xs"
+                        >
+                          <Eye className="h-3 w-3 mr-1" />
+                          Preview
+                        </Button>
                       </div>
-                      <div className="flex gap-1 mt-2">
-                        {match.matchReasons.map((reason, index) => (
-                          <Badge
-                            key={index}
-                            variant="secondary"
-                            className={`text-xs ${getMatchReasonColor(reason.type)}`}
-                          >
-                            {reason.label}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="text-xs text-muted-foreground ml-2">
-                      {match.score}% match
                     </div>
                   </div>
-                </button>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -128,6 +157,12 @@ export function InvoiceSearchSection({
           Showing {filteredInvoicesCount} invoices from {selectedPortal} • {selectedBuyer === "all_buyers" ? "All Buyers" : selectedBuyer}
         </p>
       </div>
+
+      <InvoicePreviewModal
+        isOpen={showPreviewModal}
+        onClose={() => setShowPreviewModal(false)}
+        invoice={previewInvoice}
+      />
     </div>
   );
 }
