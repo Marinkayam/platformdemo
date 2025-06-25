@@ -16,15 +16,15 @@ export function PortalGroupHeader({ portalGroup, isExpanded, onToggle }: PortalG
       className="portal-group-header grid grid-cols-6 gap-4 px-6 py-4 cursor-pointer hover:bg-gray-50 transition-colors border-b border-gray-100"
       onClick={onToggle}
     >
-      <div className="flex items-center gap-3">
-        <div className="flex-shrink-0">
+      <div className="flex items-center justify-between w-full">
+        <PortalColumn portal={portalGroup.portal} />
+        <div className="flex-shrink-0 ml-auto">
           {isExpanded ? (
             <ChevronDown className="h-4 w-4 text-gray-600 transition-transform duration-200" />
           ) : (
             <ChevronRight className="h-4 w-4 text-gray-600 transition-transform duration-200" />
           )}
         </div>
-        <PortalColumn portal={portalGroup.portal} />
       </div>
       
       <div className="flex items-center text-sm font-medium text-gray-700">

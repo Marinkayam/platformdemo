@@ -23,9 +23,8 @@ export function UserRow({ user, onEdit, onRemove, onView2FA, copyToClipboard, on
       className="user-row grid grid-cols-6 gap-4 px-6 py-3 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-50 animate-fade-in"
       onClick={onClick}
     >
-      <div className="flex items-center pl-8">
+      <div className="flex items-center pl-4">
         <div className="w-0.5 h-5 bg-gray-300 rounded-full mr-4"></div>
-        <span className="text-sm text-gray-500">User</span>
       </div>
       
       <div className="flex items-center">
