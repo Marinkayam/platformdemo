@@ -6,7 +6,6 @@ import { InvoiceFilters } from "./components/InvoiceFilters";
 import { InvoiceSearchSection } from "./components/InvoiceSearchSection";
 import { InvoiceList } from "./components/InvoiceList";
 import { ConflictAlerts } from "./components/ConflictAlerts";
-import { SelectedInvoiceDetails } from "./components/SelectedInvoiceDetails";
 import { InvoiceModals } from "./components/InvoiceModals";
 import { getInvoiceSuggestions, extractSearchTermFromPortalRecord, InvoiceMatch } from "@/utils/invoiceMatching";
 
@@ -81,12 +80,6 @@ export function MatchExistingInvoiceTab({
     inv.id === selectedInvoiceId && inv.status !== 'Pending Action'
   );
 
-  const handlePreviewPdf = () => {
-    if (selectedInvoice) {
-      setShowPdfModal(true);
-    }
-  };
-
   const handleMatchAndCreateRTP = () => {
     if (onMatchAndCreateRTP) {
       onMatchAndCreateRTP();
@@ -149,12 +142,6 @@ export function MatchExistingInvoiceTab({
         <ConflictAlerts 
           hasConflict={hasConflict}
           selectedInvoice={selectedInvoice}
-        />
-
-        {/* Selected Invoice Details */}
-        <SelectedInvoiceDetails
-          selectedInvoice={selectedInvoice}
-          onPreviewPdf={handlePreviewPdf}
         />
       </div>
 

@@ -1,8 +1,10 @@
 
 import { Button } from "@/components/ui/button";
-import { Upload } from "lucide-react";
+import { Upload, Eye, Check } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
+import { InvoicePreviewModal } from "./InvoicePreviewModal";
+import { useState } from "react";
 
 interface Invoice {
   id: string;
@@ -30,6 +32,9 @@ export function InvoiceList({
   setUploadedFile,
   onMatchAndCreateRTP,
 }: InvoiceListProps) {
+  const [previewInvoice, setPreviewInvoice] = useState<any>(null);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -45,34 +50,54 @@ export function InvoiceList({
     setUploadedFile(null);
   };
 
+  const handlePreviewInvoice = (invoice: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPreviewInvoice(invoice);
+    setShowPreviewModal(true);
+  };
+
   return (
     <div className="border rounded-lg overflow-hidden">
       {filteredInvoices.length > 0 ? (
         <div className="max-h-60 overflow-y-auto">
-          <div className="divide-y">
-            {filteredInvoices.map((invoice) => (
-              <button
-                key={invoice.id}
-                onClick={() => setSelectedInvoiceId(invoice.id)}
-                className={`w-full text-left px-4 py-3 hover:bg-muted/50 transition-colors ${
-                  selectedInvoiceId === invoice.id ? 'bg-primary/10 border-l-4 border-l-primary' : ''
-                }`}
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <div className="font-medium text-sm">{invoice.id} - {invoice.number}</div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
+          <div className="space-y-2 p-3">
+            {filteredInvoices.map((invoice) => {
+              const isSelected = selectedInvoiceId === invoice.id;
+              return (
+                <div
+                  key={invoice.id}
+                  className={`relative p-3 rounded-md border transition-colors ${
+                    isSelected 
+                      ? 'bg-primary/10 border-primary ring-2 ring-primary/20' 
+                      : 'bg-white hover:bg-gray-50 cursor-pointer'
+                  }`}
+                  onClick={() => setSelectedInvoiceId(invoice.id)}
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="font-medium text-sm flex items-center gap-2">
+                        {isSelected && <Check className="h-4 w-4 text-primary" />}
+                        {invoice.number}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {invoice.buyer} • {formatCurrency(invoice.total, invoice.currency || 'USD')} • {invoice.dueDate}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 ml-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={(e) => handlePreviewInvoice(invoice, e)}
+                        className="h-6 px-2 text-xs"
+                      >
+                        <Eye className="h-3 w-3 mr-1" />
+                        Preview
+                      </Button>
                     </div>
                   </div>
-                  {selectedInvoiceId === invoice.id && (
-                    <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center ml-2">
-                      <div className="h-2 w-2 bg-primary-foreground rounded-full" />
-                    </div>
-                  )}
                 </div>
-              </button>
-            ))}
+              );
+            })}
           </div>
         </div>
       ) : (
@@ -155,6 +180,12 @@ export function InvoiceList({
           </div>
         </div>
       )}
+
+      <InvoicePreviewModal
+        isOpen={showPreviewModal}
+        onClose={() => setShowPreviewModal(false)}
+        invoice={previewInvoice}
+      />
     </div>
   );
 }
