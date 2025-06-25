@@ -41,38 +41,9 @@ export function PortalUsersTable({
 
   const portalUsers = propPortalUsers || mockPortalUsersForTable;
 
-  // Group and sort portal users
+  // Group and sort portal users - remove any additional sorting that might override the portalAggregation sorting
   const { individualPortals, groupedPortals } = useMemo(() => {
-    const grouped = groupPortalUsers(portalUsers);
-    
-    // Sort individual portals by portal name
-    grouped.individualPortals.sort((a, b) => a.portal.localeCompare(b.portal));
-    
-    // Sort grouped portals by portal name
-    grouped.groupedPortals.sort((a, b) => a.portal.localeCompare(b.portal));
-    
-    // Sort users within each portal
-    grouped.individualPortals.forEach(portal => {
-      portal.users.sort((a, b) => {
-        if (a.status !== b.status) {
-          const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
-          return statusOrder[a.status] - statusOrder[b.status];
-        }
-        return a.username.localeCompare(b.username);
-      });
-    });
-    
-    grouped.groupedPortals.forEach(portal => {
-      portal.users.sort((a, b) => {
-        if (a.status !== b.status) {
-          const statusOrder = { 'Connected': 0, 'Validating': 1, 'Disconnected': 2 };
-          return statusOrder[a.status] - statusOrder[b.status];
-        }
-        return a.username.localeCompare(b.username);
-      });
-    });
-    
-    return grouped;
+    return groupPortalUsers(portalUsers);
   }, [portalUsers]);
 
   const copyToClipboard = (text: string) => {
@@ -166,7 +137,7 @@ export function PortalUsersTable({
 
       {/* Table Body */}
       <div className="divide-y divide-gray-100">
-        {/* Individual Portal Rows */}
+        {/* Individual Portal Rows - these are already sorted by portalAggregation */}
         {individualPortals.map(({ portal, users }) =>
           users.map((user) => (
             <div 
@@ -204,7 +175,7 @@ export function PortalUsersTable({
           ))
         )}
 
-        {/* Grouped Portal Rows */}
+        {/* Grouped Portal Rows - these are already sorted by portalAggregation */}
         {groupedPortals.map((portalGroup) => (
           <div key={portalGroup.portal}>
             <PortalGroupHeader

@@ -56,6 +56,12 @@ export function groupPortalUsers(portalUsers: PortalUser[]): {
     hasDisconnected: users.some(user => user.status === 'Disconnected')
   }));
 
+  console.log('Before sorting:', allPortalGroups.map(g => ({ 
+    portal: g.portal, 
+    hasDisconnected: g.hasDisconnected, 
+    displayType: g.displayType 
+  })));
+
   // Sort with priority: Disconnected portals first, then groups, then individuals
   const sortedPortalGroups = allPortalGroups.sort((a, b) => {
     // Priority 1: Disconnected portals first (any portal containing disconnected users)
@@ -74,6 +80,12 @@ export function groupPortalUsers(portalUsers: PortalUser[]): {
     // Same priority level: alphabetical by portal name
     return a.portal.localeCompare(b.portal);
   });
+
+  console.log('After sorting:', sortedPortalGroups.map(g => ({ 
+    portal: g.portal, 
+    hasDisconnected: g.hasDisconnected, 
+    displayType: g.displayType 
+  })));
 
   const individualPortals: { portal: string; users: PortalUser[] }[] = [];
   const groupedPortals: PortalGroup[] = [];
@@ -102,6 +114,9 @@ export function groupPortalUsers(portalUsers: PortalUser[]): {
       });
     }
   });
+  
+  console.log('Final result - individualPortals:', individualPortals.map(p => p.portal));
+  console.log('Final result - groupedPortals:', groupedPortals.map(p => p.portal));
   
   return { individualPortals, groupedPortals };
 }
