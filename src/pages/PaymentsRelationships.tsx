@@ -1,5 +1,6 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { PageHeader } from "@/components/common/PageHeader";
 import { PaymentsRelationshipsHeader } from "@/components/payments-relationships/PaymentsRelationshipsHeader";
 import { PaymentsRelationshipsFilters } from "@/components/payments-relationships/PaymentsRelationshipsFilters";
@@ -17,11 +18,30 @@ import { ConfirmRemoveModal } from "@/components/payments-relationships/portal-u
 import { usePortalUserFiltering } from "@/hooks/usePortalUserFiltering";
 
 export default function PaymentsRelationships() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState("smart-connections");
   const [isAddPortalUserModalOpen, setIsAddPortalUserModalOpen] = useState(false);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
   const [userToRemoveId, setUserToRemoveId] = useState<string | null>(null);
   const [portalUsers, setPortalUsers] = useState<PortalUser[]>(mockPortalUsers);
+
+  // Handle URL tab parameter
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && (tabParam === 'smart-connections' || tabParam === 'portal-users')) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    if (tabId === 'smart-connections') {
+      searchParams.delete('tab');
+    } else {
+      searchParams.set('tab', tabId);
+    }
+    setSearchParams(searchParams);
+  };
 
   const {
     filters: smartConnectionFilters,
@@ -87,7 +107,7 @@ export default function PaymentsRelationships() {
         <DesignTabs
           tabs={tabs}
           activeTab={activeTab}
-          onTabChange={setActiveTab}
+          onTabChange={handleTabChange}
         />
 
         {activeTab === "smart-connections" && (

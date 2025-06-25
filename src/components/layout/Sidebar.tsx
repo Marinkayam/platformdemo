@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -36,6 +37,9 @@ export function Sidebar({
   className
 }: SidebarProps) {
   const pathname = window.location.pathname;
+  const searchParams = new URLSearchParams(window.location.search);
+  const activeTab = searchParams.get('tab');
+  
   return <aside className={cn("w-[220px] border-r bg-sidebar flex flex-col h-screen sticky top-0", className)}>
       <div className="p-4 border-b bg-white">
         <div className="flex items-center gap-2">
@@ -63,7 +67,13 @@ export function Sidebar({
           
           <SidebarItem href="/portal-management" icon={<Globe size={18} />} label="Portal Management" active={pathname === "/portal-management"} />
           
-          <SidebarItem href="/payments-relationships" icon={<Brain size={18} />} label="Payments Relationships" active={pathname === "/payments-relationships"} />
+          <div className="pt-2">
+            <SidebarItem href="/payments-relationships" icon={<Brain size={18} />} label="Payments Relationships" active={pathname === "/payments-relationships"} />
+            <div className="mt-1 space-y-1">
+              <SidebarSubItem href="/payments-relationships" label="Smart Connections" active={pathname === "/payments-relationships" && (!activeTab || activeTab === "smart-connections")} />
+              <SidebarSubItem href="/payments-relationships?tab=portal-users" label="Portal Users" active={pathname === "/payments-relationships" && activeTab === "portal-users"} />
+            </div>
+          </div>
           
           <SidebarItem href="/purchase-orders" icon={<ShoppingCart size={18} />} label="Purchase Orders" active={pathname.includes("/purchase-orders")} />
           

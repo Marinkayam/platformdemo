@@ -54,7 +54,7 @@ export function LicenseTab() {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <CardContent className="p-6 text-center space-y-4">
-                <div className="w-12 h-12 mx-auto rounded-lg bg-grey-100 flex items-center justify-center group-hover:bg-grey-200 transition-colors duration-200">
+                <div className="w-12 h-12 mx-auto rounded-lg bg-[#EFEBFF] flex items-center justify-center group-hover:bg-grey-200 transition-colors duration-200">
                   <IconComponent 
                     size={20} 
                     className="text-grey-600 group-hover:text-grey-700 transition-colors duration-200"
@@ -91,14 +91,17 @@ export function LicenseTab() {
             {premiumFeatures.map((feature, index) => {
               const IconComponent = feature.icon;
               const isLocked = feature.status === "locked";
+              const isPODashboard = feature.name === "PO Dashboard";
               
               return (
                 <Card 
                   key={feature.name} 
-                  className={`group transition-all duration-200 hover:scale-[1.02] ${
+                  className={`group relative transition-all duration-200 hover:scale-[1.02] ${
                     isLocked 
                       ? "border-grey-300 bg-grey-50 hover:border-grey-400" 
-                      : "border-primary-main bg-primary-main hover:border-primary-dark hover:shadow-lg"
+                      : isPODashboard
+                        ? "border-[#7B59FF] bg-[#EFEBFF] hover:border-[#6b46ff] hover:shadow-lg"
+                        : "border-primary-main bg-primary-main hover:border-primary-dark hover:shadow-lg"
                   }`}
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
@@ -106,18 +109,20 @@ export function LicenseTab() {
                     <div className={`w-12 h-12 mx-auto rounded-lg flex items-center justify-center ${
                       isLocked 
                         ? "bg-white border border-grey-200" 
-                        : "bg-white/20 backdrop-blur-sm"
+                        : isPODashboard
+                          ? "bg-white/20 backdrop-blur-sm"
+                          : "bg-white/20 backdrop-blur-sm"
                     }`}>
                       <IconComponent 
                         size={20} 
-                        className={isLocked ? "text-grey-600" : "text-white"} 
+                        className={isLocked ? "text-grey-600" : isPODashboard ? "text-[#7B59FF]" : "text-white"} 
                         strokeWidth={1.5}
                       />
                     </div>
                     
                     <Typography 
                       variant="subtitle1" 
-                      className={isLocked ? "text-grey-700" : "text-white"}
+                      className={isLocked ? "text-grey-700" : isPODashboard ? "text-[#7B59FF]" : "text-white"}
                     >
                       {feature.name}
                     </Typography>
@@ -136,21 +141,13 @@ export function LicenseTab() {
                           </TooltipContent>
                         </Tooltip>
                       ) : (
-                        <Badge className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+                        <Badge className={isPODashboard ? "bg-[#7B59FF] text-white border-[#7B59FF] hover:bg-[#6b46ff]" : "bg-white/20 text-white border-white/30 hover:bg-white/30"}>
                           <Check size={12} className="mr-1" />
                           Included
                         </Badge>
                       )}
                     </div>
                   </CardContent>
-                  
-                  {isLocked && (
-                    <div className="absolute top-3 right-3">
-                      <Badge variant="secondary" className="bg-grey-700 text-white text-xs hover:bg-grey-800">
-                        PREMIUM
-                      </Badge>
-                    </div>
-                  )}
                 </Card>
               );
             })}
