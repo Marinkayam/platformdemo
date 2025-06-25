@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Progress } from "@/components/ui/progress";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -21,8 +22,10 @@ export function ValidationProgressIndicator({ progress, status, steps }: Validat
             <div className="w-24">
               <Progress value={progress} className="h-1.5 bg-grey-200" indicatorClassName="bg-primary-main" />
             </div>
-            <span className="text-xs text-grey-600">{progress}%</span>
-            <Loader2 className="h-3 w-3 animate-spin text-primary-main" />
+            <div className="flex items-center gap-1">
+              <span className="text-xs text-grey-600">{progress}%</span>
+              <Loader2 className="h-3 w-3 animate-spin text-primary-main" />
+            </div>
           </div>
         </TooltipTrigger>
         <TooltipContent className="w-64 p-3">
@@ -52,4 +55,4 @@ export function ValidationProgressIndicator({ progress, status, steps }: Validat
       </Tooltip>
     </TooltipProvider>
   );
-} 
+}

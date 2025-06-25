@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { AddPortalUserModal } from './AddPortalUserModal';
@@ -104,16 +103,18 @@ export function PortalUsersTable({
     <div className="rounded-xl border overflow-hidden bg-white">
       <PortalUsersTableHeader />
       
-      <PortalUsersTableBody
-        allPortals={allPortals}
-        expandedGroups={expandedGroups}
-        onToggleGroup={toggleGroup}
-        onEdit={handleEdit}
-        onRemove={handleRemove}
-        onView2FA={handleView2FA}
-        onRowClick={handleRowClick}
-        copyToClipboard={copyToClipboard}
-      />
+      <div className="max-h-[600px] overflow-y-auto">
+        <PortalUsersTableBody
+          allPortals={allPortals}
+          expandedGroups={expandedGroups}
+          onToggleGroup={toggleGroup}
+          onEdit={handleEdit}
+          onRemove={handleRemove}
+          onView2FA={handleView2FA}
+          onRowClick={handleRowClick}
+          copyToClipboard={copyToClipboard}
+        />
+      </div>
 
       <PortalUsersTableFooter totalUsers={portalUsers.length} />
 

@@ -14,10 +14,9 @@ interface ValidationColumnProps {
 export function ValidationColumn({ portalUser }: ValidationColumnProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleInsightsClick = () => {
-    console.log('Insights clicked for user:', portalUser.id);
-    searchParams.set('tab', 'insights');
-    setSearchParams(searchParams);
+  const handleInsightsClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSearchParams({ tab: 'insights' });
   };
 
   if (portalUser.status === 'Connected') {
@@ -39,7 +38,7 @@ export function ValidationColumn({ portalUser }: ValidationColumnProps) {
   if (portalUser.status === 'Validating') {
     const { steps, progress, status: validationStatus } = getValidationSteps(portalUser);
     return (
-      <div className="w-[90%] min-w-[120px]">
+      <div className="w-[90%] min-w-[120px] flex items-center">
         <ValidationProgressIndicator
           progress={progress}
           status={validationStatus}
