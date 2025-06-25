@@ -19,6 +19,7 @@ interface InvoiceSearchSectionProps {
   onClearSearch: () => void;
   selectedInvoiceId?: string;
   showSearchInput?: boolean;
+  onUnselectInvoice?: () => void;
 }
 
 export function InvoiceSearchSection({
@@ -33,6 +34,7 @@ export function InvoiceSearchSection({
   onClearSearch,
   selectedInvoiceId,
   showSearchInput = true,
+  onUnselectInvoice,
 }: InvoiceSearchSectionProps) {
   const [previewInvoice, setPreviewInvoice] = useState<any>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -50,8 +52,59 @@ export function InvoiceSearchSection({
     setShowPreviewModal(true);
   };
 
+  const handleSuggestionClick = (invoiceId: string) => {
+    onSuggestionSelect(invoiceId);
+  };
+
   return (
     <div className="space-y-4">
+      {/* Search Section */}
+      {showSearchInput && (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label className="text-sm font-medium">Search Invoices</Label>
+            <div className="flex gap-2">
+              {selectedInvoiceId && onUnselectInvoice && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onUnselectInvoice}
+                  className="h-6 text-xs text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-3 w-3 mr-1" />
+                  Unselect
+                </Button>
+              )}
+              {searchTerm && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClearSearch}
+                  className="h-6 text-xs text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-3 w-3 mr-1" />
+                  Clear
+                </Button>
+              )}
+            </div>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by invoice ID, number, or buyer..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 h-10"
+            />
+          </div>
+          {searchTerm && (
+            <p className="text-xs text-muted-foreground">
+              Showing {filteredInvoicesCount} invoices from {selectedPortal} • {selectedBuyer === "all_buyers" ? "All Buyers" : selectedBuyer}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Monto's Suggestions */}
       {showSuggestions && suggestions.length > 0 && (
         <div className="space-y-3">
@@ -71,7 +124,7 @@ export function InvoiceSearchSection({
                         ? 'bg-primary/15 border-primary ring-2 ring-primary/30' 
                         : 'bg-white hover:bg-gray-50 cursor-pointer border-gray-200'
                     }`}
-                    onClick={() => onSuggestionSelect(match.invoice.id)}
+                    onClick={() => handleSuggestionClick(match.invoice.id)}
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
@@ -111,40 +164,6 @@ export function InvoiceSearchSection({
               })}
             </div>
           </div>
-        </div>
-      )}
-
-      {/* Search Section */}
-      {showSearchInput && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <Label className="text-sm font-medium">Search Invoices</Label>
-            {searchTerm && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClearSearch}
-                className="h-6 text-xs text-muted-foreground hover:text-foreground"
-              >
-                <X className="h-3 w-3 mr-1" />
-                Clear
-              </Button>
-            )}
-          </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search by invoice ID, number, or buyer..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 h-10"
-            />
-          </div>
-          {searchTerm && (
-            <p className="text-xs text-muted-foreground">
-              Showing {filteredInvoicesCount} invoices from {selectedPortal} • {selectedBuyer === "all_buyers" ? "All Buyers" : selectedBuyer}
-            </p>
-          )}
         </div>
       )}
 

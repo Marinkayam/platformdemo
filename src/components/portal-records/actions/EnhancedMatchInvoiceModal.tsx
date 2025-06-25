@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { PortalRecord } from "@/types/portalRecord";
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -162,10 +162,13 @@ export function EnhancedMatchInvoiceModal({
     <>
       <Dialog open={isOpen} onOpenChange={handleCloseAttempt}>
         <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[95vh] flex flex-col p-0 overflow-hidden`}>
-          <DialogHeader className="border-b border-border p-6 pb-4 flex-shrink-0 bg-gradient-to-r from-primary/5 to-primary/10">
-            <DialogTitle className="text-xl font-semibold text-foreground">
-              Match Portal Record - {record.portalRecordId}
+          <DialogHeader className="border-b border-border p-4 pb-3 flex-shrink-0 bg-gradient-to-r from-primary/5 to-primary/10">
+            <DialogTitle className="text-lg font-semibold text-foreground">
+              Match Portal Record
             </DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground mt-1">
+              Connect portal record {record.portalRecordId} to an existing invoice or upload a new one to create an RTP record
+            </DialogDescription>
           </DialogHeader>
           
           <div className="flex-1 overflow-y-auto p-6">

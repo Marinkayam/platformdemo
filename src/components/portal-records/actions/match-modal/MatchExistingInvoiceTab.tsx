@@ -79,7 +79,12 @@ export function MatchExistingInvoiceTab({
   };
 
   const handleSuggestionSelect = (invoiceId: string) => {
-    setSelectedInvoiceId(invoiceId);
+    // Toggle selection - if already selected, unselect
+    if (selectedInvoiceId === invoiceId) {
+      setSelectedInvoiceId("");
+    } else {
+      setSelectedInvoiceId(invoiceId);
+    }
   };
 
   const handleSearchChange = (value: string) => {
@@ -90,6 +95,10 @@ export function MatchExistingInvoiceTab({
   const handleClearSearch = () => {
     setSearchTerm("");
     setHasManualSearch(false);
+  };
+
+  const handleUnselectInvoice = () => {
+    setSelectedInvoiceId("");
   };
 
   const showSuggestions = suggestions.length > 0 && !hasManualSearch;
@@ -121,6 +130,7 @@ export function MatchExistingInvoiceTab({
           onClearSearch={handleClearSearch}
           selectedInvoiceId={selectedInvoiceId}
           showSearchInput={true}
+          onUnselectInvoice={handleUnselectInvoice}
         />
 
         {/* Monto's Suggestions - now below search */}
@@ -137,6 +147,7 @@ export function MatchExistingInvoiceTab({
             onClearSearch={() => {}}
             selectedInvoiceId={selectedInvoiceId}
             showSearchInput={false}
+            onUnselectInvoice={handleUnselectInvoice}
           />
         )}
 
