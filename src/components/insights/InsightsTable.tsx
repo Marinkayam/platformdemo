@@ -28,7 +28,7 @@ export function InsightsTable({ insights }: InsightsTableProps) {
   return (
     <div className="rounded-xl border overflow-hidden bg-white">
       {/* Table Header */}
-      <div className="grid grid-cols-6 gap-4 px-6 py-4 bg-grey-50 border-b border-gray-200">
+      <div className="grid grid-cols-6 gap-4 px-6 py-4 bg-[#F6F7F9] border-b border-gray-200">
         <div className="text-sm font-semibold text-gray-700">Supplier</div>
         <div className="text-sm font-semibold text-gray-700">Buyer</div>
         <div className="text-sm font-semibold text-gray-700">Open POs</div>
@@ -42,7 +42,7 @@ export function InsightsTable({ insights }: InsightsTableProps) {
         {insights.map((insight) => (
           <div 
             key={insight.id}
-            className="grid grid-cols-6 gap-4 px-6 py-4 hover:bg-gray-50 transition-colors"
+            className="grid grid-cols-6 gap-4 px-6 py-4 hover:bg-gray-50 transition-colors h-[65px]"
           >
             <div className="flex items-center">
               <span className="text-sm font-medium text-gray-900 truncate">
@@ -54,7 +54,7 @@ export function InsightsTable({ insights }: InsightsTableProps) {
                 {insight.buyer}
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-center">
               <span className="text-sm font-medium text-gray-900">
                 {insight.openPOs}
               </span>
@@ -62,7 +62,7 @@ export function InsightsTable({ insights }: InsightsTableProps) {
                 ${(insight.openPOs * 23750).toLocaleString()}
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-center">
               <span className="text-sm font-medium text-gray-900">
                 {insight.approvedInvoices}
               </span>
@@ -70,7 +70,7 @@ export function InsightsTable({ insights }: InsightsTableProps) {
                 ${(insight.approvedInvoices * 6150).toLocaleString()}
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-center">
               <span className="text-sm font-medium text-gray-900">
                 {insight.invoicesInRisk}
               </span>
