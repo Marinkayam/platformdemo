@@ -14,14 +14,6 @@ export function PortalRecordInformation({ portalRecord }: PortalRecordInformatio
     }).format(amount);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
   return (
     <div className="space-y-6">
       <div className="mb-4">
@@ -67,26 +59,6 @@ export function PortalRecordInformation({ portalRecord }: PortalRecordInformatio
         <div className="space-y-2">
           <label className="text-sm text-gray-500">Supplier Name</label>
           <Input value={portalRecord.supplierName} readOnly className="bg-gray-50" />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm text-gray-500">Connection Status</label>
-          <Input value={portalRecord.connectionStatus} readOnly className="bg-gray-50" />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm text-gray-500">Portal Status</label>
-          <Input value={portalRecord.portalStatus} readOnly className="bg-gray-50" />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm text-gray-500">Match Type</label>
-          <Input value={portalRecord.matchType} readOnly className="bg-gray-50" />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm text-gray-500">Last Synced</label>
-          <Input value={portalRecord.lastSynced} readOnly className="bg-gray-50" />
         </div>
       </div>
     </div>

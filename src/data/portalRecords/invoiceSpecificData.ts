@@ -73,7 +73,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     supplierName: "Office Supplies Co.",
     connectionStatus: "Connected",
     lastSynced: "2024-01-20T13:30:00Z",
-    status: "Processing",
+    status: "Pending",
     updated: "2024-01-20T13:30:00Z",
     conflict: true
   },
@@ -129,7 +129,7 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     supplierName: "Industrial Equipment Ltd.",
     connectionStatus: "Connected",
     lastSynced: "2024-01-25T14:30:00Z",
-    status: "Processing",
+    status: "Pending",
     updated: "2024-01-25T14:30:00Z",
     conflict: false
   },
