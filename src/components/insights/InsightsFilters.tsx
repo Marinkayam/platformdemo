@@ -13,22 +13,9 @@ interface InsightsFiltersProps {
 }
 
 export function InsightsFilters({ filters, onFilterChange, onClearFilters }: InsightsFiltersProps) {
-  const supplierOptions = Array.from(new Set(mockInsights.map(i => i.supplier))).map(supplier => ({
-    value: supplier,
-    label: supplier
-  }));
-
-  const buyerOptions = Array.from(new Set(mockInsights.map(i => i.buyer))).map(buyer => ({
-    value: buyer,
-    label: buyer
-  }));
-
-  const paymentScoreOptions = [
-    { value: 'Excellent', label: 'Excellent' },
-    { value: 'Good', label: 'Good' },
-    { value: 'Fair', label: 'Fair' },
-    { value: 'Poor', label: 'Poor' }
-  ];
+  const supplierOptions = Array.from(new Set(mockInsights.map(i => i.supplier)));
+  const buyerOptions = Array.from(new Set(mockInsights.map(i => i.buyer)));
+  const paymentScoreOptions = ['Excellent', 'Good', 'Fair', 'Poor'];
 
   const hasActiveFilters = filters.search || filters.supplier.length > 0 || filters.buyer.length > 0 || filters.paymentScore.length > 0;
 
@@ -49,22 +36,25 @@ export function InsightsFilters({ filters, onFilterChange, onClearFilters }: Ins
           <DesignFilterDropdown
             label="Supplier"
             options={supplierOptions}
-            selectedValues={filters.supplier}
-            onSelectionChange={(values) => onFilterChange('supplier', values)}
+            value={filters.supplier}
+            onSelect={(values) => onFilterChange('supplier', values)}
+            multiSelect={true}
           />
           
           <DesignFilterDropdown
             label="Buyer"
             options={buyerOptions}
-            selectedValues={filters.buyer}
-            onSelectionChange={(values) => onFilterChange('buyer', values)}
+            value={filters.buyer}
+            onSelect={(values) => onFilterChange('buyer', values)}
+            multiSelect={true}
           />
           
           <DesignFilterDropdown
             label="Payment Score"
             options={paymentScoreOptions}
-            selectedValues={filters.paymentScore}
-            onSelectionChange={(values) => onFilterChange('paymentScore', values)}
+            value={filters.paymentScore}
+            onSelect={(values) => onFilterChange('paymentScore', values)}
+            multiSelect={true}
           />
           
           {hasActiveFilters && (
