@@ -28,6 +28,17 @@ export function InvoiceFilters({
   const [fromDate, setFromDate] = useState<Date>();
   const [toDate, setToDate] = useState<Date>();
 
+  const formatDateRange = () => {
+    if (fromDate && toDate) {
+      return `${format(fromDate, "MM/dd")} - ${format(toDate, "MM/dd")}`;
+    } else if (fromDate) {
+      return `From ${format(fromDate, "MM/dd")}`;
+    } else if (toDate) {
+      return `To ${format(toDate, "MM/dd")}`;
+    }
+    return "Select dates";
+  };
+
   return (
     <div className="grid grid-cols-3 gap-4">
       <div className="space-y-2">
@@ -56,54 +67,54 @@ export function InvoiceFilters({
       </div>
       <div className="space-y-2">
         <Label className="text-sm font-medium">Date Range</Label>
-        <div className="flex gap-2">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={cn(
-                  "flex-1 justify-start text-left font-normal h-10",
-                  !fromDate && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {fromDate ? format(fromDate, "MM/dd") : "From"}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={fromDate}
-                onSelect={setFromDate}
-                initialFocus
-                className="p-3 pointer-events-auto"
-              />
-            </PopoverContent>
-          </Popover>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={cn(
-                  "flex-1 justify-start text-left font-normal h-10",
-                  !toDate && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {toDate ? format(toDate, "MM/dd") : "To"}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={toDate}
-                onSelect={setToDate}
-                initialFocus
-                className="p-3 pointer-events-auto"
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full justify-start text-left font-normal h-10",
+                !fromDate && !toDate && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {formatDateRange()}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <div className="p-4 space-y-4">
+              <div>
+                <Label className="text-sm font-medium mb-2 block">From Date</Label>
+                <Calendar
+                  mode="single"
+                  selected={fromDate}
+                  onSelect={setFromDate}
+                  className="p-0 pointer-events-auto"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium mb-2 block">To Date</Label>
+                <Calendar
+                  mode="single"
+                  selected={toDate}
+                  onSelect={setToDate}
+                  className="p-0 pointer-events-auto"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2 border-t">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    setFromDate(undefined);
+                    setToDate(undefined);
+                  }}
+                >
+                  Clear
+                </Button>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );
