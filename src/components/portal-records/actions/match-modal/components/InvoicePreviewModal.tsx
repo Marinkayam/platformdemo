@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FileText, X } from "lucide-react";
+import { FileText, Download } from "lucide-react";
 
 interface Invoice {
   id: string;
@@ -34,21 +34,33 @@ export function InvoicePreviewModal({ isOpen, onClose, invoice }: InvoicePreview
     }).format(amount);
   };
 
+  const handleDownloadPdf = () => {
+    // Mock download functionality - in real app this would download the actual PDF
+    console.log(`Downloading PDF for invoice ${invoice?.number}`);
+    // You could implement actual PDF download logic here
+  };
+
   if (!invoice) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
               Invoice Preview - {invoice.number}
-            </DialogTitle>
-            <Button variant="ghost" size="sm" onClick={onClose}>
-              <X className="h-4 w-4" />
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleDownloadPdf}
+              className="flex items-center gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Download PDF
             </Button>
-          </div>
+          </DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6 p-6">
