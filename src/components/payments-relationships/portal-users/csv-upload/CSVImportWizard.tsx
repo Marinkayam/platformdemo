@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
@@ -6,12 +7,13 @@ import { UploadStep } from './UploadStep';
 import { MappingStep } from './MappingStep';
 import { ReviewStep } from './ReviewStep';
 import { SummaryStep } from './SummaryStep';
+import { ConnectionProgressStep } from '../add-portal-user-wizard/ConnectionProgressStep';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { PortalUser } from '@/types/portalUser';
 
-type WizardStepId = 'upload' | 'mapping' | 'review' | 'summary';
+type WizardStepId = 'upload' | 'mapping' | 'review' | 'summary' | 'connecting';
 
 interface Step {
   id: WizardStepId;
@@ -47,7 +49,7 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
   const [validatedData, setValidatedData] = useState<ValidatedUser[]>([]);
 
   const currentStepIndex = WIZARD_STEPS.findIndex(s => s.id === currentStep);
-  const progress = ((currentStepIndex + 1) / WIZARD_STEPS.length) * 100;
+  const progress = currentStep === 'connecting' ? 100 : ((currentStepIndex + 1) / WIZARD_STEPS.length) * 100;
 
   const parseFile = (fileToParse: File) => {
     const reader = new FileReader();
@@ -135,15 +137,28 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
     const usersToImport = validatedData
         .filter(user => user._status !== 'error')
         .map(({ _row, _errors, _warnings, _status, ...user }) => user);
+    
+    // Start connection flow instead of immediately completing
+    setCurrentStep('connecting');
+  };
+
+  const handleConnectionComplete = () => {
+    const usersToImport = validatedData
+        .filter(user => user._status !== 'error')
+        .map(({ _row, _errors, _warnings, _status, ...user }) => user);
+    
     onImport(usersToImport);
     onComplete();
-  }
+  };
 
   const isNextDisabled = () => {
     if (currentStep === 'upload') return !file;
     if (currentStep === 'mapping') return MONTO_FIELDS.filter(f => f.required).some(f => !mappings[f.key]);
     return false;
   };
+
+  // Don't show progress bar during connection
+  const showProgressBar = currentStep !== 'connecting';
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -155,6 +170,11 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
         return <ReviewStep data={validatedData} onDataChange={setValidatedData} />;
       case 'summary':
         return <SummaryStep data={validatedData} />;
+      case 'connecting':
+        return <ConnectionProgressStep 
+          selectedPortal="Multiple Portals"
+          onConnectionComplete={handleConnectionComplete}
+        />;
       default:
         return null;
     }
@@ -162,40 +182,44 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
 
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <Progress value={progress} className="h-2" />
-        <div className="flex justify-between text-sm font-normal text-gray-600">
-          {WIZARD_STEPS.map((step, index) => (
-            <span key={step.id} className={currentStepIndex >= index ? 'text-primary' : ''}>
-              {step.name}
-            </span>
-          ))}
+      {showProgressBar && (
+        <div className="space-y-4">
+          <Progress value={progress} className="h-2" />
+          <div className="flex justify-between text-sm font-normal text-gray-600">
+            {WIZARD_STEPS.map((step, index) => (
+              <span key={step.id} className={currentStepIndex >= index ? 'text-primary' : ''}>
+                {step.name}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       
       <div>
         {renderStepContent()}
       </div>
 
-      <div className="flex justify-between items-center pt-4 border-t">
-        <div>
-          {currentStep !== 'upload' && (
-            <Button variant="outline" onClick={handleBack}>
-              <ArrowLeft className="mr-2" /> Back
-            </Button>
-          )}
+      {currentStep !== 'connecting' && (
+        <div className="flex justify-between items-center pt-4 border-t">
+          <div>
+            {currentStep !== 'upload' && (
+              <Button variant="outline" onClick={handleBack}>
+                <ArrowLeft className="mr-2" /> Back
+              </Button>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" onClick={onComplete}>Cancel</Button>
+            {currentStep === 'summary' ? (
+              <Button onClick={handleImport}>Import Users</Button>
+            ) : (
+              <Button onClick={handleNext} disabled={isNextDisabled()}>
+                Continue <ArrowRight className="ml-2" />
+              </Button>
+            )}
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" onClick={onComplete}>Cancel</Button>
-          {currentStep === 'summary' ? (
-            <Button onClick={handleImport}>Import Users</Button>
-          ) : (
-            <Button onClick={handleNext} disabled={isNextDisabled()}>
-              Continue <ArrowRight className="ml-2" />
-            </Button>
-          )}
-        </div>
-      </div>
+      )}
     </div>
   );
 }
