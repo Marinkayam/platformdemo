@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { EmailConnector } from './types';
-import { ConnectorCard } from './ConnectorCard';
 
 interface ConnectorsListProps {
   connectors: EmailConnector[];
@@ -16,15 +15,10 @@ export function ConnectorsList({ connectors, onView, onStatusChange }: Connector
         <h3 className="text-lg font-semibold text-grey-900">Active Connectors</h3>
         <p className="text-sm text-grey-600">Configure and manage your email-based integrations</p>
       </div>
-      <div className="divide-y divide-grey-300">
-        {connectors.map((connector) => (
-          <ConnectorCard 
-            key={connector.id}
-            connector={connector}
-            onView={onView}
-            onStatusChange={onStatusChange}
-          />
-        ))}
+      <div className="p-4">
+        <div className="text-center py-20 text-grey-500">
+          Email connector management coming soon...
+        </div>
       </div>
     </div>
   );

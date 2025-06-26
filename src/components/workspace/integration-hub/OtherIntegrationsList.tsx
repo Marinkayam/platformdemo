@@ -24,7 +24,7 @@ export function OtherIntegrationsList({ integrations }: OtherIntegrationsListPro
                 <div className="text-xs text-grey-500">{integration.type}</div>
               </div>
             </div>
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(integration.status)}`}>
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(integration.status)}`} style={{ backgroundColor: '#EFEBFF' }}>
               {integration.status}
             </span>
           </div>
