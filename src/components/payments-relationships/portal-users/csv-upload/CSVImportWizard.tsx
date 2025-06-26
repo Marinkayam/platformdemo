@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { UploadStep } from './UploadStep';
@@ -10,8 +9,7 @@ import { WizardProgress } from './components/WizardProgress';
 import { WizardNavigation } from './components/WizardNavigation';
 import { useFileParser } from './hooks/useFileParser';
 import { useDataValidation } from './hooks/useDataValidation';
-import { WizardStepId, ValidatedUser } from './types';
-import { MONTO_FIELDS } from './constants';
+import { WizardStepId, ValidatedUser, MONTO_FIELDS } from './types';
 
 export { MONTO_FIELDS, type ValidatedUser } from './types';
 

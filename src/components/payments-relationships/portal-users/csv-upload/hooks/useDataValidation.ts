@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { ValidatedUser } from '../types';
-import { MONTO_FIELDS } from '../constants';
+import { MONTO_FIELDS } from '../types';
 
 export function useDataValidation() {
   const [validatedData, setValidatedData] = useState<ValidatedUser[]>([]);

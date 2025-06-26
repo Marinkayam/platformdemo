@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { WizardStepId } from '../types';
-import { MONTO_FIELDS } from '../constants';
+import { MONTO_FIELDS } from '../types';
 
 interface WizardNavigationProps {
   currentStep: WizardStepId;

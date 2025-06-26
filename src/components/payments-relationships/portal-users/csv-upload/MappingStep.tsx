@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AlertCircle, ArrowRight } from 'lucide-react';
-import { MONTO_FIELDS } from './constants';
+import { MONTO_FIELDS } from './types';
 
 interface MappingStepProps {
   headers: string[];
