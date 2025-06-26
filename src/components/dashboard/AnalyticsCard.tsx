@@ -15,17 +15,17 @@ export function AnalyticsCard({ title, value, subtitle, type, icon, onClick }: A
   const getColorClasses = () => {
     switch (type) {
       case 'paid':
-        return 'text-green-600 bg-green-50';
+        return 'text-success-main bg-success-main/10 border-success-main/20';
       case 'upcoming':
-        return 'text-yellow-600 bg-yellow-50';
+        return 'text-warning-main bg-warning-main/10 border-warning-main/20';
       case 'pastdue':
-        return 'text-red-600 bg-red-50';
+        return 'text-error-main bg-error-main/10 border-error-main/20';
       case 'portal':
-        return 'text-blue-600 bg-blue-50';
+        return 'text-info-main bg-info-main/10 border-info-main/20';
       case 'time':
-        return 'text-purple-600 bg-purple-50';
+        return 'text-primary-main bg-primary-main/10 border-primary-main/20';
       default:
-        return 'text-gray-600 bg-gray-50';
+        return 'text-grey-600 bg-grey-100/10 border-grey-400/20';
     }
   };
 
@@ -43,30 +43,47 @@ export function AnalyticsCard({ title, value, subtitle, type, icon, onClick }: A
   };
 
   const getTextColor = () => {
-    if (subtitle?.includes('-')) return 'text-red-500';
-    if (subtitle?.includes('+')) return 'text-green-500';
-    return 'text-gray-500';
+    if (subtitle?.includes('-')) return 'text-error-main';
+    if (subtitle?.includes('+')) return 'text-success-main';
+    return 'text-grey-600';
+  };
+
+  const getBackgroundGradient = () => {
+    switch (type) {
+      case 'paid':
+        return 'bg-gradient-to-br from-success-main/5 to-success-main/10';
+      case 'upcoming':
+        return 'bg-gradient-to-br from-warning-main/5 to-warning-main/10';
+      case 'pastdue':
+        return 'bg-gradient-to-br from-error-main/5 to-error-main/10';
+      case 'portal':
+        return 'bg-gradient-to-br from-info-main/5 to-info-main/10';
+      case 'time':
+        return 'bg-gradient-to-br from-primary-main/5 to-primary-main/10';
+      default:
+        return 'bg-gradient-to-br from-grey-200/50 to-grey-300/50';
+    }
   };
 
   return (
     <Card 
-      className={`hover-scale animate-fade-in ${onClick ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}
+      className={`relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${getBackgroundGradient()} ${onClick ? 'cursor-pointer' : ''}`}
       onClick={onClick}
     >
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+        <CardTitle className="text-sm font-medium text-grey-700">{title}</CardTitle>
         {(icon || getDefaultIcon()) && (
-          <div className={`p-2 rounded-md ${getColorClasses()}`}>
+          <div className={`p-2.5 rounded-xl border ${getColorClasses()}`}>
             {icon || getDefaultIcon()}
           </div>
         )}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold text-gray-900 mb-1">{value}</div>
+        <div className="text-3xl font-bold text-grey-900 mb-2">{value}</div>
         {subtitle && (
-          <p className={`text-xs ${getTextColor()} flex items-center gap-1`}>
-            {subtitle.includes('+') && <TrendingUp className="h-3 w-3" />}
-            {subtitle.includes('-') && <TrendingDown className="h-3 w-3" />}
+          <p className={`text-sm ${getTextColor()} flex items-center gap-1`}>
+            {subtitle.includes('+') && <TrendingUp className="h-4 w-4" />}
+            {subtitle.includes('-') && <TrendingDown className="h-4 w-4" />}
             {subtitle}
           </p>
         )}

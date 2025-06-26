@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { Calendar, BarChart3, Table } from 'lucide-react';
+import { Calendar, BarChart3, Table, TrendingUp } from 'lucide-react';
 
 // Mock data for cash forecast
 const mockCashForecast = [
@@ -21,68 +21,99 @@ export function CompactCashForecast() {
   const [viewMode, setViewMode] = useState<'chart' | 'table'>('chart');
 
   const totalForecast = mockCashForecast.reduce((acc, item) => acc + item.amount, 0);
+  const avgWeekly = totalForecast / mockCashForecast.length;
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <div className="flex items-center gap-2">
-          <Calendar className="h-4 w-4 text-purple-600" />
-          <CardTitle className="text-sm font-medium text-gray-900">Cash Forecast (8 weeks)</CardTitle>
+    <Card className="bg-gradient-to-br from-primary-main/5 to-primary-main/10 border border-primary-main/20">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-primary-main/10 border border-primary-main/20">
+            <Calendar className="h-5 w-5 text-primary-main" />
+          </div>
+          <div>
+            <CardTitle className="text-lg font-semibold text-grey-900">Cash Forecast</CardTitle>
+            <p className="text-sm text-grey-600">Next 8 weeks</p>
+          </div>
         </div>
         <div className="flex gap-1">
           <Button
             variant={viewMode === 'chart' ? 'default' : 'ghost'}
-            size="xs"
+            size="sm"
             onClick={() => setViewMode('chart')}
+            className="h-8 w-8 p-0"
           >
-            <BarChart3 className="h-3 w-3" />
+            <BarChart3 className="h-4 w-4" />
           </Button>
           <Button
             variant={viewMode === 'table' ? 'default' : 'ghost'}
-            size="xs"
+            size="sm"
             onClick={() => setViewMode('table')}
+            className="h-8 w-8 p-0"
           >
-            <Table className="h-3 w-3" />
+            <Table className="h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="mb-3">
-          <div className="text-2xl font-bold text-gray-900">
-            ${totalForecast.toFixed(1)}M
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="p-3 rounded-lg bg-white/60 border border-grey-200">
+            <div className="text-2xl font-bold text-grey-900 mb-1">
+              ${totalForecast.toFixed(1)}M
+            </div>
+            <p className="text-xs text-grey-600 flex items-center gap-1">
+              <TrendingUp className="h-3 w-3" />
+              Total expected
+            </p>
           </div>
-          <p className="text-xs text-gray-500">Expected receipts</p>
+          <div className="p-3 rounded-lg bg-white/60 border border-grey-200">
+            <div className="text-2xl font-bold text-grey-900 mb-1">
+              ${avgWeekly.toFixed(1)}M
+            </div>
+            <p className="text-xs text-grey-600">Weekly average</p>
+          </div>
         </div>
 
         {viewMode === 'chart' ? (
-          <div className="h-32">
+          <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={mockCashForecast}>
+              <BarChart data={mockCashForecast} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
                 <XAxis 
                   dataKey="week" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 10 }}
+                  tick={{ fontSize: 12, fill: '#586079' }}
                 />
                 <YAxis hide />
                 <Tooltip 
                   formatter={(value: number) => [`$${value}M`, 'Amount']}
-                  labelStyle={{ fontSize: '12px' }}
+                  labelStyle={{ fontSize: '12px', color: '#586079' }}
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #E6E7EB',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }}
                 />
                 <Bar 
                   dataKey="amount" 
-                  fill="#7B59FF" 
-                  radius={[2, 2, 0, 0]}
+                  fill="url(#barGradient)"
+                  radius={[4, 4, 0, 0]}
                 />
+                <defs>
+                  <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#7B59FF" stopOpacity={0.8} />
+                    <stop offset="100%" stopColor="#7B59FF" stopOpacity={0.4} />
+                  </linearGradient>
+                </defs>
               </BarChart>
             </ResponsiveContainer>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-2">
             {mockCashForecast.map((item) => (
-              <div key={item.week} className="flex justify-between items-center py-1">
-                <span className="text-xs text-gray-600">{item.week}</span>
-                <span className="text-xs font-medium">${item.amount}M</span>
+              <div key={item.week} className="flex justify-between items-center py-2 px-3 rounded-lg bg-white/40 hover:bg-white/60 transition-colors">
+                <span className="text-sm font-medium text-grey-700">{item.week}</span>
+                <span className="text-sm font-bold text-grey-900">${item.amount}M</span>
               </div>
             ))}
           </div>
