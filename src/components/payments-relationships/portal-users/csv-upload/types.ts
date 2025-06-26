@@ -21,3 +21,9 @@ export interface MontoField {
   required: boolean;
   description: string;
 }
+
+export const MONTO_FIELDS: MontoField[] = [
+  { key: 'portal', label: 'Portal', required: true, description: "The name of the portal (e.g., Coupa, SAP Ariba)." },
+  { key: 'username', label: 'Username', required: true, description: "The login email or username for the portal user." },
+  { key: 'password', label: 'Password', required: false, description: "The password for the portal user. Will not be stored." },
+];

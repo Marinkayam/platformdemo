@@ -10,9 +10,10 @@ import { WizardProgress } from './components/WizardProgress';
 import { WizardNavigation } from './components/WizardNavigation';
 import { useFileParser } from './hooks/useFileParser';
 import { useDataValidation } from './hooks/useDataValidation';
-import { WizardStepId } from './types';
+import { WizardStepId, ValidatedUser } from './types';
+import { MONTO_FIELDS } from './constants';
 
-export { MONTO_FIELDS, type ValidatedUser } from './constants';
+export { MONTO_FIELDS, type ValidatedUser } from './types';
 
 export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => void; onImport: (users: Partial<PortalUser>[]) => void }) {
   const [currentStep, setCurrentStep] = useState<WizardStepId>('upload');
