@@ -8,9 +8,10 @@ interface AnalyticsCardProps {
   subtitle?: string;
   type: 'paid' | 'upcoming' | 'pastdue' | 'portal' | 'time';
   icon?: React.ReactNode;
+  onClick?: () => void;
 }
 
-export function AnalyticsCard({ title, value, subtitle, type, icon }: AnalyticsCardProps) {
+export function AnalyticsCard({ title, value, subtitle, type, icon, onClick }: AnalyticsCardProps) {
   const getColorClasses = () => {
     switch (type) {
       case 'paid':
@@ -48,7 +49,10 @@ export function AnalyticsCard({ title, value, subtitle, type, icon }: AnalyticsC
   };
 
   return (
-    <Card className="hover-scale animate-fade-in">
+    <Card 
+      className={`hover-scale animate-fade-in ${onClick ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}
+      onClick={onClick}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
         {(icon || getDefaultIcon()) && (
