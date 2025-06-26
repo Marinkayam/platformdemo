@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AlertCircle, ArrowRight } from 'lucide-react';
-import { MONTO_FIELDS } from './CSVImportWizard';
+import { MONTO_FIELDS } from './constants';
 
 interface MappingStepProps {
   headers: string[];
@@ -26,7 +26,7 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
     });
     setMappings(initialMappings);
     onMappingChange(initialMappings);
-  }, [headers]);
+  }, [headers, onMappingChange]);
 
   const handleMapping = (montoField: string, csvHeader: string) => {
     const newMappings = { ...mappings, [montoField]: csvHeader };
