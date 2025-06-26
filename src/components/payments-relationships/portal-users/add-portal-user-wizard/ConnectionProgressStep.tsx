@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { LoadingAnimation } from './LoadingAnimation';
+import { Typography } from '@/components/ui/typography/typography';
 
 interface ConnectionProgressStepProps {
   selectedPortal: string;
@@ -60,18 +61,30 @@ export function ConnectionProgressStep({ selectedPortal, onConnectionComplete }:
 
   if (phase === 'connecting') {
     return (
-      <div className="text-center space-y-6 py-8">
+      <div className="text-center space-y-8 py-12">
+        {/* Potion Illustration */}
+        <div className="w-24 h-24 mx-auto mb-6">
+          <img 
+            src="/lovable-uploads/e38a7a30-6e50-4349-ad11-52305d3e55da.png" 
+            alt="AI Connection Magic"
+            className="w-full h-full object-contain animate-pulse"
+          />
+        </div>
+        
         <LoadingAnimation />
-        <div className="space-y-2">
-          <h3 className="text-xl font-semibold text-gray-900">
+        
+        <div className="space-y-4 max-w-md mx-auto">
+          <Typography variant="h3" className="text-grey-900">
             Connecting to {selectedPortal}
-          </h3>
-          <p className="text-gray-600">
+          </Typography>
+          <Typography variant="body1" className="text-grey-600">
             Our AI agent is scanning your portal and establishing a secure connection.
-          </p>
-          <p className="text-sm text-gray-500">
-            This usually takes about 30 seconds. Please don't close this window.
-          </p>
+          </Typography>
+          <div className="bg-primary-lighter border border-primary-light/20 rounded-lg p-4 mt-6">
+            <Typography variant="body2" className="text-primary-dark">
+              This usually takes about 30 seconds. Please don't close this window.
+            </Typography>
+          </div>
         </div>
       </div>
     );
@@ -79,24 +92,40 @@ export function ConnectionProgressStep({ selectedPortal, onConnectionComplete }:
 
   if (phase === 'success') {
     return (
-      <div className="text-center space-y-6 py-8">
-        <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
-          <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+      <div className="text-center space-y-8 py-12">
+        {/* Crystal Ball Illustration */}
+        <div className="w-28 h-28 mx-auto mb-6">
+          <img 
+            src="/lovable-uploads/14a68f61-74dd-44cd-910e-19f8d7c7aa6f.png" 
+            alt="AI Magic Complete"
+            className="w-full h-full object-contain animate-scale-in"
+          />
+        </div>
+
+        <div className="w-20 h-20 mx-auto bg-success-main/10 rounded-full flex items-center justify-center animate-scale-in">
+          <svg className="w-10 h-10 text-success-main" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-green-700">
+        
+        <div className="space-y-6 max-w-lg mx-auto">
+          <Typography variant="h3" className="text-success-main">
             Successfully Connected!
-          </h3>
-          <p className="text-gray-600">
+          </Typography>
+          <Typography variant="body1" className="text-grey-600">
             Monto's AI Agent is now scanning your payment relationships in {selectedPortal}.
-          </p>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-left">
-            <h4 className="font-medium text-blue-900 mb-2">How Monto's AI Agent works?</h4>
-            <p className="text-sm text-blue-800">
+          </Typography>
+          
+          <div className="bg-gradient-to-br from-primary-lighter to-primary-light/30 border border-primary-light/30 rounded-xl p-6 text-left">
+            <Typography variant="h5" className="text-primary-dark mb-3 flex items-center gap-2">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+              How Monto's AI Agent works?
+            </Typography>
+            <Typography variant="body2" className="text-primary-darker leading-relaxed">
               Our AI agent is navigating your {selectedPortal} just like a human would, learning its structure and extracting payment data in real-time. All data is synced continuously without manual effort.
-            </p>
+            </Typography>
           </div>
         </div>
       </div>
@@ -105,14 +134,25 @@ export function ConnectionProgressStep({ selectedPortal, onConnectionComplete }:
 
   if (phase === 'scanning') {
     return (
-      <div className="text-center space-y-6 py-8">
+      <div className="text-center space-y-8 py-12">
+        {/* Rotating Crystal Ball during scanning */}
+        <div className="w-24 h-24 mx-auto mb-6">
+          <img 
+            src="/lovable-uploads/14a68f61-74dd-44cd-910e-19f8d7c7aa6f.png" 
+            alt="AI Processing"
+            className="w-full h-full object-contain animate-spin"
+            style={{ animationDuration: '3s' }}
+          />
+        </div>
+        
         <LoadingAnimation />
-        <div className="space-y-2">
-          <h3 className="text-lg font-medium text-gray-900">
+        
+        <div className="space-y-4 max-w-md mx-auto">
+          <Typography variant="h4" className="text-grey-900 animate-pulse">
             {scanningText}
-          </h3>
-          <div className="w-48 mx-auto bg-gray-200 rounded-full h-2">
-            <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{ width: '70%' }}></div>
+          </Typography>
+          <div className="w-64 mx-auto bg-grey-300 rounded-full h-2 overflow-hidden">
+            <div className="bg-gradient-to-r from-primary-main to-primary-light h-2 rounded-full animate-pulse transition-all duration-1000" style={{ width: '75%' }}></div>
           </div>
         </div>
       </div>
