@@ -20,7 +20,7 @@ export function DashboardInsights() {
 
   return (
     <Card 
-      className="cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-gradient-to-br from-[#EFEBFF] to-[#BEADFF]/30 border border-[#7B59FF]/20"
+      className="cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border border-[#7B59FF]/20"
       onClick={handleInsightsClick}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">

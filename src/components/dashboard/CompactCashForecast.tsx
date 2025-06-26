@@ -24,7 +24,7 @@ export function CompactCashForecast() {
   const avgWeekly = totalForecast / mockCashForecast.length;
 
   return (
-    <Card className="bg-gradient-to-br from-[#EFEBFF] to-[#BEADFF]/30 border border-[#7B59FF]/20">
+    <Card className="bg-white border border-[#7B59FF]/20">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-xl bg-[#7B59FF]/10 border border-[#7B59FF]/20">

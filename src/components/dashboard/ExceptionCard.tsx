@@ -34,19 +34,10 @@ export function ExceptionCard({
   const getColorClasses = () => {
     if (count > 0) {
       return type === 'rtp' 
-        ? 'text-[#EF4444] bg-gradient-to-br from-[#EF4444]/10 to-[#EF4444]/20 border-[#EF4444]/30'
-        : 'text-[#7B59FF] bg-gradient-to-br from-[#EFEBFF] to-[#BEADFF]/20 border-[#7B59FF]/30';
+        ? 'text-[#EF4444] bg-[#EF4444]/10 border-[#EF4444]/30'
+        : 'text-[#7B59FF] bg-[#EFEBFF] border-[#7B59FF]/30';
     }
-    return 'text-[#007737] bg-gradient-to-br from-[#007737]/10 to-[#007737]/20 border-[#007737]/30';
-  };
-
-  const getCardBackground = () => {
-    if (count > 0) {
-      return type === 'rtp' 
-        ? 'bg-gradient-to-br from-[#EF4444]/5 to-[#EF4444]/10'
-        : 'bg-gradient-to-br from-[#EFEBFF] to-[#EFEBFF]/60';
-    }
-    return 'bg-gradient-to-br from-[#007737]/5 to-[#007737]/10';
+    return 'text-[#007737] bg-[#007737]/10 border-[#007737]/30';
   };
 
   const getButtonVariant = () => {
@@ -65,7 +56,7 @@ export function ExceptionCard({
 
   return (
     <Card 
-      className={`relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${getCardBackground()} ${onCardClick ? 'cursor-pointer' : ''}`}
+      className={`relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white ${onCardClick ? 'cursor-pointer' : ''}`}
       onClick={onCardClick}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">

@@ -48,26 +48,9 @@ export function AnalyticsCard({ title, value, subtitle, type, icon, onClick }: A
     return 'text-[#586079]';
   };
 
-  const getBackgroundGradient = () => {
-    switch (type) {
-      case 'paid':
-        return 'bg-gradient-to-br from-[#007737]/5 to-[#007737]/10';
-      case 'upcoming':
-        return 'bg-gradient-to-br from-[#F2AE40]/5 to-[#F2AE40]/10';
-      case 'pastdue':
-        return 'bg-gradient-to-br from-[#EF4444]/5 to-[#EF4444]/10';
-      case 'portal':
-        return 'bg-gradient-to-br from-[#EFEBFF] to-[#BEADFF]/20';
-      case 'time':
-        return 'bg-gradient-to-br from-[#EFEBFF] to-[#BEADFF]/20';
-      default:
-        return 'bg-gradient-to-br from-[#E6E7EB]/50 to-[#F4F6F8]/50';
-    }
-  };
-
   return (
     <Card 
-      className={`relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${getBackgroundGradient()} ${onClick ? 'cursor-pointer' : ''}`}
+      className={`relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white ${onClick ? 'cursor-pointer' : ''}`}
       onClick={onClick}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
