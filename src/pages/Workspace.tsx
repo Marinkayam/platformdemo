@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Building, Users, FileText, Settings, Plug, Building2 } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
@@ -6,7 +5,7 @@ import { TeamTab } from "@/components/workspace/TeamTab";
 import { CompanyTab } from "@/components/workspace/CompanyTab";
 import { LicenseTab } from "@/components/workspace/LicenseTab";
 import { DuplicationPolicyTab } from "@/components/workspace/DuplicationPolicyTab";
-import { IntegrationHub } from "@/components/workspace/IntegrationHub";
+import { IntegrationHub } from "@/components/workspace/integration-hub/IntegrationHub";
 
 const headerTabs = [
   {

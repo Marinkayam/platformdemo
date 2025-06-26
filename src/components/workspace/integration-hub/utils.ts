@@ -1,10 +1,10 @@
 
 export const getStatusColor = (status: string) => {
   switch (status) {
-    case 'ACTIVE': return 'bg-green-100 text-green-800';
-    case 'DRAFT': return 'bg-yellow-100 text-yellow-800';
-    case 'INACTIVE': return 'bg-gray-100 text-gray-800';
-    case 'Coming Soon': return 'bg-blue-100 text-blue-800';
-    default: return 'bg-gray-100 text-gray-800';
+    case 'ACTIVE': return 'bg-success-main/10 text-success-main border-success-main';
+    case 'DRAFT': return 'bg-warning-main/10 text-warning-main border-warning-main';
+    case 'INACTIVE': return 'bg-grey-400 text-grey-600 border-grey-400';
+    case 'Coming Soon': return 'bg-info-main/10 text-info-main border-info-main';
+    default: return 'bg-grey-400 text-grey-600 border-grey-400';
   }
 };

@@ -12,19 +12,19 @@ interface ConnectorCardProps {
 
 export function ConnectorCard({ connector, onView, onStatusChange }: ConnectorCardProps) {
   return (
-    <div className="p-4 hover:bg-gray-50 transition-colors">
+    <div className="p-4 hover:bg-grey-200 transition-colors">
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <h4 className="font-medium text-gray-900">{connector.name}</h4>
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(connector.status)}`}>
+            <h4 className="font-medium text-grey-900">{connector.name}</h4>
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(connector.status)}`}>
               {connector.status === 'ACTIVE' && <Check className="w-3 h-3 mr-1" />}
               {connector.status === 'DRAFT' && <Clock className="w-3 h-3 mr-1" />}
               {connector.status === 'INACTIVE' && <AlertCircle className="w-3 h-3 mr-1" />}
               {connector.status}
             </span>
           </div>
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-grey-600">
             <div className="flex items-center gap-4">
               <span>Email: {connector.emailTo}</span>
               <span>Type: {connector.type}</span>
@@ -35,27 +35,27 @@ export function ConnectorCard({ connector, onView, onStatusChange }: ConnectorCa
         <div className="flex items-center gap-1">
           <button 
             onClick={() => onView(connector)}
-            className="p-2 text-gray-400 hover:text-gray-600 rounded-md hover:bg-gray-100"
+            className="p-2 text-grey-500 hover:text-grey-700 rounded-md hover:bg-grey-200"
             title="View Details"
           >
             <Eye className="w-4 h-4" />
           </button>
           <button 
-            className="p-2 text-gray-400 hover:text-gray-600 rounded-md hover:bg-gray-100"
+            className="p-2 text-grey-500 hover:text-grey-700 rounded-md hover:bg-grey-200"
             title="Edit"
           >
             <Edit2 className="w-4 h-4" />
           </button>
           <button 
-            className="p-2 text-gray-400 hover:text-gray-600 rounded-md hover:bg-gray-100"
+            className="p-2 text-grey-500 hover:text-grey-700 rounded-md hover:bg-grey-200"
             title="Settings"
           >
             <Settings className="w-4 h-4" />
           </button>
           <button 
             onClick={() => onStatusChange(connector.id, connector.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE')}
-            className={`p-2 rounded-md hover:bg-gray-100 ${
-              connector.status === 'ACTIVE' ? 'text-green-600 hover:text-green-800' : 'text-gray-400 hover:text-gray-600'
+            className={`p-2 rounded-md hover:bg-grey-200 ${
+              connector.status === 'ACTIVE' ? 'text-success-main hover:text-success-main' : 'text-grey-500 hover:text-grey-700'
             }`}
             title={connector.status === 'ACTIVE' ? 'Pause' : 'Activate'}
           >
