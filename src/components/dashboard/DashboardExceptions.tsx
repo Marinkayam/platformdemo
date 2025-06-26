@@ -21,25 +21,27 @@ export function DashboardExceptions({ exceptionData }: DashboardExceptionsProps)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div onClick={handleSmartConnectionClick} className="cursor-pointer hover:scale-105 transition-transform">
-        <ExceptionCard
-          title="Smart Connection Exceptions"
-          subtitle="Connections needing attention"
-          count={exceptionData.scExceptions.connectionCount}
-          type="smartconnection"
-          affectedInvoices={exceptionData.scExceptions.affectedInvoices}
-        />
-      </div>
+      <ExceptionCard
+        title="Smart Connection Exceptions"
+        subtitle="Connections needing attention"
+        count={exceptionData.scExceptions.connectionCount}
+        type="smartconnection"
+        affectedInvoices={exceptionData.scExceptions.affectedInvoices}
+        onCardClick={handleSmartConnectionClick}
+        onButtonClick={handleSmartConnectionClick}
+        buttonText="View Connections"
+      />
       
-      <div onClick={handleInvoiceExceptionClick} className="cursor-pointer hover:scale-105 transition-transform">
-        <ExceptionCard
-          title="Invoice Exceptions"
-          subtitle="RTPs requiring manual attention"
-          count={exceptionData.rtpExceptions.count}
-          amount={exceptionData.rtpExceptions.totalAmount}
-          type="rtp"
-        />
-      </div>
+      <ExceptionCard
+        title="Invoice Exceptions"
+        subtitle="RTPs requiring manual attention"
+        count={exceptionData.rtpExceptions.count}
+        amount={exceptionData.rtpExceptions.totalAmount}
+        type="rtp"
+        onCardClick={handleInvoiceExceptionClick}
+        onButtonClick={handleInvoiceExceptionClick}
+        buttonText="Resolve Exceptions"
+      />
     </div>
   );
 }

@@ -42,12 +42,10 @@ const Dashboard = () => {
           <Skeleton className="h-40 w-full rounded-xl" />
           <Skeleton className="h-40 w-full rounded-xl" />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <Skeleton className="h-64 w-full rounded-xl" />
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Skeleton className="h-64 w-full rounded-xl" />
           <div className="space-y-6">
-            <Skeleton className="h-64 w-full rounded-xl" />
+            <Skeleton className="h-80 w-full rounded-xl" />
             <Skeleton className="h-80 w-full rounded-xl" />
           </div>
         </div>
@@ -66,15 +64,13 @@ const Dashboard = () => {
       {/* Main Metrics Grid */}
       <DashboardMetricsGrid data={metricsData} />
       
-      {/* Exceptions and Insights Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <DashboardExceptions exceptionData={exceptionData} />
-        </div>
-        <div className="space-y-6">
-          <DashboardInsights />
-          <CompactCashForecast />
-        </div>
+      {/* Exceptions Row - Full width */}
+      <DashboardExceptions exceptionData={exceptionData} />
+      
+      {/* Insights and Cash Forecast Row - Larger sections */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <DashboardInsights />
+        <CompactCashForecast />
       </div>
     </div>
   );

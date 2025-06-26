@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, Wifi } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { AlertTriangle, Wifi, ArrowRight } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
 interface ExceptionCardProps {
@@ -10,9 +11,22 @@ interface ExceptionCardProps {
   amount?: number;
   type: 'rtp' | 'smartconnection';
   affectedInvoices?: number;
+  onCardClick?: () => void;
+  onButtonClick?: () => void;
+  buttonText?: string;
 }
 
-export function ExceptionCard({ title, subtitle, count, amount, type, affectedInvoices }: ExceptionCardProps) {
+export function ExceptionCard({ 
+  title, 
+  subtitle, 
+  count, 
+  amount, 
+  type, 
+  affectedInvoices,
+  onCardClick,
+  onButtonClick,
+  buttonText = "View Details"
+}: ExceptionCardProps) {
   const getIcon = () => {
     return type === 'rtp' ? <AlertTriangle className="h-6 w-6" /> : <Wifi className="h-6 w-6" />;
   };
@@ -35,8 +49,18 @@ export function ExceptionCard({ title, subtitle, count, amount, type, affectedIn
     return 'bg-gradient-to-br from-success-main/5 to-success-main/10';
   };
 
+  const getButtonVariant = () => {
+    if (count > 0) {
+      return type === 'rtp' ? 'destructive' : 'default';
+    }
+    return 'outline';
+  };
+
   return (
-    <Card className={`relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${getCardBackground()}`}>
+    <Card 
+      className={`relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${getCardBackground()} ${onCardClick ? 'cursor-pointer' : ''}`}
+      onClick={onCardClick}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <div className="flex-1">
           <CardTitle className="text-lg font-semibold text-grey-900 mb-1">{title}</CardTitle>
@@ -46,7 +70,7 @@ export function ExceptionCard({ title, subtitle, count, amount, type, affectedIn
           {getIcon()}
         </div>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4">
         <div className="flex items-baseline gap-2">
           <span className="text-4xl font-bold text-grey-900">{count}</span>
           <span className="text-sm text-grey-600">
@@ -69,6 +93,18 @@ export function ExceptionCard({ title, subtitle, count, amount, type, affectedIn
             <span className="text-lg font-bold text-grey-900">{affectedInvoices}</span>
           </div>
         )}
+
+        <Button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onButtonClick?.();
+          }}
+          variant={getButtonVariant()}
+          className="w-full mt-4 transition-all duration-300 hover:scale-105"
+        >
+          {buttonText}
+          <ArrowRight className="h-4 w-4 ml-2" />
+        </Button>
       </CardContent>
     </Card>
   );
