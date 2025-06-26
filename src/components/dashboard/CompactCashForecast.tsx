@@ -24,15 +24,15 @@ export function CompactCashForecast() {
   const avgWeekly = totalForecast / mockCashForecast.length;
 
   return (
-    <Card className="bg-gradient-to-br from-primary-main/5 to-primary-main/10 border border-primary-main/20">
+    <Card className="bg-gradient-to-br from-[#EFEBFF] to-[#BEADFF]/30 border border-[#7B59FF]/20">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-primary-main/10 border border-primary-main/20">
-            <Calendar className="h-5 w-5 text-primary-main" />
+          <div className="p-2.5 rounded-xl bg-[#7B59FF]/10 border border-[#7B59FF]/20">
+            <Calendar className="h-5 w-5 text-[#7B59FF]" />
           </div>
           <div>
-            <CardTitle className="text-lg font-semibold text-grey-900">Cash Forecast</CardTitle>
-            <p className="text-sm text-grey-600">Next 8 weeks</p>
+            <CardTitle className="text-lg font-semibold text-[#061237]">Cash Forecast</CardTitle>
+            <p className="text-sm text-[#586079]">Next 8 weeks</p>
           </div>
         </div>
         <div className="flex gap-1">
@@ -40,7 +40,7 @@ export function CompactCashForecast() {
             variant={viewMode === 'chart' ? 'default' : 'ghost'}
             size="sm"
             onClick={() => setViewMode('chart')}
-            className="h-8 w-8 p-0"
+            className={`h-8 w-8 p-0 ${viewMode === 'chart' ? 'bg-[#7B59FF] hover:bg-[#523BAA] text-white' : 'text-[#586079] hover:text-[#061237]'}`}
           >
             <BarChart3 className="h-4 w-4" />
           </Button>
@@ -48,7 +48,7 @@ export function CompactCashForecast() {
             variant={viewMode === 'table' ? 'default' : 'ghost'}
             size="sm"
             onClick={() => setViewMode('table')}
-            className="h-8 w-8 p-0"
+            className={`h-8 w-8 p-0 ${viewMode === 'table' ? 'bg-[#7B59FF] hover:bg-[#523BAA] text-white' : 'text-[#586079] hover:text-[#061237]'}`}
           >
             <Table className="h-4 w-4" />
           </Button>
@@ -56,20 +56,20 @@ export function CompactCashForecast() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="p-3 rounded-lg bg-white/60 border border-grey-200">
-            <div className="text-2xl font-bold text-grey-900 mb-1">
+          <div className="p-3 rounded-lg bg-white/60 border border-[#E6E7EB]">
+            <div className="text-2xl font-bold text-[#061237] mb-1">
               ${totalForecast.toFixed(1)}M
             </div>
-            <p className="text-xs text-grey-600 flex items-center gap-1">
+            <p className="text-xs text-[#586079] flex items-center gap-1">
               <TrendingUp className="h-3 w-3" />
               Total expected
             </p>
           </div>
-          <div className="p-3 rounded-lg bg-white/60 border border-grey-200">
-            <div className="text-2xl font-bold text-grey-900 mb-1">
+          <div className="p-3 rounded-lg bg-white/60 border border-[#E6E7EB]">
+            <div className="text-2xl font-bold text-[#061237] mb-1">
               ${avgWeekly.toFixed(1)}M
             </div>
-            <p className="text-xs text-grey-600">Weekly average</p>
+            <p className="text-xs text-[#586079]">Weekly average</p>
           </div>
         </div>
 
@@ -112,8 +112,8 @@ export function CompactCashForecast() {
           <div className="space-y-2">
             {mockCashForecast.map((item) => (
               <div key={item.week} className="flex justify-between items-center py-2 px-3 rounded-lg bg-white/40 hover:bg-white/60 transition-colors">
-                <span className="text-sm font-medium text-grey-700">{item.week}</span>
-                <span className="text-sm font-bold text-grey-900">${item.amount}M</span>
+                <span className="text-sm font-medium text-[#586079]">{item.week}</span>
+                <span className="text-sm font-bold text-[#061237]">${item.amount}M</span>
               </div>
             ))}
           </div>

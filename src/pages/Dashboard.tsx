@@ -34,6 +34,14 @@ const Dashboard = () => {
   if (isLoading) {
     return (
       <div className="space-y-8 p-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Skeleton className="h-80 w-full rounded-xl" />
+          <Skeleton className="h-80 w-full rounded-xl" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Skeleton className="h-64 w-full rounded-xl" />
+          <Skeleton className="h-64 w-full rounded-xl" />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Skeleton className="h-40 w-full rounded-xl" />
           <Skeleton className="h-40 w-full rounded-xl" />
@@ -42,36 +50,23 @@ const Dashboard = () => {
           <Skeleton className="h-40 w-full rounded-xl" />
           <Skeleton className="h-40 w-full rounded-xl" />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Skeleton className="h-64 w-full rounded-xl" />
-          <div className="space-y-6">
-            <Skeleton className="h-80 w-full rounded-xl" />
-            <Skeleton className="h-80 w-full rounded-xl" />
-          </div>
-        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-8 p-2">
-      {/* Welcome Section */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-grey-900 mb-2">Welcome back!</h1>
-        <p className="text-grey-600">Here's what's happening with your business today.</p>
-      </div>
-
-      {/* Main Metrics Grid */}
-      <DashboardMetricsGrid data={metricsData} />
-      
-      {/* Exceptions Row - Full width */}
-      <DashboardExceptions exceptionData={exceptionData} />
-      
-      {/* Insights and Cash Forecast Row - Larger sections */}
+      {/* Insights and Cash Forecast Row - Top priority */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <DashboardInsights />
         <CompactCashForecast />
       </div>
+      
+      {/* Exceptions Row */}
+      <DashboardExceptions exceptionData={exceptionData} />
+      
+      {/* Main Metrics Grid */}
+      <DashboardMetricsGrid data={metricsData} />
     </div>
   );
 };

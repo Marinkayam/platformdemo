@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, Wifi, ArrowRight } from "lucide-react";
+import { AlertTriangle, Link, ArrowRight } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
 interface ExceptionCardProps {
@@ -28,25 +28,25 @@ export function ExceptionCard({
   buttonText = "View Details"
 }: ExceptionCardProps) {
   const getIcon = () => {
-    return type === 'rtp' ? <AlertTriangle className="h-6 w-6" /> : <Wifi className="h-6 w-6" />;
+    return type === 'rtp' ? <AlertTriangle className="h-6 w-6" /> : <Link className="h-6 w-6" />;
   };
 
   const getColorClasses = () => {
     if (count > 0) {
       return type === 'rtp' 
-        ? 'text-error-main bg-gradient-to-br from-error-main/10 to-error-main/20 border-error-main/30'
-        : 'text-warning-main bg-gradient-to-br from-warning-main/10 to-warning-main/20 border-warning-main/30';
+        ? 'text-[#EF4444] bg-gradient-to-br from-[#EF4444]/10 to-[#EF4444]/20 border-[#EF4444]/30'
+        : 'text-[#7B59FF] bg-gradient-to-br from-[#EFEBFF] to-[#BEADFF]/20 border-[#7B59FF]/30';
     }
-    return 'text-success-main bg-gradient-to-br from-success-main/10 to-success-main/20 border-success-main/30';
+    return 'text-[#007737] bg-gradient-to-br from-[#007737]/10 to-[#007737]/20 border-[#007737]/30';
   };
 
   const getCardBackground = () => {
     if (count > 0) {
       return type === 'rtp' 
-        ? 'bg-gradient-to-br from-error-main/5 to-error-main/10'
-        : 'bg-gradient-to-br from-warning-main/5 to-warning-main/10';
+        ? 'bg-gradient-to-br from-[#EF4444]/5 to-[#EF4444]/10'
+        : 'bg-gradient-to-br from-[#EFEBFF] to-[#EFEBFF]/60';
     }
-    return 'bg-gradient-to-br from-success-main/5 to-success-main/10';
+    return 'bg-gradient-to-br from-[#007737]/5 to-[#007737]/10';
   };
 
   const getButtonVariant = () => {
@@ -56,6 +56,13 @@ export function ExceptionCard({
     return 'outline';
   };
 
+  const getButtonStyles = () => {
+    if (count > 0 && type === 'smartconnection') {
+      return 'bg-[#7B59FF] hover:bg-[#523BAA] text-white border-[#7B59FF]';
+    }
+    return '';
+  };
+
   return (
     <Card 
       className={`relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${getCardBackground()} ${onCardClick ? 'cursor-pointer' : ''}`}
@@ -63,8 +70,8 @@ export function ExceptionCard({
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <div className="flex-1">
-          <CardTitle className="text-lg font-semibold text-grey-900 mb-1">{title}</CardTitle>
-          <p className="text-sm text-grey-600">{subtitle}</p>
+          <CardTitle className="text-lg font-semibold text-[#061237] mb-1">{title}</CardTitle>
+          <p className="text-sm text-[#586079]">{subtitle}</p>
         </div>
         <div className={`p-3 rounded-xl border ${getColorClasses()}`}>
           {getIcon()}
@@ -72,25 +79,25 @@ export function ExceptionCard({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-baseline gap-2">
-          <span className="text-4xl font-bold text-grey-900">{count}</span>
-          <span className="text-sm text-grey-600">
+          <span className="text-4xl font-bold text-[#061237]">{count}</span>
+          <span className="text-sm text-[#586079]">
             {type === 'rtp' ? 'exceptions' : 'connections'}
           </span>
         </div>
         
         {type === 'rtp' && amount !== undefined && (
-          <div className="flex items-center justify-between p-3 rounded-lg bg-white/50 border border-grey-200">
-            <span className="text-sm font-medium text-grey-700">Total Amount</span>
-            <span className="text-lg font-bold text-grey-900">
+          <div className="flex items-center justify-between p-3 rounded-lg bg-white/50 border border-[#E6E7EB]">
+            <span className="text-sm font-medium text-[#586079]">Total Amount</span>
+            <span className="text-lg font-bold text-[#061237]">
               {formatCurrency(amount, 'USD')}
             </span>
           </div>
         )}
         
         {type === 'smartconnection' && affectedInvoices !== undefined && (
-          <div className="flex items-center justify-between p-3 rounded-lg bg-white/50 border border-grey-200">
-            <span className="text-sm font-medium text-grey-700">Affected Invoices</span>
-            <span className="text-lg font-bold text-grey-900">{affectedInvoices}</span>
+          <div className="flex items-center justify-between p-3 rounded-lg bg-white/50 border border-[#E6E7EB]">
+            <span className="text-sm font-medium text-[#586079]">Affected Invoices</span>
+            <span className="text-lg font-bold text-[#061237]">{affectedInvoices}</span>
           </div>
         )}
 
@@ -100,7 +107,7 @@ export function ExceptionCard({
             onButtonClick?.();
           }}
           variant={getButtonVariant()}
-          className="w-full mt-4 transition-all duration-300 hover:scale-105"
+          className={`w-full mt-4 transition-all duration-300 hover:scale-105 ${getButtonStyles()}`}
         >
           {buttonText}
           <ArrowRight className="h-4 w-4 ml-2" />

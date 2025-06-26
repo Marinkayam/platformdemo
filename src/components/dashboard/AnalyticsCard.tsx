@@ -15,17 +15,17 @@ export function AnalyticsCard({ title, value, subtitle, type, icon, onClick }: A
   const getColorClasses = () => {
     switch (type) {
       case 'paid':
-        return 'text-success-main bg-success-main/10 border-success-main/20';
+        return 'text-[#007737] bg-[#007737]/10 border-[#007737]/20';
       case 'upcoming':
-        return 'text-warning-main bg-warning-main/10 border-warning-main/20';
+        return 'text-[#F2AE40] bg-[#F2AE40]/10 border-[#F2AE40]/20';
       case 'pastdue':
-        return 'text-error-main bg-error-main/10 border-error-main/20';
+        return 'text-[#EF4444] bg-[#EF4444]/10 border-[#EF4444]/20';
       case 'portal':
-        return 'text-info-main bg-info-main/10 border-info-main/20';
+        return 'text-[#7B59FF] bg-[#EFEBFF] border-[#7B59FF]/20';
       case 'time':
-        return 'text-primary-main bg-primary-main/10 border-primary-main/20';
+        return 'text-[#7B59FF] bg-[#EFEBFF] border-[#7B59FF]/20';
       default:
-        return 'text-grey-600 bg-grey-100/10 border-grey-400/20';
+        return 'text-[#586079] bg-[#E6E7EB]/10 border-[#E6E7EB]/20';
     }
   };
 
@@ -43,25 +43,25 @@ export function AnalyticsCard({ title, value, subtitle, type, icon, onClick }: A
   };
 
   const getTextColor = () => {
-    if (subtitle?.includes('-')) return 'text-error-main';
-    if (subtitle?.includes('+')) return 'text-success-main';
-    return 'text-grey-600';
+    if (subtitle?.includes('-')) return 'text-[#EF4444]';
+    if (subtitle?.includes('+')) return 'text-[#007737]';
+    return 'text-[#586079]';
   };
 
   const getBackgroundGradient = () => {
     switch (type) {
       case 'paid':
-        return 'bg-gradient-to-br from-success-main/5 to-success-main/10';
+        return 'bg-gradient-to-br from-[#007737]/5 to-[#007737]/10';
       case 'upcoming':
-        return 'bg-gradient-to-br from-warning-main/5 to-warning-main/10';
+        return 'bg-gradient-to-br from-[#F2AE40]/5 to-[#F2AE40]/10';
       case 'pastdue':
-        return 'bg-gradient-to-br from-error-main/5 to-error-main/10';
+        return 'bg-gradient-to-br from-[#EF4444]/5 to-[#EF4444]/10';
       case 'portal':
-        return 'bg-gradient-to-br from-info-main/5 to-info-main/10';
+        return 'bg-gradient-to-br from-[#EFEBFF] to-[#BEADFF]/20';
       case 'time':
-        return 'bg-gradient-to-br from-primary-main/5 to-primary-main/10';
+        return 'bg-gradient-to-br from-[#EFEBFF] to-[#BEADFF]/20';
       default:
-        return 'bg-gradient-to-br from-grey-200/50 to-grey-300/50';
+        return 'bg-gradient-to-br from-[#E6E7EB]/50 to-[#F4F6F8]/50';
     }
   };
 
@@ -71,7 +71,7 @@ export function AnalyticsCard({ title, value, subtitle, type, icon, onClick }: A
       onClick={onClick}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-        <CardTitle className="text-sm font-medium text-grey-700">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium text-[#586079]">{title}</CardTitle>
         {(icon || getDefaultIcon()) && (
           <div className={`p-2.5 rounded-xl border ${getColorClasses()}`}>
             {icon || getDefaultIcon()}
@@ -79,7 +79,7 @@ export function AnalyticsCard({ title, value, subtitle, type, icon, onClick }: A
         )}
       </CardHeader>
       <CardContent>
-        <div className="text-3xl font-bold text-grey-900 mb-2">{value}</div>
+        <div className="text-3xl font-bold text-[#061237] mb-2">{value}</div>
         {subtitle && (
           <p className={`text-sm ${getTextColor()} flex items-center gap-1`}>
             {subtitle.includes('+') && <TrendingUp className="h-4 w-4" />}
