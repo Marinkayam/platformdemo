@@ -44,7 +44,6 @@ export function AgentDetails({
   onEditAgent 
 }: AgentDetailsProps) {
   const [activeTab, setActiveTab] = useState("details");
-  const [showAddInstructionForm, setShowAddInstructionForm] = useState(false);
   const [showSaveConfirmation, setShowSaveConfirmation] = useState(false);
   
   const {
@@ -185,11 +184,7 @@ export function AgentDetails({
 
             {activeTab === "instructions" && (
               <div className="pb-6">
-                <AgentInstructionsTab 
-                  agent={agent} 
-                  showAddForm={showAddInstructionForm}
-                  onShowAddFormChange={setShowAddInstructionForm}
-                />
+                <AgentInstructionsTab agent={agent} />
               </div>
             )}
           </div>
@@ -234,7 +229,7 @@ export function AgentDetails({
             <AlertDialogAction onClick={handleConfirmSave}>Save Changes</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </Dialog>
+      </AlertDialog>
     </>
   );
 }
