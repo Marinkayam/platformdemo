@@ -6,6 +6,7 @@ import { TeamTab } from "@/components/workspace/TeamTab";
 import { CompanyTab } from "@/components/workspace/CompanyTab";
 import { LicenseTab } from "@/components/workspace/LicenseTab";
 import { DuplicationPolicyTab } from "@/components/workspace/DuplicationPolicyTab";
+import { IntegrationHub } from "@/components/workspace/IntegrationHub";
 
 const headerTabs = [
   {
@@ -40,23 +41,7 @@ const headerTabs = [
   },
 ];
 
-// Placeholder components for new tabs
-function ConnectorsTab() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h6 className="text-lg font-semibold text-grey-900 mb-1">Connectors</h6>
-        <p className="text-base text-grey-600">
-          Manage your portal connections and integrations.
-        </p>
-      </div>
-      <div className="text-center py-20 text-grey-500">
-        Connectors management coming soon...
-      </div>
-    </div>
-  );
-}
-
+// Placeholder component for company entities tab
 function CompanyEntitiesTab() {
   return (
     <div className="space-y-6">
@@ -87,7 +72,7 @@ export default function Workspace() {
       case "duplication-policy":
         return <DuplicationPolicyTab />;
       case "connectors":
-        return <ConnectorsTab />;
+        return <IntegrationHub />;
       case "company-entities":
         return <CompanyEntitiesTab />;
       default:
