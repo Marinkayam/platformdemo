@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Edit } from "lucide-react";
 import { Agent } from "@/types/smartConnection";
 import { toast } from '@/hooks/use-toast';
+import { Notes } from "@/components/common/Notes";
 
 interface AgentInstructionsTabProps {
   agent: Agent;
@@ -126,7 +126,7 @@ export function AgentInstructionsTab({
     setEditingId(null);
   };
 
-  const handleEdit = (instruction: Instruction) => {
+  const handleCardClick = (instruction: Instruction) => {
     setNewInstruction({
       title: instruction.title,
       category: instruction.category,
@@ -137,10 +137,10 @@ export function AgentInstructionsTab({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="h-full">
       {/* Add/Edit Instruction Form */}
       {showAddForm && (
-        <div className="border rounded-lg p-6 bg-white">
+        <div className="border rounded-lg p-6 bg-white mb-6">
           <div className="flex items-center gap-2 mb-6">
             <h3 className="text-lg font-semibold">
               {editingId ? "Update Instructions" : "Add Instructions"}
@@ -207,43 +207,52 @@ export function AgentInstructionsTab({
         </div>
       )}
 
-      {/* Instruction Cards */}
-      <div className="space-y-4">
-        {instructions.map((instruction) => (
-          <Card key={instruction.id} className="hover:shadow-md transition-shadow border border-gray-200">
-            <CardHeader className="pb-4">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <CardTitle className="text-lg font-semibold text-gray-900">{instruction.title}</CardTitle>
+      {/* Two-column layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+        {/* Left Column - Instructions */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold">Instructions</h3>
+          {instructions.map((instruction) => (
+            <Card 
+              key={instruction.id} 
+              className="hover:shadow-md transition-all duration-200 cursor-pointer hover:border-[#7b61ff]/30 border border-gray-200"
+              onClick={() => handleCardClick(instruction)}
+            >
+              <CardHeader className="pb-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <CardTitle className="text-lg font-semibold text-gray-900">{instruction.title}</CardTitle>
+                    </div>
+                    <p className="text-sm text-gray-600">{instruction.description}</p>
                   </div>
-                  <p className="text-sm text-gray-600">{instruction.description}</p>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleEdit(instruction)}
-                  className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-2">
-                {instruction.items.map((item, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <span className="text-[#7b61ff] text-sm mt-0.5 font-medium">•</span>
-                    <span className="text-sm text-gray-700 leading-relaxed">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4 pt-3 border-t text-xs text-gray-500">
-                Added by <span className="font-medium">{instruction.addedBy}</span> on {instruction.addedDate}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-2">
+                  {instruction.items.map((item, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <span className="text-[#7b61ff] text-sm mt-0.5 font-medium">•</span>
+                      <span className="text-sm text-gray-700 leading-relaxed">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 pt-3 border-t text-xs text-gray-500">
+                  Added by <span className="font-medium">{instruction.addedBy}</span> on {instruction.addedDate}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Right Column - Notes */}
+        <div className="h-full">
+          <Notes 
+            entityId={agent.id}
+            entityType="agent"
+            className="h-full"
+          />
+        </div>
       </div>
     </div>
   );

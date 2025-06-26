@@ -7,7 +7,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { AgentUserTypeBadge } from '@/components/ui/agent-user-type-badge';
 import { toast } from '@/hooks/use-toast';
 import { TabsNav } from '@/components/common/TabsNav';
-import { FileText, MessageSquareText, Link, Plus } from "lucide-react";
+import { FileText, MessageSquareText, Link } from "lucide-react";
 import { AgentIdentitySection } from './agent-sections/AgentIdentitySection';
 import { AgentCredentialsSection } from './agent-sections/AgentCredentialsSection';
 import { AgentTwoFactorSection } from './agent-sections/AgentTwoFactorSection';
@@ -82,11 +82,6 @@ export function AgentDetails({
     setActiveTab("instructions");
   };
 
-  const handleAddInstruction = () => {
-    setActiveTab("instructions");
-    setShowAddInstructionForm(true);
-  };
-
   const handleSaveClick = () => {
     setShowSaveConfirmation(true);
   };
@@ -137,7 +132,7 @@ export function AgentDetails({
                     <div className="text-lg font-semibold text-gray-900">{mockSmartConnection.name}</div>
                   </div>
                 </div>
-                {activeTab === "details" ? (
+                {activeTab === "details" && (
                   <Button 
                     variant="outline" 
                     size="sm" 
@@ -145,16 +140,6 @@ export function AgentDetails({
                     className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
                   >
                     View Instructions
-                  </Button>
-                ) : (
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={handleAddInstruction}
-                    className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Instructions
                   </Button>
                 )}
               </div>
@@ -249,7 +234,7 @@ export function AgentDetails({
             <AlertDialogAction onClick={handleConfirmSave}>Save Changes</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </Dialog>
     </>
   );
 }
