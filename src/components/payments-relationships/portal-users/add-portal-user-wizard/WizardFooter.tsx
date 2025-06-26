@@ -22,6 +22,11 @@ export function WizardFooter({ currentStep, selectedPortal, selectedUserType, on
     return false;
   }
 
+  // Don't render footer during connection flow
+  if (currentStep === 'connecting' || currentStep === 'success') {
+    return null;
+  }
+
   return (
     <div className="flex justify-between pt-4">
       {currentStep !== 'portal' && (

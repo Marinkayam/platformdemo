@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
@@ -8,6 +9,7 @@ import { PortalSelectionStep } from './add-portal-user-wizard/PortalSelectionSte
 import { UserTypeStep } from './add-portal-user-wizard/UserTypeStep';
 import { ExistingUserSetupStep } from './add-portal-user-wizard/ExistingUserSetupStep';
 import { DedicatedUserSetupStep } from './add-portal-user-wizard/DedicatedUserSetupStep';
+import { ConnectionProgressStep } from './add-portal-user-wizard/ConnectionProgressStep';
 import { WizardFooter } from './add-portal-user-wizard/WizardFooter';
 import { WizardStep, UserType, FormData } from './add-portal-user-wizard/types';
 
@@ -62,6 +64,12 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
       return;
     }
 
+    // Start the connection flow
+    setCurrentStep('connecting');
+  };
+
+  const handleConnectionComplete = () => {
+    // Save the portal user
     onSave({
       portal: selectedPortal,
       username: formData.username,
@@ -74,6 +82,14 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
       phoneNumber: formData.phoneNumber,
       verificationEmail: formData.verificationEmail,
     });
+
+    // Show success toast
+    toast({
+      title: "Portal User Created Successfully!",
+      description: `${formData.username} has been added and is now validating.`,
+    });
+
+    // Close modal
     onClose();
   };
 
@@ -114,6 +130,12 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
               isDedicatedUserConfirmed={isDedicatedUserConfirmed}
               setIsDedicatedUserConfirmed={setIsDedicatedUserConfirmed}
             />;
+      case 'connecting':
+      case 'success':
+        return <ConnectionProgressStep 
+          selectedPortal={selectedPortal}
+          onConnectionComplete={handleConnectionComplete}
+        />;
       default:
         return null;
     }
@@ -132,31 +154,39 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="text-xl font-semibold text-grey-900">Add Portal Users</DialogTitle>
         </DialogHeader>
-        <div className="px-6 pt-0">
-          <DesignTabs
-            tabs={[
-              { id: 'singular', label: 'Manual Entry' },
-              { id: 'csv', label: 'Upload Bulk CSV File' },
-            ]}
-            activeTab={activeTab}
-            onTabChange={(id) => setActiveTab(id as 'singular' | 'csv')}
-            className="mb-4"
-          />
-        </div>
+        
+        {/* Only show tabs if not in connection flow */}
+        {currentStep !== 'connecting' && currentStep !== 'success' && (
+          <div className="px-6 pt-0">
+            <DesignTabs
+              tabs={[
+                { id: 'singular', label: 'Manual Entry' },
+                { id: 'csv', label: 'Upload Bulk CSV File' },
+              ]}
+              activeTab={activeTab}
+              onTabChange={(id) => setActiveTab(id as 'singular' | 'csv')}
+              className="mb-4"
+            />
+          </div>
+        )}
+        
         <div className="p-6 pt-0">
           {activeTab === 'singular' && (
             <div className="space-y-6">
               {renderCurrentStep()}
 
-              <WizardFooter
-                currentStep={currentStep}
-                selectedPortal={selectedPortal}
-                selectedUserType={selectedUserType}
-                onBack={handleBack}
-                onNext={handleNext}
-                onClose={onClose}
-                onSubmit={handleSubmit}
-              />
+              {/* Only show footer if not in connection flow */}
+              {currentStep !== 'connecting' && currentStep !== 'success' && (
+                <WizardFooter
+                  currentStep={currentStep}
+                  selectedPortal={selectedPortal}
+                  selectedUserType={selectedUserType}
+                  onBack={handleBack}
+                  onNext={handleNext}
+                  onClose={onClose}
+                  onSubmit={handleSubmit}
+                />
+              )}
             </div>
           )}
           {activeTab === 'csv' && <CSVImportWizard onComplete={onClose} onImport={handleBulkImport} />}

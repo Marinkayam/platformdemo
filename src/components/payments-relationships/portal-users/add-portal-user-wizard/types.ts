@@ -1,7 +1,7 @@
 
 import { PortalUser } from "@/types/portalUser";
 
-export type WizardStep = 'portal' | 'userType' | 'setup';
+export type WizardStep = 'portal' | 'userType' | 'setup' | 'connecting' | 'success';
 export type UserType = 'existing' | 'dedicated';
 
 export type FormData = {
