@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Link, ArrowRight } from "lucide-react";
@@ -28,7 +27,7 @@ export function ExceptionCard({
   buttonText = "View Details"
 }: ExceptionCardProps) {
   const getIcon = () => {
-    return type === 'rtp' ? <AlertTriangle className="h-6 w-6" /> : <Link className="h-6 w-6" />;
+    return type === 'rtp' ? <AlertTriangle className="h-4 w-4" style={{ width: 16, height: 16 }} /> : <Link className="h-4 w-4" style={{ width: 16, height: 16 }} />;
   };
 
   const getColorClasses = () => {
@@ -59,13 +58,14 @@ export function ExceptionCard({
       className={`relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white ${onCardClick ? 'cursor-pointer' : ''}`}
       onClick={onCardClick}
     >
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+      <CardHeader className="flex flex-row items-center space-y-0 pb-3 gap-3">
+        <div className={`p-3 rounded-xl border flex-shrink-0 flex items-center justify-center ${getColorClasses()}`}
+             style={{ height: 40, width: 40 }}>
+          {getIcon()}
+        </div>
         <div className="flex-1">
           <CardTitle className="text-lg font-semibold text-[#061237] mb-1">{title}</CardTitle>
           <p className="text-sm text-[#586079]">{subtitle}</p>
-        </div>
-        <div className={`p-3 rounded-xl border ${getColorClasses()}`}>
-          {getIcon()}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -101,7 +101,7 @@ export function ExceptionCard({
           className={`w-full mt-4 transition-all duration-300 hover:scale-105 ${getButtonStyles()}`}
         >
           {buttonText}
-          <ArrowRight className="h-4 w-4 ml-2" />
+          <ArrowRight className="h-4 w-4 ml-2" style={{ width: 16, height: 16 }} />
         </Button>
       </CardContent>
     </Card>
