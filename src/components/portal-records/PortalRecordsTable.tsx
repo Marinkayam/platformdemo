@@ -1,7 +1,8 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TableSystem } from "@/components/ui/TableSystem";
+import { Table, TableBody, TableFooter, TableRow, TableCell, TableHeader, TableHead } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
 import { PortalRecordsEmptyState } from "./table/PortalRecordsEmptyState";
@@ -14,8 +15,8 @@ interface PortalRecordsTableProps {
 
 export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 10;
+  const [visibleCount, setVisibleCount] = useState(10);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Modal states
   const [matchModalOpen, setMatchModalOpen] = useState(false);
@@ -31,12 +32,15 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     return aPriority - bPriority;
   });
 
-  const indexOfLastRecord = currentPage * recordsPerPage;
-  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = sortedRecords.slice(indexOfFirstRecord, indexOfLastRecord);
+  const visibleRecords = sortedRecords.slice(0, visibleCount);
+  const hasMore = visibleCount < sortedRecords.length;
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
+  const handleLoadMore = async () => {
+    setIsLoading(true);
+    // Simulate loading delay for smooth UX
+    await new Promise(resolve => setTimeout(resolve, 300));
+    setVisibleCount(prev => Math.min(prev + 10, sortedRecords.length));
+    setIsLoading(false);
   };
 
   const handleViewDetails = (recordId: string) => {
@@ -111,28 +115,73 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     return (
       <PortalRecordsEmptyState
         columns={columns}
-        currentPage={currentPage}
-        recordsPerPage={recordsPerPage}
-        onPageChange={handlePageChange}
+        currentPage={1}
+        recordsPerPage={10}
+        onPageChange={() => {}}
       />
     );
   }
 
   return (
     <div className="space-y-0">
-      <TableSystem 
-        data={currentRecords}
-        columns={columns}
-        onRowClick={handleRowClick}
-        rowClassName="hover:bg-gray-50 cursor-pointer"
-      />
-      <PortalRecordsTableFooter 
-        totalRecords={sortedRecords.length}
-        currentPage={currentPage}
-        recordsPerPage={recordsPerPage}
-        onPageChange={handlePageChange}
-        records={sortedRecords}
-      />
+      <div className="rounded-xl border overflow-hidden bg-white">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {columns.map((column, index) => (
+                  <TableHead key={index} className={column.className}>
+                    {column.label}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            
+            <TableBody className="divide-y divide-gray-100">
+              {visibleRecords.map((record) => (
+                <TableRow
+                  key={record.id}
+                  className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
+                  onClick={() => handleRowClick(record)}
+                >
+                  {columns.map((column, index) => (
+                    <TableCell key={index} className={column.className}>
+                      {column.render ? column.render(record) : record[column.key as keyof PortalRecord]}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+              
+              {/* Loading skeleton rows */}
+              {isLoading && Array.from({ length: 3 }).map((_, index) => (
+                <TableRow key={`loading-${index}`} className="animate-pulse">
+                  {columns.map((_, colIndex) => (
+                    <TableCell key={colIndex}>
+                      <div className="h-4 bg-gray-200 rounded"></div>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+            
+            <PortalRecordsTableFooter records={sortedRecords} />
+          </Table>
+        </div>
+      </div>
+
+      {/* Load More Section */}
+      {hasMore && (
+        <div className="flex justify-center py-4">
+          <Button
+            onClick={handleLoadMore}
+            disabled={isLoading}
+            variant="outline"
+            className="animate-fade-in"
+          >
+            {isLoading ? 'Loading...' : `Load ${Math.min(10, sortedRecords.length - visibleCount)} more records`}
+          </Button>
+        </div>
+      )}
 
       <PortalRecordsModals
         selectedRecord={selectedRecord}

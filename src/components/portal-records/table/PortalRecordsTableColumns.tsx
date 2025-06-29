@@ -1,9 +1,13 @@
 
+import { TriangleAlert } from "lucide-react";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "../PortalLogo";
 import { MatchTypeBadge } from "../MatchTypeBadge";
-import { PortalStatusColumn } from "./columns/PortalStatusColumn";
+import { PortalStatusBadge } from "../PortalStatusBadge";
+import { ConnectionStatusBadge } from "../ConnectionStatusBadge";
+import { LastSyncedCell } from "../LastSyncedCell";
 import { ActionsColumn } from "./columns/ActionsColumn";
+import { formatCurrency } from "@/lib/utils";
 
 interface PortalRecordsTableColumnsProps {
   onViewDetails: (recordId: string) => void;
@@ -12,141 +16,72 @@ interface PortalRecordsTableColumnsProps {
   onIgnoreRecord: (record: PortalRecord) => void;
 }
 
-export function usePortalRecordsTableColumns({
-  onViewDetails,
-  onMatchInvoice,
-  onResolveConflict,
-  onIgnoreRecord
-}: PortalRecordsTableColumnsProps) {
-  const getDisplayValue = (record: PortalRecord, field: keyof PortalRecord): string => {
-    if (record.connectionStatus === 'Disconnected' && !['portal', 'invoiceNumber'].includes(field)) {
-      return "—";
-    }
-
-    const value = record[field] as string;
-    
-    if (!value || value === "—") {
-      return "—";
-    }
-
-    return value;
-  };
-
-  const formatCurrency = (amount: number, currency: string): string => {
-    if (amount === 0) return "—";
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-    }).format(amount);
-  };
-
+export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, onResolveConflict, onIgnoreRecord }: PortalRecordsTableColumnsProps) {
   return [
     {
-      key: "invoiceNumber",
-      label: "Invoice #",
-      sticky: true,
-      className: "w-[12%]",
-      render: (record: PortalRecord) => {
-        const value = getDisplayValue(record, 'invoiceNumber');
-        return (
-          <button
-            onClick={() => onViewDetails(record.id)}
-            className={`font-medium cursor-pointer hover:underline ${
-              value === "—" 
-                ? "text-gray-400" 
-                : "text-black hover:text-blue-800"
-            }`}
-          >
-            {value}
-          </button>
-        );
-      }
-    },
-    {
-      key: "portal",
-      label: "Portal",
-      className: "w-[12%]",
+      key: 'portalRecordId',
+      label: 'Portal Record ID',
+      className: 'sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold',
       render: (record: PortalRecord) => (
-        <PortalLogo portalName={record.portal} />
+        <div className="flex items-center gap-2">
+          {record.conflict && (
+            <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
+          )}
+          <span className="text-sm font-medium text-black truncate">
+            {record.portalRecordId}
+          </span>
+        </div>
       )
     },
     {
-      key: "buyer",
-      label: "Buyer",
-      className: "w-[12%]",
-      render: (record: PortalRecord) => {
-        const value = getDisplayValue(record, 'buyer');
-        return (
-          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
-            {value}
-          </span>
-        );
-      }
-    },
-    {
-      key: "portalStatus",
-      label: "Portal Status",
-      className: "w-[12%]",
+      key: 'buyer',
+      label: 'Buyer',
+      className: 'truncate',
       render: (record: PortalRecord) => (
-        <PortalStatusColumn record={record} />
+        <div className="flex items-center gap-2">
+          <PortalLogo portalName={record.portal} className="w-4 h-4" />
+          <span className="text-sm text-gray-900 truncate">{record.buyer}</span>
+        </div>
       )
     },
     {
-      key: "total",
-      label: "Total",
-      className: "w-[10%]",
-      render: (record: PortalRecord) => {
-        if (record.connectionStatus === 'Disconnected' || record.total === 0) {
-          return <span className="text-gray-400">—</span>;
-        }
-        return (
-          <span className="text-gray-600 font-medium">
-            {formatCurrency(record.total, record.currency)}
-          </span>
-        );
-      }
+      key: 'matchType',
+      label: 'Match Type',
+      className: 'whitespace-nowrap',
+      render: (record: PortalRecord) => <MatchTypeBadge matchType={record.matchType} />
     },
     {
-      key: "poNumber",
-      label: "PO #",
-      className: "w-[10%]",
-      render: (record: PortalRecord) => {
-        const value = getDisplayValue(record, 'poNumber');
-        return (
-          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
-            {value}
-          </span>
-        );
-      }
+      key: 'portalStatus',
+      label: 'Portal Status',  
+      className: 'whitespace-nowrap',
+      render: (record: PortalRecord) => <PortalStatusBadge status={record.portalStatus} />
     },
     {
-      key: "supplierName",
-      label: "Supplier Name",
-      className: "w-[12%]",
-      render: (record: PortalRecord) => {
-        const value = getDisplayValue(record, 'supplierName');
-        return (
-          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
-            {value}
-          </span>
-        );
-      }
+      key: 'total',
+      label: 'Amount',
+      className: 'font-medium',
+      render: (record: PortalRecord) => (
+        <span className="text-sm font-medium text-gray-900">
+          {formatCurrency(record.total, record.currency)}
+        </span>
+      )
     },
     {
-      key: "matchType",
-      label: "Match Type",
-      className: "w-[10%]",
-      render: (record: PortalRecord) => {
-        if (record.connectionStatus === 'Disconnected') {
-          return <span className="text-gray-400">—</span>;
-        }
-        return <MatchTypeBadge type={record.matchType} />;
-      }
+      key: 'connectionStatus',
+      label: 'Connection',
+      className: 'whitespace-nowrap',
+      render: (record: PortalRecord) => <ConnectionStatusBadge status={record.connectionStatus} />
     },
     {
-      key: "actions",
-      label: "Actions",
-      className: "w-[7%] text-center",
+      key: 'lastSynced',
+      label: 'Last Synced',
+      className: 'whitespace-nowrap',
+      render: (record: PortalRecord) => <LastSyncedCell lastSynced={record.lastSynced} />
+    },
+    {
+      key: 'actions',
+      label: 'Actions',
+      className: 'text-right',
       render: (record: PortalRecord) => (
         <ActionsColumn
           record={record}
