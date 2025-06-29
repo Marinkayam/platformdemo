@@ -54,7 +54,7 @@ export function PortalRecordsModals({
         onMatch={onInvoiceMatched}
         onIgnore={onRecordIgnored}
         onMatchAndCreateRTP={onMatchAndCreateRTP}
-        contextSource="table"
+        contextSource="table-row"
       />
       
       <EnhancedResolveConflictModal
