@@ -32,29 +32,39 @@ export default function PortalRecordDetail() {
 
   const onInvoiceMatched = (invoiceId: string) => {
     console.log(`Matched invoice ${invoiceId} with record ${portalRecord.id}`);
+    setMatchModalOpen(false);
     // TODO: Update record state and refresh data
   };
 
   const onConflictResolved = (selectedRecordId: string, action: 'primary' | 'alternate') => {
     console.log(`Resolved conflict: ${selectedRecordId} set as ${action} for record ${portalRecord.id}`);
+    setConflictModalOpen(false);
     // TODO: Update record state and refresh data
   };
 
   const onRecordIgnored = () => {
     console.log(`Ignored record ${portalRecord.id}`);
+    setIgnoreModalOpen(false);
     // TODO: Update record state and refresh data
     navigate("/portal-records");
   };
 
   const onStopTrackingBuyer = () => {
     console.log(`Stopped tracking buyer ${portalRecord.buyer}`);
+    setIgnoreModalOpen(false);
     // TODO: Update all records from this buyer and refresh data
     navigate("/portal-records");
   };
 
   const onMatchAndCreateRTP = (pdfFile: File) => {
     console.log(`Creating RTP for record ${portalRecord.id} with PDF:`, pdfFile.name);
+    setMatchModalOpen(false);
     // TODO: Implement RTP creation logic
+  };
+
+  const handleIgnoreRecord = () => {
+    console.log('Opening ignore modal from detail page');
+    setIgnoreModalOpen(true);
   };
 
   return (
@@ -70,7 +80,7 @@ export default function PortalRecordDetail() {
         portalRecord={portalRecord}
         onMatchInvoice={() => setMatchModalOpen(true)}
         onResolveConflict={() => setConflictModalOpen(true)}
-        onIgnoreRecord={() => setIgnoreModalOpen(true)}
+        onIgnoreRecord={handleIgnoreRecord}
       />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">

@@ -58,32 +58,43 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   };
 
   const handleIgnoreRecord = (record: PortalRecord) => {
+    console.log('Opening ignore modal for record:', record.id);
     setSelectedRecord(record);
     setIgnoreModalOpen(true);
   };
 
   const onInvoiceMatched = (invoiceId: string) => {
     console.log(`Matched invoice ${invoiceId} with record ${selectedRecord?.id}`);
+    setMatchModalOpen(false);
+    setSelectedRecord(null);
     // TODO: Update record state in real implementation
   };
 
   const onConflictResolved = (selectedRecordId: string, action: 'primary' | 'alternate') => {
     console.log(`Resolved conflict: ${selectedRecordId} set as ${action} for record ${selectedRecord?.id}`);
+    setConflictModalOpen(false);
+    setSelectedRecord(null);
     // TODO: Update record state in real implementation
   };
 
   const onRecordIgnored = () => {
     console.log(`Ignored record ${selectedRecord?.id}`);
+    setIgnoreModalOpen(false);
+    setSelectedRecord(null);
     // TODO: Remove record from state in real implementation
   };
 
   const onStopTrackingBuyer = () => {
     console.log(`Stopped tracking buyer ${selectedRecord?.buyer}`);
+    setIgnoreModalOpen(false);
+    setSelectedRecord(null);
     // TODO: Remove all records from this buyer in real implementation
   };
 
   const onMatchAndCreateRTP = (pdfFile: File) => {
     console.log(`Creating RTP for record ${selectedRecord?.id} with PDF:`, pdfFile.name);
+    setMatchModalOpen(false);
+    setSelectedRecord(null);
     // TODO: Implement RTP creation logic
   };
 
