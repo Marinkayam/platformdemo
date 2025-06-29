@@ -2,7 +2,6 @@
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "../PortalLogo";
 import { MatchTypeBadge } from "../MatchTypeBadge";
-import { PortalRecordIdColumn } from "./columns/PortalRecordIdColumn";
 import { PortalStatusColumn } from "./columns/PortalStatusColumn";
 import { ActionsColumn } from "./columns/ActionsColumn";
 
@@ -20,7 +19,7 @@ export function usePortalRecordsTableColumns({
   onIgnoreRecord
 }: PortalRecordsTableColumnsProps) {
   const getDisplayValue = (record: PortalRecord, field: keyof PortalRecord): string => {
-    if (record.connectionStatus === 'Disconnected' && !['portal', 'portalRecordId'].includes(field)) {
+    if (record.connectionStatus === 'Disconnected' && !['portal', 'invoiceNumber'].includes(field)) {
       return "—";
     }
 
@@ -43,13 +42,25 @@ export function usePortalRecordsTableColumns({
 
   return [
     {
-      key: "portalRecordId",
-      label: "Portal Record ID",
+      key: "invoiceNumber",
+      label: "Invoice #",
       sticky: true,
       className: "w-[12%]",
-      render: (record: PortalRecord) => (
-        <PortalRecordIdColumn record={record} />
-      )
+      render: (record: PortalRecord) => {
+        const value = getDisplayValue(record, 'invoiceNumber');
+        return (
+          <button
+            onClick={() => onViewDetails(record.id)}
+            className={`font-medium cursor-pointer hover:underline ${
+              value === "—" 
+                ? "text-gray-400" 
+                : "text-black hover:text-blue-800"
+            }`}
+          >
+            {value}
+          </button>
+        );
+      }
     },
     {
       key: "portal",
@@ -75,34 +86,10 @@ export function usePortalRecordsTableColumns({
     {
       key: "portalStatus",
       label: "Portal Status",
-      className: "w-[10%]",
+      className: "w-[12%]",
       render: (record: PortalRecord) => (
         <PortalStatusColumn record={record} />
       )
-    },
-    {
-      key: "invoiceNumber",
-      label: "Invoice #",
-      className: "w-[10%]",
-      render: (record: PortalRecord) => {
-        const value = getDisplayValue(record, 'invoiceNumber');
-        return (
-          <span className={value === "—" ? "text-gray-400" : "text-gray-600"}>
-            {value}
-          </span>
-        );
-      }
-    },
-    {
-      key: "matchType",
-      label: "Match Type",
-      className: "w-[10%]",
-      render: (record: PortalRecord) => {
-        if (record.connectionStatus === 'Disconnected') {
-          return <span className="text-gray-400">—</span>;
-        }
-        return <MatchTypeBadge type={record.matchType} />;
-      }
     },
     {
       key: "total",
@@ -143,6 +130,17 @@ export function usePortalRecordsTableColumns({
             {value}
           </span>
         );
+      }
+    },
+    {
+      key: "matchType",
+      label: "Match Type",
+      className: "w-[10%]",
+      render: (record: PortalRecord) => {
+        if (record.connectionStatus === 'Disconnected') {
+          return <span className="text-gray-400">—</span>;
+        }
+        return <MatchTypeBadge type={record.matchType} />;
       }
     },
     {

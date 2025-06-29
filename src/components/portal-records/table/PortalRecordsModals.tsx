@@ -2,7 +2,7 @@
 import { PortalRecord } from "@/types/portalRecord";
 import { EnhancedMatchInvoiceModal } from "../actions/EnhancedMatchInvoiceModal";
 import { EnhancedResolveConflictModal } from "../actions/EnhancedResolveConflictModal";
-import { IgnoreRecordModal } from "../actions/IgnoreRecordModal";
+import { EnhancedIgnoreRecordModal } from "../actions/EnhancedIgnoreRecordModal";
 
 interface PortalRecordsModalsProps {
   selectedRecord: PortalRecord | null;
@@ -15,6 +15,7 @@ interface PortalRecordsModalsProps {
   onInvoiceMatched: (invoiceId: string) => void;
   onConflictResolved: (selectedRecordId: string, action: 'primary' | 'alternate') => void;
   onRecordIgnored: () => void;
+  onStopTrackingBuyer: () => void;
   onMatchAndCreateRTP: (pdfFile: File) => void;
 }
 
@@ -29,6 +30,7 @@ export function PortalRecordsModals({
   onInvoiceMatched,
   onConflictResolved,
   onRecordIgnored,
+  onStopTrackingBuyer,
   onMatchAndCreateRTP
 }: PortalRecordsModalsProps) {
   if (!selectedRecord) return null;
@@ -51,11 +53,12 @@ export function PortalRecordsModals({
         onResolve={onConflictResolved}
       />
       
-      <IgnoreRecordModal
+      <EnhancedIgnoreRecordModal
         isOpen={ignoreModalOpen}
         onClose={() => setIgnoreModalOpen(false)}
         record={selectedRecord}
-        onIgnore={onRecordIgnored}
+        onIgnoreRecord={onRecordIgnored}
+        onStopTrackingBuyer={onStopTrackingBuyer}
       />
     </>
   );

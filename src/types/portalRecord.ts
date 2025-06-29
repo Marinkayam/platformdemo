@@ -4,7 +4,7 @@ export interface PortalRecord {
   portalRecordId: string;
   portal: string;
   buyer: string;
-  portalStatus: 'Active' | 'Inactive' | 'Pending' | 'Error';
+  portalStatus: 'Approved by Buyer' | 'Rejected by Buyer' | 'Paid' | 'Settled' | 'Partially Settled';
   invoiceNumber?: string; // Optional for unmatched records
   matchType: 'Primary' | 'Alternate' | 'Unmatched' | 'Conflict';
   total: number;

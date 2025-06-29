@@ -77,6 +77,11 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     // TODO: Remove record from state in real implementation
   };
 
+  const onStopTrackingBuyer = () => {
+    console.log(`Stopped tracking buyer ${selectedRecord?.buyer}`);
+    // TODO: Remove all records from this buyer in real implementation
+  };
+
   const onMatchAndCreateRTP = (pdfFile: File) => {
     console.log(`Creating RTP for record ${selectedRecord?.id} with PDF:`, pdfFile.name);
     // TODO: Implement RTP creation logic
@@ -127,6 +132,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
         onInvoiceMatched={onInvoiceMatched}
         onConflictResolved={onConflictResolved}
         onRecordIgnored={onRecordIgnored}
+        onStopTrackingBuyer={onStopTrackingBuyer}
         onMatchAndCreateRTP={onMatchAndCreateRTP}
       />
     </div>

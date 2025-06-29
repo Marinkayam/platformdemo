@@ -46,6 +46,12 @@ export default function PortalRecordDetail() {
     navigate("/portal-records");
   };
 
+  const onStopTrackingBuyer = () => {
+    console.log(`Stopped tracking buyer ${portalRecord.buyer}`);
+    // TODO: Update all records from this buyer and refresh data
+    navigate("/portal-records");
+  };
+
   const onMatchAndCreateRTP = (pdfFile: File) => {
     console.log(`Creating RTP for record ${portalRecord.id} with PDF:`, pdfFile.name);
     // TODO: Implement RTP creation logic
@@ -53,7 +59,7 @@ export default function PortalRecordDetail() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <PortalRecordDetailBreadcrumb portalRecordId={portalRecord.portalRecordId} />
+      <PortalRecordDetailBreadcrumb portalRecordId={portalRecord.invoiceNumber || portalRecord.portalRecordId} />
 
       <PortalRecordDetailHeader 
         portalRecord={portalRecord} 
@@ -94,6 +100,7 @@ export default function PortalRecordDetail() {
         onInvoiceMatched={onInvoiceMatched}
         onConflictResolved={onConflictResolved}
         onRecordIgnored={onRecordIgnored}
+        onStopTrackingBuyer={onStopTrackingBuyer}
         onMatchAndCreateRTP={onMatchAndCreateRTP}
       />
     </div>

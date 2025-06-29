@@ -18,13 +18,18 @@ export function usePortalRecordFiltering(data: PortalRecord[], activeTab: string
   const filteredRecords = useMemo(() => {
     let filtered = [...data];
 
-    // Filter by active tab (simplified to 3 tabs)
+    // Filter by active tab with new logic
     if (activeTab !== "all") {
       if (activeTab === "unmatched") {
         filtered = filtered.filter(record => record.matchType === "Unmatched");
       } else if (activeTab === "conflict") {
         filtered = filtered.filter(record => record.matchType === "Conflict");
       }
+    } else {
+      // "All Records" tab now only shows Primary and Alternate records
+      filtered = filtered.filter(record => 
+        record.matchType === "Primary" || record.matchType === "Alternate"
+      );
     }
 
     // Apply portal filter

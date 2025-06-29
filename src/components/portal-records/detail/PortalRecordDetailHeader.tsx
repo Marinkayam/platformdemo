@@ -2,7 +2,6 @@
 import { PortalRecord } from "@/types/portalRecord";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Card } from "@/components/ui/card";
-import { FileText } from "lucide-react";
 import { getPortalLogoUrl } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -21,9 +20,6 @@ export function PortalRecordDetailHeader({ portalRecord, actionButtons = [], cla
     }).format(amount);
   };
 
-  // Count related invoices (simplified - would be dynamic in real app)
-  const relatedInvoicesCount = portalRecord.invoiceNumber ? 1 : 0;
-
   return (
     <div className={cn("mb-8", className)}>
       <Card className="p-6 rounded-xl">
@@ -32,7 +28,7 @@ export function PortalRecordDetailHeader({ portalRecord, actionButtons = [], cla
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3 px-2 py-1">
                 <div className="text-lg font-semibold text-[#01173E]">
-                  {portalRecord.portalRecordId}
+                  {portalRecord.invoiceNumber || "No Invoice #"}
                 </div>
                 <StatusBadge status={portalRecord.portalStatus} />
               </div>
@@ -66,12 +62,11 @@ export function PortalRecordDetailHeader({ portalRecord, actionButtons = [], cla
               )}
               <span>Portal: {portalRecord.portal || "N/A"}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <FileText className="h-4 w-4 text-gray-500" />
-              <span>Related invoices: {relatedInvoicesCount}</span>
-            </div>
             <div>
               <span>Total: {formatCurrency(portalRecord.total, portalRecord.currency)}</span>
+            </div>
+            <div>
+              <span>Status: {portalRecord.portalStatus}</span>
             </div>
             <div>
               <span>Last synced: {portalRecord.lastSynced}</span>
