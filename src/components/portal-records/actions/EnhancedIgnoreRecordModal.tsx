@@ -1,5 +1,5 @@
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PortalRecord } from "@/types/portalRecord";
@@ -65,13 +65,12 @@ export function EnhancedIgnoreRecordModal({
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>How would you like to handle this record?</DialogTitle>
+          <DialogDescription>
+            Not every portal record needs to be tracked. Choose how you'd like Monto to handle it:
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">
-          <p className="text-sm text-gray-600">
-            Not every portal record needs to be tracked. Choose how you'd like Monto to handle it:
-          </p>
-
           <div className="space-y-3">
             <Card 
               className={`cursor-pointer transition-colors ${
