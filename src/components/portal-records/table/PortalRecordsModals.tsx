@@ -33,7 +33,17 @@ export function PortalRecordsModals({
   onStopTrackingBuyer,
   onMatchAndCreateRTP
 }: PortalRecordsModalsProps) {
-  if (!selectedRecord) return null;
+  console.log('PortalRecordsModals render:', { 
+    selectedRecord: selectedRecord?.id, 
+    ignoreModalOpen,
+    matchModalOpen,
+    conflictModalOpen 
+  });
+
+  if (!selectedRecord) {
+    console.log('No selected record, not rendering modals');
+    return null;
+  }
 
   return (
     <>
@@ -44,6 +54,7 @@ export function PortalRecordsModals({
         onMatch={onInvoiceMatched}
         onIgnore={onRecordIgnored}
         onMatchAndCreateRTP={onMatchAndCreateRTP}
+        contextSource="table"
       />
       
       <EnhancedResolveConflictModal

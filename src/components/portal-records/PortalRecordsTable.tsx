@@ -48,11 +48,13 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   };
 
   const handleMatchInvoice = (record: PortalRecord) => {
+    console.log('Opening match modal for record:', record.id);
     setSelectedRecord(record);
     setMatchModalOpen(true);
   };
 
   const handleResolveConflict = (record: PortalRecord) => {
+    console.log('Opening conflict modal for record:', record.id);
     setSelectedRecord(record);
     setConflictModalOpen(true);
   };

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PortalRecord } from "@/types/portalRecord";
 import { toast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface EnhancedIgnoreRecordModalProps {
   isOpen: boolean;
@@ -23,7 +23,16 @@ export function EnhancedIgnoreRecordModal({
 }: EnhancedIgnoreRecordModalProps) {
   const [selectedOption, setSelectedOption] = useState<'record' | 'buyer' | null>(null);
 
+  useEffect(() => {
+    console.log('EnhancedIgnoreRecordModal props:', { 
+      isOpen, 
+      recordId: record?.id,
+      recordBuyer: record?.buyer 
+    });
+  }, [isOpen, record]);
+
   const handleConfirm = () => {
+    console.log('Confirm button clicked with option:', selectedOption);
     if (selectedOption === 'record') {
       onIgnoreRecord();
       toast({
@@ -41,9 +50,15 @@ export function EnhancedIgnoreRecordModal({
   };
 
   const handleClose = () => {
+    console.log('Modal closing, resetting selectedOption');
     setSelectedOption(null);
     onClose();
   };
+
+  if (!record) {
+    console.log('No record provided to EnhancedIgnoreRecordModal');
+    return null;
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
