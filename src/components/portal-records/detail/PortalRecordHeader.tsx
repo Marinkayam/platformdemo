@@ -1,7 +1,7 @@
 
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "../PortalLogo";
-import { PortalStatusBadge } from "../PortalStatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { MatchTypeBadge } from "../MatchTypeBadge";
 import { ConnectionStatusBadge } from "../ConnectionStatusBadge";
 import { Card } from "@/components/ui/card";
@@ -36,7 +36,7 @@ export function PortalRecordHeader({ record, actionButtons = [] }: PortalRecordH
                   {record.portalRecordId}
                 </div>
                 <ConnectionStatusBadge status={record.connectionStatus} />
-                <PortalStatusBadge status={record.portalStatus} />
+                <StatusBadge status={record.portalStatus} />
                 <MatchTypeBadge type={record.matchType} />
               </div>
 

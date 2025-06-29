@@ -23,14 +23,16 @@ export const generatePortalRecordsForInvoice = (invoice: any, index: number): Po
       connectionStatus = "Connected";
     }
     
-    // Determine portal status
+    // Determine portal status with new values
     let portalStatus: PortalRecord['portalStatus'];
     if (connectionStatus === 'Disconnected') {
-      portalStatus = 'Error';
+      portalStatus = 'Rejected by Buyer';
     } else if (connectionStatus === 'Syncing') {
-      portalStatus = 'Pending';
+      portalStatus = 'Approved by Buyer';
     } else {
-      portalStatus = Math.random() < 0.8 ? 'Active' : 'Inactive';
+      // Use new portal status values
+      const newStatuses: PortalRecord['portalStatus'][] = ['Approved by Buyer', 'Rejected by Buyer', 'Paid', 'Settled', 'Partially Settled'];
+      portalStatus = newStatuses[Math.floor(Math.random() * newStatuses.length)];
     }
     
     // Determine status based on invoice status

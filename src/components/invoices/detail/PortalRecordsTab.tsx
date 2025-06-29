@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -61,7 +60,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
         portalRecordId: `${Math.floor(Math.random() * 900000) + 100000}`,
         portal: "Coupa",
         buyer: "Acme Corporation",
-        portalStatus: "Active",
+        portalStatus: "Approved by Buyer",
         invoiceNumber: invoiceId,
         matchType: "Primary",
         total: 2350.20,
