@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,6 +21,7 @@ import Onboarding from "./pages/Onboarding";
 import PaymentsRelationships from "./pages/PaymentsRelationships";
 import NewPaymentsRelationship from "./pages/NewPaymentsRelationship";
 import { NotificationsProvider } from "./context/NotificationsContext";
+import ShadcnSidebarPlayground from "./pages/ShadcnSidebarPlayground";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +37,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/welcome" element={<Welcome />} />
+            <Route path="/shadcn-sidebar" element={<ShadcnSidebarPlayground />} />
 
             {/* Routes requiring MainLayout */}
             <Route element={<MainLayout />}>
