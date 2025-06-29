@@ -27,6 +27,14 @@ export function SidebarSection({
       setExpandedItems(prev => new Set(prev).add("RTPs"));
     } else if (pathname.includes("/portal-records") || pathname.includes("/purchase-orders") || pathname.includes("/portals-dashboard")) {
       setExpandedItems(prev => new Set(prev).add("Portals Dashboard"));
+      
+      // Also expand nested items if we're on those pages
+      if (pathname.includes("/portal-records")) {
+        setExpandedItems(prev => new Set(prev).add("Portal Records"));
+      }
+      if (pathname.includes("/purchase-orders")) {
+        setExpandedItems(prev => new Set(prev).add("Purchase Orders"));
+      }
     } else if (pathname.includes("/payments-relationships")) {
       setExpandedItems(prev => new Set(prev).add("Payments Relationships"));
     }
@@ -60,24 +68,95 @@ export function SidebarSection({
     return false;
   };
 
-  const getSubItemActiveState = (item: NavItem, subItem: NavItem) => {
+  const getSubItemActiveState = (parentItem: NavItem, subItem: NavItem) => {
     const basePath = subItem.href?.split('?')[0] || '';
     const query = subItem.href?.split('?')[1] || '';
     
-    if (item.title === "RTPs") {
+    if (parentItem.title === "RTPs") {
       if (subItem.href === "/invoices" && pathname === "/invoices" && !search) return true;
       if (query && search.includes(query.split('=')[1])) return true;
-    } else if (item.title === "Portals Dashboard") {
+    } else if (parentItem.title === "Portals Dashboard") {
       if (subItem.href === "/portals-dashboard" && pathname === "/portals-dashboard" && !search) return true;
+    } else if (parentItem.title === "Portal Records") {
       if (subItem.href === "/portal-records" && pathname === "/portal-records" && !search) return true;
+      if (query && search.includes(query.split('=')[1])) return true;
+    } else if (parentItem.title === "Purchase Orders") {
       if (subItem.href === "/purchase-orders" && pathname === "/purchase-orders" && !search) return true;
       if (query && search.includes(query.split('=')[1])) return true;
-    } else if (item.title === "Payments Relationships") {
+    } else if (parentItem.title === "Payments Relationships") {
       if (subItem.href === "/payments-relationships" && pathname === "/payments-relationships" && !search) return true;
       if (query && search.includes(query.split('=')[1])) return true;
     }
     
     return false;
+  };
+
+  const renderSubMenu = (item: NavItem, level: number = 1) => {
+    const isExpanded = expandedItems.has(item.title);
+    const hasSubmenu = item.items && item.items.length > 0;
+    const marginLeft = level === 1 ? "ml-8" : "ml-12"; // Increase indentation for nested levels
+
+    if (!isExpanded || !hasSubmenu) return null;
+
+    return (
+      <div className={cn(marginLeft, "mt-1 space-y-1 transition-all duration-200")}>
+        {item.items?.map(subItem => {
+          const isSubActive = getSubItemActiveState(item, subItem);
+          const hasNestedSubmenu = subItem.items && subItem.items.length > 0;
+          
+          if (hasNestedSubmenu) {
+            const isSubExpanded = expandedItems.has(subItem.title);
+            
+            return (
+              <div key={subItem.title}>
+                <button
+                  onClick={() => handleItemClick(subItem)}
+                  className={cn(
+                    "flex items-center justify-between gap-2 px-3 py-2 text-sm font-normal rounded-md transition-colors w-full text-left",
+                    "text-[#3F4758] hover:bg-[#F4F4F7]",
+                    isSubActive && "text-[#7B59FF] font-normal bg-[#F0EDFF]"
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    {subItem.icon && (
+                      <subItem.icon 
+                        size={16} 
+                        className={isSubActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
+                        strokeWidth={1.5}
+                      />
+                    )}
+                    <span className="font-normal">{subItem.title}</span>
+                  </div>
+                  <ChevronDownIcon 
+                    size={14} 
+                    className={cn(
+                      "transition-transform duration-200",
+                      isSubExpanded ? "rotate-180" : "rotate-0",
+                      isSubActive ? "text-[#7B59FF]" : "text-[#3F4758]"
+                    )}
+                  />
+                </button>
+                {renderSubMenu(subItem, level + 1)}
+              </div>
+            );
+          }
+          
+          return (
+            <Link 
+              key={subItem.title} 
+              to={subItem.href || "#"} 
+              className={cn(
+                "block px-3 py-2 text-sm font-normal rounded-md transition-colors text-left",
+                "text-[#3F4758] hover:bg-[#F4F4F7]",
+                isSubActive && "text-[#7B59FF] font-normal bg-[#F0EDFF]"
+              )}
+            >
+              {subItem.title}
+            </Link>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
@@ -122,27 +201,7 @@ export function SidebarSection({
                   />
                 </button>
                 
-                {isExpanded && (
-                  <div className="ml-8 mt-1 space-y-1 transition-all duration-200">
-                    {item.items?.map(subItem => {
-                      const isSubActive = getSubItemActiveState(item, subItem);
-                      
-                      return (
-                        <Link 
-                          key={subItem.title} 
-                          to={subItem.href || "#"} 
-                          className={cn(
-                            "block px-3 py-2 text-sm font-normal rounded-md transition-colors text-left",
-                            "text-[#3F4758] hover:bg-[#F4F4F7]",
-                            isSubActive && "text-[#7B59FF] font-normal bg-[#F0EDFF]"
-                          )}
-                        >
-                          {subItem.title}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
+                {renderSubMenu(item)}
               </div>
             );
           }

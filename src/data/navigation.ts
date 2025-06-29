@@ -218,12 +218,26 @@ export const navMain: NavItem[] = [
     icon: PortalsDashboardIcon,
     items: [
       { title: "Overview", href: "/portals-dashboard" },
-      { title: "Portal Records", href: "/portal-records" },
-      { title: "Unmatched Records", href: "/portal-records?tab=unmatched" },
-      { title: "Conflict Records", href: "/portal-records?tab=conflict" },
-      { title: "Purchase Orders", href: "/purchase-orders" },
-      { title: "New POs", href: "/purchase-orders?status=new" },
-      { title: "Low Funds POs", href: "/purchase-orders?status=low-funds" },
+      {
+        title: "Portal Records",
+        href: "/portal-records",
+        icon: PortalRecordsIcon,
+        items: [
+          { title: "All Records", href: "/portal-records" },
+          { title: "Unmatched Records", href: "/portal-records?tab=unmatched" },
+          { title: "Conflict Records", href: "/portal-records?tab=conflict" },
+        ]
+      },
+      {
+        title: "Purchase Orders",
+        href: "/purchase-orders",
+        icon: PurchaseOrderIcon,
+        items: [
+          { title: "All POs", href: "/purchase-orders" },
+          { title: "New POs", href: "/purchase-orders?status=new" },
+          { title: "Low Funds POs", href: "/purchase-orders?status=low-funds" },
+        ]
+      },
     ],
   },
   {
