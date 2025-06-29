@@ -22,6 +22,7 @@ import PaymentsRelationships from "./pages/PaymentsRelationships";
 import NewPaymentsRelationship from "./pages/NewPaymentsRelationship";
 import { NotificationsProvider } from "./context/NotificationsContext";
 import ShadcnSidebarPlayground from "./pages/ShadcnSidebarPlayground";
+import PortalsDashboard from "./pages/PortalsDashboard";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
             {/* Routes requiring MainLayout */}
             <Route element={<MainLayout />}>
               <Route index element={<Dashboard />} />
+              <Route path="/portals-dashboard" element={<PortalsDashboard />} />
               <Route path="/invoices" element={<Invoices />} />
               <Route path="/invoices/:id" element={<InvoiceDetail />} />
               <Route path="/portal-records" element={<PortalRecords />} />

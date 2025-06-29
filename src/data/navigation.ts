@@ -139,6 +139,30 @@ const PortalRecordsIcon = ({ size = 20, className }: { size?: number; className?
   )
 );
 
+const PortalsDashboardIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
+  React.createElement('svg', {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    className: className
+  },
+  React.createElement('rect', { width: "7", height: "9", x: "3", y: "3", rx: "1" }),
+  React.createElement('rect', { width: "7", height: "5", x: "14", y: "3", rx: "1" }),
+  React.createElement('rect', { width: "7", height: "9", x: "14", y: "12", rx: "1" }),
+  React.createElement('rect', { width: "7", height: "5", x: "3", y: "16", rx: "1" }),
+  React.createElement('circle', { cx: "8", cy: "8", r: "1" }),
+  React.createElement('circle', { cx: "16", cy: "8", r: "1" }),
+  React.createElement('circle', { cx: "16", cy: "16", r: "1" }),
+  React.createElement('circle', { cx: "8", cy: "20", r: "1" })
+  )
+);
+
 const HelpIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
   React.createElement('svg', {
     xmlns: "http://www.w3.org/2000/svg",
@@ -188,6 +212,11 @@ export const navMain: NavItem[] = [
     title: "Home Page",
     href: "/",
     icon: DashboardIcon,
+  },
+  {
+    title: "Portals Dashboard",
+    href: "/portals-dashboard",
+    icon: PortalsDashboardIcon,
   },
   {
     title: "RTPs",
