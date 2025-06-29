@@ -126,18 +126,6 @@ export function EnhancedIgnoreRecordModal({
               </CardContent>
             </Card>
           </div>
-
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h4 className="font-medium text-gray-900 mb-2">Record Details</h4>
-            <div className="space-y-1 text-sm text-gray-600">
-              <div><strong>Portal:</strong> {record.portal}</div>
-              <div><strong>Buyer:</strong> {record.buyer}</div>
-              <div><strong>Amount:</strong> {new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: record.currency
-              }).format(record.total)}</div>
-            </div>
-          </div>
         </div>
 
         <DialogFooter>

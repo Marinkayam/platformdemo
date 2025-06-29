@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { PortalRecord } from "@/types/portalRecord";
@@ -8,6 +7,7 @@ import { PortalRecordDetails } from "./match-modal/PortalRecordDetails";
 import { MatchExistingInvoiceTab } from "./match-modal/MatchExistingInvoiceTab";
 import { MatchModalActions } from "./match-modal/MatchModalActions";
 import { ConfirmMatchModal } from "./match-modal/ConfirmMatchModal";
+import { EnhancedIgnoreRecordModal } from "./EnhancedIgnoreRecordModal";
 
 interface EnhancedMatchInvoiceModalProps {
   isOpen: boolean;
@@ -36,6 +36,7 @@ export function EnhancedMatchInvoiceModal({
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showMatchConfirmModal, setShowMatchConfirmModal] = useState(false);
+  const [showIgnoreModal, setShowIgnoreModal] = useState(false);
 
   // Enhanced search with debounce
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
@@ -80,18 +81,20 @@ export function EnhancedMatchInvoiceModal({
   };
 
   const handleIgnore = () => {
+    setShowIgnoreModal(true);
+  };
+
+  const handleIgnoreRecord = () => {
     onIgnore();
-    toast({
-      title: "Record Ignored",
-      description: `Portal record ${record.portalRecordId} will no longer be monitored.`,
-      variant: "warning",
-    });
-    
-    // Navigate back to portal records table
-    setTimeout(() => {
-      navigate('/portal-records');
-    }, 1500);
-    
+    setShowIgnoreModal(false);
+    onClose();
+    resetForm();
+  };
+
+  const handleStopTrackingBuyer = () => {
+    // This would typically be handled by a parent component
+    console.log(`Stop tracking buyer: ${record.buyer}`);
+    setShowIgnoreModal(false);
     onClose();
     resetForm();
   };
@@ -274,6 +277,15 @@ export function EnhancedMatchInvoiceModal({
         onConfirm={confirmMatch}
         record={record}
         selectedInvoiceId={selectedInvoiceId}
+      />
+
+      {/* Ignore Record Modal */}
+      <EnhancedIgnoreRecordModal
+        isOpen={showIgnoreModal}
+        onClose={() => setShowIgnoreModal(false)}
+        record={record}
+        onIgnoreRecord={handleIgnoreRecord}
+        onStopTrackingBuyer={handleStopTrackingBuyer}
       />
     </>
   );
