@@ -28,7 +28,7 @@ export const BADGE_COLORS = {
 
 export const STATUS_MAPPING = {
   // SUCCESS - Green
-  success: ['paid', 'settled', 'partially settled', 'live', 'connected', 'approved by buyer', 'new', 'fully invoiced', 'partially invoiced'],
+  success: ['paid', 'settled', 'partially settled', 'live', 'connected', 'new', 'fully invoiced', 'partially invoiced'],
   
   // ERROR - Red  
   error: ['rejected by buyer', 'disconnected', 'error', 'unavailable', 'pending action'],
@@ -42,8 +42,8 @@ export const STATUS_MAPPING = {
   // NEUTRAL - Gray
   neutral: ['excluded', 'inactive'],
   
-  // PROCESSING - Purple
-  processing: ['rtp prepared', 'rtp sent', 'awaiting sc', 'rejected by monto']
+  // PROCESSING - Purple (includes "Approved by Buyer")
+  processing: ['rtp prepared', 'rtp sent', 'awaiting sc', 'rejected by monto', 'approved by buyer']
 };
 
 export const getStatusColor = (status: string): typeof BADGE_COLORS[keyof typeof BADGE_COLORS] => {

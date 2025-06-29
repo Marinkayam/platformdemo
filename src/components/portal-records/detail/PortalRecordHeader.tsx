@@ -22,9 +22,6 @@ export function PortalRecordHeader({ record, actionButtons = [] }: PortalRecordH
     }).format(amount);
   };
 
-  // Count related invoices (simplified - would be dynamic in real app)
-  const relatedInvoicesCount = record.invoiceNumber ? 1 : 0;
-
   return (
     <div className="mb-8">
       <Card className="p-6 rounded-xl">
@@ -33,7 +30,7 @@ export function PortalRecordHeader({ record, actionButtons = [] }: PortalRecordH
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3 px-2 py-1">
                 <div className="text-lg font-semibold text-[#01173E]">
-                  {record.portalRecordId}
+                  {record.invoiceNumber || record.portalRecordId}
                 </div>
                 <ConnectionStatusBadge status={record.connectionStatus} />
                 <StatusBadge status={record.portalStatus} />
@@ -68,10 +65,6 @@ export function PortalRecordHeader({ record, actionButtons = [] }: PortalRecordH
                 />
               )}
               <span>Portal: {record.portal || "N/A"}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <FileText className="h-4 w-4 text-gray-500" />
-              <span>Related invoices: {relatedInvoicesCount}</span>
             </div>
             <div>
               <span>Total: {formatCurrency(record.total, record.currency)}</span>

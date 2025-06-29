@@ -51,6 +51,7 @@ export function PortalRecordsModals({
         onClose={() => setConflictModalOpen(false)}
         record={selectedRecord}
         onResolve={onConflictResolved}
+        onIgnore={onRecordIgnored}
       />
       
       <EnhancedIgnoreRecordModal

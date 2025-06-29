@@ -65,13 +65,16 @@ export const generatePortalRecordsForInvoice = (invoice: any, index: number): Po
       recordType = i === 0 ? "Primary" : "Alternate";
     }
     
+    // Format invoice number as INV-XXXXXXXX
+    const invoiceNumber = `INV-${String(invoice.id).padStart(8, '0')}`;
+    
     const record: PortalRecord = {
       id: `PR-${String(index * 10 + i + 1).padStart(3, '0')}`,
       portalRecordId: `PRC-2025-${String(index * 10 + i + 1).padStart(3, '0')}`,
       portal,
       buyer: invoice.buyer,
       portalStatus,
-      invoiceNumber: invoice.id,
+      invoiceNumber,
       matchType: i === 0 ? "Primary" : "Alternate",
       total: Math.round(amount * 100) / 100,
       currency: invoice.currency || "USD",

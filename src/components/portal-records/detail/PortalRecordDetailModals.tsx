@@ -50,6 +50,7 @@ export function PortalRecordDetailModals({
         onClose={onCloseConflictModal}
         record={portalRecord}
         onResolve={onConflictResolved}
+        onIgnore={onRecordIgnored}
       />
 
       <EnhancedIgnoreRecordModal

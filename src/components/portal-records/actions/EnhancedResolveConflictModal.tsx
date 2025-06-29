@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -13,13 +14,15 @@ interface EnhancedResolveConflictModalProps {
   onClose: () => void;
   record: PortalRecord;
   onResolve: (selectedRecordId: string, action: 'primary' | 'alternate') => void;
+  onIgnore?: () => void;
 }
 
 export function EnhancedResolveConflictModal({ 
   isOpen, 
   onClose, 
   record, 
-  onResolve 
+  onResolve,
+  onIgnore
 }: EnhancedResolveConflictModalProps) {
   const [selectedRecord, setSelectedRecord] = useState<'current' | 'conflicting' | null>(null);
 
@@ -34,7 +37,7 @@ export function EnhancedResolveConflictModal({
     matchType: 'Conflict' as const,
     total: record.total * 0.95, // Slightly different amount
     currency: record.currency,
-    poNumber: record.poNumber.replace('-', '_'), // Different PO format
+    poNumber: record.poNumber?.replace('-', '_') || 'PO-ALT', // Different PO format
     supplierName: record.supplierName,
     connectionStatus: record.connectionStatus,
     lastSynced: "2024-01-15 10:30:00"
@@ -74,6 +77,17 @@ export function EnhancedResolveConflictModal({
       title: "Conflict Resolved",
       description: `${selectedRecord === 'current' ? 'Current' : 'Conflicting'} record set as primary match.`,
     });
+    onClose();
+  };
+
+  const handleIgnore = () => {
+    if (onIgnore) {
+      onIgnore();
+      toast({
+        title: "Record Ignored",
+        description: `Portal record ${record.portalRecordId} will no longer be monitored.`,
+      });
+    }
     onClose();
   };
 
@@ -202,6 +216,11 @@ export function EnhancedResolveConflictModal({
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
+          {onIgnore && (
+            <Button variant="destructive" onClick={handleIgnore}>
+              Ignore Record
+            </Button>
+          )}
           <Button onClick={handleResolve} disabled={!selectedRecord}>
             Resolve Conflict
           </Button>
