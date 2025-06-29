@@ -1,79 +1,74 @@
 
 import { PortalRecord } from "@/types/portalRecord";
-import { StatusBadge } from "@/components/ui/status-badge";
-import { Card } from "@/components/ui/card";
-import { getPortalLogoUrl } from "@/lib/utils";
+import { PortalLogo } from "../PortalLogo";
+import { MatchTypeBadge } from "../MatchTypeBadge";
+import { ConnectionStatusBadge } from "../ConnectionStatusBadge";
+import { PortalRecordActionsMenu } from "./PortalRecordActionsMenu";
 import { cn } from "@/lib/utils";
 
 interface PortalRecordDetailHeaderProps {
   portalRecord: PortalRecord;
-  actionButtons?: React.ReactNode[];
   className?: string;
+  onMatchInvoice?: () => void;
+  onResolveConflict?: () => void;
+  onIgnoreRecord?: () => void;
+  onSyncRecord?: () => void;
 }
 
-export function PortalRecordDetailHeader({ portalRecord, actionButtons = [], className }: PortalRecordDetailHeaderProps) {
-  const formatCurrency = (amount: number, currency: string): string => {
-    if (amount === 0) return "—";
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-    }).format(amount);
+export function PortalRecordDetailHeader({ 
+  portalRecord, 
+  className,
+  onMatchInvoice,
+  onResolveConflict,
+  onIgnoreRecord,
+  onSyncRecord
+}: PortalRecordDetailHeaderProps) {
+  const handleSyncRecord = () => {
+    console.log(`Syncing record ${portalRecord.id}`);
+    // TODO: Implement sync record logic
+    if (onSyncRecord) {
+      onSyncRecord();
+    }
   };
 
   return (
-    <div className={cn("mb-8", className)}>
-      <Card className="p-6 rounded-xl">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 px-2 py-1">
-                <div className="text-lg font-semibold text-[#01173E]">
-                  {portalRecord.invoiceNumber || "No Invoice #"}
-                </div>
-                <StatusBadge status={portalRecord.portalStatus} />
-              </div>
-
-              {actionButtons.length > 0 && (
-                <div className="flex items-center gap-2">
-                  {actionButtons}
-                </div>
-              )}
+    <div className={cn("bg-white rounded-lg border p-6 shadow-sm", className)}>
+      <div className="flex items-start justify-between">
+        <div className="flex items-start space-x-4">
+          <PortalLogo portal={portalRecord.portal} size="large" />
+          
+          <div className="space-y-2">
+            <div className="flex items-center space-x-3">
+              <h1 className="text-2xl font-semibold text-gray-900">
+                {portalRecord.invoiceNumber || portalRecord.portalRecordId}
+              </h1>
+              <MatchTypeBadge matchType={portalRecord.matchType} />
             </div>
-
-            <div className="text-sm text-muted-foreground font-normal px-2 py-1">
-              Buyer: {portalRecord.buyer}
+            
+            <div className="flex items-center space-x-4 text-sm text-gray-600">
+              <span><strong>Portal:</strong> {portalRecord.portal}</span>
+              <span><strong>Buyer:</strong> {portalRecord.buyer}</span>
+              <ConnectionStatusBadge status={portalRecord.connectionStatus} />
             </div>
-          </div>
-
-          <div className="border-t border-[#E4E5E9] my-0"></div>
-
-          <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
-            <div className="flex items-center gap-2">
-              {portalRecord.portal && (
-                <img
-                  src={getPortalLogoUrl(portalRecord.portal)}
-                  alt={`${portalRecord.portal} logo`}
-                  className="w-4 h-4 object-contain rounded-full"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = '/portal-logos/placeholder.svg';
-                  }}
-                />
-              )}
-              <span>Portal: {portalRecord.portal || "N/A"}</span>
-            </div>
-            <div>
-              <span>Total: {formatCurrency(portalRecord.total, portalRecord.currency)}</span>
-            </div>
-            <div>
-              <span>Status: {portalRecord.portalStatus}</span>
-            </div>
-            <div>
-              <span>Last synced: {portalRecord.lastSynced}</span>
+            
+            <div className="flex items-center space-x-4 text-sm text-gray-600">
+              <span><strong>Amount:</strong> {new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: portalRecord.currency
+              }).format(portalRecord.total)}</span>
+              <span><strong>PO Number:</strong> {portalRecord.poNumber}</span>
             </div>
           </div>
         </div>
-      </Card>
+
+        <PortalRecordActionsMenu
+          portalRecord={portalRecord}
+          onMatchInvoice={onMatchInvoice}
+          onResolveConflict={onResolveConflict}
+          onIgnoreRecord={onIgnoreRecord}
+          onSyncRecord={handleSyncRecord}
+        />
+      </div>
     </div>
   );
 }

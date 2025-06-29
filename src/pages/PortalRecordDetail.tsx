@@ -12,6 +12,7 @@ import { PortalRecordDetailModals } from "@/components/portal-records/detail/Por
 import { PortalRecordActionInstructions } from "@/components/portal-records/detail/PortalRecordActionInstructions";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { toast } from "@/hooks/use-toast";
 
 export default function PortalRecordDetail() {
   const { id } = useParams<{ id: string }>();
@@ -67,19 +68,41 @@ export default function PortalRecordDetail() {
     setIgnoreModalOpen(true);
   };
 
+  const handleMatchInvoice = () => {
+    console.log('Opening match modal from detail page');
+    setMatchModalOpen(true);
+  };
+
+  const handleResolveConflict = () => {
+    console.log('Opening conflict modal from detail page');
+    setConflictModalOpen(true);
+  };
+
+  const handleSyncRecord = () => {
+    console.log('Syncing record from detail page');
+    toast({
+      title: "Record Synced",
+      description: `Portal record ${portalRecord.portalRecordId} has been synced successfully.`,
+    });
+  };
+
   return (
     <div className="container mx-auto px-4 py-6">
       <PortalRecordDetailBreadcrumb portalRecordId={portalRecord.invoiceNumber || portalRecord.portalRecordId} />
 
       <PortalRecordDetailHeader 
         portalRecord={portalRecord} 
-        className="mb-6" 
+        className="mb-6"
+        onMatchInvoice={handleMatchInvoice}
+        onResolveConflict={handleResolveConflict}
+        onIgnoreRecord={handleIgnoreRecord}
+        onSyncRecord={handleSyncRecord}
       />
 
       <PortalRecordActionInstructions 
         portalRecord={portalRecord}
-        onMatchInvoice={() => setMatchModalOpen(true)}
-        onResolveConflict={() => setConflictModalOpen(true)}
+        onMatchInvoice={handleMatchInvoice}
+        onResolveConflict={handleResolveConflict}
         onIgnoreRecord={handleIgnoreRecord}
       />
 
