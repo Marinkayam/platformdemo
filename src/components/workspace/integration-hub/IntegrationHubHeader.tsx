@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Upload } from 'lucide-react';
 
@@ -10,7 +9,7 @@ export function IntegrationHubHeader({ onUploadPaymentReport }: IntegrationHubHe
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
-        <h6 className="text-lg font-semibold text-grey-900 mb-1">Integration Hub</h6>
+        <h6 className="text-lg font-semibold text-grey-900 mb-1">Integration Center</h6>
         <p className="text-base text-grey-600">Manage all your data connections and integrations</p>
       </div>
       <button 

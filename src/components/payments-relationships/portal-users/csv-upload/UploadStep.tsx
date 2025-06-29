@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useCallback } from 'react';
 import { X, File as FileIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -72,7 +71,7 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-12">
       {error ? (
         <p className="text-sm text-red-600 text-center mb-4">
           ⚠️ There was an issue with your file. Please check the format and try again.
@@ -92,7 +91,7 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
       )}
       <div
         className={cn(
-          "flex flex-col items-center justify-center gap-4 border border-dashed rounded-lg p-10 text-center transition-colors cursor-pointer",
+          "flex flex-col items-center justify-center gap-10 border border-dashed rounded-lg p-10 text-center transition-colors cursor-pointer mt-10 mb-10",
           isDragging ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-gray-400'
         )}
         onDragEnter={handleDragEnter}

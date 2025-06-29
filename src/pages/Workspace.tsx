@@ -5,6 +5,7 @@ import { TeamTab } from "@/components/workspace/TeamTab";
 import { CompanyTab } from "@/components/workspace/CompanyTab";
 import { LicenseTab } from "@/components/workspace/LicenseTab";
 import { DuplicationPolicyTab } from "@/components/workspace/DuplicationPolicyTab";
+import { PoliciesTab } from "@/components/workspace/PoliciesTab";
 import { IntegrationHub } from "@/components/workspace/integration-hub/IntegrationHub";
 
 const headerTabs = [
@@ -24,19 +25,19 @@ const headerTabs = [
     icon: <FileText size={16} />,
   },
   {
-    id: "duplication-policy",
-    label: "Duplication Policy",
+    id: "policies",
+    label: "Policies",
     icon: <Settings size={16} />,
-  },
-  {
-    id: "connectors",
-    label: "Connectors",
-    icon: <Plug size={16} />,
   },
   {
     id: "company-entities",
     label: "Company Entities",
     icon: <Building2 size={16} />,
+  },
+  {
+    id: "integration-center",
+    label: "Integration Center",
+    icon: <Plug size={16} />,
   },
 ];
 
@@ -68,9 +69,9 @@ export default function Workspace() {
         return <TeamTab />;
       case "license":
         return <LicenseTab />;
-      case "duplication-policy":
-        return <DuplicationPolicyTab />;
-      case "connectors":
+      case "policies":
+        return <PoliciesTab />;
+      case "integration-center":
         return <IntegrationHub />;
       case "company-entities":
         return <CompanyEntitiesTab />;

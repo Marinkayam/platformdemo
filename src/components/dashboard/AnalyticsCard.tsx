@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, Clock } from "lucide-react";
 
@@ -32,11 +31,11 @@ export function AnalyticsCard({ title, value, subtitle, type, icon, onClick }: A
   const getDefaultIcon = () => {
     switch (type) {
       case 'paid':
-        return <TrendingUp className="h-5 w-5" />;
+        return <TrendingUp className="h-4 w-4" />;
       case 'pastdue':
-        return <TrendingDown className="h-5 w-5" />;
+        return <TrendingDown className="h-4 w-4" />;
       case 'time':
-        return <Clock className="h-5 w-5" />;
+        return <Clock className="h-4 w-4" />;
       default:
         return null;
     }
