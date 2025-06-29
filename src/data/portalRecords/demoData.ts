@@ -165,6 +165,7 @@ export const demoRecords: PortalRecord[] = [
     portal: "Tipalti",
     buyer: "Manufacturing Co",
     portalStatus: "Partially Settled",
+    invoiceNumber: "INV-00008900",
     matchType: "Unmatched",
     total: 890.50,
     currency: "EUR",

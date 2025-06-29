@@ -30,12 +30,6 @@ export function ActionsColumn({
         onClick: () => onMatchInvoice(record),
         variant: "default" as const
       });
-      actions.push({
-        label: "Ignore Record",
-        icon: Ban,
-        onClick: () => onIgnoreRecord(record),
-        variant: "destructive" as const
-      });
     } else if (record.matchType === 'Conflict') {
       actions.push({
         label: "Resolve Conflict",
@@ -44,6 +38,14 @@ export function ActionsColumn({
         variant: "default" as const
       });
     }
+    
+    // Add ignore record option for all connected records
+    actions.push({
+      label: "Ignore Record",
+      icon: Ban,
+      onClick: () => onIgnoreRecord(record),
+      variant: "destructive" as const
+    });
   }
 
   return <TableActions actions={actions} />;

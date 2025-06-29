@@ -1,7 +1,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Home, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronRight } from "lucide-react";
 
 interface PortalRecordDetailBreadcrumbProps {
   portalRecordId?: string;
@@ -15,18 +15,10 @@ export function PortalRecordDetailBreadcrumb({ portalRecordId }: PortalRecordDet
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => navigate("/")}
-        className="text-gray-600 hover:text-gray-900 p-0"
-      >
-        <Home className="h-4 w-4" />
-      </Button>
-      <ChevronRight className="h-4 w-4" />
-      <Button
-        variant="ghost"
-        size="sm"
         onClick={() => navigate("/portal-records")}
-        className="text-gray-600 hover:text-gray-900 p-0"
+        className="text-gray-600 hover:text-gray-900 p-0 flex items-center gap-1"
       >
+        <ArrowLeft className="h-4 w-4" />
         Portal Records
       </Button>
       <ChevronRight className="h-4 w-4" />
