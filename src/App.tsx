@@ -40,7 +40,7 @@ const App = () => (
 
             {/* Routes requiring MainLayout */}
             <Route element={<MainLayout />}>
-              <Route path="/" element={<Dashboard />} />
+              <Route index element={<Dashboard />} />
               <Route path="/invoices" element={<Invoices />} />
               <Route path="/invoices/:id" element={<InvoiceDetail />} />
               <Route path="/portal-records" element={<PortalRecords />} />
