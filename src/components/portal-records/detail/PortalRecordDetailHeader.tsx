@@ -1,4 +1,3 @@
-
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "../PortalLogo";
 import { MatchTypeBadge } from "../MatchTypeBadge";
@@ -35,14 +34,14 @@ export function PortalRecordDetailHeader({
     <div className={cn("bg-white rounded-lg border p-6 shadow-sm", className)}>
       <div className="flex items-start justify-between">
         <div className="flex items-start space-x-4">
-          <PortalLogo portal={portalRecord.portal} size="large" />
+          <PortalLogo portalName={portalRecord.portal} size="large" />
           
           <div className="space-y-2">
             <div className="flex items-center space-x-3">
               <h1 className="text-2xl font-semibold text-gray-900">
                 {portalRecord.invoiceNumber || portalRecord.portalRecordId}
               </h1>
-              <MatchTypeBadge matchType={portalRecord.matchType} />
+              <MatchTypeBadge type={portalRecord.matchType} />
             </div>
             
             <div className="flex items-center space-x-4 text-sm text-gray-600">
