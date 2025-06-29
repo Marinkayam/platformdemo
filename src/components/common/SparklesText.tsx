@@ -58,6 +58,14 @@ interface SparklesTextProps {
     first: string;
     second: string;
   };
+
+  /**
+   * @default undefined
+   * @type number
+   * @description
+   * Duration in ms to show sparkles before stopping (if undefined, sparkles are always on)
+   */
+  duration?: number;
 }
 
 const SparklesText: React.FC<SparklesTextProps> = ({
@@ -65,11 +73,21 @@ const SparklesText: React.FC<SparklesTextProps> = ({
   colors = { first: "#9E7AFF", second: "#FE8BBB" },
   className,
   sparklesCount = 10,
+  duration,
   ...props
 }) => {
   const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+  const [showSparkles, setShowSparkles] = useState(true);
 
   useEffect(() => {
+    if (duration !== undefined) {
+      const timer = setTimeout(() => setShowSparkles(false), duration);
+      return () => clearTimeout(timer);
+    }
+  }, [duration]);
+
+  useEffect(() => {
+    if (!showSparkles) return;
     const generateStar = (): Sparkle => {
       const starX = `${Math.random() * 100}%`;
       const starY = `${Math.random() * 100}%`;

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Users, Clock, ArrowRight, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { mockInsights } from '@/data/insights';
+import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 export function DashboardInsights() {
   const navigate = useNavigate();
@@ -22,6 +23,18 @@ export function DashboardInsights() {
     .filter(i => i.paymentHabit.score === 'Excellent')
     .sort((a, b) => a.paymentHabit.dso - b.paymentHabit.dso) // Sort by lowest DSO first
     .slice(0, 3);
+
+  // Mock data for mini area chart
+  const miniChartData = [
+    { week: 'W1', value: 12 },
+    { week: 'W2', value: 15 },
+    { week: 'W3', value: 14 },
+    { week: 'W4', value: 18 },
+    { week: 'W5', value: 17 },
+    { week: 'W6', value: 20 },
+    { week: 'W7', value: 19 },
+    { week: 'W8', value: 22 },
+  ];
 
   return (
     <Card 
@@ -86,6 +99,13 @@ export function DashboardInsights() {
             View detailed insights
             <ArrowRight className="h-4 w-4" style={{ width: 16, height: 16 }} />
           </p>
+          <div className="mt-4 h-16 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={miniChartData} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
+                <Area type="monotone" dataKey="value" stroke="#7B59FF" fill="#EDE9FE" fillOpacity={0.7} strokeWidth={2} dot={false} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </CardContent>
     </Card>

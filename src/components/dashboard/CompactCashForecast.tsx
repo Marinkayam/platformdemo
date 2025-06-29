@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, LineChart, Line } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, LineChart, Line, Area, Legend } from 'recharts';
 import { Calendar, BarChart3, Table, TrendingUp, TrendingDown, DollarSign, AlertTriangle } from 'lucide-react';
 
 // Enhanced mock data for cash forecast with realistic patterns
@@ -136,7 +136,7 @@ export function CompactCashForecast() {
         {viewMode === 'chart' ? (
           <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={mockCashForecast} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+              <LineChart data={mockCashForecast} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
                 <XAxis 
                   dataKey="week" 
                   axisLine={false}
@@ -145,22 +145,26 @@ export function CompactCashForecast() {
                 />
                 <YAxis hide />
                 <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
-                <Bar 
-                  dataKey="amount" 
-                  fill="#7B59FF"
-                  radius={[4, 4, 0, 0]}
-                  name="amount"
+                <Area 
+                  type="monotone" 
+                  dataKey="expected" 
+                  stroke="#7B59FF" 
+                  fill="#EDE9FE" 
+                  fillOpacity={0.4}
+                  name="Expected"
+                  dot={{ fill: '#7B59FF', r: 4 }}
+                  activeDot={{ r: 6 }}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="expected" 
                   stroke="#7B59FF" 
                   strokeWidth={2}
-                  strokeDasharray="5 5"
-                  dot={{ fill: '#7B59FF', strokeWidth: 2, r: 3 }}
-                  name="expected"
+                  dot={{ fill: '#7B59FF', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6 }}
+                  name="Expected"
                 />
-              </BarChart>
+              </LineChart>
             </ResponsiveContainer>
           </div>
         ) : (

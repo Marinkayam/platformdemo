@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table, TableBody, TableFooter, TableRow, TableCell, TableHeader, TableHead } from "@/components/ui/table";
@@ -138,14 +137,18 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
             </TableHeader>
             
             <TableBody className="divide-y divide-gray-100">
-              {visibleRecords.map((record) => (
+              {visibleRecords.map((record, rowIndex) => (
                 <TableRow
                   key={record.id}
                   className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
                   onClick={() => handleRowClick(record)}
                 >
-                  {columns.map((column, index) => (
-                    <TableCell key={index} className={column.className}>
+                  {columns.map((column, colIndex) => (
+                    <TableCell
+                      key={colIndex}
+                      className={column.className}
+                      style={{ paddingTop: 6, paddingBottom: 6 }} // Reduce row height
+                    >
                       {column.render ? column.render(record) : record[column.key as keyof PortalRecord]}
                     </TableCell>
                   ))}

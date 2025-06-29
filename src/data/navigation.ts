@@ -1,5 +1,5 @@
 import React from "react";
-import { Cloud, Settings } from "lucide-react";
+import { Cloud, Settings, BarChart3, Star } from "lucide-react";
 import ChatAIIcon from "@/components/ui/chat-ai-icon";
 
 // Custom SVG components for the navigation icons
@@ -139,29 +139,27 @@ const PortalRecordsIcon = ({ size = 20, className }: { size?: number; className?
   )
 );
 
-const PortalsDashboardIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
-  React.createElement('svg', {
-    xmlns: "http://www.w3.org/2000/svg",
-    width: size,
-    height: size,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "1",
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    className: className
-  },
-  React.createElement('rect', { width: "7", height: "9", x: "3", y: "3", rx: "1" }),
-  React.createElement('rect', { width: "7", height: "5", x: "14", y: "3", rx: "1" }),
-  React.createElement('rect', { width: "7", height: "9", x: "14", y: "12", rx: "1" }),
-  React.createElement('rect', { width: "7", height: "5", x: "3", y: "16", rx: "1" }),
-  React.createElement('circle', { cx: "8", cy: "8", r: "1" }),
-  React.createElement('circle', { cx: "16", cy: "8", r: "1" }),
-  React.createElement('circle', { cx: "16", cy: "16", r: "1" }),
-  React.createElement('circle', { cx: "8", cy: "20", r: "1" })
-  )
-);
+const PortalsDashboardIcon = ({ size = 20, className }: { size?: number; className?: string }) =>
+  React.createElement(
+    'svg',
+    {
+      xmlns: "http://www.w3.org/2000/svg",
+      width: size,
+      height: size,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "0.75",
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      className
+    },
+    React.createElement('path', { d: "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" }),
+    React.createElement('path', { d: "M20 3v4" }),
+    React.createElement('path', { d: "M22 5h-4" }),
+    React.createElement('path', { d: "M4 17v2" }),
+    React.createElement('path', { d: "M5 18H3" })
+  );
 
 const HelpIcon = ({ size = 20, className }: { size?: number; className?: string }) => (
   React.createElement('svg', {

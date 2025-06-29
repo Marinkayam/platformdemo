@@ -1,4 +1,3 @@
-
 import { TableCell, TableFooter, TableRow } from "@/components/ui/table";
 import { PurchaseOrder } from "@/types/purchase-orders";
 import { formatCurrency } from "@/lib/utils";
@@ -41,9 +40,9 @@ export function PurchaseOrderTableFooter({ purchaseOrders }: PurchaseOrderTableF
         </TableCell>
         <TableCell colSpan={2} className="bg-[#F6F7F9]"></TableCell>
         <TableCell className="font-semibold text-gray-700 bg-[#F6F7F9]">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 whitespace-nowrap">
             <span>Total Amount:</span>
-            <span className="font-bold text-gray-900">{formatTotalAmounts()}</span>
+            <span className="font-bold text-gray-900 whitespace-nowrap">{formatTotalAmounts()}</span>
           </div>
         </TableCell>
         <TableCell colSpan={3} className="bg-[#F6F7F9]"></TableCell>

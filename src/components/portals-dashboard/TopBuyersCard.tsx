@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Award, ArrowRight } from "lucide-react";
@@ -31,15 +30,12 @@ export function TopBuyersCard({ topBuyers, topOpenPO }: TopBuyersCardProps) {
             ))}
           </div>
           {topOpenPO && (
-            <p className="text-xs text-[#061237] font-medium">
-              Top: {topOpenPO.buyerName} via {topOpenPO.portal}
-            </p>
+            <div className="flex justify-end pt-1">
+              <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
+                View all <ArrowRight className="h-3 w-3" />
+              </span>
+            </div>
           )}
-          <div className="flex justify-end pt-1">
-            <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
-              View all <ArrowRight className="h-3 w-3" />
-            </span>
-          </div>
         </div>
       </CardContent>
     </Card>
