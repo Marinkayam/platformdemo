@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Link, ArrowRight } from "lucide-react";
@@ -10,6 +11,7 @@ interface ExceptionCardProps {
   amount?: number;
   type: 'rtp' | 'smartconnection';
   affectedInvoices?: number;
+  affectedInvoicesAmount?: number;
   onCardClick?: () => void;
   onButtonClick?: () => void;
   buttonText?: string;
@@ -22,6 +24,7 @@ export function ExceptionCard({
   amount, 
   type, 
   affectedInvoices,
+  affectedInvoicesAmount,
   onCardClick,
   onButtonClick,
   buttonText = "View Details"
@@ -85,10 +88,10 @@ export function ExceptionCard({
           </div>
         )}
         
-        {type === 'smartconnection' && affectedInvoices !== undefined && (
+        {type === 'smartconnection' && affectedInvoicesAmount !== undefined && (
           <div className="flex items-center justify-between p-3 rounded-lg bg-white/50 border border-[#E6E7EB]">
             <span className="text-sm font-medium text-[#586079]">Affected Invoices</span>
-            <span className="text-lg font-bold text-[#061237]">{affectedInvoices}</span>
+            <span className="text-lg font-bold text-[#061237]">{formatCurrency(affectedInvoicesAmount, 'USD')}</span>
           </div>
         )}
 

@@ -9,7 +9,7 @@ import { PortalRecordsTable } from "@/components/portal-records/PortalRecordsTab
 import { PurchaseOrderTable } from "@/components/purchase-orders/PurchaseOrderTable";
 import { allPortalRecords } from "@/data/portalRecords";
 import { purchaseOrderData } from "@/data/purchaseOrders";
-import { Users, Server, Award, ListChecks, FileText, AlertTriangle, Clock } from "lucide-react";
+import { Users, Server, Award, ListChecks, FileText, AlertTriangle, Clock, ArrowRight } from "lucide-react";
 import { getPortalLogoUrl } from "@/lib/utils";
 
 function formatCurrency(amount, currency = "USD") {
@@ -111,17 +111,15 @@ export default function PortalsDashboard() {
 
   return (
     <div className="space-y-8 p-8">
-      <div className="space-y-3">
-        <h1 className="text-3xl font-bold text-[#061237] tracking-tight">Portals Dashboard</h1>
-        <p className="text-lg text-[#586079] leading-relaxed max-w-4xl">
-          Unified view of all portal data including invoices and purchase orders. Monitor your portal connections, track data synchronization, and manage portal-specific insights.
-        </p>
+      <PageHeader 
+        title="Portals Dashboard" 
+        subtitle="Unified view of all portal data including invoices and purchase orders. Monitor your portal connections, track data synchronization, and manage portal-specific insights."
+      />
         
-        {/* Last Scan Time */}
-        <div className="flex items-center gap-2 text-sm text-[#586079] pt-2">
-          <Clock className="h-4 w-4 text-[#7B59FF]" />
-          <span>Last scanned: {formattedLastScan}</span>
-        </div>
+      {/* Last Scan Time */}
+      <div className="flex items-center gap-2 text-sm text-[#586079] -mt-4">
+        <Clock className="h-4 w-4 text-[#7B59FF]" />
+        <span>Last scanned: {formattedLastScan}</span>
       </div>
 
       {/* Metrics Grid */}
@@ -139,7 +137,7 @@ export default function PortalsDashboard() {
             <div className="space-y-2">
               <p className="text-sm text-[#586079] leading-relaxed">Monto spotted unique buyer activity</p>
               {recentBuyers.length > 0 && (
-                <p className="text-xs text-[#7B59FF] font-medium">Latest: {recentBuyers.join(", ")}</p>
+                <p className="text-xs text-[#061237] font-medium">Latest: BuyerCo, FastBuy Corp, OceanMart</p>
               )}
             </div>
           </CardContent>
@@ -157,19 +155,16 @@ export default function PortalsDashboard() {
             <div className="text-3xl font-bold text-[#061237]">{portalsCount}</div>
             <div className="space-y-3">
               <p className="text-sm text-[#586079] leading-relaxed">Active portals synced in the latest scan</p>
-              <div className="space-y-2">
-                <div className="flex items-center gap-1 flex-wrap">
-                  {recentPortals.map((portal) => (
-                    <img
-                      key={portal}
-                      src={getPortalLogoUrl(portal)}
-                      alt={portal + ' logo'}
-                      className="w-6 h-6 rounded-full border border-[#E6E7EB] bg-white object-contain shadow-sm"
-                      title={portal}
-                    />
-                  ))}
-                </div>
-                <p className="text-xs text-[#3B82F6] font-medium">Most recent: {recentPortals.join(", ")}</p>
+              <div className="flex items-center gap-1 flex-wrap">
+                {recentPortals.map((portal) => (
+                  <img
+                    key={portal}
+                    src={getPortalLogoUrl(portal)}
+                    alt={portal + ' logo'}
+                    className="w-6 h-6 rounded-full border border-[#E6E7EB] bg-white object-contain shadow-sm"
+                    title={portal}
+                  />
+                ))}
               </div>
             </div>
           </CardContent>
@@ -196,8 +191,8 @@ export default function PortalsDashboard() {
                 ))}
               </div>
               <div className="flex justify-end pt-1">
-                <span className="text-xs text-[#22C55E] font-medium hover:underline cursor-pointer">
-                  View full leaderboard →
+                <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
+                  View all <ArrowRight className="h-3 w-3" />
                 </span>
               </div>
             </div>
@@ -217,7 +212,7 @@ export default function PortalsDashboard() {
             <div className="space-y-2">
               <p className="text-sm text-[#586079] leading-relaxed">From {openPOsCount} open POs</p>
               {topOpenPO && (
-                <p className="text-xs text-[#7B59FF] font-medium">
+                <p className="text-xs text-[#061237] font-medium">
                   Top: {topOpenPO.buyerName} via {topOpenPO.portal}
                 </p>
               )}
@@ -236,13 +231,13 @@ export default function PortalsDashboard() {
           <CardContent className="space-y-4">
             <div className="text-3xl font-bold text-[#061237]">{formatCurrency(openInvoicesTotal)}</div>
             <div className="space-y-2">
-              <p className="text-sm text-[#586079] leading-relaxed">
+              <p className="text-sm text-[#061237] leading-relaxed">
                 Across {openInvoicesCount} invoices {openInvoicesDueSoon.length > 0 ? `(${openInvoicesDueSoon.length} due soon)` : '(none due soon)'}
               </p>
               <div className="flex justify-end">
-                <a href="#" className="text-xs text-[#7B59FF] font-medium hover:underline flex items-center gap-1">
-                  View all invoices <span>→</span>
-                </a>
+                <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
+                  View all invoices <ArrowRight className="h-3 w-3" />
+                </span>
               </div>
             </div>
           </CardContent>
@@ -259,7 +254,12 @@ export default function PortalsDashboard() {
           <CardContent className="space-y-4">
             <div className="text-3xl font-bold text-[#F2AE40]">{formatCurrency(atRiskInvoicesTotal)}</div>
             <div className="space-y-2">
-              <p className="text-sm text-[#F2AE40] leading-relaxed">Monto flagged risky invoices needing attention</p>
+              <p className="text-sm text-[#061237] leading-relaxed">Monto flagged risky invoices needing attention</p>
+              <div className="flex justify-end">
+                <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
+                  View all invoices <ArrowRight className="h-3 w-3" />
+                </span>
+              </div>
             </div>
           </CardContent>
         </Card>

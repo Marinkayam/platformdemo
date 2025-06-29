@@ -26,7 +26,7 @@ export function DashboardExceptions({ exceptionData }: DashboardExceptionsProps)
         subtitle="Connections needing attention"
         count={exceptionData.scExceptions.connectionCount}
         type="smartconnection"
-        affectedInvoices={exceptionData.scExceptions.affectedInvoices}
+        affectedInvoicesAmount={34342.44}
         onCardClick={handleSmartConnectionClick}
         onButtonClick={handleSmartConnectionClick}
         buttonText="View Connections"
