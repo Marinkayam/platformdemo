@@ -1,23 +1,12 @@
-import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { PortalRecord } from "@/types/portalRecord";
-import { toast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
-import { PortalRecordDetails } from "./match-modal/PortalRecordDetails";
-import { MatchExistingInvoiceTab } from "./match-modal/MatchExistingInvoiceTab";
-import { MatchModalActions } from "./match-modal/MatchModalActions";
-import { ConfirmMatchModal } from "./match-modal/ConfirmMatchModal";
-import { EnhancedIgnoreRecordModal } from "./EnhancedIgnoreRecordModal";
 
-interface EnhancedMatchInvoiceModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  record: PortalRecord;
-  onMatch: (invoiceId: string) => void;
-  onIgnore: () => void;
-  onMatchAndCreateRTP: (pdfFile: File) => void;
-  contextSource?: 'detail-page' | 'table-row' | 'dashboard';
-}
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { MatchModalActions } from "./match-modal/MatchModalActions";
+import { ConfirmationModals } from "./enhanced-match-modal/ConfirmationModals";
+import { ModalContent } from "./enhanced-match-modal/ModalContent";
+import { useModalState } from "./enhanced-match-modal/useModalState";
+import { useModalHandlers } from "./enhanced-match-modal/useModalHandlers";
+import { EnhancedMatchInvoiceModalProps } from "./enhanced-match-modal/types";
 
 export function EnhancedMatchInvoiceModal({ 
   isOpen, 
@@ -28,142 +17,31 @@ export function EnhancedMatchInvoiceModal({
   onMatchAndCreateRTP,
   contextSource = 'table-row'
 }: EnhancedMatchInvoiceModalProps) {
-  const navigate = useNavigate();
-  const [selectedInvoiceId, setSelectedInvoiceId] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedPortal, setSelectedPortal] = useState(record.portal);
-  const [selectedBuyer, setSelectedBuyer] = useState(record.buyer);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showMatchConfirmModal, setShowMatchConfirmModal] = useState(false);
   const [showIgnoreModal, setShowIgnoreModal] = useState(false);
 
-  // Enhanced search with debounce
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const modalState = useModalState(record);
   
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
+  const handlers = useModalHandlers({
+    record,
+    selectedInvoiceId: modalState.selectedInvoiceId,
+    uploadedFile: modalState.uploadedFile,
+    onMatch,
+    onIgnore,
+    onMatchAndCreateRTP,
+    onClose,
+    resetForm: modalState.resetForm,
+    setShowMatchConfirmModal,
+    setShowIgnoreModal,
+    setShowConfirmModal,
+  });
 
-  const handleMatch = () => {
-    if (!selectedInvoiceId) {
-      toast({
-        title: "Selection Required",
-        description: "Please select an invoice to match.",
-        variant: "destructive",
-      });
-      return;
-    }
-    setShowMatchConfirmModal(true);
-  };
-
-  const confirmMatch = () => {
-    onMatch(selectedInvoiceId);
-    
-    // Show success toast
-    toast({
-      title: "Invoice Successfully Matched!",
-      description: `Portal record ${record.portalRecordId} has been matched with invoice ${selectedInvoiceId}.`,
-      variant: "success",
-    });
-    
-    // Navigate back to portal records table
-    setTimeout(() => {
-      navigate('/portal-records');
-    }, 1500);
-    
-    onClose();
-    resetForm();
-    setShowMatchConfirmModal(false);
-  };
-
-  const handleIgnore = () => {
-    setShowIgnoreModal(true);
-  };
-
-  const handleIgnoreRecord = () => {
-    onIgnore();
-    setShowIgnoreModal(false);
-    onClose();
-    resetForm();
-  };
-
-  const handleStopTrackingBuyer = () => {
-    // This would typically be handled by a parent component
-    console.log(`Stop tracking buyer: ${record.buyer}`);
-    setShowIgnoreModal(false);
-    onClose();
-    resetForm();
-  };
-
-  const handleMatchAndCreateRTP = () => {
-    if (!uploadedFile) {
-      toast({
-        title: "PDF Required",
-        description: "Please upload an invoice PDF to create RTP.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    onMatchAndCreateRTP(uploadedFile);
-    
-    toast({
-      title: "RTP Record Created!",
-      description: `New RTP record has been created from uploaded invoice.`,
-      variant: "success",
-    });
-    
-    // Navigate back to portal records table
-    setTimeout(() => {
-      navigate('/portal-records');
-    }, 1500);
-    
-    onClose();
-    resetForm();
-  };
-
-  const handleMakePrimary = () => {
-    toast({
-      title: "Record Made Primary",
-      description: `${record.portalRecordId} has been made the primary record.`,
-      variant: "success",
-    });
-    onClose();
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setSelectedInvoiceId("");
-    setSearchTerm("");
-    setUploadedFile(null);
-    setSelectedPortal(record.portal);
-    setSelectedBuyer(record.buyer);
-  };
-
-  const handleCloseAttempt = () => {
-    if (uploadedFile || selectedInvoiceId) {
-      setShowConfirmModal(true);
-    } else {
-      onClose();
-    }
-  };
-
-  const confirmClose = () => {
-    setShowConfirmModal(false);
-    onClose();
-    resetForm();
-  };
-
-  // Determine if we should show the compact layout
   const isCompactMode = contextSource === 'detail-page';
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={handleCloseAttempt}>
+      <Dialog open={isOpen} onOpenChange={handlers.handleCloseAttempt}>
         <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[95vh] flex flex-col p-0 overflow-hidden`}>
           <DialogHeader className="border-b border-border p-4 pb-3 flex-shrink-0 bg-gradient-to-r from-primary/5 to-primary/10">
             <DialogTitle className="text-lg font-semibold text-foreground">
@@ -175,117 +53,54 @@ export function EnhancedMatchInvoiceModal({
           </DialogHeader>
           
           <div className="flex-1 overflow-y-auto p-6">
-            {isCompactMode ? (
-              // Compact mode layout for detail page
-              <div className="space-y-6">
-                <MatchExistingInvoiceTab
-                  record={record}
-                  selectedInvoiceId={selectedInvoiceId}
-                  setSelectedInvoiceId={setSelectedInvoiceId}
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  selectedPortal={selectedPortal}
-                  setSelectedPortal={setSelectedPortal}
-                  selectedBuyer={selectedBuyer}
-                  setSelectedBuyer={setSelectedBuyer}
-                  debouncedSearchTerm={debouncedSearchTerm}
-                  uploadedFile={uploadedFile}
-                  setUploadedFile={setUploadedFile}
-                  onMakePrimary={handleMakePrimary}
-                  onMatchAndCreateRTP={handleMatchAndCreateRTP}
-                />
-              </div>
-            ) : (
-              // Original two-column layout with improved styling
-              <div className="grid grid-cols-5 gap-8">
-                {/* Portal Record Details */}
-                <div className="col-span-2">
-                  <PortalRecordDetails record={record} />
-                </div>
-
-                {/* Action Area */}
-                <div className="col-span-3">
-                  <MatchExistingInvoiceTab
-                    record={record}
-                    selectedInvoiceId={selectedInvoiceId}
-                    setSelectedInvoiceId={setSelectedInvoiceId}
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    selectedPortal={selectedPortal}
-                    setSelectedPortal={setSelectedPortal}
-                    selectedBuyer={selectedBuyer}
-                    setSelectedBuyer={setSelectedBuyer}
-                    debouncedSearchTerm={debouncedSearchTerm}
-                    uploadedFile={uploadedFile}
-                    setUploadedFile={setUploadedFile}
-                    onMakePrimary={handleMakePrimary}
-                    onMatchAndCreateRTP={handleMatchAndCreateRTP}
-                  />
-                </div>
-              </div>
-            )}
+            <ModalContent
+              isCompactMode={isCompactMode}
+              record={record}
+              selectedInvoiceId={modalState.selectedInvoiceId}
+              setSelectedInvoiceId={modalState.setSelectedInvoiceId}
+              searchTerm={modalState.searchTerm}
+              setSearchTerm={modalState.setSearchTerm}
+              selectedPortal={modalState.selectedPortal}
+              setSelectedPortal={modalState.setSelectedPortal}
+              selectedBuyer={modalState.selectedBuyer}
+              setSelectedBuyer={modalState.setSelectedBuyer}
+              debouncedSearchTerm={modalState.debouncedSearchTerm}
+              uploadedFile={modalState.uploadedFile}
+              setUploadedFile={modalState.setUploadedFile}
+              onMakePrimary={handlers.handleMakePrimary}
+              onMatchAndCreateRTP={handlers.handleMatchAndCreateRTP}
+            />
           </div>
 
           <div className="border-t border-border bg-muted/30 flex-shrink-0">
             <MatchModalActions
               activeTab="match-existing"
-              selectedInvoiceId={selectedInvoiceId}
-              uploadedFile={uploadedFile}
+              selectedInvoiceId={modalState.selectedInvoiceId}
+              uploadedFile={modalState.uploadedFile}
               rtpInvoiceNumber=""
               rtpInvoiceDate=""
-              onClose={handleCloseAttempt}
-              onIgnore={handleIgnore}
-              onMatch={handleMatch}
-              onMatchAndCreateRTP={handleMatchAndCreateRTP}
+              onClose={handlers.handleCloseAttempt}
+              onIgnore={handlers.handleIgnore}
+              onMatch={handlers.handleMatch}
+              onMatchAndCreateRTP={handlers.handleMatchAndCreateRTP}
             />
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Confirmation Modal */}
-      <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Discard Changes?</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 p-6">
-            <p className="text-sm text-muted-foreground">
-              You have unsaved changes. Are you sure you want to close without saving?
-            </p>
-            <div className="flex justify-end gap-3">
-              <button 
-                onClick={() => setShowConfirmModal(false)}
-                className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground font-medium"
-              >
-                Continue Editing
-              </button>
-              <button 
-                onClick={confirmClose}
-                className="px-4 py-2 text-sm bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90 font-medium"
-              >
-                Discard Changes
-              </button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Match Confirmation Modal */}
-      <ConfirmMatchModal
-        isOpen={showMatchConfirmModal}
-        onClose={() => setShowMatchConfirmModal(false)}
-        onConfirm={confirmMatch}
+      <ConfirmationModals
+        showConfirmModal={showConfirmModal}
+        setShowConfirmModal={setShowConfirmModal}
+        showMatchConfirmModal={showMatchConfirmModal}
+        setShowMatchConfirmModal={setShowMatchConfirmModal}
+        showIgnoreModal={showIgnoreModal}
+        setShowIgnoreModal={setShowIgnoreModal}
         record={record}
-        selectedInvoiceId={selectedInvoiceId}
-      />
-
-      {/* Ignore Record Modal */}
-      <EnhancedIgnoreRecordModal
-        isOpen={showIgnoreModal}
-        onClose={() => setShowIgnoreModal(false)}
-        record={record}
-        onIgnoreRecord={handleIgnoreRecord}
-        onStopTrackingBuyer={handleStopTrackingBuyer}
+        selectedInvoiceId={modalState.selectedInvoiceId}
+        onConfirmClose={handlers.confirmClose}
+        onConfirmMatch={handlers.confirmMatch}
+        onIgnoreRecord={handlers.handleIgnoreRecord}
+        onStopTrackingBuyer={handlers.handleStopTrackingBuyer}
       />
     </>
   );
