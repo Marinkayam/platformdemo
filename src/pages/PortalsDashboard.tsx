@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography/typography";
@@ -9,7 +8,7 @@ import { PortalRecordsTable } from "@/components/portal-records/PortalRecordsTab
 import { PurchaseOrderTable } from "@/components/purchase-orders/PurchaseOrderTable";
 import { allPortalRecords } from "@/data/portalRecords";
 import { purchaseOrderData } from "@/data/purchaseOrders";
-import { Users, Server, Award, ListChecks, FileText, AlertTriangle, Clock, ArrowRight } from "lucide-react";
+import { Users, Server, Award, ListChecks, FileText, AlertTriangle, Clock, ArrowRight, Plus } from "lucide-react";
 import { getPortalLogoUrl } from "@/lib/utils";
 
 function formatCurrency(amount, currency = "USD") {
@@ -85,6 +84,16 @@ export default function PortalsDashboard() {
 
   // Buyers context
   const recentBuyers = Array.from(buyersSet).filter(Boolean).slice(0, 3);
+  // Top 3 buyers by frequency (not amount)
+  const buyerFrequency: Record<string, number> = {};
+  allPortalRecords.forEach(r => {
+    if (!r.buyer || r.buyer === "—") return;
+    buyerFrequency[r.buyer] = (buyerFrequency[r.buyer] || 0) + 1;
+  });
+  const topBuyersByFrequency = Object.entries(buyerFrequency)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3);
+
   // Portals context - get 6 portals for display
   const recentPortals = Array.from(portalsSet).filter(Boolean).slice(0, 6);
   // Top buyer/portal for open POs
@@ -113,7 +122,7 @@ export default function PortalsDashboard() {
     <div className="space-y-8 p-8">
       <PageHeader 
         title="Portals Dashboard" 
-        subtitle="Unified view of all portal data including invoices and purchase orders. Monitor your portal connections, track data synchronization, and manage portal-specific insights."
+        subtitle="Unified view of invoices and POs from all portals—track connections, syncs, and insights."
       />
         
       {/* Last Scan Time */}
@@ -134,11 +143,21 @@ export default function PortalsDashboard() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-3xl font-bold text-[#061237]">{buyersCount}</div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <p className="text-sm text-[#586079] leading-relaxed">Monto spotted unique buyer activity</p>
-              {recentBuyers.length > 0 && (
-                <p className="text-xs text-[#061237] font-medium">Latest: BuyerCo, FastBuy Corp, OceanMart</p>
-              )}
+              <div className="space-y-1">
+                {topBuyersByFrequency.slice(0, 3).map(([buyer, count], idx) => (
+                  <div key={buyer} className="text-sm text-[#061237] flex justify-between items-center">
+                    <span className={idx === 0 ? "font-semibold" : "font-normal"}>{buyer}</span>
+                    <span className="text-xs text-[#586079]">{count} records</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-end pt-1">
+                <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
+                  View all <ArrowRight className="h-3 w-3" />
+                </span>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -166,6 +185,14 @@ export default function PortalsDashboard() {
                   />
                 ))}
               </div>
+              <div className="flex justify-end pt-1">
+                <Button asChild variant="ghost" size="sm" className="text-[#7B59FF] hover:text-[#523BAA] h-auto p-0 font-medium text-xs">
+                  <Link to="/payments-relationships/new" className="flex items-center gap-1">
+                    <Plus className="h-3 w-3" />
+                    Add portal user
+                  </Link>
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -190,6 +217,11 @@ export default function PortalsDashboard() {
                   </div>
                 ))}
               </div>
+              {topOpenPO && (
+                <p className="text-xs text-[#061237] font-medium">
+                  Top: {topOpenPO.buyerName} via {topOpenPO.portal}
+                </p>
+              )}
               <div className="flex justify-end pt-1">
                 <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
                   View all <ArrowRight className="h-3 w-3" />
