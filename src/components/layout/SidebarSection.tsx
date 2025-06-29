@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -24,10 +25,8 @@ export function SidebarSection({
   useEffect(() => {
     if (pathname.includes("/invoices")) {
       setExpandedItems(prev => new Set(prev).add("RTPs"));
-    } else if (pathname.includes("/portal-records")) {
-      setExpandedItems(prev => new Set(prev).add("Portal Records"));
-    } else if (pathname.includes("/purchase-orders")) {
-      setExpandedItems(prev => new Set(prev).add("Purchase Orders"));
+    } else if (pathname.includes("/portal-records") || pathname.includes("/purchase-orders") || pathname.includes("/portals-dashboard")) {
+      setExpandedItems(prev => new Set(prev).add("Portals Dashboard"));
     } else if (pathname.includes("/payments-relationships")) {
       setExpandedItems(prev => new Set(prev).add("Payments Relationships"));
     }
@@ -68,10 +67,9 @@ export function SidebarSection({
     if (item.title === "RTPs") {
       if (subItem.href === "/invoices" && pathname === "/invoices" && !search) return true;
       if (query && search.includes(query.split('=')[1])) return true;
-    } else if (item.title === "Portal Records") {
+    } else if (item.title === "Portals Dashboard") {
+      if (subItem.href === "/portals-dashboard" && pathname === "/portals-dashboard" && !search) return true;
       if (subItem.href === "/portal-records" && pathname === "/portal-records" && !search) return true;
-      if (query && search.includes(query.split('=')[1])) return true;
-    } else if (item.title === "Purchase Orders") {
       if (subItem.href === "/purchase-orders" && pathname === "/purchase-orders" && !search) return true;
       if (query && search.includes(query.split('=')[1])) return true;
     } else if (item.title === "Payments Relationships") {

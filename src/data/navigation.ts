@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Cloud, Settings, BarChart3, Star } from "lucide-react";
 import ChatAIIcon from "@/components/ui/chat-ai-icon";
@@ -215,6 +216,15 @@ export const navMain: NavItem[] = [
     title: "Portals Dashboard",
     href: "/portals-dashboard",
     icon: PortalsDashboardIcon,
+    items: [
+      { title: "Overview", href: "/portals-dashboard" },
+      { title: "Portal Records", href: "/portal-records" },
+      { title: "Unmatched Records", href: "/portal-records?tab=unmatched" },
+      { title: "Conflict Records", href: "/portal-records?tab=conflict" },
+      { title: "Purchase Orders", href: "/purchase-orders" },
+      { title: "New POs", href: "/purchase-orders?status=new" },
+      { title: "Low Funds POs", href: "/purchase-orders?status=low-funds" },
+    ],
   },
   {
     title: "RTPs",
@@ -225,26 +235,6 @@ export const navMain: NavItem[] = [
       { title: "Pending Actions", href: "/invoices?status=pending" },
       { title: "Overdue", href: "/invoices?status=overdue" },
       { title: "Settled", href: "/invoices?status=settled" },
-    ],
-  },
-  {
-    title: "Portal Records",
-    href: "/portal-records",
-    icon: PortalRecordsIcon,
-    items: [
-      { title: "All Records", href: "/portal-records" },
-      { title: "Unmatched", href: "/portal-records?tab=unmatched" },
-      { title: "Conflicts", href: "/portal-records?tab=conflict" },
-    ],
-  },
-  {
-    title: "Purchase Orders",
-    href: "/purchase-orders",
-    icon: PurchaseOrderIcon,
-    items: [
-      { title: "All POs", href: "/purchase-orders" },
-      { title: "New POs", href: "/purchase-orders?status=new" },
-      { title: "Low Funds", href: "/purchase-orders?status=low-funds" },
     ],
   },
   {
