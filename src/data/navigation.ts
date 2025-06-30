@@ -1,6 +1,7 @@
 
+
 import React from "react";
-import { Cloud, Settings, BarChart3, Star, Bot, Building2 } from "lucide-react";
+import { Cloud, Settings, BarChart3, Star } from "lucide-react";
 import ChatAIIcon from "@/components/ui/chat-ai-icon";
 
 // Custom SVG components for the navigation icons
@@ -32,18 +33,18 @@ const CompanyIcon = ({ size = 20, className }: { size?: number; className?: stri
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: "1",
+    strokeWidth: "0.5",
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: className
   },
   React.createElement('path', { d: "M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" }),
-  React.createElement('path', { d: "M6 12h4" }),
-  React.createElement('path', { d: "M6 8h4" }),
-  React.createElement('path', { d: "M16 8h2" }),
-  React.createElement('path', { d: "M16 12h2" }),
-  React.createElement('path', { d: "M16 16h2" }),
-  React.createElement('path', { d: "M18 22V16h4" })
+  React.createElement('path', { d: "M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" }),
+  React.createElement('path', { d: "M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" }),
+  React.createElement('path', { d: "M10 6h4" }),
+  React.createElement('path', { d: "M10 10h4" }),
+  React.createElement('path', { d: "M10 14h4" }),
+  React.createElement('path', { d: "M10 18h4" })
   )
 );
 
@@ -76,24 +77,17 @@ const SmartConnectionsIcon = ({ size = 20, className }: { size?: number; classNa
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: "1",
+    strokeWidth: "0.5",
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: className
   },
-  React.createElement('path', { d: "M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" }),
-  React.createElement('path', { d: "M9 13a4.5 4.5 0 0 0 3-4" }),
-  React.createElement('path', { d: "M6.003 5.125A3 3 0 0 0 6.401 6.5" }),
-  React.createElement('path', { d: "M3.477 10.896a4 4 0 0 1 .585-.396" }),
-  React.createElement('path', { d: "M6 18a4 4 0 0 1-1.967-.516" }),
-  React.createElement('path', { d: "M12 13h4" }),
-  React.createElement('path', { d: "M12 18h6a2 2 0 0 1 2 2v1" }),
-  React.createElement('path', { d: "M12 8h8" }),
-  React.createElement('path', { d: "M16 8V5a2 2 0 0 1 2-2" }),
-  React.createElement('circle', { cx: "16", cy: "13", r: ".5" }),
-  React.createElement('circle', { cx: "18", cy: "3", r: ".5" }),
-  React.createElement('circle', { cx: "20", cy: "21", r: ".5" }),
-  React.createElement('circle', { cx: "20", cy: "8", r: ".5" })
+  React.createElement('path', { d: "M12 8V4H8" }),
+  React.createElement('rect', { width: "16", height: "12", x: "4", y: "8", rx: "2" }),
+  React.createElement('path', { d: "M2 14h2" }),
+  React.createElement('path', { d: "M20 14h2" }),
+  React.createElement('path', { d: "M15 13v2" }),
+  React.createElement('path', { d: "M9 13v2" })
   )
 );
 
@@ -254,7 +248,7 @@ export const navMain: NavItem[] = [
   {
     title: "Payments Relationships",
     href: "/payments-relationships",
-    icon: Bot,
+    icon: SmartConnectionsIcon,
     items: [
       { title: "Smart Connections", href: "/payments-relationships" },
       { title: "Portal Users", href: "/payments-relationships?tab=portal-users" },
@@ -263,7 +257,7 @@ export const navMain: NavItem[] = [
   {
     title: "My Company",
     href: "/workspace",
-    icon: Building2,
+    icon: CompanyIcon,
   },
   {
     title: "Design System",
@@ -281,3 +275,4 @@ export const navUser: NavItem[] = [
 ];
 
 export { ChevronDownIcon };
+
