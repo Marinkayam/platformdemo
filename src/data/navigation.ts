@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Cloud, Settings, BarChart3, Star } from "lucide-react";
+import { Cloud, Settings, BarChart3, Star, Bot, Building2 } from "lucide-react";
 import ChatAIIcon from "@/components/ui/chat-ai-icon";
 
 // Custom SVG components for the navigation icons
@@ -254,7 +254,7 @@ export const navMain: NavItem[] = [
   {
     title: "Payments Relationships",
     href: "/payments-relationships",
-    icon: SmartConnectionsIcon,
+    icon: Bot,
     items: [
       { title: "Smart Connections", href: "/payments-relationships" },
       { title: "Portal Users", href: "/payments-relationships?tab=portal-users" },
@@ -263,7 +263,7 @@ export const navMain: NavItem[] = [
   {
     title: "My Company",
     href: "/workspace",
-    icon: CompanyIcon,
+    icon: Building2,
   },
   {
     title: "Design System",
