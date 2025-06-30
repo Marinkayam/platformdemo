@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { AlertTriangle, ArrowRight } from "lucide-react";
@@ -19,7 +18,7 @@ export function AtRiskCard({ atRiskInvoicesCount, atRiskInvoicesTotal }: AtRiskC
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-3xl font-bold text-[#F2AE40]">{formatCurrency(atRiskInvoicesTotal)}</div>
+        <div className="text-2xl font-bold text-[#F2AE40]">{`${formatCurrency(atRiskInvoicesTotal)} (${atRiskInvoicesCount} invoices)`}</div>
         <div className="space-y-2">
           <p className="text-sm text-[#061237] leading-relaxed">Monto flagged risky invoices needing attention</p>
           <div className="flex justify-end">

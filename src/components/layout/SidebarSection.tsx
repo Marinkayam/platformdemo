@@ -1,8 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { NavItem, ChevronDownIcon } from "@/data/navigation";
+import { useSidebar } from "@/components/ui/sidebar";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface SidebarSectionProps {
   title?: string;
@@ -20,6 +21,8 @@ export function SidebarSection({
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const { state: sidebarState } = useSidebar();
+  const isCollapsed = sidebarState === "collapsed";
 
   // Initialize expanded items based on current page
   useEffect(() => {
@@ -169,6 +172,33 @@ export function SidebarSection({
           const hasSubmenu = item.items && item.items.length > 0;
           const isExpanded = expandedItems.has(item.title);
 
+          if (isCollapsed) {
+            // Only render top-level icons with tooltips in collapsed mode
+            return (
+              <Tooltip key={item.title}>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => {
+                      if (item.href) navigate(item.href);
+                      if (item.title === "AI Chat" && onChatAIOpen) onChatAIOpen();
+                    }}
+                    className={cn(
+                      "flex items-center justify-center w-10 h-10 rounded-lg transition-colors",
+                      isActive ? "bg-[#F0EDFF] text-[#7B59FF]" : "text-[#3F4758] hover:bg-[#F4F4F7]"
+                    )}
+                  >
+                    {item.icon && (
+                      <item.icon size={19} className={isActive ? "text-[#7B59FF]" : "text-[#3F4758]"} strokeWidth={1.5} />
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="right" align="center">
+                  {item.title}
+                </TooltipContent>
+              </Tooltip>
+            );
+          }
+
           if (hasSubmenu) {
             return (
               <div key={item.title}>
@@ -184,7 +214,7 @@ export function SidebarSection({
                   <div className="flex items-center gap-3">
                     {item.icon && (
                       <item.icon 
-                        size={20} 
+                        size={16} 
                         className={isActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
                         strokeWidth={1.5}
                       />
@@ -219,8 +249,8 @@ export function SidebarSection({
             >
               {item.icon && (
                 typeof item.icon === 'function' 
-                  ? item.icon({ size: 20, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
-                  : React.createElement(item.icon, { size: 20, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
+                  ? item.icon({ size: 16, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
+                  : React.createElement(item.icon, { size: 16, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
               )}
               {item.title && <span className="font-normal">{item.title}</span>}
             </Link>

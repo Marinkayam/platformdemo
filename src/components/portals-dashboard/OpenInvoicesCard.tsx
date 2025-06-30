@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { FileText, ArrowRight } from "lucide-react";
@@ -20,11 +19,11 @@ export function OpenInvoicesCard({ openInvoicesCount, openInvoicesTotal, openInv
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-3xl font-bold text-[#061237]">{formatCurrency(openInvoicesTotal)}</div>
+        <div className="text-2xl font-bold text-[#061237]">{`${formatCurrency(openInvoicesTotal)} (${openInvoicesCount} invoices)`}</div>
         <div className="space-y-2">
-          <p className="text-sm text-[#061237] leading-relaxed">
-            Across {openInvoicesCount} invoices {openInvoicesDueSoon.length > 0 ? `(${openInvoicesDueSoon.length} due soon)` : '(none due soon)'}
-          </p>
+          {openInvoicesDueSoon.length > 0 && (
+            <p className="text-xs text-[#F2AE40] leading-relaxed">({openInvoicesDueSoon.length} due soon)</p>
+          )}
           <div className="flex justify-end">
             <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
               View all invoices <ArrowRight className="h-3 w-3" />

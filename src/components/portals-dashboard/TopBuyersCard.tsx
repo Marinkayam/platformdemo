@@ -18,7 +18,7 @@ export function TopBuyersCard({ topBuyers, topOpenPO }: TopBuyersCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-3xl font-bold text-[#061237]">{formatCurrency(topBuyers.reduce((sum, [, total]) => sum + Number(total), 0))}</div>
+        <div className="text-2xl font-bold text-[#061237]">{`${formatCurrency(topBuyers.reduce((sum, [, total]) => sum + Number(total), 0))} (${topBuyers.length} buyers)`}</div>
         <div className="space-y-3">
           <p className="text-sm text-[#586079] leading-relaxed">Buyers leading in open invoice value</p>
           <div className="space-y-1">

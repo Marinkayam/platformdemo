@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -6,6 +5,7 @@ import { Notification, useNotifications } from '@/context/NotificationsContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Bell } from 'lucide-react';
 
 export const NotificationsPopover: React.FC = () => {
   const {
@@ -37,14 +37,20 @@ export const NotificationsPopover: React.FC = () => {
     }
   };
 
+  // Demo notifications
+  const demoNotifications = [
+    { title: "Invoice Approved", message: "Invoice INV-00001234 was approved by BuyerCo." },
+    { title: "New Portal Connected", message: "SAP Ariba portal connection established." },
+    { title: "Payment Settled", message: "Payment for INV-00003333 has been settled." },
+    { title: "User Added", message: "A new user was added to your workspace." },
+    { title: "Sync Complete", message: "All portals synced successfully at 12:45 PM." },
+  ];
+
   return (
     <Popover onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#01173E" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
-            <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
-          </svg>
+          <Bell className="h-5 w-5 text-[#7B59FF]" />
           {unreadCount > 0 && (
             <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
           )}
@@ -64,46 +70,32 @@ export const NotificationsPopover: React.FC = () => {
             </Button>
           )}
         </div>
-        {notifications.length > 0 ? (
-          <ScrollArea className="max-h-[60vh]">
-            <div className="p-0">
-              {notifications.map((notification) => (
-                <div
-                  key={notification.id}
-                  className={`p-4 border-b border-l-4 ${getNotificationTypeStyles(
-                    notification.type
-                  )} relative group`}
-                  onClick={() => markAsRead(notification.id)}
-                >
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 h-5 w-5 p-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeNotification(notification.id);
-                    }}
+        <div className="divide-y divide-gray-100">
+          {demoNotifications.map((n, i) => (
+            <div
+              key={i}
+              className="p-4 text-sm bg-white rounded-lg mb-2 shadow-sm hover:bg-[#F6F7F9] transition-colors group flex flex-col gap-1"
+              tabIndex={0}
+              role="listitem"
+              aria-label={n.title}
+            >
+              <div className="font-semibold text-gray-900 mb-0.5">{n.title}</div>
+              <div className="text-gray-700 mb-1">{n.message}</div>
+              {(n.title.includes('Invoice') || n.title.includes('Portal')) && (
+                <div className="flex justify-end">
+                  <a
+                    href="#"
+                    className="text-xs text-[#7B59FF] hover:underline font-medium px-2 py-1 rounded transition-colors hover:bg-[#EDE9FE] focus:outline-none focus:ring-2 focus:ring-[#7B59FF]"
+                    tabIndex={0}
+                    aria-label={`View details for ${n.title}`}
                   >
-                    <span className="sr-only">Dismiss</span>
-                    <span aria-hidden="true">×</span>
-                  </Button>
-                  <div className="font-medium">{notification.title}</div>
-                  <div className="text-sm text-muted-foreground mt-1">{notification.message}</div>
-                  <div className="text-xs text-muted-foreground mt-2">
-                    {formatDistanceToNow(notification.timestamp, { addSuffix: true })}
-                  </div>
-                  {!notification.read && (
-                    <Badge className="absolute top-4 right-4 bg-blue-500">New</Badge>
-                  )}
+                    View
+                  </a>
                 </div>
-              ))}
+              )}
             </div>
-          </ScrollArea>
-        ) : (
-          <div className="p-4 text-center text-muted-foreground text-sm">
-            No notifications
-          </div>
-        )}
+          ))}
+        </div>
       </PopoverContent>
     </Popover>
   );

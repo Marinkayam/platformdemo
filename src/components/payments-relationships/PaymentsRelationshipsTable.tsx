@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { getConnectionIssues, getHighestSeverityIssue } from "@/utils/connectionIssues";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import React from "react";
+import { AutoCreatedTag } from "@/components/ui/auto-created-tag";
 
 interface SmartConnectionsTableProps {
   connections: SmartConnection[];
@@ -124,6 +125,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
               <TableHead className="w-[140px] py-4">Status</TableHead>
               <TableHead className="w-[200px] py-4">Issues</TableHead>
               <TableHead className="w-[120px] py-4">Agents</TableHead>
+              <TableHead className="w-[120px] py-4"> </TableHead>
               <TableHead className="w-[100px] py-4"></TableHead>
             </TableRow>
           </TableHeader>
@@ -199,7 +201,13 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                       </div>
                     </TableCell>
                     
-                    <TableCell className="py-6 actions-cell">
+                    <TableCell className="py-6">
+                      {['Google LLC', 'Apple Inc.', 'IBM Corp', 'Monto INC'].includes(connection.receivableEntity) && (
+                        <AutoCreatedTag />
+                      )}
+                    </TableCell>
+                    
+                    <TableCell className="py-6 actions-cell text-right pr-6">
                       <TableActions actions={getConnectionActions(connection)} />
                     </TableCell>
                   </TableRow>

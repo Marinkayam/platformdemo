@@ -19,7 +19,7 @@ export function OpenPOsCard({ openPOsCount, openPOsTotal, topOpenPO }: OpenPOsCa
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-3xl font-bold text-[#061237]">{formatCurrency(openPOsTotal)}</div>
+        <div className="text-2xl font-bold text-[#061237]">{`${formatCurrency(openPOsTotal)} (${openPOsCount} POs)`}</div>
         <div className="space-y-2">
           <p className="text-sm text-[#586079] leading-relaxed">From {openPOsCount} open POs</p>
         </div>
