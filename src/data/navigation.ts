@@ -56,16 +56,19 @@ const InvoicesIcon = ({ size = 20, className }: { size?: number; className?: str
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: "1",
+    strokeWidth: "0.75",
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: className
   },
-  React.createElement('path', { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" }),
-  React.createElement('path', { d: "M14 2v4a2 2 0 0 0 2 2h4" }),
-  React.createElement('path', { d: "M10 9H8" }),
-  React.createElement('path', { d: "M16 13H8" }),
-  React.createElement('path', { d: "M16 17H8" })
+  React.createElement('path', { d: "m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72" }),
+  React.createElement('path', { d: "m14 7 3 3" }),
+  React.createElement('path', { d: "M5 6v4" }),
+  React.createElement('path', { d: "M19 14v4" }),
+  React.createElement('path', { d: "M10 2v2" }),
+  React.createElement('path', { d: "M7 8H3" }),
+  React.createElement('path', { d: "M21 16h-4" }),
+  React.createElement('path', { d: "M11 3H9" })
   )
 );
 
