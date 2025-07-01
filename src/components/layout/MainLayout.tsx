@@ -1,4 +1,5 @@
-import { LogOut } from "lucide-react";
+
+import { LogOut, Settings } from "lucide-react";
 import { NotificationsPopover } from "../notifications/NotificationsPopover";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useNavigate, Outlet } from "react-router-dom";
@@ -23,6 +24,9 @@ export function MainLayout() {
   const handleMyWorkspaceClick = () => {
     navigate("/workspace");
   };
+  const handleSettingsClick = () => {
+    navigate("/settings");
+  };
   const handleLogoClick = () => {
     navigate("/design-system");
   };
@@ -42,23 +46,29 @@ export function MainLayout() {
           </div>
           <div className="flex items-center gap-3 ml-auto pr-4">
             <div className="relative">
-              <NotificationsPopover />
+              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#D3D6DB' }}>
+                <NotificationsPopover />
+              </div>
               <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500 border-2 border-[#FAFAFA]" />
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="w-8 h-8 rounded-full bg-purple-100 text-purple-800 flex items-center justify-center font-medium cursor-pointer hover:bg-purple-200 transition-colors">
-                  M
+                <button className="w-8 h-8 rounded-full flex items-center justify-center font-medium cursor-pointer hover:opacity-80 transition-opacity" style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}>
+                  L
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-2 py-1.5">
-                  <p className="text-sm font-medium">User Profile</p>
-                  <p className="text-xs text-muted-foreground">user@example.com</p>
+                  <p className="text-sm font-medium">Lisa Smith</p>
+                  <p className="text-xs text-muted-foreground">lisa.smith@example.com</p>
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer" onClick={handleMyWorkspaceClick}>
                   <span>My Workspace</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onClick={handleSettingsClick}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>

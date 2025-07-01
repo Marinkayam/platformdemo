@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +14,7 @@ import PurchaseOrderDetail from "./pages/PurchaseOrderDetail";
 import PortalRecords from "./pages/PortalRecords";
 import PortalRecordDetail from "./pages/PortalRecordDetail";
 import Workspace from "./pages/Workspace";
+import Settings from "./pages/Settings";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
 import Welcome from "./pages/Welcome";
@@ -53,6 +55,7 @@ const App = () => (
               <Route path="/purchase-orders" element={<PurchaseOrders />} />
               <Route path="/purchase-orders/:id" element={<PurchaseOrderDetail />} />
               <Route path="/workspace" element={<Workspace />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/design-system" element={<DesignSystemPlayground />} />
               <Route path="/request-to-pay-transaction/:id" element={<div>RequestToPayTransaction Page Placeholder</div>} />
               <Route path="/payments-relationships/add-agent" element={<AddAgent />} />
