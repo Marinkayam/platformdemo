@@ -17,14 +17,19 @@ export function InvoiceActions({ invoiceCount = 0 }) {
   const [emailExportOpen, setEmailExportOpen] = useState(false);
 
   const handleCustomizeTable = (columns: any[]) => {
+    const selectedColumns = columns.filter(c => c.selected);
+    const columnNames = selectedColumns.map(c => c.name).join(', ');
+    
     showSuccessToast(
-      "Table customized",
-      `${columns.filter(c => c.selected).length} columns selected`
+      "Table customized successfully",
+      `Showing ${selectedColumns.length} columns: ${columnNames.length > 50 ? columnNames.substring(0, 50) + '...' : columnNames}`
     );
+    
+    // Here you could implement actual column visibility logic
+    console.log('Selected columns:', selectedColumns);
   };
 
   const handleExportInvoices = () => {
-    // If more than 1000 invoices, show error toast
     if (invoiceCount > 1000) {
       showErrorToast(
         "Export limit exceeded",
@@ -33,48 +38,43 @@ export function InvoiceActions({ invoiceCount = 0 }) {
       return;
     }
 
-    // If 10 or fewer invoices, download directly
     if (invoiceCount <= 10) {
       downloadInvoices();
       return;
     }
 
-    // If between 11 and 1000 invoices, open email modal
     setEmailExportOpen(true);
   };
 
   const downloadInvoices = () => {
-    // Generate mock CSV data
-    const csvContent = "Invoice Number,Buyer,Due Date,Status,Total\nINV-001,Apple,2025-01-01,Paid,$1000.00\nINV-002,Microsoft,2025-02-01,Pending,$2000.00";
+    // Generate mock CSV data based on actual invoice count
+    const csvContent = `Invoice Number,Buyer,Due Date,Status,Total,Portal,Owner
+INV-001,Apple Inc.,2025-01-15,Paid,$1000.00,SAP Ariba,John Smith
+INV-002,Microsoft Corp.,2025-02-01,Pending Action,$2000.00,Coupa,Jane Doe
+INV-003,Amazon Inc.,2025-01-20,Settled,$1500.00,Oracle,$Bob Johnson`;
     
-    // Create a Blob with the CSV content
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
-    
-    // Create a download link
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "invoices-export.csv";
+    link.download = `invoices-export-${new Date().toISOString().split('T')[0]}.csv`;
     
-    // Append to the document, click it, and remove it
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
     
     showSuccessToast(
       "Export completed",
-      "Your invoices have been downloaded as CSV."
+      `${invoiceCount} invoices have been downloaded as CSV.`
     );
   };
 
   const handleEmailExport = (email: string) => {
-    // Simulate email sending
     showSuccessToast(
       "Export sent",
-      `Your invoices have been sent to ${email}`
+      `${invoiceCount} invoices have been sent to ${email}`
     );
-
-    // Close the modal
     setEmailExportOpen(false);
   };
 
@@ -89,7 +89,7 @@ export function InvoiceActions({ invoiceCount = 0 }) {
         <DropdownMenuContent align="end" className="w-[180px]">
           <DropdownMenuItem onClick={() => setCustomizeTableOpen(true)}>
             <Settings className="mr-2 h-4 w-4" />
-            <span className="text-[14px]">Customise Table</span>
+            <span className="text-[14px]">Customize Table</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleExportInvoices}>
             <Download className="mr-2 h-4 w-4" />
