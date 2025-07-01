@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -10,7 +11,7 @@ const Table = React.forwardRef<
     <div className="relative w-full overflow-x-auto">
       <table
         ref={ref}
-        className={cn("w-full caption-bottom text-sm font-normal font-sans", className)}
+        className={cn("w-full caption-bottom text-sm font-normal font-sans table-fixed min-w-[1000px]", className)}
         {...props}
       />
     </div>
@@ -60,7 +61,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "h-[65px] border-b border-gray-50 transition-colors hover:bg-gray-50 data-[state=selected]:bg-muted",
+      "h-[60px] xl:h-[65px] border-b border-gray-50 transition-colors hover:bg-gray-50 data-[state=selected]:bg-muted",
       className
     )}
     {...props}
@@ -75,7 +76,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm min-w-[150px] font-sans [&:has([role=checkbox])]:pr-0",
+      "h-[60px] xl:h-[65px] px-3 xl:px-4 text-left align-middle font-semibold text-gray-700 text-sm xl:text-base font-sans [&:has([role=checkbox])]:pr-0",
       className
     )}
     {...props}
@@ -89,7 +90,7 @@ const TableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("h-[65px] px-4 align-middle text-sm font-normal font-sans min-w-[150px] [&:has([role=checkbox])]:pr-0", className)}
+    className={cn("h-[60px] xl:h-[65px] px-3 xl:px-4 align-middle text-sm xl:text-base font-normal font-sans [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
 ))
