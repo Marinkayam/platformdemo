@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -81,7 +80,7 @@ export function InvoiceTableRow({
       )}
       
       <TableCell className="px-4 py-4 min-w-[120px] flex-shrink-0">
-        <StatusBadge status={invoice.status} />
+        <StatusBadge status={invoice.status} showTooltip={true} />
       </TableCell>
       
       <TableCell className="px-4 py-4 min-w-[180px] flex-1">
