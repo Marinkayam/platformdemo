@@ -1,4 +1,5 @@
-import { FileText, FileX, Database, FileSpreadsheet, MessageSquareText } from "lucide-react";
+
+import { FileText, FileX, Database, FileSpreadsheet, MessageSquareText, Link } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
 
 interface InvoiceTabsProps {
@@ -14,6 +15,7 @@ export function InvoiceTabsNav({ activeTab, onTabChange, activityCount = 0, invo
     { id: "rtp-data", icon: <Database className="h-4 w-4" />, label: "RTP Data", 
       tooltip: "View the full payment request (RTP) data, including Smart Connection details, PO information, and payable/receivable fields, enriched by Monto for accurate processing in the portal." },
     { id: "portal-records", icon: <FileSpreadsheet className="h-4 w-4" />, label: "Portal Records", tooltip: null },
+    { id: "smart-connection", icon: <Link className="h-4 w-4" />, label: "Smart Connection", tooltip: null },
     { id: "activity", icon: <MessageSquareText className="h-4 w-4" />, label: "Activity", count: activityCount, tooltip: null },
   ];
   
