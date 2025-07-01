@@ -29,7 +29,7 @@ export function DashboardExceptions({ exceptionData }: DashboardExceptionsProps)
         affectedInvoicesAmount={34342.44}
         onCardClick={handleSmartConnectionClick}
         onButtonClick={handleSmartConnectionClick}
-        buttonText="View Connections"
+        buttonText="Resolve Exceptions"
       />
       
       <ExceptionCard
