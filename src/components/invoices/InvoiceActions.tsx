@@ -7,7 +7,7 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem 
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Settings, Download } from "lucide-react";
+import { MoreVertical, TableProperties, Download } from "lucide-react";
 import { showSuccessToast, showErrorToast } from "@/lib/toast-helpers";
 import { TableCustomizationDialog } from "@/components/invoices/TableCustomizationDialog";
 import { EmailExportModal } from "@/components/invoices/EmailExportModal";
@@ -88,7 +88,7 @@ INV-003,Amazon Inc.,2025-01-20,Settled,$1500.00,Oracle,$Bob Johnson`;
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[180px]">
           <DropdownMenuItem onClick={() => setCustomizeTableOpen(true)}>
-            <Settings className="mr-2 h-4 w-4" />
+            <TableProperties className="mr-2 h-4 w-4" />
             <span className="text-[14px]">Customize Table</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleExportInvoices}>
