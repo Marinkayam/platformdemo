@@ -29,7 +29,7 @@ export function InvoiceTableFooter({ invoices, columnsCount }: InvoiceTableFoote
   return (
     <TableFooter>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableCell colSpan={2} className="font-semibold text-gray-700 sticky left-0 z-20 bg-[#F6F7F9] border-r border-gray-200 px-4 py-3">
+        <TableCell colSpan={2} className="font-semibold text-gray-700 sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="text-sm">Total Invoices:</span>
             <span className="font-bold text-gray-900 text-sm">{totalInvoices}</span>
