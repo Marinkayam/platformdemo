@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -69,6 +68,7 @@ export function InvoiceSearchSection({
   const handleFileUpload = (file: File) => {
     if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
       setUploadedFile(file);
+      // Don't close the modal - keep it open for user to click "Create RTP Record"
     } else {
       alert('Please upload a PDF file only.');
     }
@@ -118,9 +118,15 @@ export function InvoiceSearchSection({
   const handleCreateRTPConfirm = () => {
     if (uploadedFile && onCreateRTP) {
       onCreateRTP();
+      // Only close modal after RTP creation is confirmed
       setShowCreateRTPModal(false);
       setUploadedFile(null);
     }
+  };
+
+  const handleCancelRTP = () => {
+    setShowCreateRTPModal(false);
+    setUploadedFile(null);
   };
 
   return (
@@ -250,7 +256,7 @@ export function InvoiceSearchSection({
       )}
 
       {/* Create RTP Modal */}
-      <Dialog open={showCreateRTPModal} onOpenChange={setShowCreateRTPModal}>
+      <Dialog open={showCreateRTPModal} onOpenChange={(open) => !open && handleCancelRTP()}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>Create New RTP Record</DialogTitle>
@@ -281,7 +287,7 @@ export function InvoiceSearchSection({
                   </p>
                 </div>
                 <div className="text-sm text-gray-500">
-                  Drag & drop a file here or{" "}
+                  Drag & drop a file or{" "}
                   <button
                     type="button"
                     onClick={handleFileSelect}
@@ -312,10 +318,7 @@ export function InvoiceSearchSection({
             <div className="flex justify-end gap-3 mt-6">
               <Button 
                 variant="outline"
-                onClick={() => {
-                  setShowCreateRTPModal(false);
-                  setUploadedFile(null);
-                }}
+                onClick={handleCancelRTP}
               >
                 Cancel
               </Button>
