@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,14 +34,14 @@ export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScann
               />
             ))}
           </div>
-          <div className="flex justify-end pt-1">
+          {/* <div className="flex justify-end pt-1">
             <Button asChild variant="ghost" size="sm" className="text-[#7B59FF] hover:text-[#523BAA] h-auto p-0 font-medium text-xs">
               <Link to="/payments-relationships/new" className="flex items-center gap-1">
                 <Plus className="h-3 w-3" />
                 Add portal user
               </Link>
             </Button>
-          </div>
+          </div> */}
         </div>
       </CardContent>
     </Card>

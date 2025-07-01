@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Cloud, BarChart3, Star } from "lucide-react";
 import ChatAIIcon from "@/components/ui/chat-ai-icon";
@@ -55,7 +54,7 @@ const InvoicesIcon = ({ size = 20, className }: { size?: number; className?: str
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: "0.75",
+    strokeWidth: "1",
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: className
@@ -79,7 +78,7 @@ const SmartConnectionsIcon = ({ size = 20, className }: { size?: number; classNa
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: "0.75",
+    strokeWidth: "1",
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: className
@@ -145,7 +144,7 @@ const PortalsDashboardIcon = ({ size = 20, className }: { size?: number; classNa
       viewBox: "0 0 24 24",
       fill: "none",
       stroke: "currentColor",
-      strokeWidth: "0.75",
+      strokeWidth: "1",
       strokeLinecap: "round",
       strokeLinejoin: "round",
       className
@@ -184,7 +183,7 @@ const HeartIcon = ({ size = 20, className }: { size?: number; className?: string
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: "0.75",
+    strokeWidth: "1",
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: className
@@ -234,21 +233,11 @@ export const navMain: NavItem[] = [
         title: "Portal Records",
         href: "/portal-records",
         icon: PortalRecordsIcon,
-        items: [
-          { title: "All Records", href: "/portal-records" },
-          { title: "Unmatched Records", href: "/portal-records?tab=unmatched" },
-          { title: "Conflict Records", href: "/portal-records?tab=conflict" },
-        ]
       },
       {
         title: "Purchase Orders",
         href: "/purchase-orders",
         icon: PurchaseOrderIcon,
-        items: [
-          { title: "All POs", href: "/purchase-orders" },
-          { title: "New POs", href: "/purchase-orders?status=new" },
-          { title: "Low Funds POs", href: "/purchase-orders?status=low-funds" },
-        ]
       },
     ],
   },

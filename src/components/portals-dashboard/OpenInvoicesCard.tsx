@@ -19,16 +19,19 @@ export function OpenInvoicesCard({ openInvoicesCount, openInvoicesTotal, openInv
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-2xl font-bold text-[#061237]">{`${formatCurrency(openInvoicesTotal)} (${openInvoicesCount} invoices)`}</div>
+        <div className="text-2xl font-bold text-[#061237]">{formatCurrency(openInvoicesTotal)}
+          <span className="text-sm font-normal ml-1">({openInvoicesCount} invoices)</span>
+        </div>
+        <p className="text-sm text-[#586079] leading-relaxed">Across all scanned portals</p>
         <div className="space-y-2">
           {openInvoicesDueSoon.length > 0 && (
             <p className="text-xs text-[#F2AE40] leading-relaxed">({openInvoicesDueSoon.length} due soon)</p>
           )}
-          <div className="flex justify-end">
-            <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
-              View all invoices <ArrowRight className="h-3 w-3" />
-            </span>
-          </div>
+        </div>
+        <div className="flex justify-end pt-1">
+          <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
+            View all invoices <ArrowRight className="h-3 w-3" />
+          </span>
         </div>
       </CardContent>
     </Card>

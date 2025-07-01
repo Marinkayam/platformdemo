@@ -18,14 +18,16 @@ export function AtRiskCard({ atRiskInvoicesCount, atRiskInvoicesTotal }: AtRiskC
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-2xl font-bold text-[#F2AE40]">{`${formatCurrency(atRiskInvoicesTotal)} (${atRiskInvoicesCount} invoices)`}</div>
+        <div className="text-2xl font-bold text-[#F2AE40]">{formatCurrency(atRiskInvoicesTotal)}
+          <span className="text-sm font-normal ml-1">({atRiskInvoicesCount} invoices)</span>
+        </div>
         <div className="space-y-2">
           <p className="text-sm text-[#061237] leading-relaxed">Monto flagged risky invoices needing attention</p>
-          <div className="flex justify-end">
-            <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
-              View all invoices <ArrowRight className="h-3 w-3" />
-            </span>
-          </div>
+        </div>
+        <div className="flex justify-end pt-1">
+          <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
+            View all invoices <ArrowRight className="h-3 w-3" />
+          </span>
         </div>
       </CardContent>
     </Card>

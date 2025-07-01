@@ -134,11 +134,12 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
               const issues = getConnectionIssues(connection);
               const highestIssue = getHighestSeverityIssue(issues);
               const isExpanded = expandedRows.has(connection.id);
+              const isAutoCreated = ['Google LLC', 'Apple Inc.', 'IBM Corp', 'Monto INC'].includes(connection.receivableEntity);
               
               return (
                 <React.Fragment key={connection.id}>
                   <TableRow 
-                    className="hover:bg-gray-50 cursor-pointer transition-colors bg-white group"
+                    className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white group ${isAutoCreated ? 'auto-created-row' : ''}`}
                     onClick={(e) => handleRowClick(connection.id, e)}
                   >
                     <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 group-hover:bg-gray-50 py-6">
@@ -202,7 +203,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                     </TableCell>
                     
                     <TableCell className="py-6">
-                      {['Google LLC', 'Apple Inc.', 'IBM Corp', 'Monto INC'].includes(connection.receivableEntity) && (
+                      {isAutoCreated && (
                         <AutoCreatedTag />
                       )}
                     </TableCell>
@@ -214,7 +215,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                   
                   {isExpanded && (
                     <TableRow>
-                      <TableCell colSpan={5} className="p-0 bg-gray-50">
+                      <TableCell colSpan={6} className="p-0 bg-gray-50">
                         <div className="p-6">
                           <div className="flex items-center justify-between mb-4">
                             <h3 className="text-sm font-normal text-gray-900">Agents</h3>

@@ -18,7 +18,9 @@ export function TopBuyersCard({ topBuyers, topOpenPO }: TopBuyersCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-2xl font-bold text-[#061237]">{`${formatCurrency(topBuyers.reduce((sum, [, total]) => sum + Number(total), 0))} (${topBuyers.length} buyers)`}</div>
+        <div className="text-2xl font-bold text-[#061237]">{formatCurrency(topBuyers.reduce((sum, [, total]) => sum + Number(total), 0))}
+          <span className="text-sm font-normal ml-1">({topBuyers.length} buyers)</span>
+        </div>
         <div className="space-y-3">
           <p className="text-sm text-[#586079] leading-relaxed">Buyers leading in open invoice value</p>
           <div className="space-y-1">
@@ -29,13 +31,13 @@ export function TopBuyersCard({ topBuyers, topOpenPO }: TopBuyersCardProps) {
               </div>
             ))}
           </div>
-          {topOpenPO && (
+          {/* {topOpenPO && (
             <div className="flex justify-end pt-1">
               <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
                 View all <ArrowRight className="h-3 w-3" />
               </span>
             </div>
-          )}
+          )} */}
         </div>
       </CardContent>
     </Card>

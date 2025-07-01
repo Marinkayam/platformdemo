@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ListChecks } from "lucide-react";
+import { ListChecks, ArrowRight } from "lucide-react";
 import { formatCurrency } from "@/utils/portalsDashboardUtils";
 
 interface OpenPOsCardProps {
@@ -19,10 +19,17 @@ export function OpenPOsCard({ openPOsCount, openPOsTotal, topOpenPO }: OpenPOsCa
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-2xl font-bold text-[#061237]">{`${formatCurrency(openPOsTotal)} (${openPOsCount} POs)`}</div>
+        <div className="text-2xl font-bold text-[#061237]">{formatCurrency(openPOsTotal)}
+          <span className="text-sm font-normal ml-1">({openPOsCount} POs)</span>
+        </div>
         <div className="space-y-2">
           <p className="text-sm text-[#586079] leading-relaxed">From {openPOsCount} open POs</p>
         </div>
+        <div className="flex justify-end pt-1">
+            <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
+              View all <ArrowRight className="h-3 w-3" />
+            </span>
+          </div>
       </CardContent>
     </Card>
   );

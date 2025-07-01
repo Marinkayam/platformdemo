@@ -69,8 +69,8 @@ export function MainLayout() {
             </DropdownMenu>
           </div>
         </header>
-        <main className="flex-1 bg-white min-h-0">
-          <div className="px-2 sm:px-4 md:px-6 py-3 bg-white max-w-[1440px] mx-auto w-full">
+        <main className="flex-1 bg-white min-h-0 p-6">
+          <div className="max-w-[1440px] mx-auto w-full">
             <Outlet />
           </div>
         </main>
