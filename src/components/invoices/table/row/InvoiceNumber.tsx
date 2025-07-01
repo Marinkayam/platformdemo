@@ -1,5 +1,5 @@
 
-import { AlertTriangle, Layers2 } from "lucide-react";
+import { AlertTriangle, SquareStack } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface InvoiceNumberProps {
@@ -23,7 +23,7 @@ export function InvoiceNumber({
     <div className="flex items-center gap-2 text-[14px]">
       {hasWarning && <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />}
       <div className="flex items-center gap-1.5 overflow-hidden max-w-[180px]">
-        <span className={`truncate ${isPendingAction ? "text-red-600 font-semibold" : "font-semibold"}`}>
+        <span className={`truncate ${isPendingAction ? "text-black font-semibold" : "font-semibold"}`}>
           {number}
         </span>
         
@@ -31,7 +31,7 @@ export function InvoiceNumber({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Layers2 className="h-4 w-4 text-red-500 flex-shrink-0" />
+                <SquareStack className="h-4 w-4 text-red-500 flex-shrink-0" />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Duplicate Invoice</p>
