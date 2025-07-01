@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -41,6 +42,8 @@ export function InvoiceSearchSection({
   const [previewInvoice, setPreviewInvoice] = useState<any>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [showCreateRTPModal, setShowCreateRTPModal] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
@@ -63,19 +66,61 @@ export function InvoiceSearchSection({
     setShowCreateRTPModal(true);
   };
 
-  const handleCreateRTPConfirm = () => {
-    // Trigger the file upload dialog
+  const handleFileUpload = (file: File) => {
+    if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+      setUploadedFile(file);
+    } else {
+      alert('Please upload a PDF file only.');
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      handleFileUpload(files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleFileSelect = () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.pdf';
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
-      if (file && onCreateRTP) {
-        onCreateRTP();
-        setShowCreateRTPModal(false);
+      if (file) {
+        handleFileUpload(file);
       }
     };
     input.click();
+  };
+
+  const handleCreateRTPConfirm = () => {
+    if (uploadedFile && onCreateRTP) {
+      onCreateRTP();
+      setShowCreateRTPModal(false);
+      setUploadedFile(null);
+    }
   };
 
   return (
@@ -206,34 +251,77 @@ export function InvoiceSearchSection({
 
       {/* Create RTP Modal */}
       <Dialog open={showCreateRTPModal} onOpenChange={setShowCreateRTPModal}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>Create New RTP Record</DialogTitle>
             <DialogDescription>
               Upload an invoice PDF to create a new Request to Pay record with the corrected data.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 p-6">
-            <div className="text-center space-y-4">
-              <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                <Upload className="h-8 w-8 text-primary" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-foreground">Upload Invoice PDF</h3>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Select a PDF file containing the corrected invoice data to create a new RTP record.
-                </p>
+          <div className="p-6">
+            <div
+              className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                isDragging 
+                  ? 'border-primary bg-primary/10' 
+                  : 'border-gray-300 hover:border-primary/50'
+              }`}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+            >
+              <div className="space-y-4">
+                <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                  <Upload className="h-8 w-8 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Upload New RTP</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    This invoice must include the corrected data
+                  </p>
+                </div>
+                <div className="text-sm text-gray-500">
+                  Drag & drop a file here or{" "}
+                  <button
+                    type="button"
+                    onClick={handleFileSelect}
+                    className="text-primary hover:text-primary/80 underline font-medium"
+                  >
+                    click to browse
+                  </button>
+                </div>
+                {uploadedFile && (
+                  <div className="mt-4 p-3 bg-gray-50 rounded-md border text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700 font-medium">{uploadedFile.name}</span>
+                      <button
+                        onClick={() => setUploadedFile(null)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {Math.round(uploadedFile.size / 1024)} KB
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
+            
             <div className="flex justify-end gap-3 mt-6">
               <Button 
                 variant="outline"
-                onClick={() => setShowCreateRTPModal(false)}
+                onClick={() => {
+                  setShowCreateRTPModal(false);
+                  setUploadedFile(null);
+                }}
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleCreateRTPConfirm}
+                disabled={!uploadedFile}
                 className="bg-primary hover:bg-primary/90"
               >
                 <Upload className="h-4 w-4 mr-2" />
