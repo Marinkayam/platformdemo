@@ -20,6 +20,7 @@ interface InvoiceSearchSectionProps {
   selectedInvoiceId?: string;
   showSearchInput?: boolean;
   onUnselectInvoice?: () => void;
+  onCreateRTP?: () => void;
 }
 
 export function InvoiceSearchSection({
@@ -35,6 +36,7 @@ export function InvoiceSearchSection({
   selectedInvoiceId,
   showSearchInput = true,
   onUnselectInvoice,
+  onCreateRTP,
 }: InvoiceSearchSectionProps) {
   const [previewInvoice, setPreviewInvoice] = useState<any>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -164,6 +166,22 @@ export function InvoiceSearchSection({
               })}
             </div>
           </div>
+          
+          {/* Didn't find an invoice section */}
+          {onCreateRTP && (
+            <div className="text-center py-2">
+              <p className="text-sm text-muted-foreground">
+                Didn't find an invoice? Upload an invoice PDF to{" "}
+                <span 
+                  className="text-primary cursor-pointer hover:underline font-medium"
+                  onClick={onCreateRTP}
+                >
+                  create a new RTP record
+                </span>{" "}
+                here
+              </p>
+            </div>
+          )}
         </div>
       )}
 

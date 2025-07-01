@@ -148,6 +148,7 @@ export function MatchExistingInvoiceTab({
             selectedInvoiceId={selectedInvoiceId}
             showSearchInput={false}
             onUnselectInvoice={handleUnselectInvoice}
+            onCreateRTP={handleMatchAndCreateRTP}
           />
         )}
 
