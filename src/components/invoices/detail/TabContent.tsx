@@ -4,7 +4,6 @@ import { ExceptionsTab } from "./ExceptionsTab";
 import { RTPDataTab } from "./RTPDataTab";
 import { ActivityTab } from "./ActivityTab";
 import { PortalRecordsTab } from "./PortalRecordsTab";
-import { InvoiceSmartConnectionTab } from "./InvoiceSmartConnectionTab";
 import { Invoice, Attachment } from "@/types/invoice";
 import { showSuccessToast } from "@/lib/toast-helpers";
 
@@ -87,8 +86,6 @@ export function TabContent({ tab, invoice, attachments = [] }: TabContentProps) 
       return <RTPDataTab invoice={localInvoice} attachments={attachments} />;
     case "portal-records":
       return <PortalRecordsTab invoiceId={localInvoice?.id || ""} />;
-    case "smart-connection":
-      return <InvoiceSmartConnectionTab invoice={localInvoice} />;
     case "activity":
       return <ActivityTab />;
     default:
