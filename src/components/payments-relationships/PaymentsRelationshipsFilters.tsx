@@ -1,11 +1,13 @@
+
 import { Search, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
 import { SmartConnectionFilters } from "@/types/smartConnection";
 import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
 import { PaymentsRelationshipStatusBadge } from "@/components/payments-relationships/PaymentsRelationshipStatusBadge";
 import { getPortalLogoUrl } from "@/lib/utils";
+import { DesignFilterChip } from "@/components/ui/design-filter-chip";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface PaymentsRelationshipsFiltersProps {
   filters: SmartConnectionFilters;
@@ -71,23 +73,23 @@ export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearF
     const active = [];
     
     filters.status.forEach(status => {
-      active.push({ key: `status-${status}`, label: status, type: 'status' });
+      active.push({ key: `status-${status}`, label: "Status", value: status, type: 'status' });
     });
     
     filters.receivableEntity.forEach(entity => {
-      active.push({ key: `receivable-${entity}`, label: entity, type: 'receivableEntity' });
+      active.push({ key: `receivable-${entity}`, label: "Receivable Entity", value: entity, type: 'receivableEntity' });
     });
     
     filters.payable.forEach(payable => {
-      active.push({ key: `payable-${payable}`, label: payable, type: 'payable' });
+      active.push({ key: `payable-${payable}`, label: "Payable", value: payable, type: 'payable' });
     });
     
     filters.portal.forEach(portal => {
-      active.push({ key: `portal-${portal}`, label: portal, type: 'portal' });
+      active.push({ key: `portal-${portal}`, label: "Portal", value: portal, type: 'portal' });
     });
     
     if (filters.viewInactive) {
-      active.push({ key: 'view-inactive', label: 'View Inactive', type: 'viewInactive' });
+      active.push({ key: 'view-inactive', label: "Filter", value: 'View Inactive', type: 'viewInactive' });
     }
     
     return active;
@@ -171,8 +173,8 @@ export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearF
                   width={20}
                   height={20}
                   onError={(e) => {
-                    e.currentTarget.onerror = null; // Prevent infinite loop
-                    e.currentTarget.src = '/portal-logos/placeholder.svg'; // Fallback to a default image
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/portal-logos/placeholder.svg';
                   }}
                 />
                 <span>{option}</span>
@@ -216,19 +218,26 @@ export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearF
       </div>
       
       {activeFilters.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {activeFilters.map((filter) => (
-            <Badge
-              key={filter.key}
-              variant="outline"
-              className="px-2 py-1 text-xs cursor-pointer hover:bg-purple-50 bg-purple-50 text-purple-700 border-purple-200"
-              onClick={() => handleRemoveFilter(filter.key, filter.type)}
-            >
-              {filter.label}
-              <span className="ml-1 text-purple-400">×</span>
-            </Badge>
-          ))}
-        </div>
+        <motion.div 
+          className="flex flex-wrap gap-2 pt-2"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ 
+            opacity: activeFilters.length > 0 ? 1 : 0,
+            height: activeFilters.length > 0 ? 'auto' : 0 
+          }}
+          transition={{ duration: 0.3 }}
+        >
+          <AnimatePresence>
+            {activeFilters.map((filter) => (
+              <DesignFilterChip
+                key={filter.key}
+                label={filter.label}
+                value={filter.value}
+                onRemove={() => handleRemoveFilter(filter.key, filter.type)}
+              />
+            ))}
+          </AnimatePresence>
+        </motion.div>
       )}
     </div>
   );
