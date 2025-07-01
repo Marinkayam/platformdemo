@@ -1,9 +1,9 @@
-
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Search, Sparkles, X, Eye, Check } from "lucide-react";
+import { Search, Sparkles, X, Eye, Check, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { InvoiceMatch } from "@/utils/invoiceMatching";
 import { InvoicePreviewModal } from "./InvoicePreviewModal";
 
@@ -40,6 +40,7 @@ export function InvoiceSearchSection({
 }: InvoiceSearchSectionProps) {
   const [previewInvoice, setPreviewInvoice] = useState<any>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [showCreateRTPModal, setShowCreateRTPModal] = useState(false);
 
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
@@ -59,19 +60,22 @@ export function InvoiceSearchSection({
   };
 
   const handleCreateRTPClick = () => {
-    if (onCreateRTP) {
-      // Trigger the file upload dialog
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.pdf';
-      input.onchange = (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file) {
-          onCreateRTP();
-        }
-      };
-      input.click();
-    }
+    setShowCreateRTPModal(true);
+  };
+
+  const handleCreateRTPConfirm = () => {
+    // Trigger the file upload dialog
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file && onCreateRTP) {
+        onCreateRTP();
+        setShowCreateRTPModal(false);
+      }
+    };
+    input.click();
   };
 
   return (
@@ -199,6 +203,46 @@ export function InvoiceSearchSection({
           )}
         </div>
       )}
+
+      {/* Create RTP Modal */}
+      <Dialog open={showCreateRTPModal} onOpenChange={setShowCreateRTPModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Create New RTP Record</DialogTitle>
+            <DialogDescription>
+              Upload an invoice PDF to create a new Request to Pay record with the corrected data.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 p-6">
+            <div className="text-center space-y-4">
+              <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <Upload className="h-8 w-8 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-lg font-medium text-foreground">Upload Invoice PDF</h3>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Select a PDF file containing the corrected invoice data to create a new RTP record.
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 mt-6">
+              <Button 
+                variant="outline"
+                onClick={() => setShowCreateRTPModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleCreateRTPConfirm}
+                className="bg-primary hover:bg-primary/90"
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Create RTP Record
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <InvoicePreviewModal
         isOpen={showPreviewModal}
