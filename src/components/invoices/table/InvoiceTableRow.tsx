@@ -39,7 +39,7 @@ export function InvoiceTableRow({
       className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white ${isPendingAction ? 'pending-action-row' : ''}`}
       onClick={handleClick}
     >
-      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold py-3 xl:py-4 pl-3 xl:pl-4 pr-2 w-[200px] xl:w-[220px] min-w-[180px] relative">
+      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold py-3 xl:py-4 pl-3 xl:pl-4 pr-2 min-w-[180px] flex-shrink-0 relative">
         {isPendingAction && (
           <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500" />
         )}
@@ -54,7 +54,7 @@ export function InvoiceTableRow({
         </div>
       </TableCell>
       
-      <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[150px] xl:min-w-[180px] lg:min-w-[160px] md:min-w-[140px]">
+      <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[140px] flex-1">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -63,27 +63,28 @@ export function InvoiceTableRow({
             <TooltipContent>
               <p>{invoice.buyer}</p>
             </TooltipContent>
-          </TooltipProvider>
+          </Tooltip>
+        </TooltipProvider>
       </TableCell>
       
       {isPendingTab ? (
-        <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px]">
+        <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[120px] flex-shrink-0">
           <RejectionInfo 
             isRejectedByMonto={invoice.rejectedBy === 'Monto'}
             isRejectedByBuyer={invoice.rejectedBy === 'Buyer'}
           />
         </TableCell>
       ) : (
-        <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px]">
+        <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[120px] flex-shrink-0">
           {invoice.dueDate}
         </TableCell>
       )}
       
-      <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[100px] xl:min-w-[120px] lg:min-w-[110px] md:min-w-[100px] pr-2 xl:pr-4">
+      <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[100px] flex-shrink-0 pr-2 xl:pr-4">
         <StatusBadge status={invoice.status} />
       </TableCell>
       
-      <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[140px] xl:min-w-[180px] lg:min-w-[160px] md:min-w-[140px]">
+      <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[140px] flex-1">
         <div className="flex items-center gap-2">
           {(() => {
             const resolvedPortalName = invoice.portal;
@@ -120,12 +121,12 @@ export function InvoiceTableRow({
         </div>
       </TableCell>
       
-      <TableCell className="px-3 xl:px-4 py-3 xl:py-4 font-medium min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px] text-right">
+      <TableCell className="px-3 xl:px-4 py-3 xl:py-4 font-medium min-w-[120px] flex-shrink-0 text-right">
         {formatCurrency(invoice.total, invoice.currency)}
       </TableCell>
       
       {isPendingTab ? (
-        <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px]">
+        <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[120px] flex-1">
           <div onClick={(e) => e.stopPropagation()}>
             <AssigneeComponent 
               assignee={invoice.assignee}
@@ -135,7 +136,7 @@ export function InvoiceTableRow({
           </div>
         </TableCell>
       ) : (
-        <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px]">
+        <TableCell className="px-3 xl:px-4 py-3 xl:py-4 min-w-[120px] flex-1">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -149,7 +150,7 @@ export function InvoiceTableRow({
         </TableCell>
       )}
       
-      <TableCell className="text-center px-3 xl:px-4 py-3 xl:py-4 w-[80px]">
+      <TableCell className="text-center px-3 xl:px-4 py-3 xl:py-4 w-[80px] flex-shrink-0">
         <div onClick={(e) => e.stopPropagation()}>
           <InvoiceActionsMenu 
             invoiceId={invoice.id} 
