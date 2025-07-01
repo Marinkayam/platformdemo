@@ -27,7 +27,17 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
 
   return (
     <div className="space-y-6">
-      {/* Benefits Icons - Now at the top */}
+      {/* Header - Now at the top */}
+      <div className="text-center space-y-2">
+        <div className="space-y-1">
+          <h3 className="text-lg font-medium text-grey-900">Upload Payment Report</h3>
+          <p className="text-sm text-grey-600 max-w-md mx-auto">
+            Transform your ERP payment data into intelligent insights
+          </p>
+        </div>
+      </div>
+
+      {/* Benefits Icons - Now below header */}
       <div className="grid md:grid-cols-3 gap-4">
         <div className="text-center space-y-2">
           <div className="inline-flex items-center justify-center w-8 h-8 bg-success-main/10 rounded-lg">
@@ -66,20 +76,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
         </div>
       </div>
 
-      {/* Header - Now smaller */}
-      <div className="text-center space-y-2">
-        <div className="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-xl">
-          <Sparkles className="w-5 h-5 text-primary" />
-        </div>
-        <div className="space-y-1">
-          <h3 className="text-lg font-medium text-grey-900">Upload Payment Report</h3>
-          <p className="text-sm text-grey-600 max-w-md mx-auto">
-            Transform your ERP payment data into intelligent insights
-          </p>
-        </div>
-      </div>
-
-      {/* Upload Zone - More compact */}
+      {/* Upload Zone */}
       <div className="space-y-4">
         <Card className="border-2 border-dashed border-grey-300 hover:border-primary/50 transition-all duration-200 group">
           <CardContent 
@@ -116,15 +113,15 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
           </CardContent>
         </Card>
 
-        {/* Template Download - Under upload section */}
+        {/* Template Download - Updated text and button */}
         <div className="text-center">
+          <p className="text-xs text-grey-500 mb-2">
+            Need help formatting your data?
+          </p>
           <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 gap-2">
             <Download className="w-4 h-4" />
-            Download Template
+            Download Monto's Payment report template
           </Button>
-          <p className="text-xs text-grey-500 mt-1">
-            Need help formatting your data? Use our template
-          </p>
         </div>
       </div>
     </div>
