@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -31,12 +32,17 @@ export function InvoiceTableRow({
     onNavigate(invoice.id);
   };
 
+  const isPendingAction = invoice.status === "Pending Action";
+
   return (
     <TableRow 
-      className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
+      className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white ${isPendingAction ? 'pending-action-row' : ''}`}
       onClick={handleClick}
     >
-      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold py-4 pl-4 pr-2 w-[180px]">
+      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold py-4 pl-4 pr-2 w-[180px] relative">
+        {isPendingAction && (
+          <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500" />
+        )}
         <InvoiceNumber 
           number={invoice.number}
           hasWarning={invoice.hasWarning}

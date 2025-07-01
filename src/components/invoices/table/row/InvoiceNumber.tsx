@@ -34,7 +34,7 @@ export function InvoiceNumber({
                 <SquareStack className="h-4 w-4 text-red-500 flex-shrink-0" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Duplicate Invoice</p>
+                <p>Duplicated invoice</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
