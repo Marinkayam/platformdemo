@@ -35,47 +35,47 @@ export function InvoiceTableHeader({
   return (
     <TableHeader>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 min-w-[200px] xl:min-w-[220px] text-left">
+        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 min-w-[220px] text-left text-sm font-semibold">
           {renderSortButton('number', 'Invoice Number')}
         </TableHead>
         
-        <TableHead className="min-w-[160px] xl:min-w-[180px]">
+        <TableHead className="min-w-[180px] text-sm font-semibold">
           {renderSortButton('buyer', 'Buyer')}
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="min-w-[130px] xl:min-w-[140px]">
+          <TableHead className="min-w-[140px] text-sm font-semibold">
             Rejected By
           </TableHead>
         ) : (
-          <TableHead className="min-w-[130px] xl:min-w-[140px]">
+          <TableHead className="min-w-[140px] text-sm font-semibold">
             {renderSortButton('dueDate', 'Due Date')}
           </TableHead>
         )}
 
-        <TableHead className="min-w-[110px] xl:min-w-[120px]">
+        <TableHead className="min-w-[120px] text-sm font-semibold">
           Status
         </TableHead>
         
-        <TableHead className="min-w-[160px] xl:min-w-[180px]">
+        <TableHead className="min-w-[180px] text-sm font-semibold">
           Portal
         </TableHead>
         
-        <TableHead className="min-w-[140px] xl:min-w-[150px] text-right">
+        <TableHead className="min-w-[150px] text-right text-sm font-semibold">
           {renderSortButton('total', 'Total')}
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="min-w-[140px] xl:min-w-[160px]">
+          <TableHead className="min-w-[160px] text-sm font-semibold">
             Assignee
           </TableHead>
         ) : (
-          <TableHead className="min-w-[140px] xl:min-w-[160px]">
+          <TableHead className="min-w-[160px] text-sm font-semibold">
             {renderSortButton('owner', 'Owner')}
           </TableHead>
         )}
 
-        <TableHead className="w-[80px] text-center">
+        <TableHead className="w-[80px] text-center text-sm font-semibold">
         </TableHead>
       </TableRow>
     </TableHeader>
