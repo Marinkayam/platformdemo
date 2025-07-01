@@ -1,6 +1,6 @@
 
 import React, { useCallback } from 'react';
-import { Upload, FileText, Download } from 'lucide-react';
+import { Upload, FileText, Download, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface UploadStepProps {
@@ -25,49 +25,40 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-grey-900 mb-2">
-          Help Monto understand what's paid—so we can focus on what matters!
-        </h3>
-        <p className="text-grey-600 mb-4">
-          You can upload your ERP's Payment or AR report in Monto's format to help us do the heavy lifting for you. 
-          It includes both required and optional fields—we'll guide you through what's needed.
-        </p>
-        
-        <div className="bg-white border border-grey-300 rounded-lg p-4">
-          <h4 className="font-semibold text-grey-900 mb-2">Why upload?</h4>
-          <p className="text-sm text-grey-600 mb-3">By sharing your report, Monto can:</p>
-          <ul className="text-sm text-grey-600 space-y-1 list-disc list-inside">
-            <li>Automatically identify payment relationships hidden in your invoice data</li>
-            <li>Spot which invoices are already paid (so we don't track what's settled)</li>
-            <li>Focus only on open invoices that actually need monitoring</li>
-            <li>Create smart RTPs for your open invoices—and keep them updated with live portal data</li>
-          </ul>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-3">
+        <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+          <Upload className="w-8 h-8 text-primary" />
         </div>
-        
-        <p className="text-sm text-grey-500 mt-4">
-          No report to share yet? No worries—you can skip this step and come back later. 
-          But for a smoother, more powerful experience, we recommend uploading it when you can.
-        </p>
+        <div>
+          <h3 className="text-xl font-semibold text-grey-900">Upload Payment Report</h3>
+          <p className="text-grey-600 mt-1">
+            Help Monto focus on what matters by sharing your ERP payment data
+          </p>
+        </div>
       </div>
 
+      {/* Upload Zone */}
       <div
-        className="border-2 border-dashed border-grey-400 rounded-lg p-8 text-center hover:border-primary-main transition-colors"
+        className="border-2 border-dashed border-grey-300 rounded-xl p-12 text-center hover:border-primary/50 hover:bg-primary/5 transition-colors cursor-pointer"
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
       >
-        <Upload className="w-12 h-12 text-grey-500 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-grey-900 mb-2">
-          Drop your payment report here
-        </h3>
-        <p className="text-grey-600 mb-4">
-          Upload your .csv or .xlsx ERP payment/AR report
-        </p>
-        <div className="flex items-center justify-center gap-4">
-          <Button variant="outline" asChild>
+        <div className="space-y-4">
+          <div className="mx-auto w-12 h-12 bg-grey-100 rounded-lg flex items-center justify-center">
+            <FileText className="w-6 h-6 text-grey-500" />
+          </div>
+          <div>
+            <p className="text-lg font-medium text-grey-900 mb-1">
+              Drop your file here or browse
+            </p>
+            <p className="text-sm text-grey-500">
+              Supports CSV and Excel files up to 10MB
+            </p>
+          </div>
+          <Button variant="outline" asChild className="mt-4">
             <label className="cursor-pointer">
-              <FileText className="w-4 h-4 mr-2" />
               Choose File
               <input
                 type="file"
@@ -77,11 +68,42 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
               />
             </label>
           </Button>
-          <Button variant="ghost" size="sm">
-            <Download className="w-4 h-4 mr-2" />
-            Download Template
-          </Button>
         </div>
+      </div>
+
+      {/* Benefits */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <div className="flex gap-3">
+          <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+          <div className="space-y-3">
+            <h4 className="font-semibold text-grey-900">Why upload your payment report?</h4>
+            <ul className="text-sm text-grey-600 space-y-2">
+              <li className="flex items-start gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <span>Automatically identify payment relationships in your data</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <span>Skip tracking invoices that are already paid</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <span>Create smart RTPs for open invoices automatically</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Template Download */}
+      <div className="text-center">
+        <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
+          <Download className="w-4 h-4 mr-2" />
+          Download Template
+        </Button>
+        <p className="text-xs text-grey-500 mt-1">
+          Need help formatting your data? Use our template
+        </p>
       </div>
     </div>
   );

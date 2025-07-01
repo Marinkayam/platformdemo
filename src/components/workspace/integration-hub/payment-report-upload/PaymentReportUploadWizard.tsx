@@ -10,6 +10,7 @@ import { WizardNavigation } from './components/WizardNavigation';
 import { useFileParser } from './hooks/useFileParser';
 import { useDataValidation } from './hooks/useDataValidation';
 import { PaymentReportWizardStepId } from './types';
+import { Loader2 } from 'lucide-react';
 
 interface PaymentReportUploadWizardProps {
   isOpen: boolean;
@@ -80,9 +81,10 @@ export function PaymentReportUploadWizard({ isOpen, onClose }: PaymentReportUplo
         return <SummaryStep validatedData={validatedData} />;
       case 'connecting':
         return (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-main mb-4"></div>
-            <p className="text-grey-600">Importing payment report...</p>
+          <div className="flex flex-col items-center justify-center py-20 space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="text-grey-600 font-medium">Importing payment report...</p>
+            <p className="text-sm text-grey-500">This may take a few moments</p>
           </div>
         );
       default:
@@ -95,11 +97,11 @@ export function PaymentReportUploadWizard({ isOpen, onClose }: PaymentReportUplo
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Upload ERP Payment Report</DialogTitle>
+        <DialogHeader className="pb-6">
+          <DialogTitle className="text-xl">Upload ERP Payment Report</DialogTitle>
         </DialogHeader>
-        <div className="space-y-6">
-          <WizardProgress currentStep={currentStep} />
+        <div className="space-y-8">
+          {currentStep !== 'connecting' && <WizardProgress currentStep={currentStep} />}
           {renderStep()}
           <WizardNavigation
             currentStep={currentStep}

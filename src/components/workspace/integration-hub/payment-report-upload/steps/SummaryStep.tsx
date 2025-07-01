@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ValidatedPaymentRecord } from '../types';
+import { CheckCircle, AlertTriangle, FileText, TrendingUp } from 'lucide-react';
 
 interface SummaryStepProps {
   validatedData: ValidatedPaymentRecord[];
@@ -8,6 +9,9 @@ interface SummaryStepProps {
 
 export function SummaryStep({ validatedData }: SummaryStepProps) {
   const validRecords = validatedData.filter(record => record._status === 'valid');
+  const warningRecords = validatedData.filter(record => record._status === 'warning');
+  const errorRecords = validatedData.filter(record => record._status === 'error');
+  
   const statusBreakdown = validRecords.reduce((acc, record) => {
     const status = record.status || 'Unknown';
     acc[status] = (acc[status] || 0) + 1;
@@ -15,58 +19,99 @@ export function SummaryStep({ validatedData }: SummaryStepProps) {
   }, {} as { [key: string]: number });
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold text-grey-900 mb-2">Import Summary</h3>
-        <p className="text-grey-600">
-          Ready to import your payment report data. Review the summary below.
-        </p>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-3">
+        <div className="mx-auto w-16 h-16 bg-success-main/10 rounded-full flex items-center justify-center">
+          <CheckCircle className="w-8 h-8 text-success-main" />
+        </div>
+        <div>
+          <h3 className="text-xl font-semibold text-grey-900">Ready to Import</h3>
+          <p className="text-grey-600">
+            Your payment data has been processed and is ready for import
+          </p>
+        </div>
       </div>
 
-      <div className="bg-grey-100 rounded-lg p-6">
-        <div className="grid grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-semibold text-grey-900 mb-3">Import Details</h4>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-grey-600">Total Records:</span>
-                <span className="font-medium">{validatedData.length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-grey-600">Valid Records:</span>
-                <span className="font-medium text-success-main">{validRecords.length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-grey-600">Records with Issues:</span>
-                <span className="font-medium text-red-600">
-                  {validatedData.length - validRecords.length}
-                </span>
-              </div>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-success-main/5 border border-success-main/20 rounded-lg p-4 text-center">
+          <div className="text-2xl font-bold text-success-main">{validRecords.length}</div>
+          <div className="text-sm text-success-main font-medium">Valid Records</div>
+        </div>
+        <div className="bg-warning-main/5 border border-warning-main/20 rounded-lg p-4 text-center">
+          <div className="text-2xl font-bold text-warning-main">{warningRecords.length}</div>
+          <div className="text-sm text-warning-main font-medium">Warnings</div>
+        </div>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+          <div className="text-2xl font-bold text-red-600">{errorRecords.length}</div>
+          <div className="text-sm text-red-600 font-medium">Errors</div>
+        </div>
+      </div>
+
+      {/* Details */}
+      <div className="grid grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <FileText className="w-5 h-5 text-grey-600" />
+            <h4 className="font-semibold text-grey-900">Import Summary</h4>
+          </div>
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between py-2 border-b border-grey-200">
+              <span className="text-grey-600">Total Records:</span>
+              <span className="font-medium">{validatedData.length}</span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-grey-200">
+              <span className="text-grey-600">Ready to Import:</span>
+              <span className="font-medium text-success-main">{validRecords.length}</span>
+            </div>
+            <div className="flex justify-between py-2">
+              <span className="text-grey-600">Need Attention:</span>
+              <span className="font-medium text-red-600">
+                {validatedData.length - validRecords.length}
+              </span>
             </div>
           </div>
+        </div>
 
-          <div>
-            <h4 className="font-semibold text-grey-900 mb-3">Status Breakdown</h4>
-            <div className="space-y-2">
-              {Object.entries(statusBreakdown).map(([status, count]) => (
-                <div key={status} className="flex justify-between">
-                  <span className="text-grey-600">{status}:</span>
-                  <span className="font-medium">{count}</span>
-                </div>
-              ))}
-            </div>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-grey-600" />
+            <h4 className="font-semibold text-grey-900">Status Breakdown</h4>
+          </div>
+          <div className="space-y-3 text-sm">
+            {Object.entries(statusBreakdown).map(([status, count]) => (
+              <div key={status} className="flex justify-between py-2 border-b border-grey-200">
+                <span className="text-grey-600 capitalize">{status}:</span>
+                <span className="font-medium">{count}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-grey-900 mb-2">What happens next?</h4>
-        <ul className="text-sm text-grey-600 space-y-1 list-disc list-inside">
-          <li>Payment records will be imported into your Monto workspace</li>
-          <li>Smart RTPs will be created for open invoices</li>
-          <li>Paid invoices will be marked accordingly to focus on what matters</li>
-          <li>You'll be able to track payment relationships in your dashboard</li>
-        </ul>
+      {/* What's Next */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <div className="flex gap-3">
+          <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+          <div className="space-y-3">
+            <h4 className="font-semibold text-grey-900">What happens after import?</h4>
+            <ul className="text-sm text-grey-600 space-y-2">
+              <li className="flex items-start gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <span>Payment records will be added to your workspace</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <span>Smart RTPs will be created for open invoices</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <span>Payment relationships will be tracked automatically</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
