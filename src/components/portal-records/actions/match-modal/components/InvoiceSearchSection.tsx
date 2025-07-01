@@ -58,6 +58,22 @@ export function InvoiceSearchSection({
     onSuggestionSelect(invoiceId);
   };
 
+  const handleCreateRTPClick = () => {
+    if (onCreateRTP) {
+      // Trigger the file upload dialog
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.pdf';
+      input.onchange = (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file) {
+          onCreateRTP();
+        }
+      };
+      input.click();
+    }
+  };
+
   return (
     <div className="space-y-4">
       {/* Search Section */}
@@ -174,11 +190,10 @@ export function InvoiceSearchSection({
                 Didn't find an invoice? Upload an invoice PDF to{" "}
                 <span 
                   className="text-primary cursor-pointer hover:underline font-medium"
-                  onClick={onCreateRTP}
+                  onClick={handleCreateRTPClick}
                 >
                   create a new RTP record
-                </span>{" "}
-                here
+                </span>
               </p>
             </div>
           )}
