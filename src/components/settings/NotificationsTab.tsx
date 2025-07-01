@@ -32,7 +32,7 @@ export function NotificationsTab() {
 
       <Card>
         <CardHeader>
-          <CardTitle>General Notifications</CardTitle>
+          <CardTitle className="text-lg font-semibold">General Notifications</CardTitle>
           <CardDescription>
             Configure your general notification preferences.
           </CardDescription>
@@ -63,7 +63,7 @@ export function NotificationsTab() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Alert Preferences</CardTitle>
+          <CardTitle className="text-lg font-semibold">Alert Preferences</CardTitle>
           <CardDescription>
             Choose which types of alerts you want to receive.
           </CardDescription>
@@ -109,9 +109,11 @@ export function NotificationsTab() {
               onCheckedChange={setWeeklyReports}
             />
           </div>
-          <Button onClick={handleSaveNotifications} className="bg-[#7B59FF] hover:bg-[#6a4bea]">
-            Save Preferences
-          </Button>
+          <div className="flex justify-end">
+            <Button onClick={handleSaveNotifications} className="bg-[#7B59FF] hover:bg-[#6a4bea]">
+              Save Preferences
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

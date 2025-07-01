@@ -1,11 +1,10 @@
 
 import { useState } from "react";
-import { User, Bell, Shield, Settings as SettingsIcon } from "lucide-react";
+import { User, Bell, Shield } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
 import { AccountSettingsTab } from "@/components/settings/AccountSettingsTab";
 import { NotificationsTab } from "@/components/settings/NotificationsTab";
 import { SecurityTab } from "@/components/settings/SecurityTab";
-import { PreferencesTab } from "@/components/settings/PreferencesTab";
 
 const headerTabs = [
   {
@@ -23,11 +22,6 @@ const headerTabs = [
     label: "Security",
     icon: <Shield size={16} />,
   },
-  {
-    id: "preferences",
-    label: "Preferences",
-    icon: <SettingsIcon size={16} />,
-  },
 ];
 
 export default function Settings() {
@@ -41,8 +35,6 @@ export default function Settings() {
         return <NotificationsTab />;
       case "security":
         return <SecurityTab />;
-      case "preferences":
-        return <PreferencesTab />;
       default:
         return null;
     }

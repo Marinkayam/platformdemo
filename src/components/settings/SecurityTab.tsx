@@ -46,7 +46,7 @@ export function SecurityTab() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Change Password</CardTitle>
+          <CardTitle className="text-lg font-semibold">Change Password</CardTitle>
           <CardDescription>
             Update your account password to keep your account secure.
           </CardDescription>
@@ -79,15 +79,17 @@ export function SecurityTab() {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <Button onClick={handleChangePassword} className="bg-[#7B59FF] hover:bg-[#6a4bea]">
-            Update Password
-          </Button>
+          <div className="flex justify-end">
+            <Button onClick={handleChangePassword} className="bg-[#7B59FF] hover:bg-[#6a4bea]">
+              Update Password
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Two-Factor Authentication</CardTitle>
+          <CardTitle className="text-lg font-semibold">Two-Factor Authentication</CardTitle>
           <CardDescription>
             Add an extra layer of security to your account.
           </CardDescription>
@@ -117,7 +119,7 @@ export function SecurityTab() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Session Management</CardTitle>
+          <CardTitle className="text-lg font-semibold">Session Management</CardTitle>
           <CardDescription>
             Control how your sessions are managed.
           </CardDescription>
