@@ -97,10 +97,10 @@ export function PaymentReportUploadWizard({ isOpen, onClose }: PaymentReportUplo
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="pb-6">
-          <DialogTitle className="text-xl">Upload ERP Payment Report</DialogTitle>
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-lg">Upload ERP Payment Report</DialogTitle>
         </DialogHeader>
-        <div className="space-y-8">
+        <div className="space-y-6">
           {currentStep !== 'connecting' && <WizardProgress currentStep={currentStep} />}
           {renderStep()}
           <WizardNavigation

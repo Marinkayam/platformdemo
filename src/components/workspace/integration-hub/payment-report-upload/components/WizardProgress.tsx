@@ -14,17 +14,17 @@ export function WizardProgress({ currentStep }: WizardProgressProps) {
   const progress = ((currentStepIndex + 1) / WIZARD_STEPS.length) * 100;
 
   return (
-    <div className="space-y-6">
-      <Progress value={progress} className="h-2" />
+    <div className="space-y-4">
+      <Progress value={progress} className="h-1" />
       <div className="flex justify-between">
         {WIZARD_STEPS.map((step, index) => {
           const isCompleted = index < currentStepIndex;
           const isCurrent = index === currentStepIndex;
           
           return (
-            <div key={step.id} className="flex flex-col items-center space-y-2">
+            <div key={step.id} className="flex flex-col items-center space-y-1">
               <div
-                className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors ${
+                className={`flex items-center justify-center w-6 h-6 rounded-full border-2 transition-colors ${
                   isCompleted
                     ? 'bg-primary border-primary text-white'
                     : isCurrent
@@ -33,13 +33,13 @@ export function WizardProgress({ currentStep }: WizardProgressProps) {
                 }`}
               >
                 {isCompleted ? (
-                  <CheckCircle className="w-5 h-5" />
+                  <CheckCircle className="w-3 h-3" />
                 ) : (
-                  <span className="text-sm font-medium">{index + 1}</span>
+                  <span className="text-xs font-medium">{index + 1}</span>
                 )}
               </div>
               <span
-                className={`text-sm font-medium ${
+                className={`text-xs font-medium ${
                   isCurrent ? 'text-primary' : isCompleted ? 'text-grey-700' : 'text-grey-400'
                 }`}
               >
