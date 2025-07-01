@@ -39,7 +39,7 @@ export function InvoiceTableRow({
       className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white ${isPendingAction ? 'pending-action-row' : ''}`}
       onClick={handleClick}
     >
-      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold py-4 pl-4 pr-3 min-w-[220px] flex-shrink-0 relative">
+      <TableCell className="sticky left-0 z-20 bg-white border-r border-gray-100 font-semibold px-4 py-4 min-w-[220px] flex-shrink-0 relative">
         {isPendingAction && (
           <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500" />
         )}
@@ -121,7 +121,7 @@ export function InvoiceTableRow({
         </div>
       </TableCell>
       
-      <TableCell className="px-4 py-4 font-medium min-w-[150px] flex-shrink-0 text-right text-sm">
+      <TableCell className="px-4 py-4 font-medium min-w-[150px] flex-shrink-0 text-left text-sm">
         {formatCurrency(invoice.total, invoice.currency)}
       </TableCell>
       
