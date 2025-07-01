@@ -1,4 +1,3 @@
-
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -11,7 +10,7 @@ const Table = React.forwardRef<
     <div className="relative w-full overflow-x-auto">
       <table
         ref={ref}
-        className={cn("w-full caption-bottom text-sm font-normal font-sans table-fixed min-w-[1000px]", className)}
+        className={cn("w-full caption-bottom text-sm font-normal font-sans table-fixed min-w-[1200px]", className)}
         {...props}
       />
     </div>

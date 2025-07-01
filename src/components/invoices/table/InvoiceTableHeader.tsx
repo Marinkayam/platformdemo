@@ -35,42 +35,42 @@ export function InvoiceTableHeader({
   return (
     <TableHeader>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[200px] xl:w-[220px] min-w-[180px] text-left">
+        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 min-w-[200px] xl:min-w-[220px] text-left">
           {renderSortButton('number', 'Invoice Number')}
         </TableHead>
         
-        <TableHead className="min-w-[150px] xl:min-w-[180px] lg:min-w-[160px] md:min-w-[140px]">
+        <TableHead className="min-w-[160px] xl:min-w-[180px]">
           {renderSortButton('buyer', 'Buyer')}
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px]">
+          <TableHead className="min-w-[130px] xl:min-w-[140px]">
             Rejected By
           </TableHead>
         ) : (
-          <TableHead className="min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px]">
+          <TableHead className="min-w-[130px] xl:min-w-[140px]">
             {renderSortButton('dueDate', 'Due Date')}
           </TableHead>
         )}
 
-        <TableHead className="min-w-[100px] xl:min-w-[120px] lg:min-w-[110px] md:min-w-[100px]">
+        <TableHead className="min-w-[110px] xl:min-w-[120px]">
           Status
         </TableHead>
         
-        <TableHead className="min-w-[140px] xl:min-w-[180px] lg:min-w-[160px] md:min-w-[140px]">
+        <TableHead className="min-w-[160px] xl:min-w-[180px]">
           Portal
         </TableHead>
         
-        <TableHead className="min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px] text-right">
+        <TableHead className="min-w-[140px] xl:min-w-[150px] text-right">
           {renderSortButton('total', 'Total')}
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px]">
+          <TableHead className="min-w-[140px] xl:min-w-[160px]">
             Assignee
           </TableHead>
         ) : (
-          <TableHead className="min-w-[120px] xl:min-w-[140px] lg:min-w-[130px] md:min-w-[120px]">
+          <TableHead className="min-w-[140px] xl:min-w-[160px]">
             {renderSortButton('owner', 'Owner')}
           </TableHead>
         )}
