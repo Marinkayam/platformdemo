@@ -26,43 +26,82 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Hero Section */}
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-2">
-          <Sparkles className="w-8 h-8 text-primary" />
+    <div className="space-y-6">
+      {/* Benefits Icons - Now at the top */}
+      <div className="grid md:grid-cols-3 gap-4">
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center justify-center w-8 h-8 bg-success-main/10 rounded-lg">
+            <Zap className="w-4 h-4 text-success-main" />
+          </div>
+          <div className="space-y-1">
+            <h4 className="text-sm font-medium text-grey-900">Auto-Match Payments</h4>
+            <p className="text-xs text-grey-600 leading-relaxed">
+              Automatically identify payment relationships
+            </p>
+          </div>
         </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold text-grey-900">Upload Payment Report</h2>
-          <p className="text-grey-600 text-lg leading-relaxed max-w-lg mx-auto">
+
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center justify-center w-8 h-8 bg-warning-main/10 rounded-lg">
+            <Clock className="w-4 h-4 text-warning-main" />
+          </div>
+          <div className="space-y-1">
+            <h4 className="text-sm font-medium text-grey-900">Skip Paid Invoices</h4>
+            <p className="text-xs text-grey-600 leading-relaxed">
+              No need to track settled invoices
+            </p>
+          </div>
+        </div>
+
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center justify-center w-8 h-8 bg-primary/10 rounded-lg">
+            <Sparkles className="w-4 h-4 text-primary" />
+          </div>
+          <div className="space-y-1">
+            <h4 className="text-sm font-medium text-grey-900">Smart RTPs</h4>
+            <p className="text-xs text-grey-600 leading-relaxed">
+              Create intelligent RTPs automatically
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Header - Now smaller */}
+      <div className="text-center space-y-2">
+        <div className="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-xl">
+          <Sparkles className="w-5 h-5 text-primary" />
+        </div>
+        <div className="space-y-1">
+          <h3 className="text-lg font-medium text-grey-900">Upload Payment Report</h3>
+          <p className="text-sm text-grey-600 max-w-md mx-auto">
             Transform your ERP payment data into intelligent insights
           </p>
         </div>
       </div>
 
-      {/* Upload Zone */}
-      <div className="relative">
-        <Card className="border-2 border-dashed border-grey-400 hover:border-primary/60 transition-all duration-300 group hover:shadow-lg">
+      {/* Upload Zone - More compact */}
+      <div className="space-y-4">
+        <Card className="border-2 border-dashed border-grey-300 hover:border-primary/50 transition-all duration-200 group">
           <CardContent 
-            className="p-12 text-center"
+            className="p-8 text-center"
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
-            <div className="space-y-6">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-grey-100 group-hover:bg-primary/5 rounded-2xl transition-colors duration-300">
-                <Upload className="w-10 h-10 text-grey-500 group-hover:text-primary transition-colors duration-300" />
+            <div className="space-y-4">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-grey-50 group-hover:bg-primary/5 rounded-xl transition-colors duration-200">
+                <Upload className="w-6 h-6 text-grey-400 group-hover:text-primary transition-colors duration-200" />
               </div>
               
-              <div className="space-y-3">
-                <h3 className="text-xl font-semibold text-grey-900">
+              <div className="space-y-2">
+                <h4 className="text-base font-medium text-grey-900">
                   Drop your file here or browse
-                </h3>
-                <p className="text-grey-500">
+                </h4>
+                <p className="text-sm text-grey-500">
                   CSV and Excel files up to 10MB
                 </p>
               </div>
 
-              <Button size="lg" variant="outline" className="px-8" asChild>
+              <Button size="default" variant="outline" className="px-6" asChild>
                 <label className="cursor-pointer">
                   Choose File
                   <input
@@ -77,54 +116,15 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
           </CardContent>
         </Card>
 
-        {/* Template Download */}
-        <div className="mt-6 text-center">
+        {/* Template Download - Under upload section */}
+        <div className="text-center">
           <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 gap-2">
             <Download className="w-4 h-4" />
             Download Template
           </Button>
-          <p className="text-sm text-grey-500 mt-2">
+          <p className="text-xs text-grey-500 mt-1">
             Need help formatting your data? Use our template
           </p>
-        </div>
-      </div>
-
-      {/* Benefits Grid */}
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-success-main/10 rounded-xl">
-            <Zap className="w-6 h-6 text-success-main" />
-          </div>
-          <div className="space-y-1">
-            <h4 className="font-semibold text-grey-900">Auto-Match Payments</h4>
-            <p className="text-sm text-grey-600 leading-relaxed">
-              Automatically identify payment relationships in your data
-            </p>
-          </div>
-        </div>
-
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-warning-main/10 rounded-xl">
-            <Clock className="w-6 h-6 text-warning-main" />
-          </div>
-          <div className="space-y-1">
-            <h4 className="font-semibold text-grey-900">Skip Paid Invoices</h4>
-            <p className="text-sm text-grey-600 leading-relaxed">
-              No need to track invoices that are already settled
-            </p>
-          </div>
-        </div>
-
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-xl">
-            <Sparkles className="w-6 h-6 text-primary" />
-          </div>
-          <div className="space-y-1">
-            <h4 className="font-semibold text-grey-900">Smart RTPs</h4>
-            <p className="text-sm text-grey-600 leading-relaxed">
-              Create intelligent RTPs for open invoices automatically
-            </p>
-          </div>
         </div>
       </div>
     </div>
