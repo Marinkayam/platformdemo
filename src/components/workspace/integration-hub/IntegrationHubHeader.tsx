@@ -14,10 +14,10 @@ export function IntegrationHubHeader({ onUploadPaymentReport }: IntegrationHubHe
       </div>
       <button 
         onClick={onUploadPaymentReport}
-        className="bg-primary-main text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-primary-dark transition-colors"
+        className="bg-primary text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-primary/90 transition-colors font-medium"
       >
         <Upload className="w-4 h-4" />
-        Upload Payment Report
+        Upload ERP Payment Report
       </button>
     </div>
   );

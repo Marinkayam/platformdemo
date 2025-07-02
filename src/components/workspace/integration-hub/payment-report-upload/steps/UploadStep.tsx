@@ -77,12 +77,13 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
       </div>
 
       {/* Upload Zone */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         <Card className="border-2 border-dashed border-grey-300 hover:border-primary/50 transition-all duration-200 group">
           <CardContent 
-            className="p-8 text-center"
+            className="p-8 text-center cursor-pointer"
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
+            onClick={() => document.getElementById('file-upload')?.click()}
           >
             <div className="space-y-4">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-grey-50 group-hover:bg-primary/5 rounded-xl transition-colors duration-200">
@@ -91,27 +92,109 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
               
               <div className="space-y-2">
                 <h4 className="text-base font-medium text-grey-900">
-                  Drop your file here or browse
+                  Drop your file here or{" "}
+                  <button 
+                    type="button"
+                    className="text-primary underline hover:text-primary/80 font-medium"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      document.getElementById('file-upload')?.click();
+                    }}
+                  >
+                    browse
+                  </button>
                 </h4>
                 <p className="text-sm text-grey-500">
                   CSV and Excel files up to 10MB
                 </p>
               </div>
 
-              <Button size="default" variant="outline" className="px-6" asChild>
-                <label className="cursor-pointer">
-                  Choose File
-                  <input
-                    type="file"
-                    accept=".csv,.xlsx"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                  />
-                </label>
-              </Button>
+              <input
+                id="file-upload"
+                type="file"
+                accept=".csv,.xlsx"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
             </div>
           </CardContent>
         </Card>
+
+        {/* Skip option */}
+        <div className="text-center p-4 bg-grey-50 rounded-lg border">
+          <p className="text-sm text-grey-700 mb-2">
+            No report to share yet? No worries—you can skip this step and come back later. But for a smoother, more powerful experience, we recommend uploading it when you can.
+          </p>
+        </div>
+
+        {/* Alternative option for PDFs */}
+        <div className="text-center p-4 bg-primary/5 rounded-lg border border-primary/20">
+          <p className="text-sm text-grey-700 mb-2">
+            <strong>Want to see Monto's magic in action?</strong>
+          </p>
+          <p className="text-sm text-grey-600">
+            Upload just a few invoice PDFs and we'll take it from there—Monto will automatically identify payment relationships and show you how it all connects.
+          </p>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="mt-3 border-primary text-primary hover:bg-primary/10"
+            onClick={() => {
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.accept = '.pdf';
+              input.multiple = true;
+              input.onchange = (e) => {
+                const files = (e.target as HTMLInputElement).files;
+                if (files && files.length > 0) {
+                  // Handle PDF files - for now just show a toast
+                  console.log('PDF files selected:', files);
+                }
+              };
+              input.click();
+            }}
+          >
+            Upload Invoice PDFs
+          </Button>
+        </div>
+
+        {/* Payment Report Fields */}
+        <div className="space-y-4">
+          <h4 className="text-base font-medium text-grey-900">Payment Report Fields</h4>
+          <div className="bg-white border rounded-lg overflow-hidden">
+            <div className="grid grid-cols-4 gap-4 p-3 bg-grey-50 border-b font-medium text-sm text-grey-700">
+              <div>Name</div>
+              <div>Required</div>
+              <div>Example</div>
+              <div>Description</div>
+            </div>
+            <div className="divide-y">
+              {[
+                { name: 'Invoice Number', required: 'Yes', example: 'INV-123456', description: 'Invoice Number (string)' },
+                { name: 'Issue Date', required: 'Yes', example: '15/05/2025', description: 'Invoice Issue Date (date)' },
+                { name: 'Due Date', required: 'Yes', example: '15/06/2025', description: "Invoice Due Date. It's Mandatory if no Payment Terms (date)" },
+                { name: 'Payment Terms', required: 'Yes', example: 'Net30', description: "Payment Terms. It's Mandatory if no Due Date. (string)" },
+                { name: 'Billing Currency', required: 'Yes', example: 'USD', description: 'Invoice Billing Currency. (string)' },
+                { name: 'Receivable', required: 'Yes', example: 'Monto LDT', description: 'Supplier Name (string)' },
+                { name: 'Payable', required: 'Yes', example: 'Acme INC', description: 'Buyer Name (string)' },
+                { name: 'Total Amount', required: 'Yes', example: '15,325', description: 'Invoice Total Amount (number)' },
+                { name: 'Total Remaining Amount', required: 'Yes', example: '0', description: "Total Remaining Amount. It's mandatory if no Status. (number)" },
+                { name: 'Status', required: 'Yes', example: 'PAID', description: "Invoice Status in ERP. It's mandatory if no Total Remaining Amount.PAID, OPEN, DRAFT, …(string)" },
+                { name: 'PO Number', required: 'No', example: 'PO-123456', description: 'Related Purchase Order Number. (string)' },
+                { name: 'Tax Total', required: 'No', example: '10', description: 'Tax Total Amount (number)' },
+                { name: 'Type', required: 'No', example: 'INVOICE', description: 'INVOICE, CREDITBy default, it is derived from the Total Amount. Total Amount > 0 → INVOICE(string)' },
+                { name: 'Transaction ID', required: 'No', example: 'TRN-123456', description: 'Unique transaction ID in ERP (string)' }
+              ].map((field, index) => (
+                <div key={index} className="grid grid-cols-4 gap-4 p-3 text-sm">
+                  <div className="font-medium text-grey-900">{field.name}</div>
+                  <div className={field.required === 'Yes' ? 'text-red-600 font-medium' : 'text-grey-500'}>{field.required}</div>
+                  <div className="text-grey-600 font-mono text-xs">{field.example}</div>
+                  <div className="text-grey-600 text-xs">{field.description}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
         {/* Template Download - Updated text and button */}
         <div className="text-center">
