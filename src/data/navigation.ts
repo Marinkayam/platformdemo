@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Cloud, BarChart3, Star } from "lucide-react";
 import ChatAIIcon from "@/components/ui/chat-ai-icon";
@@ -253,12 +254,12 @@ export const navMain: NavItem[] = [
     ],
   },
   {
-    title: "Payments Relationships",
+    title: "Connection Hub",
     href: "/payments-relationships",
     icon: SmartConnectionsIcon,
     items: [
       { title: "Smart Connections", href: "/payments-relationships" },
-      { title: "Portal Users", href: "/payments-relationships?tab=portal-users" },
+      { title: "Scan Agents", href: "/payments-relationships?tab=scan-agents" },
     ],
   },
   {

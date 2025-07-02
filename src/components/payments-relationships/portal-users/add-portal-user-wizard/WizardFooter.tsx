@@ -41,7 +41,7 @@ export function WizardFooter({ currentStep, selectedPortal, selectedUserType, on
         </Button>
         {currentStep === 'setup' ? (
           <Button onClick={onSubmit}>
-            Add Portal User
+            Add Scan Agent
           </Button>
         ) : (
           <Button onClick={onNext} disabled={isNextDisabled()}>
