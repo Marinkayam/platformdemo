@@ -50,7 +50,7 @@ export function WizardNavigation({
           <Button onClick={onImport}>Import Payment Report</Button>
         ) : (
           <Button onClick={onNext} disabled={isNextDisabled()}>
-            Continue <ArrowRight className="ml-2" />
+            {file ? 'Next: Map Fields' : 'Continue Without Uploading'} <ArrowRight className="ml-2" />
           </Button>
         )}
       </div>
