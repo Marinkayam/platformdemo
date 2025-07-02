@@ -56,7 +56,7 @@ export function InvoiceHeader({
     } catch {
       // fallback
     }
-    return "All Invoices";
+    return "All Request-to-Pay";
   };
 
   const handleBackNavigation = () => {
@@ -87,7 +87,7 @@ export function InvoiceHeader({
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/invoices">RTP's</Link>
+                  <Link to="/invoices">Request-to-Pay</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />

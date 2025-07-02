@@ -27,20 +27,20 @@ export function InvoiceHeader({
   const getSubtitle = (activeTab: string) => {
     switch (activeTab) {
       case "pending":
-        return "Pending Actions shows all RTPs that need your attention—whether waiting for approval, payment, or follow-up—so nothing slips through the cracks.";
+        return "Pending Actions shows all Request-to-Pay that need your attention—whether waiting for approval, payment, or follow-up—so nothing slips through the cracks.";
       case "overdue":
-        return "Overdue shows RTPs that have missed their expected payment date—helping you quickly spot delays and take action.";
+        return "Overdue shows Request-to-Pay that have missed their expected payment date—helping you quickly spot delays and take action.";
       case "settled":
-        return "Settled shows all RTPs that have been paid—giving you a clear view of completed transactions and cash flow.";
+        return "Settled shows all Request-to-Pay that have been paid—giving you a clear view of completed transactions and cash flow.";
       default:
-        return "RTPs in Monto are smart, trackable payment requests tied to invoices—helping teams sync data, track approvals, and manage payments in one place.";
+        return "Request-to-Pay in Monto are smart, trackable payment requests tied to invoices—helping teams sync data, track approvals, and manage payments in one place.";
     }
   };
 
   return (
     <>
       <PageHeader 
-        title="RTPs" 
+        title="Request-to-Pay" 
         subtitle={getSubtitle(activeTab)}
       />
       

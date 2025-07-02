@@ -242,11 +242,11 @@ export const navMain: NavItem[] = [
     ],
   },
   {
-    title: "RTPs",
+    title: "Request-to-Pay",
     href: "/invoices",
     icon: InvoicesIcon,
     items: [
-      { title: "All RTPs", href: "/invoices" },
+      { title: "All Request-to-Pay", href: "/invoices" },
       { title: "Pending Actions", href: "/invoices?status=pending" },
       { title: "Overdue", href: "/invoices?status=overdue" },
       { title: "Settled", href: "/invoices?status=settled" },

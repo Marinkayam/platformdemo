@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -57,7 +56,7 @@ export function Sidebar({
           <SidebarItem href="/dashboard" icon={<LayoutDashboard size={18} />} label="Dashboard" active={pathname === "/dashboard"} />
           
           <div className="pt-2">
-            <SidebarItem href="/invoices" icon={<FileText size={18} />} label="RTPs" active={pathname.includes("/invoices")} />
+            <SidebarItem href="/invoices" icon={<FileText size={18} />} label="Request-to-Pay" active={pathname.includes("/invoices")} />
             <div className="mt-1 space-y-1">
               <SidebarSubItem href="/invoices?status=pending" label="Pending Actions" active={pathname === "/invoices" && window.location.search.includes("pending")} />
               <SidebarSubItem href="/invoices?status=overdue" label="Overdue" active={pathname === "/invoices" && window.location.search.includes("overdue")} />

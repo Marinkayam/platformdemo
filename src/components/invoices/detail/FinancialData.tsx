@@ -15,6 +15,7 @@ export function FinancialData({
     <div className="space-y-6">
       <div className="mb-4">
         <h2 className="text-lg font-medium">Financial Data</h2>
+        <p className="text-sm text-gray-500 mt-1">Extracted with monto document AI</p>
       </div>
 
       <FinancialFields
