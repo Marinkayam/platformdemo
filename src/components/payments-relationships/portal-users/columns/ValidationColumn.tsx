@@ -19,9 +19,20 @@ export function ValidationColumn({ portalUser }: ValidationColumnProps) {
   };
 
   if (portalUser.status === 'Validating') {
+    // Mock validation data for the progress indicator
+    const mockSteps = [
+      { label: 'Portal Connection', status: 'completed' as const },
+      { label: 'Credential Verification', status: 'in-progress' as const },
+      { label: 'Data Sync', status: 'pending' as const },
+    ];
+    
     return (
       <div className="flex items-center">
-        <ValidationProgressIndicator />
+        <ValidationProgressIndicator 
+          progress={65}
+          status="Validating portal connection..."
+          steps={mockSteps}
+        />
       </div>
     );
   }
