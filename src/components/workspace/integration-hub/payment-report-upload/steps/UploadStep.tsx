@@ -120,83 +120,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
           </CardContent>
         </Card>
 
-        {/* Skip option */}
-        <div className="text-center p-4 bg-grey-50 rounded-lg border">
-          <p className="text-sm text-grey-700 mb-2">
-            No report to share yet? No worries—you can skip this step and come back later. But for a smoother, more powerful experience, we recommend uploading it when you can.
-          </p>
-        </div>
-
-        {/* Alternative option for PDFs */}
-        <div className="text-center p-4 bg-primary/5 rounded-lg border border-primary/20">
-          <p className="text-sm text-grey-700 mb-2">
-            <strong>Want to see Monto's magic in action?</strong>
-          </p>
-          <p className="text-sm text-grey-600">
-            Upload just a few invoice PDFs and we'll take it from there—Monto will automatically identify payment relationships and show you how it all connects.
-          </p>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="mt-3 border-primary text-primary hover:bg-primary/10"
-            onClick={() => {
-              const input = document.createElement('input');
-              input.type = 'file';
-              input.accept = '.pdf';
-              input.multiple = true;
-              input.onchange = (e) => {
-                const files = (e.target as HTMLInputElement).files;
-                if (files && files.length > 0) {
-                  // Handle PDF files - for now just show a toast
-                  console.log('PDF files selected:', files);
-                }
-              };
-              input.click();
-            }}
-          >
-            Upload Invoice PDFs
-          </Button>
-        </div>
-
-        {/* Payment Report Fields */}
-        <div className="space-y-4">
-          <h4 className="text-base font-medium text-grey-900">Payment Report Fields</h4>
-          <div className="bg-white border rounded-lg overflow-hidden">
-            <div className="grid grid-cols-4 gap-4 p-3 bg-grey-50 border-b font-medium text-sm text-grey-700">
-              <div>Name</div>
-              <div>Required</div>
-              <div>Example</div>
-              <div>Description</div>
-            </div>
-            <div className="divide-y">
-              {[
-                { name: 'Invoice Number', required: 'Yes', example: 'INV-123456', description: 'Invoice Number (string)' },
-                { name: 'Issue Date', required: 'Yes', example: '15/05/2025', description: 'Invoice Issue Date (date)' },
-                { name: 'Due Date', required: 'Yes', example: '15/06/2025', description: "Invoice Due Date. It's Mandatory if no Payment Terms (date)" },
-                { name: 'Payment Terms', required: 'Yes', example: 'Net30', description: "Payment Terms. It's Mandatory if no Due Date. (string)" },
-                { name: 'Billing Currency', required: 'Yes', example: 'USD', description: 'Invoice Billing Currency. (string)' },
-                { name: 'Receivable', required: 'Yes', example: 'Monto LDT', description: 'Supplier Name (string)' },
-                { name: 'Payable', required: 'Yes', example: 'Acme INC', description: 'Buyer Name (string)' },
-                { name: 'Total Amount', required: 'Yes', example: '15,325', description: 'Invoice Total Amount (number)' },
-                { name: 'Total Remaining Amount', required: 'Yes', example: '0', description: "Total Remaining Amount. It's mandatory if no Status. (number)" },
-                { name: 'Status', required: 'Yes', example: 'PAID', description: "Invoice Status in ERP. It's mandatory if no Total Remaining Amount.PAID, OPEN, DRAFT, …(string)" },
-                { name: 'PO Number', required: 'No', example: 'PO-123456', description: 'Related Purchase Order Number. (string)' },
-                { name: 'Tax Total', required: 'No', example: '10', description: 'Tax Total Amount (number)' },
-                { name: 'Type', required: 'No', example: 'INVOICE', description: 'INVOICE, CREDITBy default, it is derived from the Total Amount. Total Amount > 0 → INVOICE(string)' },
-                { name: 'Transaction ID', required: 'No', example: 'TRN-123456', description: 'Unique transaction ID in ERP (string)' }
-              ].map((field, index) => (
-                <div key={index} className="grid grid-cols-4 gap-4 p-3 text-sm">
-                  <div className="font-medium text-grey-900">{field.name}</div>
-                  <div className={field.required === 'Yes' ? 'text-red-600 font-medium' : 'text-grey-500'}>{field.required}</div>
-                  <div className="text-grey-600 font-mono text-xs">{field.example}</div>
-                  <div className="text-grey-600 text-xs">{field.description}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Template Download - Updated text and button */}
+        {/* Template Download - Next to upload */}
         <div className="text-center">
           <p className="text-xs text-grey-500 mb-2">
             Need help formatting your data?
@@ -206,6 +130,65 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
             Download Monto's Payment report template
           </Button>
         </div>
+
+        {/* Skip option */}
+        <div className="text-center p-4 bg-grey-50 rounded-lg border">
+          <p className="text-sm text-grey-700">
+            No report to share yet? No worries—you can skip this step and come back later. But for a smoother, more powerful experience, we recommend uploading it when you can.
+          </p>
+        </div>
+
+        {/* Alternative option for PDFs - Improved UX */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-grey-200" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white px-2 text-grey-500">or</span>
+          </div>
+        </div>
+
+        <Card className="border border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10">
+          <CardContent className="p-6 text-center">
+            <div className="space-y-4">
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-xl">
+                <Sparkles className="w-5 h-5 text-primary" />
+              </div>
+              
+              <div className="space-y-2">
+                <h4 className="text-base font-semibold text-grey-900">
+                  Want to see Monto's magic in action?
+                </h4>
+                <p className="text-sm text-grey-600 max-w-md mx-auto">
+                  Upload just a few invoice PDFs and we'll take it from there—Monto will automatically identify payment relationships and show you how it all connects.
+                </p>
+              </div>
+
+              <Button 
+                variant="default" 
+                size="default" 
+                className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
+                onClick={() => {
+                  const input = document.createElement('input');
+                  input.type = 'file';
+                  input.accept = '.pdf';
+                  input.multiple = true;
+                  input.onchange = (e) => {
+                    const files = (e.target as HTMLInputElement).files;
+                    if (files && files.length > 0) {
+                      // Handle PDF files - for now just show a toast
+                      console.log('PDF files selected:', files);
+                    }
+                  };
+                  input.click();
+                }}
+              >
+                <Upload className="w-4 h-4" />
+                Upload Invoice PDFs
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
