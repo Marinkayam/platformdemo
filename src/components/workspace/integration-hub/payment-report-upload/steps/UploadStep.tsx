@@ -90,9 +90,9 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                 <Upload className="w-6 h-6 text-grey-400 group-hover:text-primary transition-colors duration-200" />
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <h4 className="text-base font-medium text-grey-900">
-                  Drop your file here or{" "}
+                  Drop your files here or{" "}
                   <button 
                     type="button"
                     className="text-primary underline hover:text-primary/80 font-medium"
@@ -104,15 +104,26 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                     browse
                   </button>
                 </h4>
-                <p className="text-sm text-grey-500">
-                  CSV and Excel files up to 10MB
+                
+                <div className="space-y-2">
+                  <p className="text-sm text-grey-700 font-medium">
+                    📊 <strong>Payment Report:</strong> Upload your ERP payment data (CSV/Excel)
+                  </p>
+                  <p className="text-sm text-grey-700 font-medium">
+                    📄 <strong>Quick Demo:</strong> Upload a few invoice PDFs to see Monto's magic
+                  </p>
+                </div>
+                
+                <p className="text-xs text-grey-500">
+                  Supported: CSV, XLSX, PDF • Up to 10MB each
                 </p>
               </div>
 
               <input
                 id="file-upload"
                 type="file"
-                accept=".csv,.xlsx"
+                accept=".csv,.xlsx,.pdf"
+                multiple
                 onChange={handleFileSelect}
                 className="hidden"
               />
@@ -123,7 +134,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
         {/* Template Download - Next to upload */}
         <div className="text-center">
           <p className="text-xs text-grey-500 mb-2">
-            Need help formatting your data?
+            Need help formatting your payment report?
           </p>
           <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 gap-2">
             <Download className="w-4 h-4" />
@@ -134,61 +145,9 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
         {/* Skip option */}
         <div className="text-center p-4 bg-grey-50 rounded-lg border">
           <p className="text-sm text-grey-700">
-            No report to share yet? No worries—you can skip this step and come back later. But for a smoother, more powerful experience, we recommend uploading it when you can.
+            No files to upload right now? No worries—you can skip this step and come back later. But for the best experience, we recommend uploading your data when you can.
           </p>
         </div>
-
-        {/* Alternative option for PDFs - Improved UX */}
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-grey-200" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-grey-500">or</span>
-          </div>
-        </div>
-
-        <Card className="border border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10">
-          <CardContent className="p-6 text-center">
-            <div className="space-y-4">
-              <div className="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-xl">
-                <Sparkles className="w-5 h-5 text-primary" />
-              </div>
-              
-              <div className="space-y-2">
-                <h4 className="text-base font-semibold text-grey-900">
-                  Want to see Monto's magic in action?
-                </h4>
-                <p className="text-sm text-grey-600 max-w-md mx-auto">
-                  Upload just a few invoice PDFs and we'll take it from there—Monto will automatically identify payment relationships and show you how it all connects.
-                </p>
-              </div>
-
-              <Button 
-                variant="default" 
-                size="default" 
-                className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
-                onClick={() => {
-                  const input = document.createElement('input');
-                  input.type = 'file';
-                  input.accept = '.pdf';
-                  input.multiple = true;
-                  input.onchange = (e) => {
-                    const files = (e.target as HTMLInputElement).files;
-                    if (files && files.length > 0) {
-                      // Handle PDF files - for now just show a toast
-                      console.log('PDF files selected:', files);
-                    }
-                  };
-                  input.click();
-                }}
-              >
-                <Upload className="w-4 h-4" />
-                Upload Invoice PDFs
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
