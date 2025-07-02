@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -95,13 +94,13 @@ export default function PaymentsRelationships() {
 
   // Determine title and subtitle based on active tab
   const getPageTitle = () => {
-    return activeTab === 'scan-agents' ? 'Scan Agents' : 'Connection Hub';
+    return activeTab === 'scan-agents' ? 'Scan Agents' : 'Smart Connections';
   };
 
   const getPageSubtitle = () => {
     return activeTab === 'scan-agents' 
       ? 'Portal Agents automatically scan portals, sync invoice and PO data, and keep your records up to date—no manual effort needed.'
-      : 'Monto creates Smart Connections with your customers—each one powered by dedicated Agents working on your behalf.';
+      : 'Unify invoices, POs, and portal activity for clear tracking across buyers and platforms.';
   };
 
   return (

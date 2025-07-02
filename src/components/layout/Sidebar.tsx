@@ -67,10 +67,10 @@ export function Sidebar({
           <SidebarItem href="/portal-management" icon={<Globe size={18} />} label="Portal Management" active={pathname === "/portal-management"} />
           
           <div className="pt-2">
-            <SidebarItem href="/payments-relationships" icon={<Brain size={18} />} label="Payments Relationships" active={pathname === "/payments-relationships"} />
+            <SidebarItem href="/payments-relationships" icon={<Brain size={18} />} label="Connection Hub" active={pathname === "/payments-relationships"} />
             <div className="mt-1 space-y-1">
               <SidebarSubItem href="/payments-relationships" label="Smart Connections" active={pathname === "/payments-relationships" && (!activeTab || activeTab === "smart-connections")} />
-              <SidebarSubItem href="/payments-relationships?tab=portal-users" label="Portal Users" active={pathname === "/payments-relationships" && activeTab === "portal-users"} />
+              <SidebarSubItem href="/payments-relationships?tab=scan-agents" label="Scan Agents" active={pathname === "/payments-relationships" && activeTab === "scan-agents"} />
             </div>
           </div>
           

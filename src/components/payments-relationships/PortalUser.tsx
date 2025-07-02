@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -122,7 +123,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
       <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
-            <span>Portal User Details</span>
+            <span>Portal Agent Details</span>
             <StatusBadge status={portalUser.status} />
             <AgentUserTypeBadge type={portalUser.userType} />
           </DialogTitle>

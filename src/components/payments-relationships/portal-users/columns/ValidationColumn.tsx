@@ -40,14 +40,14 @@ export function ValidationColumn({ portalUser }: ValidationColumnProps) {
   if (portalUser.status === 'Connected') {
     return (
       <div className="flex items-center gap-2">
-        <Wand className="h-4 w-4 text-black" />
-        <span className="text-sm text-black">Insights</span>
         <Button 
           variant="ghost" 
           size="sm" 
-          className="p-0 h-auto"
+          className="flex items-center gap-2 p-2 h-auto hover:bg-gray-100"
           onClick={handleInsightsClick}
         >
+          <Wand className="h-4 w-4 text-black" />
+          <span className="text-sm text-black">Insights</span>
         </Button>
       </div>
     );
