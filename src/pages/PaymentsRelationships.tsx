@@ -93,13 +93,24 @@ export default function PaymentsRelationships() {
     setIsAddPortalUserModalOpen(false);
   };
 
+  // Determine title and subtitle based on active tab
+  const getPageTitle = () => {
+    return activeTab === 'scan-agents' ? 'Scan Agents' : 'Connection Hub';
+  };
+
+  const getPageSubtitle = () => {
+    return activeTab === 'scan-agents' 
+      ? 'Portal Agents automatically scan portals, sync invoice and PO data, and keep your records up to date—no manual effort needed.'
+      : 'Monto creates Smart Connections with your customers—each one powered by dedicated Agents working on your behalf.';
+  };
+
   return (
     <TooltipProvider>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <PageHeader 
-            title="Connection Hub" 
-            subtitle="Monto creates Smart Connections with your customers—each one powered by dedicated Agents working on your behalf." 
+            title={getPageTitle()} 
+            subtitle={getPageSubtitle()} 
           />
           <PaymentsRelationshipsHeader 
             activeTab={activeTab}
