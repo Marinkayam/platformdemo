@@ -40,7 +40,7 @@ export function ValidationColumn({ portalUser }: ValidationColumnProps) {
   if (portalUser.status === 'Connected') {
     return (
       <div className="flex items-center gap-2">
-        <span className="text-sm text-green-600">✓ Validated</span>
+        <span className="text-sm text-green-600">Insights</span>
         <Button 
           variant="ghost" 
           size="sm" 

@@ -188,7 +188,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
                 Close
               </Button>
               <Button onClick={handleEdit}>
-                Edit Portal User
+                Edit Portal Agent
               </Button>
             </>
           )}
