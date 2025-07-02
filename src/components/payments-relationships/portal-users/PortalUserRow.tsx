@@ -3,7 +3,6 @@ import React from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { PortalColumn } from './columns/PortalColumn';
 import { UserTypeColumn } from './columns/UserTypeColumn';
-import { LinkedAgentsColumn } from './columns/LinkedAgentsColumn';
 import { ValidationColumn } from './columns/ValidationColumn';
 import { ActionsColumn } from './columns/ActionsColumn';
 import { StatusBadge } from '@/components/ui/status-badge';
@@ -26,7 +25,7 @@ export function PortalUserRow({
   return (
     <div 
       key={user.id}
-      className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-6 hover:bg-gray-50 cursor-pointer transition-colors min-h-[90px]"
+      className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-6 hover:bg-gray-50 cursor-pointer transition-colors min-h-[90px]"
       onClick={() => onRowClick(user)}
     >
       <div className="flex items-center">
@@ -40,9 +39,6 @@ export function PortalUserRow({
       </div>
       <div className="flex items-center">
         <UserTypeColumn userType={user.userType} />
-      </div>
-      <div className="flex items-center">
-        <LinkedAgentsColumn count={user.linkedSmartConnections} />
       </div>
       <div className="flex items-center">
         <ValidationColumn portalUser={user} />

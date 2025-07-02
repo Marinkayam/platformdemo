@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -29,7 +30,7 @@ export default function PaymentsRelationships() {
   // Handle URL tab parameter
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam && (tabParam === 'smart-connections' || tabParam === 'portal-users' || tabParam === 'insights')) {
+    if (tabParam && (tabParam === 'smart-connections' || tabParam === 'scan-agents' || tabParam === 'insights')) {
       setActiveTab(tabParam);
     }
   }, [searchParams]);
@@ -58,10 +59,10 @@ export default function PaymentsRelationships() {
     handleResetFilters: handleResetPortalUserFilters
   } = usePortalUserFiltering(portalUsers);
 
+  // Hide insights tab for now
   const tabs = [
     { id: "smart-connections", label: "Smart Connections", count: filteredConnections.length },
-    { id: "portal-users", label: "Portal Users", count: filteredUsers.length },
-    { id: "insights", label: "Insights", count: mockInsights.length }
+    { id: "scan-agents", label: "Scan Agents", count: filteredUsers.length }
   ];
 
   const handleConfirmRemove = () => {
@@ -97,8 +98,8 @@ export default function PaymentsRelationships() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <PageHeader 
-            title="Payments Relationships" 
-            subtitle="Manage and monitor your payments relationships in real-time" 
+            title="Connection Hub" 
+            subtitle="Monto creates Smart Connections with your customers—each one powered by dedicated Agents working on your behalf." 
           />
           <PaymentsRelationshipsHeader 
             activeTab={activeTab}
@@ -124,7 +125,7 @@ export default function PaymentsRelationships() {
           </>
         )}
 
-        {activeTab === "portal-users" && (
+        {activeTab === "scan-agents" && (
           <>
             <PortalUsersFilters
               filters={portalUserFilters}
@@ -158,7 +159,7 @@ export default function PaymentsRelationships() {
         isOpen={isConfirmRemoveModalOpen}
         onClose={() => setIsConfirmRemoveModalOpen(false)}
         onConfirm={handleConfirmRemove}
-        itemName={portalUsers.find(user => user.id === userToRemoveId)?.username || "this portal user"}
+        itemName={portalUsers.find(user => user.id === userToRemoveId)?.username || "this scan agent"}
       />
     </TooltipProvider>
   );

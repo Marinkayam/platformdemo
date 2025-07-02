@@ -85,7 +85,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
 
     // Show success toast
     toast({
-      title: "Portal User Created Successfully!",
+      title: "Scan Agent Created Successfully!",
       description: `${formData.username} has been added and is now validating.`,
     });
 
@@ -152,7 +152,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
     >
       <DialogContent className="w-[772px] p-0 overflow-hidden rounded-xl max-w-none">
         <DialogHeader className="p-6 pb-0">
-          <DialogTitle className="text-xl font-semibold text-grey-900">Add Portal Users</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-grey-900">Add Scan Agent</DialogTitle>
         </DialogHeader>
         
         {/* Only show tabs if not in connection flow */}

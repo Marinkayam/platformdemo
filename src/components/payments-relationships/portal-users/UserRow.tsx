@@ -3,7 +3,6 @@ import React from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { UsernameColumn } from './columns/UsernameColumn';
 import { UserTypeColumn } from './columns/UserTypeColumn';
-import { LinkedAgentsColumn } from './columns/LinkedAgentsColumn';
 import { ValidationColumn } from './columns/ValidationColumn';
 import { ActionsColumn } from './columns/ActionsColumn';
 import { StatusBadge } from '@/components/ui/status-badge';
@@ -20,7 +19,7 @@ interface UserRowProps {
 export function UserRow({ user, onEdit, onRemove, onView2FA, copyToClipboard, onClick }: UserRowProps) {
   return (
     <div 
-      className="user-row grid grid-cols-6 gap-4 px-6 py-3 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-50 animate-fade-in"
+      className="user-row grid grid-cols-5 gap-4 px-6 py-3 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-50 animate-fade-in"
       onClick={onClick}
     >
       <div className="flex items-center pl-6">
@@ -37,10 +36,6 @@ export function UserRow({ user, onEdit, onRemove, onView2FA, copyToClipboard, on
       
       <div className="flex items-center">
         <UserTypeColumn userType={user.userType} />
-      </div>
-      
-      <div className="flex items-center">
-        <LinkedAgentsColumn count={user.linkedSmartConnections} />
       </div>
       
       <div className="flex items-center">

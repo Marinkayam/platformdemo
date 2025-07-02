@@ -12,11 +12,11 @@ interface SmartConnectionsHeaderProps {
 export function PaymentsRelationshipsHeader({ activeTab = "smart-connections", onAddPortalUser }: SmartConnectionsHeaderProps) {
   const navigate = useNavigate();
 
-  if (activeTab === "portal-users") {
+  if (activeTab === "scan-agents") {
     return (
       <Button onClick={onAddPortalUser}>
         <Plus className="w-4 h-4 mr-2" />
-        Add Portal User
+        Add Scan Agent
       </Button>
     );
   }

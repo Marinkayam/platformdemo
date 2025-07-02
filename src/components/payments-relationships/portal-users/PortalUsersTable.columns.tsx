@@ -7,7 +7,6 @@ import {
   PortalColumn,
   UsernameColumn,
   UserTypeColumn,
-  LinkedAgentsColumn,
   ValidationColumn,
   ActionsColumn
 } from './columns';
@@ -54,12 +53,6 @@ export const getColumns = ({ onEdit, onRemove, onView2FA, copyToClipboard }: Get
     render: (userType: PortalUser['userType']) => (
       <UserTypeColumn userType={userType} />
     )
-  },
-  {
-    key: 'linkedSmartConnections',
-    label: 'Linked Agents',
-    sortable: true,
-    render: (count: number) => <LinkedAgentsColumn count={count} />
   },
   {
     key: 'validation',
