@@ -3,9 +3,10 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/typography/typography";
+import { Loader2 } from "lucide-react";
+import { showSuccessToast } from "@/lib/toast-helpers";
 
 import {
   AlertDialog,
@@ -22,28 +23,30 @@ type DuplicationMode = "auto-replace" | "stop-and-ask";
 
 export function DuplicationPolicyTab() {
   const [selectedMode, setSelectedMode] = useState<DuplicationMode>("stop-and-ask");
-  
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const duplicationOptions = [
     {
       id: "auto-replace" as DuplicationMode,
       title: "Auto Replacement",
-      description: "Monto will automatically replace older invoices if they're marked Invalid or Rejected. This option provides seamless processing when duplicate invoices are detected with clearly invalid statuses. The system will keep the newer version and archive the older one without interrupting your workflow.",
-      details: "Best for: High-volume environments where speed is essential and you trust the status indicators. The replacement happens silently when the original invoice status is Invalid, Rejected, or Cancelled."
+      description: "Monto will automatically replace older invoices if they're marked Invalid or Rejected. This option provides seamless processing when duplicate invoices are detected with clearly invalid statuses. The system will keep the newer version and archive the older one without interrupting your workflow."
     },
     {
       id: "stop-and-ask" as DuplicationMode,
       title: "Stop and Ask",
-      description: "Monto pauses and asks you to choose the valid invoice when both are in acceptable statuses. This gives you full control over which version to keep when duplicates are detected. You'll receive a notification and can review both invoices before making a decision.",
-      details: "Best for: Environments requiring manual review and approval processes. Recommended when both invoices have valid statuses like Submitted, Approved, or Paid, ensuring no important invoice data is accidentally replaced."
+      description: "Monto pauses and asks you to choose the valid invoice when both are in acceptable statuses. This gives you full control over which version to keep when duplicates are detected. You'll receive a notification and can review both invoices before making a decision."
     }
   ];
 
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setIsSaving(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsSaving(false);
     setShowSaveModal(false);
-    // Handle save logic here
+    showSuccessToast("Policy saved successfully", "Your duplication handling policy has been updated and will take effect immediately.");
     console.log('Duplication policy saved:', selectedMode);
   };
 
@@ -98,10 +101,6 @@ export function DuplicationPolicyTab() {
                           <Typography variant="body2" className="text-grey-600 leading-relaxed">
                             {option.description}
                           </Typography>
-                          
-                          <Typography variant="body3" className="text-grey-500 text-sm">
-                            {option.details}
-                          </Typography>
                         </div>
                       </div>
                     </CardContent>
@@ -135,8 +134,19 @@ export function DuplicationPolicyTab() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleSave} className="bg-primary-main hover:bg-primary-dark">
-              Save Policy
+            <AlertDialogAction 
+              onClick={handleSave} 
+              disabled={isSaving}
+              className="bg-primary-main hover:bg-primary-dark"
+            >
+              {isSaving ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save Policy"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
