@@ -71,7 +71,6 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
       {/* Step Header */}
       <div className="text-center space-y-3">
         <div className="text-sm font-medium text-primary mb-2">Step 1 of 4</div>
-        <h3 className="text-xl font-semibold text-grey-900">Upload Payment Report</h3>
         <p className="text-base text-grey-600 max-w-lg mx-auto">
           Upload your ERP report to match payments, skip paid invoices, and auto-create RTPs—instantly.
         </p>
@@ -166,12 +165,12 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                 ) : (
                   <>
                     {/* Default State */}
-                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 ${
+                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200 ${
                       isDragging 
                         ? 'bg-primary/20 scale-110' 
                         : 'bg-grey-50 hover:bg-primary/5'
                     }`}>
-                      <Upload className={`w-6 h-6 transition-colors duration-200 ${
+                      <Upload className={`w-5 h-5 transition-colors duration-200 ${
                         isDragging 
                           ? 'text-primary' 
                           : 'text-grey-400 hover:text-primary'
@@ -179,7 +178,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                     </div>
                     
                     <div className="space-y-3">
-                      <h4 className="text-lg font-medium text-grey-900">
+                      <h4 className="text-base font-medium text-grey-900">
                         {isDragging ? 'Drop your file here' : (
                           <>
                             Drop your file here or{" "}
@@ -197,7 +196,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                         )}
                       </h4>
                       
-                      <p className="text-sm text-grey-600">
+                      <p className="text-xs text-grey-600">
                         Upload your ERP payment report
                       </p>
                       
@@ -342,8 +341,8 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
 
       {/* Skip option - only show in real mode without upload */}
       {uploadMode === 'real' && !uploadedFile && (
-        <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <p className="text-sm text-blue-800">
+        <div className="text-center p-4">
+          <p className="text-sm text-grey-600">
             <strong>💡 No report yet?</strong> No worries—skip this step and return later. We recommend uploading when available.
           </p>
         </div>
