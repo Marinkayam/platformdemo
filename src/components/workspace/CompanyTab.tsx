@@ -59,7 +59,7 @@ export function CompanyTab() {
                   />
                 ) : (
                   <div className="flex flex-col items-center">
-                    <CloudUpload size={24} className="text-primary mb-1" />
+                    <CloudUpload size={24} strokeWidth={0.75} className="text-primary mb-1" />
                     <span className="text-xs text-gray-500 text-center px-2">Click to upload logo</span>
                   </div>
                 )}
@@ -87,9 +87,31 @@ export function CompanyTab() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="utc-8">🇺🇸 UTC-8 (Pacific Standard Time)</SelectItem>
-                <SelectItem value="utc-5">🇺🇸 UTC-5 (Eastern Standard Time)</SelectItem>
-                <SelectItem value="utc+0">🇬🇧 UTC+0 (Greenwich Mean Time)</SelectItem>
+                <SelectItem value="utc-12">🇺🇸 UTC-12 (GMT-12) Baker Island</SelectItem>
+                <SelectItem value="utc-11">🇺🇸 UTC-11 (GMT-11) Hawaii</SelectItem>
+                <SelectItem value="utc-10">🇺🇸 UTC-10 (GMT-10) Alaska</SelectItem>
+                <SelectItem value="utc-9">🇺🇸 UTC-9 (GMT-9) Alaska</SelectItem>
+                <SelectItem value="utc-8">🇺🇸 UTC-8 (GMT-8) Pacific Standard Time</SelectItem>
+                <SelectItem value="utc-7">🇺🇸 UTC-7 (GMT-7) Mountain Standard Time</SelectItem>
+                <SelectItem value="utc-6">🇺🇸 UTC-6 (GMT-6) Central Standard Time</SelectItem>
+                <SelectItem value="utc-5">🇺🇸 UTC-5 (GMT-5) Eastern Standard Time</SelectItem>
+                <SelectItem value="utc-4">🇻🇪 UTC-4 (GMT-4) Atlantic Standard Time</SelectItem>
+                <SelectItem value="utc-3">🇧🇷 UTC-3 (GMT-3) Argentina Time</SelectItem>
+                <SelectItem value="utc-2">🇧🇷 UTC-2 (GMT-2) South Georgia</SelectItem>
+                <SelectItem value="utc-1">🇨🇻 UTC-1 (GMT-1) Azores Time</SelectItem>
+                <SelectItem value="utc+0">🇬🇧 UTC+0 (GMT+0) Greenwich Mean Time</SelectItem>
+                <SelectItem value="utc+1">🇩🇪 UTC+1 (GMT+1) Central European Time</SelectItem>
+                <SelectItem value="utc+2">🇪🇪 UTC+2 (GMT+2) Eastern European Time</SelectItem>
+                <SelectItem value="utc+3">🇷🇺 UTC+3 (GMT+3) Moscow Time</SelectItem>
+                <SelectItem value="utc+4">🇦🇪 UTC+4 (GMT+4) Gulf Standard Time</SelectItem>
+                <SelectItem value="utc+5">🇵🇰 UTC+5 (GMT+5) Pakistan Standard Time</SelectItem>
+                <SelectItem value="utc+6">🇧🇩 UTC+6 (GMT+6) Bangladesh Standard Time</SelectItem>
+                <SelectItem value="utc+7">🇹🇭 UTC+7 (GMT+7) Indochina Time</SelectItem>
+                <SelectItem value="utc+8">🇨🇳 UTC+8 (GMT+8) China Standard Time</SelectItem>
+                <SelectItem value="utc+9">🇯🇵 UTC+9 (GMT+9) Japan Standard Time</SelectItem>
+                <SelectItem value="utc+10">🇦🇺 UTC+10 (GMT+10) Australian Eastern Time</SelectItem>
+                <SelectItem value="utc+11">🇸🇧 UTC+11 (GMT+11) Solomon Islands Time</SelectItem>
+                <SelectItem value="utc+12">🇳🇿 UTC+12 (GMT+12) New Zealand Standard Time</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-gray-500 mt-2">
@@ -97,7 +119,7 @@ export function CompanyTab() {
             </p>
           </div>
           
-          <div className="bg-[#EFEBFF] p-4 rounded-lg border border-purple-200">
+          <div style={{ backgroundColor: '#EFEBFF' }} className="p-4 rounded-lg border border-purple-200">
             <p className="text-sm text-purple-800">
               <span className="font-medium">Your company portal will be accessible at:</span><br />
               <span className="font-mono text-purple-900">montotechnologies.monto.com</span>
@@ -112,7 +134,7 @@ export function CompanyTab() {
             >
               {isLoading ? (
                 <>
-                  <Loader2 size={16} className="mr-2 animate-spin" />
+                  <Loader2 size={16} strokeWidth={0.75} className="mr-2 animate-spin" />
                   Saving...
                 </>
               ) : (

@@ -87,13 +87,13 @@ export function DuplicationPolicyTab() {
               <div key={option.id} className="relative">
                 <Label htmlFor={option.id} className="cursor-pointer">
                   <Card 
-                    className={`transition-all duration-200 ${
+                    className={`transition-all duration-300 ${
                       isSelected 
-                        ? "border-primary-main border-2 shadow-sm bg-primary-main/5" 
-                        : "border-grey-200 hover:border-grey-300 hover:shadow-sm"
+                        ? "border-primary-main border-2 shadow-lg bg-gradient-to-br from-primary-main/8 to-primary-main/4 ring-1 ring-primary-main/20" 
+                        : "border-grey-200 hover:border-primary-main/30 hover:shadow-md hover:bg-gradient-to-br hover:from-grey-50/50 hover:to-white"
                     }`}
                   >
-                    <CardContent className="p-8">
+                    <CardContent className="p-10">
                       <div className="flex items-start gap-6">
                         {/* Radio Button */}
                         <div className="flex items-center pt-1">
@@ -112,8 +112,8 @@ export function DuplicationPolicyTab() {
                               </Badge>
                             </div>
                             {isSelected && (
-                              <Badge className="bg-primary-main text-white text-sm font-normal">
-                                Selected
+                              <Badge className="bg-gradient-to-r from-primary-main to-primary-dark text-white text-sm font-medium shadow-sm">
+                                ✓ Selected
                               </Badge>
                             )}
                           </div>
@@ -134,9 +134,9 @@ export function DuplicationPolicyTab() {
                             >
                               <span>Show Example</span>
                               {isExampleExpanded ? (
-                                <ChevronUp size={16} />
+                                <ChevronUp size={16} strokeWidth={0.75} />
                               ) : (
-                                <ChevronDown size={16} />
+                                <ChevronDown size={16} strokeWidth={0.75} />
                               )}
                             </button>
                             

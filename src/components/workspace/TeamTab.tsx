@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/select";
 import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { showSuccessToast } from "@/lib/toast-helpers";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const initialTeamMembers = [
   { id: 1, email: "sarah@monto.tech", role: "Admin" as const },
@@ -147,9 +148,24 @@ export function TeamTab() {
                   <TableRow key={member.id} className="hover:bg-gray-50">
                     <TableCell className="px-8 py-5 whitespace-nowrap text-base text-gray-900">{member.email}</TableCell>
                     <TableCell className="px-8 py-5 whitespace-nowrap">
-                      <Badge variant="secondary" className={getRoleBadgeClass(member.role)}>
-                        {member.role}
-                      </Badge>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div>
+                              <Badge variant="secondary" className={getRoleBadgeClass(member.role)}>
+                                {member.role}
+                              </Badge>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              {member.role === "Admin" && "Full access to manage users, connections, and settings"}
+                              {member.role === "Editor" && "Can view and edit content, but cannot manage users"}
+                              {member.role === "Viewer" && "Read-only access to view content"}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </TableCell>
                     <TableCell className="px-8 py-5 whitespace-nowrap">
                        <TableActions actions={memberActions(member)} className="mx-auto" />
@@ -161,7 +177,7 @@ export function TeamTab() {
           </div>
           <div className="px-7 py-7 border-t flex justify-end">
             <Button onClick={handleAddNewMember} size="lg">
-              <Plus size={18} className="mr-2" />
+              <Plus size={18} strokeWidth={0.75} className="mr-2" />
               Add New Member
             </Button>
           </div>
