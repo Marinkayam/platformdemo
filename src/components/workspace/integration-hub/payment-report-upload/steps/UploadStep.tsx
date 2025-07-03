@@ -198,7 +198,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                       </h4>
                       
                       <p className="text-sm text-grey-600">
-                        Upload your ERP payment report (CSV, Excel) or invoice PDFs for demo
+                        Upload your ERP payment report
                       </p>
                       
                       <p className="text-xs text-grey-500">
@@ -206,7 +206,17 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                       </p>
                       
                       <p className="text-xs text-grey-500 mt-2">
-                        Need help formatting your data? Download monto's template
+                        Need help formatting your data?{" "}
+                        <button 
+                          type="button"
+                          className="text-primary underline hover:text-primary/80"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // Add download logic here
+                          }}
+                        >
+                          Download monto's template
+                        </button>
                       </p>
                     </div>
                   </>
@@ -224,15 +234,6 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
             </CardContent>
           </Card>
 
-          {/* Template Download */}
-          {!isUploading && !uploadComplete && (
-            <div className="flex justify-center">
-              <Button variant="ghost" size="sm" className="text-grey-600 hover:text-primary gap-2 text-xs">
-                <Download className="w-3 h-3" />
-                Need help formatting your data? Download templat
-              </Button>
-            </div>
-          )}
         </div>
       ) : (
         <div className="space-y-6">
