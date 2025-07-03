@@ -145,7 +145,7 @@ export function TeamTab() {
           Editors can view and edit. Viewers can only view.
         </p>
       </div>
-      <Card className="shadow-none border border-[#ececec] rounded-xl">
+      <Card className="shadow-none border border-[#ececec] rounded-xl max-w-4xl">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <Table>
@@ -188,17 +188,17 @@ export function TeamTab() {
                         variant="outline" 
                         size="sm"
                         onClick={() => handleCopyInviteLink(member)}
-                        className="flex items-center gap-1 h-7 px-2 text-xs"
+                        className="flex items-center gap-1 h-6 px-2 text-xs"
                       >
                         {copiedMemberId === member.id ? (
                           <>
-                            <Check size={12} strokeWidth={0.75} />
-                            <span className="hidden sm:inline text-xs">Copied</span>
+                            <Check size={10} strokeWidth={0.75} />
+                            <span className="hidden lg:inline text-xs">Copied</span>
                           </>
                         ) : (
                           <>
-                            <Copy size={12} strokeWidth={0.75} />
-                            <span className="hidden sm:inline text-xs">Invitation Link</span>
+                            <Copy size={10} strokeWidth={0.75} />
+                            <span className="hidden lg:inline text-xs">Copy</span>
                           </>
                         )}
                       </Button>
