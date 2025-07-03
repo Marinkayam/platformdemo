@@ -63,13 +63,13 @@ export function MappingStep({ headers, data, mappings, onMappingChange }: Mappin
                     value={mappings[field.key] || ''}
                     onValueChange={(value) => handleMappingChange(field.key, value)}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white border border-grey-300 hover:border-grey-400">
                       <SelectValue placeholder="Select column..." />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="skip">Skip this field</SelectItem>
+                    <SelectContent className="bg-white border border-grey-300 shadow-lg z-50">
+                      <SelectItem value="skip" className="hover:bg-grey-50">Skip this field</SelectItem>
                       {headers.map((header) => (
-                        <SelectItem key={header} value={header}>
+                        <SelectItem key={header} value={header} className="hover:bg-grey-50">
                           {header}
                         </SelectItem>
                       ))}
