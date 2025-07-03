@@ -36,7 +36,7 @@ export function MappingStep({ headers, data, mappings, onMappingChange }: Mappin
 
       <div className="border border-grey-400 rounded-lg overflow-hidden">
         <div className="bg-grey-200 px-4 py-3 border-b border-grey-400">
-          <div className="grid grid-cols-4 gap-4 font-semibold text-grey-900">
+          <div className="grid grid-cols-4 gap-4 text-sm font-semibold text-grey-900">
             <div>Monto Field</div>
             <div>Your File Column</div>
             <div>Sample Data</div>
@@ -45,10 +45,10 @@ export function MappingStep({ headers, data, mappings, onMappingChange }: Mappin
         </div>
         
         <div className="divide-y divide-grey-300">
-          {PAYMENT_REPORT_FIELDS.map((field) => (
+          {PAYMENT_REPORT_FIELDS.slice(0, 6).map((field) => (
             <div key={field.key} className="p-4">
               <div className="grid grid-cols-4 gap-4 items-start">
-                <div className="font-medium text-grey-900">
+                <div className="text-sm font-medium text-grey-900">
                   {field.label}
                   {field.required && <span className="text-red-500 ml-1">*</span>}
                   {field.conditionallyRequired && (
@@ -81,7 +81,7 @@ export function MappingStep({ headers, data, mappings, onMappingChange }: Mappin
                   {getSampleData(mappings[field.key])}
                 </div>
                 
-                <div className="text-sm text-grey-500">
+                <div className="text-xs text-grey-500">
                   {field.description}
                 </div>
               </div>
