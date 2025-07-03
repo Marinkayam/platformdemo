@@ -160,7 +160,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
           <Card className={`border-2 border-dashed transition-all duration-200 cursor-pointer ${
             isDragging 
               ? 'border-primary bg-primary/5 scale-[1.02]' 
-              : 'border-grey-300 hover:border-primary/50'
+              : 'border-primary/30 hover:border-primary/50 bg-gradient-to-br from-primary/5 to-primary/2'
           }`}>
             <CardContent 
               className="p-8 text-center"
@@ -170,39 +170,42 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
               onClick={() => document.getElementById('demo-file-upload')?.click()}
             >
               <div className="space-y-4">
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 ${
+                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full transition-all duration-200 ${
                   isDragging 
                     ? 'bg-primary/20 scale-110' 
-                    : 'bg-gradient-to-br from-primary/10 to-primary/5'
+                    : 'bg-white shadow-sm border border-primary/20'
                 }`}>
-                  <FileText className={`w-6 h-6 transition-colors duration-200 ${
+                  <Sparkles className={`w-8 h-8 transition-colors duration-200 ${
                     isDragging 
                       ? 'text-primary' 
                       : 'text-primary'
                   }`} />
                 </div>
                 
-                <div className="space-y-3">
-                  <h4 className="text-lg font-medium text-grey-900">
-                    <strong>Want to see Monto's magic in action?</strong>
+                <div className="space-y-4">
+                  <h4 className="text-xl font-semibold text-grey-900">
+                    Want to see Monto's magic in action?
                   </h4>
                   
-                  <p className="text-sm text-grey-600 max-w-md mx-auto leading-relaxed">
+                  <p className="text-base text-grey-700 max-w-md mx-auto leading-relaxed">
                     Upload just a few invoice PDFs and we'll take it from there—Monto will automatically identify payment relationships and show you how it all connects.
                   </p>
                   
-                  <Button 
-                    variant="outline" 
-                    className="mt-4"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      document.getElementById('demo-file-upload')?.click();
-                    }}
-                  >
-                    Upload Invoice PDFs
-                  </Button>
+                  <div className="pt-2">
+                    <Button 
+                      size="lg"
+                      className="bg-primary hover:bg-primary/90 text-white font-medium px-6"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        document.getElementById('demo-file-upload')?.click();
+                      }}
+                    >
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload Invoice PDFs
+                    </Button>
+                  </div>
                   
-                  <p className="text-xs text-grey-500 mt-2">
+                  <p className="text-sm text-grey-500 mt-3">
                     PDF files • Up to 5 invoices for demo
                   </p>
                 </div>
@@ -258,9 +261,9 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
 
       {/* Skip option - only show in real mode without upload */}
       {uploadMode === 'real' && !uploadedFile && (
-        <div className="text-center p-4 bg-grey-50 rounded-lg border">
-          <p className="text-sm text-grey-600">
-            No report to share yet? No worries—you can skip this step and come back later. But for a smoother, more powerful experience, we recommend uploading it when you can.
+        <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <p className="text-sm text-blue-800">
+            <strong>💡 No report yet?</strong> No worries—skip this step and return later. For the best experience, we recommend uploading when available.
           </p>
         </div>
       )}
