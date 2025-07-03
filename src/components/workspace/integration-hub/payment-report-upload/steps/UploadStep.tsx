@@ -152,7 +152,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
           <div className="flex justify-center">
             <Button variant="ghost" size="sm" className="text-grey-600 hover:text-primary gap-2 text-sm">
               <Download className="w-4 h-4" />
-              Need help formatting your data? Download template
+              Need help formatting your data? Download templat
             </Button>
           </div>
         </div>
