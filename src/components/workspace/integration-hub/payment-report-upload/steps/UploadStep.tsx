@@ -268,7 +268,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                   </h4>
                   
                   <p className="text-sm text-grey-700 max-w-md mx-auto leading-relaxed">
-                    Upload just a few invoice PDFs and we'll take it from there—Monto will automatically identify payment relationships and show you how it all connects.
+                    Upload invoice PDFs and we'll take it from there. Monto will automatically identify payment relationships and show you how it all connects.
                   </p>
                   
                   <div className="pt-2">

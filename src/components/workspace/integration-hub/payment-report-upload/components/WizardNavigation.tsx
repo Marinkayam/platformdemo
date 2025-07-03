@@ -26,7 +26,7 @@ export function WizardNavigation({
   const isNextDisabled = () => {
     if (currentStep === 'upload') return !file;
     if (currentStep === 'mapping') {
-      return PAYMENT_REPORT_FIELDS.filter(f => f.required).some(f => !mappings[f.key]);
+      return false; // Always allow next from mapping step
     }
     return false;
   };
