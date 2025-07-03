@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Copy, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -71,6 +71,7 @@ export function TeamTab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [memberToEdit, setMemberToEdit] = useState<TeamMember | null>(null);
   const [memberToDelete, setMemberToDelete] = useState<TeamMember | null>(null);
+  const [copiedMemberId, setCopiedMemberId] = useState<number | null>(null);
 
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<MemberRole>("Viewer");
@@ -118,6 +119,18 @@ export function TeamTab() {
     setMemberToEdit(null);
   };
   
+  const handleCopyInviteLink = async (member: TeamMember) => {
+    const inviteLink = `https://montotechnologies.monto.com/invite/${member.id}`;
+    try {
+      await navigator.clipboard.writeText(inviteLink);
+      setCopiedMemberId(member.id);
+      setTimeout(() => setCopiedMemberId(null), 2000);
+      showSuccessToast("Invite link copied", "The invitation link has been copied to your clipboard.");
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
   const memberActions = (member: TeamMember) => [
     commonActions.edit(() => handleEditMember(member)),
     commonActions.delete(() => handleDeleteMemberRequest(member)),
@@ -138,16 +151,19 @@ export function TeamTab() {
             <Table>
               <TableHeader className="bg-gray-50 border-b">
                 <TableRow>
-                  <TableHead className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Email</TableHead>
-                  <TableHead className="px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</TableHead>
-                  <TableHead className="px-8 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"></TableHead>
+                  <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Email</TableHead>
+                  <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</TableHead>
+                  <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Invite Link</TableHead>
+                  <TableHead className="px-4 sm:px-8 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white divide-y divide-gray-100">
                 {members.map((member) => (
                   <TableRow key={member.id} className="hover:bg-gray-50">
-                    <TableCell className="px-8 py-5 whitespace-nowrap text-base text-gray-900">{member.email}</TableCell>
-                    <TableCell className="px-8 py-5 whitespace-nowrap">
+                    <TableCell className="px-4 sm:px-8 py-5 text-base text-gray-900">
+                      <div className="truncate max-w-[200px] sm:max-w-none">{member.email}</div>
+                    </TableCell>
+                    <TableCell className="px-4 sm:px-8 py-5">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -167,7 +183,27 @@ export function TeamTab() {
                         </Tooltip>
                       </TooltipProvider>
                     </TableCell>
-                    <TableCell className="px-8 py-5 whitespace-nowrap">
+                    <TableCell className="px-4 sm:px-8 py-5">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleCopyInviteLink(member)}
+                        className="flex items-center gap-2 h-8"
+                      >
+                        {copiedMemberId === member.id ? (
+                          <>
+                            <Check size={14} strokeWidth={0.75} />
+                            <span className="hidden sm:inline">Copied</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={14} strokeWidth={0.75} />
+                            <span className="hidden sm:inline">Copy Link</span>
+                          </>
+                        )}
+                      </Button>
+                    </TableCell>
+                    <TableCell className="px-4 sm:px-8 py-5">
                        <TableActions actions={memberActions(member)} className="mx-auto" />
                     </TableCell>
                   </TableRow>

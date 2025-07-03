@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Building, Users, FileText, Settings, Plug, Building2 } from "lucide-react";
+import { Building2, Users, HeartHandshake, FileLock, FolderKanban, Unplug } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
 import { TeamTab } from "@/components/workspace/TeamTab";
 import { CompanyTab } from "@/components/workspace/CompanyTab";
@@ -12,32 +12,32 @@ const headerTabs = [
   {
     id: "company",
     label: "Company Info",
-    icon: <Building size={16} />,
+    icon: <Building2 size={16} strokeWidth={0.75} />,
   },
   {
     id: "team",
     label: "Team",
-    icon: <Users size={16} />,
+    icon: <Users size={16} strokeWidth={0.75} />,
   },
   {
     id: "license",
     label: "License",
-    icon: <FileText size={16} />,
+    icon: <HeartHandshake size={16} strokeWidth={0.75} />,
   },
   {
     id: "policies",
     label: "Policies",
-    icon: <Settings size={16} />,
+    icon: <FileLock size={16} strokeWidth={0.75} />,
   },
   {
     id: "company-entities",
     label: "Company Entities",
-    icon: <Building2 size={16} />,
+    icon: <FolderKanban size={16} strokeWidth={0.75} />,
   },
   {
     id: "integration-center",
     label: "Integration Center",
-    icon: <Plug size={16} />,
+    icon: <Unplug size={16} strokeWidth={0.75} />,
   },
 ];
 

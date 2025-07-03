@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/typography/typography";
-import { ChevronDown, ChevronUp } from "lucide-react";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,41 +22,24 @@ type DuplicationMode = "auto-replace" | "stop-and-ask";
 
 export function DuplicationPolicyTab() {
   const [selectedMode, setSelectedMode] = useState<DuplicationMode>("stop-and-ask");
-  const [expandedExamples, setExpandedExamples] = useState<Set<DuplicationMode>>(new Set());
+  
   const [showSaveModal, setShowSaveModal] = useState(false);
 
   const duplicationOptions = [
     {
       id: "auto-replace" as DuplicationMode,
       title: "Auto Replacement",
-      badge: "Simple workflows",
-      badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
-      description: "Monto will automatically replace older invoices if they're marked Invalid or Rejected.",
-      example: "INV-0098 (Rejected) ➝ INV-0098 (Submitted)",
-      note: "Replacement happens silently when original status is Invalid or Rejected."
+      description: "Monto will automatically replace older invoices if they're marked Invalid or Rejected. This option provides seamless processing when duplicate invoices are detected with clearly invalid statuses. The system will keep the newer version and archive the older one without interrupting your workflow.",
+      details: "Best for: High-volume environments where speed is essential and you trust the status indicators. The replacement happens silently when the original invoice status is Invalid, Rejected, or Cancelled."
     },
     {
       id: "stop-and-ask" as DuplicationMode,
       title: "Stop and Ask",
-      badge: "Recommended",
-      badgeColor: "bg-primary-50 text-primary-700 border-primary-200",
-      description: "Monto pauses and asks you to choose the valid invoice when both are in acceptable statuses.",
-      example: "INV-0098 (Submitted) ⟷ INV-0098 (Approved)\nYou choose which version to keep.",
-      note: "For when both invoices have valid statuses like Submitted, Approved, or Paid."
+      description: "Monto pauses and asks you to choose the valid invoice when both are in acceptable statuses. This gives you full control over which version to keep when duplicates are detected. You'll receive a notification and can review both invoices before making a decision.",
+      details: "Best for: Environments requiring manual review and approval processes. Recommended when both invoices have valid statuses like Submitted, Approved, or Paid, ensuring no important invoice data is accidentally replaced."
     }
   ];
 
-  const toggleExample = (modeId: DuplicationMode) => {
-    setExpandedExamples(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(modeId)) {
-        newSet.delete(modeId);
-      } else {
-        newSet.add(modeId);
-      }
-      return newSet;
-    });
-  };
 
   const handleSave = () => {
     setShowSaveModal(false);
@@ -78,10 +61,9 @@ export function DuplicationPolicyTab() {
 
       {/* Radio Group Cards */}
       <RadioGroup value={selectedMode} onValueChange={(value) => setSelectedMode(value as DuplicationMode)}>
-        <div className="space-y-8">
+        <div className="space-y-6">
           {duplicationOptions.map((option) => {
             const isSelected = selectedMode === option.id;
-            const isExampleExpanded = expandedExamples.has(option.id);
             
             return (
               <div key={option.id} className="relative">
@@ -89,32 +71,27 @@ export function DuplicationPolicyTab() {
                   <Card 
                     className={`transition-all duration-300 ${
                       isSelected 
-                        ? "border-primary-main border-2 shadow-lg bg-gradient-to-br from-primary-main/8 to-primary-main/4 ring-1 ring-primary-main/20" 
-                        : "border-grey-200 hover:border-primary-main/30 hover:shadow-md hover:bg-gradient-to-br hover:from-grey-50/50 hover:to-white"
+                        ? "border-primary border-2 shadow-md bg-primary/5" 
+                        : "border-grey-200 hover:border-primary/30 hover:shadow-sm hover:bg-grey-50/50"
                     }`}
                   >
-                    <CardContent className="p-10">
-                      <div className="flex items-start gap-6">
+                    <CardContent className="p-8">
+                      <div className="flex items-start gap-4">
                         {/* Radio Button */}
                         <div className="flex items-center pt-1">
                           <RadioGroupItem value={option.id} id={option.id} />
                         </div>
                         
                         {/* Content */}
-                        <div className="flex-1 space-y-6">
+                        <div className="flex-1 space-y-4">
                           <div className="flex items-start justify-between">
-                            <div className="space-y-3">
-                              <Typography variant="h6" className="text-grey-900">
-                                {option.title}
-                              </Typography>
-                              <Badge className={`text-sm font-normal border ${option.badgeColor}`}>
-                                {option.badge}
-                              </Badge>
-                            </div>
+                            <Typography variant="h6" className="text-grey-900">
+                              {option.title}
+                            </Typography>
                             {isSelected && (
-                              <Badge className="bg-gradient-to-r from-primary-main to-primary-dark text-white text-sm font-medium shadow-sm">
+                              <div className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
                                 ✓ Selected
-                              </Badge>
+                              </div>
                             )}
                           </div>
                           
@@ -122,35 +99,9 @@ export function DuplicationPolicyTab() {
                             {option.description}
                           </Typography>
                           
-                          {/* Collapsible Example */}
-                          <div className="border-t border-grey-200 pt-6">
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                toggleExample(option.id);
-                              }}
-                              className="flex items-center gap-2 text-sm text-grey-600 hover:text-grey-800 transition-colors"
-                            >
-                              <span>Show Example</span>
-                              {isExampleExpanded ? (
-                                <ChevronUp size={16} strokeWidth={0.75} />
-                              ) : (
-                                <ChevronDown size={16} strokeWidth={0.75} />
-                              )}
-                            </button>
-                            
-                            {isExampleExpanded && (
-                              <div className="mt-6 space-y-4">
-                                <Typography variant="body3" className="text-grey-700 font-mono bg-grey-50 px-4 py-3 rounded-md whitespace-pre-line">
-                                  {option.example}
-                                </Typography>
-                                <Typography variant="caption" className="text-grey-500">
-                                  {option.note}
-                                </Typography>
-                              </div>
-                            )}
-                          </div>
+                          <Typography variant="body3" className="text-grey-500 text-sm">
+                            {option.details}
+                          </Typography>
                         </div>
                       </div>
                     </CardContent>
