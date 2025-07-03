@@ -48,6 +48,10 @@ export function WizardNavigation({
         <Button variant="ghost" onClick={onComplete}>Cancel</Button>
         {currentStep === 'summary' ? (
           <Button onClick={onImport}>Import Payment Report</Button>
+        ) : currentStep === 'mapping' ? (
+          <Button onClick={onNext} disabled={isNextDisabled()}>
+            Next: Review Data <ArrowRight className="ml-2" />
+          </Button>
         ) : (
           <Button onClick={onNext} disabled={isNextDisabled()}>
             Next: Map Fields <ArrowRight className="ml-2" />
