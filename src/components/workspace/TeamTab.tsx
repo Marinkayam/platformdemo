@@ -153,17 +153,17 @@ export function TeamTab() {
                 <TableRow>
                   <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Email</TableHead>
                   <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</TableHead>
-                  <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Invite Link</TableHead>
-                  <TableHead className="px-4 sm:px-8 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"></TableHead>
+                  <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider min-w-[120px]">Invite</TableHead>
+                  <TableHead className="px-4 sm:px-8 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider w-16"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white divide-y divide-gray-100">
                 {members.map((member) => (
                   <TableRow key={member.id} className="hover:bg-gray-50">
-                    <TableCell className="px-4 sm:px-8 py-5 text-base text-gray-900">
-                      <div className="truncate max-w-[200px] sm:max-w-none">{member.email}</div>
+                    <TableCell className="px-4 sm:px-8 py-5 text-base text-gray-900 max-w-0">
+                      <div className="truncate">{member.email}</div>
                     </TableCell>
-                    <TableCell className="px-4 sm:px-8 py-5">
+                    <TableCell className="px-4 sm:px-8 py-5 min-w-0">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -183,27 +183,27 @@ export function TeamTab() {
                         </Tooltip>
                       </TooltipProvider>
                     </TableCell>
-                    <TableCell className="px-4 sm:px-8 py-5">
+                    <TableCell className="px-4 sm:px-8 py-5 min-w-0">
                       <Button 
                         variant="outline" 
                         size="sm"
                         onClick={() => handleCopyInviteLink(member)}
-                        className="flex items-center gap-2 h-8"
+                        className="flex items-center gap-1 h-7 px-2 text-xs"
                       >
                         {copiedMemberId === member.id ? (
                           <>
-                            <Check size={14} strokeWidth={0.75} />
-                            <span className="hidden sm:inline">Copied</span>
+                            <Check size={12} strokeWidth={0.75} />
+                            <span className="hidden sm:inline text-xs">Copied</span>
                           </>
                         ) : (
                           <>
-                            <Copy size={14} strokeWidth={0.75} />
-                            <span className="hidden sm:inline">Copy Link</span>
+                            <Copy size={12} strokeWidth={0.75} />
+                            <span className="hidden sm:inline text-xs">Invitation Link</span>
                           </>
                         )}
                       </Button>
                     </TableCell>
-                    <TableCell className="px-4 sm:px-8 py-5">
+                    <TableCell className="px-4 sm:px-8 py-5 w-16">
                        <TableActions actions={memberActions(member)} className="mx-auto" />
                     </TableCell>
                   </TableRow>
