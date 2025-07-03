@@ -71,7 +71,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
       {/* Step Header */}
       <div className="text-center space-y-3">
         <div className="text-sm font-medium text-primary mb-2">Step 1 of 4</div>
-        <h3 className="text-2xl font-semibold text-grey-900">Upload Payment Report</h3>
+        <h3 className="text-xl font-semibold text-grey-900">Upload Payment Report</h3>
         <p className="text-base text-grey-600 max-w-lg mx-auto">
           Upload your ERP report to match payments, skip paid invoices, and auto-create RTPs—instantly.
         </p>
@@ -204,6 +204,10 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                       <p className="text-xs text-grey-500">
                         Supported: CSV, XLSX, PDF • Up to 10MB each
                       </p>
+                      
+                      <p className="text-xs text-grey-500 mt-2">
+                        Need help formatting your data? Download monto's template
+                      </p>
                     </div>
                   </>
                 )}
@@ -223,8 +227,8 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
           {/* Template Download */}
           {!isUploading && !uploadComplete && (
             <div className="flex justify-center">
-              <Button variant="ghost" size="sm" className="text-grey-600 hover:text-primary gap-2 text-sm">
-                <Download className="w-4 h-4" />
+              <Button variant="ghost" size="sm" className="text-grey-600 hover:text-primary gap-2 text-xs">
+                <Download className="w-3 h-3" />
                 Need help formatting your data? Download templat
               </Button>
             </div>
