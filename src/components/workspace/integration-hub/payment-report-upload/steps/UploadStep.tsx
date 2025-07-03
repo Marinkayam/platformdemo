@@ -1,6 +1,6 @@
 
 import React, { useCallback, useState } from 'react';
-import { Upload, Download, Sparkles, Clock, Zap, FileText } from 'lucide-react';
+import { Upload, Download, Sparkles, Clock, Zap, FileText, Loader2, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -12,6 +12,30 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
   const [uploadMode, setUploadMode] = useState<'real' | 'demo'>('real');
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadComplete, setUploadComplete] = useState(false);
+
+  const simulateUpload = (file: File) => {
+    setIsUploading(true);
+    setUploadProgress(0);
+    setUploadComplete(false);
+    
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsUploading(false);
+          setUploadComplete(true);
+          setTimeout(() => {
+            onFileUpload(file);
+          }, 500);
+          return 100;
+        }
+        return prev + Math.random() * 15 + 5;
+      });
+    }, 200);
+  };
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -20,7 +44,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
     const file = files[0];
     if (file) {
       setUploadedFile(file);
-      onFileUpload(file);
+      simulateUpload(file);
     }
   }, [onFileUpload]);
 
@@ -38,7 +62,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
     const file = e.target.files?.[0];
     if (file) {
       setUploadedFile(file);
-      onFileUpload(file);
+      simulateUpload(file);
     }
   };
 
@@ -94,48 +118,95 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
-              onClick={() => document.getElementById('file-upload')?.click()}
+              onClick={() => !isUploading && document.getElementById('file-upload')?.click()}
             >
               <div className="space-y-4">
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 ${
-                  isDragging 
-                    ? 'bg-primary/20 scale-110' 
-                    : 'bg-grey-50 hover:bg-primary/5'
-                }`}>
-                  <Upload className={`w-6 h-6 transition-colors duration-200 ${
-                    isDragging 
-                      ? 'text-primary' 
-                      : 'text-grey-400 hover:text-primary'
-                  }`} />
-                </div>
-                
-                <div className="space-y-3">
-                  <h4 className="text-lg font-medium text-grey-900">
-                    {isDragging ? 'Drop your file here' : (
-                      <>
-                        Drop your file here or{" "}
-                        <button 
-                          type="button"
-                          className="text-primary underline hover:text-primary/80 font-medium"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            document.getElementById('file-upload')?.click();
-                          }}
-                        >
-                          browse
-                        </button>
-                      </>
-                    )}
-                  </h4>
-                  
-                  <p className="text-sm text-grey-600">
-                    Upload your ERP payment report (CSV, Excel) or invoice PDFs for demo
-                  </p>
-                  
-                  <p className="text-xs text-grey-500">
-                    Supported: CSV, XLSX, PDF • Up to 10MB each
-                  </p>
-                </div>
+                {isUploading ? (
+                  <>
+                    {/* Loading State */}
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10">
+                      <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <h4 className="text-lg font-medium text-grey-900">
+                        Uploading {uploadedFile?.name}...
+                      </h4>
+                      
+                      <div className="max-w-xs mx-auto">
+                        <div className="bg-grey-200 rounded-full h-2">
+                          <div 
+                            className="bg-primary h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${uploadProgress}%` }}
+                          />
+                        </div>
+                        <p className="text-sm text-grey-600 mt-2">
+                          {Math.round(uploadProgress)}% complete
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                ) : uploadComplete ? (
+                  <>
+                    {/* Success State */}
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-green-100">
+                      <CheckCircle className="w-6 h-6 text-green-600" />
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <h4 className="text-lg font-medium text-grey-900">
+                        Upload Complete!
+                      </h4>
+                      
+                      <p className="text-sm text-grey-600">
+                        {uploadedFile?.name} has been successfully uploaded
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* Default State */}
+                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 ${
+                      isDragging 
+                        ? 'bg-primary/20 scale-110' 
+                        : 'bg-grey-50 hover:bg-primary/5'
+                    }`}>
+                      <Upload className={`w-6 h-6 transition-colors duration-200 ${
+                        isDragging 
+                          ? 'text-primary' 
+                          : 'text-grey-400 hover:text-primary'
+                      }`} />
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <h4 className="text-lg font-medium text-grey-900">
+                        {isDragging ? 'Drop your file here' : (
+                          <>
+                            Drop your file here or{" "}
+                            <button 
+                              type="button"
+                              className="text-primary underline hover:text-primary/80 font-medium"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                document.getElementById('file-upload')?.click();
+                              }}
+                            >
+                              browse
+                            </button>
+                          </>
+                        )}
+                      </h4>
+                      
+                      <p className="text-sm text-grey-600">
+                        Upload your ERP payment report (CSV, Excel) or invoice PDFs for demo
+                      </p>
+                      
+                      <p className="text-xs text-grey-500">
+                        Supported: CSV, XLSX, PDF • Up to 10MB each
+                      </p>
+                    </div>
+                  </>
+                )}
 
                 <input
                   id="file-upload"
@@ -143,18 +214,21 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                   accept=".csv,.xlsx,.pdf"
                   onChange={handleFileSelect}
                   className="hidden"
+                  disabled={isUploading}
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Template Download */}
-          <div className="flex justify-center">
-            <Button variant="ghost" size="sm" className="text-grey-600 hover:text-primary gap-2 text-sm">
-              <Download className="w-4 h-4" />
-              Need help formatting your data? Download templat
-            </Button>
-          </div>
+          {!isUploading && !uploadComplete && (
+            <div className="flex justify-center">
+              <Button variant="ghost" size="sm" className="text-grey-600 hover:text-primary gap-2 text-sm">
+                <Download className="w-4 h-4" />
+                Need help formatting your data? Download templat
+              </Button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="space-y-6">
