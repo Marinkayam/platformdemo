@@ -53,30 +53,32 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
         </p>
       </div>
 
-      {/* Mode Toggle */}
+      {/* Mode Toggle - Navbar Style */}
       <div className="flex justify-center">
-        <div className="inline-flex bg-grey-100 rounded-lg p-1">
-          <button
-            onClick={() => setUploadMode('real')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
-              uploadMode === 'real'
-                ? 'bg-white text-grey-900 shadow-sm'
-                : 'text-grey-600 hover:text-grey-900'
-            }`}
-          >
-            Upload Your Data
-          </button>
-          <button
-            onClick={() => setUploadMode('demo')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
-              uploadMode === 'demo'
-                ? 'bg-white text-grey-900 shadow-sm'
-                : 'text-grey-600 hover:text-grey-900'
-            }`}
-          >
-            Try Demo
-          </button>
-        </div>
+        <nav className="bg-white border border-grey-200 rounded-lg p-1 shadow-sm">
+          <div className="flex">
+            <button
+              onClick={() => setUploadMode('real')}
+              className={`px-6 py-2.5 text-sm font-medium rounded-md transition-all ${
+                uploadMode === 'real'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-grey-600 hover:text-grey-900 hover:bg-grey-50'
+              }`}
+            >
+              Upload Your Data
+            </button>
+            <button
+              onClick={() => setUploadMode('demo')}
+              className={`px-6 py-2.5 text-sm font-medium rounded-md transition-all ${
+                uploadMode === 'demo'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-grey-600 hover:text-grey-900 hover:bg-grey-50'
+              }`}
+            >
+              Try Demo
+            </button>
+          </div>
+        </nav>
       </div>
 
       {uploadMode === 'real' ? (
@@ -263,7 +265,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
       {uploadMode === 'real' && !uploadedFile && (
         <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
           <p className="text-sm text-blue-800">
-            <strong>💡 No report yet?</strong> No worries—skip this step and return later. For the best experience, we recommend uploading when available.
+            <strong>💡 No report yet?</strong> No worries—skip this step and return later. We recommend uploading when available.
           </p>
         </div>
       )}
