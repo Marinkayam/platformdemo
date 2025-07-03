@@ -12,32 +12,32 @@ const headerTabs = [
   {
     id: "company",
     label: "Company Info",
-    icon: <Building2 size={16} strokeWidth={0.75} />,
+    icon: <Building2 size={16} strokeWidth={1} />,
   },
   {
     id: "team",
     label: "Team",
-    icon: <Users size={16} strokeWidth={0.75} />,
+    icon: <Users size={16} strokeWidth={1} />,
   },
   {
     id: "license",
     label: "License",
-    icon: <HeartHandshake size={16} strokeWidth={0.75} />,
+    icon: <HeartHandshake size={16} strokeWidth={1} />,
   },
   {
     id: "policies",
     label: "Policies",
-    icon: <FileLock size={16} strokeWidth={0.75} />,
+    icon: <FileLock size={16} strokeWidth={1} />,
   },
   {
     id: "company-entities",
     label: "Company Entities",
-    icon: <FolderKanban size={16} strokeWidth={0.75} />,
+    icon: <FolderKanban size={16} strokeWidth={1} />,
   },
   {
     id: "integration-center",
     label: "Integration Center",
-    icon: <Unplug size={16} strokeWidth={0.75} />,
+    icon: <Unplug size={16} strokeWidth={1} />,
   },
 ];
 
