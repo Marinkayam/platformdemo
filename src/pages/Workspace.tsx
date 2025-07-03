@@ -6,7 +6,7 @@ import { CompanyTab } from "@/components/workspace/CompanyTab";
 import { LicenseTab } from "@/components/workspace/LicenseTab";
 import { DuplicationPolicyTab } from "@/components/workspace/DuplicationPolicyTab";
 import { PoliciesTab } from "@/components/workspace/PoliciesTab";
-import { IntegrationCenterNew } from "@/components/workspace/integration-hub/IntegrationCenterNew";
+import { IntegrationHub } from "@/components/workspace/integration-hub/IntegrationHub";
 
 const headerTabs = [
   {
@@ -72,7 +72,7 @@ export default function Workspace() {
       case "policies":
         return <PoliciesTab />;
       case "integration-center":
-        return <IntegrationCenterNew />;
+        return <IntegrationHub />;
       case "company-entities":
         return <CompanyEntitiesTab />;
       default:
