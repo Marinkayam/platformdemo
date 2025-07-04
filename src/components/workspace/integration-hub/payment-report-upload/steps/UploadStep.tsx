@@ -215,7 +215,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                           className="text-primary underline hover:text-primary/80"
                           onClick={(e) => {
                             e.stopPropagation();
-                            // Add download logic here
+                            window.open('/templates/portal-users.csv', '_blank');
                           }}
                         >
                           Download monto's template
@@ -267,7 +267,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                 </div>
                 
                 <div className="space-y-4">
-                  <h4 className="text-lg font-semibold text-grey-900">
+                  <h4 className="text-base font-normal text-grey-900">
                     Want to see Monto's magic in action?
                   </h4>
                   
