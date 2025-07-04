@@ -144,25 +144,30 @@ export function InvoiceHeader({
             
             <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
               <div className="flex items-center gap-2">
-                <User className="h-4 w-4" style={{
-                stroke: "#01173E"
-              }} />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#01173E" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
                 <span className="font-semibold text-[#01173E]">Owner:</span>
                 <span>{localInvoice.owner}</span>
               </div>
               
               <div className="flex items-center gap-2">
-                <File className="h-4 w-4" style={{
-                stroke: "#01173E"
-              }} />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#01173E" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                  <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                </svg>
                 <span className="font-semibold text-[#01173E]">Transaction Type:</span>
                 <span>{isCreditMemo ? "Credit Memo" : "Invoice"}</span>
               </div>
               
               {isPendingAction && <div className="flex items-center gap-2">
-                  <UserRoundCheck className="h-4 w-4" style={{
-                stroke: "#01173E"
-              }} />
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#01173E" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <line x1="19" x2="19" y1="8" y2="14"/>
+                    <line x1="22" x2="16" y1="11" y2="11"/>
+                  </svg>
                   <span className="font-semibold text-[#01173E]">Assignee:</span>
                   <div onClick={e => e.stopPropagation()} className="inline-block">
                     <AssigneeComponent assignee={localInvoice.assignee} onAssign={handleAssign} onRemove={handleRemoveAssignee} />
