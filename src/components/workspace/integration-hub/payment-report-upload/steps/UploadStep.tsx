@@ -267,7 +267,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                 </div>
                 
                 <div className="space-y-4">
-                  <h4 className="text-base font-normal text-grey-900">
+                  <h4 className="text-base font-medium text-grey-900">
                     Want to see Monto's magic in action?
                   </h4>
                   
