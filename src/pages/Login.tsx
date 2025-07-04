@@ -17,19 +17,12 @@ const Login = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === 'maya@montopay.com' && password === '12345') {
-      toast({
-        title: "Login successful",
-        description: "Welcome back!"
-      });
-      navigate('/dashboard');
-    } else {
-      toast({
-        title: "Login failed",
-        description: "Incorrect email or password",
-        variant: "destructive"
-      });
-    }
+    // Demo mode - no credential validation required
+    toast({
+      title: "Login successful",
+      description: "Welcome back!"
+    });
+    navigate('/dashboard');
   };
 
   return (
