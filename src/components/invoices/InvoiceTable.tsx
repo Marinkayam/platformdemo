@@ -5,13 +5,15 @@ import { useSortedInvoices } from "@/hooks/useSortedInvoices";
 import { InvoiceTableHeader } from "./table/InvoiceTableHeader";
 import { InvoiceTableRow } from "./table/InvoiceTableRow";
 import { InvoiceTableFooter } from "./table/InvoiceTableFooter";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 
 interface InvoiceTableProps {
   invoices: Invoice[];
   isPendingTab?: boolean;
+  isLoading?: boolean;
 }
 
-export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTableProps) {
+export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false }: InvoiceTableProps) {
   const navigate = useNavigate();
   const { 
     sortedInvoices, 
@@ -58,29 +60,35 @@ export function InvoiceTable({ invoices, isPendingTab = false }: InvoiceTablePro
             isPendingTab={isPendingTab}
           />
           
-          <TableBody className="divide-y divide-gray-100">
-            {sortedInvoices.length === 0 ? (
-              <tr>
-                <td colSpan={columnsCount} className="h-[65px] text-center text-sm text-gray-600 py-2 align-middle bg-white">
-                  No invoices found.
-                </td>
-              </tr>
-            ) : (
-              sortedInvoices.map((invoice) => (
-                <InvoiceTableRow
-                  key={invoice.id}
-                  invoice={invoice}
-                  isPendingTab={isPendingTab}
-                  onNavigate={(id) => navigate(`/invoices/${id}`)}
-                  onAssign={handleAssign}
-                  onRemoveAssignee={handleRemoveAssignee}
-                  onExclude={handleExcludeInvoice}
-                />
-              ))
-            )}
-          </TableBody>
-          
-          <InvoiceTableFooter invoices={sortedInvoices} columnsCount={columnsCount} />
+          {isLoading ? (
+            <TableSkeleton rows={8} columns={columnsCount} showFooter />
+          ) : (
+            <>
+              <TableBody className="divide-y divide-gray-100">
+                {sortedInvoices.length === 0 ? (
+                  <tr>
+                    <td colSpan={columnsCount} className="h-[65px] text-center text-sm text-gray-600 py-2 align-middle bg-white">
+                      No invoices found.
+                    </td>
+                  </tr>
+                ) : (
+                  sortedInvoices.map((invoice) => (
+                    <InvoiceTableRow
+                      key={invoice.id}
+                      invoice={invoice}
+                      isPendingTab={isPendingTab}
+                      onNavigate={(id) => navigate(`/invoices/${id}`)}
+                      onAssign={handleAssign}
+                      onRemoveAssignee={handleRemoveAssignee}
+                      onExclude={handleExcludeInvoice}
+                    />
+                  ))
+                )}
+              </TableBody>
+              
+              <InvoiceTableFooter invoices={sortedInvoices} columnsCount={columnsCount} />
+            </>
+          )}
         </Table>
       </div>
     </div>

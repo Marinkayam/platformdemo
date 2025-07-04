@@ -7,12 +7,14 @@ import { useSortedPurchaseOrders } from "@/hooks/useSortedPurchaseOrders";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigate } from "react-router-dom";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 
 interface PurchaseOrderTableProps {
   purchaseOrders: PurchaseOrder[];
+  isLoading?: boolean;
 }
 
-export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) {
+export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: PurchaseOrderTableProps) {
   const navigate = useNavigate();
   const { 
     sortedPurchaseOrders, 
@@ -35,15 +37,18 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
             onSort={handleSort}
           />
           
-          <TableBody className="divide-y divide-gray-100">
-            {sortedPurchaseOrders.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={8} className="text-center text-sm text-gray-600 align-middle bg-white">
-                  No purchase orders found.
-                </TableCell>
-              </TableRow>
-            ) : (
-              sortedPurchaseOrders.map((po) => (
+          {isLoading ? (
+            <TableSkeleton rows={6} columns={8} showFooter />
+          ) : (
+            <TableBody className="divide-y divide-gray-100">
+              {sortedPurchaseOrders.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8} className="text-center text-sm text-gray-600 align-middle bg-white">
+                    No purchase orders found.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                sortedPurchaseOrders.map((po) => (
                 <TableRow
                   key={po.id}
                   className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
@@ -123,11 +128,12 @@ export function PurchaseOrderTable({ purchaseOrders }: PurchaseOrderTableProps) 
                     </TooltipProvider>
                   </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
+                ))
+              )}
+            </TableBody>
+          )}
           
-          <PurchaseOrderTableFooter purchaseOrders={sortedPurchaseOrders} />
+          {!isLoading && <PurchaseOrderTableFooter purchaseOrders={sortedPurchaseOrders} />}
         </Table>
       </div>
     </div>

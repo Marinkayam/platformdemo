@@ -10,17 +10,20 @@ import { PortalUsersFilteredEmptyState } from './PortalUsersFilteredEmptyState';
 import { toast } from "@/hooks/use-toast";
 import { mockPortalUsersForTable } from '@/data/portalUsersForTable';
 import { groupPortalUsers } from './utils/portalAggregation';
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 
 interface PortalUsersTableProps {
   portalUsers?: PortalUser[];
   onEditPortalUser?: (user: PortalUser) => void;
   onRemovePortalUser?: (id: string) => void;
+  isLoading?: boolean;
 }
 
 export function PortalUsersTable({
   portalUsers: propPortalUsers,
   onEditPortalUser,
   onRemovePortalUser,
+  isLoading = false,
 }: PortalUsersTableProps) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<PortalUser | null>(null);
@@ -104,16 +107,20 @@ export function PortalUsersTable({
       <PortalUsersTableHeader />
       
       <div className="max-h-[600px] overflow-y-auto">
-        <PortalUsersTableBody
-          allPortals={allPortals}
-          expandedGroups={expandedGroups}
-          onToggleGroup={toggleGroup}
-          onEdit={handleEdit}
-          onRemove={handleRemove}
-          onView2FA={handleView2FA}
-          onRowClick={handleRowClick}
-          copyToClipboard={copyToClipboard}
-        />
+        {isLoading ? (
+          <TableSkeleton rows={8} columns={6} />
+        ) : (
+          <PortalUsersTableBody
+            allPortals={allPortals}
+            expandedGroups={expandedGroups}
+            onToggleGroup={toggleGroup}
+            onEdit={handleEdit}
+            onRemove={handleRemove}
+            onView2FA={handleView2FA}
+            onRowClick={handleRowClick}
+            copyToClipboard={copyToClipboard}
+          />
+        )}
       </div>
 
       <PortalUsersTableFooter totalUsers={portalUsers.length} />

@@ -7,15 +7,17 @@ import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
 import { PortalRecordsEmptyState } from "./table/PortalRecordsEmptyState";
 import { PortalRecordsModals } from "./table/PortalRecordsModals";
 import { usePortalRecordsTableColumns } from "./table/PortalRecordsTableColumns";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 
 interface PortalRecordsTableProps {
   records: PortalRecord[];
+  isLoading?: boolean;
 }
 
-export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
+export function PortalRecordsTable({ records, isLoading = false }: PortalRecordsTableProps) {
   const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(10);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // Modal states
   const [matchModalOpen, setMatchModalOpen] = useState(false);
@@ -35,11 +37,11 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
   const hasMore = visibleCount < sortedRecords.length;
 
   const handleLoadMore = async () => {
-    setIsLoading(true);
+    setIsLoadingMore(true);
     // Simulate loading delay for smooth UX
     await new Promise(resolve => setTimeout(resolve, 300));
     setVisibleCount(prev => Math.min(prev + 10, sortedRecords.length));
-    setIsLoading(false);
+    setIsLoadingMore(false);
   };
 
   const handleViewDetails = (recordId: string) => {
@@ -136,8 +138,11 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
               </tr>
             </thead>
             
-            <tbody className="divide-y divide-gray-100">
-              {visibleRecords.map((record, rowIndex) => (
+            {isLoading ? (
+              <TableSkeleton rows={6} columns={columns.length} showFooter />
+            ) : (
+              <tbody className="divide-y divide-gray-100">
+                {visibleRecords.map((record, rowIndex) => (
                 <tr
                   key={record.id}
                   className="h-[60px] hover:bg-gray-50 cursor-pointer transition-colors bg-white"
@@ -152,21 +157,22 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
                     </td>
                   ))}
                 </tr>
-              ))}
-              
-              {/* Loading skeleton rows */}
-              {isLoading && Array.from({ length: 3 }).map((_, index) => (
-                <tr key={`loading-${index}`} className="h-[60px] animate-pulse">
-                  {columns.map((_, colIndex) => (
-                    <td key={colIndex} className="px-4">
-                      <div className="h-4 bg-gray-200 rounded"></div>
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
+                ))}
+                
+                {/* Loading skeleton rows */}
+                {isLoadingMore && Array.from({ length: 3 }).map((_, index) => (
+                  <tr key={`loading-${index}`} className="h-[60px] animate-pulse">
+                    {columns.map((_, colIndex) => (
+                      <td key={colIndex} className="px-4">
+                        <div className="h-4 bg-gray-200 rounded"></div>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            )}
             
-            <PortalRecordsTableFooter records={sortedRecords} />
+            {!isLoading && <PortalRecordsTableFooter records={sortedRecords} />}
           </table>
         </div>
       </div>
@@ -176,11 +182,11 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
         <div className="flex justify-center py-4">
           <Button
             onClick={handleLoadMore}
-            disabled={isLoading}
+            disabled={isLoadingMore}
             variant="outline"
             className="animate-fade-in"
           >
-            {isLoading ? 'Loading...' : `Load ${Math.min(10, sortedRecords.length - visibleCount)} more records`}
+            {isLoadingMore ? 'Loading...' : `Load ${Math.min(10, sortedRecords.length - visibleCount)} more records`}
           </Button>
         </div>
       )}

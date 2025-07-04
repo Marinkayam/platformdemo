@@ -7,9 +7,11 @@ import { Invoice } from "@/types/invoice";
 import { getRandomPortalName } from "@/lib/portalUtils";
 import { useNavigate } from "react-router-dom";
 import { MoreVertical } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface RecentInvoicesTableProps {
   invoices: Invoice[];
+  isLoading?: boolean;
 }
 
 const sampleInvoices = [
@@ -20,7 +22,7 @@ const sampleInvoices = [
   { id: "INV-1994", category: "Mac", price: "$52.17", status: "Paid" }
 ];
 
-export function RecentInvoicesTable({ invoices }: RecentInvoicesTableProps) {
+export function RecentInvoicesTable({ invoices, isLoading = false }: RecentInvoicesTableProps) {
   const navigate = useNavigate();
 
   const getStatusColor = (status: string) => {
@@ -57,26 +59,38 @@ export function RecentInvoicesTable({ invoices }: RecentInvoicesTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sampleInvoices.map((invoice, index) => (
-              <TableRow 
-                key={invoice.id}
-                className="hover:bg-gray-50 cursor-pointer animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-                onClick={() => navigate(`/invoices/${invoice.id}`)}
-              >
-                <TableCell className="font-semibold">{invoice.id}</TableCell>
-                <TableCell>{invoice.category}</TableCell>
-                <TableCell className="font-medium">{invoice.price}</TableCell>
-                <TableCell>
-                  <StatusBadge status={invoice.status} />
-                </TableCell>
-                <TableCell>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <TableRow key={index} className="h-[65px]">
+                  <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                  <TableCell><Skeleton className="h-6 w-20" /></TableCell>
+                  <TableCell><Skeleton className="h-8 w-8" /></TableCell>
+                </TableRow>
+              ))
+            ) : (
+              sampleInvoices.map((invoice, index) => (
+                <TableRow 
+                  key={invoice.id}
+                  className="hover:bg-gray-50 cursor-pointer animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                  onClick={() => navigate(`/invoices/${invoice.id}`)}
+                >
+                  <TableCell className="font-semibold">{invoice.id}</TableCell>
+                  <TableCell>{invoice.category}</TableCell>
+                  <TableCell className="font-medium">{invoice.price}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={invoice.status} />
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </CardContent>
