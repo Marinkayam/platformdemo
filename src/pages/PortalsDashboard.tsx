@@ -47,33 +47,42 @@ export default function PortalsDashboard() {
     atRiskInvoicesTotal: 0
   });
 
-  // Progress bar animation
+  // Progress bar animation - smoother with easing
   useEffect(() => {
-    let frame: number;
     if (progress < 100) {
-      frame = window.setTimeout(() => setProgress(progress + 10), 250);
+      const increment = progress < 30 ? 2 : progress < 70 ? 3 : 1.5; // Variable speed for realistic effect
+      const timeout = progress < 30 ? 150 : progress < 70 ? 100 : 200;
+      
+      const frame = setTimeout(() => {
+        setProgress(prev => Math.min(prev + increment, 100));
+      }, timeout);
+      
+      return () => clearTimeout(frame);
     } else {
-      setTimeout(() => setScanComplete(true), 200);
+      const completionTimer = setTimeout(() => setScanComplete(true), 300);
+      return () => clearTimeout(completionTimer);
     }
-    return () => clearTimeout(frame);
   }, [progress]);
 
-  // Metrics scanning animation
+  // Metrics scanning animation - smoother increments
   useEffect(() => {
     if (!metricsScanning) return;
     
     const metricsInterval = setInterval(() => {
-      setCurrentMetrics(prev => ({
-        buyersCount: Math.min(finalMetrics.buyersCount, Math.round((finalMetrics.buyersCount * progress) / 100)),
-        portalsCount: Math.min(finalMetrics.portalsCount, Math.round((finalMetrics.portalsCount * progress) / 100)),
-        openPOsCount: Math.min(finalMetrics.openPOsCount, Math.round((finalMetrics.openPOsCount * progress) / 100)),
-        openPOsTotal: Math.min(finalMetrics.openPOsTotal, Math.round((finalMetrics.openPOsTotal * progress) / 100)),
-        openInvoicesCount: Math.min(finalMetrics.openInvoicesCount, Math.round((finalMetrics.openInvoicesCount * progress) / 100)),
-        openInvoicesTotal: Math.min(finalMetrics.openInvoicesTotal, Math.round((finalMetrics.openInvoicesTotal * progress) / 100)),
-        atRiskInvoicesCount: Math.min(finalMetrics.atRiskInvoicesCount, Math.round((finalMetrics.atRiskInvoicesCount * progress) / 100)),
-        atRiskInvoicesTotal: Math.min(finalMetrics.atRiskInvoicesTotal, Math.round((finalMetrics.atRiskInvoicesTotal * progress) / 100))
-      }));
-    }, 250);
+      const progressFactor = Math.min(progress / 100, 1);
+      const easedProgress = 1 - Math.pow(1 - progressFactor, 3); // Cubic ease-out
+      
+      setCurrentMetrics({
+        buyersCount: Math.floor(finalMetrics.buyersCount * easedProgress),
+        portalsCount: Math.floor(finalMetrics.portalsCount * easedProgress),
+        openPOsCount: Math.floor(finalMetrics.openPOsCount * easedProgress),
+        openPOsTotal: Math.floor(finalMetrics.openPOsTotal * easedProgress),
+        openInvoicesCount: Math.floor(finalMetrics.openInvoicesCount * easedProgress),
+        openInvoicesTotal: Math.floor(finalMetrics.openInvoicesTotal * easedProgress),
+        atRiskInvoicesCount: Math.floor(finalMetrics.atRiskInvoicesCount * easedProgress),
+        atRiskInvoicesTotal: Math.floor(finalMetrics.atRiskInvoicesTotal * easedProgress)
+      });
+    }, 50); // Higher frequency for smoother updates
 
     const completionTimer = setTimeout(() => {
       setMetricsScanning(false);
@@ -88,7 +97,7 @@ export default function PortalsDashboard() {
         atRiskInvoicesTotal: finalMetrics.atRiskInvoicesTotal
       });
       clearInterval(metricsInterval);
-    }, 2500); // Complete metrics scanning when progress bar finishes
+    }, 3000);
 
     return () => {
       clearInterval(metricsInterval);
@@ -117,81 +126,198 @@ export default function PortalsDashboard() {
           subtitle="Unified view of invoices and POs from all portals—track connections, syncs, and insights."
         />
         
-        {/* AI Scan Progress Bar - Magical Version */}
+        {/* AI Scan Progress Bar - Enhanced Magical Version */}
         {!scanComplete && (
-          <div className="w-96 max-w-full mt-2 mb-2 flex flex-col items-center relative">
+          <motion.div 
+            className="w-96 max-w-full mt-2 mb-2 flex flex-col items-center relative"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
             <AnimatePresence>
               <motion.div
                 key="ai-magic-text"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
                 className="mb-1"
               >
                 <SparklesText 
-                  text={`Fetching data from portals... ${progress}%`} 
-                  className="text-base font-normal text-[#7B59FF]" 
-                  sparklesCount={8} 
-                  duration={1500} 
+                  text={`AI scanning portals... ${Math.round(progress)}%`} 
+                  className="text-base font-semibold text-[#7B59FF]" 
+                  sparklesCount={12} 
+                  duration={1200} 
                 />
               </motion.div>
             </AnimatePresence>
             <div className="relative w-full">
               <Progress
                 value={progress}
-                indicatorClassName="bg-gradient-to-r from-[#7B59FF] via-[#B983FF] to-[#7B59FF] shadow-[0_0_16px_2px_rgba(123,89,255,0.25)] transition-all duration-300"
-                className="h-1 rounded-full bg-[#F0EDFF] shadow-[0_2px_16px_0_rgba(123,89,255,0.10)]"
+                indicatorClassName="bg-gradient-to-r from-[#7B59FF] via-[#9B7AFF] via-[#B983FF] to-[#7B59FF] shadow-[0_0_20px_3px_rgba(123,89,255,0.4)] transition-all duration-500 ease-out"
+                className="h-1.5 rounded-full bg-gradient-to-r from-[#F0EDFF] to-[#E8E3FF] shadow-[0_3px_20px_0_rgba(123,89,255,0.15)]"
               />
-              {/* Sparkles overlay */}
+              {/* Enhanced sparkles overlay with pulsing */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <SparklesText text="✨" className="text-2xl animate-pulse" sparklesCount={6} duration={1500} />
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                    rotate: [0, 180, 360]
+                  }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <SparklesText text="✨" className="text-2xl" sparklesCount={8} duration={1000} />
+                </motion.div>
               </div>
+              {/* Scanning light effect */}
+              <motion.div
+                className="absolute top-0 left-0 h-full w-8 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full"
+                animate={{ x: [-32, 384] }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+                style={{ filter: 'blur(1px)' }}
+              />
             </div>
-          </div>
+          </motion.div>
         )}
-        {/* Last Scan Time */}
+        
+        {/* Enhanced completion message */}
         {scanComplete && (
-          <div className="flex items-center gap-2 text-sm text-[#7B59FF] font-semibold -mt-4 min-h-[40px]">
-            <span className="text-base font-semibold">AI scan finished:</span>
+          <motion.div 
+            className="flex items-center gap-2 text-sm text-[#7B59FF] font-semibold -mt-4 min-h-[40px]"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <motion.span 
+              className="text-base font-semibold"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              ✅ AI scan completed:
+            </motion.span>
             <span className="text-[#586079] font-normal ml-2">{formattedLastScan}</span>
-          </div>
+          </motion.div>
         )}
 
-        {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <BuyersFoundCard 
-            buyersCount={displayMetrics.buyersCount}
-            topBuyersByFrequency={displayMetrics.topBuyersByFrequency}
-          />
+        {/* Enhanced Metrics Grid with smooth animations */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          initial={{ opacity: 0.7 }}
+          animate={{ opacity: scanComplete ? 1 : 0.9 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.div
+            animate={{ 
+              scale: metricsScanning ? [1, 1.02, 1] : 1,
+            }}
+            transition={{ 
+              duration: 1.5,
+              repeat: metricsScanning ? Infinity : 0,
+              ease: "easeInOut"
+            }}
+          >
+            <BuyersFoundCard 
+              buyersCount={displayMetrics.buyersCount}
+              topBuyersByFrequency={displayMetrics.topBuyersByFrequency}
+            />
+          </motion.div>
 
-          <PortalsScannedCard 
-            portalsCount={displayMetrics.portalsCount}
-            recentPortals={displayMetrics.recentPortals}
-          />
+          <motion.div
+            animate={{ 
+              scale: metricsScanning ? [1, 1.02, 1] : 1,
+            }}
+            transition={{ 
+              duration: 1.5,
+              repeat: metricsScanning ? Infinity : 0,
+              ease: "easeInOut",
+              delay: 0.1
+            }}
+          >
+            <PortalsScannedCard 
+              portalsCount={displayMetrics.portalsCount}
+              recentPortals={displayMetrics.recentPortals}
+            />
+          </motion.div>
 
-          <TopBuyersCard 
-            topBuyers={displayMetrics.topBuyers}
-            topOpenPO={displayMetrics.topOpenPO}
-          />
+          <motion.div
+            animate={{ 
+              scale: metricsScanning ? [1, 1.02, 1] : 1,
+            }}
+            transition={{ 
+              duration: 1.5,
+              repeat: metricsScanning ? Infinity : 0,
+              ease: "easeInOut",
+              delay: 0.2
+            }}
+          >
+            <TopBuyersCard 
+              topBuyers={displayMetrics.topBuyers}
+              topOpenPO={displayMetrics.topOpenPO}
+            />
+          </motion.div>
 
-          <OpenPOsCard 
-            openPOsCount={displayMetrics.openPOsCount}
-            openPOsTotal={displayMetrics.openPOsTotal}
-            topOpenPO={displayMetrics.topOpenPO}
-          />
+          <motion.div
+            animate={{ 
+              scale: metricsScanning ? [1, 1.02, 1] : 1,
+            }}
+            transition={{ 
+              duration: 1.5,
+              repeat: metricsScanning ? Infinity : 0,
+              ease: "easeInOut",
+              delay: 0.3
+            }}
+          >
+            <OpenPOsCard 
+              openPOsCount={displayMetrics.openPOsCount}
+              openPOsTotal={displayMetrics.openPOsTotal}
+              topOpenPO={displayMetrics.topOpenPO}
+            />
+          </motion.div>
 
-          <OpenInvoicesCard 
-            openInvoicesCount={displayMetrics.openInvoicesCount}
-            openInvoicesTotal={displayMetrics.openInvoicesTotal}
-            openInvoicesDueSoon={displayMetrics.openInvoicesDueSoon}
-          />
+          <motion.div
+            animate={{ 
+              scale: metricsScanning ? [1, 1.02, 1] : 1,
+            }}
+            transition={{ 
+              duration: 1.5,
+              repeat: metricsScanning ? Infinity : 0,
+              ease: "easeInOut",
+              delay: 0.4
+            }}
+          >
+            <OpenInvoicesCard 
+              openInvoicesCount={displayMetrics.openInvoicesCount}
+              openInvoicesTotal={displayMetrics.openInvoicesTotal}
+              openInvoicesDueSoon={displayMetrics.openInvoicesDueSoon}
+            />
+          </motion.div>
 
-          <AtRiskCard 
-            atRiskInvoicesCount={displayMetrics.atRiskInvoicesCount}
-            atRiskInvoicesTotal={displayMetrics.atRiskInvoicesTotal}
-          />
-        </div>
+          <motion.div
+            animate={{ 
+              scale: metricsScanning ? [1, 1.02, 1] : 1,
+            }}
+            transition={{ 
+              duration: 1.5,
+              repeat: metricsScanning ? Infinity : 0,
+              ease: "easeInOut",
+              delay: 0.5
+            }}
+          >
+            <AtRiskCard 
+              atRiskInvoicesCount={displayMetrics.atRiskInvoicesCount}
+              atRiskInvoicesTotal={displayMetrics.atRiskInvoicesTotal}
+            />
+          </motion.div>
+        </motion.div>
         
         {/* Portal Records Section */}
         <div className="space-y-2 pb-0">
