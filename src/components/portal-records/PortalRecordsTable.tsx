@@ -147,7 +147,7 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
                     <TableCell
                       key={colIndex}
                       className={column.className}
-                      style={{ paddingTop: 6, paddingBottom: 6 }} // Reduce row height
+                      style={{ paddingTop: 12, paddingBottom: 12 }} // Increase row height for better spacing
                     >
                       {column.render ? column.render(record) : record[column.key as keyof PortalRecord]}
                     </TableCell>

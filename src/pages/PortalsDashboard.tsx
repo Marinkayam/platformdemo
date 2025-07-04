@@ -67,7 +67,7 @@ export default function PortalsDashboard() {
               >
                 <SparklesText 
                   text={`Fetching data from portals... ${progress}%`} 
-                  className="text-base font-semibold text-[#7B59FF]" 
+                  className="text-base font-normal text-[#7B59FF]" 
                   sparklesCount={8} 
                   duration={1500} 
                 />
@@ -77,7 +77,7 @@ export default function PortalsDashboard() {
               <Progress
                 value={progress}
                 indicatorClassName="bg-gradient-to-r from-[#7B59FF] via-[#B983FF] to-[#7B59FF] shadow-[0_0_16px_2px_rgba(123,89,255,0.25)] transition-all duration-300"
-                className="h-2 rounded-full bg-[#F0EDFF] shadow-[0_2px_16px_0_rgba(123,89,255,0.10)]"
+                className="h-1 rounded-full bg-[#F0EDFF] shadow-[0_2px_16px_0_rgba(123,89,255,0.10)]"
               />
               {/* Sparkles overlay */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
