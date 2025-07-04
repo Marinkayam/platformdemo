@@ -24,7 +24,7 @@ export function ConnectorsList({ connectors, onView, onStatusChange }: Connector
               <div className="text-xs text-grey-500">ERP Integration</div>
             </div>
           </div>
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-yellow-50 text-yellow-700 border-yellow-200">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-grey-100 text-grey-700 border-grey-300">
             Coming Soon
           </span>
         </div>
@@ -37,7 +37,7 @@ export function ConnectorsList({ connectors, onView, onStatusChange }: Connector
               <div className="text-xs text-grey-500">Enterprise Solution</div>
             </div>
           </div>
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-yellow-50 text-yellow-700 border-yellow-200">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-grey-100 text-grey-700 border-grey-300">
             Coming Soon
           </span>
         </div>
@@ -50,7 +50,7 @@ export function ConnectorsList({ connectors, onView, onStatusChange }: Connector
               <div className="text-xs text-grey-500">Accounting Software</div>
             </div>
           </div>
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-yellow-50 text-yellow-700 border-yellow-200">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-grey-100 text-grey-700 border-grey-300">
             Coming Soon
           </span>
         </div>
@@ -65,7 +65,7 @@ export function ConnectorsList({ connectors, onView, onStatusChange }: Connector
               <div className="text-xs text-grey-500">Team Communication</div>
             </div>
           </div>
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-yellow-50 text-yellow-700 border-yellow-200">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-grey-100 text-grey-700 border-grey-300">
             Coming Soon
           </span>
         </div>
