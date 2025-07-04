@@ -19,6 +19,23 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
   const [agentToDeactivate, setAgentToDeactivate] = useState<Agent | null>(null);
   const [progress, setProgress] = useState(0);
   const [scanComplete, setScanComplete] = useState(false);
+  const [metricsScanning, setMetricsScanning] = useState(true);
+  const [metricsProgress, setMetricsProgress] = useState(0);
+  const [currentMetrics, setCurrentMetrics] = useState({
+    dso: 0,
+    receivables: 0,
+    openPOs: 0,
+    rejectionRate: 0,
+    revenue: 0
+  });
+
+  const finalMetrics = {
+    dso: 27,
+    receivables: 12500,
+    openPOs: 7800,
+    rejectionRate: 2.5,
+    revenue: 120000
+  };
 
   useEffect(() => {
     let frame: number;
@@ -29,6 +46,39 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
     }
     return () => clearTimeout(frame);
   }, [progress]);
+
+  // Metrics scanning simulation
+  useEffect(() => {
+    if (!metricsScanning) return;
+    
+    const metricsInterval = setInterval(() => {
+      setMetricsProgress(prev => {
+        const newProgress = prev + 20;
+        
+        // Update metrics progressively
+        setCurrentMetrics(prev => ({
+          dso: Math.min(finalMetrics.dso, Math.round((finalMetrics.dso * newProgress) / 100)),
+          receivables: Math.min(finalMetrics.receivables, Math.round((finalMetrics.receivables * newProgress) / 100)),
+          openPOs: Math.min(finalMetrics.openPOs, Math.round((finalMetrics.openPOs * newProgress) / 100)),
+          rejectionRate: Math.min(finalMetrics.rejectionRate, (finalMetrics.rejectionRate * newProgress) / 100),
+          revenue: Math.min(finalMetrics.revenue, Math.round((finalMetrics.revenue * newProgress) / 100))
+        }));
+        
+        return newProgress;
+      });
+    }, 300);
+
+    const completionTimer = setTimeout(() => {
+      setMetricsScanning(false);
+      setCurrentMetrics(finalMetrics);
+      clearInterval(metricsInterval);
+    }, 1800); // Complete in ~1.8 seconds
+
+    return () => {
+      clearInterval(metricsInterval);
+      clearTimeout(completionTimer);
+    };
+  }, []);
 
   const handleViewDetails = (agent: Agent) => {
     setSelectedAgent(agent);
@@ -106,22 +156,40 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
             {(() => {
               const metrics = [
                 {
-                  icon: <Calendar className="h-3 w-3 text-[#7B59FF] animate-bounce-once align-middle" />, label: 'TDSO', value: 'Net 30', sub: ''
+                  icon: <Calendar className={`h-3 w-3 text-[#7B59FF] align-middle ${metricsScanning ? 'animate-pulse' : 'animate-bounce-once'}`} />, 
+                  label: 'TDSO', 
+                  value: 'Net 30', 
+                  sub: ''
                 },
                 {
-                  icon: <Clock className="h-3 w-3 text-[#7B59FF] animate-bounce-once align-middle" />, label: 'Avg DSO', value: '27', sub: 'Days'
+                  icon: <Clock className={`h-3 w-3 text-[#7B59FF] align-middle ${metricsScanning ? 'animate-pulse' : 'animate-bounce-once'}`} />, 
+                  label: 'Avg DSO', 
+                  value: metricsScanning ? `${currentMetrics.dso}` : '27', 
+                  sub: 'Days'
                 },
                 {
-                  icon: <FileText className="h-3 w-3 text-[#22C55E] animate-bounce-once align-middle" />, label: 'Receivables', value: '$12,500', sub: '(8 invoices)'
+                  icon: <FileText className={`h-3 w-3 text-[#22C55E] align-middle ${metricsScanning ? 'animate-pulse' : 'animate-bounce-once'}`} />, 
+                  label: 'Receivables', 
+                  value: metricsScanning ? `$${currentMetrics.receivables.toLocaleString()}` : '$12,500', 
+                  sub: '(8 invoices)'
                 },
                 {
-                  icon: <ShoppingCart className="h-3 w-3 text-[#F2AE40] animate-bounce-once align-middle" />, label: 'Open POs', value: '$7,800', sub: '(3 POs)'
+                  icon: <ShoppingCart className={`h-3 w-3 text-[#F2AE40] align-middle ${metricsScanning ? 'animate-pulse' : 'animate-bounce-once'}`} />, 
+                  label: 'Open POs', 
+                  value: metricsScanning ? `$${currentMetrics.openPOs.toLocaleString()}` : '$7,800', 
+                  sub: '(3 POs)'
                 },
                 {
-                  icon: <Percent className="h-3 w-3 text-[#EF4444] animate-bounce-once align-middle" />, label: 'Rejection Rate', value: '2.5%', sub: ''
+                  icon: <Percent className={`h-3 w-3 text-[#EF4444] align-middle ${metricsScanning ? 'animate-pulse' : 'animate-bounce-once'}`} />, 
+                  label: 'Rejection Rate', 
+                  value: metricsScanning ? `${currentMetrics.rejectionRate.toFixed(1)}%` : '2.5%', 
+                  sub: ''
                 },
                 {
-                  icon: <DollarSign className="h-3 w-3 text-[#7B59FF] animate-bounce-once align-middle" />, label: 'Last Yr Revenue', value: '$120,000', sub: ''
+                  icon: <DollarSign className={`h-3 w-3 text-[#7B59FF] align-middle ${metricsScanning ? 'animate-pulse' : 'animate-bounce-once'}`} />, 
+                  label: 'Last Yr Revenue', 
+                  value: metricsScanning ? `$${currentMetrics.revenue.toLocaleString()}` : '$120,000', 
+                  sub: ''
                 },
               ];
               return metrics.map((metric) => (
