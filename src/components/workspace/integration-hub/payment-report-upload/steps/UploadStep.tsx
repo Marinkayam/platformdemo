@@ -259,7 +259,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                     ? 'bg-primary/20 scale-110' 
                     : 'bg-white shadow-sm border border-primary/20'
                 }`}>
-                  <Sparkles className={`w-8 h-8 transition-colors duration-200 ${
+                  <Sparkles className={`w-4 h-4 transition-colors duration-200 ${
                     isDragging 
                       ? 'text-primary' 
                       : 'text-primary'
@@ -278,13 +278,12 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                   <div className="pt-2">
                     <Button 
                       size="lg"
-                      className="bg-primary hover:bg-primary/90 text-white font-medium px-6"
+                      className="bg-primary hover:bg-primary/90 text-white font-medium px-6 text-xs"
                       onClick={(e) => {
                         e.stopPropagation();
                         document.getElementById('demo-file-upload')?.click();
                       }}
                     >
-                      <img src="/lovable-uploads/eb3891f0-219d-4575-9f07-3c12091a0aec.png" alt="Upload" className="w-9 h-9 mr-2" />
                       Upload Invoice PDFs
                     </Button>
                   </div>
@@ -333,7 +332,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
 
           <div className="text-center space-y-2 opacity-75">
             <div className="inline-flex items-center justify-center w-8 h-8 bg-primary/10 rounded-lg">
-              <Sparkles className="w-4 h-4 text-primary" />
+              <Sparkles className="w-3 h-3 text-primary" />
             </div>
             <div className="space-y-1">
               <h4 className="text-sm font-medium text-grey-900">Create RTPs</h4>
