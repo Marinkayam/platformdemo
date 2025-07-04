@@ -12,7 +12,7 @@ export function ConnectorsList({ connectors, onView, onStatusChange }: Connector
   return (
     <div className="lg:col-span-2 bg-white rounded-lg border border-grey-400">
       <div className="p-4 border-b border-grey-400">
-        <h3 className="text-lg font-semibold text-grey-900">Active Connectors</h3>
+        <h3 className="text-xl font-semibold text-grey-900">Integrations</h3>
         <p className="text-sm text-grey-600">Configure and manage your email-based integrations</p>
       </div>
       <div className="p-4">
