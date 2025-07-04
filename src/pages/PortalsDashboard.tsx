@@ -19,7 +19,7 @@ import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function PortalsDashboard() {
-  const metrics = calculatePortalsDashboardMetrics();
+  const finalMetrics = calculatePortalsDashboardMetrics();
 
   // Format last scan time
   const lastScanTime = new Date();
@@ -35,6 +35,19 @@ export default function PortalsDashboard() {
 
   const [progress, setProgress] = useState(0);
   const [scanComplete, setScanComplete] = useState(false);
+  const [metricsScanning, setMetricsScanning] = useState(true);
+  const [currentMetrics, setCurrentMetrics] = useState({
+    buyersCount: 0,
+    portalsCount: 0,
+    openPOsCount: 0,
+    openPOsTotal: 0,
+    openInvoicesCount: 0,
+    openInvoicesTotal: 0,
+    atRiskInvoicesCount: 0,
+    atRiskInvoicesTotal: 0
+  });
+
+  // Progress bar animation
   useEffect(() => {
     let frame: number;
     if (progress < 100) {
@@ -44,6 +57,57 @@ export default function PortalsDashboard() {
     }
     return () => clearTimeout(frame);
   }, [progress]);
+
+  // Metrics scanning animation
+  useEffect(() => {
+    if (!metricsScanning) return;
+    
+    const metricsInterval = setInterval(() => {
+      setCurrentMetrics(prev => ({
+        buyersCount: Math.min(finalMetrics.buyersCount, Math.round((finalMetrics.buyersCount * progress) / 100)),
+        portalsCount: Math.min(finalMetrics.portalsCount, Math.round((finalMetrics.portalsCount * progress) / 100)),
+        openPOsCount: Math.min(finalMetrics.openPOsCount, Math.round((finalMetrics.openPOsCount * progress) / 100)),
+        openPOsTotal: Math.min(finalMetrics.openPOsTotal, Math.round((finalMetrics.openPOsTotal * progress) / 100)),
+        openInvoicesCount: Math.min(finalMetrics.openInvoicesCount, Math.round((finalMetrics.openInvoicesCount * progress) / 100)),
+        openInvoicesTotal: Math.min(finalMetrics.openInvoicesTotal, Math.round((finalMetrics.openInvoicesTotal * progress) / 100)),
+        atRiskInvoicesCount: Math.min(finalMetrics.atRiskInvoicesCount, Math.round((finalMetrics.atRiskInvoicesCount * progress) / 100)),
+        atRiskInvoicesTotal: Math.min(finalMetrics.atRiskInvoicesTotal, Math.round((finalMetrics.atRiskInvoicesTotal * progress) / 100))
+      }));
+    }, 250);
+
+    const completionTimer = setTimeout(() => {
+      setMetricsScanning(false);
+      setCurrentMetrics({
+        buyersCount: finalMetrics.buyersCount,
+        portalsCount: finalMetrics.portalsCount,
+        openPOsCount: finalMetrics.openPOsCount,
+        openPOsTotal: finalMetrics.openPOsTotal,
+        openInvoicesCount: finalMetrics.openInvoicesCount,
+        openInvoicesTotal: finalMetrics.openInvoicesTotal,
+        atRiskInvoicesCount: finalMetrics.atRiskInvoicesCount,
+        atRiskInvoicesTotal: finalMetrics.atRiskInvoicesTotal
+      });
+      clearInterval(metricsInterval);
+    }, 2500); // Complete metrics scanning when progress bar finishes
+
+    return () => {
+      clearInterval(metricsInterval);
+      clearTimeout(completionTimer);
+    };
+  }, [progress, finalMetrics, metricsScanning]);
+
+  // Use current metrics during scan, final metrics after scan
+  const displayMetrics = metricsScanning ? {
+    ...finalMetrics,
+    buyersCount: currentMetrics.buyersCount,
+    portalsCount: currentMetrics.portalsCount,
+    openPOsCount: currentMetrics.openPOsCount,
+    openPOsTotal: currentMetrics.openPOsTotal,
+    openInvoicesCount: currentMetrics.openInvoicesCount,
+    openInvoicesTotal: currentMetrics.openInvoicesTotal,
+    atRiskInvoicesCount: currentMetrics.atRiskInvoicesCount,
+    atRiskInvoicesTotal: currentMetrics.atRiskInvoicesTotal
+  } : finalMetrics;
 
   return (
     <div className="w-full">
@@ -97,35 +161,35 @@ export default function PortalsDashboard() {
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <BuyersFoundCard 
-            buyersCount={metrics.buyersCount}
-            topBuyersByFrequency={metrics.topBuyersByFrequency}
+            buyersCount={displayMetrics.buyersCount}
+            topBuyersByFrequency={displayMetrics.topBuyersByFrequency}
           />
 
           <PortalsScannedCard 
-            portalsCount={metrics.portalsCount}
-            recentPortals={metrics.recentPortals}
+            portalsCount={displayMetrics.portalsCount}
+            recentPortals={displayMetrics.recentPortals}
           />
 
           <TopBuyersCard 
-            topBuyers={metrics.topBuyers}
-            topOpenPO={metrics.topOpenPO}
+            topBuyers={displayMetrics.topBuyers}
+            topOpenPO={displayMetrics.topOpenPO}
           />
 
           <OpenPOsCard 
-            openPOsCount={metrics.openPOsCount}
-            openPOsTotal={metrics.openPOsTotal}
-            topOpenPO={metrics.topOpenPO}
+            openPOsCount={displayMetrics.openPOsCount}
+            openPOsTotal={displayMetrics.openPOsTotal}
+            topOpenPO={displayMetrics.topOpenPO}
           />
 
           <OpenInvoicesCard 
-            openInvoicesCount={metrics.openInvoicesCount}
-            openInvoicesTotal={metrics.openInvoicesTotal}
-            openInvoicesDueSoon={metrics.openInvoicesDueSoon}
+            openInvoicesCount={displayMetrics.openInvoicesCount}
+            openInvoicesTotal={displayMetrics.openInvoicesTotal}
+            openInvoicesDueSoon={displayMetrics.openInvoicesDueSoon}
           />
 
           <AtRiskCard 
-            atRiskInvoicesCount={metrics.atRiskInvoicesCount}
-            atRiskInvoicesTotal={metrics.atRiskInvoicesTotal}
+            atRiskInvoicesCount={displayMetrics.atRiskInvoicesCount}
+            atRiskInvoicesTotal={displayMetrics.atRiskInvoicesTotal}
           />
         </div>
         
