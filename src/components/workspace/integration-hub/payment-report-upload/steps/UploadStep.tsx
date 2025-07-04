@@ -170,11 +170,15 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                         ? 'bg-primary/20 scale-110' 
                         : 'bg-grey-50 hover:bg-primary/5'
                     }`}>
-                      <Upload className={`w-5 h-5 transition-colors duration-200 ${
-                        isDragging 
-                          ? 'text-primary' 
-                          : 'text-grey-400 hover:text-primary'
-                      }`} />
+                      <img 
+                        src="/lovable-uploads/ccd20285-a224-4f50-923f-b0798202cdb0.png" 
+                        alt="Upload" 
+                        className={`w-5 h-5 transition-all duration-200 ${
+                          isDragging 
+                            ? 'opacity-100 scale-110' 
+                            : 'opacity-60 hover:opacity-100'
+                        }`} 
+                      />
                     </div>
                     
                     <div className="space-y-3">
@@ -280,7 +284,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                         document.getElementById('demo-file-upload')?.click();
                       }}
                     >
-                      <Upload className="w-4 h-4 mr-2" />
+                      <img src="/lovable-uploads/ccd20285-a224-4f50-923f-b0798202cdb0.png" alt="Upload" className="w-4 h-4 mr-2" />
                       Upload Invoice PDFs
                     </Button>
                   </div>
