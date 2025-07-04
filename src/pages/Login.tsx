@@ -38,7 +38,7 @@ const Login = () => {
         <div className="mx-auto w-full max-w-sm space-y-6">
           {/* Round Logo Placeholder */}
           <div className="flex justify-center mb-8">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 flex items-center justify-center shadow-lg animate-fade-in">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 flex items-center justify-center animate-fade-in">
               <MontoLogo className="w-[45px] h-[13px]" />
             </div>
           </div>
