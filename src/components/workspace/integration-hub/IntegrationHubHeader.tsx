@@ -1,5 +1,4 @@
 import React from 'react';
-import { Upload } from 'lucide-react';
 
 interface IntegrationHubHeaderProps {
   onUploadPaymentReport: () => void;
@@ -16,7 +15,7 @@ export function IntegrationHubHeader({ onUploadPaymentReport }: IntegrationHubHe
         onClick={onUploadPaymentReport}
         className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg flex items-center gap-2 hover:bg-primary/90 transition-colors text-sm"
       >
-        <Upload className="w-4 h-4" strokeWidth={0.75} />
+        <img src="/lovable-uploads/ccd20285-a224-4f50-923f-b0798202cdb0.png" alt="Upload" className="w-4 h-4" />
         Upload ERP Report
       </button>
     </div>

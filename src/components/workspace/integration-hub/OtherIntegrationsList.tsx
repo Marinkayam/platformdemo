@@ -20,7 +20,7 @@ export function OtherIntegrationsList({ integrations }: OtherIntegrationsListPro
             <div className="flex items-center gap-3">
               <integration.icon className="w-5 h-5 text-grey-600" />
               <div>
-                <div className="font-medium text-grey-900">{integration.name}</div>
+                <div className="font-medium text-grey-900 text-sm">{integration.name}</div>
                 <div className="text-xs text-grey-500">{integration.type}</div>
               </div>
             </div>

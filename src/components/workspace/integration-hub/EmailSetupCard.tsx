@@ -1,12 +1,11 @@
 
 import React from 'react';
-import { Mail, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 export function EmailSetupCard() {
   return (
     <div className="border border-grey-400 rounded-lg p-6 mb-6">
       <div className="flex items-center gap-3 mb-4">
-        <Mail className="w-5 h-5 text-primary-main" />
         <h3 className="text-lg font-semibold text-grey-900">Email Integration Setup</h3>
       </div>
       <p className="text-sm text-grey-600 mb-4">
