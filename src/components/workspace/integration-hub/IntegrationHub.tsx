@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { IntegrationHubHeader } from './IntegrationHubHeader';
 import { EmailSetupCard } from './EmailSetupCard';
 import { ConnectorsList } from './ConnectorsList';
-import { OtherIntegrationsList } from './OtherIntegrationsList';
+
 import { PaymentReportUploadWizard } from './payment-report-upload/PaymentReportUploadWizard';
-import { emailConnectors, otherIntegrations } from './constants';
+import { emailConnectors } from './constants';
 
 export function IntegrationHub() {
   const [showPaymentReportWizard, setShowPaymentReportWizard] = useState(false);
@@ -28,7 +28,6 @@ export function IntegrationHub() {
           onView={() => {}}
           onStatusChange={() => {}}
         />
-        <OtherIntegrationsList integrations={otherIntegrations} />
       </div>
       <PaymentReportUploadWizard 
         isOpen={showPaymentReportWizard}
