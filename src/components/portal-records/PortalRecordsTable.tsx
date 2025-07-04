@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Table, TableBody, TableFooter, TableRow, TableCell, TableHeader, TableHead } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import React from "react";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
 import { PortalRecordsEmptyState } from "./table/PortalRecordsEmptyState";
 import { PortalRecordsModals } from "./table/PortalRecordsModals";
 import { usePortalRecordsTableColumns } from "./table/PortalRecordsTableColumns";
-import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { usePortalRecordsTable } from "./hooks/usePortalRecordsTable";
+import { usePortalRecordsActions } from "./hooks/usePortalRecordsActions";
+import { PortalRecordsTableContent } from "./components/PortalRecordsTableContent";
+import { PortalRecordsLoadMore } from "./components/PortalRecordsLoadMore";
 
 interface PortalRecordsTableProps {
   records: PortalRecord[];
@@ -15,95 +15,40 @@ interface PortalRecordsTableProps {
 }
 
 export function PortalRecordsTable({ records, isLoading = false }: PortalRecordsTableProps) {
-  const navigate = useNavigate();
-  const [visibleCount, setVisibleCount] = useState(10);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const {
+    visibleRecords,
+    sortedRecords,
+    hasMore,
+    isLoadingMore,
+    visibleCount,
+    matchModalOpen,
+    setMatchModalOpen,
+    conflictModalOpen,
+    setConflictModalOpen,
+    ignoreModalOpen,
+    setIgnoreModalOpen,
+    selectedRecord,
+    setSelectedRecord,
+    handleLoadMore,
+    handleViewDetails,
+    handleRowClick,
+  } = usePortalRecordsTable(records);
 
-  // Modal states
-  const [matchModalOpen, setMatchModalOpen] = useState(false);
-  const [conflictModalOpen, setConflictModalOpen] = useState(false);
-  const [ignoreModalOpen, setIgnoreModalOpen] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<PortalRecord | null>(null);
-
-  // Sort records to prioritize unmatched and conflict records
-  const sortedRecords = [...records].sort((a, b) => {
-    const priorityOrder = { 'Unmatched': 0, 'Conflict': 1, 'Primary': 2, 'Alternate': 3 };
-    const aPriority = priorityOrder[a.matchType] ?? 4;
-    const bPriority = priorityOrder[b.matchType] ?? 4;
-    return aPriority - bPriority;
+  const {
+    handleMatchInvoice,
+    handleResolveConflict,
+    handleIgnoreRecord,
+    onInvoiceMatched,
+    onConflictResolved,
+    onRecordIgnored,
+    onStopTrackingBuyer,
+    onMatchAndCreateRTP,
+  } = usePortalRecordsActions({
+    setSelectedRecord,
+    setMatchModalOpen,
+    setConflictModalOpen,
+    setIgnoreModalOpen,
   });
-
-  const visibleRecords = sortedRecords.slice(0, visibleCount);
-  const hasMore = visibleCount < sortedRecords.length;
-
-  const handleLoadMore = async () => {
-    setIsLoadingMore(true);
-    // Simulate loading delay for smooth UX
-    await new Promise(resolve => setTimeout(resolve, 300));
-    setVisibleCount(prev => Math.min(prev + 10, sortedRecords.length));
-    setIsLoadingMore(false);
-  };
-
-  const handleViewDetails = (recordId: string) => {
-    navigate(`/portal-records/${recordId}`);
-  };
-
-  const handleRowClick = (record: PortalRecord) => {
-    navigate(`/portal-records/${record.id}`);
-  };
-
-  const handleMatchInvoice = (record: PortalRecord) => {
-    console.log('Opening match modal for record:', record.id);
-    setSelectedRecord(record);
-    setMatchModalOpen(true);
-  };
-
-  const handleResolveConflict = (record: PortalRecord) => {
-    console.log('Opening conflict modal for record:', record.id);
-    setSelectedRecord(record);
-    setConflictModalOpen(true);
-  };
-
-  const handleIgnoreRecord = (record: PortalRecord) => {
-    console.log('Opening ignore modal for record:', record.id);
-    setSelectedRecord(record);
-    setIgnoreModalOpen(true);
-  };
-
-  const onInvoiceMatched = (invoiceId: string) => {
-    console.log(`Matched invoice ${invoiceId} with record ${selectedRecord?.id}`);
-    setMatchModalOpen(false);
-    setSelectedRecord(null);
-    // TODO: Update record state in real implementation
-  };
-
-  const onConflictResolved = (selectedRecordId: string, action: 'primary' | 'alternate') => {
-    console.log(`Resolved conflict: ${selectedRecordId} set as ${action} for record ${selectedRecord?.id}`);
-    setConflictModalOpen(false);
-    setSelectedRecord(null);
-    // TODO: Update record state in real implementation
-  };
-
-  const onRecordIgnored = () => {
-    console.log(`Ignored record ${selectedRecord?.id}`);
-    setIgnoreModalOpen(false);
-    setSelectedRecord(null);
-    // TODO: Remove record from state in real implementation
-  };
-
-  const onStopTrackingBuyer = () => {
-    console.log(`Stopped tracking buyer ${selectedRecord?.buyer}`);
-    setIgnoreModalOpen(false);
-    setSelectedRecord(null);
-    // TODO: Remove all records from this buyer in real implementation
-  };
-
-  const onMatchAndCreateRTP = (pdfFile: File) => {
-    console.log(`Creating RTP for record ${selectedRecord?.id} with PDF:`, pdfFile.name);
-    setMatchModalOpen(false);
-    setSelectedRecord(null);
-    // TODO: Implement RTP creation logic
-  };
 
   const columns = usePortalRecordsTableColumns({
     onViewDetails: handleViewDetails,
@@ -138,58 +83,28 @@ export function PortalRecordsTable({ records, isLoading = false }: PortalRecords
               </tr>
             </thead>
             
-            {isLoading ? (
-              <TableSkeleton rows={6} columns={columns.length} showFooter />
-            ) : (
-              <tbody className="divide-y divide-gray-100">
-                {visibleRecords.map((record, rowIndex) => (
-                <tr
-                  key={record.id}
-                  className="h-[60px] hover:bg-gray-50 cursor-pointer transition-colors bg-white"
-                  onClick={() => handleRowClick(record)}
-                >
-                  {columns.map((column, colIndex) => (
-                    <td
-                      key={colIndex}
-                      className={`px-4 align-middle text-sm ${column.className || ''}`}
-                    >
-                      {column.render ? column.render(record) : record[column.key as keyof PortalRecord]}
-                    </td>
-                  ))}
-                </tr>
-                ))}
-                
-                {/* Loading skeleton rows */}
-                {isLoadingMore && Array.from({ length: 3 }).map((_, index) => (
-                  <tr key={`loading-${index}`} className="h-[60px] animate-pulse">
-                    {columns.map((_, colIndex) => (
-                      <td key={colIndex} className="px-4">
-                        <div className="h-4 bg-gray-200 rounded"></div>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            )}
+            <PortalRecordsTableContent
+              isLoading={isLoading}
+              visibleRecords={visibleRecords}
+              isLoadingMore={isLoadingMore}
+              onViewDetails={handleViewDetails}
+              onMatchInvoice={handleMatchInvoice}
+              onResolveConflict={handleResolveConflict}
+              onIgnoreRecord={handleIgnoreRecord}
+              onRowClick={handleRowClick}
+            />
             
             {!isLoading && <PortalRecordsTableFooter records={sortedRecords} />}
           </table>
         </div>
       </div>
 
-      {/* Load More Section */}
-      {hasMore && (
-        <div className="flex justify-center py-4">
-          <Button
-            onClick={handleLoadMore}
-            disabled={isLoadingMore}
-            variant="outline"
-            className="animate-fade-in"
-          >
-            {isLoadingMore ? 'Loading...' : `Load ${Math.min(10, sortedRecords.length - visibleCount)} more records`}
-          </Button>
-        </div>
-      )}
+      <PortalRecordsLoadMore
+        hasMore={hasMore}
+        isLoadingMore={isLoadingMore}
+        remainingCount={sortedRecords.length - visibleCount}
+        onLoadMore={handleLoadMore}
+      />
 
       <PortalRecordsModals
         selectedRecord={selectedRecord}
@@ -199,11 +114,11 @@ export function PortalRecordsTable({ records, isLoading = false }: PortalRecords
         setConflictModalOpen={setConflictModalOpen}
         ignoreModalOpen={ignoreModalOpen}
         setIgnoreModalOpen={setIgnoreModalOpen}
-        onInvoiceMatched={onInvoiceMatched}
-        onConflictResolved={onConflictResolved}
-        onRecordIgnored={onRecordIgnored}
-        onStopTrackingBuyer={onStopTrackingBuyer}
-        onMatchAndCreateRTP={onMatchAndCreateRTP}
+        onInvoiceMatched={(invoiceId) => onInvoiceMatched(invoiceId, selectedRecord)}
+        onConflictResolved={(selectedRecordId, action) => onConflictResolved(selectedRecordId, action, selectedRecord)}
+        onRecordIgnored={() => onRecordIgnored(selectedRecord)}
+        onStopTrackingBuyer={() => onStopTrackingBuyer(selectedRecord)}
+        onMatchAndCreateRTP={(pdfFile) => onMatchAndCreateRTP(pdfFile, selectedRecord)}
       />
     </div>
   );
