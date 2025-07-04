@@ -91,11 +91,6 @@ export function DuplicationPolicyTab() {
                             <Typography variant="h6" className="text-grey-900">
                               {option.title}
                             </Typography>
-                            {isSelected && (
-                              <div className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
-                                ✓ Selected
-                              </div>
-                            )}
                           </div>
                           
                           <Typography variant="body2" className="text-grey-600 leading-relaxed">
