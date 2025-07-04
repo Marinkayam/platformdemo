@@ -36,9 +36,11 @@ const Login = () => {
       {/* Left Panel - Login Form */}
       <div className="flex flex-col justify-center px-12">
         <div className="mx-auto w-full max-w-sm space-y-6">
-          {/* Monto Logo - 30% larger */}
-          <div className="flex justify-center">
-            <MontoLogo className="mb-6 w-[68px] h-[20px]" />
+          {/* Round Logo Placeholder */}
+          <div className="flex justify-center mb-8">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 flex items-center justify-center shadow-lg animate-fade-in">
+              <MontoLogo className="w-[45px] h-[13px]" />
+            </div>
           </div>
 
           {/* Header */}
@@ -124,19 +126,20 @@ const Login = () => {
 
       {/* Right Panel - Illustration */}
       <div className="bg-[#FAFAFA] flex flex-col justify-center items-center text-center px-8">
-        <div className="max-w-md space-y-8">
+        <div className="max-w-md space-y-8 animate-fade-in">
           {/* Tagline - Doubled size */}
-          <div className="text-4xl text-[#12141D] text-center leading-tight py-[17px]">
+          <div className="text-4xl text-[#12141D] text-center leading-tight py-[17px] animate-fade-in" style={{ animationDelay: "0.2s" }}>
             You should get paid on time,<br />
             <strong>every time.</strong>
           </div>
 
           {/* Desk Illustration - Doubled size */}
-          <div className="flex justify-center">
+          <div className="flex justify-center hover-scale">
             <img 
               alt="Desk Illustration" 
               src="/lovable-uploads/f1aa6c2a-356d-4e7c-86ef-601b891b80c3.png" 
-              className="w-[800px] max-w-full h-auto object-fill" 
+              className="w-[800px] max-w-full h-auto object-fill animate-fade-in" 
+              style={{ animationDelay: "0.4s" }}
             />
           </div>
         </div>
