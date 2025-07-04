@@ -58,10 +58,11 @@ export default function PaymentsRelationships() {
     handleResetFilters: handleResetPortalUserFilters
   } = usePortalUserFiltering(portalUsers);
 
-  // Hide insights tab for now
+  // Enable insights tab for demo
   const tabs = [
     { id: "smart-connections", label: "Smart Connections", count: filteredConnections.length },
-    { id: "scan-agents", label: "Scan Agents", count: filteredUsers.length }
+    { id: "scan-agents", label: "Scan Agents", count: filteredUsers.length },
+    { id: "insights", label: "AI Insights", count: mockInsights.length }
   ];
 
   const handleConfirmRemove = () => {
