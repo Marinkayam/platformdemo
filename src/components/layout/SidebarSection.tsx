@@ -123,7 +123,7 @@ export function SidebarSection({
                   <div className="flex items-center gap-2">
                     {subItem.icon && (
                       <subItem.icon 
-                        size={16} 
+                        size={6} 
                         className={isSubActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
                         strokeWidth={1.5}
                       />
@@ -188,7 +188,7 @@ export function SidebarSection({
                     )}
                   >
                     {item.icon && (
-                      <item.icon size={19} className={isActive ? "text-[#7B59FF]" : "text-[#3F4758]"} strokeWidth={1.5} />
+                      <item.icon size={6} className={isActive ? "text-[#7B59FF]" : "text-[#3F4758]"} strokeWidth={1.5} />
                     )}
                   </button>
                 </TooltipTrigger>
@@ -214,7 +214,7 @@ export function SidebarSection({
                   <div className="flex items-center gap-3">
                     {item.icon && (
                       <item.icon 
-                        size={16} 
+                        size={6} 
                         className={isActive ? "text-[#7B59FF]" : "text-[#3F4758]"} 
                         strokeWidth={1.5}
                       />
@@ -249,8 +249,8 @@ export function SidebarSection({
             >
               {item.icon && (
                 typeof item.icon === 'function' 
-                  ? item.icon({ size: 16, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
-                  : React.createElement(item.icon, { size: 16, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
+                  ? item.icon({ size: 6, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
+                  : React.createElement(item.icon, { size: 6, className: isActive ? "text-[#7B59FF]" : "text-[#3F4758]", strokeWidth: 1.5 })
               )}
               {item.title && <span className="font-normal">{item.title}</span>}
             </Link>
