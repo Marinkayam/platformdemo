@@ -125,50 +125,49 @@ export function PortalRecordsTable({ records }: PortalRecordsTableProps) {
     <div className="space-y-0">
       <div className="rounded-xl border overflow-hidden bg-white">
         <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
+          <table className="w-full caption-bottom text-sm">
+            <thead className="bg-[#F6F7F9] border-b border-gray-100">
+              <tr>
                 {columns.map((column, index) => (
-                  <TableHead key={index} className={column.className}>
+                  <th key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm ${column.className || ''}`}>
                     {column.label}
-                  </TableHead>
+                  </th>
                 ))}
-              </TableRow>
-            </TableHeader>
+              </tr>
+            </thead>
             
-            <TableBody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100">
               {visibleRecords.map((record, rowIndex) => (
-                <TableRow
+                <tr
                   key={record.id}
-                  className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
+                  className="h-[60px] hover:bg-gray-50 cursor-pointer transition-colors bg-white"
                   onClick={() => handleRowClick(record)}
                 >
                   {columns.map((column, colIndex) => (
-                    <TableCell
+                    <td
                       key={colIndex}
-                      className={column.className}
-                      style={{ paddingTop: 12, paddingBottom: 12 }} // Increase row height for better spacing
+                      className={`px-4 align-middle text-sm ${column.className || ''}`}
                     >
                       {column.render ? column.render(record) : record[column.key as keyof PortalRecord]}
-                    </TableCell>
+                    </td>
                   ))}
-                </TableRow>
+                </tr>
               ))}
               
               {/* Loading skeleton rows */}
               {isLoading && Array.from({ length: 3 }).map((_, index) => (
-                <TableRow key={`loading-${index}`} className="animate-pulse">
+                <tr key={`loading-${index}`} className="h-[60px] animate-pulse">
                   {columns.map((_, colIndex) => (
-                    <TableCell key={colIndex}>
+                    <td key={colIndex} className="px-4">
                       <div className="h-4 bg-gray-200 rounded"></div>
-                    </TableCell>
+                    </td>
                   ))}
-                </TableRow>
+                </tr>
               ))}
-            </TableBody>
+            </tbody>
             
             <PortalRecordsTableFooter records={sortedRecords} />
-          </Table>
+          </table>
         </div>
       </div>
 
