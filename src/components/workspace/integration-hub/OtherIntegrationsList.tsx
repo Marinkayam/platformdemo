@@ -9,7 +9,7 @@ interface OtherIntegrationsListProps {
 
 export function OtherIntegrationsList({ integrations }: OtherIntegrationsListProps) {
   return (
-    <div className="bg-white rounded-lg border border-grey-400">
+    <div className="lg:col-span-3 bg-white rounded-lg border border-grey-400">
       <div className="p-4 border-b border-grey-400">
         <h3 className="text-base font-semibold text-grey-900">Connectors</h3>
         <p className="text-sm text-grey-600">Additional integration options</p>
