@@ -82,7 +82,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
           <div className="flex">
             <button
               onClick={() => setUploadMode('real')}
-              className={`px-6 py-2.5 text-sm font-medium rounded-md transition-all ${
+              className={`px-6 py-2.5 text-xs font-medium rounded-md transition-all ${
                 uploadMode === 'real'
                   ? 'bg-primary text-white shadow-sm'
                   : 'text-grey-600 hover:text-grey-900 hover:bg-grey-50'
@@ -92,7 +92,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
             </button>
             <button
               onClick={() => setUploadMode('demo')}
-              className={`px-6 py-2.5 text-sm font-medium rounded-md transition-all ${
+              className={`px-6 py-2.5 text-xs font-medium rounded-md transition-all ${
                 uploadMode === 'demo'
                   ? 'bg-primary text-white shadow-sm'
                   : 'text-grey-600 hover:text-grey-900 hover:bg-grey-50'
