@@ -165,15 +165,15 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                 ) : (
                   <>
                     {/* Default State */}
-                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200 ${
+                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 ${
                       isDragging 
                         ? 'bg-primary/20 scale-110' 
                         : 'bg-grey-50 hover:bg-primary/5'
                     }`}>
                       <img 
-                        src="/lovable-uploads/ccd20285-a224-4f50-923f-b0798202cdb0.png" 
+                        src="/lovable-uploads/eb3891f0-219d-4575-9f07-3c12091a0aec.png" 
                         alt="Upload" 
-                        className={`w-5 h-5 transition-all duration-200 ${
+                        className={`w-8 h-8 transition-all duration-200 ${
                           isDragging 
                             ? 'opacity-100 scale-110' 
                             : 'opacity-60 hover:opacity-100'
@@ -284,7 +284,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
                         document.getElementById('demo-file-upload')?.click();
                       }}
                     >
-                      <img src="/lovable-uploads/ccd20285-a224-4f50-923f-b0798202cdb0.png" alt="Upload" className="w-4 h-4 mr-2" />
+                      <img src="/lovable-uploads/eb3891f0-219d-4575-9f07-3c12091a0aec.png" alt="Upload" className="w-6 h-6 mr-2" />
                       Upload Invoice PDFs
                     </Button>
                   </div>
