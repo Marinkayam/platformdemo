@@ -6,6 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ExceptionBanner } from "@/components/ui/exception-banner";
 import { Invoice } from "@/types/invoice";
 import { DuplicationResolutionModal } from "./DuplicationResolutionModal";
 import { ComparisonTable } from "./ComparisonTable";
@@ -81,38 +82,22 @@ export function DuplicationException({
         </Badge>
       </div>
 
-      {/* Exception Alert Banner */}
-      <div className="bg-red-50 p-4 rounded-xl border border-red-200">
-        <div className="flex items-start gap-3">
-          <TriangleAlert 
-            strokeWidth={1.25} 
-            className="mt-1 flex-shrink-0 text-red-600" 
-            size={18} 
-          />
-          <div>
-            <p className="text-gray-900 text-sm">
-              <span className="font-semibold">Duplication Detected:</span> Invoice {currentInvoice.number} has been submitted multiple times with different details.
-            </p>
-          </div>
-        </div>
-      </div>
+      <ExceptionBanner 
+        variant="error" 
+        icon="alert"
+        title="Duplication Detected"
+      >
+        Invoice {currentInvoice.number} has been submitted multiple times with different details.
+      </ExceptionBanner>
 
-      {/* Info Banner */}
-      <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
-        <div className="flex items-start gap-3">
-          <Sparkles 
-            strokeWidth={1.25} 
-            className="mt-1 flex-shrink-0 text-blue-600" 
-            size={18} 
-          />
-          <div>
-            <p className="text-gray-900 text-sm">
-              <span className="font-semibold">Action Required:</span> Compare both versions below and choose how to resolve this duplication. 
-              Select the version you want to keep or exclude both if needed.
-            </p>
-          </div>
-        </div>
-      </div>
+      <ExceptionBanner 
+        variant="info" 
+        icon="sparkles"
+        title="Action Required"
+      >
+        Compare both versions below and choose how to resolve this duplication. 
+        Select the version you want to keep or exclude both if needed.
+      </ExceptionBanner>
 
       {/* Comparison Table without inner box */}
       <ComparisonTable 

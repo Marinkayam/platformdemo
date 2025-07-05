@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ExceptionBanner } from "@/components/ui/exception-banner";
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 import { toast } from "@/hooks/use-toast";
@@ -104,19 +105,20 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
             </Badge>
           </div>
 
-          {/* Red banner with error message */}
-          <div className="bg-red-50 border border-red-200 rounded-md p-4">
-            <p className="text-red-800 text-sm font-medium">
-              Duplication Exceptions - Monto detected multiple invoices with the same number
-            </p>
-          </div>
+          <ExceptionBanner 
+            variant="error" 
+            icon="alert"
+            title="Duplication Exceptions"
+          >
+            Monto detected multiple invoices with the same number
+          </ExceptionBanner>
 
-          {/* Blue banner with instructions */}
-          <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-            <p className="text-blue-800 text-sm">
-              Please select the invoice you'd like to proceed with. Click on a card to select it, then choose to keep your selection or exclude all duplicates.
-            </p>
-          </div>
+          <ExceptionBanner 
+            variant="info" 
+            icon="info"
+          >
+            Please select the invoice you'd like to proceed with. Click on a card to select it, then choose to keep your selection or exclude all duplicates.
+          </ExceptionBanner>
 
           <DuplicateInvoiceCardsGrid 
             invoices={duplicateInvoices}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AlertTriangle, Upload, ChevronDown, ChevronUp, Lightbulb, X, File, TriangleAlert } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ExceptionBanner } from '@/components/ui/exception-banner';
 
 interface ValidationExceptionWizardProps {
   onResolve?: (resolutionData: any) => void;
@@ -228,23 +229,14 @@ const ValidationExceptionWizard = ({
           {/* Exception Alerts Section - Updated styling to match INV-10021301 */}
           <div className="space-y-3">
             {exceptions.map((exception, index) => (
-              <div 
+              <ExceptionBanner 
                 key={exception.id}
-                className="bg-red-50 p-4 rounded-xl border border-red-200"
+                variant="error" 
+                icon="alert"
+                title={exception.title}
               >
-                <div className="flex items-start gap-3">
-                  <TriangleAlert 
-                    strokeWidth={1.25} 
-                    className="mt-1 flex-shrink-0 text-red-600" 
-                    size={18} 
-                  />
-                  <div>
-                    <p className="text-gray-900 text-sm">
-                      <span className="font-semibold">{exception.title}:</span> {exception.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                {exception.description}
+              </ExceptionBanner>
             ))}
           </div>
           
