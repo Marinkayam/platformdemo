@@ -128,7 +128,7 @@ const Login = () => {
           </div>
 
           {/* Desk Illustration - Doubled size */}
-          <div className="flex justify-center hover-scale animate-pulse">
+          <div className="flex justify-center hover-scale">
             <img 
               alt="Desk Illustration" 
               src="/lovable-uploads/f1aa6c2a-356d-4e7c-86ef-601b891b80c3.png" 
