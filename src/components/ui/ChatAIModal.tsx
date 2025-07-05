@@ -127,7 +127,7 @@ export function ChatAIModal({ isOpen, onClose }: ChatAIModalProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => handleSubjectClick(subject.text)}
-                  className="justify-center h-auto py-2 px-3"
+                  className="justify-start h-auto py-2 px-3"
                 >
                   <span className="text-sm font-normal">{subject.text}</span>
                 </Button>
