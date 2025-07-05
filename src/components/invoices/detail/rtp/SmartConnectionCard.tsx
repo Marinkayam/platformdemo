@@ -21,7 +21,7 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold">Smart Connection</CardTitle>
+          <CardTitle className="text-lg font-medium">Smart Connection</CardTitle>
           <StatusBadge status={connection.status} />
         </div>
       </CardHeader>

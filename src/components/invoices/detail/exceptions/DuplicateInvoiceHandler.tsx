@@ -96,7 +96,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
         <div className="space-y-6">
           {/* Header with title and chip */}
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-black">
+            <h2 className="text-lg font-medium text-black">
               Resolve Exception
             </h2>
             <Badge variant="destructive" className="bg-red-100 text-red-800 border-red-200">

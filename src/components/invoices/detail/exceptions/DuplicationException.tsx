@@ -75,7 +75,7 @@ export function DuplicationException({
     <div className="space-y-6">
       {/* Header with Resolve Exception title and Duplication chip */}
       <div className="flex items-center gap-3">
-        <h2 className="text-xl font-semibold text-gray-900">Resolve Exception</h2>
+        <h2 className="text-lg font-medium text-gray-900">Resolve Exception</h2>
         <Badge className="bg-purple-100 text-purple-700 border-purple-200">
           Duplication
         </Badge>

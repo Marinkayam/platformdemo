@@ -23,7 +23,7 @@ export const POInformationCard = ({ po }: POCardProps) => {
   return (
     <Card className="mb-6">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Purchase Order Information</CardTitle>
+        <CardTitle className="text-lg font-medium">Purchase Order Information</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
