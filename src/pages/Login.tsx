@@ -38,7 +38,7 @@ const Login = () => {
 
           {/* Header */}
           <div className="space-y-2">
-            <h1 className="text-3xl font-semibold text-[#12141D] text-center">Welcome</h1>
+            <h1 className="text-3xl font-normal text-[#12141D] text-center">Welcome</h1>
             <p className="text-sm text-muted-foreground">Sign In</p>
           </div>
 
