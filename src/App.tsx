@@ -17,13 +17,11 @@ import Workspace from "./pages/Workspace";
 import Settings from "./pages/Settings";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
-import Welcome from "./pages/Welcome";
 import DesignSystemPlayground from "./pages/DesignSystemPlayground";
 import Onboarding from "./pages/Onboarding";
 import PaymentsRelationships from "./pages/PaymentsRelationships";
 import NewPaymentsRelationship from "./pages/NewPaymentsRelationship";
 import { NotificationsProvider } from "./context/NotificationsContext";
-import ShadcnSidebarPlayground from "./pages/ShadcnSidebarPlayground";
 import PortalsDashboard from "./pages/PortalsDashboard";
 
 const queryClient = new QueryClient();
@@ -39,8 +37,6 @@ const App = () => (
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/shadcn-sidebar" element={<ShadcnSidebarPlayground />} />
 
             {/* Routes requiring MainLayout */}
             <Route element={<MainLayout />}>
