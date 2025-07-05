@@ -100,10 +100,6 @@ const Login = () => {
             </Button>
           </form>
 
-          {/* Logo and Version */}
-          <div className="text-center space-y-2">
-            <img src="/monto-logo.svg" alt="Monto Logo" className="h-4 mx-auto" />
-          </div>
 
           {/* Footer Links */}
           <div className="text-center">
@@ -132,11 +128,11 @@ const Login = () => {
           </div>
 
           {/* Desk Illustration - Doubled size */}
-          <div className="flex justify-center hover-scale">
+          <div className="flex justify-center hover-scale animate-pulse">
             <img 
               alt="Desk Illustration" 
               src="/lovable-uploads/f1aa6c2a-356d-4e7c-86ef-601b891b80c3.png" 
-              className="w-[800px] max-w-full h-auto object-fill animate-fade-in" 
+              className="w-[800px] max-w-full h-auto object-fill animate-fade-in hover:animate-scale-in transition-all duration-500 hover:brightness-110" 
               style={{ animationDelay: "0.4s" }}
             />
           </div>
