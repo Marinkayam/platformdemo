@@ -243,7 +243,8 @@ export function SidebarSection({
               className={cn(
                 "flex items-center gap-3 px-3 py-3 text-sm font-normal rounded-md transition-colors w-full text-left",
                 "text-[#3F4758] hover:bg-[#F4F4F7]",
-                isActive && "bg-[#F0EDFF] text-[#7B59FF] font-normal"
+                isActive && "bg-[#F0EDFF] text-[#7B59FF] font-normal",
+                item.hidden && "opacity-5 hover:opacity-100"
               )}
               onClick={item.id === "chat-ai-nav" && onChatAIOpen ? onChatAIOpen : undefined}
             >

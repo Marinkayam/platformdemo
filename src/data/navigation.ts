@@ -216,6 +216,7 @@ export interface NavItem {
   icon?: any;
   items?: NavItem[];
   id?: string;
+  hidden?: boolean;
 }
 
 export const navMain: NavItem[] = [
@@ -271,6 +272,7 @@ export const navMain: NavItem[] = [
     title: "Design System",
     href: "/design-system",
     icon: HeartIcon,
+    hidden: true,
   },
 ];
 
