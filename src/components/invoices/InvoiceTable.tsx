@@ -16,12 +16,6 @@ interface InvoiceTableProps {
 export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false }: InvoiceTableProps) {
   const navigate = useNavigate();
   
-  console.log('InvoiceTable render:', { 
-    invoicesLength: invoices.length, 
-    isLoading, 
-    isPendingTab 
-  });
-  
   const { 
     sortedInvoices, 
     sortField, 
@@ -29,8 +23,6 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
     handleSort, 
     setLocalInvoices 
   } = useSortedInvoices(invoices);
-  
-  console.log('Sorted invoices length:', sortedInvoices.length);
 
   const handleAssign = (invoiceId: string, email: string) => {
     setLocalInvoices(prev => {

@@ -9,6 +9,7 @@ import { useInvoiceFiltering } from "@/hooks/useInvoiceFiltering";
 export default function Invoices() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("all");
+  const [isLoading, setIsLoading] = useState(true);
   
   // Set active tab based on URL search params
   useEffect(() => {
@@ -25,6 +26,16 @@ export default function Invoices() {
       setActiveTab("all");
     }
   }, [location.search]);
+
+  // Simulate loading effect for realistic UX
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200); // 1.2 seconds loading time
+
+    return () => clearTimeout(timer);
+  }, [activeTab]); // Reload when tab changes
   
   // Use custom hook for filtering
   const { filters, setFilters, filteredInvoices } = useInvoiceFiltering(invoiceData, activeTab);
@@ -66,6 +77,7 @@ export default function Invoices() {
       <InvoiceTable 
         invoices={filteredInvoices} 
         isPendingTab={activeTab === "pending"}
+        isLoading={isLoading}
       />
     </div>
   );
