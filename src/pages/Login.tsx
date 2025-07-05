@@ -118,7 +118,7 @@ const Login = () => {
         <div className="max-w-md space-y-8 animate-fade-in">
           {/* Tagline - Doubled size */}
           <div className="text-4xl text-[#12141D] text-center leading-tight py-[17px] animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            <span>You should get paid on time, <strong>every time.</strong></span>
+            <span>You should get paid on time, <span className="font-semibold">every time.</span></span>
           </div>
 
           {/* Desk Illustration - Doubled size */}
