@@ -12,7 +12,7 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
   const { state: sidebarState } = useSidebar();
   const isCollapsed = sidebarState === "collapsed";
   return (
-    <Sidebar variant="sidebar" collapsible="icon" className="w-64 bg-[#FAFAFA] border-r border-[#E4E5E9] transition-all duration-300">
+    <Sidebar variant="sidebar" collapsible="icon" className="z-50 w-64 bg-[#FAFAFA] border-r border-[#E4E5E9] transition-all duration-300">
       <SidebarHeader className="border-b border-[#E4E5E9] h-[64px] flex items-center justify-center p-0">
         {isCollapsed ? (
         <svg width="32" height="32" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
