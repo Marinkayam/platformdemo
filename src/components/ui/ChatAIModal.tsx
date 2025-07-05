@@ -119,7 +119,6 @@ export function ChatAIModal({ isOpen, onClose }: ChatAIModalProps) {
         <div className="flex flex-col gap-4 max-h-[60vh]">
           {/* Quick Subjects */}
           <div className="space-y-2">
-            <h4 className="text-sm font-medium text-muted-foreground">Quick Topics</h4>
             <div className="grid grid-cols-2 gap-2">
               {montoSubjects.map((subject, index) => (
                 <Button
