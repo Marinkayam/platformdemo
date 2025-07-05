@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/hooks/use-toast';
 import { MontoLogo } from '@/components/MontoLogo';
-import { Typewriter } from '@/components/ui/typewriter-text';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -119,12 +118,7 @@ const Login = () => {
         <div className="max-w-md space-y-8 animate-fade-in">
           {/* Tagline - Doubled size */}
           <div className="text-4xl text-[#12141D] text-center leading-tight py-[17px] animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            <Typewriter
-              text={["You should get paid on time, every time."]}
-              speed={80}
-              loop={false}
-              className="text-4xl text-[#12141D] leading-tight"
-            />
+            <span>You should get paid on time, <strong>every time.</strong></span>
           </div>
 
           {/* Desk Illustration - Doubled size */}
