@@ -15,28 +15,24 @@ interface ExceptionBannerProps {
 
 const variantStyles = {
   error: {
-    container: "bg-rose-50/50 border-l-4 border-l-rose-400 border border-rose-100/60",
-    icon: "text-rose-500",
-    title: "text-rose-900",
-    text: "text-rose-800"
+    container: "bg-red-50 border border-red-200 text-red-800",
+    icon: "text-error-main",
+    title: "text-red-900"
   },
   warning: {
-    container: "bg-amber-50/50 border-l-4 border-l-amber-400 border border-amber-100/60",
-    icon: "text-amber-500",
-    title: "text-amber-900", 
-    text: "text-amber-800"
+    container: "bg-amber-50 border border-amber-200 text-amber-800",
+    icon: "text-warning-main",
+    title: "text-amber-900"
   },
   info: {
-    container: "bg-blue-50/50 border-l-4 border-l-blue-400 border border-blue-100/60",
-    icon: "text-blue-500",
-    title: "text-blue-900",
-    text: "text-blue-800"
+    container: "bg-blue-50 border border-blue-200 text-blue-800",
+    icon: "text-info-main",
+    title: "text-blue-900"
   },
   success: {
-    container: "bg-emerald-50/50 border-l-4 border-l-emerald-400 border border-emerald-100/60",
-    icon: "text-emerald-500",
-    title: "text-emerald-900",
-    text: "text-emerald-800"
+    container: "bg-green-50 border border-green-200 text-green-800",
+    icon: "text-success-main",
+    title: "text-green-900"
   }
 };
 
@@ -60,25 +56,23 @@ export function ExceptionBanner({
 
   return (
     <div className={cn(
-      "p-5 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md",
+      "p-3 rounded-lg text-sm",
       styles.container,
       className
     )}>
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-2">
         <IconComponent 
-          strokeWidth={1.5} 
+          strokeWidth={1.25} 
           className={cn("mt-0.5 flex-shrink-0", styles.icon)} 
-          size={20} 
+          size={16} 
         />
-        <div className="flex-1 space-y-1">
+        <div className="flex-1">
           {title && (
-            <p className={cn("font-semibold text-base leading-relaxed", styles.title)}>
-              {title}
-            </p>
+            <span className={cn("font-semibold", styles.title)}>
+              {title}:{" "}
+            </span>
           )}
-          <div className={cn("text-base leading-relaxed", styles.text)}>
-            {children}
-          </div>
+          <span>{children}</span>
         </div>
       </div>
     </div>
