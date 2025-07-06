@@ -15,9 +15,9 @@ interface ExceptionBannerProps {
 
 const variantStyles = {
   error: {
-    container: "bg-red-50 border border-red-200 text-error-main",
+    container: "bg-red-50 border border-red-200 text-red-900",
     icon: "text-error-main",
-    title: "text-error-main"
+    title: "text-red-900"
   },
   warning: {
     container: "bg-amber-50 border border-amber-200 text-amber-800",
