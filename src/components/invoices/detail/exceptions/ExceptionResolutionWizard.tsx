@@ -311,8 +311,15 @@ const ExceptionResolutionWizard = ({
             ))}
           </div>
           
-          
-          {/* File Upload Section */}
+          {/* Resolution Guidance Text */}
+          <div className="flex items-start gap-3">
+            <WandSparkles className="mt-1 flex-shrink-0" style={{ color: '#7B59FF' }} size={16} />
+            <div>
+              <p style={{ color: '#38415F' }} className="text-sm">
+                To resolve these issues, you can upload a new RTP with a valid PO number that has sufficient available funds, or contact your customer for clarification.
+              </p>
+            </div>
+          </div>
           <div 
             className={`bg-white p-6 rounded-xl border border-gray-200 flex flex-col items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 ${
               selectedOption === 'upload' ? 'ring-2 ring-purple-500 border-purple-500' : ''
