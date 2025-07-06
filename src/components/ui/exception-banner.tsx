@@ -72,7 +72,7 @@ export function ExceptionBanner({
         />
         <div className="flex-1">
           {title && (
-            <span className={cn("font-semibold", styles.title)} style={variant === 'error' ? { color: styles.textColor } : undefined}>
+            <span className={cn("font-medium", styles.title)} style={variant === 'error' ? { color: styles.textColor } : undefined}>
               {title}:{" "}
             </span>
           )}
