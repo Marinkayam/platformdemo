@@ -65,15 +65,15 @@ export function POLineItemsExceptionHandler({
       <ExceptionBanner 
         variant="warning" 
         icon="alert"
-        title="⚠️ PO Line Items"
+        title="PO Line Items"
       >
-        Monto Could not find or select PO line items that matches the invoice details
+        Monto could not find or select PO line items that matches the invoice details
       </ExceptionBanner>
 
       <ExceptionBanner 
         variant="info" 
         icon="sparkles"
-        title="Resolution Instructions from Back Office"
+        title="Resolution Instructions"
       >
         To resolve these issues select PO line items that matches the invoice details
       </ExceptionBanner>

@@ -15,7 +15,7 @@ export function ExceptionBanners() {
       <ExceptionBanner 
         variant="info" 
         icon="lightbulb"
-        title="Resolve this issue by"
+        title="Resolution"
       >
         Manually filling required fields Or Upload New RTP with the correct Data (Optional)
       </ExceptionBanner>
