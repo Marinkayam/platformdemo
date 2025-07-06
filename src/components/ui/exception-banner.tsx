@@ -15,9 +15,9 @@ interface ExceptionBannerProps {
 
 const variantStyles = {
   error: {
-    container: "bg-red-50 border border-red-200 text-red-800",
+    container: "bg-red-50 border border-red-200 text-error-main",
     icon: "text-error-main",
-    title: "text-red-900"
+    title: "text-error-main"
   },
   warning: {
     container: "bg-amber-50 border border-amber-200 text-amber-800",
@@ -64,7 +64,7 @@ export function ExceptionBanner({
         <IconComponent 
           strokeWidth={1.25} 
           className={cn("mt-0.5 flex-shrink-0", styles.icon)} 
-          size={16} 
+          size={14} 
         />
         <div className="flex-1">
           {title && (
