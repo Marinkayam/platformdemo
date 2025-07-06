@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AlertTriangle, Upload, ChevronDown, ChevronUp, Lightbulb, X, File, TriangleAlert } from 'lucide-react';
+import { AlertTriangle, Upload, ChevronDown, ChevronUp, WandSparkles, X, File, TriangleAlert } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ExceptionBanner } from '@/components/ui/exception-banner';
 
@@ -314,7 +314,7 @@ const ExceptionResolutionWizard = ({
           {/* Resolution Guidance Section */}
           <div className="bg-white p-4 rounded-xl border border-gray-200">
             <div className="flex items-start gap-3">
-              <Lightbulb className="mt-1 flex-shrink-0" style={{ color: '#7B59FF' }} size={20} />
+              <WandSparkles className="mt-1 flex-shrink-0" style={{ color: '#7B59FF' }} size={20} />
               <div>
                 <p style={{ color: '#38415F' }} className="text-sm">
                   To resolve these issues, you can upload a new RTP with a valid PO number that has sufficient available funds, or contact your customer for clarification.
