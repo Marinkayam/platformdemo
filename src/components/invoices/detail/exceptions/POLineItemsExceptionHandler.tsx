@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ExceptionBanner } from "@/components/ui/exception-banner";
+import { WandSparkles } from "lucide-react";
 import { Exception } from "@/types/exception";
 import { Invoice } from "@/types/invoice";
 import { ResolutionOptions } from "./extra-data/ResolutionOptions";
@@ -63,20 +64,22 @@ export function POLineItemsExceptionHandler({
       </div>
 
       <ExceptionBanner 
-        variant="warning" 
+        variant="error" 
         icon="alert"
         title="PO Line Items"
       >
         Monto could not find or select PO line items that matches the invoice details
       </ExceptionBanner>
 
-      <ExceptionBanner 
-        variant="info" 
-        icon="sparkles"
-        title="Resolution Instructions"
-      >
-        To resolve these issues select PO line items that matches the invoice details
-      </ExceptionBanner>
+      {/* Resolution guidance without background container */}
+      <div className="flex items-start gap-3">
+        <WandSparkles className="mt-0.5 flex-shrink-0" style={{ color: '#7B59FF' }} size={16} />
+        <div>
+          <p style={{ color: '#38415F' }} className="text-sm">
+            To resolve these issues select PO line items that matches the invoice details
+          </p>
+        </div>
+      </div>
 
       {/* Instructions Text Field */}
       <Card className="shadow-none">
