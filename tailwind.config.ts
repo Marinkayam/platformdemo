@@ -53,6 +53,7 @@ export default {
 				'background-paper': '#FFFFFF',
 				'divider': 'rgba(140, 148, 169, 0.2)',
 				'monto-purple': '#7B59FF',
+				'modal-overlay': 'rgba(1, 23, 62, 0.25)',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
