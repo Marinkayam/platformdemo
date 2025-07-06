@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertTriangle, Upload, ChevronDown, ChevronUp, Lightbulb, X, File, TriangleAlert } from 'lucide-react';
+import { AlertTriangle, Upload, ChevronDown, ChevronUp, Lightbulb, X, File, TriangleAlert, WandSparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ExceptionBanner } from '@/components/ui/exception-banner';
 
@@ -240,15 +240,13 @@ const ValidationExceptionWizard = ({
             ))}
           </div>
           
-          {/* Resolution Guidance Section */}
-          <div className="bg-white p-4 rounded-xl border border-gray-200">
-            <div className="flex items-start gap-3">
-              <Lightbulb className="mt-1 flex-shrink-0" style={{ color: '#7B59FF' }} size={20} />
-              <div>
-                <p style={{ color: '#38415F' }} className="text-sm">
-                  To resolve these validation issues, you can upload a corrected RTP with valid data, or contact your customer for clarification.
-                </p>
-              </div>
+          {/* Resolution guidance without background container */}
+          <div className="flex items-start gap-3">
+            <WandSparkles className="mt-0.5 flex-shrink-0" style={{ color: '#7B59FF' }} size={16} />
+            <div>
+              <p style={{ color: '#38415F' }} className="text-sm">
+                To resolve these validation issues, you can upload a corrected RTP with valid data, or contact your customer for clarification.
+              </p>
             </div>
           </div>
           
