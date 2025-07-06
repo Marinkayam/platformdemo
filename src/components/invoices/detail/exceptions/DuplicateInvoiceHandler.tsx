@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExceptionBanner } from "@/components/ui/exception-banner";
+import { WandSparkles } from "lucide-react";
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 import { toast } from "@/hooks/use-toast";
@@ -113,12 +114,15 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
             Monto detected multiple invoices with the same number
           </ExceptionBanner>
 
-          <ExceptionBanner 
-            variant="info" 
-            icon="info"
-          >
-            Please select the invoice you'd like to proceed with. Click on a card to select it, then choose to keep your selection or exclude all duplicates.
-          </ExceptionBanner>
+          {/* Resolution guidance without background container */}
+          <div className="flex items-start gap-3">
+            <WandSparkles className="mt-0.5 flex-shrink-0" style={{ color: '#7B59FF' }} size={16} />
+            <div>
+              <p style={{ color: '#38415F' }} className="text-sm">
+                Please select the invoice you'd like to proceed with. Click on a card to select it, then choose to keep your selection or exclude all duplicates.
+              </p>
+            </div>
+          </div>
 
           <DuplicateInvoiceCardsGrid 
             invoices={duplicateInvoices}
