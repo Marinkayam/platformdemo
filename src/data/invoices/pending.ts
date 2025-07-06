@@ -202,5 +202,38 @@ export const pendingInvoices: Invoice[] = [
     documentType: "Invoice",
     portal: "SAP Ariba",
     hasExceptions: false
+  },
+  {
+    id: "6",
+    number: "INV-10032100",
+    buyer: "TechCorp Solutions",
+    dueDate: "2024-05-15",
+    status: "Pending Action",
+    total: 5750.00,
+    creationDate: "2024-04-10",
+    owner: "alex.thompson@example.com",
+    assignee: "sarah.davis@example.com",
+    subtotal: 5000.00,
+    tax: 750.00,
+    paymentTerms: "Net 30",
+    currency: "USD",
+    poNumber: "PO-10032",
+    taxId: "TAX-007",
+    requesterEmail: "billing@techcorp.com",
+    documentType: "Invoice",
+    portal: "Oracle Procurement",
+    hasExceptions: true,
+    rejectedBy: "Buyer",
+    exceptions: [
+      {
+        id: "exc-extra-data-001",
+        type: "EXTRA_DATA",
+        message: "Extra Data Required",
+        details: "Additional information is required to process this invoice",
+        createdAt: "2024-04-10T11:00:00Z",
+        resolved: false,
+        missingFields: ["additionalNotes", "projectCode"]
+      }
+    ]
   }
 ];
