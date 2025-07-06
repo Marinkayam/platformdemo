@@ -1,5 +1,5 @@
 import React from "react";
-import { TriangleAlert, AlertCircle, Info, Lightbulb, Sparkles } from "lucide-react";
+import { TriangleAlert, AlertCircle, Info, WandSparkles, FileX2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type ExceptionBannerVariant = "error" | "warning" | "info" | "success";
@@ -37,11 +37,11 @@ const variantStyles = {
 };
 
 const iconComponents = {
-  alert: TriangleAlert,
+  alert: FileX2,
   circle: AlertCircle,
   info: Info,
-  lightbulb: Lightbulb,
-  sparkles: Sparkles
+  lightbulb: WandSparkles,
+  sparkles: WandSparkles
 };
 
 export function ExceptionBanner({ 
