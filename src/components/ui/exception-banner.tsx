@@ -15,24 +15,28 @@ interface ExceptionBannerProps {
 
 const variantStyles = {
   error: {
-    container: "bg-red-50/50 border border-red-200 text-red-900",
+    container: "bg-red-50/50 border border-red-200",
     icon: "text-error-main",
-    title: "text-red-900"
+    title: "",
+    textColor: "#DF1C41"
   },
   warning: {
     container: "bg-amber-50 border border-amber-200 text-amber-800",
     icon: "text-warning-main",
-    title: "text-amber-900"
+    title: "text-amber-900",
+    textColor: undefined
   },
   info: {
     container: "bg-white border border-primary text-gray-900",
     icon: "text-primary",
-    title: "text-gray-900"
+    title: "text-gray-900",
+    textColor: undefined
   },
   success: {
     container: "bg-green-50 border border-green-200 text-green-800",
     icon: "text-success-main",
-    title: "text-green-900"
+    title: "text-green-900",
+    textColor: undefined
   }
 };
 
@@ -59,7 +63,7 @@ export function ExceptionBanner({
       "p-3 rounded-lg text-sm",
       styles.container,
       className
-    )}>
+    )} style={variant === 'error' ? { color: styles.textColor } : undefined}>
       <div className="flex items-start gap-2">
         <IconComponent 
           strokeWidth={1.25} 
@@ -68,7 +72,7 @@ export function ExceptionBanner({
         />
         <div className="flex-1">
           {title && (
-            <span className={cn("font-semibold", styles.title)}>
+            <span className={cn("font-semibold", styles.title)} style={variant === 'error' ? { color: styles.textColor } : undefined}>
               {title}:{" "}
             </span>
           )}
