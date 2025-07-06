@@ -25,9 +25,9 @@ const variantStyles = {
     title: "text-amber-900"
   },
   info: {
-    container: "bg-white border border-gray-200 text-primary",
+    container: "bg-white border border-primary text-gray-900",
     icon: "text-primary",
-    title: "text-primary"
+    title: "text-gray-900"
   },
   success: {
     container: "bg-green-50 border border-green-200 text-green-800",
