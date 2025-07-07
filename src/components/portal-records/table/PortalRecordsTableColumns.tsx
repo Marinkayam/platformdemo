@@ -34,7 +34,6 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
       render: (record: PortalRecord) => (
         <div className="flex items-center gap-2">
           <PortalLogo portalName={record.portal} className="w-4 h-4" />
-          <span className="text-sm text-gray-900 truncate">{record.portal}</span>
         </div>
       )
     },
