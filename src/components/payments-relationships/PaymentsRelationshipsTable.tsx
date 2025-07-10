@@ -192,14 +192,28 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                     </TableCell>
                     
                     <TableCell className="py-6">
-                      <div className="flex items-center gap-2">
-                        <span className="text-gray-700 font-medium">
-                          {connection.agents.length}
-                        </span>
-                        <span className="text-gray-500 text-sm">
-                          agent{connection.agents.length !== 1 ? 's' : ''}
-                        </span>
-                      </div>
+                      {connection.agents.length === 0 ? (
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-blue-600 hover:text-blue-700 p-0 h-auto font-normal"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddAgent(connection.id);
+                          }}
+                        >
+                          +Add Agent
+                        </Button>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-700 font-medium">
+                            {connection.agents.length}
+                          </span>
+                          <span className="text-gray-500 text-sm">
+                            agent{connection.agents.length !== 1 ? 's' : ''}
+                          </span>
+                        </div>
+                      )}
                     </TableCell>
                     
                     <TableCell className="py-6">
