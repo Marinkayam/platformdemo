@@ -203,7 +203,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-blue-600 hover:text-blue-700 p-0 h-auto font-normal"
+                              className="text-purple-600 hover:text-purple-700 p-0 h-auto font-normal"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleAddAgent(connection.id);

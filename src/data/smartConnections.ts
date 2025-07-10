@@ -62,7 +62,7 @@ export const mockSmartConnections: SmartConnection[] = [
     receivableErp: "Oracle",
     payableErp: "Workday",
     status: "In Process",
-    agentCount: 2,
+    agentCount: 1,
     lastUpdated: "2025-05-10",
     isActive: true,
     agents: [
@@ -74,14 +74,6 @@ export const mockSmartConnections: SmartConnection[] = [
         portalUser: "admin@amazon.com",
         role: "Both"
       },
-      {
-        id: "a4",
-        portalName: "Tradeshift",
-        type: "Monto",
-        status: "Validating",
-        portalUser: "setup@google.com",
-        role: "Submit Invoice"
-      }
     ],
     buyer: { name: "Google LLC" },
     supplier: { name: "Amazon Inc." },
