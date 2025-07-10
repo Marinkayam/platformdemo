@@ -43,9 +43,6 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
 
   return (
     <>
-      <div className="mt-4 mb-2 w-full text-left text-sm text-[#586079] font-medium tracking-tight px-2">
-        Agents
-      </div>
       <AgentTable
         connection={connection}
         onViewDetails={handleViewDetails}
