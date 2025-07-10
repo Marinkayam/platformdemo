@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AgentTable } from "./AgentTable";
 import { AgentModals } from "./AgentModals";
 import { SmartConnection, Agent } from "@/types/smartConnection";
-import { AIScanProgress, ScanCompletionIndicator } from "./agent-sections";
+import { AIScanProgress } from "./agent-sections";
 
 interface ExpandedAgentCardProps {
   connection: SmartConnection;
@@ -50,7 +50,6 @@ export function ExpandedAgentCard({ connection }: ExpandedAgentCardProps) {
   return (
     <>
       {!scanComplete && <AIScanProgress onComplete={handleScanComplete} />}
-      {scanComplete && <ScanCompletionIndicator />}
       
       <div className="mt-4 mb-2 w-full text-left text-sm text-[#586079] font-medium tracking-tight px-2">
         Agents
