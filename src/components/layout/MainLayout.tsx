@@ -54,11 +54,11 @@ export function MainLayout() {
             </div>
             {/* Hidden user settings for demo */}
             <DropdownMenu>
-              <DropdownMenuTrigger asChild className="hidden">
-                <button className="w-8 h-8 rounded-full flex items-center justify-center font-medium cursor-pointer hover:opacity-80 transition-opacity" style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}>
-                  L
-                </button>
-              </DropdownMenuTrigger>
+               <DropdownMenuTrigger asChild>
+                 <button className="w-8 h-8 rounded-full flex items-center justify-center font-medium cursor-pointer hover:opacity-80 transition-opacity" style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}>
+                   L
+                 </button>
+               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-2 py-1.5">
                   <p className="text-sm font-medium">Lisa Smith</p>
@@ -77,22 +77,22 @@ export function MainLayout() {
                   </svg>
                   <span>My Company</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer py-2" onClick={handleSettingsClick}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                    <path d="m14.305 19.53.923-.382"/>
-                    <path d="m15.228 16.852-.923-.383"/>
-                    <path d="m16.852 15.228-.383-.923"/>
-                    <path d="m16.852 20.772-.383.924"/>
-                    <path d="m19.148 15.228.383-.923"/>
-                    <path d="m19.53 21.696-.382-.924"/>
-                    <path d="M2 21a8 8 0 0 1 10.434-7.62"/>
-                    <path d="m20.772 16.852.924-.383"/>
-                    <path d="m20.772 19.148.924.383"/>
-                    <circle cx="10" cy="8" r="5"/>
-                    <circle cx="18" cy="18" r="3"/>
-                  </svg>
-                  <span>Settings</span>
-                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer py-2 hidden" onClick={handleSettingsClick}>
+                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                     <path d="m14.305 19.53.923-.382"/>
+                     <path d="m15.228 16.852-.923-.383"/>
+                     <path d="m16.852 15.228-.383-.923"/>
+                     <path d="m16.852 20.772-.383.924"/>
+                     <path d="m19.148 15.228.383-.923"/>
+                     <path d="m19.53 21.696-.382-.924"/>
+                     <path d="M2 21a8 8 0 0 1 10.434-7.62"/>
+                     <path d="m20.772 16.852.924-.383"/>
+                     <path d="m20.772 19.148.924.383"/>
+                     <circle cx="10" cy="8" r="5"/>
+                     <circle cx="18" cy="18" r="3"/>
+                   </svg>
+                   <span>Settings</span>
+                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer py-2" onClick={handleLogout}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
