@@ -40,31 +40,28 @@ export function PurchaseOrderTableHeader({
   return (
     <TableHeader>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 flex-1">
+        <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[200px] min-w-[200px]">
            <SortButton field="poNumber">PO Number</SortButton>
          </TableHead>
-         <TableHead className="flex-1">
+         <TableHead className="w-[200px] min-w-[200px]">
            <SortButton field="supplier">Buyer Name</SortButton>
          </TableHead>
-         <TableHead className="flex-1">
-           <SortButton field="portal">Portal</SortButton>
-         </TableHead>
-         <TableHead className="flex-1">
-           <SortButton field="status">Order Date</SortButton>
-         </TableHead>
-         <TableHead className="flex-1">
+         <TableHead className="w-[200px] min-w-[200px]">
            <SortButton field="status">Portal Status</SortButton>
          </TableHead>
-         <TableHead className="flex-1">
+         <TableHead className="w-[200px] min-w-[200px]">
+           <SortButton field="portal">Portal</SortButton>
+         </TableHead>
+         <TableHead className="w-[200px] min-w-[200px]">
            <SortButton field="totalAmount">Total Amount</SortButton>
          </TableHead>
-         <TableHead className="flex-1">
+         <TableHead className="w-[200px] min-w-[200px]">
            <SortButton field="invoicedAmount">Amount Invoiced</SortButton>
          </TableHead>
-         <TableHead className="flex-1">
+         <TableHead className="w-[200px] min-w-[200px]">
            <SortButton field="amountLeft">Amount Left</SortButton>
          </TableHead>
-         <TableHead className="flex-1">
+         <TableHead className="w-[200px] min-w-[200px]">
            <SortButton field="dueDate">Payment Terms</SortButton>
          </TableHead>
       </TableRow>

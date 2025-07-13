@@ -32,20 +32,24 @@ export function PurchaseOrderTableFooter({ purchaseOrders }: PurchaseOrderTableF
   return (
     <TableFooter>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableCell colSpan={2} className="font-semibold text-gray-700 sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200">
+        <TableCell className="font-semibold text-gray-700 sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[200px] min-w-[200px]">
           <div className="flex items-center gap-2">
-            <span>Total Purchase Orders:</span>
+            <span>Total POs:</span>
             <span className="font-bold text-gray-900">{totalPurchaseOrders}</span>
           </div>
         </TableCell>
-        <TableCell colSpan={2} className="bg-[#F6F7F9]"></TableCell>
-        <TableCell className="font-semibold text-gray-700 bg-[#F6F7F9]">
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
+        <TableCell className="font-semibold text-gray-700 bg-[#F6F7F9] w-[200px] min-w-[200px]">
           <div className="flex items-center gap-2 whitespace-nowrap">
-            <span>Total Amount:</span>
+            <span>Total:</span>
             <span className="font-bold text-gray-900 whitespace-nowrap">{formatTotalAmounts()}</span>
           </div>
         </TableCell>
-        <TableCell colSpan={3} className="bg-[#F6F7F9]"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
       </TableRow>
     </TableFooter>
   );
