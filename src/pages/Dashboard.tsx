@@ -3,12 +3,14 @@ import React, { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardMetricsGrid } from "@/components/dashboard/DashboardMetricsGrid";
 import { DashboardExceptions } from "@/components/dashboard/DashboardExceptions";
-import { DashboardInsights } from "@/components/dashboard/DashboardInsights";
-import { CompactCashForecast } from "@/components/dashboard/CompactCashForecast";
+import { TransactionsChart } from "@/components/dashboard/TransactionsChart";
+import { AccountReceivables } from "@/components/dashboard/AccountReceivables";
+import { DateRangeFilter, DateRange } from "@/components/dashboard/DateRangeFilter";
 import { calculateExceptionData } from "@/utils/dashboardAnalytics";
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [dateRange, setDateRange] = useState<DateRange>('last-month');
 
   useEffect(() => {
     // Simulate loading delay
@@ -19,14 +21,16 @@ const Dashboard = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Mock metrics data based on the screenshot
+  // Mock metrics data for the new structure
   const metricsData = {
     totalCustomers: 425,
     totalOpenPOsValue: 73500000,
-    totalApprovedInvoices: 48750000,
     connectedPortals: 120,
-    availableEarlyPayments: 12500000,
     atRiskCash: 2350000,
+    upcomingAmount: 30,
+    upcomingInvoices: 185,
+    pastDueAmount: 30,
+    pastDueInvoices: 92,
   };
 
   const exceptionData = calculateExceptionData();
@@ -56,14 +60,21 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-8 p-2">
-      {/* Insights and Cash Forecast Row - Top priority */}
+      {/* Transactions and Account Receivables Row - Top priority */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <DashboardInsights />
-        <CompactCashForecast />
+        <TransactionsChart />
+        <AccountReceivables />
       </div>
       
       {/* Exceptions Row */}
       <DashboardExceptions exceptionData={exceptionData} />
+      
+      {/* Date Range Filter */}
+      <DateRangeFilter 
+        value={dateRange} 
+        onChange={setDateRange}
+        className="flex justify-end"
+      />
       
       {/* Main Metrics Grid */}
       <DashboardMetricsGrid data={metricsData} />

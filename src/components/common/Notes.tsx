@@ -98,10 +98,11 @@ export function Notes({ entityId, entityType, className }: NotesProps) {
       <Card className="p-4 rounded-xl shadow-sm">
         <div className="font-medium text-sm mb-2">Add a note...</div>
         <Textarea
-          placeholder="Write your note here..."
+          placeholder="Coming Soon"
           className="mb-3 min-h-[80px]"
           value={newNoteContent}
           onChange={(e) => setNewNoteContent(e.target.value)}
+          disabled
         />
         <div className="flex justify-between items-center">
           <Button variant="ghost" size="sm" className="flex items-center gap-1 text-sm text-gray-600">

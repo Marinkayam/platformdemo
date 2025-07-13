@@ -1,14 +1,16 @@
 import React from 'react';
 import { AnalyticsCard } from './AnalyticsCard';
-import { TrendingUp, TrendingDown, Building, FileText, CreditCard, AlertTriangle } from 'lucide-react';
+import { TrendingUp, Building, FileText, CreditCard, AlertTriangle, Clock } from 'lucide-react';
 
 interface MetricsData {
   totalCustomers: number;
   totalOpenPOsValue: number;
-  totalApprovedInvoices: number;
   connectedPortals: number;
-  availableEarlyPayments: number;
   atRiskCash: number;
+  upcomingAmount: number;
+  upcomingInvoices: number;
+  pastDueAmount: number;
+  pastDueInvoices: number;
 }
 
 interface DashboardMetricsGridProps {
@@ -27,22 +29,6 @@ export function DashboardMetricsGrid({ data }: DashboardMetricsGridProps) {
       />
       
       <AnalyticsCard
-        title="Total Open POs Value"
-        value={`$${(data.totalOpenPOsValue / 1000000).toFixed(1)}M`}
-        subtitle="+14.5% from last month"
-        type="upcoming"
-        icon={<FileText className="h-4 w-4" style={{ width: 16, height: 16 }} />}
-      />
-      
-      <AnalyticsCard
-        title="Total Approved Invoices"
-        value={`$${(data.totalApprovedInvoices / 1000000).toFixed(1)}M`}
-        subtitle="+6.2% from last month"
-        type="paid"
-        icon={<TrendingUp className="h-4 w-4" style={{ width: 16, height: 16 }} />}
-      />
-      
-      <AnalyticsCard
         title="Connected Portals"
         value={data.connectedPortals.toString()}
         subtitle="+12% from last month"
@@ -51,17 +37,33 @@ export function DashboardMetricsGrid({ data }: DashboardMetricsGridProps) {
       />
       
       <AnalyticsCard
-        title="Available Early Payments"
-        value={`$${(data.availableEarlyPayments / 1000000).toFixed(1)}M`}
-        subtitle="+18.7% from last month"
-        type="portal"
-        icon={<TrendingUp className="h-4 w-4" style={{ width: 16, height: 16 }} />}
+        title="Total Open POs"
+        value={`$${(data.totalOpenPOsValue / 1000000).toFixed(1)}M`}
+        subtitle="+14.5% from last month"
+        type="upcoming"
+        icon={<FileText className="h-4 w-4" style={{ width: 16, height: 16 }} />}
       />
       
       <AnalyticsCard
         title="At-Risk Cash"
         value={`$${(data.atRiskCash / 1000000).toFixed(1)}M`}
         subtitle="-5.8% from last month"
+        type="pastdue"
+        icon={<AlertTriangle className="h-4 w-4" style={{ width: 16, height: 16 }} />}
+      />
+      
+      <AnalyticsCard
+        title="Upcoming"
+        value={`$${data.upcomingAmount}M`}
+        subtitle={`${data.upcomingInvoices} invoices`}
+        type="upcoming"
+        icon={<Clock className="h-4 w-4" style={{ width: 16, height: 16 }} />}
+      />
+      
+      <AnalyticsCard
+        title="Past Due"
+        value={`$${data.pastDueAmount}M`}
+        subtitle={`${data.pastDueInvoices} invoices`}
         type="pastdue"
         icon={<AlertTriangle className="h-4 w-4" style={{ width: 16, height: 16 }} />}
       />

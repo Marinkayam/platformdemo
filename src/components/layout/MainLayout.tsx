@@ -45,14 +45,16 @@ export function MainLayout() {
             {/* You can add breadcrumbs or page title here if needed */}
           </div>
           <div className="flex items-center gap-3 ml-auto pr-4">
-            <div className="relative">
+            {/* Hidden notifications for demo */}
+            <div className="relative hidden">
               <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#E6E7EB' }}>
                 <NotificationsPopover />
               </div>
               <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500 border-2 border-[#FAFAFA]" />
             </div>
+            {/* Hidden user settings for demo */}
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenuTrigger asChild className="hidden">
                 <button className="w-8 h-8 rounded-full flex items-center justify-center font-medium cursor-pointer hover:opacity-80 transition-opacity" style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}>
                   L
                 </button>
