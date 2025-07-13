@@ -29,7 +29,7 @@ export default function PaymentsRelationships() {
   // Handle URL tab parameter
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam && (tabParam === 'smart-connections' || tabParam === 'scan-agents' || tabParam === 'insights')) {
+    if (tabParam && (tabParam === 'smart-connections' || tabParam === 'scan-agents')) {
       setActiveTab(tabParam);
     }
   }, [searchParams]);
@@ -58,11 +58,9 @@ export default function PaymentsRelationships() {
     handleResetFilters: handleResetPortalUserFilters
   } = usePortalUserFiltering(portalUsers);
 
-  // Enable insights tab for demo
   const tabs = [
     { id: "smart-connections", label: "Smart Connections", count: filteredConnections.length },
-    { id: "scan-agents", label: "Scan Agents", count: filteredUsers.length },
-    { id: "insights", label: "AI Insights", count: mockInsights.length }
+    { id: "scan-agents", label: "Scan Agents", count: filteredUsers.length }
   ];
 
   const handleConfirmRemove = () => {

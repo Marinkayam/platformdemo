@@ -3,7 +3,7 @@ import React from 'react';
 import { PortalUser } from '@/types/portalUser';
 import { UsernameColumn } from './columns/UsernameColumn';
 import { UserTypeColumn } from './columns/UserTypeColumn';
-import { ValidationColumn } from './columns/ValidationColumn';
+
 import { ActionsColumn } from './columns/ActionsColumn';
 import { StatusBadge } from '@/components/ui/status-badge';
 
@@ -39,7 +39,6 @@ export function UserRow({ user, onEdit, onRemove, onView2FA, copyToClipboard, on
       </div>
       
       <div className="flex items-center">
-        <ValidationColumn portalUser={user} />
         <div className="ml-auto">
           <ActionsColumn
             portalUser={user}

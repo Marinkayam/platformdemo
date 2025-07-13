@@ -8,7 +8,7 @@ interface PortalUsersTableFooterProps {
 export function PortalUsersTableFooter({ totalUsers }: PortalUsersTableFooterProps) {
   return (
     <div className="px-6 py-3 border-t bg-gray-50 text-sm text-gray-600">
-      Filter Result: {totalUsers} Portal User{totalUsers !== 1 ? 's' : ''}
+      Total Scan Agents: {totalUsers}
     </div>
   );
 }

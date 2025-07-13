@@ -11,7 +11,7 @@ import { toast } from '@/hooks/use-toast';
 import { PortalIdentitySection } from './portal-users/sections/PortalIdentitySection';
 import { CredentialsSection } from './portal-users/sections/CredentialsSection';
 import { TwoFactorSection } from './portal-users/sections/TwoFactorSection';
-import { ConnectionDetailsSection } from './portal-users/sections/ConnectionDetailsSection';
+
 
 interface PortalUserProps {
   isOpen: boolean;
@@ -166,11 +166,6 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
             portalUserId={portalUser.id}
           />
 
-          <ConnectionDetailsSection
-            portalUser={portalUser}
-            mockLinkedConnections={mockLinkedConnections}
-            handleConnectionClick={handleConnectionClick}
-          />
         </div>
 
         <div className="flex justify-end gap-2 pt-4 border-t">

@@ -13,7 +13,7 @@ interface PortalGroupHeaderProps {
 export function PortalGroupHeader({ portalGroup, isExpanded, onToggle }: PortalGroupHeaderProps) {
   return (
     <div 
-      className="portal-group-header grid grid-cols-6 gap-4 px-6 py-4 cursor-pointer hover:bg-gray-50 transition-colors border-b border-gray-100"
+      className="portal-group-header grid grid-cols-5 gap-4 px-6 py-4 cursor-pointer hover:bg-gray-50 transition-colors border-b border-gray-100"
       onClick={onToggle}
     >
       <div className="flex items-center justify-between w-full">
@@ -41,10 +41,6 @@ export function PortalGroupHeader({ portalGroup, isExpanded, onToggle }: PortalG
       
       <div className="flex items-center text-sm text-gray-600">
         {portalGroup.totalAgents} total
-      </div>
-      
-      <div className="flex items-center">
-        {/* Empty validation column for groups */}
       </div>
     </div>
   );
