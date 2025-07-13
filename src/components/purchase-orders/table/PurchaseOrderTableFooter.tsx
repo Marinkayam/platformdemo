@@ -32,12 +32,7 @@ export function PurchaseOrderTableFooter({ purchaseOrders }: PurchaseOrderTableF
   return (
     <TableFooter>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableCell className="font-semibold text-gray-700 sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[200px] min-w-[200px]">
-          <div className="flex items-center gap-2">
-            <span>Total POs:</span>
-            <span className="font-bold text-gray-900">{totalPurchaseOrders}</span>
-          </div>
-        </TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] sticky left-0 z-10 border-r border-gray-200"></TableCell>
         <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
         <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
         <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>

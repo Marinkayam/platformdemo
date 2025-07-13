@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu, 
@@ -7,7 +6,7 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem 
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Settings, Download } from "lucide-react";
+import { MoreVertical, Download } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 export function PortalRecordsActions({ recordCount = 0 }) {
@@ -45,12 +44,6 @@ export function PortalRecordsActions({ recordCount = 0 }) {
     });
   };
 
-  const handleCustomizeTable = () => {
-    toast({
-      title: "Customize Table",
-      description: "Table customization feature coming soon.",
-    });
-  };
 
   return (
     <DropdownMenu>
