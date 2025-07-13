@@ -135,63 +135,63 @@ export function TeamTab() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h6 className="text-lg font-semibold text-gray-900 mb-1">Team</h6>
-        <p className="text-base text-gray-600">
-          Invite teammates to collaborate.
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h6 className="text-lg font-semibold text-gray-900 mb-1">Team</h6>
+          <p className="text-base text-gray-600">
+            Invite teammates to collaborate.
+          </p>
+        </div>
+        <Button onClick={handleAddNewMember} size="default">
+          <Plus size={16} strokeWidth={1.5} className="mr-2" />
+          Add New Member
+        </Button>
       </div>
       <Card className="shadow-none border border-[#ececec] rounded-xl w-full">
         <CardContent className="p-0">
-          <div>
-            <Table>
-              <TableHeader className="bg-gray-50 border-b">
-                <TableRow>
-                  <TableHead className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Email</TableHead>
-                  <TableHead className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-32">Invite</TableHead>
-                  <TableHead className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider w-16"></TableHead>
+          <Table>
+            <TableHeader className="bg-gray-50/50 border-b">
+              <TableRow>
+                <TableHead className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">User Email</TableHead>
+                <TableHead className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-32">Invite Link</TableHead>
+                <TableHead className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-20">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="bg-white">
+              {members.map((member, index) => (
+                <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
+                  <TableCell className="px-6 py-4">
+                    <div className="flex items-center">
+                      <div className="text-sm font-medium text-gray-900">{member.email}</div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-6 py-4 text-center">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleCopyInviteLink(member)}
+                      className="h-8 px-3 text-xs font-medium border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-colors"
+                    >
+                      {copiedMemberId === member.id ? (
+                        <>
+                          <Check size={14} className="mr-1.5 text-green-600" />
+                          Copied
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={14} className="mr-1.5 text-gray-500" />
+                          Copy Link
+                        </>
+                      )}
+                    </Button>
+                  </TableCell>
+                  <TableCell className="px-6 py-4 text-center">
+                     <TableActions actions={memberActions(member)} />
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody className="bg-white divide-y divide-gray-100">
-                {members.map((member) => (
-                  <TableRow key={member.id} className="hover:bg-gray-50">
-                    <TableCell className="px-4 py-4 text-base text-gray-900">
-                      <div className="truncate">{member.email}</div>
-                    </TableCell>
-                    <TableCell className="px-4 py-4">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleCopyInviteLink(member)}
-                        className="flex items-center gap-1 h-7 px-2 text-xs w-full max-w-20"
-                      >
-                        {copiedMemberId === member.id ? (
-                          <>
-                            <Check size={12} strokeWidth={0.75} />
-                            <span className="text-xs">Copied</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy size={12} strokeWidth={0.75} />
-                            <span className="text-xs">Copy</span>
-                          </>
-                        )}
-                      </Button>
-                    </TableCell>
-                    <TableCell className="px-4 py-4 w-16">
-                       <TableActions actions={memberActions(member)} className="mx-auto" />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-          <div className="px-6 py-6 border-t flex justify-end">
-            <Button onClick={handleAddNewMember} size="lg">
-              <Plus size={18} strokeWidth={0.75} className="mr-2" />
-              Add New Member
-            </Button>
-          </div>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
       
