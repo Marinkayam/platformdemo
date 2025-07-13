@@ -11,10 +11,9 @@ interface AgentTableRowProps {
   agent: Agent;
   connection: SmartConnection;
   onViewDetails: (agent: Agent) => void;
-  onDeactivateAgent: (agent: Agent) => void;
 }
 
-export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAgent }: AgentTableRowProps) {
+export function AgentTableRow({ agent, connection, onViewDetails }: AgentTableRowProps) {
   const getUserTypeColor = (type: string) => {
     switch (type) {
       case "Monto":
@@ -31,10 +30,6 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
     console.log('Edit agent:', agent.id);
   };
 
-  const handleDeactivateAgent = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onDeactivateAgent(agent);
-  };
 
   return (
     <TableRow 
@@ -73,14 +68,6 @@ export function AgentTableRow({ agent, connection, onViewDetails, onDeactivateAg
             onClick={handleEditAgent}
           >
             <Edit className="h-4 w-4 text-gray-600" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600"
-            onClick={handleDeactivateAgent}
-          >
-            <Trash2 className="h-4 w-4 text-gray-600 hover:text-red-600" />
           </Button>
         </div>
       </TableCell>

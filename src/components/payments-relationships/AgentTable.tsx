@@ -7,10 +7,9 @@ import { Agent, SmartConnection } from "@/types/smartConnection";
 interface AgentTableProps {
   connection: SmartConnection;
   onViewDetails: (agent: Agent) => void;
-  onDeactivateAgent: (agent: Agent) => void;
 }
 
-export function AgentTable({ connection, onViewDetails, onDeactivateAgent }: AgentTableProps) {
+export function AgentTable({ connection, onViewDetails }: AgentTableProps) {
   // Filter out disconnected Monto users
   const filteredAgents = connection.agents.filter(agent => 
     !(agent.type === "Monto" && agent.status === "Disconnected")
@@ -58,7 +57,6 @@ export function AgentTable({ connection, onViewDetails, onDeactivateAgent }: Age
               agent={agent}
               connection={connection}
               onViewDetails={onViewDetails}
-              onDeactivateAgent={onDeactivateAgent}
             />
           ))}
         </TableBody>

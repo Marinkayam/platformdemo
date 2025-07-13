@@ -69,13 +69,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
       onClick: () => handleAddAgent(connection.id),
       variant: "default" as const
     },
-    commonActions.edit(() => handleEditConnection(connection.id)),
-    {
-      label: "Deactivate",
-      icon: AlertTriangle,
-      onClick: () => handleDeactivateConnection(connection.id),
-      variant: "destructive" as const
-    }
+    commonActions.edit(() => handleEditConnection(connection.id))
   ];
 
   if (connections.length === 0) {
