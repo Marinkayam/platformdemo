@@ -96,7 +96,6 @@ export default function PortalRecordDetail() {
         onMatchInvoice={handleMatchInvoice}
         onResolveConflict={handleResolveConflict}
         onIgnoreRecord={handleIgnoreRecord}
-        onSyncRecord={handleSyncRecord}
       />
 
       <PortalRecordActionInstructions 

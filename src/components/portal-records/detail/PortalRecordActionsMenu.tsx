@@ -15,15 +15,13 @@ interface PortalRecordActionsMenuProps {
   onMatchInvoice?: () => void;
   onResolveConflict?: () => void;
   onIgnoreRecord?: () => void;
-  onSyncRecord?: () => void;
 }
 
 export function PortalRecordActionsMenu({ 
   portalRecord,
   onMatchInvoice,
   onResolveConflict,
-  onIgnoreRecord,
-  onSyncRecord
+  onIgnoreRecord
 }: PortalRecordActionsMenuProps) {
   const getMenuItems = () => {
     const items = [];
@@ -41,11 +39,6 @@ export function PortalRecordActionsMenu({
         });
       }
       
-      items.push({
-        label: "Sync Record",
-        onClick: onSyncRecord,
-      });
-
       items.push({
         label: "Ignore Record",
         onClick: onIgnoreRecord,

@@ -14,24 +14,15 @@ interface PortalRecordDetailHeaderProps {
   onMatchInvoice?: () => void;
   onResolveConflict?: () => void;
   onIgnoreRecord?: () => void;
-  onSyncRecord?: () => void;
 }
 
 export function PortalRecordDetailHeader({ 
-  portalRecord, 
+  portalRecord,
   className,
   onMatchInvoice,
   onResolveConflict,
-  onIgnoreRecord,
-  onSyncRecord
+  onIgnoreRecord
 }: PortalRecordDetailHeaderProps) {
-  const handleSyncRecord = () => {
-    console.log(`Syncing record ${portalRecord.id}`);
-    // TODO: Implement sync record logic
-    if (onSyncRecord) {
-      onSyncRecord();
-    }
-  };
 
   const formatCurrency = (amount: number, currency: string): string => {
     if (amount === 0) return "—";
@@ -60,7 +51,6 @@ export function PortalRecordDetailHeader({
                 onMatchInvoice={onMatchInvoice}
                 onResolveConflict={onResolveConflict}
                 onIgnoreRecord={onIgnoreRecord}
-                onSyncRecord={handleSyncRecord}
               />
             </div>
 

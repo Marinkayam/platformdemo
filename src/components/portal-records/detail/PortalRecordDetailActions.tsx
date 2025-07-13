@@ -6,7 +6,6 @@ interface PortalRecordDetailActionsProps {
   portalRecord: PortalRecord;
   onMatchInvoice: () => void;
   onResolveConflict: () => void;
-  onSyncRecord: () => void;
   onIgnoreRecord: () => void;
 }
 
@@ -14,7 +13,6 @@ export function PortalRecordDetailActions({
   portalRecord,
   onMatchInvoice,
   onResolveConflict,
-  onSyncRecord,
   onIgnoreRecord,
 }: PortalRecordDetailActionsProps) {
   const getActionButtons = () => {
@@ -39,12 +37,6 @@ export function PortalRecordDetailActions({
           </Button>
         );
       }
-      
-      buttons.push(
-        <Button key="sync" variant="outline" onClick={onSyncRecord}>
-          Sync Record
-        </Button>
-      );
     }
 
     return buttons;
