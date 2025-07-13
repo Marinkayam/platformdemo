@@ -11,8 +11,11 @@ export interface PortalRecord {
   currency: 'USD' | 'EUR' | 'GBP';
   poNumber: string;
   supplierName: string;
-  connectionStatus: 'Connected' | 'Disconnected' | 'Syncing';
-  lastSynced: string;
+   connectionStatus: 'Connected' | 'Disconnected' | 'Syncing';
+   lastSynced: string;
+   invoiceDate?: string;
+   dueDate?: string;
+   netTerms?: string;
   
   // Legacy fields kept for compatibility
   matchStatus?: 'Matched' | 'Unmatched' | 'Conflicted' | 'Pending' | '—';

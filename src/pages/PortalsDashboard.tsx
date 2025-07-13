@@ -153,7 +153,7 @@ export default function PortalsDashboard() {
         {/* Last Scan Time */}
         {scanComplete && (
           <div className="flex items-center gap-2 text-sm text-[#7B59FF] font-semibold -mt-4 min-h-[40px]">
-            <span className="text-base font-semibold">AI scan finished:</span>
+            <span className="text-base font-semibold">Monto's Latest Scan:</span>
             <span className="text-[#586079] font-normal ml-2">{formattedLastScan}</span>
           </div>
         )}

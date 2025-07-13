@@ -41,29 +41,32 @@ export function PurchaseOrderTableHeader({
     <TableHeader>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
         <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 flex-1">
-          <SortButton field="poNumber">PO Number</SortButton>
-        </TableHead>
-        <TableHead className="flex-1">
-          <SortButton field="supplier">Buyer Name</SortButton>
-        </TableHead>
-        <TableHead className="flex-1">
-          <SortButton field="status">Status</SortButton>
-        </TableHead>
-        <TableHead className="flex-1">
-          <SortButton field="portal">Portal</SortButton>
-        </TableHead>
-        <TableHead className="flex-1">
-          <SortButton field="totalAmount">Total</SortButton>
-        </TableHead>
-        <TableHead className="flex-1">
-          <SortButton field="invoicedAmount">Invoiced Amount</SortButton>
-        </TableHead>
-        <TableHead className="flex-1">
-          <SortButton field="amountLeft">Amount Left</SortButton>
-        </TableHead>
-        <TableHead className="flex-1">
-          <SortButton field="dueDate">Due Date</SortButton>
-        </TableHead>
+           <SortButton field="poNumber">PO Number</SortButton>
+         </TableHead>
+         <TableHead className="flex-1">
+           <SortButton field="supplier">Buyer Name</SortButton>
+         </TableHead>
+         <TableHead className="flex-1">
+           <SortButton field="portal">Portal</SortButton>
+         </TableHead>
+         <TableHead className="flex-1">
+           <SortButton field="status">Order Date</SortButton>
+         </TableHead>
+         <TableHead className="flex-1">
+           <SortButton field="status">Portal Status</SortButton>
+         </TableHead>
+         <TableHead className="flex-1">
+           <SortButton field="totalAmount">Total Amount</SortButton>
+         </TableHead>
+         <TableHead className="flex-1">
+           <SortButton field="invoicedAmount">Amount Invoiced</SortButton>
+         </TableHead>
+         <TableHead className="flex-1">
+           <SortButton field="amountLeft">Amount Left</SortButton>
+         </TableHead>
+         <TableHead className="flex-1">
+           <SortButton field="dueDate">Payment Terms</SortButton>
+         </TableHead>
       </TableRow>
     </TableHeader>
   );
