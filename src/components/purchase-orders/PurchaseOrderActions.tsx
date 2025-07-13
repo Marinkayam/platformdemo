@@ -60,10 +60,6 @@ export function PurchaseOrderActions({ purchaseOrderCount = 0 }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[180px]">
-        <DropdownMenuItem onClick={handleCustomizeTable}>
-          <Settings className="mr-2 h-4 w-4" />
-          <span className="text-[14px]">Customize Table</span>
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={handleExportPurchaseOrders}>
           <Download className="mr-2 h-4 w-4" />
           <span className="text-[14px]">Export All</span>
