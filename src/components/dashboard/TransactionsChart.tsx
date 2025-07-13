@@ -4,24 +4,24 @@ import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } fro
 import { TrendingUp, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-// Mock data for transactions by month (last year)
+// Mock data for transactions by month (last year - 2023)
 const mockTransactionsData = [
-  { month: 'Jan', totalAmount: 2.8, recordCount: 142 },
-  { month: 'Feb', totalAmount: 3.1, recordCount: 156 },
-  { month: 'Mar', totalAmount: 2.9, recordCount: 148 },
-  { month: 'Apr', totalAmount: 3.4, recordCount: 171 },
-  { month: 'May', totalAmount: 3.2, recordCount: 163 },
-  { month: 'Jun', totalAmount: 3.8, recordCount: 189 },
-  { month: 'Jul', totalAmount: 3.6, recordCount: 182 },
-  { month: 'Aug', totalAmount: 3.9, recordCount: 195 },
-  { month: 'Sep', totalAmount: 3.7, recordCount: 187 },
-  { month: 'Oct', totalAmount: 4.1, recordCount: 208 },
-  { month: 'Nov', totalAmount: 3.8, recordCount: 192 },
-  { month: 'Dec', totalAmount: 4.3, recordCount: 218 },
+  { month: 'Jan 2023', amount: 2.8, recordCount: 142 },
+  { month: 'Feb 2023', amount: 3.1, recordCount: 156 },
+  { month: 'Mar 2023', amount: 2.9, recordCount: 148 },
+  { month: 'Apr 2023', amount: 3.4, recordCount: 171 },
+  { month: 'May 2023', amount: 3.2, recordCount: 163 },
+  { month: 'Jun 2023', amount: 3.8, recordCount: 189 },
+  { month: 'Jul 2023', amount: 3.6, recordCount: 182 },
+  { month: 'Aug 2023', amount: 3.9, recordCount: 195 },
+  { month: 'Sep 2023', amount: 3.7, recordCount: 187 },
+  { month: 'Oct 2023', amount: 4.1, recordCount: 208 },
+  { month: 'Nov 2023', amount: 3.8, recordCount: 192 },
+  { month: 'Dec 2023', amount: 4.3, recordCount: 218 },
 ];
 
 // Calculate summary metrics
-const totalTransactions = mockTransactionsData.reduce((acc, item) => acc + item.totalAmount, 0);
+const totalTransactions = mockTransactionsData.reduce((acc, item) => acc + item.amount, 0);
 const totalRecords = mockTransactionsData.reduce((acc, item) => acc + item.recordCount, 0);
 const avgMonthlyAmount = totalTransactions / mockTransactionsData.length;
 const avgMonthlyRecords = Math.round(totalRecords / mockTransactionsData.length);
@@ -29,7 +29,7 @@ const avgMonthlyRecords = Math.round(totalRecords / mockTransactionsData.length)
 // Custom tooltip
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
-    const amount = payload.find((p: any) => p.dataKey === 'totalAmount')?.value;
+    const amount = payload.find((p: any) => p.dataKey === 'amount')?.value;
     const records = payload.find((p: any) => p.dataKey === 'recordCount')?.value;
     return (
       <div style={{ 
@@ -42,7 +42,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         fontSize: 13, 
         lineHeight: 1.4 
       }}>
-        <div style={{ fontWeight: 600, color: '#061237', marginBottom: 4, fontSize: 14 }}>{label} 2024</div>
+        <div style={{ fontWeight: 600, color: '#061237', marginBottom: 4, fontSize: 14 }}>{label}</div>
         <div style={{ color: '#7B59FF', fontWeight: 500, fontSize: 13 }}>Amount: ${amount}M</div>
         <div style={{ color: '#00BCD4', fontWeight: 500, fontSize: 13 }}>Records: {records}</div>
       </div>
@@ -132,7 +132,7 @@ export function TransactionsChart() {
               <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
               <Bar 
                 yAxisId="amount"
-                dataKey="totalAmount" 
+                dataKey="amount" 
                 fill="#7B59FF" 
                 radius={[2, 2, 0, 0]}
                 opacity={0.8}

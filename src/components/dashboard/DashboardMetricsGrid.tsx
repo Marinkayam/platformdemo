@@ -11,6 +11,10 @@ interface MetricsData {
   upcomingInvoices: number;
   pastDueAmount: number;
   pastDueInvoices: number;
+  customerGrowth: string;
+  portalGrowth: string;
+  poGrowth: string;
+  riskChange: string;
 }
 
 interface DashboardMetricsGridProps {
@@ -23,7 +27,7 @@ export function DashboardMetricsGrid({ data }: DashboardMetricsGridProps) {
       <AnalyticsCard
         title="Total Customers"
         value={data.totalCustomers.toLocaleString()}
-        subtitle="+8% from last month"
+        subtitle={data.customerGrowth}
         type="paid"
         icon={<Building className="h-4 w-4" style={{ width: 16, height: 16 }} />}
       />
@@ -31,7 +35,7 @@ export function DashboardMetricsGrid({ data }: DashboardMetricsGridProps) {
       <AnalyticsCard
         title="Connected Portals"
         value={data.connectedPortals.toString()}
-        subtitle="+12% from last month"
+        subtitle={data.portalGrowth}
         type="portal"
         icon={<CreditCard className="h-4 w-4" style={{ width: 16, height: 16 }} />}
       />
@@ -39,7 +43,7 @@ export function DashboardMetricsGrid({ data }: DashboardMetricsGridProps) {
       <AnalyticsCard
         title="Total Open POs"
         value={`$${(data.totalOpenPOsValue / 1000000).toFixed(1)}M`}
-        subtitle="+14.5% from last month"
+        subtitle={data.poGrowth}
         type="upcoming"
         icon={<FileText className="h-4 w-4" style={{ width: 16, height: 16 }} />}
       />
@@ -47,7 +51,7 @@ export function DashboardMetricsGrid({ data }: DashboardMetricsGridProps) {
       <AnalyticsCard
         title="At-Risk Cash"
         value={`$${(data.atRiskCash / 1000000).toFixed(1)}M`}
-        subtitle="-5.8% from last month"
+        subtitle={data.riskChange}
         type="pastdue"
         icon={<AlertTriangle className="h-4 w-4" style={{ width: 16, height: 16 }} />}
       />
