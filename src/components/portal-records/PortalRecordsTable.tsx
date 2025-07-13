@@ -117,7 +117,7 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
                    activeTab={activeTab}
                  />
                 
-                {!isLoading && <PortalRecordsTableFooter records={sortedRecords} />}
+                
               </>
             )}
           </Table>
@@ -130,6 +130,7 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
         totalRecords={totalRecords}
         recordsPerPage={recordsPerPage}
         onPageChange={handlePageChange}
+        records={sortedRecords}
       />
 
       <PortalRecordsModals
