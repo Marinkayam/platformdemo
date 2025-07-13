@@ -1,5 +1,5 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
 interface PortalRecordsPaginationProps {
   currentPage: number;
@@ -19,40 +19,24 @@ export function PortalRecordsPagination({
   const startRecord = (currentPage - 1) * recordsPerPage + 1;
   const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
 
-  const getVisiblePages = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      const half = Math.floor(maxVisiblePages / 2);
-      let start = Math.max(1, currentPage - half);
-      let end = Math.min(totalPages, start + maxVisiblePages - 1);
-      
-      if (end - start + 1 < maxVisiblePages) {
-        start = Math.max(1, end - maxVisiblePages + 1);
-      }
-      
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-    }
-    
-    return pages;
-  };
-
-  if (totalPages <= 1) return null;
-
   return (
-    <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200">
-      <div className="text-sm text-gray-500">
-        Showing {startRecord} to {endRecord} of {totalRecords} entries
+    <div className="flex items-center justify-between px-6 py-4 bg-white border-t">
+      <div className="text-sm text-muted-foreground">
+        Showing {startRecord} to {endRecord} of {totalRecords} portal records
       </div>
       
-      <div className="flex items-center gap-2">
+      <div className="flex items-center space-x-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(1)}
+          disabled={currentPage === 1}
+          className="h-8 w-8 p-0"
+        >
+          <ChevronsLeft className="h-4 w-4" />
+          <span className="sr-only">First page</span>
+        </Button>
+        
         <Button
           variant="outline"
           size="sm"
@@ -61,19 +45,14 @@ export function PortalRecordsPagination({
           className="h-8 w-8 p-0"
         >
           <ChevronLeft className="h-4 w-4" />
+          <span className="sr-only">Previous page</span>
         </Button>
         
-        {getVisiblePages().map((page) => (
-          <Button
-            key={page}
-            variant={page === currentPage ? "default" : "outline"}
-            size="sm"
-            onClick={() => onPageChange(page)}
-            className="h-8 w-8 p-0"
-          >
-            {page}
-          </Button>
-        ))}
+        <div className="flex items-center space-x-1">
+          <span className="text-sm font-medium">
+            Page {currentPage} of {totalPages}
+          </span>
+        </div>
         
         <Button
           variant="outline"
@@ -83,6 +62,18 @@ export function PortalRecordsPagination({
           className="h-8 w-8 p-0"
         >
           <ChevronRight className="h-4 w-4" />
+          <span className="sr-only">Next page</span>
+        </Button>
+        
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(totalPages)}
+          disabled={currentPage === totalPages}
+          className="h-8 w-8 p-0"
+        >
+          <ChevronsRight className="h-4 w-4" />
+          <span className="sr-only">Last page</span>
         </Button>
       </div>
     </div>
