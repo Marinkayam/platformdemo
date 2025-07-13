@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
 import { PortalRecordsEmptyState } from "./table/PortalRecordsEmptyState";
@@ -8,6 +9,7 @@ import { usePortalRecordsTable } from "./hooks/usePortalRecordsTable";
 import { usePortalRecordsActions } from "./hooks/usePortalRecordsActions";
 import { PortalRecordsTableContent } from "./components/PortalRecordsTableContent";
 import { PortalRecordsPagination } from "./components/PortalRecordsPagination";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 
 interface PortalRecordsTableProps {
    records: PortalRecord[];
@@ -88,31 +90,37 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
     <div className="space-y-0">
       <div className="rounded-xl border overflow-hidden bg-white">
         <div className="overflow-x-auto">
-          <table className="w-full caption-bottom text-sm">
-            <thead className="bg-[#F6F7F9] border-b border-gray-100">
-              <tr>
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
                 {columns.map((column, index) => (
-                  <th key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm bg-[#F6F7F9] ${column.className || ''}`}>
+                  <TableHead key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm bg-[#F6F7F9] ${column.className || ''}`}>
                     {column.label}
-                  </th>
+                  </TableHead>
                 ))}
-              </tr>
-            </thead>
+              </TableRow>
+            </TableHeader>
             
-            <PortalRecordsTableContent
-               isLoading={isLoading}
-               visibleRecords={visibleRecords}
-               isLoadingMore={isLoadingMore}
-               onViewDetails={handleViewDetails}
-               onMatchInvoice={handleMatchInvoice}
-               onResolveConflict={handleResolveConflict}
-               onIgnoreRecord={handleIgnoreRecord}
-               onRowClick={handleRowClick}
-               activeTab={activeTab}
-             />
-            
-            {!isLoading && <PortalRecordsTableFooter records={sortedRecords} />}
-          </table>
+            {isLoading ? (
+              <TableSkeleton rows={6} columns={columns.length} showFooter />
+            ) : (
+              <>
+                <PortalRecordsTableContent
+                   isLoading={isLoading}
+                   visibleRecords={visibleRecords}
+                   isLoadingMore={isLoadingMore}
+                   onViewDetails={handleViewDetails}
+                   onMatchInvoice={handleMatchInvoice}
+                   onResolveConflict={handleResolveConflict}
+                   onIgnoreRecord={handleIgnoreRecord}
+                   onRowClick={handleRowClick}
+                   activeTab={activeTab}
+                 />
+                
+                {!isLoading && <PortalRecordsTableFooter records={sortedRecords} />}
+              </>
+            )}
+          </Table>
         </div>
       </div>
 

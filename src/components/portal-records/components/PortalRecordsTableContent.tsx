@@ -1,7 +1,7 @@
 import React from "react";
+import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { PortalRecord } from "@/types/portalRecord";
 import { usePortalRecordsTableColumns } from "../table/PortalRecordsTableColumns";
-import { TableSkeleton } from "@/components/ui/table-skeleton";
 
 interface PortalRecordsTableContentProps {
    isLoading: boolean;
@@ -34,39 +34,43 @@ export function PortalRecordsTableContent({
      activeTab
    });
 
-  if (isLoading) {
-    return <TableSkeleton rows={6} columns={columns.length} showFooter />;
-  }
-
   return (
-    <tbody className="divide-y divide-gray-100">
-      {visibleRecords.map((record, rowIndex) => (
-        <tr
-          key={record.id}
-          className="h-[60px] hover:bg-gray-50 cursor-pointer transition-colors bg-white"
-          onClick={() => onRowClick(record)}
-        >
-          {columns.map((column, colIndex) => (
-            <td
-              key={colIndex}
-              className={`px-4 align-middle text-sm ${column.className || ''}`}
-            >
-              {column.render ? column.render(record) : record[column.key as keyof PortalRecord]}
-            </td>
-          ))}
-        </tr>
-      ))}
+    <TableBody className="divide-y divide-gray-100">
+      {visibleRecords.length === 0 ? (
+        <TableRow>
+          <TableCell colSpan={columns.length} className="text-center text-sm text-gray-600 align-middle bg-white">
+            No portal records found.
+          </TableCell>
+        </TableRow>
+      ) : (
+        visibleRecords.map((record, rowIndex) => (
+          <TableRow
+            key={record.id}
+            className="h-[60px] hover:bg-gray-50 cursor-pointer transition-colors bg-white"
+            onClick={() => onRowClick(record)}
+          >
+            {columns.map((column, colIndex) => (
+              <TableCell
+                key={colIndex}
+                className={`px-4 align-middle text-sm ${column.className || ''}`}
+              >
+                {column.render ? column.render(record) : record[column.key as keyof PortalRecord]}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))
+      )}
       
       {/* Loading skeleton rows */}
       {isLoadingMore && Array.from({ length: 3 }).map((_, index) => (
-        <tr key={`loading-${index}`} className="h-[60px] animate-pulse">
+        <TableRow key={`loading-${index}`} className="h-[60px] animate-pulse">
           {columns.map((_, colIndex) => (
-            <td key={colIndex} className="px-4">
+            <TableCell key={colIndex} className="px-4">
               <div className="h-4 bg-gray-200 rounded"></div>
-            </td>
+            </TableCell>
           ))}
-        </tr>
+        </TableRow>
       ))}
-    </tbody>
+    </TableBody>
   );
 }

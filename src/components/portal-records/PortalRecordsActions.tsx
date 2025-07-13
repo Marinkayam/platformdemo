@@ -60,10 +60,6 @@ export function PortalRecordsActions({ recordCount = 0 }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[180px] bg-white border shadow-lg z-50">
-        <DropdownMenuItem onClick={handleCustomizeTable}>
-          <Settings className="mr-2 h-4 w-4" />
-          <span className="text-[14px]">Customize Table</span>
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={handleExportRecords}>
           <Download className="mr-2 h-4 w-4" />
           <span className="text-[14px]">Export All</span>
