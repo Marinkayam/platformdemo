@@ -6,6 +6,8 @@ import { InvoiceTableHeader } from "./table/InvoiceTableHeader";
 import { InvoiceTableRow } from "./table/InvoiceTableRow";
 import { InvoiceTableFooter } from "./table/InvoiceTableFooter";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { InvoicesPagination } from "./components/InvoicesPagination";
+import { useState, useMemo } from "react";
 
 interface InvoiceTableProps {
   invoices: Invoice[];
@@ -15,6 +17,8 @@ interface InvoiceTableProps {
 
 export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false }: InvoiceTableProps) {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
   
   const { 
     sortedInvoices, 
@@ -23,6 +27,13 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
     handleSort, 
     setLocalInvoices 
   } = useSortedInvoices(invoices);
+
+  // Pagination logic
+  const totalPages = Math.ceil(sortedInvoices.length / pageSize);
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return sortedInvoices.slice(startIndex, startIndex + pageSize);
+  }, [sortedInvoices, currentPage, pageSize]);
 
   const handleAssign = (invoiceId: string, email: string) => {
     setLocalInvoices(prev => {
@@ -47,6 +58,10 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
     // TODO: Implement actual exclude logic when backend is ready
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   // Determine the number of columns based on isPendingTab
   const columnsCount = isPendingTab ? 10 : 11; // Updated for new columns: Invoice Number, Buyer, Due Date, Status, Portal, Total, PO Number, Invoice Date, Net Terms, Owner/Assignee, Actions
 
@@ -66,14 +81,14 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
           ) : (
             <>
               <TableBody className="divide-y divide-gray-100">
-                {sortedInvoices.length === 0 ? (
+                {paginatedData.length === 0 ? (
                   <tr>
                     <td colSpan={columnsCount} className="h-[65px] text-center text-sm text-gray-600 py-2 align-middle bg-white">
                       No invoices found.
                     </td>
                   </tr>
                 ) : (
-                  sortedInvoices.map((invoice) => (
+                  paginatedData.map((invoice) => (
                     <InvoiceTableRow
                       key={invoice.id}
                       invoice={invoice}
@@ -92,6 +107,16 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
           )}
         </Table>
       </div>
+      
+      {!isLoading && (
+        <InvoicesPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          pageSize={pageSize}
+          totalItems={sortedInvoices.length}
+        />
+      )}
     </div>
   );
 }
