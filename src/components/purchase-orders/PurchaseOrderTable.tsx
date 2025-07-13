@@ -149,7 +149,7 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
             </TableBody>
           )}
           
-          {!isLoading && <PurchaseOrderTableFooter purchaseOrders={sortedPurchaseOrders} />}
+          
         </Table>
       </div>
       
@@ -160,6 +160,7 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
           onPageChange={handlePageChange}
           pageSize={pageSize}
           totalItems={sortedPurchaseOrders.length}
+          purchaseOrders={sortedPurchaseOrders}
         />
       )}
     </div>

@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { PurchaseOrder } from "@/types/purchase-orders";
+import { formatCurrency } from "@/lib/utils";
 
 interface PurchaseOrdersPaginationProps {
   currentPage: number;
@@ -7,6 +9,7 @@ interface PurchaseOrdersPaginationProps {
   onPageChange: (page: number) => void;
   pageSize: number;
   totalItems: number;
+  purchaseOrders: PurchaseOrder[];
 }
 
 export function PurchaseOrdersPagination({
@@ -15,14 +18,40 @@ export function PurchaseOrdersPagination({
   onPageChange,
   pageSize,
   totalItems,
+  purchaseOrders,
 }: PurchaseOrdersPaginationProps) {
   const startItem = (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
+  // Calculate totals by currency
+  const currencyTotals = purchaseOrders.reduce((acc, po) => {
+    const currency = po.currency || "USD";
+    if (!acc[currency]) {
+      acc[currency] = 0;
+    }
+    acc[currency] += po.total || 0;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Format the total amounts display
+  const formatTotalAmounts = () => {
+    const entries = Object.entries(currencyTotals);
+    if (entries.length === 0) return formatCurrency(0, "USD");
+    
+    return entries
+      .map(([currency, amount]) => formatCurrency(amount, currency))
+      .join(" + ");
+  };
+
   return (
     <div className="flex items-center justify-between px-6 py-4 bg-white border-t">
-      <div className="text-sm text-muted-foreground">
-        Showing {startItem} to {endItem} of {totalItems} purchase orders
+      <div className="flex items-center gap-4">
+        <div className="text-sm text-muted-foreground">
+          Showing {startItem} to {endItem} of {totalItems} purchase orders
+        </div>
+        <div className="text-sm font-semibold text-gray-900">
+          Total: {formatTotalAmounts()}
+        </div>
       </div>
       
       <div className="flex items-center space-x-2">
