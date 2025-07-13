@@ -57,11 +57,11 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
       console.log('No records found, creating default record');
       const defaultRecord: PortalRecord = {
         id: `default-${invoiceId}`,
-        portalRecordId: `${Math.floor(Math.random() * 900000) + 100000}`,
+        portalRecordId: `PR-2024-${Math.floor(Math.random() * 9000) + 1000}`,
         portal: "Coupa",
         buyer: "Acme Corporation",
         portalStatus: "Approved by Buyer",
-        invoiceNumber: invoiceId,
+        invoiceNumber: `CP-INV-2024-${Math.floor(Math.random() * 9000) + 1000}`,
         matchType: "Primary",
         total: 2350.20,
         currency: "USD",

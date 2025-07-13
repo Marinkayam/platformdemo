@@ -40,6 +40,29 @@ export const invoiceSpecificRecords: PortalRecord[] = [
     conflict: false
   },
   
+  // Invoice 2 - Single primary record
+  {
+    id: "pr-inv2-primary",
+    portalRecordId: "PR-2024-0789",
+    portal: "Coupa",
+    buyer: "Global Manufacturing Inc.",
+    portalStatus: "Approved by Buyer",
+    invoiceNumber: "CP-INV-2024-0789",
+    matchType: "Primary",
+    total: 3875.50,
+    currency: "USD",
+    poNumber: "PO-2024-002",
+    supplierName: "Software Licensing Corp.",
+    connectionStatus: "Connected",
+    lastSynced: "2024-01-18T12:15:00Z",
+    status: "Approved",
+    updated: "2024-01-18T12:15:00Z",
+    conflict: false,
+    invoiceDate: "2024-01-15",
+    dueDate: "2024-02-14",
+    netTerms: "Net 30"
+  },
+  
   // Invoice 3 - Multiple records with conflict
   {
     id: "pr-inv3-primary",
