@@ -23,10 +23,10 @@ export const AutoCreatedTag: React.FC = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.35, type: 'spring', bounce: 0.3 }}
                 onAnimationComplete={() => setAnimate(false)}
-                className="inline-flex items-center rounded-full border border-[#E1D6F9] bg-[#F2EEFF] px-3 py-0.5 text-[12px] font-medium text-[#7B59FF] select-none cursor-default shadow-sm"
+                className="inline-flex items-center rounded-full border border-[#E1D6F9] bg-[#F2EEFF] px-3 py-0.5 text-[11px] font-medium text-[#7B59FF] select-none cursor-default shadow-sm whitespace-nowrap"
                 style={{ minWidth: 0 }}
               >
-                Auto-created&nbsp;from&nbsp;RTP
+                Auto-created from RTP
               </motion.div>
             </AnimatePresence>
           </span>

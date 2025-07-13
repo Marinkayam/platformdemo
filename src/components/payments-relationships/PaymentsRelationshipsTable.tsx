@@ -84,7 +84,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[280px]">
+              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[240px]">
                 Smart Connection
               </TableHead>
               <TableHead className="w-[140px]">Status</TableHead>
@@ -119,13 +119,13 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
         <Table>
           <TableHeader>
             <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9] border-b border-gray-200">
-              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[280px] py-4">
+              <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[240px] py-4">
                 Smart Connection
               </TableHead>
               <TableHead className="w-[140px] py-4">Status</TableHead>
               <TableHead className="w-[200px] py-4">Issues</TableHead>
               <TableHead className="w-[120px] py-4">Agents</TableHead>
-              <TableHead className="w-[120px] py-4"> </TableHead>
+              <TableHead className="w-[140px] py-4"> </TableHead>
               <TableHead className="w-[100px] py-4"></TableHead>
             </TableRow>
           </TableHeader>
@@ -142,7 +142,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                     className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white group ${isAutoCreated ? 'auto-created-row' : ''}`}
                     onClick={(e) => handleRowClick(connection.id, e)}
                   >
-                    <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 group-hover:bg-gray-50 py-6">
+                    <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 group-hover:bg-gray-50 py-6 w-[240px]">
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0 p-1">
                           {isExpanded ? (
@@ -203,7 +203,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-primary hover:text-primary/80 p-0 h-auto font-normal"
+                              className="text-primary hover:text-primary/80 p-0 h-auto font-bold"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleAddAgent(connection.id);
