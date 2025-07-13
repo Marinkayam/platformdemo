@@ -38,9 +38,9 @@ export function InvoiceTableRow({
       className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white ${isPendingAction ? 'pending-action-row' : ''}`}
       onClick={handleClick}
     >
-      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold px-4 py-4 w-[200px] min-w-[200px] flex-shrink-0 relative">
+      <TableCell className="sticky left-0 z-20 bg-white hover:bg-gray-50 border-r border-gray-200 font-semibold px-4 py-4 w-[200px] min-w-[200px] flex-shrink-0 relative transition-colors">
         {isPendingAction && (
-          <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500" />
+          <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500 z-30" />
         )}
         <div className="text-left">
           <InvoiceNumber 
