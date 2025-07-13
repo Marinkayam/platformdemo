@@ -71,7 +71,7 @@ export function ActivityLog({ entityId, entityType, className }: ActivityLogProp
   }, [entityId, entityType]);
 
   return (
-    <div className="space-y-6">
+    <div className="grid grid-cols-1 gap-6">
       {/* Activity Timeline - Coming Soon */}
       <div>
         <h3 className="text-lg font-semibold mb-4">Activity Timeline</h3>
