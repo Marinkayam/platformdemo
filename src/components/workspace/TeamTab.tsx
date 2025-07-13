@@ -141,44 +141,44 @@ export function TeamTab() {
           Invite teammates to collaborate.
         </p>
       </div>
-      <Card className="shadow-none border border-[#ececec] rounded-xl max-w-4xl">
+      <Card className="shadow-none border border-[#ececec] rounded-xl w-full">
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
+          <div>
             <Table>
               <TableHeader className="bg-gray-50 border-b">
                 <TableRow>
-                  <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Email</TableHead>
-                  <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider min-w-[120px]">Invite</TableHead>
-                  <TableHead className="px-4 sm:px-8 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider w-16"></TableHead>
+                  <TableHead className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Email</TableHead>
+                  <TableHead className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-32">Invite</TableHead>
+                  <TableHead className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider w-16"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white divide-y divide-gray-100">
                 {members.map((member) => (
                   <TableRow key={member.id} className="hover:bg-gray-50">
-                    <TableCell className="px-4 sm:px-8 py-5 text-base text-gray-900 max-w-0">
+                    <TableCell className="px-4 py-4 text-base text-gray-900">
                       <div className="truncate">{member.email}</div>
                     </TableCell>
-                    <TableCell className="px-4 sm:px-8 py-5 min-w-0">
+                    <TableCell className="px-4 py-4">
                       <Button 
                         variant="outline" 
                         size="sm"
                         onClick={() => handleCopyInviteLink(member)}
-                        className="flex items-center gap-1 h-6 px-2 text-xs"
+                        className="flex items-center gap-1 h-7 px-2 text-xs w-full max-w-20"
                       >
                         {copiedMemberId === member.id ? (
                           <>
-                            <Check size={10} strokeWidth={0.75} />
-                            <span className="hidden lg:inline text-xs">Copied</span>
+                            <Check size={12} strokeWidth={0.75} />
+                            <span className="text-xs">Copied</span>
                           </>
                         ) : (
                           <>
-                            <Copy size={10} strokeWidth={0.75} />
-                            <span className="hidden lg:inline text-xs">Copy</span>
+                            <Copy size={12} strokeWidth={0.75} />
+                            <span className="text-xs">Copy</span>
                           </>
                         )}
                       </Button>
                     </TableCell>
-                    <TableCell className="px-4 sm:px-8 py-5 w-16">
+                    <TableCell className="px-4 py-4 w-16">
                        <TableActions actions={memberActions(member)} className="mx-auto" />
                     </TableCell>
                   </TableRow>
@@ -186,7 +186,7 @@ export function TeamTab() {
               </TableBody>
             </Table>
           </div>
-          <div className="px-7 py-7 border-t flex justify-end">
+          <div className="px-6 py-6 border-t flex justify-end">
             <Button onClick={handleAddNewMember} size="lg">
               <Plus size={18} strokeWidth={0.75} className="mr-2" />
               Add New Member
