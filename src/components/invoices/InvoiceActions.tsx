@@ -87,7 +87,7 @@ INV-003,Amazon Inc.,2025-01-20,Settled,$1500.00,Oracle,$Bob Johnson`;
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[180px]">
-          <DropdownMenuItem onClick={() => setCustomizeTableOpen(true)}>
+          <DropdownMenuItem onClick={() => setCustomizeTableOpen(true)} className="hidden">
             <TableProperties className="mr-2 h-4 w-4" />
             <span className="text-[14px]">Customize Table</span>
           </DropdownMenuItem>
