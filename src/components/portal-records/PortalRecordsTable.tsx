@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalRecordsTableFooter } from "./PortalRecordsTableFooter";
 import { PortalRecordsEmptyState } from "./table/PortalRecordsEmptyState";
@@ -7,7 +7,7 @@ import { usePortalRecordsTableColumns } from "./table/PortalRecordsTableColumns"
 import { usePortalRecordsTable } from "./hooks/usePortalRecordsTable";
 import { usePortalRecordsActions } from "./hooks/usePortalRecordsActions";
 import { PortalRecordsTableContent } from "./components/PortalRecordsTableContent";
-import { PortalRecordsLoadMore } from "./components/PortalRecordsLoadMore";
+import { PortalRecordsPagination } from "./components/PortalRecordsPagination";
 
 interface PortalRecordsTableProps {
    records: PortalRecord[];
@@ -16,6 +16,16 @@ interface PortalRecordsTableProps {
  }
 
 export function PortalRecordsTable({ records, isLoading = false, activeTab }: PortalRecordsTableProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 10;
+
+  // Calculate pagination values
+  const totalRecords = records.length;
+  const totalPages = Math.ceil(totalRecords / recordsPerPage);
+  const startIndex = (currentPage - 1) * recordsPerPage;
+  const endIndex = startIndex + recordsPerPage;
+  const paginatedRecords = records.slice(startIndex, endIndex);
+
   const {
     visibleRecords,
     sortedRecords,
@@ -33,7 +43,7 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
     handleLoadMore,
     handleViewDetails,
     handleRowClick,
-  } = usePortalRecordsTable(records);
+  } = usePortalRecordsTable(paginatedRecords);
 
   const {
     handleMatchInvoice,
@@ -59,13 +69,17 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
      activeTab
    });
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   if (records.length === 0) {
     return (
       <PortalRecordsEmptyState
         columns={columns}
-        currentPage={1}
-        recordsPerPage={10}
-        onPageChange={() => {}}
+        currentPage={currentPage}
+        recordsPerPage={recordsPerPage}
+        onPageChange={handlePageChange}
       />
     );
   }
@@ -78,7 +92,7 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
             <thead className="bg-[#F6F7F9] border-b border-gray-100">
               <tr>
                 {columns.map((column, index) => (
-                  <th key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm ${column.className || ''}`}>
+                  <th key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm bg-[#F6F7F9] ${column.className || ''}`}>
                     {column.label}
                   </th>
                 ))}
@@ -102,11 +116,12 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
         </div>
       </div>
 
-      <PortalRecordsLoadMore
-        hasMore={hasMore}
-        isLoadingMore={isLoadingMore}
-        remainingCount={sortedRecords.length - visibleCount}
-        onLoadMore={handleLoadMore}
+      <PortalRecordsPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalRecords={totalRecords}
+        recordsPerPage={recordsPerPage}
+        onPageChange={handlePageChange}
       />
 
       <PortalRecordsModals

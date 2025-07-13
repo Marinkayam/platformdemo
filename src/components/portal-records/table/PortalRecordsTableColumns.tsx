@@ -21,9 +21,9 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      {
        key: 'invoiceNumber',
        label: 'Portal Invoice Number',
-       className: 'sticky left-0 z-10 bg-white border-r border-gray-100',
+       className: 'sticky left-0 z-10 bg-white border-r border-gray-100 w-[200px] min-w-[200px] whitespace-nowrap',
        render: (record: PortalRecord) => (
-         <span className="text-sm text-gray-900 truncate cursor-pointer hover:underline" onClick={() => onViewDetails(record.id)}>
+         <span className="text-sm text-gray-900 cursor-pointer hover:underline whitespace-nowrap" onClick={() => onViewDetails(record.id)}>
            {record.invoiceNumber}
          </span>
        )
@@ -31,7 +31,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      {
        key: 'portal',
        label: 'Portal',
-       className: 'truncate',
+       className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <div className="flex items-center gap-2">
            <PortalLogo portalName={record.portal} className="w-4 h-4" />
@@ -41,7 +41,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      {
        key: 'buyer',
        label: 'Buyer',
-       className: 'truncate',
+       className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.buyer}</span>
        )
@@ -49,13 +49,13 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      {
        key: 'portalStatus',
        label: 'Portal Status',  
-       className: 'whitespace-nowrap',
+       className: 'w-[200px] min-w-[200px] whitespace-nowrap',
        render: (record: PortalRecord) => <StatusBadge status={record.portalStatus} />
      },
      {
        key: 'total',
        label: 'Total',
-       className: 'font-medium',
+       className: 'w-[200px] min-w-[200px] font-medium',
        render: (record: PortalRecord) => (
          <span className="text-sm font-medium text-gray-900">
            {formatCurrency(record.total, record.currency)}
@@ -65,7 +65,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      {
        key: 'poNumber',
        label: 'PO Number',
-       className: 'truncate',
+       className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.poNumber}</span>
        )
@@ -73,7 +73,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      {
        key: 'invoiceDate',
        label: 'Invoice Date',
-       className: 'truncate',
+       className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.invoiceDate || 'N/A'}</span>
        )
@@ -81,7 +81,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      {
        key: 'dueDate',
        label: 'Due Date',
-       className: 'truncate',
+       className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.dueDate || 'N/A'}</span>
        )
@@ -89,7 +89,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      {
        key: 'netTerms',
        label: 'Net Terms',
-       className: 'truncate',
+       className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.netTerms || 'N/A'}</span>
        )
@@ -97,7 +97,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      {
        key: 'supplierName',
        label: 'Supplier',
-       className: 'truncate',
+       className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.supplierName}</span>
        )
@@ -109,7 +109,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      baseColumns.push({
        key: 'matchType',
        label: 'Match Type',
-       className: 'whitespace-nowrap',
+       className: 'w-[200px] min-w-[200px] whitespace-nowrap',
        render: (record: PortalRecord) => <MatchTypeBadge type={record.matchType} />
      });
    }
@@ -119,7 +119,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
     {
       key: 'actions',
       label: '',
-      className: 'text-right',
+      className: 'text-right w-[200px] min-w-[200px]',
       render: (record: PortalRecord) => (
         <ActionsColumn
           record={record}
