@@ -74,19 +74,16 @@ export function TeamTab() {
   const [copiedMemberId, setCopiedMemberId] = useState<number | null>(null);
 
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState<MemberRole>("Viewer");
   
   const handleAddNewMember = () => {
     setMemberToEdit(null);
     setEmail("");
-    setRole("Viewer");
     setIsModalOpen(true);
   };
 
   const handleEditMember = (member: TeamMember) => {
     setMemberToEdit(member);
     setEmail(member.email);
-    setRole(member.role);
     setIsModalOpen(true);
   };
   
@@ -108,10 +105,10 @@ export function TeamTab() {
         return;
     }
     if (memberToEdit) {
-      setMembers(members.map(m => m.id === memberToEdit.id ? { ...m, email, role } : m));
+      setMembers(members.map(m => m.id === memberToEdit.id ? { ...m, email } : m));
       showSuccessToast("Member updated", "The team member's details have been updated.");
     } else {
-      const newMember = { id: Date.now(), email, role };
+      const newMember = { id: Date.now(), email, role: "Viewer" as const };
       setMembers([...members, newMember]);
       showSuccessToast("Member added", "An invitation has been sent to the new member.");
     }
@@ -141,8 +138,7 @@ export function TeamTab() {
       <div>
         <h6 className="text-lg font-semibold text-gray-900 mb-1">Team</h6>
         <p className="text-base text-gray-600">
-          Invite teammates to collaborate. Admins can manage users, connections, and settings.<br />
-          Editors can view and edit. Viewers can only view.
+          Invite teammates to collaborate.
         </p>
       </div>
       <Card className="shadow-none border border-[#ececec] rounded-xl max-w-4xl">
@@ -152,7 +148,6 @@ export function TeamTab() {
               <TableHeader className="bg-gray-50 border-b">
                 <TableRow>
                   <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Email</TableHead>
-                  <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</TableHead>
                   <TableHead className="px-4 sm:px-8 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider min-w-[120px]">Invite</TableHead>
                   <TableHead className="px-4 sm:px-8 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider w-16"></TableHead>
                 </TableRow>
@@ -162,26 +157,6 @@ export function TeamTab() {
                   <TableRow key={member.id} className="hover:bg-gray-50">
                     <TableCell className="px-4 sm:px-8 py-5 text-base text-gray-900 max-w-0">
                       <div className="truncate">{member.email}</div>
-                    </TableCell>
-                    <TableCell className="px-4 sm:px-8 py-5 min-w-0">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div>
-                              <Badge variant="secondary" className={getRoleBadgeClass(member.role)}>
-                                {member.role}
-                              </Badge>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
-                              {member.role === "Admin" && "Full access to manage users, connections, and settings"}
-                              {member.role === "Editor" && "Can view and edit content, but cannot manage users"}
-                              {member.role === "Viewer" && "Read-only access to view content"}
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
                     </TableCell>
                     <TableCell className="px-4 sm:px-8 py-5 min-w-0">
                       <Button 
@@ -225,7 +200,7 @@ export function TeamTab() {
           <DialogHeader>
             <DialogTitle>{memberToEdit ? "Edit Member" : "Add New Member"}</DialogTitle>
             <DialogDescription>
-              {memberToEdit ? "Update the details for the team member." : "Enter the email and assign a role to invite a new member."}
+              {memberToEdit ? "Update the details for the team member." : "Enter the email to invite a new member."}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -240,21 +215,6 @@ export function TeamTab() {
                 className="col-span-3"
                 placeholder="name@company.com"
               />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="role" className="text-right">
-                Role
-              </Label>
-              <Select onValueChange={(value: MemberRole) => setRole(value)} value={role}>
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Admin">Admin</SelectItem>
-                  <SelectItem value="Editor">Editor</SelectItem>
-                  <SelectItem value="Viewer">Viewer</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
           <DialogFooter>

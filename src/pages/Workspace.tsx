@@ -24,21 +24,6 @@ const headerTabs = [
     label: "License",
     icon: <HeartHandshake size={16} strokeWidth={1} />,
   },
-  {
-    id: "policies",
-    label: "Policies",
-    icon: <FileLock size={16} strokeWidth={1} />,
-  },
-  {
-    id: "company-entities",
-    label: "Company Entities",
-    icon: <FolderKanban size={16} strokeWidth={1} />,
-  },
-  {
-    id: "integration-center",
-    label: "Integration Center",
-    icon: <Unplug size={16} strokeWidth={1} />,
-  },
 ];
 
 // Placeholder component for company entities tab
@@ -69,12 +54,6 @@ export default function Workspace() {
         return <TeamTab />;
       case "license":
         return <LicenseTab />;
-      case "policies":
-        return <PoliciesTab />;
-      case "integration-center":
-        return <IntegrationHub />;
-      case "company-entities":
-        return <CompanyEntitiesTab />;
       default:
         return null;
     }
