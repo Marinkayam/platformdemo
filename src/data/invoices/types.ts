@@ -11,22 +11,39 @@ export const getBasicInvoiceData = (
   creationDate: string,
   owner: string,
   extras: Partial<Invoice> = {}
-): Invoice => ({
-  id,
-  number,
-  buyer,
-  dueDate,
-  status: status as Invoice['status'],
-  total,
-  creationDate,
-  owner,
-  currency: "USD",
-  hasExceptions: extras.hasExceptions || false,
-  documentType: extras.documentType || "Invoice",
-  portal: extras.portal,
-  isOverdue: extras.isOverdue || false,
-  ...extras
-});
+): Invoice => {
+  const baseInvoiceDate = new Date(creationDate);
+  const defaultInvoiceDate = new Date(baseInvoiceDate.getTime() - Math.random() * 14 * 24 * 60 * 60 * 1000); // 0-14 days before creation
+  
+  const netTermsOptions = ["Net 15", "Net 30", "Net 45", "Net 60", "Due on Receipt", "Net 10"];
+  const defaultNetTerms = netTermsOptions[Math.floor(Math.random() * netTermsOptions.length)];
+  
+  const poNumbers = [`PO-${Math.floor(Math.random() * 999999) + 100000}`, `P${Math.floor(Math.random() * 999999) + 100000}`, `${buyer.substring(0, 3).toUpperCase()}-${Math.floor(Math.random() * 9999) + 1000}`];
+  const defaultPONumber = poNumbers[Math.floor(Math.random() * poNumbers.length)];
+
+  const portals = ["Coupa", "SAP Ariba", "Oracle Procurement", "Tipalti", "Bill.com"];
+  const defaultPortal = portals[Math.floor(Math.random() * portals.length)];
+
+  return {
+    id,
+    number,
+    buyer,
+    dueDate,
+    status: status as Invoice['status'],
+    total,
+    creationDate,
+    owner,
+    currency: "USD",
+    hasExceptions: extras.hasExceptions || false,
+    documentType: extras.documentType || "Invoice",
+    portal: extras.portal || defaultPortal as Invoice['portal'],
+    isOverdue: extras.isOverdue || false,
+    poNumber: extras.poNumber || defaultPONumber,
+    invoiceDate: extras.invoiceDate || defaultInvoiceDate.toISOString().split('T')[0],
+    netTerms: extras.netTerms || defaultNetTerms,
+    ...extras
+  };
+};
 
 // Test data for Overdue Invoices and Credit Memos
 export const testInvoices = [

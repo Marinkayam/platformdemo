@@ -1,25 +1,26 @@
-
 import { Invoice } from "@/types/invoice";
+import { getBasicInvoiceData } from "./types";
 
 export const duplicateInvoices: Invoice[] = [
   {
-    id: "dup1",
-    number: "INV-100231211",
-    buyer: "Marvel Entertainment",
-    dueDate: "12/31/2024",
-    status: "Pending Action",
-    total: 12423.00,
-    creationDate: "04/26/2024",
-    owner: "Camila Rodriguez",
+    ...getBasicInvoiceData(
+      "dup1",
+      "INV-100231211",
+      "Marvel Entertainment",
+      "12/31/2024",
+      "Pending Action",
+      12423.00,
+      "04/26/2024",
+      "Camila Rodriguez"
+    ),
     subtotal: 11294.55,
     tax: 1128.45,
-    currency: "USD",
-    poNumber: "PO-123456",
     paymentTerms: "Net 60",
     hasExceptions: true,
-    documentType: "Invoice",
     isDuplicate: true,
     portal: "SAP Ariba",
+    invoiceDate: "2024-04-20",
+    netTerms: "Net 60",
     exceptions: [
       {
         id: "exc-duplicate-001",
@@ -32,86 +33,89 @@ export const duplicateInvoices: Invoice[] = [
     ]
   },
   {
-    id: "dup2",
-    number: "INV-100231211",
-    buyer: "Marvel Studios LLC",
-    dueDate: "12/15/2024",
-    status: "Approved by Buyer",
-    total: 12675.00,
-    creationDate: "04/24/2024",
-    owner: "John Matthews",
+    ...getBasicInvoiceData(
+      "dup2",
+      "INV-100231211",
+      "Marvel Studios LLC",
+      "12/15/2024",
+      "Approved by Buyer",
+      12675.00,
+      "04/24/2024",
+      "John Matthews"
+    ),
     subtotal: 11500.00,
     tax: 1175.00,
-    currency: "USD",
-    poNumber: "PO-123456",
     paymentTerms: "Net 45",
-    documentType: "Invoice",
     hasExceptions: false,
     isDuplicate: true,
-    portal: "Coupa"
+    portal: "Coupa",
+    invoiceDate: "2024-04-18",
+    netTerms: "Net 45"
   },
   {
-    id: "dup3",
-    number: "INV-100231211",
-    buyer: "Marvel Comics International",
-    dueDate: "01/15/2025",
-    status: "Pending Action",
-    total: 11890.50,
-    creationDate: "04/22/2024",
-    owner: "Sarah Chen",
-    subtotal: 10800.00,
-    tax: 1090.50,
-    currency: "USD",
-    poNumber: "PO-123457",
-    paymentTerms: "Net 90",
-    documentType: "Invoice",
+    ...getBasicInvoiceData(
+      "dup3",
+      "INV-100231400",
+      "Disney Productions",
+      "11/30/2024",
+      "Pending Action",
+      8567.33,
+      "04/25/2024",
+      "Sarah Johnson"
+    ),
+    subtotal: 7800.00,
+    tax: 767.33,
+    paymentTerms: "Net 30",
     hasExceptions: true,
     isDuplicate: true,
     portal: "Bill.com",
+    invoiceDate: "2024-04-19",
+    netTerms: "Net 30",
     exceptions: [
       {
-        id: "exc-duplicate-003",
+        id: "exc-duplicate-002",
         type: "DUPLICATE_INVOICE",
         message: "Duplicate Invoice Detected",
-        details: "This invoice number has been submitted multiple times with different details",
-        createdAt: "2024-04-22T14:25:00Z",
+        details: "This invoice number has been submitted multiple times",
+        createdAt: "2024-04-25T14:20:00Z",
         resolved: false
       },
       {
-        id: "exc-amount-mismatch-003",
+        id: "exc-validation-001",
         type: "VALIDATION_ERROR",
-        message: "Amount Mismatch",
-        details: "Invoice total does not match PO expected amount",
-        createdAt: "2024-04-22T14:30:00Z",
+        message: "Invoice Validation Error",
+        details: "Invoice total does not match the sum of line items",
+        createdAt: "2024-04-25T14:25:00Z",
         resolved: false
       }
     ]
   },
   {
-    id: "dup4",
-    number: "INV-100231211",
-    buyer: "Marvel Digital Services",
-    dueDate: "11/30/2024",
-    status: "Pending Action",
-    total: 13100.25,
-    creationDate: "04/28/2024",
-    owner: "Michael Torres",
-    subtotal: 11900.00,
-    tax: 1200.25,
-    currency: "USD",
-    poNumber: "PO-123458",
-    paymentTerms: "Net 30",
-    documentType: "Invoice",
+    ...getBasicInvoiceData(
+      "dup4",
+      "INV-100231500",
+      "Warner Bros Entertainment",
+      "01/15/2025",
+      "Pending Action",
+      15234.67,
+      "04/27/2024",
+      "Michael Chen"
+    ),
+    subtotal: 13500.00,
+    tax: 1734.67,
+    paymentTerms: "Net 45",
     hasExceptions: true,
     isDuplicate: true,
     portal: "SAP Ariba",
+    invoiceDate: "2024-04-21",
+    netTerms: "Net 45",
     exceptions: [
       {
-        id: "exc-duplicate-004",
+        id: "exc-duplicate-003",
         type: "DUPLICATE_INVOICE",
         message: "Duplicate Invoice Detected",
-        details: "This invoice number has been submitted multiple times with different details",
-        createdAt: "2024-04-28T11:15:00Z",
+        details: "This invoice number conflicts with existing invoice",
+        createdAt: "2024-04-27T11:15:00Z",
         resolved: false
       }
     ]

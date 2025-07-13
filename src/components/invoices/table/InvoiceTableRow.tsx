@@ -38,7 +38,7 @@ export function InvoiceTableRow({
       className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white ${isPendingAction ? 'pending-action-row' : ''}`}
       onClick={handleClick}
     >
-      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold px-4 py-4 min-w-[220px] flex-shrink-0 relative">
+      <TableCell className="sticky left-0 z-10 bg-white border-r border-gray-100 font-semibold px-4 py-4 min-w-[180px] flex-shrink-0 relative">
         {isPendingAction && (
           <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500" />
         )}
@@ -66,24 +66,15 @@ export function InvoiceTableRow({
         </TooltipProvider>
       </TableCell>
       
-      {isPendingTab ? (
-        <TableCell className="px-4 py-4 min-w-[140px] flex-shrink-0">
-          <RejectionInfo 
-            isRejectedByMonto={invoice.rejectedBy === 'Monto'}
-            isRejectedByBuyer={invoice.rejectedBy === 'Buyer'}
-          />
-        </TableCell>
-      ) : (
-        <TableCell className="px-4 py-4 min-w-[140px] flex-shrink-0 text-sm">
-          {invoice.dueDate}
-        </TableCell>
-      )}
+      <TableCell className="px-4 py-4 min-w-[120px] flex-shrink-0 text-sm">
+        {invoice.dueDate}
+      </TableCell>
       
       <TableCell className="px-4 py-4 min-w-[120px] flex-shrink-0">
         <StatusBadge status={invoice.status} showTooltip={true} />
       </TableCell>
       
-      <TableCell className="px-4 py-4 min-w-[180px] flex-1">
+      <TableCell className="px-4 py-4 min-w-[140px] flex-1">
         <div className="flex items-center gap-2">
           {(() => {
             const resolvedPortalName = invoice.portal;
@@ -120,8 +111,29 @@ export function InvoiceTableRow({
         </div>
       </TableCell>
       
-      <TableCell className="px-4 py-4 font-medium min-w-[150px] flex-shrink-0 text-left text-sm">
+      <TableCell className="px-4 py-4 font-medium min-w-[130px] flex-shrink-0 text-left text-sm">
         {formatCurrency(invoice.total, invoice.currency)}
+      </TableCell>
+
+      <TableCell className="px-4 py-4 min-w-[140px] flex-shrink-0 text-sm">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="truncate cursor-help block">{invoice.poNumber}</span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{invoice.poNumber}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </TableCell>
+
+      <TableCell className="px-4 py-4 min-w-[120px] flex-shrink-0 text-sm">
+        {invoice.invoiceDate}
+      </TableCell>
+
+      <TableCell className="px-4 py-4 min-w-[110px] flex-shrink-0 text-sm">
+        {invoice.netTerms}
       </TableCell>
       
       {isPendingTab ? (

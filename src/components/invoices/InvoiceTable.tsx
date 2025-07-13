@@ -48,7 +48,7 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
   };
 
   // Determine the number of columns based on isPendingTab
-  const columnsCount = isPendingTab ? 7 : 8; // Adjust based on actual column count
+  const columnsCount = isPendingTab ? 10 : 11; // Updated for new columns: Invoice Number, Buyer, Due Date, Status, Portal, Total, PO Number, Invoice Date, Net Terms, Owner/Assignee, Actions
 
   return (
     <div className="rounded-xl border border-gray-200 overflow-hidden bg-white">

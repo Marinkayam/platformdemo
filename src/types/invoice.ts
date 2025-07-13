@@ -16,11 +16,11 @@ export interface Invoice {
   tax?: number;
   paymentTerms?: string;
   currency?: string;
-  poNumber?: string;
+  poNumber: string;
   taxId?: string;
   requesterEmail?: string;
   documentType?: 'Invoice' | 'Credit Memo';
-  portal?: 'Coupa' | 'Tipalti' | 'Bill.com' | 'Amazon Payee' | 'Apple' | 'SAP' | 'Facturaxion' | 'Fieldglass' | 'iSupplier' | 'KissFlow' | 'Qualcomm' | 'Sainsburys' | 'Segment' | 'Shopify' | 'StoreNext' | 'Taulia' | 'Teradata' | 'Tungsten' | 'Walmart' | 'Oracle Procurement' | 'SAP Ariba';
+  portal: 'Coupa' | 'Tipalti' | 'Bill.com' | 'Amazon Payee' | 'Apple' | 'SAP' | 'Facturaxion' | 'Fieldglass' | 'iSupplier' | 'KissFlow' | 'Qualcomm' | 'Sainsburys' | 'Segment' | 'Shopify' | 'StoreNext' | 'Taulia' | 'Teradata' | 'Tungsten' | 'Walmart' | 'Oracle Procurement' | 'SAP Ariba';
   isOverdue?: boolean;
   lineItems?: LineItem[];
   attachments?: Attachment[];
@@ -29,6 +29,8 @@ export interface Invoice {
   isDuplicate?: boolean;
   submitMethod?: 'ERP' | 'Email' | 'Portal Upload' | 'API';
   submittedAt?: string;
+  invoiceDate: string;
+  netTerms: string;
 }
 
 export type InvoiceStatus = 
