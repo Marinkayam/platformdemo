@@ -1,6 +1,6 @@
 
 import { PortalRecord } from "@/types/portalRecord";
-import { ActivityLog } from "@/components/common/ActivityLog";
+import { Notes } from "@/components/common/Notes";
 
 interface PortalRecordActivityLogProps {
   portalRecord: PortalRecord;
@@ -8,6 +8,19 @@ interface PortalRecordActivityLogProps {
 
 export function PortalRecordActivityLog({ portalRecord }: PortalRecordActivityLogProps) {
   return (
-    <ActivityLog entityId={portalRecord.id} entityType="portal_record" />
+    <div className="space-y-6">
+      {/* Activity Timeline - Coming Soon */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Activity Timeline</h3>
+        <div className="text-center py-12 text-gray-500">
+          <p className="text-lg">Coming Soon</p>
+        </div>
+      </div>
+      
+      {/* Notes Section */}
+      <div>
+        <Notes entityId={portalRecord.id} entityType="portal_record" />
+      </div>
+    </div>
   );
 }

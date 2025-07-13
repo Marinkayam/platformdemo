@@ -1,11 +1,5 @@
 
 import React from "react";
-import { 
-  ResizablePanelGroup,
-  ResizablePanel, 
-  ResizableHandle 
-} from "@/components/ui/resizable";
-import { ActivityTimeline } from "./ActivityTimeline";
 import { NotesThread } from "./NotesThread";
 import { useNotes } from "@/hooks/useNotes";
 
@@ -14,25 +8,25 @@ export function ActivityTab() {
 
   return (
     <div className="bg-white rounded-lg">
-      <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-lg border">
-        {/* Timeline Panel */}
-        <ResizablePanel defaultSize={60} minSize={30}>
-          <ActivityTimeline />
-        </ResizablePanel>
+      <div className="min-h-[600px] rounded-lg border p-6">
+        {/* Activity Timeline - Coming Soon */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Activity Timeline</h3>
+          <div className="text-center py-12 text-gray-500">
+            <p className="text-lg">Coming Soon</p>
+          </div>
+        </div>
         
-        {/* Resizable Handle */}
-        <ResizableHandle withHandle />
-        
-        {/* Notes Panel */}
-        <ResizablePanel defaultSize={40} minSize={30}>
+        {/* Notes Section */}
+        <div>
           <NotesThread 
             notes={notes}
             addNote={addNote}
             removeNoteAttachment={removeNoteAttachment}
             scrollRef={scrollRef}
           />
-        </ResizablePanel>
-      </ResizablePanelGroup>
+        </div>
+      </div>
     </div>
   );
 }

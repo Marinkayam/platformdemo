@@ -71,37 +71,16 @@ export function ActivityLog({ entityId, entityType, className }: ActivityLogProp
   }, [entityId, entityType]);
 
   return (
-    <div className="grid grid-cols-1 gap-6">
-      {/* Hide Activity Timeline for demo */}
-      <div className="hidden">
+    <div className="space-y-6">
+      {/* Activity Timeline - Coming Soon */}
+      <div>
         <h3 className="text-lg font-semibold mb-4">Activity Timeline</h3>
-        
-        <div className="relative pl-5">
-          {activities.map((activity, index) => (
-            <div key={activity.id} className="mb-6 flex items-start">
-              {/* Timeline dot and line */}
-              <div className="flex flex-col items-center mr-4">
-                <div className="w-5 h-5 rounded-full flex items-center justify-center bg-gray-100 flex-shrink-0">
-                  {activity.icon}
-                </div>
-                {index < activities.length - 1 && (
-                  <div className="w-px h-full bg-gray-200 mt-2 flex-grow" />
-                )}
-              </div>
-              
-              <div className="flex-1">
-                <p className="font-medium text-sm text-[#01173E] mb-1">{activity.title}</p>
-                <div className="text-xs text-muted-foreground mb-1">
-                  By {activity.user} • {format(new Date(activity.timestamp), "MMM dd, yyyy hh:mm a")}
-                </div>
-                {activity.description && (
-                  <p className="text-sm text-gray-700">{activity.description}</p>
-                )}
-              </div>
-            </div>
-          ))}
+        <div className="text-center py-12 text-gray-500">
+          <p className="text-lg">Coming Soon</p>
         </div>
       </div>
+      
+      {/* Notes Section */}
       <div>
         <Notes entityId={entityId} entityType={entityType} />
       </div>
