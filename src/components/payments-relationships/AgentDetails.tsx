@@ -111,14 +111,6 @@ export function AgentDetails({
         <DialogContent className="sm:max-w-[1000px] p-0 h-[90vh] bg-white flex flex-col overflow-hidden">
           {/* Fixed Header */}
           <div className="flex-shrink-0 p-6 pb-2 bg-white">
-            <DialogHeader className="mb-4">
-              <DialogTitle className="flex items-center gap-3 text-xl">
-                <span>Agent Details</span>
-                <StatusBadge status={agent.status} />
-                <AgentUserTypeBadge type={agent.type} />
-              </DialogTitle>
-            </DialogHeader>
-
             {/* Smart Connection Section - Monto Style */}
             <div className="mb-4 p-4 bg-gradient-to-r from-[#7b61ff]/5 to-[#6b46ff]/5 border border-[#7b61ff]/20 rounded-lg">
               <div className="flex items-center justify-between">
@@ -131,88 +123,65 @@ export function AgentDetails({
                     <div className="text-lg font-semibold text-gray-900">{mockSmartConnection.name}</div>
                   </div>
                 </div>
-                {activeTab === "details" && (
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={handleViewInstructions}
-                    className="bg-white hover:bg-gray-50 border-[#7b61ff]/30 text-[#7b61ff] hover:text-[#6b46ff]"
-                  >
-                    View Instructions
-                  </Button>
-                )}
               </div>
             </div>
 
             <AgentDisconnectionAlert agent={agent} />
-
-            {/* Navigation Tabs */}
-            <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-6 bg-white">
-            {activeTab === "details" && (
-              <div className="space-y-6 max-w-full pb-6">
-                <AgentIdentitySection 
-                  agent={agent}
-                  connectionInfo={connectionInfo}
-                  copyToClipboard={copyToClipboard}
-                  isEditMode={isEditMode}
-                  editFormData={editFormData}
-                  onFormChange={handleFormChange}
-                />
+            <div className="space-y-6 max-w-full pb-6">
+              <AgentIdentitySection 
+                agent={agent}
+                connectionInfo={connectionInfo}
+                copyToClipboard={copyToClipboard}
+                isEditMode={isEditMode}
+                editFormData={editFormData}
+                onFormChange={handleFormChange}
+              />
 
-                <AgentCredentialsSection
-                  credentials={mockCredentials}
-                  isEditMode={isEditMode}
-                  editFormData={editFormData}
-                  onFormChange={handleFormChange}
-                  copyToClipboard={copyToClipboard}
-                />
+              <AgentCredentialsSection
+                credentials={mockCredentials}
+                isEditMode={isEditMode}
+                editFormData={editFormData}
+                onFormChange={handleFormChange}
+                copyToClipboard={copyToClipboard}
+              />
 
-                <AgentTwoFactorSection
-                  credentials={mockCredentials}
-                  isEditMode={isEditMode}
-                  editFormData={editFormData}
-                  onFormChange={handleFormChange}
-                  onConfigureSettings={handleEdit}
-                  agentId={agent.id}
-                />
-              </div>
-            )}
-
-            {activeTab === "instructions" && (
-              <div className="pb-6">
-                <AgentInstructionsTab agent={agent} />
-              </div>
-            )}
+              <AgentTwoFactorSection
+                credentials={mockCredentials}
+                isEditMode={isEditMode}
+                editFormData={editFormData}
+                onFormChange={handleFormChange}
+                onConfigureSettings={handleEdit}
+                agentId={agent.id}
+              />
+            </div>
           </div>
 
-          {/* Fixed Footer - Only show for Details tab */}
-          {activeTab === "details" && (
-            <div className="flex-shrink-0 flex justify-end gap-3 p-6 bg-white border-t">
-              {isEditMode ? (
-                <>
-                  <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
-                    Cancel
-                  </Button>
-                  <Button onClick={handleSaveClick} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
-                    Save Changes
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button variant="ghost" onClick={onClose} className="min-w-[80px]">
-                    Close
-                  </Button>
-                  <Button onClick={handleEdit} className="min-w-[100px] bg-[#7b61ff] hover:bg-[#6b46ff]">
-                    Edit Agent
-                  </Button>
-                </>
-              )}
-            </div>
-          )}
+          {/* Fixed Footer */}
+          <div className="flex-shrink-0 flex justify-end gap-3 p-6 bg-white border-t">
+            {isEditMode ? (
+              <>
+                <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveClick} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
+                  Save Changes
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" onClick={onClose} className="min-w-[80px]">
+                  Close
+                </Button>
+                <Button onClick={handleEdit} className="min-w-[100px] bg-[#7b61ff] hover:bg-[#6b46ff]">
+                  Edit Agent
+                </Button>
+              </>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
 
