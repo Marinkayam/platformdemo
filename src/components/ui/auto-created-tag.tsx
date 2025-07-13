@@ -26,7 +26,7 @@ export const AutoCreatedTag: React.FC = () => {
                 className="inline-flex items-center rounded-full border border-[#E1D6F9] bg-[#F2EEFF] px-3 py-0.5 text-[12px] font-medium text-[#7B59FF] select-none cursor-default shadow-sm"
                 style={{ minWidth: 0 }}
               >
-                Auto-created from RTP
+                Auto-created&nbsp;from&nbsp;RTP
               </motion.div>
             </AnimatePresence>
           </span>

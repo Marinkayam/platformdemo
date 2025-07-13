@@ -111,6 +111,14 @@ export function AgentDetails({
         <DialogContent className="sm:max-w-[1000px] p-0 h-[90vh] bg-white flex flex-col overflow-hidden">
           {/* Fixed Header */}
           <div className="flex-shrink-0 p-6 pb-2 bg-white">
+            <DialogHeader className="mb-4">
+              <DialogTitle className="flex items-center gap-3 text-xl">
+                <span>Agent Details</span>
+                <StatusBadge status={agent.status} />
+                <AgentUserTypeBadge type={agent.type} />
+              </DialogTitle>
+            </DialogHeader>
+
             {/* Smart Connection Section - Monto Style */}
             <div className="mb-4 p-4 bg-gradient-to-r from-[#7b61ff]/5 to-[#6b46ff]/5 border border-[#7b61ff]/20 rounded-lg">
               <div className="flex items-center justify-between">
