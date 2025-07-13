@@ -176,22 +176,19 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
               <thead>
                 <tr className="bg-[#F6F7F9] border-b border-gray-200">
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Portal Record ID
+                    Portal Invoice Number
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Portal
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Status
+                    Portal Status
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Match Type
+                    Match Date
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Last Updated
-                  </th>
-                  <th className="h-[65px] px-4 text-right align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Action
                   </th>
                 </tr>
               </thead>
@@ -206,11 +203,12 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                     >
                       <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
                         <div className="flex items-center gap-2">
+                          {expandedId === record.id ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
                           {record.conflict && (
                             <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
                           )}
                           <span className="text-sm font-medium text-black">
-                            {record.portalRecordId}
+                            {record.invoiceNumber}
                           </span>
                         </div>
                       </td>
@@ -221,29 +219,21 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                         {getStatusBadge(record.status)}
                       </td>
                       <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        {getMatchTypeDisplay(record.matchType)}
+                        <span className="text-sm text-gray-600">
+                          {format(new Date(record.lastSynced || record.updated), "MMM d, yyyy")}
+                        </span>
                       </td>
                       <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
                         <span className="text-sm text-gray-600">
                           {format(new Date(record.updated), "MMM d, yyyy")}
                         </span>
                       </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans text-right">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="flex gap-1 items-center pointer-events-none"
-                        >
-                          {expandedId === record.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                          Details
-                        </Button>
-                      </td>
                     </tr>
 
                     {/* Expanded Details Row */}
                     {expandedId === record.id && (
                       <tr>
-                        <td colSpan={6} className="bg-white border-t border-gray-100">
+                        <td colSpan={5} className="bg-white border-t border-gray-100">
                           <div className="px-6 pt-6 pb-4">
                             {record.conflict && (
                               <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4 border border-[#F2AE40]">
@@ -269,13 +259,13 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                               </div>
                               
                               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                                <Field label="Record ID" value={record.portalRecordId} />
+                                <Field label="Portal Invoice Number" value={record.invoiceNumber} />
                                 <Field label="Portal" value={record.portal} />
                                 <Field label="Buyer" value={record.buyer} />
-                                <Field label="Invoice Number" value={record.invoiceNumber} />
                                 <Field label="Total Amount" value={`${record.currency === 'EUR' ? '€' : record.currency === 'GBP' ? '£' : '$'}${record.total.toLocaleString()}`} />
                                 <Field label="Currency" value={record.currency || "USD"} />
                                 <Field label="PO Number" value={record.poNumber} />
+                                <Field label="Due Date" value={record.dueDate || "Not specified"} />
                                 <Field label="Supplier Name" value={record.supplierName} />
                               </div>
                             </div>
