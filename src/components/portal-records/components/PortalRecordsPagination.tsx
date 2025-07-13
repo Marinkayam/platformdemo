@@ -31,7 +31,7 @@ export function PortalRecordsPagination({
           size="sm"
           onClick={() => onPageChange(1)}
           disabled={currentPage === 1}
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 p-0 rounded-lg"
         >
           <ChevronsLeft className="h-4 w-4" />
           <span className="sr-only">First page</span>
@@ -42,7 +42,7 @@ export function PortalRecordsPagination({
           size="sm"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 p-0 rounded-lg"
         >
           <ChevronLeft className="h-4 w-4" />
           <span className="sr-only">Previous page</span>
@@ -59,7 +59,7 @@ export function PortalRecordsPagination({
           size="sm"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 p-0 rounded-lg"
         >
           <ChevronRight className="h-4 w-4" />
           <span className="sr-only">Next page</span>
@@ -70,7 +70,7 @@ export function PortalRecordsPagination({
           size="sm"
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage === totalPages}
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 p-0 rounded-lg"
         >
           <ChevronsRight className="h-4 w-4" />
           <span className="sr-only">Last page</span>

@@ -94,7 +94,7 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
             <TableHeader>
               <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
                 {columns.map((column, index) => (
-                  <TableHead key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm bg-[#F6F7F9] ${column.className || ''}`}>
+                  <TableHead key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm ${index === 0 ? 'bg-[#F6F7F9] sticky left-0 z-10 border-r border-gray-200' : 'bg-[#F6F7F9]'} ${column.className || ''}`}>
                     {column.label}
                   </TableHead>
                 ))}
