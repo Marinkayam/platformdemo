@@ -10,11 +10,12 @@ import { PortalRecordsTableContent } from "./components/PortalRecordsTableConten
 import { PortalRecordsLoadMore } from "./components/PortalRecordsLoadMore";
 
 interface PortalRecordsTableProps {
-  records: PortalRecord[];
-  isLoading?: boolean;
-}
+   records: PortalRecord[];
+   isLoading?: boolean;
+   activeTab?: string;
+ }
 
-export function PortalRecordsTable({ records, isLoading = false }: PortalRecordsTableProps) {
+export function PortalRecordsTable({ records, isLoading = false, activeTab }: PortalRecordsTableProps) {
   const {
     visibleRecords,
     sortedRecords,
@@ -51,11 +52,12 @@ export function PortalRecordsTable({ records, isLoading = false }: PortalRecords
   });
 
   const columns = usePortalRecordsTableColumns({
-    onViewDetails: handleViewDetails,
-    onMatchInvoice: handleMatchInvoice,
-    onResolveConflict: handleResolveConflict,
-    onIgnoreRecord: handleIgnoreRecord
-  });
+     onViewDetails: handleViewDetails,
+     onMatchInvoice: handleMatchInvoice,
+     onResolveConflict: handleResolveConflict,
+     onIgnoreRecord: handleIgnoreRecord,
+     activeTab
+   });
 
   if (records.length === 0) {
     return (
@@ -84,15 +86,16 @@ export function PortalRecordsTable({ records, isLoading = false }: PortalRecords
             </thead>
             
             <PortalRecordsTableContent
-              isLoading={isLoading}
-              visibleRecords={visibleRecords}
-              isLoadingMore={isLoadingMore}
-              onViewDetails={handleViewDetails}
-              onMatchInvoice={handleMatchInvoice}
-              onResolveConflict={handleResolveConflict}
-              onIgnoreRecord={handleIgnoreRecord}
-              onRowClick={handleRowClick}
-            />
+               isLoading={isLoading}
+               visibleRecords={visibleRecords}
+               isLoadingMore={isLoadingMore}
+               onViewDetails={handleViewDetails}
+               onMatchInvoice={handleMatchInvoice}
+               onResolveConflict={handleResolveConflict}
+               onIgnoreRecord={handleIgnoreRecord}
+               onRowClick={handleRowClick}
+               activeTab={activeTab}
+             />
             
             {!isLoading && <PortalRecordsTableFooter records={sortedRecords} />}
           </table>

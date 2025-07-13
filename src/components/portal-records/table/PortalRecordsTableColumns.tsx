@@ -9,14 +9,15 @@ import { ActionsColumn } from "./columns/ActionsColumn";
 import { formatCurrency } from "@/lib/utils";
 
 interface PortalRecordsTableColumnsProps {
-  onViewDetails: (recordId: string) => void;
-  onMatchInvoice: (record: PortalRecord) => void;
-  onResolveConflict: (record: PortalRecord) => void;
-  onIgnoreRecord: (record: PortalRecord) => void;
-}
+   onViewDetails: (recordId: string) => void;
+   onMatchInvoice: (record: PortalRecord) => void;
+   onResolveConflict: (record: PortalRecord) => void;
+   onIgnoreRecord: (record: PortalRecord) => void;
+   activeTab?: string;
+ }
 
-export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, onResolveConflict, onIgnoreRecord }: PortalRecordsTableColumnsProps) {
-  return [
+export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, onResolveConflict, onIgnoreRecord, activeTab }: PortalRecordsTableColumnsProps) {
+  const baseColumns = [
      {
        key: 'invoiceNumber',
        label: 'Portal Invoice Number',
@@ -100,13 +101,21 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.supplierName}</span>
        )
-     },
-     {
+     }
+   ];
+
+   // Only add Match Type column if not on the "unmatched" tab
+   if (activeTab !== 'unmatched') {
+     baseColumns.push({
        key: 'matchType',
        label: 'Match Type',
        className: 'whitespace-nowrap',
        render: (record: PortalRecord) => <MatchTypeBadge type={record.matchType} />
-     },
+     });
+   }
+
+   return [
+     ...baseColumns,
     {
       key: 'actions',
       label: '',

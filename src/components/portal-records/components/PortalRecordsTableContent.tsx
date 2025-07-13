@@ -4,32 +4,35 @@ import { usePortalRecordsTableColumns } from "../table/PortalRecordsTableColumns
 import { TableSkeleton } from "@/components/ui/table-skeleton";
 
 interface PortalRecordsTableContentProps {
-  isLoading: boolean;
-  visibleRecords: PortalRecord[];
-  isLoadingMore: boolean;
-  onViewDetails: (recordId: string) => void;
-  onMatchInvoice: (record: PortalRecord) => void;
-  onResolveConflict: (record: PortalRecord) => void;
-  onIgnoreRecord: (record: PortalRecord) => void;
-  onRowClick: (record: PortalRecord) => void;
-}
+   isLoading: boolean;
+   visibleRecords: PortalRecord[];
+   isLoadingMore: boolean;
+   onViewDetails: (recordId: string) => void;
+   onMatchInvoice: (record: PortalRecord) => void;
+   onResolveConflict: (record: PortalRecord) => void;
+   onIgnoreRecord: (record: PortalRecord) => void;
+   onRowClick: (record: PortalRecord) => void;
+   activeTab?: string;
+ }
 
 export function PortalRecordsTableContent({
-  isLoading,
-  visibleRecords,
-  isLoadingMore,
-  onViewDetails,
-  onMatchInvoice,
-  onResolveConflict,
-  onIgnoreRecord,
-  onRowClick,
-}: PortalRecordsTableContentProps) {
+   isLoading,
+   visibleRecords,
+   isLoadingMore,
+   onViewDetails,
+   onMatchInvoice,
+   onResolveConflict,
+   onIgnoreRecord,
+   onRowClick,
+   activeTab,
+ }: PortalRecordsTableContentProps) {
   const columns = usePortalRecordsTableColumns({
-    onViewDetails,
-    onMatchInvoice,
-    onResolveConflict,
-    onIgnoreRecord
-  });
+     onViewDetails,
+     onMatchInvoice,
+     onResolveConflict,
+     onIgnoreRecord,
+     activeTab
+   });
 
   if (isLoading) {
     return <TableSkeleton rows={6} columns={columns.length} showFooter />;

@@ -50,7 +50,7 @@ export default function PortalRecords() {
         needsAttentionCount={needsAttentionCount}
       />
       
-      <PortalRecordsTable records={filteredRecords} />
+      <PortalRecordsTable records={filteredRecords} activeTab={activeTab} />
     </div>
   );
 }
