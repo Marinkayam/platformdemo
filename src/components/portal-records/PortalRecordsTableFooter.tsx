@@ -41,9 +41,9 @@ export function PortalRecordsTableFooter({ records, currentPage, totalPages, rec
   const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
 
   return (
-    <TableFooter>
-      <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableCell colSpan={11} className="bg-[#F6F7F9] px-6 py-4 rounded-b-xl">
+    <TableFooter className="bg-[#F6F7F9]">
+      <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9] border-none">
+        <TableCell colSpan={11} className="bg-[#F6F7F9] px-6 py-4 rounded-b-xl border-none">
           <div className="flex items-center justify-between w-full">
             {/* Left side - Totals and Record count */}
             <div className="flex items-center gap-6">
