@@ -50,9 +50,6 @@ export function ExceptionCard({
   };
 
   const getButtonStyles = () => {
-    if (count > 0 && type === 'smartconnection') {
-      return 'bg-[#7B59FF] hover:bg-[#523BAA] text-white border-[#7B59FF]';
-    }
     return '';
   };
 
