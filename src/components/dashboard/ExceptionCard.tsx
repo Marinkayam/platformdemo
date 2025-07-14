@@ -44,7 +44,7 @@ export function ExceptionCard({
 
   const getButtonVariant = () => {
     if (count > 0) {
-      return type === 'rtp' ? 'destructive' : 'default';
+      return type === 'rtp' ? 'destructive' : 'destructive';
     }
     return 'outline';
   };
