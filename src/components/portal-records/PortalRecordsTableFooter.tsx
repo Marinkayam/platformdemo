@@ -1,12 +1,17 @@
 import { TableCell, TableFooter, TableRow } from "@/components/ui/table";
 import { PortalRecord } from "@/types/portalRecord";
 import { formatCurrency } from "@/lib/utils";
+import { PortalRecordsPagination } from "./components/PortalRecordsPagination";
 
 interface PortalRecordsTableFooterProps {
   records: PortalRecord[];
+  currentPage: number;
+  totalPages: number;
+  recordsPerPage: number;
+  onPageChange: (page: number) => void;
 }
 
-export function PortalRecordsTableFooter({ records }: PortalRecordsTableFooterProps) {
+export function PortalRecordsTableFooter({ records, currentPage, totalPages, recordsPerPage, onPageChange }: PortalRecordsTableFooterProps) {
   const totalRecords = records.length;
   
   // Calculate totals by currency
@@ -33,8 +38,16 @@ export function PortalRecordsTableFooter({ records }: PortalRecordsTableFooterPr
 
   return (
     <TableFooter>
-      <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] sticky left-0 z-10 border-r border-gray-200"></TableCell>
+      <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9] rounded-b-xl">
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] sticky left-0 z-10 border-r border-gray-200">
+          <PortalRecordsPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalRecords={totalRecords}
+            recordsPerPage={recordsPerPage}
+            onPageChange={onPageChange}
+          />
+        </TableCell>
         <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
         <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
         <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>

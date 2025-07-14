@@ -30,6 +30,10 @@ export function PortalRecordsEmptyState({
       </div>
       <PortalRecordsTableFooter 
         records={[]}
+        currentPage={currentPage}
+        totalPages={1}
+        recordsPerPage={recordsPerPage}
+        onPageChange={onPageChange}
       />
     </div>
   );

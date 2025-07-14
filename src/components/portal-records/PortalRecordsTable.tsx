@@ -117,20 +117,19 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
                    activeTab={activeTab}
                  />
                 
-                 {!isLoading && <PortalRecordsTableFooter records={sortedRecords} />}
+                 {!isLoading && <PortalRecordsTableFooter 
+                   records={sortedRecords} 
+                   currentPage={currentPage}
+                   totalPages={totalPages}
+                   recordsPerPage={recordsPerPage}
+                   onPageChange={handlePageChange}
+                 />}
               </>
             )}
           </Table>
         </div>
       </div>
 
-      <PortalRecordsPagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        totalRecords={totalRecords}
-        recordsPerPage={recordsPerPage}
-        onPageChange={handlePageChange}
-      />
 
       <PortalRecordsModals
         selectedRecord={selectedRecord}
