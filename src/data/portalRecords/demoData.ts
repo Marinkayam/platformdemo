@@ -138,15 +138,15 @@ export const demoRecords: PortalRecord[] = [
     dueDate: "01/14/2025",
     netTerms: "Net 30",
     // Legacy compatibility fields
-    matchStatus: "—",
+    matchStatus: "Unmatched",
     status: "Rejected",
-    updated: "2024-06-15",
+    updated: "2024-12-28",
     conflict: false,
     type: "Unmatched",
-    companyName: "Unknown",
-    accountName: "Unknown Account",
+    companyName: "TechCorp Industries",
+    accountName: "TechCorp Account",
     recordType: "Invoice",
-    lastSyncDate: "2024-06-15"
+    lastSyncDate: "2024-12-28"
   },
   // Additional records for better demo
   {
