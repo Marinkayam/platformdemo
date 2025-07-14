@@ -1,7 +1,8 @@
 import { TableCell, TableFooter, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { PortalRecord } from "@/types/portalRecord";
 import { formatCurrency } from "@/lib/utils";
-import { PortalRecordsPagination } from "./components/PortalRecordsPagination";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
 interface PortalRecordsTableFooterProps {
   records: PortalRecord[];
@@ -36,34 +37,82 @@ export function PortalRecordsTableFooter({ records, currentPage, totalPages, rec
       .join(" + ");
   };
 
+  const startRecord = (currentPage - 1) * recordsPerPage + 1;
+  const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
+
   return (
     <TableFooter>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9] rounded-b-xl">
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] sticky left-0 z-10 border-r border-gray-200">
-          <PortalRecordsPagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            totalRecords={totalRecords}
-            recordsPerPage={recordsPerPage}
-            onPageChange={onPageChange}
-          />
-        </TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="font-semibold text-gray-700 bg-[#F6F7F9] w-[200px] min-w-[200px]">
-          <div className="flex items-center gap-2 whitespace-nowrap">
-            <span>Total:</span>
-            <span className="font-bold text-gray-900 whitespace-nowrap">{formatTotalAmounts()}</span>
+        <TableCell colSpan={11} className="bg-[#F6F7F9] px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Left side - Record count */}
+            <div className="text-sm text-muted-foreground">
+              Showing {startRecord} to {endRecord} of {totalRecords} portal records
+            </div>
+            
+            {/* Right side - Totals and Pagination */}
+            <div className="flex items-center gap-6">
+              {/* Totals */}
+              <div className="flex items-center gap-2 font-semibold text-gray-700">
+                <span>Total:</span>
+                <span className="font-bold text-gray-900 whitespace-nowrap">{formatTotalAmounts()}</span>
+              </div>
+              
+              {/* Pagination */}
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onPageChange(1)}
+                  disabled={currentPage === 1}
+                  className="h-8 w-8 p-0 rounded-lg"
+                >
+                  <ChevronsLeft className="h-4 w-4" />
+                  <span className="sr-only">First page</span>
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onPageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="h-8 w-8 p-0 rounded-lg"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  <span className="sr-only">Previous page</span>
+                </Button>
+                
+                <div className="flex items-center space-x-1">
+                  <span className="text-sm font-medium">
+                    Page {currentPage} of {totalPages}
+                  </span>
+                </div>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onPageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="h-8 w-8 p-0 rounded-lg"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                  <span className="sr-only">Next page</span>
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onPageChange(totalPages)}
+                  disabled={currentPage === totalPages}
+                  className="h-8 w-8 p-0 rounded-lg"
+                >
+                  <ChevronsRight className="h-4 w-4" />
+                  <span className="sr-only">Last page</span>
+                </Button>
+              </div>
+            </div>
           </div>
         </TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
       </TableRow>
     </TableFooter>
   );
