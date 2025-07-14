@@ -45,17 +45,17 @@ export function PortalRecordsTableFooter({ records, currentPage, totalPages, rec
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9] rounded-b-xl">
         <TableCell colSpan={11} className="bg-[#F6F7F9] px-6 py-4">
           <div className="flex items-center justify-between">
-            {/* Left side - Record count */}
-            <div className="text-sm text-muted-foreground">
-              Showing {startRecord} to {endRecord} of {totalRecords} portal records
+            {/* Left side - Totals */}
+            <div className="flex items-center gap-2 font-semibold text-gray-700">
+              <span>Total:</span>
+              <span className="font-bold text-gray-900 whitespace-nowrap">{formatTotalAmounts()}</span>
             </div>
             
-            {/* Right side - Totals and Pagination */}
+            {/* Right side - Record count and Pagination */}
             <div className="flex items-center gap-6">
-              {/* Totals */}
-              <div className="flex items-center gap-2 font-semibold text-gray-700">
-                <span>Total:</span>
-                <span className="font-bold text-gray-900 whitespace-nowrap">{formatTotalAmounts()}</span>
+              {/* Record count */}
+              <div className="text-sm text-muted-foreground">
+                Showing {startRecord} to {endRecord} of {totalRecords} portal records
               </div>
               
               {/* Pagination */}
