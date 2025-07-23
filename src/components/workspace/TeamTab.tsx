@@ -156,41 +156,21 @@ export function TeamTab() {
             <Table className="min-w-full">
               <TableHeader className="bg-gray-50/50 border-b">
                 <TableRow>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide min-w-[200px]">Team Member</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-32 hidden sm:table-cell">Invite Link</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-20">Actions</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3">Full Name</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3">Email</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white">
                 {members.map((member, index) => (
                   <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
-                    <TableCell className="px-4 md:px-6 py-4">
-                      <div className="flex flex-col">
-                        <div className="text-sm font-medium text-gray-900">{member.fullName}</div>
-                        <div className="text-sm text-gray-500">{member.email}</div>
-                      </div>
+                    <TableCell className="px-4 md:px-6 py-4 w-1/3">
+                      <div className="text-sm font-medium text-gray-900">{member.fullName}</div>
                     </TableCell>
-                    <TableCell className="px-4 md:px-6 py-4 text-center hidden sm:table-cell">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleCopyInviteLink(member)}
-                        className="h-8 px-3 text-xs font-medium border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-colors"
-                      >
-                        {copiedMemberId === member.id ? (
-                          <>
-                            <Check size={14} className="mr-1.5 text-green-600" />
-                            <span className="hidden lg:inline">Copied</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy size={14} className="mr-1.5 text-gray-500" />
-                            <span className="hidden lg:inline">Copy Link</span>
-                          </>
-                        )}
-                      </Button>
+                    <TableCell className="px-4 md:px-6 py-4 w-1/3">
+                      <div className="text-sm text-gray-600">{member.email}</div>
                     </TableCell>
-                    <TableCell className="px-4 md:px-6 py-4 text-center">
+                    <TableCell className="px-4 md:px-6 py-4 text-center w-1/3">
                        <TableActions actions={memberActions(member)} />
                     </TableCell>
                   </TableRow>
