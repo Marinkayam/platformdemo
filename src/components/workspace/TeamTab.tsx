@@ -45,9 +45,9 @@ import { showSuccessToast } from "@/lib/toast-helpers";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const initialTeamMembers = [
-  { id: 1, email: "sarah@monto.tech", role: "Admin" as const },
-  { id: 2, email: "mike@monto.tech", role: "Editor" as const },
-  { id: 3, email: "lisa@monto.tech", role: "Viewer" as const },
+  { id: 1, fullName: "Sarah Johnson", email: "sarah@monto.tech", role: "Admin" as const },
+  { id: 2, fullName: "Mike Chen", email: "mike@monto.tech", role: "Editor" as const },
+  { id: 3, fullName: "Lisa Rodriguez", email: "lisa@monto.tech", role: "Viewer" as const },
 ];
 
 type TeamMember = typeof initialTeamMembers[number];
@@ -74,16 +74,19 @@ export function TeamTab() {
   const [copiedMemberId, setCopiedMemberId] = useState<number | null>(null);
 
   const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
   
   const handleAddNewMember = () => {
     setMemberToEdit(null);
     setEmail("");
+    setFullName("");
     setIsModalOpen(true);
   };
 
   const handleEditMember = (member: TeamMember) => {
     setMemberToEdit(member);
     setEmail(member.email);
+    setFullName(member.fullName);
     setIsModalOpen(true);
   };
   
@@ -100,15 +103,15 @@ export function TeamTab() {
   };
 
   const handleSaveMember = () => {
-    if (!email) {
+    if (!email || !fullName) {
         // Here you could show an error toast
         return;
     }
     if (memberToEdit) {
-      setMembers(members.map(m => m.id === memberToEdit.id ? { ...m, email } : m));
+      setMembers(members.map(m => m.id === memberToEdit.id ? { ...m, email, fullName } : m));
       showSuccessToast("Member updated", "The team member's details have been updated.");
     } else {
-      const newMember = { id: Date.now(), email, role: "Viewer" as const };
+      const newMember = { id: Date.now(), fullName, email, role: "Viewer" as const };
       setMembers([...members, newMember]);
       showSuccessToast("Member added", "An invitation has been sent to the new member.");
     }
@@ -147,51 +150,54 @@ export function TeamTab() {
           Add New Member
         </Button>
       </div>
-      <Card className="shadow-none border border-[#ececec] rounded-xl w-full">
+      <Card className="shadow-none border border-[#ececec] rounded-xl w-full overflow-hidden">
         <CardContent className="p-0">
-          <Table>
-            <TableHeader className="bg-gray-50/50 border-b">
-              <TableRow>
-                <TableHead className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">User Email</TableHead>
-                <TableHead className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-32">Invite Link</TableHead>
-                <TableHead className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-20">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody className="bg-white">
-              {members.map((member, index) => (
-                <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
-                  <TableCell className="px-6 py-4">
-                    <div className="flex items-center">
-                      <div className="text-sm font-medium text-gray-900">{member.email}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="px-6 py-4 text-center">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleCopyInviteLink(member)}
-                      className="h-8 px-3 text-xs font-medium border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-colors"
-                    >
-                      {copiedMemberId === member.id ? (
-                        <>
-                          <Check size={14} className="mr-1.5 text-green-600" />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy size={14} className="mr-1.5 text-gray-500" />
-                          Copy Link
-                        </>
-                      )}
-                    </Button>
-                  </TableCell>
-                  <TableCell className="px-6 py-4 text-center">
-                     <TableActions actions={memberActions(member)} />
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table className="min-w-full">
+              <TableHeader className="bg-gray-50/50 border-b">
+                <TableRow>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide min-w-[200px]">Team Member</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-32 hidden sm:table-cell">Invite Link</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-20">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody className="bg-white">
+                {members.map((member, index) => (
+                  <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
+                    <TableCell className="px-4 md:px-6 py-4">
+                      <div className="flex flex-col">
+                        <div className="text-sm font-medium text-gray-900">{member.fullName}</div>
+                        <div className="text-sm text-gray-500">{member.email}</div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="px-4 md:px-6 py-4 text-center hidden sm:table-cell">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleCopyInviteLink(member)}
+                        className="h-8 px-3 text-xs font-medium border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-colors"
+                      >
+                        {copiedMemberId === member.id ? (
+                          <>
+                            <Check size={14} className="mr-1.5 text-green-600" />
+                            <span className="hidden lg:inline">Copied</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={14} className="mr-1.5 text-gray-500" />
+                            <span className="hidden lg:inline">Copy Link</span>
+                          </>
+                        )}
+                      </Button>
+                    </TableCell>
+                    <TableCell className="px-4 md:px-6 py-4 text-center">
+                       <TableActions actions={memberActions(member)} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
       
@@ -200,10 +206,22 @@ export function TeamTab() {
           <DialogHeader>
             <DialogTitle>{memberToEdit ? "Edit Member" : "Add New Member"}</DialogTitle>
             <DialogDescription>
-              {memberToEdit ? "Update the details for the team member." : "Enter the email to invite a new member."}
+              {memberToEdit ? "Update the details for the team member." : "Enter the details to invite a new member."}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="fullName" className="text-right">
+                Full Name
+              </Label>
+              <Input
+                id="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="col-span-3"
+                placeholder="John Doe"
+              />
+            </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="email" className="text-right">
                 Email
