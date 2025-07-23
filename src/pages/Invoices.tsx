@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { InvoiceHeader } from "@/components/invoices/InvoiceHeader";
 import { InvoiceTable } from "@/components/invoices/InvoiceTable";
+import { PaymentReportUploadWizard } from "@/components/workspace/integration-hub/payment-report-upload/PaymentReportUploadWizard";
 import { invoiceData } from "@/data/invoices";
 import { useInvoiceFiltering } from "@/hooks/useInvoiceFiltering";
 
@@ -10,6 +11,7 @@ export default function Invoices() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
+  const [showPaymentReportWizard, setShowPaymentReportWizard] = useState(false);
   
   // Set active tab based on URL search params
   useEffect(() => {
@@ -64,6 +66,14 @@ export default function Invoices() {
     { id: "settled", label: "Settled", count: settledCount },
   ];
 
+  const handlePaymentSync = () => {
+    setShowPaymentReportWizard(true);
+  };
+
+  const handleClosePaymentReportWizard = () => {
+    setShowPaymentReportWizard(false);
+  };
+
   return (
     <div>
       <InvoiceHeader 
@@ -72,12 +82,18 @@ export default function Invoices() {
         onTabChange={setActiveTab}
         onFilterChange={setFilters}
         invoiceCount={filteredInvoices.length}
+        onPaymentSync={handlePaymentSync}
       />
       
       <InvoiceTable 
         invoices={filteredInvoices} 
         isPendingTab={activeTab === "pending"}
         isLoading={isLoading}
+      />
+
+      <PaymentReportUploadWizard 
+        isOpen={showPaymentReportWizard}
+        onClose={handleClosePaymentReportWizard}
       />
     </div>
   );

@@ -1,4 +1,6 @@
 
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import { TabsNav } from "@/components/common/TabsNav";
 import { InvoiceFilters } from "@/components/invoices/InvoiceFilters";
 import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filters/types";
@@ -15,6 +17,7 @@ interface InvoiceHeaderProps {
   onTabChange: (tabId: string) => void;
   onFilterChange: (filters: InvoiceFiltersType) => void;
   invoiceCount: number;
+  onPaymentSync: () => void;
 }
 
 export function InvoiceHeader({ 
@@ -22,7 +25,8 @@ export function InvoiceHeader({
   activeTab, 
   onTabChange,
   onFilterChange,
-  invoiceCount
+  invoiceCount,
+  onPaymentSync
 }: InvoiceHeaderProps) {
   const getSubtitle = (activeTab: string) => {
     switch (activeTab) {
@@ -52,7 +56,13 @@ export function InvoiceHeader({
       
       <div className="flex justify-between items-center mb-6">
         <InvoiceFilters onFilterChange={onFilterChange} />
-        <InvoiceActions invoiceCount={invoiceCount} />
+        <div className="flex items-center gap-3">
+          <Button onClick={onPaymentSync} className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Payment sync
+          </Button>
+          <InvoiceActions invoiceCount={invoiceCount} />
+        </div>
       </div>
     </>
   );
