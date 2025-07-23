@@ -43,10 +43,20 @@ export function InvoiceHeader({
 
   return (
     <>
-      <PageHeader 
-        title="Request-to-Pay" 
-        subtitle={getSubtitle(activeTab)}
-      />
+      <div className="mb-6">
+        <div className="flex justify-between items-start mb-2">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-900">Request-to-Pay</h1>
+          </div>
+          <Button onClick={onPaymentSync} className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Payment sync
+          </Button>
+        </div>
+        <p className="text-sm text-gray-600 max-w-3xl">
+          {getSubtitle(activeTab)}
+        </p>
+      </div>
       
       <TabsNav
         tabs={tabs}
@@ -56,13 +66,7 @@ export function InvoiceHeader({
       
       <div className="flex justify-between items-center mb-6">
         <InvoiceFilters onFilterChange={onFilterChange} />
-        <div className="flex items-center gap-3">
-          <Button onClick={onPaymentSync} className="flex items-center gap-2">
-            <Plus className="h-4 w-4" />
-            Payment sync
-          </Button>
-          <InvoiceActions invoiceCount={invoiceCount} />
-        </div>
+        <InvoiceActions invoiceCount={invoiceCount} />
       </div>
     </>
   );
