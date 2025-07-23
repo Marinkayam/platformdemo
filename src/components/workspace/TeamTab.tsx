@@ -136,6 +136,15 @@ export function TeamTab() {
     commonActions.delete(() => handleDeleteMemberRequest(member)),
   ];
 
+  const getInitials = (fullName: string) => {
+    return fullName
+      .split(' ')
+      .map(name => name.charAt(0))
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -158,19 +167,24 @@ export function TeamTab() {
                 <TableRow>
                   <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3">Full Name</TableHead>
                   <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3">Email</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3">Actions</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white">
                 {members.map((member, index) => (
-                  <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
+                <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
                     <TableCell className="px-4 md:px-6 py-4 w-1/3">
-                      <div className="text-sm font-medium text-gray-900">{member.fullName}</div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+                          {getInitials(member.fullName)}
+                        </div>
+                        <div className="text-sm font-medium text-gray-900">{member.fullName}</div>
+                      </div>
                     </TableCell>
                     <TableCell className="px-4 md:px-6 py-4 w-1/3">
                       <div className="text-sm text-gray-600">{member.email}</div>
                     </TableCell>
-                    <TableCell className="px-4 md:px-6 py-4 text-center w-1/3">
+                    <TableCell className="px-4 md:px-6 py-4 text-right w-1/3">
                        <TableActions actions={memberActions(member)} />
                     </TableCell>
                   </TableRow>
