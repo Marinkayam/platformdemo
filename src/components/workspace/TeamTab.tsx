@@ -175,7 +175,7 @@ export function TeamTab() {
                 <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
                     <TableCell className="px-4 md:px-6 py-4 w-1/3">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+                        <div className="w-6 h-6 rounded-full bg-[#EFEBFF] text-[#6b53e6] flex items-center justify-center text-xs font-light">
                           {getInitials(member.fullName)}
                         </div>
                         <div className="text-sm font-medium text-gray-900">{member.fullName}</div>
