@@ -70,11 +70,6 @@ export function NotesIndicator({ notes = [], invoiceId }: NotesIndicatorProps) {
                       : note.content
                     }
                   </p>
-                  {note.isNew && (
-                    <span className="inline-block px-1.5 py-0.5 bg-destructive text-destructive-foreground text-xs rounded">
-                      NEW
-                    </span>
-                  )}
                 </div>
               ))}
               {unreadNotes.length > 3 && (

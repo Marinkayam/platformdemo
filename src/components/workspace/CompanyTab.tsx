@@ -86,7 +86,7 @@ export function CompanyTab() {
               <SelectTrigger className="h-12 bg-white">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent side="bottom">
                 <SelectItem value="utc-12">🇺🇸 UTC-12 (GMT-12) Baker Island</SelectItem>
                 <SelectItem value="utc-11">🇺🇸 UTC-11 (GMT-11) Hawaii</SelectItem>
                 <SelectItem value="utc-10">🇺🇸 UTC-10 (GMT-10) Alaska</SelectItem>
@@ -122,7 +122,14 @@ export function CompanyTab() {
           <div style={{ backgroundColor: '#EFEBFF' }} className="p-4 rounded-lg border border-purple-200">
             <p className="text-sm text-purple-800">
               <span className="font-medium">Your company portal will be accessible at:</span><br />
-              <span className="font-mono text-purple-900">montotechnologies.monto.com</span>
+              <a 
+                href="https://montotechnologies.monto.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="font-mono text-purple-900 hover:text-purple-700 hover:underline transition-colors"
+              >
+                montotechnologies.monto.com
+              </a>
             </p>
           </div>
 
