@@ -86,7 +86,7 @@ export function CompanyTab() {
               <SelectTrigger className="h-12 bg-white">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent side="bottom">
+              <SelectContent side="bottom" align="start" sideOffset={4}>
                 <SelectItem value="utc-12">🇺🇸 UTC-12 (GMT-12) Baker Island</SelectItem>
                 <SelectItem value="utc-11">🇺🇸 UTC-11 (GMT-11) Hawaii</SelectItem>
                 <SelectItem value="utc-10">🇺🇸 UTC-10 (GMT-10) Alaska</SelectItem>

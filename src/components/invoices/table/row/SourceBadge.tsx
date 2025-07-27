@@ -23,16 +23,16 @@ export function SourceBadge({ submitMethod }: SourceBadgeProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className="flex items-center gap-1.5 text-sm font-medium text-primary cursor-help whitespace-nowrap">
+          <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-muted text-muted-foreground text-xs font-medium rounded-full cursor-help whitespace-nowrap">
             <Sparkles className="h-3 w-3" />
             {isPaymentReport ? 'PR' : 'AR'}
           </span>
         </TooltipTrigger>
         <TooltipContent>
-          <div className="space-y-2">
+          <div className="space-y-1">
             <p className="font-medium">Created from {submitMethod}</p>
             <p className="text-xs text-muted-foreground">
-              This invoice was automatically generated from a {isPaymentReport ? 'payment' : 'accounts receivable'} report on {new Date().toLocaleDateString()}
+              {new Date().toLocaleDateString()}
             </p>
           </div>
         </TooltipContent>
