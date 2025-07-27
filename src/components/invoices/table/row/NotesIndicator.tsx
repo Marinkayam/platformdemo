@@ -52,17 +52,17 @@ export function NotesIndicator({ notes = [], invoiceId }: NotesIndicatorProps) {
             )}
           </button>
         </TooltipTrigger>
-        <TooltipContent className="w-80 p-3" side="top">
-          <div className="space-y-2">
+        <TooltipContent className="w-80 p-4" side="top">
+          <div className="space-y-3">
             <h4 className="font-semibold text-sm">Unread Notes ({unreadNotes.length})</h4>
-            <div className="space-y-2 max-h-32 overflow-y-auto">
+            <div className="space-y-3 max-h-32 overflow-y-auto">
               {unreadNotes.slice(0, 3).map(note => (
-                <div key={note.id} className="text-xs space-y-1">
+                <div key={note.id} className="text-xs space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-medium">{note.createdBy}</span>
                     <span className="text-muted-foreground">{formatDate(note.createdAt)}</span>
                   </div>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     {note.content.length > 100 
                       ? `${note.content.substring(0, 100)}...` 
                       : note.content
@@ -81,7 +81,7 @@ export function NotesIndicator({ notes = [], invoiceId }: NotesIndicatorProps) {
                 </p>
               )}
             </div>
-            <p className="text-xs text-muted-foreground italic">
+            <p className="text-xs text-primary font-medium">
               Click to view all notes in Activity tab
             </p>
           </div>
