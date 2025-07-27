@@ -23,7 +23,10 @@ export function SourceBadge({ submitMethod }: SourceBadgeProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-muted text-muted-foreground text-xs font-medium rounded-full cursor-help whitespace-nowrap">
+          <span 
+            className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium rounded-full cursor-help whitespace-nowrap"
+            style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}
+          >
             <Sparkles className="h-3 w-3" />
             {isPaymentReport ? 'PR' : 'AR'}
           </span>
