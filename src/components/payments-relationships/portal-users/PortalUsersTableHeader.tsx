@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { PortalUser } from '@/types/portalUser';
-import { TableHeader, TableRow, TableHead } from "@/components/ui/table";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
 interface PortalUsersTableHeaderProps {
@@ -29,46 +28,44 @@ export function PortalUsersTableHeader({
   };
 
   return (
-    <TableHeader className="bg-[#F6F7F9]">
-      <TableRow>
-        <TableHead 
-          className="whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors"
-          onClick={() => onSort('portal')}
-        >
-          <div className="flex items-center justify-between">
-            Portal
-            {renderSortButton('portal', 'Portal')}
-          </div>
-        </TableHead>
-        <TableHead 
-          className="whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors"
-          onClick={() => onSort('username')}
-        >
-          <div className="flex items-center justify-between">
-            Username
-            {renderSortButton('username', 'Username')}
-          </div>
-        </TableHead>
-        <TableHead 
-          className="whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors"
-          onClick={() => onSort('status')}
-        >
-          <div className="flex items-center justify-between">
-            Status
-            {renderSortButton('status', 'Status')}
-          </div>
-        </TableHead>
-        <TableHead 
-          className="whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors"
-          onClick={() => onSort('userType')}
-        >
-          <div className="flex items-center justify-between">
-            User Type
-            {renderSortButton('userType', 'User Type')}
-          </div>
-        </TableHead>
-        <TableHead className="w-16 text-center">Actions</TableHead>
-      </TableRow>
-    </TableHeader>
+    <div className="grid grid-cols-[1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-4 bg-[#F6F7F9] border-b">
+      <div 
+        className="whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors p-2 rounded"
+        onClick={() => onSort('portal')}
+      >
+        <div className="flex items-center justify-between">
+          <span className="font-medium text-gray-900">Portal</span>
+          {renderSortButton('portal', 'Portal')}
+        </div>
+      </div>
+      <div 
+        className="whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors p-2 rounded"
+        onClick={() => onSort('username')}
+      >
+        <div className="flex items-center justify-between">
+          <span className="font-medium text-gray-900">Username</span>
+          {renderSortButton('username', 'Username')}
+        </div>
+      </div>
+      <div 
+        className="whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors p-2 rounded"
+        onClick={() => onSort('status')}
+      >
+        <div className="flex items-center justify-between">
+          <span className="font-medium text-gray-900">Status</span>
+          {renderSortButton('status', 'Status')}
+        </div>
+      </div>
+      <div 
+        className="whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors p-2 rounded"
+        onClick={() => onSort('userType')}
+      >
+        <div className="flex items-center justify-between">
+          <span className="font-medium text-gray-900">User Type</span>
+          {renderSortButton('userType', 'User Type')}
+        </div>
+      </div>
+      <div className="text-center font-medium text-gray-900 p-2">Actions</div>
+    </div>
   );
 }

@@ -114,30 +114,30 @@ export function PortalUsersTable({
 
   return (
     <div className="rounded-xl border overflow-hidden bg-white">
-      <Table>
+      <div className="border-b border-gray-200 bg-gray-50/50">
         <PortalUsersTableHeader 
           sortField={sortField}
           sortDirection={sortDirection}
           onSort={handleSort}
         />
-        
-        <div className="max-h-[600px] overflow-y-auto">
-          {isLoading ? (
-            <TableSkeleton rows={8} columns={6} />
-          ) : (
-            <PortalUsersTableBody
-              allPortals={allPortals}
-              expandedGroups={expandedGroups}
-              onToggleGroup={toggleGroup}
-              onEdit={handleEdit}
-              onRemove={handleRemove}
-              onView2FA={handleView2FA}
-              onRowClick={handleRowClick}
-              copyToClipboard={copyToClipboard}
-            />
-          )}
-        </div>
-      </Table>
+      </div>
+      
+      <div className="max-h-[600px] overflow-y-auto">
+        {isLoading ? (
+          <TableSkeleton rows={8} columns={6} />
+        ) : (
+          <PortalUsersTableBody
+            allPortals={allPortals}
+            expandedGroups={expandedGroups}
+            onToggleGroup={toggleGroup}
+            onEdit={handleEdit}
+            onRemove={handleRemove}
+            onView2FA={handleView2FA}
+            onRowClick={handleRowClick}
+            copyToClipboard={copyToClipboard}
+          />
+        )}
+      </div>
 
       <PortalUsersTableFooter totalUsers={portalUsers.length} />
 
