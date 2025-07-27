@@ -71,7 +71,13 @@ export function InvoiceTableHeader({
           {renderSortButton('netTerms', 'Net Terms')}
         </TableHead>
 
-        <TableHead className="w-24 text-center text-sm font-semibold">Notes</TableHead>
+        <TableHead className="w-24 text-center text-sm font-semibold">
+          Notes
+        </TableHead>
+
+        <TableHead className="w-[120px] min-w-[120px] text-sm font-semibold">
+          Source
+        </TableHead>
 
         {isPendingTab ? (
           <TableHead className="w-[200px] min-w-[200px] text-sm font-semibold">

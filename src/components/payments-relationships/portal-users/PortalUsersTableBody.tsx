@@ -34,14 +34,17 @@ export function PortalUsersTableBody({
           {portalDisplay.displayType === 'individual' ? (
             // Individual Portal Row
             portalDisplay.users.map((user) => (
-              <PortalUserRow
-                key={user.id}
-                user={user}
-                onEdit={onEdit}
-                onRemove={onRemove}
-                onView2FA={onView2FA}
-                onRowClick={onRowClick}
-              />
+              <div key={user.id} className="grid grid-cols-[1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-4 hover:bg-gray-50">
+                <div className="text-sm">{user.portal}</div>
+                <div className="text-sm">{user.username}</div>
+                <div className="text-sm">{user.status}</div>
+                <div className="text-sm">{user.userType}</div>
+                <div className="text-center">
+                  <button className="text-gray-400 hover:text-gray-600">
+                    ⋯
+                  </button>
+                </div>
+              </div>
             ))
           ) : (
             // Grouped Portal Row

@@ -45,16 +45,13 @@ export function InvoiceTableRow({
           <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500 z-30" />
         )}
         <div className="text-left">
-          <div className="flex items-center gap-2">
-            <InvoiceNumber 
-              number={invoice.number}
-              hasWarning={invoice.hasWarning}
-              status={invoice.status}
-              isCreditMemo={invoice.documentType === "Credit Memo"}
-              isDuplicate={invoice.isDuplicate}
-            />
-            <SourceBadge submitMethod={invoice.submitMethod} />
-          </div>
+          <InvoiceNumber 
+            number={invoice.number}
+            hasWarning={invoice.hasWarning}
+            status={invoice.status}
+            isCreditMemo={invoice.documentType === "Credit Memo"}
+            isDuplicate={invoice.isDuplicate}
+          />
         </div>
       </TableCell>
       
@@ -144,6 +141,12 @@ export function InvoiceTableRow({
       {/* Notes */}
       <TableCell className="text-center px-4 py-4 w-24">
         <NotesIndicator notes={invoice.notes} invoiceId={invoice.id} />
+      </TableCell>
+
+      {/* Source */}
+      <TableCell className="px-4 py-4 w-[120px] min-w-[120px] text-sm">
+        {invoice.submitMethod === 'Payment Report' ? 'Payment Report' : 
+         invoice.submitMethod === 'A/R Report' ? 'A/R Report' : '-'}
       </TableCell>
       
       {isPendingTab ? (
