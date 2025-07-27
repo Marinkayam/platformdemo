@@ -6,6 +6,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Agent, SmartConnection } from "@/types/smartConnection";
 import { AgentIssueBanner } from "./AgentIssueBanner";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { getAgentIssueMessage } from "@/utils/connectionIssues";
 
 interface AgentTableRowProps {
   agent: Agent;
@@ -30,47 +31,55 @@ export function AgentTableRow({ agent, connection, onViewDetails }: AgentTableRo
     console.log('Edit agent:', agent.id);
   };
 
+  const hasIssue = getAgentIssueMessage(agent);
 
   return (
-    <TableRow 
-      className="hover:bg-gray-100/50 transition-colors bg-white cursor-pointer"
-      onClick={() => onViewDetails(agent)}
-    >
-      <TableCell className="px-6 py-4">
-        <div>
+    <>
+      <TableRow 
+        className="hover:bg-gray-100/50 transition-colors bg-white cursor-pointer"
+        onClick={() => onViewDetails(agent)}
+      >
+        <TableCell className="px-6 py-4">
           <div className="font-medium text-gray-900 text-base">
             {agent.portalName}
           </div>
-          <AgentIssueBanner agent={agent} />
-        </div>
-      </TableCell>
-      <TableCell className="px-6 py-4">
-        <div className="text-gray-600 text-sm">
-          {connection.receivableEntity} → {connection.payableEntity}
-        </div>
-      </TableCell>
-      <TableCell className="px-6 py-4">
-        <StatusBadge status={agent.status} />
-      </TableCell>
-      <TableCell className="px-6 py-4">
-        <Badge 
-          className={`rounded-full px-2.5 py-1 text-xs font-medium ${getUserTypeColor(agent.type)}`}
-        >
-          {agent.type === "Monto" ? "Monto User" : "Customer User"}
-        </Badge>
-      </TableCell>
-      <TableCell className="px-6 py-4">
-        <div className="flex items-center justify-end gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 hover:bg-gray-200"
-            onClick={handleEditAgent}
+        </TableCell>
+        <TableCell className="px-6 py-4">
+          <div className="text-gray-600 text-sm">
+            {connection.receivableEntity} → {connection.payableEntity}
+          </div>
+        </TableCell>
+        <TableCell className="px-6 py-4">
+          <StatusBadge status={agent.status} />
+        </TableCell>
+        <TableCell className="px-6 py-4">
+          <Badge 
+            className={`rounded-full px-2.5 py-1 text-xs font-medium ${getUserTypeColor(agent.type)}`}
           >
-            <Edit className="h-4 w-4 text-gray-600" />
-          </Button>
-        </div>
-      </TableCell>
-    </TableRow>
+            {agent.type === "Monto" ? "Monto User" : "Customer User"}
+          </Badge>
+        </TableCell>
+        <TableCell className="px-6 py-4">
+          <div className="flex items-center justify-end gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 hover:bg-gray-200"
+              onClick={handleEditAgent}
+            >
+              <Edit className="h-4 w-4 text-gray-600" />
+            </Button>
+          </div>
+        </TableCell>
+      </TableRow>
+      
+      {hasIssue && (
+        <TableRow>
+          <TableCell colSpan={5} className="px-6 py-0 pb-4">
+            <AgentIssueBanner agent={agent} />
+          </TableCell>
+        </TableRow>
+      )}
+    </>
   );
 }

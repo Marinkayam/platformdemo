@@ -1,8 +1,8 @@
 
-import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Agent } from "@/types/smartConnection";
 import { getAgentIssueMessage } from "@/utils/connectionIssues";
+import { ExceptionBanner } from "@/components/ui/exception-banner";
 
 interface AgentIssueBannerProps {
   agent: Agent;
@@ -21,23 +21,20 @@ export function AgentIssueBanner({ agent }: AgentIssueBannerProps) {
   };
 
   return (
-    <div className="bg-red-100 text-red-700 text-sm rounded-md py-2 px-4 mt-2">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <AlertTriangle className="h-4 w-4 stroke-red-500 mr-2" />
-          <span>
-            {issueMessage}
-          </span>
+    <div className="mt-3">
+      <ExceptionBanner variant="error" icon="alert">
+        <div className="flex items-center justify-between w-full">
+          <span>{issueMessage}</span>
+          <Button 
+            variant="link" 
+            size="sm" 
+            className="text-error-main underline cursor-pointer font-medium h-auto p-0 text-sm ml-4"
+            onClick={handleResolveIssue}
+          >
+            Resolve issue
+          </Button>
         </div>
-        <Button 
-          variant="link" 
-          size="sm" 
-          className="text-red-600 underline cursor-pointer font-medium h-auto p-0 text-sm ml-2"
-          onClick={handleResolveIssue}
-        >
-          Resolve issue
-        </Button>
-      </div>
+      </ExceptionBanner>
     </div>
   );
 }
