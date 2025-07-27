@@ -15,6 +15,7 @@ export function useInvoiceFiltering(invoices: Invoice[], activeTab: string) {
     transactionType: "All",
     owner: [],
     search: "",
+    source: [],
   });
   
   // Check if a date is overdue
@@ -52,6 +53,13 @@ export function useInvoiceFiltering(invoices: Invoice[], activeTab: string) {
       
       // Apply owner filter
       if (filters.owner.length > 0 && !filters.owner.includes(invoice.owner)) return false;
+      
+      // Apply source filter
+      if (filters.source.length > 0) {
+        const hasPaymentReport = filters.source.includes("Created from Payment Report") && invoice.submitMethod === "Payment Report";
+        const hasARReport = filters.source.includes("Created from A/R Report") && invoice.submitMethod === "A/R Report";
+        if (!hasPaymentReport && !hasARReport) return false;
+      }
       
       // Apply date range filter
       if (filters.dueDate.from || filters.dueDate.to) {

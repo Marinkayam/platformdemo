@@ -61,6 +61,25 @@ export const testInvoices = [
       portal: "Coupa",
       isOverdue: true,
       hasExceptions: true,
+      submitMethod: "Payment Report",
+      notes: [
+        {
+          id: "note-1",
+          content: "Payment report shows discrepancy in amount. Please verify with accounting team.",
+          createdAt: "2024-02-16T09:15:00Z",
+          createdBy: "Sarah Wilson",
+          isRead: false,
+          isNew: true
+        },
+        {
+          id: "note-2", 
+          content: "Buyer requested additional documentation for this high-value invoice.",
+          createdAt: "2024-02-17T14:30:00Z",
+          createdBy: "John Smith",
+          isRead: false,
+          isNew: false
+        }
+      ],
       exceptions: [
         {
           id: "exc-extra-data-001",
@@ -86,7 +105,18 @@ export const testInvoices = [
     "Lady Gaga",
     {
       documentType: "Credit Memo",
-      portal: "Tipalti"
+      portal: "Tipalti",
+      submitMethod: "A/R Report",
+      notes: [
+        {
+          id: "note-3",
+          content: "A/R Report indicates this credit memo needs urgent processing.",
+          createdAt: "2024-03-26T11:45:00Z",
+          createdBy: "Lady Gaga",
+          isRead: false,
+          isNew: true
+        }
+      ]
     }
   ),
   getBasicInvoiceData(
@@ -100,7 +130,77 @@ export const testInvoices = [
     "Madona",
     {
       documentType: "Credit Memo",
-      portal: "Bill.com"
+      portal: "Bill.com",
+      submitMethod: "A/R Report",
+      notes: [
+        {
+          id: "note-3",
+          content: "A/R Report indicates this credit memo needs urgent processing.",
+          createdAt: "2024-03-26T11:45:00Z",
+          createdBy: "Lady Gaga",
+          isRead: false,
+          isNew: true
+        }
+      ]
+    }
+  ),
+
+  // Additional test invoices with notes and source indicators
+  getBasicInvoiceData(
+    "test-payment-report-1",
+    "INV-10032200",
+    "Amazon",
+    "2024-04-15",
+    "Approved by Buyer",
+    25000.00,
+    "2024-04-01",
+    "John",
+    {
+      portal: "Oracle Procurement",
+      submitMethod: "Payment Report",
+      notes: [
+        {
+          id: "note-4",
+          content: "Payment report validation completed successfully.",
+          createdAt: "2024-04-02T08:30:00Z",
+          createdBy: "Sarah Wilson",
+          isRead: false,
+          isNew: false
+        },
+        {
+          id: "note-5",
+          content: "Approved for payment - amount verified against payment report.",
+          createdAt: "2024-04-03T16:20:00Z",
+          createdBy: "Elon",
+          isRead: false,
+          isNew: true
+        }
+      ]
+    }
+  ),
+
+  getBasicInvoiceData(
+    "test-regular-1",
+    "INV-10032300",
+    "Apple",
+    "2024-04-20",
+    "Pending Action",
+    12500.00,
+    "2024-04-05",
+    "Jane",
+    {
+      portal: "SAP Ariba",
+      submitMethod: "Portal Upload",
+      notes: [
+        {
+          id: "note-6",
+          content: "Missing supporting documentation - requested from vendor.",
+          createdAt: "2024-04-06T10:15:00Z",
+          createdBy: "Robert",
+          isRead: false,
+          isNew: true
+        }
+      ]
     }
   )
 ];

@@ -56,6 +56,14 @@ export function FilterControls({ filters, onFilterChange }: FilterControlsProps)
         multiSelect
         searchable
       />
+      <FilterDropdown 
+        label="Source" 
+        value={filters.source} 
+        options={filterConfig.sourceOptions}
+        onSelect={(value) => onFilterChange("source", value)}
+        multiSelect
+        searchable
+      />
       <div className="ml-auto">
         <DateRangePicker
           fromDate={filters.dueDate.from}

@@ -11,6 +11,7 @@ export interface InvoiceFilters {
   owner: string[];
   search: string;
   userType?: string[];
+  source: string[];
 }
 
 export const defaultFilters: InvoiceFilters = {
@@ -24,5 +25,6 @@ export const defaultFilters: InvoiceFilters = {
   portal: [],
   transactionType: "All",
   owner: [],
-  search: ""
+  search: "",
+  source: []
 };

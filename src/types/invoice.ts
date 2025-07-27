@@ -27,10 +27,20 @@ export interface Invoice {
   exceptions?: Exception[];
   hasExceptions?: boolean;
   isDuplicate?: boolean;
-  submitMethod?: 'ERP' | 'Email' | 'Portal Upload' | 'API';
+  submitMethod?: 'ERP' | 'Email' | 'Portal Upload' | 'API' | 'Payment Report' | 'A/R Report';
   submittedAt?: string;
   invoiceDate: string;
   netTerms: string;
+  notes?: Note[];
+}
+
+export interface Note {
+  id: string;
+  content: string;
+  createdAt: string;
+  createdBy: string;
+  isRead: boolean;
+  isNew: boolean;
 }
 
 export type InvoiceStatus = 

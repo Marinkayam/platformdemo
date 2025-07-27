@@ -10,7 +10,9 @@ import { PortalUsersFilteredEmptyState } from './PortalUsersFilteredEmptyState';
 import { toast } from "@/hooks/use-toast";
 import { mockPortalUsersForTable } from '@/data/portalUsersForTable';
 import { groupPortalUsers } from './utils/portalAggregation';
+import { useSortedPortalUsers } from '@/hooks/useSortedPortalUsers';
 import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { Table } from "@/components/ui/table";
 
 interface PortalUsersTableProps {
   portalUsers?: PortalUser[];
@@ -34,11 +36,19 @@ export function PortalUsersTable({
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
   const portalUsers = propPortalUsers || mockPortalUsersForTable;
+  
+  // Add sorting functionality
+  const {
+    sortedPortalUsers,
+    sortField,
+    sortDirection,
+    handleSort,
+  } = useSortedPortalUsers(portalUsers);
 
   // Group and sort portal users - get the properly sorted allPortals array
   const { allPortals } = useMemo(() => {
-    return groupPortalUsers(portalUsers);
-  }, [portalUsers]);
+    return groupPortalUsers(sortedPortalUsers);
+  }, [sortedPortalUsers]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -104,24 +114,30 @@ export function PortalUsersTable({
 
   return (
     <div className="rounded-xl border overflow-hidden bg-white">
-      <PortalUsersTableHeader />
-      
-      <div className="max-h-[600px] overflow-y-auto">
-        {isLoading ? (
-          <TableSkeleton rows={8} columns={6} />
-        ) : (
-          <PortalUsersTableBody
-            allPortals={allPortals}
-            expandedGroups={expandedGroups}
-            onToggleGroup={toggleGroup}
-            onEdit={handleEdit}
-            onRemove={handleRemove}
-            onView2FA={handleView2FA}
-            onRowClick={handleRowClick}
-            copyToClipboard={copyToClipboard}
-          />
-        )}
-      </div>
+      <Table>
+        <PortalUsersTableHeader 
+          sortField={sortField}
+          sortDirection={sortDirection}
+          onSort={handleSort}
+        />
+        
+        <div className="max-h-[600px] overflow-y-auto">
+          {isLoading ? (
+            <TableSkeleton rows={8} columns={6} />
+          ) : (
+            <PortalUsersTableBody
+              allPortals={allPortals}
+              expandedGroups={expandedGroups}
+              onToggleGroup={toggleGroup}
+              onEdit={handleEdit}
+              onRemove={handleRemove}
+              onView2FA={handleView2FA}
+              onRowClick={handleRowClick}
+              copyToClipboard={copyToClipboard}
+            />
+          )}
+        </div>
+      </Table>
 
       <PortalUsersTableFooter totalUsers={portalUsers.length} />
 

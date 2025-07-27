@@ -27,7 +27,7 @@ export function InvoiceTableHeader({
         aria-label={`Sort by ${label}`}
       >
         {label}
-        <SortIcon className="h-4 w-4" />
+        <SortIcon className={`h-4 w-4 ${isActive ? 'text-primary' : 'text-gray-400'}`} />
       </button>
     );
   };
@@ -70,6 +70,8 @@ export function InvoiceTableHeader({
         <TableHead className="w-[200px] min-w-[200px] text-sm font-semibold">
           {renderSortButton('netTerms', 'Net Terms')}
         </TableHead>
+
+        <TableHead className="w-24 text-center text-sm font-semibold">Notes</TableHead>
 
         {isPendingTab ? (
           <TableHead className="w-[200px] min-w-[200px] text-sm font-semibold">

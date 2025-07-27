@@ -8,6 +8,8 @@ import { InvoiceActionsMenu } from "./row/InvoiceActionsMenu";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { RejectionInfo } from "./row/RejectionInfo";
 import { InvoiceNumber } from "./row/InvoiceNumber";
+import { NotesIndicator } from "./row/NotesIndicator";
+import { SourceBadge } from "./row/SourceBadge";
 import { getRandomPortalName } from "@/lib/portalUtils";
 
 interface InvoiceTableRowProps {
@@ -43,13 +45,16 @@ export function InvoiceTableRow({
           <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500 z-30" />
         )}
         <div className="text-left">
-          <InvoiceNumber 
-            number={invoice.number}
-            hasWarning={invoice.hasWarning}
-            status={invoice.status}
-            isCreditMemo={invoice.documentType === "Credit Memo"}
-            isDuplicate={invoice.isDuplicate}
-          />
+          <div className="flex items-center gap-2">
+            <InvoiceNumber 
+              number={invoice.number}
+              hasWarning={invoice.hasWarning}
+              status={invoice.status}
+              isCreditMemo={invoice.documentType === "Credit Memo"}
+              isDuplicate={invoice.isDuplicate}
+            />
+            <SourceBadge submitMethod={invoice.submitMethod} />
+          </div>
         </div>
       </TableCell>
       
@@ -134,6 +139,11 @@ export function InvoiceTableRow({
 
       <TableCell className="px-4 py-4 w-[200px] min-w-[200px] text-sm">
         {invoice.netTerms}
+      </TableCell>
+
+      {/* Notes */}
+      <TableCell className="text-center px-4 py-4 w-24">
+        <NotesIndicator notes={invoice.notes} invoiceId={invoice.id} />
       </TableCell>
       
       {isPendingTab ? (

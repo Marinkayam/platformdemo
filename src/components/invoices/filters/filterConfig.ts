@@ -76,5 +76,10 @@ export const filterConfig = {
     "Jane", 
     "Robert", 
     "Sarah"
+  ],
+
+  sourceOptions: [
+    "Created from Payment Report",
+    "Created from A/R Report"
   ]
 };
