@@ -13,25 +13,27 @@ interface SourceBadgeProps {
 
 export function SourceBadge({ submitMethod }: SourceBadgeProps) {
   if (submitMethod !== 'Payment Report' && submitMethod !== 'A/R Report') {
-    return null;
+    return <span className="text-muted-foreground text-sm">-</span>;
   }
 
   const isPaymentReport = submitMethod === 'Payment Report';
-  const badgeClass = isPaymentReport 
-    ? "bg-blue-100 text-blue-700 border border-blue-200" 
-    : "bg-green-100 text-green-700 border border-green-200";
-
+  const displayText = isPaymentReport ? 'Payment Report' : 'A/R Report';
+  
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${badgeClass}`}>
-            <FileBarChart className="h-3 w-3" />
-            {isPaymentReport ? 'Payment' : 'A/R'}
+          <span className="text-sm font-medium text-primary cursor-help whitespace-nowrap">
+            {displayText}
           </span>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Created from {submitMethod}</p>
+          <div className="space-y-1">
+            <p className="font-medium">Created from {submitMethod}</p>
+            <p className="text-xs text-muted-foreground">
+              This invoice was automatically generated from a {isPaymentReport ? 'payment' : 'accounts receivable'} report
+            </p>
+          </div>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

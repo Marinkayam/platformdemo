@@ -139,14 +139,13 @@ export function InvoiceTableRow({
       </TableCell>
 
       {/* Notes */}
-      <TableCell className="text-center px-4 py-4 w-24">
+      <TableCell className="text-left px-4 py-4 w-24">
         <NotesIndicator notes={invoice.notes} invoiceId={invoice.id} />
       </TableCell>
 
       {/* Source */}
       <TableCell className="px-4 py-4 w-[120px] min-w-[120px] text-sm">
-        {invoice.submitMethod === 'Payment Report' ? 'Payment Report' : 
-         invoice.submitMethod === 'A/R Report' ? 'A/R Report' : '-'}
+        <SourceBadge submitMethod={invoice.submitMethod} />
       </TableCell>
       
       {isPendingTab ? (

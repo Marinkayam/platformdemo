@@ -71,7 +71,7 @@ export function InvoiceTableHeader({
           {renderSortButton('netTerms', 'Net Terms')}
         </TableHead>
 
-        <TableHead className="w-24 text-center text-sm font-semibold">
+        <TableHead className="w-24 text-left text-sm font-semibold">
           Notes
         </TableHead>
 
