@@ -45,11 +45,13 @@ export function NotesIndicator({ notes = [], invoiceId }: NotesIndicatorProps) {
             onClick={handleClick}
             className="flex items-center gap-1 text-sm hover:text-primary transition-colors cursor-pointer group"
           >
-            <MessageSquare className="h-3 w-3" />
+            <div className="relative">
+              <MessageSquare className="h-3 w-3" />
+              {hasNewNotes && (
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full animate-pulse" />
+              )}
+            </div>
             <span className="font-medium">{unreadNotes.length}</span>
-            {hasNewNotes && (
-              <div className="w-2 h-2 bg-destructive rounded-full animate-pulse ml-1" />
-            )}
           </button>
         </TooltipTrigger>
         <TooltipContent className="w-80 p-4" side="top">
