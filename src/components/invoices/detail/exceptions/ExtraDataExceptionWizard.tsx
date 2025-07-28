@@ -76,30 +76,25 @@ export function ExtraDataExceptionWizard({ onResolve }: ExtraDataExceptionWizard
         <ExceptionHeader />
         <ExceptionBanners />
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="space-y-4">
+        <div className="space-y-4">
+          <ResolutionOptions
+            selectedAction={selectedAction}
+            showOtherOptions={showOtherOptions}
+            onSelectedActionChange={(value) => setSelectedAction(value as any)}
+            onShowOtherOptionsChange={setShowOtherOptions}
+          />
 
-              <ResolutionOptions
-                selectedAction={selectedAction}
-                showOtherOptions={showOtherOptions}
-                onSelectedActionChange={(value) => setSelectedAction(value as any)}
-                onShowOtherOptionsChange={setShowOtherOptions}
-              />
-
-              <div className="flex justify-end pt-4">
-                <ResolutionButton
-                  selectedAction={selectedAction}
-                  invoiceDate=""
-                  customerName=""
-                  uploadedFile={uploadedFile}
-                  isUploading={isUploading}
-                  onResolve={handleResolve}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          <div className="flex justify-end pt-4">
+            <ResolutionButton
+              selectedAction={selectedAction}
+              invoiceDate=""
+              customerName=""
+              uploadedFile={uploadedFile}
+              isUploading={isUploading}
+              onResolve={handleResolve}
+            />
+          </div>
+        </div>
       </div>
     );
   }
