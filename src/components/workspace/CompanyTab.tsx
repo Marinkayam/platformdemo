@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CloudUpload, Loader2 } from "lucide-react";
+import { CloudUpload, Loader2, Copy } from "lucide-react";
 import { showSuccessToast } from "@/lib/toast-helpers";
+import { toast } from "sonner";
 
 export function CompanyTab() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
@@ -33,6 +34,11 @@ export function CompanyTab() {
     await new Promise(resolve => setTimeout(resolve, 1000));
     setIsLoading(false);
     showSuccessToast("Settings saved successfully", "Your company information has been updated.");
+  };
+
+  const copyPortalUrl = () => {
+    navigator.clipboard.writeText("montotechnologies.monto.com");
+    toast.success("Copied to clipboard");
   };
 
   return (
@@ -122,14 +128,23 @@ export function CompanyTab() {
           <div style={{ backgroundColor: '#EFEBFF' }} className="p-4 rounded-lg border border-purple-200">
             <p className="text-sm text-purple-800">
               <span className="font-medium">Your company portal will be accessible at:</span><br />
-              <a 
-                href="https://montotechnologies.monto.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="font-mono text-purple-900 hover:text-purple-700 hover:underline transition-colors"
-              >
-                montotechnologies.monto.com
-              </a>
+              <div className="flex items-center gap-2 mt-1">
+                <a 
+                  href="https://montotechnologies.monto.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="font-mono text-purple-900 hover:text-purple-700 hover:underline transition-colors"
+                >
+                  montotechnologies.monto.com
+                </a>
+                <button
+                  onClick={copyPortalUrl}
+                  className="flex items-center justify-center w-6 h-6 rounded hover:bg-purple-200 transition-colors"
+                  title="Copy to clipboard"
+                >
+                  <Copy size={14} className="text-purple-700" />
+                </button>
+              </div>
             </p>
           </div>
 
