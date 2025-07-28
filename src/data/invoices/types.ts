@@ -191,6 +191,16 @@ export const testInvoices = [
     {
       portal: "SAP Ariba",
       submitMethod: "Portal Upload",
+      hasExceptions: true,
+      exceptions: [
+        {
+          id: "exc-smart-connection-001",
+          type: "EXTRA_DATA",
+          message: "Smart Connection Issue",
+          details: "Portal scan agent credentials are missing",
+          createdAt: "2024-04-06T08:00:00Z"
+        }
+      ],
       notes: [
         {
           id: "note-6",
