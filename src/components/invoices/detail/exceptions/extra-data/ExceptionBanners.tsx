@@ -1,15 +1,38 @@
 
 import { ExceptionBanner } from "@/components/ui/exception-banner";
 import { WandSparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function ExceptionBanners() {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleConnectionHubClick = () => {
     navigate('/payments-relationships');
   };
 
+  // For INV-10032355 (test-regular-2), show only Smart Connections exception in red
+  if (id === "test-regular-2") {
+    return (
+      <>
+        <ExceptionBanner 
+          variant="error" 
+          icon="alert"
+          title="Smart Connections"
+        >
+          Portal scan agent credentials are missing: Resolve the exception by updating the scan agent details{" "}
+          <button 
+            onClick={handleConnectionHubClick}
+            className="text-error-main underline hover:text-error-main/80 cursor-pointer"
+          >
+            here
+          </button>
+        </ExceptionBanner>
+      </>
+    );
+  }
+
+  // For other invoices, show both Smart Connection and Missing Data exceptions
   return (
     <>
       <ExceptionBanner 

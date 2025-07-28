@@ -212,5 +212,30 @@ export const testInvoices = [
         }
       ]
     }
+  ),
+
+  getBasicInvoiceData(
+    "test-regular-2",
+    "INV-10032355",
+    "Microsoft",
+    "2024-04-25",
+    "Pending Action",
+    8750.00,
+    "2024-04-10",
+    "Alex",
+    {
+      portal: "SAP Ariba",
+      submitMethod: "Portal Upload",
+      hasExceptions: true,
+      exceptions: [
+        {
+          id: "exc-smart-connection-002",
+          type: "EXTRA_DATA",
+          message: "Smart Connections Issue",
+          details: "Portal scan agent credentials are missing",
+          createdAt: "2024-04-10T09:00:00Z"
+        }
+      ]
+    }
   )
 ];
