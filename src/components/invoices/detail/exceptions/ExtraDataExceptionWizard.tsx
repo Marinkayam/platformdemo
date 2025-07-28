@@ -79,14 +79,6 @@ export function ExtraDataExceptionWizard({ onResolve }: ExtraDataExceptionWizard
         <Card>
           <CardContent className="p-6">
             <div className="space-y-4">
-              <UploadSection
-                uploadedFile={uploadedFile}
-                isUploading={isUploading}
-                uploadProgress={uploadProgress}
-                selectedAction={selectedAction}
-                onFileUpload={handleFileUpload}
-                onFileRemoval={handleFileRemoval}
-              />
 
               <ResolutionOptions
                 selectedAction={selectedAction}
