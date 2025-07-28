@@ -69,7 +69,7 @@ export function ExtraDataExceptionWizard({ onResolve }: ExtraDataExceptionWizard
     setUploadProgress(0);
   };
 
-  // For Smart Connections exception (test-regular-2), show simplified layout
+  // For Smart Connections exception (test-regular-2), show only upload and resolution sections
   if (id === "test-regular-2") {
     return (
       <div className="space-y-6">
@@ -79,52 +79,27 @@ export function ExtraDataExceptionWizard({ onResolve }: ExtraDataExceptionWizard
         <Card>
           <CardContent className="p-6">
             <div className="space-y-4">
-              {/* Customer Name Field Only */}
-              <div>
-                <Label htmlFor="customerName">Customer Name</Label>
-                <Input
-                  id="customerName"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="Please insert Customer Name"
-                />
-              </div>
+              <UploadSection
+                uploadedFile={uploadedFile}
+                isUploading={isUploading}
+                uploadProgress={uploadProgress}
+                selectedAction={selectedAction}
+                onFileUpload={handleFileUpload}
+                onFileRemoval={handleFileRemoval}
+              />
 
-              <div className="flex items-center gap-4 my-6">
-                <Separator className="flex-1" />
-                <span className="text-sm text-gray-500 font-medium">Or</span>
-                <Separator className="flex-1" />
-              </div>
-
-              <div>
-                <h3 className="text-sm font-medium mb-2">Upload New RTP</h3>
-                <p className="text-sm text-gray-600 mb-4">This invoice must include the corrected data</p>
-                
-                <UploadSection
-                  uploadedFile={uploadedFile}
-                  isUploading={isUploading}
-                  uploadProgress={uploadProgress}
-                  selectedAction={selectedAction}
-                  onFileUpload={handleFileUpload}
-                  onFileRemoval={handleFileRemoval}
-                />
-              </div>
-
-              <div className="mt-8">
-                <h3 className="text-sm font-medium mb-4">Other Resolution Options</h3>
-                <ResolutionOptions
-                  selectedAction={selectedAction}
-                  showOtherOptions={showOtherOptions}
-                  onSelectedActionChange={(value) => setSelectedAction(value as any)}
-                  onShowOtherOptionsChange={setShowOtherOptions}
-                />
-              </div>
+              <ResolutionOptions
+                selectedAction={selectedAction}
+                showOtherOptions={showOtherOptions}
+                onSelectedActionChange={(value) => setSelectedAction(value as any)}
+                onShowOtherOptionsChange={setShowOtherOptions}
+              />
 
               <div className="flex justify-end pt-4">
                 <ResolutionButton
                   selectedAction={selectedAction}
                   invoiceDate=""
-                  customerName={customerName}
+                  customerName=""
                   uploadedFile={uploadedFile}
                   isUploading={isUploading}
                   onResolve={handleResolve}
