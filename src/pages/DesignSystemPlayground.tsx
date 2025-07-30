@@ -1468,130 +1468,7 @@ export default function DesignSystemPlayground() {
         <p className="text-sm text-grey-600 font-semibold">Component Name: <code className="font-mono text-primary-main">Toast, useToast</code></p>
       </div>
 
-      {/* Design Specifications */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Design Specifications</CardTitle>
-          <CardDescription>Complete styling and implementation details for toast notifications</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-grey-900">Typography & Layout</h3>
-            <div className="space-y-2 text-sm text-grey-600">
-              <p><strong>Font Family:</strong> Inter (inherited from system)</p>
-              <p><strong>Title Font:</strong> 14px, font-semibold (text-sm font-semibold)</p>
-              <p><strong>Description Font:</strong> 14px, font-normal, 90% opacity (text-sm)</p>
-              <p><strong>Container:</strong> max-width 420px, rounded-lg, padding 24px, shadow-lg</p>
-              <p><strong>Position:</strong> Fixed top-0 sm:bottom-0 sm:right-0 with 16px padding</p>
-              <p><strong>Animation:</strong> Slide-in from top (mobile) / bottom (desktop)</p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-grey-900">Toast Variants</h3>
-            
-            {/* Default Toast */}
-            <div className="border border-grey-300 rounded-lg p-4">
-              <h4 className="font-medium text-grey-900 mb-2">Default Toast</h4>
-              <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Border:</strong> 1px solid #7B59FF (border-primary-main)</p>
-                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
-                <p><strong>Title Color:</strong> #38415F (text-grey-800)</p>
-                <p><strong>Description Color:</strong> #38415F (text-grey-800)</p>
-                <p><strong>Usage:</strong> General notifications and confirmations</p>
-              </div>
-            </div>
-
-            {/* Success Toast */}
-            <div className="border border-grey-300 rounded-lg p-4">
-              <h4 className="font-medium text-grey-900 mb-2">Success Toast</h4>
-              <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Border:</strong> 1px solid #10B981 (border-green-500)</p>
-                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
-                <p><strong>Title Color:</strong> #10B981 (text-green-500)</p>
-                <p><strong>Description Color:</strong> #38415F (text-grey-800)</p>
-                <p><strong>Close Button:</strong> #10B981 (text-green-500)</p>
-                <p><strong>Usage:</strong> Successful operations, confirmations</p>
-              </div>
-            </div>
-
-            {/* Info Toast */}
-            <div className="border border-grey-300 rounded-lg p-4">
-              <h4 className="font-medium text-grey-900 mb-2">Info Toast</h4>
-              <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Border:</strong> 1px solid #3B82F6 (border-blue-500)</p>
-                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
-                <p><strong>Title Color:</strong> #3B82F6 (text-blue-500)</p>
-                <p><strong>Description Color:</strong> #38415F (text-grey-800)</p>
-                <p><strong>Close Button:</strong> #3B82F6 (text-blue-500)</p>
-                <p><strong>Usage:</strong> General information, helpful tips</p>
-              </div>
-            </div>
-
-            {/* Warning Toast */}
-            <div className="border border-grey-300 rounded-lg p-4">
-              <h4 className="font-medium text-grey-900 mb-2">Warning Toast</h4>
-              <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Border:</strong> 1px solid #F59E0B (border-yellow-500)</p>
-                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
-                <p><strong>Title Color:</strong> #F59E0B (text-yellow-500)</p>
-                <p><strong>Description Color:</strong> #38415F (text-grey-800)</p>
-                <p><strong>Close Button:</strong> #F59E0B (text-yellow-500)</p>
-                <p><strong>Usage:</strong> Caution messages, important notices</p>
-              </div>
-            </div>
-
-            {/* Destructive Toast */}
-            <div className="border border-grey-300 rounded-lg p-4">
-              <h4 className="font-medium text-grey-900 mb-2">Destructive Toast</h4>
-              <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Border:</strong> 1px solid #EF4444 (border-red-500)</p>
-                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
-                <p><strong>Title Color:</strong> #EF4444 (text-red-500)</p>
-                <p><strong>Description Color:</strong> #38415F (text-grey-800)</p>
-                <p><strong>Close Button:</strong> #EF4444 (text-red-500)</p>
-                <p><strong>Usage:</strong> Errors, failed operations, critical alerts</p>
-              </div>
-            </div>
-
-            {/* Toast with Action */}
-            <div className="border border-grey-300 rounded-lg p-4">
-              <h4 className="font-medium text-grey-900 mb-2">Toast with Action</h4>
-              <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Action Button:</strong> Inline button with variant="link"</p>
-                <p><strong>Action Style:</strong> Transparent background, hover:bg-secondary</p>
-                <p><strong>Action Text:</strong> Same color as toast variant</p>
-                <p><strong>Layout:</strong> Action positioned to the right of content</p>
-                <p><strong>Usage:</strong> When user action is required (confirm, retry, etc.)</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-grey-900">Implementation Details</h3>
-            <div className="space-y-2 text-sm text-grey-600">
-              <p><strong>Auto-dismiss:</strong> 3 seconds (TOAST_REMOVE_DELAY = 3000ms)</p>
-              <p><strong>Max toasts:</strong> 5 simultaneous toasts (TOAST_LIMIT = 5)</p>
-              <p><strong>Close icon:</strong> X icon (Lucide), 16px size (h-4 w-4)</p>
-              <p><strong>Close position:</strong> Absolute positioned, top-2 right-2</p>
-              <p><strong>Swipe gesture:</strong> Swipe right to dismiss on mobile</p>
-              <p><strong>Z-index:</strong> z-[100] to appear above all content</p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-grey-900">Helper Functions</h3>
-            <div className="space-y-2 text-sm text-grey-600">
-              <p><strong>showSuccessToast(title, description)</strong> - Green success toast</p>
-              <p><strong>showErrorToast(title, description)</strong> - Red destructive toast</p>
-              <p><strong>showWarningToast(title, description)</strong> - Orange warning toast</p>
-              <p><strong>showInfoToast(title, description)</strong> - Blue info toast</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Interactive Examples */}
+      {/* Interactive Examples - Moved to top */}
       <Card className="shadow-none">
         <CardHeader>
           <CardTitle>Interactive Examples</CardTitle>
@@ -1651,30 +1528,184 @@ export default function DesignSystemPlayground() {
               onClick={() =>
                 toast({
                   variant: "destructive",
-                  title: "Uh oh! Something went wrong.",
-                  description: "There was a problem with your request.",
+                  title: "Error!",
+                  description: "Something went wrong.",
                 })
               }
             >
-              Destructive Toast
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() =>
-                toast({
-                  title: "Action Required",
-                  description: "Please confirm your email address.",
-                  action: (
-                    <Button variant="link" onClick={() => console.log("Action clicked")}>Confirm</Button>
-                  ),
-                })
-              }
-            >
-              Toast with Action
+              Error Toast
             </Button>
           </div>
         </CardContent>
       </Card>
+
+      {/* Design Specifications with Visual Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Design Specifications & Visual Examples</CardTitle>
+          <CardDescription>Complete styling details and visual representations of all toast variants</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-grey-900">Typography & Layout</h3>
+            <div className="space-y-2 text-sm text-grey-600">
+              <p><strong>Font Family:</strong> Inter (inherited from system)</p>
+              <p><strong>Title Font:</strong> 14px, font-semibold (text-sm font-semibold)</p>
+              <p><strong>Description Font:</strong> 14px, font-normal, 90% opacity (text-sm)</p>
+              <p><strong>Container:</strong> max-width 420px, rounded-lg, padding 24px, shadow-lg</p>
+              <p><strong>Position:</strong> Fixed top-0 sm:bottom-0 sm:right-0 with 16px padding</p>
+              <p><strong>Animation:</strong> Slide-in from top (mobile) / bottom (desktop)</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-grey-900">Toast Variants</h3>
+            
+            {/* Default Toast */}
+            <div className="border border-grey-300 rounded-lg p-4">
+              <h4 className="font-medium text-grey-900 mb-2">Default Toast</h4>
+              <div className="space-y-1 text-sm text-grey-600">
+                <p><strong>Border:</strong> 1px solid #7B59FF (border-primary-main)</p>
+                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
+                <p><strong>Title Color:</strong> #38415F (text-grey-800)</p>
+                <p><strong>Description Color:</strong> #38415F (text-grey-800)</p>
+                <p><strong>Usage:</strong> General notifications and confirmations</p>
+              </div>
+            </div>
+
+            {/* Success Toast with Visual Example */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="border border-grey-300 rounded-lg p-4">
+                <h4 className="font-medium text-grey-900 mb-3">Success Toast</h4>
+                <div className="space-y-2 text-sm text-grey-600">
+                  <p><strong>Border:</strong> 1px solid #10B981</p>
+                  <p><strong>Background:</strong> #FFFFFF</p>
+                  <p><strong>Title Color:</strong> #10B981</p>
+                  <p><strong>Description Color:</strong> #000000</p>
+                  <p><strong>Close Button:</strong> #000000</p>
+                  <p><strong>Usage:</strong> Successful operations, confirmations</p>
+                </div>
+              </div>
+              <div className="border border-[#10B981] bg-white rounded-lg p-4 shadow-sm">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#10B981] mb-1">Success!</div>
+                    <div className="text-sm text-black">Your action was completed successfully.</div>
+                  </div>
+                  <button className="text-black opacity-70 hover:opacity-100 ml-4">×</button>
+                </div>
+              </div>
+            </div>
+
+            {/* Info Toast with Visual Example */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="border border-grey-300 rounded-lg p-4">
+                <h4 className="font-medium text-grey-900 mb-3">Info Toast</h4>
+                <div className="space-y-2 text-sm text-grey-600">
+                  <p><strong>Border:</strong> 1px solid #3B82F6</p>
+                  <p><strong>Background:</strong> #FFFFFF</p>
+                  <p><strong>Title Color:</strong> #3B82F6</p>
+                  <p><strong>Description Color:</strong> #000000</p>
+                  <p><strong>Close Button:</strong> #000000</p>
+                  <p><strong>Usage:</strong> General information, helpful tips</p>
+                </div>
+              </div>
+              <div className="border border-[#3B82F6] bg-white rounded-lg p-4 shadow-sm">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#3B82F6] mb-1">Information</div>
+                    <div className="text-sm text-black">Here's some helpful information.</div>
+                  </div>
+                  <button className="text-black opacity-70 hover:opacity-100 ml-4">×</button>
+                </div>
+              </div>
+            </div>
+
+            {/* Warning Toast with Visual Example */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="border border-grey-300 rounded-lg p-4">
+                <h4 className="font-medium text-grey-900 mb-3">Warning Toast</h4>
+                <div className="space-y-2 text-sm text-grey-600">
+                  <p><strong>Border:</strong> 1px solid #F59E0B</p>
+                  <p><strong>Background:</strong> #FFFFFF</p>
+                  <p><strong>Title Color:</strong> #F59E0B</p>
+                  <p><strong>Description Color:</strong> #000000</p>
+                  <p><strong>Close Button:</strong> #000000</p>
+                  <p><strong>Usage:</strong> Caution messages, important notices</p>
+                </div>
+              </div>
+              <div className="border border-[#F59E0B] bg-white rounded-lg p-4 shadow-sm">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#F59E0B] mb-1">Warning</div>
+                    <div className="text-sm text-black">Please be careful with this action.</div>
+                  </div>
+                  <button className="text-black opacity-70 hover:opacity-100 ml-4">×</button>
+                </div>
+              </div>
+            </div>
+
+            {/* Destructive Toast with Visual Example */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="border border-grey-300 rounded-lg p-4">
+                <h4 className="font-medium text-grey-900 mb-3">Destructive Toast</h4>
+                <div className="space-y-2 text-sm text-grey-600">
+                  <p><strong>Border:</strong> 1px solid #EF4444</p>
+                  <p><strong>Background:</strong> #FFFFFF</p>
+                  <p><strong>Title Color:</strong> #EF4444</p>
+                  <p><strong>Description Color:</strong> #000000</p>
+                  <p><strong>Close Button:</strong> #000000</p>
+                  <p><strong>Usage:</strong> Errors, failed operations, critical alerts</p>
+                </div>
+              </div>
+              <div className="border border-[#EF4444] bg-white rounded-lg p-4 shadow-sm">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#EF4444] mb-1">Error</div>
+                    <div className="text-sm text-black">Something went wrong. Please try again.</div>
+                  </div>
+                  <button className="text-black opacity-70 hover:opacity-100 ml-4">×</button>
+                </div>
+              </div>
+            </div>
+
+            {/* Toast with Action */}
+            <div className="border border-grey-300 rounded-lg p-4">
+              <h4 className="font-medium text-grey-900 mb-2">Toast with Action</h4>
+              <div className="space-y-1 text-sm text-grey-600">
+                <p><strong>Action Button:</strong> Inline button with variant="link"</p>
+                <p><strong>Action Style:</strong> Transparent background, hover:bg-secondary</p>
+                <p><strong>Action Text:</strong> Same color as toast variant</p>
+                <p><strong>Layout:</strong> Action positioned to the right of content</p>
+                <p><strong>Usage:</strong> When user action is required (confirm, retry, etc.)</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-grey-900">Implementation Details</h3>
+            <div className="space-y-2 text-sm text-grey-600">
+              <p><strong>Auto-dismiss:</strong> 3 seconds (TOAST_REMOVE_DELAY = 3000ms)</p>
+              <p><strong>Max toasts:</strong> 5 simultaneous toasts (TOAST_LIMIT = 5)</p>
+              <p><strong>Close icon:</strong> X icon (Lucide), 16px size (h-4 w-4)</p>
+              <p><strong>Close position:</strong> Absolute positioned, top-2 right-2</p>
+              <p><strong>Swipe gesture:</strong> Swipe right to dismiss on mobile</p>
+              <p><strong>Z-index:</strong> z-[100] to appear above all content</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-grey-900">Helper Functions</h3>
+            <div className="space-y-2 text-sm text-grey-600">
+              <p><strong>showSuccessToast(title, description)</strong> - Green success toast</p>
+              <p><strong>showErrorToast(title, description)</strong> - Red destructive toast</p>
+              <p><strong>showWarningToast(title, description)</strong> - Orange warning toast</p>
+              <p><strong>showInfoToast(title, description)</strong> - Blue info toast</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
     </div>
   );
 
