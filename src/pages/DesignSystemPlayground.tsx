@@ -1506,11 +1506,11 @@ export default function DesignSystemPlayground() {
             <div className="border border-grey-300 rounded-lg p-4">
               <h4 className="font-medium text-grey-900 mb-2">Success Toast</h4>
               <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Border:</strong> 1px solid #007737 (border-success-main)</p>
+                <p><strong>Border:</strong> 1px solid #10B981 (border-success-main)</p>
                 <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
-                <p><strong>Title Color:</strong> #005A2A (text-success-dark)</p>
-                <p><strong>Description Color:</strong> #005A2A (text-success-dark)</p>
-                <p><strong>Close Button:</strong> #005A2A (text-success-dark)</p>
+                <p><strong>Title Color:</strong> #10B981 (text-success-main)</p>
+                <p><strong>Description Color:</strong> #10B981 (text-success-main)</p>
+                <p><strong>Close Button:</strong> #10B981 (text-success-main)</p>
                 <p><strong>Usage:</strong> Successful operations, confirmations</p>
               </div>
             </div>
@@ -1519,11 +1519,11 @@ export default function DesignSystemPlayground() {
             <div className="border border-grey-300 rounded-lg p-4">
               <h4 className="font-medium text-grey-900 mb-2">Info Toast</h4>
               <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Border:</strong> 1px solid #375DFB (border-info-main)</p>
+                <p><strong>Border:</strong> 1px solid #3B82F6 (border-info-main)</p>
                 <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
-                <p><strong>Title Color:</strong> #1E3A8A (text-info-dark)</p>
-                <p><strong>Description Color:</strong> #1E3A8A (text-info-dark)</p>
-                <p><strong>Close Button:</strong> #1E3A8A (text-info-dark)</p>
+                <p><strong>Title Color:</strong> #3B82F6 (text-info-main)</p>
+                <p><strong>Description Color:</strong> #3B82F6 (text-info-main)</p>
+                <p><strong>Close Button:</strong> #3B82F6 (text-info-main)</p>
                 <p><strong>Usage:</strong> General information, helpful tips</p>
               </div>
             </div>
@@ -1532,11 +1532,11 @@ export default function DesignSystemPlayground() {
             <div className="border border-grey-300 rounded-lg p-4">
               <h4 className="font-medium text-grey-900 mb-2">Warning Toast</h4>
               <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Border:</strong> 1px solid #F2AE40 (border-warning-main)</p>
+                <p><strong>Border:</strong> 1px solid #F59E0B (border-warning-main)</p>
                 <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
-                <p><strong>Title Color:</strong> #B45309 (text-warning-dark)</p>
-                <p><strong>Description Color:</strong> #B45309 (text-warning-dark)</p>
-                <p><strong>Close Button:</strong> #B45309 (text-warning-dark)</p>
+                <p><strong>Title Color:</strong> #F59E0B (text-warning-main)</p>
+                <p><strong>Description Color:</strong> #F59E0B (text-warning-main)</p>
+                <p><strong>Close Button:</strong> #F59E0B (text-warning-main)</p>
                 <p><strong>Usage:</strong> Caution messages, important notices</p>
               </div>
             </div>
@@ -1545,11 +1545,11 @@ export default function DesignSystemPlayground() {
             <div className="border border-grey-300 rounded-lg p-4">
               <h4 className="font-medium text-grey-900 mb-2">Destructive Toast</h4>
               <div className="space-y-1 text-sm text-grey-600">
-                <p><strong>Border:</strong> 1px solid #DF1C41 (border-error-main)</p>
+                <p><strong>Border:</strong> 1px solid #EF4444 (border-error-main)</p>
                 <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
-                <p><strong>Title Color:</strong> #991B1B (text-error-dark)</p>
-                <p><strong>Description Color:</strong> #991B1B (text-error-dark)</p>
-                <p><strong>Close Button:</strong> #991B1B (text-error-dark)</p>
+                <p><strong>Title Color:</strong> #EF4444 (text-error-main)</p>
+                <p><strong>Description Color:</strong> #EF4444 (text-error-main)</p>
+                <p><strong>Close Button:</strong> #EF4444 (text-error-main)</p>
                 <p><strong>Usage:</strong> Errors, failed operations, critical alerts</p>
               </div>
             </div>
