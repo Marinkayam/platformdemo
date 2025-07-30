@@ -1461,12 +1461,142 @@ export default function DesignSystemPlayground() {
   };
 
   const renderToastNotifications = () => (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Toast Notifications</h2>
         <p className="text-sm text-grey-600 mb-4">Toasts provide brief, timely messages about app processes.</p>
+        <p className="text-sm text-grey-600 font-semibold">Component Name: <code className="font-mono text-primary-main">Toast, useToast</code></p>
       </div>
+
+      {/* Design Specifications */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Design Specifications</CardTitle>
+          <CardDescription>Complete styling and implementation details for toast notifications</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-grey-900">Typography & Layout</h3>
+            <div className="space-y-2 text-sm text-grey-600">
+              <p><strong>Font Family:</strong> Inter (inherited from system)</p>
+              <p><strong>Title Font:</strong> 14px, font-semibold (text-sm font-semibold)</p>
+              <p><strong>Description Font:</strong> 14px, font-normal, 90% opacity (text-sm)</p>
+              <p><strong>Container:</strong> max-width 420px, rounded-lg, padding 24px, shadow-lg</p>
+              <p><strong>Position:</strong> Fixed top-0 sm:bottom-0 sm:right-0 with 16px padding</p>
+              <p><strong>Animation:</strong> Slide-in from top (mobile) / bottom (desktop)</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-grey-900">Toast Variants</h3>
+            
+            {/* Default Toast */}
+            <div className="border border-grey-300 rounded-lg p-4">
+              <h4 className="font-medium text-grey-900 mb-2">Default Toast</h4>
+              <div className="space-y-1 text-sm text-grey-600">
+                <p><strong>Border:</strong> 1px solid #7B59FF (border-primary-main)</p>
+                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
+                <p><strong>Title Color:</strong> #38415F (text-grey-800)</p>
+                <p><strong>Description Color:</strong> #38415F (text-grey-800)</p>
+                <p><strong>Usage:</strong> General notifications and confirmations</p>
+              </div>
+            </div>
+
+            {/* Success Toast */}
+            <div className="border border-grey-300 rounded-lg p-4">
+              <h4 className="font-medium text-grey-900 mb-2">Success Toast</h4>
+              <div className="space-y-1 text-sm text-grey-600">
+                <p><strong>Border:</strong> 1px solid #007737 (border-success-main)</p>
+                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
+                <p><strong>Title Color:</strong> #005A2A (text-success-dark)</p>
+                <p><strong>Description Color:</strong> #005A2A (text-success-dark)</p>
+                <p><strong>Close Button:</strong> #005A2A (text-success-dark)</p>
+                <p><strong>Usage:</strong> Successful operations, confirmations</p>
+              </div>
+            </div>
+
+            {/* Info Toast */}
+            <div className="border border-grey-300 rounded-lg p-4">
+              <h4 className="font-medium text-grey-900 mb-2">Info Toast</h4>
+              <div className="space-y-1 text-sm text-grey-600">
+                <p><strong>Border:</strong> 1px solid #375DFB (border-info-main)</p>
+                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
+                <p><strong>Title Color:</strong> #1E3A8A (text-info-dark)</p>
+                <p><strong>Description Color:</strong> #1E3A8A (text-info-dark)</p>
+                <p><strong>Close Button:</strong> #1E3A8A (text-info-dark)</p>
+                <p><strong>Usage:</strong> General information, helpful tips</p>
+              </div>
+            </div>
+
+            {/* Warning Toast */}
+            <div className="border border-grey-300 rounded-lg p-4">
+              <h4 className="font-medium text-grey-900 mb-2">Warning Toast</h4>
+              <div className="space-y-1 text-sm text-grey-600">
+                <p><strong>Border:</strong> 1px solid #F2AE40 (border-warning-main)</p>
+                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
+                <p><strong>Title Color:</strong> #B45309 (text-warning-dark)</p>
+                <p><strong>Description Color:</strong> #B45309 (text-warning-dark)</p>
+                <p><strong>Close Button:</strong> #B45309 (text-warning-dark)</p>
+                <p><strong>Usage:</strong> Caution messages, important notices</p>
+              </div>
+            </div>
+
+            {/* Destructive Toast */}
+            <div className="border border-grey-300 rounded-lg p-4">
+              <h4 className="font-medium text-grey-900 mb-2">Destructive Toast</h4>
+              <div className="space-y-1 text-sm text-grey-600">
+                <p><strong>Border:</strong> 1px solid #DF1C41 (border-error-main)</p>
+                <p><strong>Background:</strong> #FFFFFF (bg-white)</p>
+                <p><strong>Title Color:</strong> #991B1B (text-error-dark)</p>
+                <p><strong>Description Color:</strong> #991B1B (text-error-dark)</p>
+                <p><strong>Close Button:</strong> #991B1B (text-error-dark)</p>
+                <p><strong>Usage:</strong> Errors, failed operations, critical alerts</p>
+              </div>
+            </div>
+
+            {/* Toast with Action */}
+            <div className="border border-grey-300 rounded-lg p-4">
+              <h4 className="font-medium text-grey-900 mb-2">Toast with Action</h4>
+              <div className="space-y-1 text-sm text-grey-600">
+                <p><strong>Action Button:</strong> Inline button with variant="link"</p>
+                <p><strong>Action Style:</strong> Transparent background, hover:bg-secondary</p>
+                <p><strong>Action Text:</strong> Same color as toast variant</p>
+                <p><strong>Layout:</strong> Action positioned to the right of content</p>
+                <p><strong>Usage:</strong> When user action is required (confirm, retry, etc.)</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-grey-900">Implementation Details</h3>
+            <div className="space-y-2 text-sm text-grey-600">
+              <p><strong>Auto-dismiss:</strong> 3 seconds (TOAST_REMOVE_DELAY = 3000ms)</p>
+              <p><strong>Max toasts:</strong> 5 simultaneous toasts (TOAST_LIMIT = 5)</p>
+              <p><strong>Close icon:</strong> X icon (Lucide), 16px size (h-4 w-4)</p>
+              <p><strong>Close position:</strong> Absolute positioned, top-2 right-2</p>
+              <p><strong>Swipe gesture:</strong> Swipe right to dismiss on mobile</p>
+              <p><strong>Z-index:</strong> z-[100] to appear above all content</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-grey-900">Helper Functions</h3>
+            <div className="space-y-2 text-sm text-grey-600">
+              <p><strong>showSuccessToast(title, description)</strong> - Green success toast</p>
+              <p><strong>showErrorToast(title, description)</strong> - Red destructive toast</p>
+              <p><strong>showWarningToast(title, description)</strong> - Orange warning toast</p>
+              <p><strong>showInfoToast(title, description)</strong> - Blue info toast</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Interactive Examples */}
       <Card className="shadow-none">
+        <CardHeader>
+          <CardTitle>Interactive Examples</CardTitle>
+          <CardDescription>Click buttons to see toast notifications in action</CardDescription>
+        </CardHeader>
         <CardContent className="p-6 space-y-4">
           <div className="flex flex-wrap items-center gap-4">
             <Button
