@@ -3,17 +3,7 @@ import React from "react";
 import { useNewSmartConnection } from "@/context/NewSmartConnectionContext";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-const payableOptions = [
-  "Acme Corporation",
-  "Global Industries Ltd",
-  "TechStart Solutions",
-  "Metro Services Inc",
-  "Pioneer Manufacturing",
-  "Sunrise Enterprises",
-  "NextGen Systems",
-  "Atlantic Holdings"
-];
+import { PayableDropdown } from "../components/PayableDropdown";
 
 const receivableOptions = [
   "Financial Services Corp",
@@ -27,7 +17,7 @@ const receivableOptions = [
 ];
 
 export function ConnectionSetupStep() {
-  const { state, updateConnectionSetup } = useNewSmartConnection();
+  const { state, setSelectedPayable, updateConnectionSetup } = useNewSmartConnection();
 
   return (
     <div className="space-y-6">
@@ -40,21 +30,10 @@ export function ConnectionSetupStep() {
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label htmlFor="payableName">Payable Name on the ERP *</Label>
-          <Select 
-            value={state.connectionSetup.payableName} 
-            onValueChange={(value) => updateConnectionSetup({ payableName: value })}
-          >
-            <SelectTrigger className="h-12">
-              <SelectValue placeholder="Select payable name..." />
-            </SelectTrigger>
-            <SelectContent>
-              {payableOptions.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <PayableDropdown
+            selectedPayable={state.connectionSetup.selectedPayable}
+            onPayableSelect={setSelectedPayable}
+          />
         </div>
         
         <div className="space-y-2">

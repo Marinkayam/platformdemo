@@ -1,9 +1,10 @@
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { PortalOption, UserType, ExistingUserData, DedicatedUserData } from "./AddAgentContext";
+import { PayableOption } from "@/data/payables";
 
 export interface ConnectionSetupData {
-  payableName: string;
+  selectedPayable: PayableOption | null;
   receivable: string;
 }
 
@@ -20,6 +21,7 @@ interface NewSmartConnectionContextType {
   state: NewSmartConnectionState;
   setCurrentStep: (step: number) => void;
   updateConnectionSetup: (data: Partial<ConnectionSetupData>) => void;
+  setSelectedPayable: (payable: PayableOption | null) => void;
   setSelectedPortal: (portal: PortalOption | null) => void;
   setUserType: (type: UserType | null) => void;
   updateExistingUserData: (data: Partial<ExistingUserData>) => void;
@@ -32,7 +34,7 @@ const NewSmartConnectionContext = createContext<NewSmartConnectionContextType | 
 const initialState: NewSmartConnectionState = {
   currentStep: 1,
   connectionSetup: {
-    payableName: "",
+    selectedPayable: null,
     receivable: "",
   },
   selectedPortal: null,
@@ -60,6 +62,13 @@ export function NewSmartConnectionProvider({ children }: { children: ReactNode }
     setState(prev => ({
       ...prev,
       connectionSetup: { ...prev.connectionSetup, ...data }
+    }));
+  };
+
+  const setSelectedPayable = (payable: PayableOption | null) => {
+    setState(prev => ({
+      ...prev,
+      connectionSetup: { ...prev.connectionSetup, selectedPayable: payable }
     }));
   };
 
@@ -95,6 +104,7 @@ export function NewSmartConnectionProvider({ children }: { children: ReactNode }
         state,
         setCurrentStep,
         updateConnectionSetup,
+        setSelectedPayable,
         setSelectedPortal,
         setUserType,
         updateExistingUserData,

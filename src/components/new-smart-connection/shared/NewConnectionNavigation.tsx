@@ -15,7 +15,7 @@ export function NewConnectionNavigation() {
   const canGoNext = () => {
     switch (state.currentStep) {
       case 1:
-        return state.connectionSetup.payableName && state.connectionSetup.receivable;
+        return state.connectionSetup.selectedPayable && state.connectionSetup.receivable;
       case 2:
         return state.selectedPortal !== null;
       case 3:
