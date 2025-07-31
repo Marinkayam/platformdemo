@@ -117,94 +117,100 @@ export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearF
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <FilterDropdown 
-            label="SC Status" 
-            value={filters.status} 
-            options={statusOptions.map(opt => opt.value)}
-            onSelect={(value) => onFilterChange({ 
-              ...filters, 
-              status: Array.isArray(value) ? value : [value] 
-            })}
-            multiSelect
+      <div className="flex flex-wrap items-center gap-4">
+        {/* Search - First */}
+        <div className="relative">
+          <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <input 
+            type="text" 
+            placeholder="Search..." 
+            className="pl-9 pr-4 h-9 border rounded-md w-[160px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[220px] transition-all duration-300 ease-in-out text-[14px]"
+            value={filters.search}
+            onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
           />
-          
-          <FilterDropdown 
-            label="Receivable Entity" 
-            value={filters.receivableEntity} 
-            options={receivableEntityOptions.map(opt => opt.value)}
-            onSelect={(value) => onFilterChange({ 
-              ...filters, 
-              receivableEntity: Array.isArray(value) ? value : [value] 
-            })}
-            multiSelect
-            searchable
-          />
-          
-          <FilterDropdown 
-            label="Payable" 
-            value={filters.payable} 
-            options={payableOptions.map(opt => opt.value)}
-            onSelect={(value) => onFilterChange({ 
-              ...filters, 
-              payable: Array.isArray(value) ? value : [value] 
-            })}
-            multiSelect
-            searchable
-          />
-          
-          <FilterDropdown 
-            label="Portal" 
-            value={filters.portal} 
-            options={portalOptions.map(opt => opt.value)}
-            onSelect={(value) => onFilterChange({ 
-              ...filters, 
-              portal: Array.isArray(value) ? value : [value] 
-            })}
-            multiSelect
-            searchable
-            renderOption={(option) => (
-              <div className="flex items-center gap-2">
-                <img 
-                  src={getPortalLogoUrl(option)} 
-                  alt={`${option} logo`}
-                  className="w-5 h-5 object-contain rounded-full"
-                  width={20}
-                  height={20}
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = '/portal-logos/placeholder.svg';
-                  }}
-                />
-                <span>{option}</span>
-              </div>
-            )}
-          />
-
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="view-inactive"
-              checked={filters.viewInactive}
-              onCheckedChange={(checked) => onFilterChange({ ...filters, viewInactive: checked })}
-            />
-            <label htmlFor="view-inactive" className="text-sm font-medium">
-              View Inactive Connections
-            </label>
-          </div>
         </div>
+
+        {/* Status */}
+        <FilterDropdown 
+          label="Status" 
+          value={filters.status} 
+          options={statusOptions.map(opt => opt.value)}
+          onSelect={(value) => onFilterChange({ 
+            ...filters, 
+            status: Array.isArray(value) ? value : [value] 
+          })}
+          multiSelect
+        />
         
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search..." 
-              className="pl-9 pr-4 h-9 border rounded-md w-[160px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[220px] transition-all duration-300 ease-in-out text-[14px]"
-              value={filters.search}
-              onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
-            />
-          </div>
+        {/* Receivable */}
+        <FilterDropdown 
+          label="Receivable" 
+          value={filters.receivableEntity} 
+          options={receivableEntityOptions.map(opt => opt.value)}
+          onSelect={(value) => onFilterChange({ 
+            ...filters, 
+            receivableEntity: Array.isArray(value) ? value : [value] 
+          })}
+          multiSelect
+          searchable
+        />
+        
+        {/* Payable */}
+        <FilterDropdown 
+          label="Payable" 
+          value={filters.payable} 
+          options={payableOptions.map(opt => opt.value)}
+          onSelect={(value) => onFilterChange({ 
+            ...filters, 
+            payable: Array.isArray(value) ? value : [value] 
+          })}
+          multiSelect
+          searchable
+        />
+        
+        {/* Portals */}
+        <FilterDropdown 
+          label="Portals" 
+          value={filters.portal} 
+          options={portalOptions.map(opt => opt.value)}
+          onSelect={(value) => onFilterChange({ 
+            ...filters, 
+            portal: Array.isArray(value) ? value : [value] 
+          })}
+          multiSelect
+          searchable
+          renderOption={(option) => (
+            <div className="flex items-center gap-2">
+              <img 
+                src={getPortalLogoUrl(option)} 
+                alt={`${option} logo`}
+                className="w-5 h-5 object-contain rounded-full"
+                width={20}
+                height={20}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/portal-logos/placeholder.svg';
+                }}
+              />
+              <span>{option}</span>
+            </div>
+          )}
+        />
+
+        {/* View Inactive Connections toggle */}
+        <div className="flex items-center space-x-2">
+          <Switch
+            id="view-inactive"
+            checked={filters.viewInactive}
+            onCheckedChange={(checked) => onFilterChange({ ...filters, viewInactive: checked })}
+          />
+          <label htmlFor="view-inactive" className="text-sm font-medium">
+            View Inactive Connections
+          </label>
+        </div>
+
+        {/* Reset button on the right */}
+        <div className="ml-auto">
           <Button 
             variant="ghost" 
             size="sm" 
