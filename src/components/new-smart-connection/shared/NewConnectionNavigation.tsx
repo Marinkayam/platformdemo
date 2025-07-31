@@ -13,6 +13,13 @@ export function NewConnectionNavigation() {
   const canGoBack = state.currentStep > 1;
   
   const canGoNext = () => {
+    console.log("Current step:", state.currentStep);
+    console.log("Connection setup:", state.connectionSetup);
+    console.log("Selected portal:", state.selectedPortal);
+    console.log("User type:", state.userType);
+    console.log("Existing user data:", state.existingUserData);
+    console.log("Dedicated user data:", state.dedicatedUserData);
+    
     switch (state.currentStep) {
       case 1:
         return state.connectionSetup.selectedPayable && state.connectionSetup.receivable;
