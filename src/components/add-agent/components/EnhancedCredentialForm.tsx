@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Copy } from "lucide-react";
+import { Copy, ChevronDown, ChevronUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { TwoFactorModal } from "./TwoFactorModal";
 import { ExistingUserData } from "@/context/AddAgentContext";
@@ -17,6 +18,8 @@ interface EnhancedCredentialFormProps {
 export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFormProps) {
   const { toast } = useToast();
   const [showTwoFactorModal, setShowTwoFactorModal] = useState(false);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [twoFactorExpanded, setTwoFactorExpanded] = useState(false);
 
   const handleCopyEmail = () => {
     const email = "client@montopay.com";
@@ -98,105 +101,138 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
       
       <div className="border-t pt-8">
         <div className="space-y-6">
-          <h3 className="text-lg font-semibold text-[#38415F]">🔐 Two-Factor Authentication</h3>
-          
-          <RadioGroup
-            value={data.twoFactorMethod}
-            onValueChange={(value: "redirect" | "authenticator") => 
-              onUpdate({ twoFactorMethod: value })
-            }
-            className="space-y-6"
-          >
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <RadioGroupItem value="redirect" id="redirect" className="mt-1" />
-                <div className="space-y-4 flex-1">
-                  <Label htmlFor="redirect" className="text-base font-medium text-[#38415F]">
-                    Option 1: Redirect 2FA
-                  </Label>
-                  
-                  {data.twoFactorMethod === "redirect" && (
-                    <div className="space-y-4 ml-2">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-[#38415F]">Redirect to Email:</span>
-                        <span className="font-mono text-sm">client@montopay.com</span>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={handleCopyEmail}
-                          className="h-6 w-6 p-0"
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                      
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-[#38415F]">Redirect to Phone:</span>
-                        <span className="font-mono text-sm">+1-222-333-4444</span>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={handleCopyPhone}
-                          className="h-6 w-6 p-0"
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                      
-                      <Button
-                        variant="outline"
-                        onClick={() => setShowTwoFactorModal(true)}
-                        className="text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
-                      >
-                        Enter 2FA Code
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <RadioGroupItem value="authenticator" id="authenticator" className="mt-1" />
-                <div className="space-y-4 flex-1">
-                  <Label htmlFor="authenticator" className="text-base font-medium text-[#38415F]">
-                    Option 2: Use Authenticator App
-                  </Label>
-                  <p className="text-sm text-[#8C92A3]">
-                    Use an authenticator app with the provided secret key.
-                  </p>
-                  
-                  {data.twoFactorMethod === "authenticator" && (
-                    <div className="space-y-4 ml-2">
-                      <div className="space-y-2">
-                        <Label htmlFor="authSecret" className="text-sm font-medium text-[#38415F]">
-                          Secret Key
-                        </Label>
-                        <Input
-                          id="authSecret"
-                          type="text"
-                          value={data.authSecret || ""}
-                          onChange={(e) => onUpdate({ authSecret: e.target.value })}
-                          placeholder="Enter authenticator secret key"
-                          className="h-10"
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium text-[#38415F]">
-                          Upload QR Code (optional)
-                        </Label>
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          className="h-10"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <h3 className="text-lg font-semibold text-[#38415F]">🔐 Two-Factor Authentication</h3>
+              <Switch
+                checked={twoFactorEnabled}
+                onCheckedChange={(checked) => {
+                  setTwoFactorEnabled(checked);
+                  setTwoFactorExpanded(checked);
+                }}
+              />
             </div>
-          </RadioGroup>
+            {twoFactorEnabled && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setTwoFactorExpanded(!twoFactorExpanded)}
+                className="flex items-center gap-2 text-[#8C92A3] hover:text-[#38415F]"
+              >
+                {twoFactorExpanded ? (
+                  <>
+                    <ChevronUp className="h-4 w-4" />
+                    Hide Details
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-4 w-4" />
+                    Show Details
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
+          
+          {twoFactorEnabled && twoFactorExpanded && (
+            <RadioGroup
+              value={data.twoFactorMethod}
+              onValueChange={(value: "redirect" | "authenticator") => 
+                onUpdate({ twoFactorMethod: value })
+              }
+              className="space-y-6"
+            >
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <RadioGroupItem value="redirect" id="redirect" className="mt-1" />
+                  <div className="space-y-4 flex-1">
+                    <Label htmlFor="redirect" className="text-base font-medium text-[#38415F]">
+                      Option 1: Redirect 2FA
+                    </Label>
+                    
+                    {data.twoFactorMethod === "redirect" && (
+                      <div className="space-y-4 ml-2">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm text-[#38415F]">Redirect to Email:</span>
+                          <span className="font-mono text-sm">client@montopay.com</span>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={handleCopyEmail}
+                            className="h-6 w-6 p-0"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm text-[#38415F]">Redirect to Phone:</span>
+                          <span className="font-mono text-sm">+1-222-333-4444</span>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={handleCopyPhone}
+                            className="h-6 w-6 p-0"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
+                        </div>
+                        
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowTwoFactorModal(true)}
+                          className="text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
+                        >
+                          Enter 2FA Code
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3">
+                  <RadioGroupItem value="authenticator" id="authenticator" className="mt-1" />
+                  <div className="space-y-4 flex-1">
+                    <Label htmlFor="authenticator" className="text-base font-medium text-[#38415F]">
+                      Option 2: Use Authenticator App
+                    </Label>
+                    <p className="text-sm text-[#8C92A3]">
+                      Use an authenticator app with the provided secret key.
+                    </p>
+                    
+                    {data.twoFactorMethod === "authenticator" && (
+                      <div className="space-y-4 ml-2">
+                        <div className="space-y-2">
+                          <Label htmlFor="authSecret" className="text-sm font-medium text-[#38415F]">
+                            Secret Key
+                          </Label>
+                          <Input
+                            id="authSecret"
+                            type="text"
+                            value={data.authSecret || ""}
+                            onChange={(e) => onUpdate({ authSecret: e.target.value })}
+                            placeholder="Enter authenticator secret key"
+                            className="h-10"
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium text-[#38415F]">
+                            Upload QR Code (optional)
+                          </Label>
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            className="h-10"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </RadioGroup>
+          )}
         </div>
       </div>
 
