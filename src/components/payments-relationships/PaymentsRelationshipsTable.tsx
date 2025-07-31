@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ChevronDown, ChevronRight, Plus, AlertTriangle, ExternalLink } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,18 @@ const getRandomCompanyName = () => {
 
 export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const navigate = useNavigate();
+
+  // Calculate pagination
+  const totalPages = Math.ceil(connections.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedConnections = useMemo(() => 
+    connections.slice(startIndex, endIndex), 
+    [connections, startIndex, endIndex]
+  );
 
   const toggleRow = (connectionId: string) => {
     const newExpanded = new Set(expandedRows);
@@ -124,7 +135,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
             </TableRow>
           </TableHeader>
           <TableBody className="divide-y divide-gray-100">
-            {connections.map((connection) => {
+            {paginatedConnections.map((connection) => {
               const issues = getConnectionIssues(connection);
               const highestIssue = getHighestSeverityIssue(issues);
               const isExpanded = expandedRows.has(connection.id);
@@ -250,7 +261,13 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
           </TableBody>
         </Table>
       </div>
-      <PaymentsRelationshipsTableFooter totalConnections={connections.length} />
+      <PaymentsRelationshipsTableFooter 
+        totalConnections={connections.length} 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        itemsPerPage={itemsPerPage}
+      />
     </div>
   );
 }

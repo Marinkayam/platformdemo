@@ -102,8 +102,8 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
       <div className="border-t pt-8">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-[#38415F]">Two-Factor Authentication</h3>
             <div className="flex items-center gap-3">
-              <h3 className="text-lg font-semibold text-[#38415F]">🔐 Two-Factor Authentication</h3>
               <Switch
                 checked={twoFactorEnabled}
                 onCheckedChange={(checked) => {
@@ -111,27 +111,27 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
                   setTwoFactorExpanded(checked);
                 }}
               />
+              {twoFactorEnabled && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setTwoFactorExpanded(!twoFactorExpanded)}
+                  className="flex items-center gap-2 text-[#8C92A3] hover:text-[#38415F]"
+                >
+                  {twoFactorExpanded ? (
+                    <>
+                      <ChevronUp className="h-4 w-4" />
+                      Hide Details
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="h-4 w-4" />
+                      Show Details
+                    </>
+                  )}
+                </Button>
+              )}
             </div>
-            {twoFactorEnabled && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setTwoFactorExpanded(!twoFactorExpanded)}
-                className="flex items-center gap-2 text-[#8C92A3] hover:text-[#38415F]"
-              >
-                {twoFactorExpanded ? (
-                  <>
-                    <ChevronUp className="h-4 w-4" />
-                    Hide Details
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="h-4 w-4" />
-                    Show Details
-                  </>
-                )}
-              </Button>
-            )}
           </div>
           
           {twoFactorEnabled && twoFactorExpanded && (
