@@ -7,9 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CloudUpload, Loader2, Copy } from "lucide-react";
 import { showSuccessToast } from "@/lib/toast-helpers";
 import { toast } from "sonner";
+import { useCompany } from "@/context/CompanyContext";
 
 export function CompanyTab() {
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const { companyInfo, updateLogo } = useCompany();
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -18,7 +19,7 @@ export function CompanyTab() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setLogoUrl(e.target?.result as string);
+        updateLogo(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -57,9 +58,9 @@ export function CompanyTab() {
                 className="relative w-28 h-28 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors overflow-hidden mb-2"
                 onClick={triggerFileUpload}
               >
-                {logoUrl ? (
+                {companyInfo.logoUrl ? (
                   <img 
-                    src={logoUrl} 
+                    src={companyInfo.logoUrl} 
                     alt="Company logo" 
                     className="w-full h-full object-cover rounded-full"
                   />

@@ -22,6 +22,7 @@ import Onboarding from "./pages/Onboarding";
 import PaymentsRelationships from "./pages/PaymentsRelationships";
 import NewPaymentsRelationship from "./pages/NewPaymentsRelationship";
 import { NotificationsProvider } from "./context/NotificationsContext";
+import { CompanyProvider } from "./context/CompanyContext";
 import PortalsDashboard from "./pages/PortalsDashboard";
 
 const queryClient = new QueryClient();
@@ -29,10 +30,11 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <NotificationsProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+      <CompanyProvider>
+        <NotificationsProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
           <Routes>
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
@@ -61,7 +63,8 @@ const App = () => (
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
-      </NotificationsProvider>
+        </NotificationsProvider>
+      </CompanyProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
