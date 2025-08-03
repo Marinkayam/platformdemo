@@ -14,7 +14,7 @@ export const CompanyLogo = ({ collapsed = false, className }: CompanyLogoProps) 
     return (
       <div className={cn(
         "flex items-center justify-center rounded-full overflow-hidden bg-muted shrink-0",
-        collapsed ? "w-8 h-8" : "w-10 h-10",
+        collapsed ? "w-7 h-7" : "w-9 h-9",
         className
       )}>
         <img
@@ -30,12 +30,12 @@ export const CompanyLogo = ({ collapsed = false, className }: CompanyLogoProps) 
   return (
     <div className={cn(
       "flex items-center justify-center shrink-0",
-      collapsed ? "w-8 h-8" : "w-10 h-10",
+      collapsed ? "w-7 h-7" : "w-9 h-9",
       className
     )}>
       <MontoLogo 
-        width={collapsed ? 24 : 32} 
-        height={collapsed ? 24 : 32}
+        width={collapsed ? 20 : 28} 
+        height={collapsed ? 20 : 28}
         className="text-primary"
       />
     </div>
