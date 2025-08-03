@@ -21,6 +21,11 @@ export const CompanyLogo = ({ collapsed = false, className }: CompanyLogoProps) 
           src={companyInfo.logoUrl}
           alt="Company Logo"
           className="w-full h-full object-cover"
+          style={{
+            width: collapsed ? '28px' : '36px',
+            height: collapsed ? '28px' : '36px'
+          }}
+          loading="eager"
         />
       </div>
     );
