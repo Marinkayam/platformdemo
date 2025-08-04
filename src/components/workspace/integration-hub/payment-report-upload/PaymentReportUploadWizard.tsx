@@ -96,22 +96,30 @@ export function PaymentReportUploadWizard({ isOpen, onClose }: PaymentReportUplo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="pb-4">
+      <DialogContent className="max-w-4xl h-[85vh] flex flex-col">
+        <DialogHeader className="pb-4 flex-shrink-0">
           <DialogTitle className="text-lg">Upload ERP Payment Report</DialogTitle>
         </DialogHeader>
-        <div className="space-y-6">
-          {currentStep !== 'connecting' && <WizardProgress currentStep={currentStep} />}
-          {renderStep()}
-          <WizardNavigation
-            currentStep={currentStep}
-            onBack={handleBack}
-            onNext={handleNext}
-            onImport={handleImport}
-            onComplete={onClose}
-            file={file}
-            mappings={mappings}
-          />
+        <div className="flex-1 flex flex-col min-h-0">
+          {currentStep !== 'connecting' && (
+            <div className="flex-shrink-0 pb-4">
+              <WizardProgress currentStep={currentStep} />
+            </div>
+          )}
+          <div className="flex-1 overflow-y-auto">
+            {renderStep()}
+          </div>
+          <div className="flex-shrink-0 mt-4">
+            <WizardNavigation
+              currentStep={currentStep}
+              onBack={handleBack}
+              onNext={handleNext}
+              onImport={handleImport}
+              onComplete={onClose}
+              file={file}
+              mappings={mappings}
+            />
+          </div>
         </div>
       </DialogContent>
     </Dialog>
