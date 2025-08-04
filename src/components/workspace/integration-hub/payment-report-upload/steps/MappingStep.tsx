@@ -66,7 +66,7 @@ export function MappingStep({ headers, data, mappings, onMappingChange }: Mappin
                     <SelectTrigger className="bg-white border border-grey-300 hover:border-grey-400">
                       <SelectValue placeholder="Select column..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border border-grey-300 shadow-lg z-50">
+                    <SelectContent className="bg-white border border-grey-300 shadow-lg z-[100]">
                       <SelectItem value="skip" className="hover:bg-grey-50">Skip this field</SelectItem>
                       {headers.map((header) => (
                         <SelectItem key={header} value={header} className="hover:bg-grey-50">
