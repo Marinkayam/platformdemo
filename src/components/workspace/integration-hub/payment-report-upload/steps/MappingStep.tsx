@@ -36,29 +36,31 @@ export function MappingStep({ headers, data, mappings, onMappingChange }: Mappin
 
       <div className="border border-grey-400 rounded-lg overflow-hidden">
         <div className="bg-grey-200 px-4 py-3 border-b border-grey-400">
-          <div className="grid grid-cols-4 gap-4 text-sm font-semibold text-grey-900">
-            <div>Monto Field</div>
-            <div>Your File Column</div>
-            <div>Sample Data</div>
-            <div>Description</div>
+          <div className="grid grid-cols-4 gap-2 text-sm font-semibold text-grey-900">
+            <div className="min-w-0">Monto Field</div>
+            <div className="min-w-0">Your File Column</div>
+            <div className="min-w-0">Sample Data</div>
+            <div className="min-w-0">Description</div>
           </div>
         </div>
         
         <div className="divide-y divide-grey-300">
           {PAYMENT_REPORT_FIELDS.slice(0, 6).map((field) => (
             <div key={field.key} className="p-4">
-              <div className="grid grid-cols-4 gap-4 items-start">
-                <div className="text-sm font-medium text-grey-900">
-                  {field.label}
-                  {field.required && <span className="text-red-500 ml-1">*</span>}
+              <div className="grid grid-cols-4 gap-2 items-start">
+                <div className="text-sm font-medium text-grey-900 min-w-0">
+                  <div className="truncate">
+                    {field.label}
+                    {field.required && <span className="text-red-500 ml-1">*</span>}
+                  </div>
                   {field.conditionallyRequired && (
-                    <span className="text-orange-500 text-xs block">
+                    <span className="text-orange-500 text-xs block truncate">
                       Required if no {field.conditionallyRequired}
                     </span>
                   )}
                 </div>
                 
-                <div>
+                <div className="min-w-0">
                   <Select
                     value={mappings[field.key] || ''}
                     onValueChange={(value) => handleMappingChange(field.key, value)}
@@ -77,12 +79,12 @@ export function MappingStep({ headers, data, mappings, onMappingChange }: Mappin
                   </Select>
                 </div>
                 
-                <div className="text-sm text-grey-600 font-mono">
-                  {getSampleData(mappings[field.key])}
+                <div className="text-sm text-grey-600 font-mono min-w-0">
+                  <div className="truncate">{getSampleData(mappings[field.key])}</div>
                 </div>
                 
-                <div className="text-xs text-grey-500">
-                  {field.description}
+                <div className="text-xs text-grey-500 min-w-0">
+                  <div className="truncate">{field.description}</div>
                 </div>
               </div>
             </div>
