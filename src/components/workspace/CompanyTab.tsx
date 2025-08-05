@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { useCompany } from "@/context/CompanyContext";
 
 export function CompanyTab() {
-  const { companyInfo, updateLogo } = useCompany();
+  const { companyInfo, updateLogo, updateCompanyInfo } = useCompany();
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -85,7 +85,12 @@ export function CompanyTab() {
           </div>
           <div>
             <label className="block text-[15px] mb-2 font-medium text-gray-800">Company Name</label>
-            <Input className="h-12 bg-gray-100 text-base font-normal" value="Monto Technologies" disabled />
+            <Input 
+              className="h-12 bg-white text-base font-normal" 
+              value={companyInfo.name || "Monto Technologies"} 
+              onChange={(e) => updateCompanyInfo({ name: e.target.value })}
+              placeholder="Enter company name"
+            />
           </div>
           <div>
             <label className="block text-[15px] mb-2 font-medium text-gray-800">Timezone</label>
