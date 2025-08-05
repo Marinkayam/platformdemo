@@ -44,10 +44,15 @@ export function PaymentReportUploadWizard({ isOpen, onClose }: PaymentReportUplo
     }
   };
 
-  const handleFileUpload = async (uploadedFile: File) => {
-    setFile(uploadedFile);
-    await parseFile(uploadedFile);
-    handleNext();
+  const handleFileUpload = async (uploadedFile: File | null) => {
+    if (uploadedFile) {
+      setFile(uploadedFile);
+      await parseFile(uploadedFile);
+      // Don't auto-advance - user must click Next button
+    } else {
+      // File was removed, clear state
+      setFile(null);
+    }
   };
 
   const handleImport = () => {
@@ -96,7 +101,7 @@ export function PaymentReportUploadWizard({ isOpen, onClose }: PaymentReportUplo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl h-[85vh] flex flex-col">
+      <DialogContent className="max-w-4xl h-[70vh] flex flex-col">
         <DialogHeader className="pb-4 flex-shrink-0">
           <DialogTitle className="text-lg">Upload ERP Payment Report</DialogTitle>
         </DialogHeader>
@@ -106,10 +111,10 @@ export function PaymentReportUploadWizard({ isOpen, onClose }: PaymentReportUplo
               <WizardProgress currentStep={currentStep} />
             </div>
           )}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto py-4">
             {renderStep()}
           </div>
-          <div className="flex-shrink-0 mt-4">
+          <div className="flex-shrink-0 pt-4">
             <WizardNavigation
               currentStep={currentStep}
               onBack={handleBack}

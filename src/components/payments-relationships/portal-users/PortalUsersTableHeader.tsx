@@ -31,12 +31,15 @@ export function PortalUsersTableHeader({
   };
 
   return (
-    <div className="grid grid-cols-[1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-4 bg-[#F6F7F9] border-b">
+    <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-4 bg-[#F6F7F9] border-b">
       <div className="text-sm font-semibold">
         {renderSortButton('portal', 'Portal')}
       </div>
       <div className="text-sm font-semibold">
         {renderSortButton('username', 'Username')}
+      </div>
+      <div className="text-sm font-semibold">
+        {renderSortButton('supplierName', 'Supplier Name')}
       </div>
       <div className="text-sm font-semibold">
         {renderSortButton('status', 'Status')}

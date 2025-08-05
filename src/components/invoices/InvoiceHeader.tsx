@@ -42,16 +42,18 @@ export function InvoiceHeader({
   };
 
   return (
-    <>
+    <div className="w-full max-w-[1350px]">
       <div className="mb-6">
-        <div className="flex justify-between items-start mb-2">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Request-to-Pay</h1>
+        <div className="flex items-start mb-2 gap-8">
+          <div className="flex-1">
+            <h1 className="text-xl font-semibold text-gray-900">Request-to-Pay</h1>
           </div>
-          <Button onClick={onPaymentSync} className="flex items-center gap-2">
-            <Plus className="h-4 w-4" />
-            Payment sync
-          </Button>
+          <div className="flex-shrink-0">
+            <Button onClick={onPaymentSync} className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              Payment sync
+            </Button>
+          </div>
         </div>
         <p className="text-sm text-gray-600 max-w-3xl">
           {getSubtitle(activeTab)}
@@ -68,6 +70,6 @@ export function InvoiceHeader({
         <InvoiceFilters onFilterChange={onFilterChange} />
         <InvoiceActions invoiceCount={invoiceCount} />
       </div>
-    </>
+    </div>
   );
 }

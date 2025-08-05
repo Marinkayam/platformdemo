@@ -1,141 +1,136 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ValidatedPaymentRecord } from '../types';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle, AlertTriangle, XCircle, FileText } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ReviewStepProps {
   validatedData: ValidatedPaymentRecord[];
 }
 
-export function ReviewStep({ validatedData }: ReviewStepProps) {
-  const validRecords = validatedData.filter(record => record._status === 'valid').length;
-  const warningRecords = validatedData.filter(record => record._status === 'warning').length;
-  const errorRecords = validatedData.filter(record => record._status === 'error').length;
+type Filter = 'all' | 'valid' | 'error';
 
-  const getStatusBadge = (status: string) => {
+export function ReviewStep({ validatedData }: ReviewStepProps) {
+  const [filter, setFilter] = useState<Filter>('all');
+
+  const validRecords = validatedData.filter(record => record._status === 'valid').length;
+  const errorRecords = validatedData.filter(record => record._status !== 'valid').length;
+
+  const getStatusIcon = (status: ValidatedPaymentRecord['_status']) => {
     switch (status) {
       case 'valid':
-        return <Badge variant="default" className="bg-success-main text-white">Valid</Badge>;
+        return <CheckCircle className="h-5 w-5 text-green-500" />;
       case 'warning':
-        return <Badge variant="secondary" className="bg-warning-main text-white">Warning</Badge>;
+        return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
       case 'error':
-        return <Badge variant="destructive">Error</Badge>;
-      default:
-        return null;
+        return <XCircle className="h-5 w-5 text-red-500" />;
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'valid':
-        return <CheckCircle className="w-4 h-4 text-success-main" />;
-      case 'warning':
-        return <AlertTriangle className="w-4 h-4 text-warning-main" />;
-      case 'error':
-        return <XCircle className="w-4 h-4 text-red-600" />;
-      default:
-        return null;
-    }
+  const filteredData = validatedData.filter(d => {
+    if (filter === 'all') return true;
+    if (filter === 'valid') return d._status === 'valid';
+    if (filter === 'error') return d._status === 'error' || d._status === 'warning';
+    return true;
+  });
+
+  // Create error preview showing row numbers and X marks for missing/invalid fields
+  const getErrorPreview = (record: ValidatedPaymentRecord) => {
+    if (record._status === 'valid') return null;
+    
+    const fields = ['Invoice Number', 'Receivable', 'Payable', 'Amount', 'Date'];
+    return (
+      <div className="text-xs text-gray-600 mt-1">
+        Row {record._row}: {fields.map((field, idx) => {
+          const hasError = record._errors.some(error => error.toLowerCase().includes(field.toLowerCase()));
+          return hasError ? <span key={idx} className="text-red-500 font-mono mx-1">[X]</span> : 
+                           <span key={idx} className="text-green-500 font-mono mx-1">[✓]</span>;
+        })}
+      </div>
+    );
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="text-center space-y-3">
-        <div className="mx-auto w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center">
-          <FileText className="w-8 h-8 text-blue-600" />
-        </div>
-        <div>
-          <h3 className="text-xl font-semibold text-grey-900">Review Your Data</h3>
-          <p className="text-grey-600">
-            Check the processed records and resolve any issues before importing
-          </p>
-        </div>
-      </div>
+    <TooltipProvider>
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Review Data</h3>
+        <p className="text-sm text-gray-600">Review your data before importing. Rows with errors will be skipped.</p>
 
-      {/* Status Summary */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-success-main/5 border border-success-main/20 rounded-lg p-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <CheckCircle className="w-5 h-5 text-success-main" />
-            <span className="text-lg font-bold text-success-main">{validRecords}</span>
+        {/* Summary counts */}
+        <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-green-500" />
+            <span className="text-sm font-medium">{validRecords} valid rows</span>
           </div>
-          <div className="text-sm text-success-main font-medium">Valid Records</div>
-        </div>
-        <div className="bg-warning-main/5 border border-warning-main/20 rounded-lg p-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <AlertTriangle className="w-5 h-5 text-warning-main" />
-            <span className="text-lg font-bold text-warning-main">{warningRecords}</span>
+          <div className="flex items-center gap-2">
+            <XCircle className="h-5 w-5 text-red-500" />
+            <span className="text-sm font-medium">{errorRecords} errors found</span>
           </div>
-          <div className="text-sm text-warning-main font-medium">Warnings</div>
         </div>
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <XCircle className="w-5 h-5 text-red-600" />
-            <span className="text-lg font-bold text-red-600">{errorRecords}</span>
-          </div>
-          <div className="text-sm text-red-600 font-medium">Errors</div>
-        </div>
-      </div>
 
-      {/* Data Table */}
-      <div className="border border-grey-300 rounded-lg overflow-hidden">
-        <div className="bg-grey-100 px-4 py-3 border-b border-grey-300">
-          <div className="grid grid-cols-6 gap-4 font-semibold text-grey-900 text-sm">
-            <div className="flex items-center gap-2">
-              <span>Row</span>
-            </div>
-            <div>Status</div>
-            <div>Invoice Number</div>
-            <div>Receivable</div>
-            <div>Payable</div>
-            <div>Amount</div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>
+              All ({validatedData.length})
+            </Button>
+            <Button variant={filter === 'valid' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('valid')}>
+              Valid ({validRecords})
+            </Button>
+            <Button variant={filter === 'error' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('error')}>
+              Errors ({errorRecords})
+            </Button>
           </div>
         </div>
-        
-        <div className="max-h-80 overflow-y-auto">
-          <div className="divide-y divide-grey-200">
-            {validatedData.slice(0, 50).map((record, index) => (
-              <div key={index} className="p-4 hover:bg-grey-50">
-                <div className="grid grid-cols-6 gap-4 items-center text-sm">
-                  <div className="text-grey-600">#{record._row}</div>
-                  <div className="flex items-center gap-2">
-                    {getStatusIcon(record._status)}
-                    {getStatusBadge(record._status)}
-                  </div>
-                  <div className="font-medium text-grey-900">{record.invoiceNumber || 'N/A'}</div>
-                  <div className="text-grey-700">{record.receivable || 'N/A'}</div>
-                  <div className="text-grey-700">{record.payable || 'N/A'}</div>
-                  <div className="font-medium text-grey-900">{record.totalAmount || 'N/A'}</div>
-                </div>
-                {(record._errors.length > 0 || record._warnings.length > 0) && (
-                  <div className="mt-3 space-y-1">
-                    {record._errors.map((error, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-red-600">
-                        <XCircle className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                        <span>{error}</span>
-                      </div>
-                    ))}
-                    {record._warnings.map((warning, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-orange-600">
-                        <AlertTriangle className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                        <span>{warning}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+
+        <div className="border rounded-lg overflow-hidden max-h-[400px] overflow-y-auto">
+          <Table>
+            <TableHeader className="bg-gray-50 sticky top-0">
+              <TableRow>
+                <TableHead>#</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Invoice Number</TableHead>
+                <TableHead>Amount</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredData.map(record => (
+                <TableRow key={record._row}>
+                  <TableCell className="text-gray-500">{record._row}</TableCell>
+                  <TableCell>
+                    <Tooltip>
+                      <TooltipTrigger>{getStatusIcon(record._status)}</TooltipTrigger>
+                      <TooltipContent>
+                        {record._status === 'valid' && '✅ All good! Ready to import.'}
+                        {record._status === 'warning' && (
+                          <div className="p-1">
+                            <p className="font-medium text-yellow-600">Warnings (row will be imported):</p>
+                            <ul className="list-disc list-inside text-sm">
+                              {record._warnings.map((w, i) => <li key={i}>{w}</li>)}
+                            </ul>
+                          </div>
+                        )}
+                        {record._status === 'error' && (
+                          <div className="p-1">
+                            <p className="font-medium text-red-600">Errors (row will be skipped):</p>
+                            <ul className="list-disc list-inside text-sm">
+                              {record._errors.map((e, i) => <li key={i}>{e}</li>)}
+                            </ul>
+                          </div>
+                        )}
+                      </TooltipContent>
+                    </Tooltip>
+                    {getErrorPreview(record)}
+                  </TableCell>
+                  <TableCell>{record.invoiceNumber || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
+                  <TableCell>{record.totalAmount || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
-        
-        {validatedData.length > 50 && (
-          <div className="bg-grey-50 px-4 py-3 border-t border-grey-300 text-center text-sm text-grey-600">
-            Showing first 50 of {validatedData.length} records
-          </div>
-        )}
       </div>
-    </div>
+    </TooltipProvider>
   );
 }

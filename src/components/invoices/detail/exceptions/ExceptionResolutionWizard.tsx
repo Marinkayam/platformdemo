@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AlertTriangle, Upload, ChevronDown, ChevronUp, WandSparkles, X, File, TriangleAlert } from 'lucide-react';
+import { AlertTriangle, Upload, ChevronDown, ChevronUp, WandSparkles, X, File, TriangleAlert, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ExceptionBanner } from '@/components/ui/exception-banner';
 
@@ -289,11 +289,19 @@ const ExceptionResolutionWizard = ({
       {/* Boxed Wrapper to match Portal Records and other tabs */}
       <div className="bg-white border border-gray-200 rounded-xl p-6">
         {/* Header Section */}
-        <div className="flex items-center gap-2 mb-6">
-          <h2 className="text-lg font-medium">Resolve Exception</h2>
-          <span className="text-xs px-2 py-1 bg-purple-100 text-purple-600 rounded-full font-medium ml-2">
-            PO
-          </span>
+        <div className="space-y-3 mb-6">
+          <div className="flex items-center gap-2">
+            <h2 className="text-lg font-medium">Resolve Exception</h2>
+            <span className="text-xs px-2 py-1 bg-purple-100 text-purple-600 rounded-full font-medium ml-2">
+              PO
+            </span>
+          </div>
+          <div className="flex items-start gap-2">
+            <Sparkles className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+            <p style={{ color: '#38415F' }} className="text-sm">
+              Monto continuously monitors portal data. If conditions change, exceptions may be resolved automatically — no action needed on your end.
+            </p>
+          </div>
         </div>
 
         <div className="space-y-4">

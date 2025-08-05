@@ -11,43 +11,21 @@ interface WizardProgressProps {
 
 export function WizardProgress({ currentStep }: WizardProgressProps) {
   const currentStepIndex = WIZARD_STEPS.findIndex(s => s.id === currentStep);
-  const progress = ((currentStepIndex + 1) / WIZARD_STEPS.length) * 100;
+  const progress = currentStep === 'connecting' ? 100 : ((currentStepIndex + 1) / WIZARD_STEPS.length) * 100;
+
+  if (currentStep === 'connecting') {
+    return null;
+  }
 
   return (
     <div className="space-y-4">
-      <Progress value={progress} className="h-1" />
-      <div className="flex justify-between">
-        {WIZARD_STEPS.map((step, index) => {
-          const isCompleted = index < currentStepIndex;
-          const isCurrent = index === currentStepIndex;
-          
-          return (
-            <div key={step.id} className="flex flex-col items-center space-y-1">
-              <div
-                className={`flex items-center justify-center w-6 h-6 rounded-full border-2 transition-colors ${
-                  isCompleted
-                    ? 'bg-primary border-primary text-white'
-                    : isCurrent
-                    ? 'border-primary bg-primary/10 text-primary'
-                    : 'border-grey-300 bg-white text-grey-400'
-                }`}
-              >
-                {isCompleted ? (
-                  <CheckCircle className="w-3 h-3" />
-                ) : (
-                  <span className="text-xs font-medium">{index + 1}</span>
-                )}
-              </div>
-              <span
-                className={`text-xs font-medium ${
-                  isCurrent ? 'text-primary' : isCompleted ? 'text-grey-700' : 'text-grey-400'
-                }`}
-              >
-                {step.name}
-              </span>
-            </div>
-          );
-        })}
+      <Progress value={progress} className="h-2" />
+      <div className="flex justify-between text-sm font-normal text-gray-600">
+        {WIZARD_STEPS.map((step, index) => (
+          <span key={step.id} className={currentStepIndex >= index ? 'text-primary' : ''}>
+            {step.name}
+          </span>
+        ))}
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { useFileAttachments } from "@/hooks/useFileAttachments";
 import { toast } from "@/hooks/use-toast";
+import { Sparkles } from "lucide-react";
 
 interface DataExtractionResolverProps {
   exceptions: Exception[];
@@ -110,11 +111,19 @@ export function DataExtractionResolver({ exceptions, invoice, onResolveException
     <div className="space-y-6">
       <Card className="border border-red-200 shadow-sm">
         <CardContent className="pt-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Resolve Exceptions</h2>
-            <Badge variant="outline" className="bg-primary/10 text-primary px-3 py-1 text-sm font-medium rounded-md">
-              Invoice Data
-            </Badge>
+          <div className="space-y-3 mb-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Resolve Exceptions</h2>
+              <Badge variant="outline" className="bg-primary/10 text-primary px-3 py-1 text-sm font-medium rounded-md">
+                Invoice Data
+              </Badge>
+            </div>
+            <div className="flex items-start gap-2">
+              <Sparkles className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+              <p style={{ color: '#38415F' }} className="text-sm">
+                Monto continuously monitors portal data. If conditions change, exceptions may be resolved automatically — no action needed on your end.
+              </p>
+            </div>
           </div>
           
           <Separator className="my-4" />

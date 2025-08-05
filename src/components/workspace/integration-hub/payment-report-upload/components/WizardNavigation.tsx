@@ -36,7 +36,7 @@ export function WizardNavigation({
   }
 
   return (
-    <div className="flex justify-between items-center pt-4 border-t">
+    <div className="flex justify-between items-center">
       <div>
         {currentStep !== 'upload' && (
           <Button variant="outline" onClick={onBack}>
@@ -45,7 +45,6 @@ export function WizardNavigation({
         )}
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" onClick={onComplete}>Cancel</Button>
         {currentStep === 'summary' ? (
           <Button onClick={onImport}>Import Payment Report</Button>
         ) : currentStep === 'mapping' ? (

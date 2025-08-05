@@ -75,11 +75,19 @@ export function DuplicationException({
   return (
     <div className="space-y-6">
       {/* Header with Resolve Exception title and Duplication chip */}
-      <div className="flex items-center gap-3">
-        <h2 className="text-lg font-medium text-gray-900">Resolve Exception</h2>
-        <Badge className="bg-purple-100 text-purple-700 border-purple-200">
-          Duplication
-        </Badge>
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <h2 className="text-lg font-medium text-gray-900">Resolve Exception</h2>
+          <Badge className="bg-purple-100 text-purple-700 border-purple-200">
+            Duplication
+          </Badge>
+        </div>
+        <div className="flex items-start gap-2">
+          <Sparkles className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+          <p style={{ color: '#38415F' }} className="text-sm">
+            Monto continuously monitors portal data. If conditions change, exceptions may be resolved automatically — no action needed on your end.
+          </p>
+        </div>
       </div>
 
       <ExceptionBanner 

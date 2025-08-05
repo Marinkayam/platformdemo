@@ -40,7 +40,7 @@ export function InvoiceTableRow({
       className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white ${isPendingAction ? 'pending-action-row' : ''}`}
       onClick={handleClick}
     >
-      <TableCell className="sticky left-0 z-20 bg-white hover:bg-gray-50 border-r border-gray-200 font-semibold px-4 py-4 w-[200px] min-w-[200px] flex-shrink-0 relative transition-colors">
+      <TableCell className="sticky left-0 z-30 bg-white hover:bg-gray-50 border-r border-gray-200 font-semibold px-4 py-3 w-[250px] min-w-[250px] flex-shrink-0 relative transition-colors">
         {isPendingAction && (
           <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500 z-30" />
         )}
@@ -55,7 +55,7 @@ export function InvoiceTableRow({
         </div>
       </TableCell>
       
-      <TableCell className="px-4 py-4 w-[200px] min-w-[200px] truncate">
+      <TableCell className="px-4 py-3 w-[250px] min-w-[250px] truncate">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -68,15 +68,15 @@ export function InvoiceTableRow({
         </TooltipProvider>
       </TableCell>
       
-      <TableCell className="px-4 py-4 w-[200px] min-w-[200px] text-sm">
+      <TableCell className="px-4 py-3 w-[200px] min-w-[200px] text-sm">
         {invoice.dueDate}
       </TableCell>
       
-      <TableCell className="px-4 py-4 w-[200px] min-w-[200px]">
+      <TableCell className="px-4 py-3 w-[200px] min-w-[200px]">
         <StatusBadge status={invoice.status} showTooltip={true} />
       </TableCell>
       
-      <TableCell className="px-4 py-4 w-[200px] min-w-[200px] truncate">
+      <TableCell className="px-4 py-3 w-[250px] min-w-[250px] truncate">
         <div className="flex items-center gap-2">
           {(() => {
             const resolvedPortalName = invoice.portal;
@@ -87,9 +87,9 @@ export function InvoiceTableRow({
                 <img 
                   src={portalLogoUrl} 
                   alt={`${resolvedPortalName} logo`}
-                  className="w-5 h-5 object-contain rounded-full flex-shrink-0"
-                  width={20}
-                  height={20}
+                  className="w-4 h-4 object-contain rounded-full flex-shrink-0"
+                  width={16}
+                  height={16}
                   onError={(e) => {
                     e.currentTarget.onerror = null; 
                     e.currentTarget.src = '/portal-logos/placeholder.svg';
@@ -113,11 +113,11 @@ export function InvoiceTableRow({
         </div>
       </TableCell>
       
-      <TableCell className="px-4 py-4 font-medium w-[200px] min-w-[200px] text-left text-sm">
+      <TableCell className="px-4 py-3 font-medium w-[200px] min-w-[200px] text-left text-sm">
         {formatCurrency(invoice.total, invoice.currency)}
       </TableCell>
 
-      <TableCell className="px-4 py-4 w-[200px] min-w-[200px] text-sm">
+      <TableCell className="px-4 py-3 w-[250px] min-w-[250px] text-sm">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -130,26 +130,26 @@ export function InvoiceTableRow({
         </TooltipProvider>
       </TableCell>
 
-      <TableCell className="px-4 py-4 w-[200px] min-w-[200px] text-sm">
+      <TableCell className="px-4 py-3 w-[200px] min-w-[200px] text-sm">
         {invoice.invoiceDate}
       </TableCell>
 
-      <TableCell className="px-4 py-4 w-[200px] min-w-[200px] text-sm">
+      <TableCell className="px-4 py-3 w-[200px] min-w-[200px] text-sm">
         {invoice.netTerms}
       </TableCell>
 
       {/* Notes */}
-      <TableCell className="text-left px-4 py-4 w-24">
+      <TableCell className="text-left px-4 py-3 w-[200px] min-w-[200px]">
         <NotesIndicator notes={invoice.notes} invoiceId={invoice.id} />
       </TableCell>
 
       {/* Source */}
-      <TableCell className="px-4 py-4 w-[120px] min-w-[120px] text-sm">
+      <TableCell className="px-4 py-3 w-[200px] min-w-[200px] text-sm">
         <SourceBadge submitMethod={invoice.submitMethod} />
       </TableCell>
       
       {isPendingTab ? (
-        <TableCell className="px-4 py-4 w-[200px] min-w-[200px]">
+        <TableCell className="px-4 py-3 w-[250px] min-w-[250px]">
           <div onClick={(e) => e.stopPropagation()}>
             <AssigneeComponent 
               assignee={invoice.assignee}
@@ -159,7 +159,7 @@ export function InvoiceTableRow({
           </div>
         </TableCell>
       ) : (
-        <TableCell className="px-4 py-4 w-[200px] min-w-[200px] truncate">
+        <TableCell className="px-4 py-3 w-[250px] min-w-[250px] truncate">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -173,7 +173,7 @@ export function InvoiceTableRow({
         </TableCell>
       )}
       
-      <TableCell className="text-center px-4 py-4 w-[80px] flex-shrink-0">
+      <TableCell className="text-center px-4 py-3 w-[150px] min-w-[150px] flex-shrink-0">
         <div onClick={(e) => e.stopPropagation()}>
           <InvoiceActionsMenu 
             invoiceId={invoice.id} 

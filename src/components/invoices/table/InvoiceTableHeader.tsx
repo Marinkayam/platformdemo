@@ -35,11 +35,11 @@ export function InvoiceTableHeader({
   return (
     <TableHeader>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableHead className="sticky left-0 z-30 bg-[#F6F7F9] border-r border-gray-200 w-[200px] min-w-[200px] text-left text-sm font-semibold">
+        <TableHead className="sticky left-0 z-30 bg-[#F6F7F9] border-r border-gray-200 w-[250px] min-w-[250px] text-left text-sm font-semibold">
           {renderSortButton('number', 'Invoice Number')}
         </TableHead>
         
-        <TableHead className="w-[200px] min-w-[200px] text-sm font-semibold">
+        <TableHead className="w-[250px] min-w-[250px] text-sm font-semibold">
           {renderSortButton('buyer', 'Buyer')}
         </TableHead>
 
@@ -51,7 +51,7 @@ export function InvoiceTableHeader({
           Status
         </TableHead>
         
-        <TableHead className="w-[200px] min-w-[200px] text-sm font-semibold">
+        <TableHead className="w-[250px] min-w-[250px] text-sm font-semibold">
           Portal
         </TableHead>
         
@@ -59,7 +59,7 @@ export function InvoiceTableHeader({
           {renderSortButton('total', 'Total')}
         </TableHead>
 
-        <TableHead className="w-[200px] min-w-[200px] text-sm font-semibold">
+        <TableHead className="w-[250px] min-w-[250px] text-sm font-semibold">
           {renderSortButton('poNumber', 'PO Number')}
         </TableHead>
 
@@ -71,25 +71,25 @@ export function InvoiceTableHeader({
           {renderSortButton('netTerms', 'Net Terms')}
         </TableHead>
 
-        <TableHead className="w-24 text-left text-sm font-semibold">
+        <TableHead className="w-[200px] min-w-[200px] text-left text-sm font-semibold">
           Notes
         </TableHead>
 
-        <TableHead className="w-[120px] min-w-[120px] text-sm font-semibold">
+        <TableHead className="w-[200px] min-w-[200px] text-sm font-semibold">
           Source
         </TableHead>
 
         {isPendingTab ? (
-          <TableHead className="w-[200px] min-w-[200px] text-sm font-semibold">
+          <TableHead className="w-[250px] min-w-[250px] text-sm font-semibold">
             Assignee
           </TableHead>
         ) : (
-          <TableHead className="w-[200px] min-w-[200px] text-sm font-semibold">
+          <TableHead className="w-[250px] min-w-[250px] text-sm font-semibold">
             {renderSortButton('owner', 'Owner')}
           </TableHead>
         )}
 
-        <TableHead className="w-[80px] text-center text-sm font-semibold">
+        <TableHead className="w-[150px] min-w-[150px] text-center text-sm font-semibold">
         </TableHead>
       </TableRow>
     </TableHeader>

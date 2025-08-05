@@ -66,9 +66,9 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
   const columnsCount = isPendingTab ? 10 : 11; // Updated for new columns: Invoice Number, Buyer, Due Date, Status, Portal, Total, PO Number, Invoice Date, Net Terms, Owner/Assignee, Actions
 
   return (
-    <div className="rounded-xl border border-gray-200 overflow-hidden bg-white">
-      <div className="overflow-x-auto">
-        <Table>
+    <div className="rounded-xl border border-gray-200 overflow-hidden bg-white max-w-full">
+      <div className="overflow-x-auto max-w-full">
+        <Table className="min-w-[2800px]">
           <InvoiceTableHeader 
             sortField={sortField}
             sortDirection={sortDirection}

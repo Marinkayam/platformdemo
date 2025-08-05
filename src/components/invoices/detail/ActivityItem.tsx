@@ -58,9 +58,9 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
       {/* Content - Added more margin-left for better spacing */}
       <div className="ml-4">
         <div className="flex flex-col">
-          <h3 className="font-medium">{activity.title}</h3>
-          <div className="text-sm text-muted-foreground">
-            By {activity.user} • {formatTimestamp(activity.timestamp)}
+          <h3 className="text-sm">{activity.title}</h3>
+          <div className="text-xs text-muted-foreground">
+            By <span className="font-medium">{activity.user}</span> • {formatTimestamp(activity.timestamp)}
           </div>
         </div>
         {activity.description && (

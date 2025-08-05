@@ -3,6 +3,7 @@ export interface PortalUser {
   id: string;
   portal: string;
   username: string;
+  supplierName?: string;
   status: "Connected" | "Validating" | "Disconnected";
   userType: "Monto" | "External";
   linkedSmartConnections: number;

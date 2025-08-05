@@ -47,7 +47,7 @@ export function MainLayout() {
           <div className="flex items-center gap-3 ml-auto pr-4">
             {/* Hidden notifications for demo */}
             <div className="relative hidden">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#E6E7EB' }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300" style={{ backgroundColor: '#E6E7EB' }}>
                 <NotificationsPopover />
               </div>
               <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500 border-2 border-[#FAFAFA]" />
@@ -55,7 +55,7 @@ export function MainLayout() {
             {/* Hidden user settings for demo */}
             <DropdownMenu>
                <DropdownMenuTrigger asChild>
-                 <button className="w-8 h-8 rounded-full flex items-center justify-center font-medium cursor-pointer hover:opacity-80 transition-opacity" style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}>
+                 <button className="w-8 h-8 rounded-full flex items-center justify-center font-medium cursor-pointer hover:opacity-80 transition-opacity border border-gray-300" style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}>
                    L
                  </button>
                </DropdownMenuTrigger>
@@ -106,8 +106,8 @@ export function MainLayout() {
             </DropdownMenu>
           </div>
         </header>
-        <main className="flex-1 bg-white min-h-0 p-6">
-          <div className="max-w-[1440px] mx-auto w-full">
+        <main className="flex-1 bg-white min-h-0 py-4 overflow-x-hidden">
+          <div className="w-full px-[2%]">
             <Outlet />
           </div>
         </main>

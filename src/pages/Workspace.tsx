@@ -24,6 +24,11 @@ const headerTabs = [
     label: "License",
     icon: <HeartHandshake size={16} strokeWidth={1} />,
   },
+  {
+    id: "integration",
+    label: "Integration Hub",
+    icon: <Unplug size={16} strokeWidth={1} />,
+  },
 ];
 
 // Placeholder component for company entities tab
@@ -54,6 +59,8 @@ export default function Workspace() {
         return <TeamTab />;
       case "license":
         return <LicenseTab />;
+      case "integration":
+        return <IntegrationHub />;
       default:
         return null;
     }

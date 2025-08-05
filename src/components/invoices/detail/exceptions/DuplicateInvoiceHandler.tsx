@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExceptionBanner } from "@/components/ui/exception-banner";
-import { WandSparkles } from "lucide-react";
+import { WandSparkles, Sparkles } from "lucide-react";
 import { Invoice } from "@/types/invoice";
 import { Exception } from "@/types/exception";
 import { toast } from "@/hooks/use-toast";
@@ -97,13 +97,21 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
       <CardContent className="pt-6">
         <div className="space-y-6">
           {/* Header with title and chip */}
-          <div className="flex items-center gap-3">
-            <h2 className="text-lg font-medium text-black">
-              Resolve Exception
-            </h2>
-            <Badge variant="destructive" className="bg-red-100 text-red-800 border-red-200">
-              Duplication
-            </Badge>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <h2 className="text-lg font-medium text-black">
+                Resolve Exception
+              </h2>
+              <Badge variant="destructive" className="bg-red-100 text-red-800 border-red-200">
+                Duplication
+              </Badge>
+            </div>
+            <div className="flex items-start gap-2">
+              <Sparkles className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+              <p style={{ color: '#38415F' }} className="text-sm">
+                Monto continuously monitors portal data. If conditions change, exceptions may be resolved automatically — no action needed on your end.
+              </p>
+            </div>
           </div>
 
           <ExceptionBanner 

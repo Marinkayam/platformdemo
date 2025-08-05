@@ -32,22 +32,24 @@ export function InvoiceTableFooter({ invoices, columnsCount }: InvoiceTableFoote
   return (
     <TableFooter>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] sticky left-0 z-20 border-r border-gray-200"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="font-semibold text-gray-700 bg-[#F6F7F9] w-[200px] min-w-[200px]">
+        <TableCell className="bg-[#F6F7F9] w-[250px] min-w-[250px] sticky left-0 z-30 border-r border-gray-200 px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[250px] min-w-[250px] px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[250px] min-w-[250px] px-4 py-3"></TableCell>
+        <TableCell className="font-semibold text-gray-700 bg-[#F6F7F9] w-[200px] min-w-[200px] px-4 py-3">
           <div className="flex items-center gap-2 whitespace-nowrap">
-            <span>Total:</span>
-            <span className="font-bold text-gray-900 whitespace-nowrap">{formatTotalAmounts()}</span>
+            <span className="text-sm">Total:</span>
+            <span className="font-bold text-gray-900 whitespace-nowrap text-sm">{formatTotalAmounts()}</span>
           </div>
         </TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px]"></TableCell>
-        <TableCell className="bg-[#F6F7F9] w-[80px]"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[250px] min-w-[250px] px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[250px] min-w-[250px] px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[150px] min-w-[150px] px-4 py-3"></TableCell>
       </TableRow>
     </TableFooter>
   );

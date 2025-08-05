@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ExceptionBanner } from "@/components/ui/exception-banner";
-import { WandSparkles } from "lucide-react";
+import { WandSparkles, Sparkles } from "lucide-react";
 import { Exception } from "@/types/exception";
 import { Invoice } from "@/types/invoice";
 import { ResolutionOptions } from "./extra-data/ResolutionOptions";
@@ -56,11 +56,19 @@ export function POLineItemsExceptionHandler({
   return (
     <div className="space-y-6">
       {/* Exception Header */}
-      <div className="flex items-center gap-3">
-        <h2 className="text-lg font-medium text-gray-900">Resolve Exception</h2>
-        <Badge className="bg-purple-100 text-purple-700 border-purple-200">
-          PO
-        </Badge>
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <h2 className="text-lg font-medium text-gray-900">Resolve Exception</h2>
+          <Badge className="bg-purple-100 text-purple-700 border-purple-200">
+            PO
+          </Badge>
+        </div>
+        <div className="flex items-start gap-2">
+          <Sparkles className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+          <p style={{ color: '#38415F' }} className="text-sm">
+            Monto continuously monitors portal data. If conditions change, exceptions may be resolved automatically — no action needed on your end.
+          </p>
+        </div>
       </div>
 
       <ExceptionBanner 
