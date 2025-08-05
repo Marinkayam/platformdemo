@@ -19,21 +19,35 @@ interface GetRowActionsParams {
 export const getRowActions = (
   portalUser: PortalUser, 
   { onEdit, onRemove, onView2FA }: GetRowActionsParams
-): RowAction[] => [
-  {
-    label: "Edit",
-    icon: Edit,
-    onClick: (e: React.MouseEvent) => { e.stopPropagation(); onEdit(portalUser); }
-  },
-  {
-    label: "Remove",
-    icon: Trash2,
-    onClick: (e: React.MouseEvent) => { e.stopPropagation(); onRemove(portalUser.id); },
-    variant: "destructive" as const
-  },
-  {
-    label: "View 2FA",
-    icon: Eye,
-    onClick: (e: React.MouseEvent) => { e.stopPropagation(); onView2FA(portalUser.id); },
+): RowAction[] => {
+  // For Monto users, only show View 2FA
+  if (portalUser.userType === "Monto") {
+    return [
+      {
+        label: "View 2FA",
+        icon: Eye,
+        onClick: (e: React.MouseEvent) => { e.stopPropagation(); onView2FA(portalUser.id); },
+      }
+    ];
   }
-];
+
+  // For External users, show all actions
+  return [
+    {
+      label: "Edit",
+      icon: Edit,
+      onClick: (e: React.MouseEvent) => { e.stopPropagation(); onEdit(portalUser); }
+    },
+    {
+      label: "Delete Scan Agent",
+      icon: Trash2,
+      onClick: (e: React.MouseEvent) => { e.stopPropagation(); onRemove(portalUser.id); },
+      variant: "destructive" as const
+    },
+    {
+      label: "View 2FA",
+      icon: Eye,
+      onClick: (e: React.MouseEvent) => { e.stopPropagation(); onView2FA(portalUser.id); },
+    }
+  ];
+};

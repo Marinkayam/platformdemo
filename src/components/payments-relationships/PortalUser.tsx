@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangle } from "lucide-react";
@@ -18,15 +18,23 @@ interface PortalUserProps {
   onClose: () => void;
   portalUser: PortalUserType;
   onEditPortalUser: (user: PortalUserType) => void;
+  onDeletePortalUser?: (userId: string) => void;
 }
 
-export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: PortalUserProps) {
+export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDeletePortalUser }: PortalUserProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [errors, setErrors] = useState<{
+    password?: string;
+    confirmPassword?: string;
+    portalUrl?: string;
+  }>({});
   const [editFormData, setEditFormData] = useState({
     portal: portalUser.portal,
     username: portalUser.username,
     password: "SecurePassword123!",
+    confirmPassword: "SecurePassword123!",
     portalUrl: `https://${portalUser.portal.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: portalUser.status !== "Disconnected",
     twoFAMethod: portalUser.twoFAMethod || "authenticator",
@@ -36,7 +44,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
   
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast({ title: "Copied to clipboard", description: `${text} copied!` });
+    toast({ title: "Copied to clipboard", description: `${text} copied!`, duration: 3000 });
   };
 
   // Mock credentials data
@@ -71,6 +79,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
       portal: portalUser.portal,
       username: portalUser.username,
       password: "SecurePassword123!",
+      confirmPassword: "SecurePassword123!",
       portalUrl: `https://${portalUser.portal.toLowerCase().replace(/\s+/g, '')}.com`,
       twoFAEnabled: portalUser.status !== "Disconnected",
       twoFAMethod: portalUser.twoFAMethod || "authenticator",
@@ -79,7 +88,41 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
     });
   };
 
+  const validateForm = () => {
+    const newErrors: typeof errors = {};
+
+    // Validate Portal URL
+    if (!editFormData.portalUrl || !editFormData.portalUrl.startsWith('http')) {
+      newErrors.portalUrl = 'Portal URL must be a valid URL starting with http:// or https://';
+    }
+
+    // Validate Password (only if not hidden)
+    if (portalUser.userType !== "Monto") {
+      if (!editFormData.password || editFormData.password.length < 8) {
+        newErrors.password = 'Password must be at least 8 characters long';
+      }
+
+      // Validate password confirmation
+      if (editFormData.password !== editFormData.confirmPassword) {
+        newErrors.confirmPassword = 'Password and confirm password do not match';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSave = () => {
+    if (!validateForm()) {
+      toast({ 
+        title: "Validation Error", 
+        description: "Please fix the errors in the form.",
+        variant: "destructive",
+        duration: 5000
+      });
+      return;
+    }
+
     // Update the portal user with new data and set to validating
     const updatedUser: PortalUserType = {
       ...portalUser,
@@ -95,10 +138,12 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
     
     onEditPortalUser(updatedUser);
     setIsEditMode(false);
+    setErrors({});
     onClose(); // Close modal and return to table
     toast({ 
       title: "Portal User Updated", 
-      description: "Changes have been saved and validation has started." 
+      description: "Changes have been saved and validation has started.",
+      duration: 5000
     });
   };
 
@@ -107,6 +152,35 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
       ...prev,
       [field]: value
     }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[field as keyof typeof errors]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: undefined
+      }));
+    }
+  };
+
+  const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (onDeletePortalUser) {
+      onDeletePortalUser(portalUser.id);
+      setShowDeleteConfirm(false);
+      onClose();
+      toast({ 
+        title: "Portal User Deleted", 
+        description: "The portal user has been removed from your system.",
+        duration: 5000
+      });
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirm(false);
   };
 
   // Get disconnection reason from the portalUser.issue field
@@ -119,15 +193,16 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-3">
-            <span>Portal Agent Details</span>
-            <StatusBadge status={portalUser.status} />
-            <AgentUserTypeBadge type={portalUser.userType} />
-          </DialogTitle>
-        </DialogHeader>
+    <>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              <span>Portal Agent Details</span>
+              <StatusBadge status={portalUser.status} />
+              <AgentUserTypeBadge type={portalUser.userType} />
+            </DialogTitle>
+          </DialogHeader>
 
         {/* Disconnection Alert Banner */}
         {portalUser.status === "Disconnected" && (
@@ -156,6 +231,8 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
             isEditMode={isEditMode}
             editFormData={editFormData}
             onFormChange={handleFormChange}
+            hidePassword={portalUser.userType === "Monto"}
+            errors={errors}
           />
 
           <TwoFactorSection
@@ -168,28 +245,68 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser }: Po
 
         </div>
 
-        <div className="flex justify-end gap-2 pt-4 border-t">
-          {isEditMode ? (
-            <>
-              <Button variant="ghost" onClick={handleCancel}>
-                Cancel
+        <div className="flex justify-between pt-4 border-t">
+          <div>
+            {isEditMode && onDeletePortalUser && (
+              <Button variant="destructive" onClick={handleDelete}>
+                Delete User
               </Button>
-              <Button onClick={handleSave}>
-                Save Changes
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="ghost" onClick={onClose}>
-                Close
-              </Button>
-              <Button onClick={handleEdit}>
-                Edit Portal Agent
-              </Button>
-            </>
-          )}
+            )}
+          </div>
+          <div className="flex gap-2">
+            {isEditMode ? (
+              <>
+                <Button variant="ghost" onClick={handleCancel}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSave}>
+                  Save Changes
+                </Button>
+              </>
+            ) : (
+              <>
+                {portalUser.userType !== "Monto" && (
+                  <Button onClick={handleEdit}>
+                    Edit Portal Agent
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
+
+    {/* Delete Confirmation Modal */}
+    <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+      <DialogContent className="sm:max-w-[400px]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-red-500" />
+            Delete Portal User
+          </DialogTitle>
+        </DialogHeader>
+        <div className="py-4">
+          <p className="text-sm text-gray-600 mb-4">
+            Are you sure you want to delete this user?
+          </p>
+          <Alert variant="destructive" className="mb-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              If you decide to delete this user, this may affect all the portal users connected to Smart Connections and this action is unrevertable.
+            </AlertDescription>
+          </Alert>
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={handleCancelDelete}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={handleConfirmDelete}>
+            Delete User
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }

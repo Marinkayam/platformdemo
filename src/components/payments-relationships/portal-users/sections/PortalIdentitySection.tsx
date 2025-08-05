@@ -57,7 +57,8 @@ export function PortalIdentitySection({
               }} 
             />
           </div>
-          {isEditMode ? (
+          {/* Portal name is always disabled in edit mode */}
+          {false ? (
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <Button

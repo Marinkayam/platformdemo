@@ -18,10 +18,17 @@ interface CredentialsSectionProps {
     portal: string;
     username: string;
     password: string;
+    confirmPassword?: string;
     portalUrl: string;
     twoFAEnabled: boolean;
   };
   onFormChange?: (field: string, value: string | boolean) => void;
+  hidePassword?: boolean;
+  errors?: {
+    password?: string;
+    confirmPassword?: string;
+    portalUrl?: string;
+  };
 }
 
 export function CredentialsSection({ 
@@ -31,7 +38,9 @@ export function CredentialsSection({
   copyToClipboard,
   isEditMode = false,
   editFormData,
-  onFormChange
+  onFormChange,
+  hidePassword = false,
+  errors = {}
 }: CredentialsSectionProps) {
   const currentPortalUrl = isEditMode ? editFormData?.portalUrl || mockCredentials.portalUrl : mockCredentials.portalUrl;
   const currentPassword = isEditMode ? editFormData?.password || mockCredentials.password : mockCredentials.password;
@@ -42,11 +51,16 @@ export function CredentialsSection({
         <Label htmlFor="portal-url" className="text-sm">Portal URL</Label>
         <div className="flex gap-2">
           {isEditMode ? (
-            <Input
-              value={currentPortalUrl}
-              onChange={(e) => onFormChange?.('portalUrl', e.target.value)}
-              className="flex-1 h-10 font-mono text-sm"
-            />
+            <div className="flex-1">
+              <Input
+                value={currentPortalUrl}
+                onChange={(e) => onFormChange?.('portalUrl', e.target.value)}
+                className={`h-10 font-mono text-sm ${errors.portalUrl ? 'border-red-500' : ''}`}
+              />
+              {errors.portalUrl && (
+                <p className="text-xs text-red-500 mt-1">{errors.portalUrl}</p>
+              )}
+            </div>
           ) : (
             <button
               onClick={() => window.open(currentPortalUrl, '_blank')}
@@ -55,54 +69,74 @@ export function CredentialsSection({
               {currentPortalUrl}
             </button>
           )}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => window.open(currentPortalUrl, '_blank')}
-            className="h-10"
-          >
-            <ExternalLink className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => copyToClipboard(currentPortalUrl)}
-            className="h-10"
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
         </div>
       </div>
       
-      <div className="space-y-2">
-        <Label htmlFor="password" className="text-sm">Password</Label>
-        <div className="flex gap-2">
-          <Input 
-            id="password" 
-            type={showPassword ? "text" : "password"}
-            value={showPassword ? currentPassword : "••••••••••••"} 
-            readOnly={!isEditMode}
-            onChange={(e) => isEditMode && showPassword && onFormChange?.('password', e.target.value)}
-            className={`${isEditMode ? 'bg-white' : 'bg-gray-50'} font-mono h-10 text-sm`} 
-          />
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowPassword(!showPassword)}
-            className="h-10"
-          >
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => copyToClipboard(currentPassword)}
-            className="h-10"
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
+      {!hidePassword && (
+        <div className="space-y-2">
+          <Label htmlFor="password" className="text-sm">Password</Label>
+          <div className="space-y-1">
+            <div className="flex gap-2">
+              <Input 
+                id="password" 
+                type={showPassword ? "text" : "password"}
+                value={showPassword ? currentPassword : "••••••••••••"} 
+                readOnly={!isEditMode}
+                onChange={(e) => isEditMode && showPassword && onFormChange?.('password', e.target.value)}
+                className={`${isEditMode ? 'bg-white' : 'bg-gray-50'} font-mono h-10 text-sm ${errors.password ? 'border-red-500' : ''}`} 
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPassword(!showPassword)}
+                className="h-10"
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => copyToClipboard(currentPassword)}
+                className="h-10"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
+            {errors.password && (
+              <p className="text-xs text-red-500">{errors.password}</p>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+      
+      {isEditMode && !hidePassword && (
+        <div className="space-y-2">
+          <Label htmlFor="confirm-password" className="text-sm">Confirm Password</Label>
+          <div className="space-y-1">
+            <div className="flex gap-2">
+              <Input 
+                id="confirm-password" 
+                type={showPassword ? "text" : "password"}
+                value={editFormData?.confirmPassword || ""}
+                onChange={(e) => onFormChange?.('confirmPassword', e.target.value)}
+                placeholder="Confirm your password"
+                className={`bg-white font-mono h-10 text-sm ${errors.confirmPassword ? 'border-red-500' : ''}`} 
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPassword(!showPassword)}
+                className="h-10"
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="text-xs text-red-500">{errors.confirmPassword}</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

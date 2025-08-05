@@ -56,6 +56,10 @@ export function PortalUsersTable({
   };
 
   const handleRowClick = (portalUser: PortalUser) => {
+    // Don't open modal for Monto users
+    if (portalUser.userType === "Monto") {
+      return;
+    }
     setSelectedPortalUser(portalUser);
     setIsDetailModalOpen(true);
   };
@@ -166,8 +170,13 @@ export function PortalUsersTable({
           onClose={closeDetailModal}
           portalUser={selectedPortalUser}
           onEditPortalUser={(user) => {
+            // Just update the user data, don't open edit modal
+            console.log('Updated user:', user);
+            // In a real app, this would update the user in the list/state
+          }}
+          onDeletePortalUser={(userId) => {
             closeDetailModal();
-            handleEdit(user);
+            handleRemove(userId);
           }}
         />
       )}

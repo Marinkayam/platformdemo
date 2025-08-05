@@ -8,13 +8,15 @@ interface PortalUserDetailModalProps {
   onClose: () => void;
   portalUser: PortalUser;
   onEditPortalUser: (user: PortalUser) => void;
+  onDeletePortalUser?: (userId: string) => void;
 }
 
 export function PortalUserDetailModal({ 
   isOpen, 
   onClose, 
   portalUser, 
-  onEditPortalUser 
+  onEditPortalUser,
+  onDeletePortalUser 
 }: PortalUserDetailModalProps) {
   return (
     <PortalUserModal
@@ -22,6 +24,7 @@ export function PortalUserDetailModal({
       onClose={onClose}
       portalUser={portalUser}
       onEditPortalUser={onEditPortalUser}
+      onDeletePortalUser={onDeletePortalUser}
     />
   );
 }

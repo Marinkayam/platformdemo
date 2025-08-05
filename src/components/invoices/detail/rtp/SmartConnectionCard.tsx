@@ -1,5 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { SmartConnection } from "@/types/smartConnection";
 import { useNavigate } from "react-router-dom";
 import { getPortalLogoUrl } from "@/lib/utils";
@@ -26,33 +28,53 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-3">
+        <div className="space-y-4">
           {/* Buyer and Supplier row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-            <div>
-              <span className="text-gray-500 text-sm">Buyer:</span>
-              <p className="font-medium text-gray-900 mt-1">{connection.buyer.name}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="buyer" className="text-sm text-gray-500">Buyer</Label>
+              <Input 
+                id="buyer"
+                value={connection.buyer.name} 
+                readOnly 
+                className="bg-gray-50 text-sm" 
+              />
             </div>
-            <div>
-              <span className="text-gray-500 text-sm">Supplier:</span>
-              <p className="font-medium text-gray-900 mt-1">{connection.supplier.name}</p>
+            <div className="space-y-2">
+              <Label htmlFor="supplier" className="text-sm text-gray-500">Supplier</Label>
+              <Input 
+                id="supplier"
+                value={connection.supplier.name} 
+                readOnly 
+                className="bg-gray-50 text-sm" 
+              />
             </div>
           </div>
           
           {/* Portal and Portal User row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-            <div>
-              <span className="text-gray-500 text-sm">Portal:</span>
-              <p className="font-medium text-gray-900 mt-1 flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full flex items-center justify-center overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="portal" className="text-sm text-gray-500">Portal</Label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 rounded-full flex items-center justify-center overflow-hidden">
                   <img src={getPortalLogoUrl(connection.portal.type)} alt={`${connection.portal.type} logo`} className="w-full h-full object-cover" />
-                </span>
-                {connection.portal.type}
-              </p>
+                </div>
+                <Input 
+                  id="portal"
+                  value={connection.portal.type} 
+                  readOnly 
+                  className="bg-gray-50 text-sm pl-10" 
+                />
+              </div>
             </div>
-            <div>
-              <span className="text-gray-500 text-sm">Portal User:</span>
-              <p className="font-medium text-gray-900 mt-1">{connection.portal.user}</p>
+            <div className="space-y-2">
+              <Label htmlFor="portal-user" className="text-sm text-gray-500">Portal User</Label>
+              <Input 
+                id="portal-user"
+                value={connection.portal.user} 
+                readOnly 
+                className="bg-gray-50 text-sm" 
+              />
             </div>
           </div>
           
