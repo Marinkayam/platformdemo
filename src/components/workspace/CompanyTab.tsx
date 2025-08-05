@@ -86,10 +86,9 @@ export function CompanyTab() {
           <div>
             <label className="block text-[15px] mb-2 font-medium text-gray-800">Company Name</label>
             <Input 
-              className="h-12 bg-white text-base font-normal" 
+              className="h-12 bg-gray-100 text-base font-normal" 
               value={companyInfo.name || "Monto Technologies"} 
-              onChange={(e) => updateCompanyInfo({ name: e.target.value })}
-              placeholder="Enter company name"
+              disabled
             />
           </div>
           <div>
