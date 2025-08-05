@@ -76,7 +76,7 @@ export default function Invoices() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 px-6 pt-6">
         <InvoiceHeader 
           tabs={tabsWithCounts}
           activeTab={activeTab}
