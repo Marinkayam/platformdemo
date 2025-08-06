@@ -43,7 +43,6 @@ export function WizardNavigation({
         )}
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" onClick={onComplete}>Cancel</Button>
         {currentStep === 'summary' ? (
           <Button onClick={onImport}>Import Users</Button>
         ) : (

@@ -17,13 +17,33 @@ export function WizardProgress({ currentStep }: WizardProgressProps) {
   }
 
   return (
-    <div className="space-y-4">
-      <Progress value={progress} className="h-2" />
-      <div className="flex justify-between text-sm font-normal text-gray-600">
+    <div className="space-y-6">
+      <div className="relative">
+        <Progress value={progress} className="h-1 bg-gray-100" />
+        <div className="absolute top-0 left-0 right-0 flex justify-between items-center -mt-1">
+          {WIZARD_STEPS.map((step, index) => (
+            <div key={step.id} className="flex flex-col items-center">
+              <div className={`
+                w-3 h-3 rounded-full border-2 transition-colors duration-200
+                ${currentStepIndex >= index 
+                  ? 'bg-primary border-primary' 
+                  : 'bg-white border-gray-300'
+                }
+              `} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="flex justify-between">
         {WIZARD_STEPS.map((step, index) => (
-          <span key={step.id} className={currentStepIndex >= index ? 'text-primary' : ''}>
-            {step.name}
-          </span>
+          <div key={step.id} className="flex flex-col items-center">
+            <span className={`
+              text-xs font-medium transition-colors duration-200
+              ${currentStepIndex >= index ? 'text-primary' : 'text-gray-500'}
+            `}>
+              {step.name}
+            </span>
+          </div>
         ))}
       </div>
     </div>

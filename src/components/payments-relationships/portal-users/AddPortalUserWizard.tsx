@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
-import { TabsNav } from '@/components/common/TabsNav';
-import { CSVImportWizard } from './csv-upload/CSVImportWizard';
 import { PortalUser } from '@/types/portalUser';
 import { PortalSelectionStep } from './add-portal-user-wizard/PortalSelectionStep';
 import { UserTypeStep } from './add-portal-user-wizard/UserTypeStep';
@@ -13,6 +11,9 @@ import { DedicatedUserSetupStep } from './add-portal-user-wizard/DedicatedUserSe
 import { ConnectionProgressStep } from './add-portal-user-wizard/ConnectionProgressStep';
 import { WizardFooter } from './add-portal-user-wizard/WizardFooter';
 import { WizardStep, UserType, FormData } from './add-portal-user-wizard/types';
+import { Upload, Info } from 'lucide-react';
+import { BulkUploadModal } from './BulkUploadModal';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface AddPortalUserWizardProps {
   isOpen: boolean;
@@ -23,7 +24,6 @@ interface AddPortalUserWizardProps {
 }
 
 export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', portalUser }: AddPortalUserWizardProps) {
-  const [activeTab, setActiveTab] = useState<'manual' | 'bulk'>('manual');
   const [currentStep, setCurrentStep] = useState<WizardStep>('portal');
   const [selectedPortal, setSelectedPortal] = useState<string>('');
   const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
@@ -42,6 +42,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   const [searchQuery, setSearchQuery] = useState('');
   const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showBulkUploadModal, setShowBulkUploadModal] = useState(false);
 
   const handleNext = () => {
     if (currentStep === 'portal' && selectedPortal) {
@@ -100,11 +101,21 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   };
 
   const handleBulkImport = (users: Partial<PortalUser>[]) => {
-    console.log("Importing users:", users);
+    // Process each user from the CSV
+    users.forEach(user => {
+      onSave({
+        ...user,
+        status: 'Validating',
+        lastUpdated: new Date().toISOString(),
+        isReadOnly: false,
+      });
+    });
+    
     toast({
       title: "Import Successful",
-      description: `${users.length} users have been imported.`,
+      description: `${users.length} scan agents have been imported.`,
     });
+    setShowBulkUploadModal(false);
     onClose();
   };
   
@@ -172,55 +183,40 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
           }
         }}
       >
-        <DialogContent className="w-[772px] p-0 overflow-hidden rounded-xl max-w-none">
-          <DialogHeader className="p-6 pb-0">
-            <DialogTitle className="text-xl font-semibold text-grey-900">
-              {currentStep === 'portal' ? 'Add Scan Agent' : 
-               currentStep === 'userType' ? 'Select User Type' : 'Fill User Details'}
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="p-6 pt-0">
-            {/* Show TabsNav only on portal step */}
-            {currentStep === 'portal' && (
-              <TabsNav
-                tabs={[
-                  { id: 'manual', label: 'Manual Entry' },
-                  { id: 'bulk', label: 'Upload Bulk CSV File' }
-                ]}
-                activeTab={activeTab}
-                onTabChange={(tabId) => setActiveTab(tabId as 'manual' | 'bulk')}
-              />
-            )}
-
-            {/* Manual Entry Content - Non-portal steps */}
-            {currentStep !== 'portal' && (
-              <div className="space-y-6">
-                {renderCurrentStep()}
-
-                {/* Only show footer if not in connection flow */}
-                {currentStep !== 'connecting' && currentStep !== 'success' && (
-                  <WizardFooter
-                    currentStep={currentStep}
-                    selectedPortal={selectedPortal}
-                    selectedUserType={selectedUserType}
-                    formData={formData}
-                    onBack={handleBack}
-                    onNext={handleNext}
-                    onClose={handleCloseAttempt}
-                    onSubmit={handleSubmit}
-                    isSubmitting={isSubmitting}
-                  />
+        <DialogContent className="w-[900px] p-0 overflow-hidden rounded-xl max-w-[90vw] max-h-[90vh]">
+          <DialogHeader className="p-8 pb-0">
+            <TooltipProvider>
+              <div className="flex items-center gap-2">
+                <DialogTitle className="text-xl font-semibold text-grey-900">
+                  {currentStep === 'portal' ? 'Add Scan Agent' : 
+                   currentStep === 'userType' ? 'Select User Type' : 'Fill User Details'}
+                </DialogTitle>
+                {currentStep === 'portal' && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button className="h-5 w-5 rounded-full hover:bg-gray-100 flex items-center justify-center">
+                        <Info className="h-4 w-4 text-grey-500" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" className="max-w-sm">
+                      <p className="text-xs">
+                        <strong>Scan Agents</strong> automatically connect to your supplier portals, 
+                        scan for invoices and purchase orders, and keep your records up to date 
+                        without any manual effort. They run on Monto's secure infrastructure 24/7.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
                 )}
               </div>
-            )}
+            </TooltipProvider>
+          </DialogHeader>
+          
+          <div className="p-8 pt-4 overflow-y-auto">
+            <div className="space-y-6">
+              {renderCurrentStep()}
 
-            {/* Portal Selection with Manual Entry */}
-            {currentStep === 'portal' && activeTab === 'manual' && (
-              <div className="space-y-6">
-                {renderCurrentStep()}
-
-                {/* Only show footer if not in connection flow */}
+              {/* Only show footer if not in connection flow */}
+              {currentStep !== 'connecting' && currentStep !== 'success' && (
                 <WizardFooter
                   currentStep={currentStep}
                   selectedPortal={selectedPortal}
@@ -231,17 +227,10 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                   onClose={handleCloseAttempt}
                   onSubmit={handleSubmit}
                   isSubmitting={isSubmitting}
+                  onBulkUpload={() => setShowBulkUploadModal(true)}
                 />
-              </div>
-            )}
-
-            {/* Bulk CSV Upload */}
-            {currentStep === 'portal' && activeTab === 'bulk' && (
-              <CSVImportWizard 
-                onComplete={onClose}
-                onImport={handleBulkImport}
-              />
-            )}
+              )}
+            </div>
           </div>
       </DialogContent>
     </Dialog>
@@ -265,6 +254,13 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
         </div>
       </DialogContent>
     </Dialog>
+
+    {/* Bulk Upload Modal */}
+    <BulkUploadModal
+      isOpen={showBulkUploadModal}
+      onClose={() => setShowBulkUploadModal(false)}
+      onImport={handleBulkImport}
+    />
     </>
   );
 }

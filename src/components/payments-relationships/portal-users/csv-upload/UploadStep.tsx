@@ -71,27 +71,10 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
   };
 
   return (
-    <div className="space-y-12">
-      {error ? (
-        <p className="text-sm text-red-600 text-center mb-4">
-          ⚠️ There was an issue with your file. Please check the format and try again.
-        </p>
-      ) : selectedFile ? (
-        <p className="text-sm text-gray-600 text-center mb-4">
-          ✅ File uploaded. Continue to map fields and preview your data.
-        </p>
-      ) : (
-        <div className="text-sm text-gray-600 text-center mb-4">
-          <p>Upload your list of portal users. We'll guide you through mapping and validation —</p>
-          <p>or{" "}
-            <button type="button" onClick={handleDownloadTemplate} className="text-primary underline font-medium">download our template</button>{" "}
-            to get started quickly.
-          </p>
-        </div>
-      )}
+    <div className="space-y-8">
       <div
         className={cn(
-          "flex flex-col items-center justify-center gap-10 border border-dashed rounded-lg p-10 text-center transition-colors cursor-pointer mt-10 mb-10",
+          "flex flex-col items-center justify-center gap-6 border border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer",
           isDragging ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-gray-400'
         )}
         onDragEnter={handleDragEnter}
@@ -100,9 +83,11 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
       >
-        <img src="/lovable-uploads/f38987db-daaa-460a-b748-137cf3e679b8.png" alt="Upload file illustration" className="h-24" />
-        <h4 className="font-semibold text-gray-900 text-base">Drop your file here or click to upload</h4>
-        <p className="text-sm text-gray-500">Supported formats: CSV, XLSX • Up to 500 users</p>
+        <img src="/lovable-uploads/f38987db-daaa-460a-b748-137cf3e679b8.png" alt="Upload file illustration" className="h-16" />
+        <div className="space-y-2">
+          <h4 className="font-medium text-gray-900 text-sm">Drop your file here or click to upload</h4>
+          <p className="text-xs text-gray-500">Supported formats: CSV, XLSX • Up to 500 users</p>
+        </div>
         <input
           type="file"
           accept=".csv,.xlsx"
@@ -111,6 +96,23 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
           onChange={handleFileSelect}
         />
       </div>
+
+      {error ? (
+        <p className="text-sm text-red-600 text-center">
+          ⚠️ There was an issue with your file. Please check the format and try again.
+        </p>
+      ) : selectedFile ? (
+        <p className="text-sm text-gray-600 text-center">
+          ✅ File uploaded. Continue to map fields and preview your data.
+        </p>
+      ) : (
+        <div className="text-sm text-gray-600 text-center space-y-3">
+          <p>Upload your list of portal users. We'll guide you through mapping and validation —</p>
+          <p>or{" "}
+            <button type="button" onClick={handleDownloadTemplate} className="text-primary underline font-medium">download our template</button>
+          </p>
+        </div>
+      )}
 
       {error && (
         <div className="bg-destructive/10 border border-destructive/20 text-destructive p-3 rounded-lg text-sm flex items-center gap-2">
