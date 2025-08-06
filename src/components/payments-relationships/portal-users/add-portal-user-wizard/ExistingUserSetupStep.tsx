@@ -2,7 +2,7 @@
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react';
@@ -23,26 +23,24 @@ export function ExistingUserSetupStep({ selectedPortal, formData, setFormData, s
 
   return (
     <div className="space-y-6">
-      {/* Portal Header with Logo */}
-      <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-lg border border-primary/20">
-        <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-white border">
-          <img
-            src={getPortalLogoUrl(selectedPortal)}
-            alt={`${selectedPortal} logo`}
-            className="w-full h-full object-contain"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = '/portal-logos/placeholder.svg';
-            }}
-          />
-        </div>
-        <div>
-          <h3 className="font-semibold text-gray-900">{selectedPortal}</h3>
-          <p className="text-sm text-gray-600">Enter your existing portal credentials</p>
-        </div>
-      </div>
-      
       <div className="space-y-4">
+        <div className="space-y-2">
+          <Label>Portal</Label>
+          <div className="relative">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full overflow-hidden flex items-center justify-center bg-white border">
+              <img
+                src={getPortalLogoUrl(selectedPortal)}
+                alt={`${selectedPortal} logo`}
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/portal-logos/placeholder.svg';
+                }}
+              />
+            </div>
+            <Input value={selectedPortal} disabled className="pl-12" />
+          </div>
+        </div>
         <div className="space-y-2">
           <Label>Username</Label>
           <Input
@@ -94,13 +92,13 @@ export function ExistingUserSetupStep({ selectedPortal, formData, setFormData, s
             <p className="text-sm text-red-600">Passwords do not match</p>
           )}
         </div>
-        <div className="flex items-center space-x-2">
-          <Checkbox
+        <div className="flex items-center justify-between">
+          <Label htmlFor="enable2FA">Enable Two-Factor Authentication</Label>
+          <Switch
             id="enable2FA"
             checked={formData.enable2FA}
-            onCheckedChange={(checked) => setFormData(prev => ({ ...prev, enable2FA: checked as boolean }))}
+            onCheckedChange={(checked) => setFormData(prev => ({ ...prev, enable2FA: checked }))}
           />
-          <Label htmlFor="enable2FA">Enable Two-Factor Authentication</Label>
         </div>
         {formData.enable2FA && (
           <div className="space-y-4 pl-6">

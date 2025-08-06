@@ -36,8 +36,8 @@ export function WizardFooter({ currentStep, selectedPortal, selectedUserType, on
         </Button>
       )}
       <div className="flex gap-2 ml-auto">
-        {/* Only show cancel button for setup step, not for userType step */}
-        {currentStep === 'setup' && (
+        {/* Only show cancel button for setup step when userType is dedicated */}
+        {currentStep === 'setup' && selectedUserType === 'dedicated' && (
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
