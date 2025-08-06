@@ -226,11 +226,21 @@ export const navMain: NavItem[] = [
     icon: DashboardIcon,
   },
   {
+    title: "Request-to-Pay",
+    href: "/invoices",
+    icon: InvoicesIcon,
+    items: [
+      { title: "All Request-to-Pay", href: "/invoices" },
+      { title: "Pending Actions", href: "/invoices?status=pending" },
+      { title: "Overdue", href: "/invoices?status=overdue" },
+      { title: "Settled", href: "/invoices?status=settled" },
+    ],
+  },
+  {
     title: "Portals Dashboard",
     href: "/portals-dashboard",
     icon: PortalsDashboardIcon,
     items: [
-      { title: "Overview", href: "/portals-dashboard" },
       {
         title: "Portal Records",
         href: "/portal-records",
@@ -244,23 +254,12 @@ export const navMain: NavItem[] = [
     ],
   },
   {
-    title: "Request-to-Pay",
-    href: "/invoices",
-    icon: InvoicesIcon,
-    items: [
-      { title: "All Request-to-Pay", href: "/invoices" },
-      { title: "Pending Actions", href: "/invoices?status=pending" },
-      { title: "Overdue", href: "/invoices?status=overdue" },
-      { title: "Settled", href: "/invoices?status=settled" },
-    ],
-  },
-  {
     title: "Connection Hub",
-    href: "/payments-relationships",
+    href: "/smart-connections",
     icon: SmartConnectionsIcon,
     items: [
-      { title: "Smart Connections", href: "/payments-relationships" },
-      { title: "Scan Agents", href: "/payments-relationships?tab=scan-agents" },
+      { title: "Smart Connections", href: "/smart-connections" },
+      { title: "Scan Agents", href: "/scan-agents" },
     ],
   },
   {
