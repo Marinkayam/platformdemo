@@ -36,9 +36,12 @@ export function WizardFooter({ currentStep, selectedPortal, selectedUserType, on
         </Button>
       )}
       <div className="flex gap-2 ml-auto">
-        <Button variant="outline" onClick={onClose}>
-          Cancel
-        </Button>
+        {/* Only show cancel button for setup step, not for userType step */}
+        {currentStep === 'setup' && (
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+        )}
         {currentStep === 'setup' ? (
           <Button onClick={onSubmit}>
             Add Scan Agent

@@ -14,16 +14,35 @@ interface ExistingUserSetupStepProps {
     setFormData: React.Dispatch<React.SetStateAction<FormData>>;
     showPassword: boolean;
     setShowPassword: (show: boolean) => void;
+    showConfirmPassword: boolean;
+    setShowConfirmPassword: (show: boolean) => void;
 }
 
-export function ExistingUserSetupStep({ selectedPortal, formData, setFormData, showPassword, setShowPassword }: ExistingUserSetupStepProps) {
+export function ExistingUserSetupStep({ selectedPortal, formData, setFormData, showPassword, setShowPassword, showConfirmPassword, setShowConfirmPassword }: ExistingUserSetupStepProps) {
+  const getPortalLogoUrl = (portalName: string) => `/portal-logos/${portalName.toLowerCase().replace(/\s+/g, '-')}.svg`;
+
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label>Portal</Label>
-          <Input value={selectedPortal} disabled />
+      {/* Portal Header with Logo */}
+      <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-lg border border-primary/20">
+        <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-white border">
+          <img
+            src={getPortalLogoUrl(selectedPortal)}
+            alt={`${selectedPortal} logo`}
+            className="w-full h-full object-contain"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/portal-logos/placeholder.svg';
+            }}
+          />
         </div>
+        <div>
+          <h3 className="font-semibold text-gray-900">{selectedPortal}</h3>
+          <p className="text-sm text-gray-600">Enter your existing portal credentials</p>
+        </div>
+      </div>
+      
+      <div className="space-y-4">
         <div className="space-y-2">
           <Label>Username</Label>
           <Input
@@ -51,6 +70,29 @@ export function ExistingUserSetupStep({ selectedPortal, formData, setFormData, s
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </Button>
           </div>
+        </div>
+        <div className="space-y-2">
+          <Label>Confirm Password</Label>
+          <div className="relative">
+            <Input
+              type={showConfirmPassword ? "text" : "password"}
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+              placeholder="Confirm portal password"
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </Button>
+          </div>
+          {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
+            <p className="text-sm text-red-600">Passwords do not match</p>
+          )}
         </div>
         <div className="flex items-center space-x-2">
           <Checkbox

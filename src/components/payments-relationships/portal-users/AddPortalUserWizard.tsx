@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { DesignTabs } from '@/components/ui/design-tabs';
 import { CSVImportWizard } from './csv-upload/CSVImportWizard';
@@ -29,14 +30,17 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   const [formData, setFormData] = useState<FormData>({
     username: '',
     password: '',
+    confirmPassword: '',
     enable2FA: false,
     twoFAMethod: undefined,
     phoneNumber: '',
     verificationEmail: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isDedicatedUserConfirmed, setIsDedicatedUserConfirmed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
 
   const handleNext = () => {
     if (currentStep === 'portal' && selectedPortal) {
@@ -124,6 +128,8 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
               setFormData={setFormData}
               showPassword={showPassword}
               setShowPassword={setShowPassword}
+              showConfirmPassword={showConfirmPassword}
+              setShowConfirmPassword={setShowConfirmPassword}
             /> 
           : <DedicatedUserSetupStep 
               selectedPortal={selectedPortal}
@@ -141,34 +147,48 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
     }
   };
 
+  const handleCloseAttempt = () => {
+    if (currentStep === 'portal' || currentStep === 'connecting' || currentStep === 'success') {
+      onClose();
+    } else {
+      setShowCloseConfirmation(true);
+    }
+  };
+
+  const handleConfirmClose = () => {
+    setShowCloseConfirmation(false);
+    onClose();
+  };
+
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={(newOpenState) => {
-        if (!newOpenState) {
-          onClose();
-        }
-      }}
-    >
-      <DialogContent className="w-[772px] p-0 overflow-hidden rounded-xl max-w-none">
-        <DialogHeader className="p-6 pb-0">
-          <DialogTitle className="text-xl font-semibold text-grey-900">Add Scan Agent</DialogTitle>
-        </DialogHeader>
-        
-        {/* Only show tabs if not in connection flow */}
-        {currentStep !== 'connecting' && currentStep !== 'success' && (
-          <div className="px-6 pt-0">
-            <DesignTabs
-              tabs={[
-                { id: 'singular', label: 'Manual Entry' },
-                { id: 'csv', label: 'Upload Bulk CSV File' },
-              ]}
-              activeTab={activeTab}
-              onTabChange={(id) => setActiveTab(id as 'singular' | 'csv')}
-              className="mb-4"
-            />
-          </div>
-        )}
+    <>
+      <Dialog
+        open={isOpen}
+        onOpenChange={(newOpenState) => {
+          if (!newOpenState) {
+            handleCloseAttempt();
+          }
+        }}
+      >
+        <DialogContent className="w-[772px] p-0 overflow-hidden rounded-xl max-w-none">
+          <DialogHeader className="p-6 pb-0">
+            <DialogTitle className="text-xl font-semibold text-grey-900">Add Scan Agent</DialogTitle>
+          </DialogHeader>
+          
+          {/* Only show tabs if not in connection flow and not in userType step */}
+          {currentStep !== 'connecting' && currentStep !== 'success' && currentStep !== 'userType' && (
+            <div className="px-6 pt-0">
+              <DesignTabs
+                tabs={[
+                  { id: 'singular', label: 'Manual Entry' },
+                  { id: 'csv', label: 'Upload Bulk CSV File' },
+                ]}
+                activeTab={activeTab}
+                onTabChange={(id) => setActiveTab(id as 'singular' | 'csv')}
+                className="mb-4"
+              />
+            </div>
+          )}
         
         <div className="p-6 pt-0">
           {activeTab === 'singular' && (
@@ -183,7 +203,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                   selectedUserType={selectedUserType}
                   onBack={handleBack}
                   onNext={handleNext}
-                  onClose={onClose}
+                  onClose={handleCloseAttempt}
                   onSubmit={handleSubmit}
                 />
               )}
@@ -193,5 +213,26 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
         </div>
       </DialogContent>
     </Dialog>
+
+    {/* Close Confirmation Modal */}
+    <Dialog open={showCloseConfirmation} onOpenChange={setShowCloseConfirmation}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Are you sure?</DialogTitle>
+        </DialogHeader>
+        <p className="text-muted-foreground">
+          You will lose all progress if you close this wizard.
+        </p>
+        <div className="flex justify-end gap-2 mt-4">
+          <Button variant="outline" onClick={() => setShowCloseConfirmation(false)}>
+            Continue Editing
+          </Button>
+          <Button variant="destructive" onClick={handleConfirmClose}>
+            Close Wizard
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }

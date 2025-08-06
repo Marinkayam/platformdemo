@@ -11,8 +11,29 @@ interface DedicatedUserSetupStepProps {
 }
 
 export function DedicatedUserSetupStep({ selectedPortal, isDedicatedUserConfirmed, setIsDedicatedUserConfirmed }: DedicatedUserSetupStepProps) {
+  const getPortalLogoUrl = (portalName: string) => `/portal-logos/${portalName.toLowerCase().replace(/\s+/g, '-')}.svg`;
+
   return (
     <div className="space-y-6">
+      {/* Portal Header with Logo */}
+      <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-lg border border-primary/20">
+        <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-white border">
+          <img
+            src={getPortalLogoUrl(selectedPortal)}
+            alt={`${selectedPortal} logo`}
+            className="w-full h-full object-contain"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/portal-logos/placeholder.svg';
+            }}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold text-gray-900">{selectedPortal}</h3>
+          <p className="text-sm text-gray-600">Create a dedicated Monto user in your portal</p>
+        </div>
+      </div>
+      
       <Card className="bg-primary-lighter border-primary-main">
         <CardContent className="p-4">
           <h4 className="font-medium text-primary-main mb-4">Setup Instructions</h4>

@@ -7,6 +7,7 @@ export type UserType = 'existing' | 'dedicated';
 export type FormData = {
     username: string;
     password: string;
+    confirmPassword: string;
     enable2FA: boolean;
     twoFAMethod: PortalUser['twoFAMethod'];
     phoneNumber: string;
