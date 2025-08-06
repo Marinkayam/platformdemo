@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
-import { DesignTabs } from '@/components/ui/design-tabs';
 import { CSVImportWizard } from './csv-upload/CSVImportWizard';
 import { PortalUser } from '@/types/portalUser';
 import { PortalSelectionStep } from './add-portal-user-wizard/PortalSelectionStep';
@@ -23,7 +22,6 @@ interface AddPortalUserWizardProps {
 }
 
 export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', portalUser }: AddPortalUserWizardProps) {
-  const [activeTab, setActiveTab] = useState<'singular' | 'csv'>('singular');
   const [currentStep, setCurrentStep] = useState<WizardStep>('portal');
   const [selectedPortal, setSelectedPortal] = useState<string>('');
   const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
@@ -102,7 +100,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
     toast({
       title: "Import Successful",
       description: `${users.length} users have been imported.`,
-    })
+    });
     onClose();
   };
   
@@ -175,23 +173,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
             <DialogTitle className="text-xl font-semibold text-grey-900">Add Scan Agent</DialogTitle>
           </DialogHeader>
           
-          {/* Only show tabs if not in connection flow and not in userType step */}
-          {currentStep !== 'connecting' && currentStep !== 'success' && currentStep !== 'userType' && (
-            <div className="px-6 pt-0">
-              <DesignTabs
-                tabs={[
-                  { id: 'singular', label: 'Manual Entry' },
-                  { id: 'csv', label: 'Upload Bulk CSV File' },
-                ]}
-                activeTab={activeTab}
-                onTabChange={(id) => setActiveTab(id as 'singular' | 'csv')}
-                className="mb-4"
-              />
-            </div>
-          )}
-        
-        <div className="p-6 pt-0">
-          {activeTab === 'singular' && (
+          <div className="p-6 pt-0">
             <div className="space-y-6">
               {renderCurrentStep()}
 
@@ -208,9 +190,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                 />
               )}
             </div>
-          )}
-          {activeTab === 'csv' && <CSVImportWizard onComplete={onClose} onImport={handleBulkImport} />}
-        </div>
+          </div>
       </DialogContent>
     </Dialog>
 

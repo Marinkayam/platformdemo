@@ -3,6 +3,7 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react';
@@ -92,6 +93,9 @@ export function ExistingUserSetupStep({ selectedPortal, formData, setFormData, s
             <p className="text-sm text-red-600">Passwords do not match</p>
           )}
         </div>
+        
+        <Separator className="my-6" />
+        
         <div className="flex items-center justify-between">
           <Label htmlFor="enable2FA">Enable Two-Factor Authentication</Label>
           <Switch
