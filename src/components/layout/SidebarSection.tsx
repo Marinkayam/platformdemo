@@ -152,7 +152,7 @@ export function SidebarSection({
     <div className={cn("space-y-2", className)}>
       {title}
       
-      <div className="space-y-1">
+      <div className="space-y-3">
         {items.map(item => {
           const isActive = isItemActive(item);
           const hasSubmenu = item.items && item.items.length > 0;
