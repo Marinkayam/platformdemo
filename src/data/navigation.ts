@@ -255,11 +255,11 @@ export const navMain: NavItem[] = [
   },
   {
     title: "Connection Hub",
-    href: "/smart-connections",
+    href: "/payments-relationships",
     icon: SmartConnectionsIcon,
     items: [
-      { title: "Smart Connections", href: "/smart-connections" },
-      { title: "Scan Agents", href: "/scan-agents" },
+      { title: "Smart Connections", href: "/payments-relationships" },
+      { title: "Scan Agents", href: "/payments-relationships?tab=scan-agents" },
     ],
   },
   {
