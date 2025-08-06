@@ -65,19 +65,19 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
         )}
 
         <div className="border rounded-lg overflow-hidden">
-          <div className="overflow-x-auto max-h-96">
+          <div className="overflow-auto max-h-[400px]">
             <Table>
-              <TableHeader className="bg-gray-50">
+              <TableHeader className="bg-gray-50 sticky top-0 z-10">
                 <TableRow>
-                  <TableHead className="w-[35%] min-w-[120px] text-sm">Monto Field</TableHead>
-                  <TableHead className="w-[40%] min-w-[160px] text-sm">Your File's Column</TableHead>
-                  <TableHead className="w-[25%] min-w-[100px] text-sm">Preview</TableHead>
+                  <TableHead className="w-[30%] text-xs font-medium py-3 px-3">Monto Field</TableHead>
+                  <TableHead className="w-[45%] text-xs font-medium py-3 px-3">Your File's Column</TableHead>
+                  <TableHead className="w-[25%] text-xs font-medium py-3 px-3">Preview</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {MONTO_FIELDS.map(field => (
                   <TableRow key={field.key} className="h-12">
-                    <TableCell className="font-medium text-sm py-2">
+                    <TableCell className="font-medium text-xs py-2 px-3">
                       <div className="flex items-center gap-1">
                         <span className="truncate">{field.label}</span>
                         {field.required && <span className="text-destructive text-xs">*</span>}
@@ -91,7 +91,7 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
                         </Tooltip>
                       </div>
                     </TableCell>
-                    <TableCell className="py-2">
+                    <TableCell className="py-2 px-3">
                       <div className="flex items-center gap-1">
                         <ArrowRight className="h-3 w-3 text-gray-400 flex-shrink-0" />
                         <Select value={mappings[field.key]} onValueChange={(value) => handleMapping(field.key, value)}>
@@ -107,11 +107,11 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
                         </Select>
                       </div>
                     </TableCell>
-                    <TableCell className="text-gray-500 italic text-xs py-2">
-                      <div className="max-w-[120px]">
+                    <TableCell className="text-gray-500 italic text-xs py-2 px-3">
+                      <div className="max-w-[100px]">
                         {mappings[field.key] && data.length > 0 ? (
                           data.slice(0, 2).map((row, i) => (
-                            <div key={i} className="truncate">{row[mappings[field.key] as string]}</div>
+                            <div key={i} className="truncate text-[10px]">{row[mappings[field.key] as string]}</div>
                           ))
                         ) : 'N/A'}
                       </div>
