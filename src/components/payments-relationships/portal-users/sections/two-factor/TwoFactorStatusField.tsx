@@ -13,6 +13,7 @@ interface TwoFactorStatusFieldProps {
   onToggle2FA: (enabled: boolean) => void;
   onView2FACode: () => void;
   getMethodDisplayName: (method: string) => string;
+  isViewOnly?: boolean;
 }
 
 export function TwoFactorStatusField({
@@ -21,7 +22,8 @@ export function TwoFactorStatusField({
   isEditMode,
   onToggle2FA,
   onView2FACode,
-  getMethodDisplayName
+  getMethodDisplayName,
+  isViewOnly = false
 }: TwoFactorStatusFieldProps) {
   return (
     <div className="space-y-2">
@@ -46,7 +48,7 @@ export function TwoFactorStatusField({
             <Eye className="h-4 w-4" />
           </Button>
         )}
-        {isEditMode && (
+        {isEditMode && !isViewOnly && (
           <Switch 
             id="2fa-toggle"
             checked={currentTwoFAEnabled}

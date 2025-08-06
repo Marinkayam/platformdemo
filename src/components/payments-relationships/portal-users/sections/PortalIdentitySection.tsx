@@ -21,6 +21,7 @@ interface PortalIdentitySectionProps {
     twoFAEnabled: boolean;
   };
   onFormChange?: (field: string, value: string | boolean) => void;
+  isViewOnly?: boolean;
 }
 
 const availablePortals = [
@@ -33,7 +34,8 @@ export function PortalIdentitySection({
   copyToClipboard, 
   isEditMode = false,
   editFormData,
-  onFormChange
+  onFormChange,
+  isViewOnly = false
 }: PortalIdentitySectionProps) {
   const [open, setOpen] = useState(false);
   const currentPortal = isEditMode ? editFormData?.portal || portalUser.portal : portalUser.portal;
@@ -133,9 +135,9 @@ export function PortalIdentitySection({
           <Input 
             id="username" 
             value={currentUsername} 
-            readOnly={!isEditMode}
-            onChange={(e) => isEditMode && onFormChange?.('username', e.target.value)}
-            className={`${isEditMode ? 'bg-white' : 'bg-gray-50'} font-mono h-10 text-sm`} 
+            readOnly={!isEditMode || isViewOnly}
+            onChange={(e) => isEditMode && !isViewOnly && onFormChange?.('username', e.target.value)}
+            className={`${isEditMode && !isViewOnly ? 'bg-white' : 'bg-gray-50'} font-mono h-10 text-sm`} 
           />
           <Button
             variant="outline"

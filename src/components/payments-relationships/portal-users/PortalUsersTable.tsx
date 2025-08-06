@@ -56,10 +56,6 @@ export function PortalUsersTable({
   };
 
   const handleRowClick = (portalUser: PortalUser) => {
-    // Don't open modal for Monto users
-    if (portalUser.userType === "Monto") {
-      return;
-    }
     setSelectedPortalUser(portalUser);
     setIsDetailModalOpen(true);
   };

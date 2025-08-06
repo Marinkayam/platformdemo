@@ -30,6 +30,10 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
     confirmPassword?: string;
     portalUrl?: string;
   }>({});
+  
+  // Check if user is Monto type for view-only mode
+  const isMontoUser = portalUser.userType === "Monto";
+  const isViewOnly = isMontoUser;
   const [editFormData, setEditFormData] = useState({
     portal: portalUser.portal,
     username: portalUser.username,
@@ -221,6 +225,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
             isEditMode={isEditMode}
             editFormData={editFormData}
             onFormChange={handleFormChange}
+            isViewOnly={isViewOnly}
           />
 
           <CredentialsSection
@@ -233,6 +238,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
             onFormChange={handleFormChange}
             hidePassword={portalUser.userType === "Monto"}
             errors={errors}
+            isViewOnly={isViewOnly}
           />
 
           <TwoFactorSection
@@ -241,39 +247,40 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
             editFormData={editFormData}
             onFormChange={handleFormChange}
             portalUserId={portalUser.id}
+            isViewOnly={isViewOnly}
           />
 
         </div>
 
-        <div className="flex justify-between pt-4 border-t">
-          <div>
-            {isEditMode && onDeletePortalUser && (
-              <Button variant="destructive" onClick={handleDelete}>
-                Delete User
-              </Button>
-            )}
-          </div>
-          <div className="flex gap-2">
-            {isEditMode ? (
-              <>
-                <Button variant="ghost" onClick={handleCancel}>
-                  Cancel
+        {!isViewOnly && (
+          <div className="flex justify-between pt-4 border-t">
+            <div>
+              {isEditMode && onDeletePortalUser && (
+                <Button variant="destructive" onClick={handleDelete}>
+                  Delete User
                 </Button>
-                <Button onClick={handleSave}>
-                  Save Changes
-                </Button>
-              </>
-            ) : (
-              <>
-                {portalUser.userType !== "Monto" && (
+              )}
+            </div>
+            <div className="flex gap-2">
+              {isEditMode ? (
+                <>
+                  <Button variant="ghost" onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleSave}>
+                    Save Changes
+                  </Button>
+                </>
+              ) : (
+                <>
                   <Button onClick={handleEdit}>
                     Edit Portal Agent
                   </Button>
-                )}
-              </>
-            )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </DialogContent>
     </Dialog>
 

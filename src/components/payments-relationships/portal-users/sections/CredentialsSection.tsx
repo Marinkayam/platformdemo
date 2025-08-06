@@ -29,6 +29,7 @@ interface CredentialsSectionProps {
     confirmPassword?: string;
     portalUrl?: string;
   };
+  isViewOnly?: boolean;
 }
 
 export function CredentialsSection({ 
@@ -40,7 +41,8 @@ export function CredentialsSection({
   editFormData,
   onFormChange,
   hidePassword = false,
-  errors = {}
+  errors = {},
+  isViewOnly = false
 }: CredentialsSectionProps) {
   const currentPortalUrl = isEditMode ? editFormData?.portalUrl || mockCredentials.portalUrl : mockCredentials.portalUrl;
   const currentPassword = isEditMode ? editFormData?.password || mockCredentials.password : mockCredentials.password;
@@ -50,7 +52,7 @@ export function CredentialsSection({
       <div className="space-y-2">
         <Label htmlFor="portal-url" className="text-sm">Portal URL</Label>
         <div className="flex gap-2">
-          {isEditMode ? (
+          {isEditMode && !isViewOnly ? (
             <div className="flex-1">
               <Input
                 value={currentPortalUrl}

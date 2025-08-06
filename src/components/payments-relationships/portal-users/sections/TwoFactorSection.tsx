@@ -24,6 +24,7 @@ interface TwoFactorSectionProps {
   };
   onFormChange?: (field: string, value: string | boolean) => void;
   portalUserId?: string;
+  isViewOnly?: boolean;
 }
 
 export function TwoFactorSection({ 
@@ -31,7 +32,8 @@ export function TwoFactorSection({
   isEditMode = false,
   editFormData,
   onFormChange,
-  portalUserId = "default-id"
+  portalUserId = "default-id",
+  isViewOnly = false
 }: TwoFactorSectionProps) {
   const [isView2FAModalOpen, setIsView2FAModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -86,10 +88,11 @@ export function TwoFactorSection({
           onToggle2FA={handleToggle2FA}
           onView2FACode={handleView2FACode}
           getMethodDisplayName={getMethodDisplayName}
+          isViewOnly={isViewOnly}
         />
 
         {/* Method Selection - Only in Edit Mode when 2FA is Enabled */}
-        {isEditMode && currentTwoFAEnabled && (
+        {isEditMode && currentTwoFAEnabled && !isViewOnly && (
           <TwoFactorMethodSelector
             currentTwoFAMethod={currentTwoFAMethod}
             onMethodChange={handleMethodChange}
@@ -101,7 +104,7 @@ export function TwoFactorSection({
       </div>
 
       {/* Method Details Section - Only show in edit mode when 2FA is enabled */}
-      {isEditMode && currentTwoFAEnabled && editFormData && (
+      {isEditMode && currentTwoFAEnabled && editFormData && !isViewOnly && (
         <TwoFactorMethodDetails 
           method={currentTwoFAMethod}
           editFormData={{
