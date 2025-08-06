@@ -183,6 +183,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                   currentStep={currentStep}
                   selectedPortal={selectedPortal}
                   selectedUserType={selectedUserType}
+                  formData={formData}
                   onBack={handleBack}
                   onNext={handleNext}
                   onClose={handleCloseAttempt}

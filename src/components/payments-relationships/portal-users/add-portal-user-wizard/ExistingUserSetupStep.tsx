@@ -94,8 +94,9 @@ export function ExistingUserSetupStep({ selectedPortal, formData, setFormData, s
           )}
         </div>
         
-        <Separator className="my-6" />
+        <Separator className="my-8" />
         
+        <div className="space-y-6">
         <div className="flex items-center justify-between">
           <Label htmlFor="enable2FA">Enable Two-Factor Authentication</Label>
           <Switch
@@ -146,6 +147,7 @@ export function ExistingUserSetupStep({ selectedPortal, formData, setFormData, s
             )}
           </div>
         )}
+        </div>
       </div>
     </div>
   );

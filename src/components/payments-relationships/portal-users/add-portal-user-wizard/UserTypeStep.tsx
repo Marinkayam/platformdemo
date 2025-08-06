@@ -14,10 +14,10 @@ interface UserTypeStepProps {
 
 export function UserTypeStep({ selectedUserType, onUserTypeSelect }: UserTypeStepProps) {
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <Label>Select User Type</Label>
-        <div className="grid grid-cols-2 gap-4">
+    <div className="space-y-8">
+      <div className="space-y-4">
+        <Label className="text-lg">Select User Type</Label>
+        <div className="grid grid-cols-2 gap-4 mt-8">
           <Card
             className={cn(
               "cursor-pointer transition-all hover:border-primary-main",
