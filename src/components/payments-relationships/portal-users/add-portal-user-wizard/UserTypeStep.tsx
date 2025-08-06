@@ -16,7 +16,6 @@ export function UserTypeStep({ selectedUserType, onUserTypeSelect }: UserTypeSte
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <Label className="text-lg">Select User Type</Label>
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div className="flex items-start gap-3">
             <div className="text-blue-600 text-lg font-bold">💡</div>

@@ -13,9 +13,10 @@ interface WizardFooterProps {
   onNext: () => void;
   onClose: () => void;
   onSubmit: () => void;
+  isSubmitting?: boolean;
 }
 
-export function WizardFooter({ currentStep, selectedPortal, selectedUserType, formData, onBack, onNext, onClose, onSubmit }: WizardFooterProps) {
+export function WizardFooter({ currentStep, selectedPortal, selectedUserType, formData, onBack, onNext, onClose, onSubmit, isSubmitting = false }: WizardFooterProps) {
   
   const isNextDisabled = () => {
     if (currentStep === 'portal') return !selectedPortal;
@@ -51,8 +52,8 @@ export function WizardFooter({ currentStep, selectedPortal, selectedUserType, fo
           </Button>
         )}
         {currentStep === 'setup' ? (
-          <Button onClick={onSubmit} disabled={isSubmitDisabled()}>
-            Add Scan Agent
+          <Button onClick={onSubmit} disabled={isSubmitDisabled() || isSubmitting}>
+            {isSubmitting ? "Adding..." : "Add Scan Agent"}
           </Button>
         ) : (
           <Button onClick={onNext} disabled={isNextDisabled()}>

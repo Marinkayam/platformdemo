@@ -41,6 +41,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   const [isDedicatedUserConfirmed, setIsDedicatedUserConfirmed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleNext = () => {
     if (currentStep === 'portal' && selectedPortal) {
@@ -69,6 +70,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
     }
 
     // Start the connection flow
+    setIsSubmitting(true);
     setCurrentStep('connecting');
   };
 
@@ -173,7 +175,8 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
         <DialogContent className="w-[772px] p-0 overflow-hidden rounded-xl max-w-none">
           <DialogHeader className="p-6 pb-0">
             <DialogTitle className="text-xl font-semibold text-grey-900">
-              {currentStep === 'portal' ? 'Add Scan Agent' : 'Select User Type'}
+              {currentStep === 'portal' ? 'Add Scan Agent' : 
+               currentStep === 'userType' ? 'Select User Type' : 'Fill User Details'}
             </DialogTitle>
           </DialogHeader>
           
@@ -206,6 +209,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                     onNext={handleNext}
                     onClose={handleCloseAttempt}
                     onSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
                   />
                 )}
               </div>
@@ -226,6 +230,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                   onNext={handleNext}
                   onClose={handleCloseAttempt}
                   onSubmit={handleSubmit}
+                  isSubmitting={isSubmitting}
                 />
               </div>
             )}
