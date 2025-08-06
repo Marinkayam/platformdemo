@@ -64,64 +64,6 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
             </div>
         )}
 
-        <div className="border rounded-lg overflow-hidden">
-          <div className="overflow-auto max-h-[400px]">
-            <Table className="w-[1000px]">
-              <TableHeader className="bg-gray-50 sticky top-0 z-10">
-                <TableRow>
-                  <TableHead className="w-[30%] text-xs font-medium py-3 px-3">Monto Field</TableHead>
-                  <TableHead className="w-[45%] text-xs font-medium py-3 px-3">Your File's Column</TableHead>
-                  <TableHead className="w-[25%] text-xs font-medium py-3 px-3">Preview</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {MONTO_FIELDS.map(field => (
-                  <TableRow key={field.key} className="h-12">
-                    <TableCell className="font-medium text-xs py-2 px-3">
-                      <div className="flex items-center gap-1">
-                        <span className="truncate">{field.label}</span>
-                        {field.required && <span className="text-destructive text-xs">*</span>}
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <AlertCircle className="h-3 w-3 text-gray-400 cursor-pointer flex-shrink-0" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="text-xs max-w-48">{field.description}</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </TableCell>
-                    <TableCell className="py-2 px-3">
-                      <div className="flex items-center gap-1">
-                        <ArrowRight className="h-3 w-3 text-gray-400 flex-shrink-0" />
-                        <Select value={mappings[field.key]} onValueChange={(value) => handleMapping(field.key, value)}>
-                          <SelectTrigger className="w-full h-8 text-xs">
-                            <SelectValue placeholder="Select column" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="skip" className="text-xs">-- Don't import --</SelectItem>
-                            {headers.map(header => (
-                              <SelectItem key={header} value={header} className="text-xs">{header}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-gray-500 italic text-xs py-2 px-3">
-                      <div className="max-w-[100px]">
-                        {mappings[field.key] && data.length > 0 ? (
-                          data.slice(0, 2).map((row, i) => (
-                            <div key={i} className="truncate text-[10px]">{row[mappings[field.key] as string]}</div>
-                          ))
-                        ) : 'N/A'}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
       </div>
     </TooltipProvider>
   );
