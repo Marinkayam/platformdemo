@@ -20,6 +20,8 @@ import Login from "./pages/Login";
 import DesignSystemPlayground from "./pages/DesignSystemPlayground";
 import Onboarding from "./pages/Onboarding";
 import PaymentsRelationships from "./pages/PaymentsRelationships";
+import SmartConnections from "./pages/SmartConnections";
+import ScanAgents from "./pages/ScanAgents";
 import NewPaymentsRelationship from "./pages/NewPaymentsRelationship";
 import { NotificationsProvider } from "./context/NotificationsContext";
 import { CompanyProvider } from "./context/CompanyContext";
@@ -55,6 +57,8 @@ const App = () => (
               <Route path="/workspace" element={<Workspace />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/design-system" element={<DesignSystemPlayground />} />
+              <Route path="/smart-connections" element={<SmartConnections />} />
+              <Route path="/scan-agents" element={<ScanAgents />} />
               <Route path="/request-to-pay-transaction/:id" element={<div>RequestToPayTransaction Page Placeholder</div>} />
               <Route path="/payments-relationships/add-agent" element={<AddAgent />} />
             </Route>
