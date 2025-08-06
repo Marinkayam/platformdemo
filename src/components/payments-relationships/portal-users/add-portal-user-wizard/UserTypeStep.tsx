@@ -16,12 +16,12 @@ export function UserTypeStep({ selectedUserType, onUserTypeSelect }: UserTypeSte
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-[#EBF1FF] border border-[#C7D9FF] rounded-lg p-4">
           <div className="flex items-start gap-3">
-            <div className="text-blue-600 text-lg font-bold">💡</div>
+            <div className="text-[#253EA7] text-lg font-bold">💡</div>
             <div className="text-left">
-              <p className="text-sm font-medium text-blue-900 mb-1">Pro Tip</p>
-              <p className="text-sm text-blue-700">
+              <p className="text-sm font-medium text-[#253EA7] mb-1">Pro Tip</p>
+              <p className="text-sm text-[#253EA7]">
                 We recommend using a dedicated Monto user for better security and easier management of your portal connections.
               </p>
             </div>
