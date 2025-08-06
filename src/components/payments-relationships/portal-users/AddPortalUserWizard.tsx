@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
 import { CSVImportWizard } from './csv-upload/CSVImportWizard';
 import { PortalUser } from '@/types/portalUser';
@@ -22,6 +23,7 @@ interface AddPortalUserWizardProps {
 }
 
 export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', portalUser }: AddPortalUserWizardProps) {
+  const [activeTab, setActiveTab] = useState<'manual' | 'bulk'>('manual');
   const [currentStep, setCurrentStep] = useState<WizardStep>('portal');
   const [selectedPortal, setSelectedPortal] = useState<string>('');
   const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
@@ -174,23 +176,37 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
           </DialogHeader>
           
           <div className="p-6 pt-0">
-            <div className="space-y-6">
-              {renderCurrentStep()}
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'manual' | 'bulk')} className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="manual">Manual Entry</TabsTrigger>
+                <TabsTrigger value="bulk">Upload Bulk CSV File</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="manual" className="space-y-6 mt-6">
+                {renderCurrentStep()}
 
-              {/* Only show footer if not in connection flow */}
-              {currentStep !== 'connecting' && currentStep !== 'success' && (
-                <WizardFooter
-                  currentStep={currentStep}
-                  selectedPortal={selectedPortal}
-                  selectedUserType={selectedUserType}
-                  formData={formData}
-                  onBack={handleBack}
-                  onNext={handleNext}
-                  onClose={handleCloseAttempt}
-                  onSubmit={handleSubmit}
+                {/* Only show footer if not in connection flow */}
+                {currentStep !== 'connecting' && currentStep !== 'success' && (
+                  <WizardFooter
+                    currentStep={currentStep}
+                    selectedPortal={selectedPortal}
+                    selectedUserType={selectedUserType}
+                    formData={formData}
+                    onBack={handleBack}
+                    onNext={handleNext}
+                    onClose={handleCloseAttempt}
+                    onSubmit={handleSubmit}
+                  />
+                )}
+              </TabsContent>
+              
+              <TabsContent value="bulk" className="mt-6">
+                <CSVImportWizard 
+                  onComplete={onClose}
+                  onImport={handleBulkImport}
                 />
-              )}
-            </div>
+              </TabsContent>
+            </Tabs>
           </div>
       </DialogContent>
     </Dialog>
