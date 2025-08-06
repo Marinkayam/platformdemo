@@ -27,19 +27,11 @@ export function SidebarSection({
   // Initialize expanded items based on current page
   useEffect(() => {
     if (pathname.includes("/invoices")) {
-      setExpandedItems(prev => new Set(prev).add("RTPs"));
+      setExpandedItems(prev => new Set(prev).add("Request-to-Pay"));
     } else if (pathname.includes("/portal-records") || pathname.includes("/purchase-orders") || pathname.includes("/portals-dashboard")) {
       setExpandedItems(prev => new Set(prev).add("Portals Dashboard"));
-      
-      // Also expand nested items if we're on those pages
-      if (pathname.includes("/portal-records")) {
-        setExpandedItems(prev => new Set(prev).add("Portal Records"));
-      }
-      if (pathname.includes("/purchase-orders")) {
-        setExpandedItems(prev => new Set(prev).add("Purchase Orders"));
-      }
-    } else if (pathname.includes("/payments-relationships")) {
-      setExpandedItems(prev => new Set(prev).add("Payments Relationships"));
+    } else if (pathname.includes("/smart-connections") || pathname.includes("/scan-agents")) {
+      setExpandedItems(prev => new Set(prev).add("Connection Hub"));
     }
   }, [pathname]);
 
@@ -66,7 +58,8 @@ export function SidebarSection({
 
   const isItemActive = (item: NavItem) => {
     if (item.href) {
-      return pathname === item.href || pathname.includes(item.href.split('?')[0]);
+      const basePath = item.href.split('?')[0];
+      return pathname === item.href || pathname === basePath;
     }
     return false;
   };
@@ -75,20 +68,13 @@ export function SidebarSection({
     const basePath = subItem.href?.split('?')[0] || '';
     const query = subItem.href?.split('?')[1] || '';
     
-    if (parentItem.title === "RTPs") {
+    if (parentItem.title === "Request-to-Pay") {
       if (subItem.href === "/invoices" && pathname === "/invoices" && !search) return true;
       if (query && search.includes(query.split('=')[1])) return true;
     } else if (parentItem.title === "Portals Dashboard") {
-      if (subItem.href === "/portals-dashboard" && pathname === "/portals-dashboard" && !search) return true;
-    } else if (parentItem.title === "Portal Records") {
-      if (subItem.href === "/portal-records" && pathname === "/portal-records" && !search) return true;
-      if (query && search.includes(query.split('=')[1])) return true;
-    } else if (parentItem.title === "Purchase Orders") {
-      if (subItem.href === "/purchase-orders" && pathname === "/purchase-orders" && !search) return true;
-      if (query && search.includes(query.split('=')[1])) return true;
-    } else if (parentItem.title === "Payments Relationships") {
-      if (subItem.href === "/payments-relationships" && pathname === "/payments-relationships" && !search) return true;
-      if (query && search.includes(query.split('=')[1])) return true;
+      if (pathname === basePath) return true;
+    } else if (parentItem.title === "Connection Hub") {
+      if (pathname === basePath) return true;
     }
     
     return false;
