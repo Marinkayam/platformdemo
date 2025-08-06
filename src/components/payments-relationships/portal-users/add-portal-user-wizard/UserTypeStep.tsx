@@ -17,6 +17,17 @@ export function UserTypeStep({ selectedUserType, onUserTypeSelect }: UserTypeSte
     <div className="space-y-8">
       <div className="space-y-4">
         <Label className="text-lg">Select User Type</Label>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <div className="text-blue-600 text-lg font-bold">💡</div>
+            <div className="text-left">
+              <p className="text-sm font-medium text-blue-900 mb-1">Pro Tip</p>
+              <p className="text-sm text-blue-700">
+                We recommend using a dedicated Monto user for better security and easier management of your portal connections.
+              </p>
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-4 mt-8">
           <Card
             className={cn(

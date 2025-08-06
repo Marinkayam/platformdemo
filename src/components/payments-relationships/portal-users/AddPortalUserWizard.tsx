@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
+import { TabsNav } from '@/components/common/TabsNav';
 import { CSVImportWizard } from './csv-upload/CSVImportWizard';
 import { PortalUser } from '@/types/portalUser';
 import { PortalSelectionStep } from './add-portal-user-wizard/PortalSelectionStep';
@@ -172,17 +172,27 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
       >
         <DialogContent className="w-[772px] p-0 overflow-hidden rounded-xl max-w-none">
           <DialogHeader className="p-6 pb-0">
-            <DialogTitle className="text-xl font-semibold text-grey-900">Add Scan Agent</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-grey-900">
+              {currentStep === 'portal' ? 'Add Scan Agent' : 'Select User Type'}
+            </DialogTitle>
           </DialogHeader>
           
           <div className="p-6 pt-0">
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'manual' | 'bulk')} className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="manual">Manual Entry</TabsTrigger>
-                <TabsTrigger value="bulk">Upload Bulk CSV File</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="manual" className="space-y-6 mt-6">
+            {/* Show TabsNav only on portal step */}
+            {currentStep === 'portal' && (
+              <TabsNav
+                tabs={[
+                  { id: 'manual', label: 'Manual Entry' },
+                  { id: 'bulk', label: 'Upload Bulk CSV File' }
+                ]}
+                activeTab={activeTab}
+                onTabChange={(tabId) => setActiveTab(tabId as 'manual' | 'bulk')}
+              />
+            )}
+
+            {/* Manual Entry Content - Non-portal steps */}
+            {currentStep !== 'portal' && (
+              <div className="space-y-6">
                 {renderCurrentStep()}
 
                 {/* Only show footer if not in connection flow */}
@@ -198,15 +208,35 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                     onSubmit={handleSubmit}
                   />
                 )}
-              </TabsContent>
-              
-              <TabsContent value="bulk" className="mt-6">
-                <CSVImportWizard 
-                  onComplete={onClose}
-                  onImport={handleBulkImport}
+              </div>
+            )}
+
+            {/* Portal Selection with Manual Entry */}
+            {currentStep === 'portal' && activeTab === 'manual' && (
+              <div className="space-y-6">
+                {renderCurrentStep()}
+
+                {/* Only show footer if not in connection flow */}
+                <WizardFooter
+                  currentStep={currentStep}
+                  selectedPortal={selectedPortal}
+                  selectedUserType={selectedUserType}
+                  formData={formData}
+                  onBack={handleBack}
+                  onNext={handleNext}
+                  onClose={handleCloseAttempt}
+                  onSubmit={handleSubmit}
                 />
-              </TabsContent>
-            </Tabs>
+              </div>
+            )}
+
+            {/* Bulk CSV Upload */}
+            {currentStep === 'portal' && activeTab === 'bulk' && (
+              <CSVImportWizard 
+                onComplete={onClose}
+                onImport={handleBulkImport}
+              />
+            )}
           </div>
       </DialogContent>
     </Dialog>
