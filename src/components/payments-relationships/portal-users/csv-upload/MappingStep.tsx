@@ -66,7 +66,7 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
 
         <div className="border rounded-lg overflow-hidden">
           <div className="overflow-auto max-h-[400px]">
-            <Table>
+            <Table className="w-[1000px]">
               <TableHeader className="bg-gray-50 sticky top-0 z-10">
                 <TableRow>
                   <TableHead className="w-[30%] text-xs font-medium py-3 px-3">Monto Field</TableHead>
