@@ -690,13 +690,6 @@ export default function DesignSystemPlayground() {
         icon: Plug,
         statuses: ['Connected', 'Coming Soon'],
         customColors: true
-      },
-      {
-        name: 'Wrapper Components',
-        path: 'Various locations',
-        icon: Database,
-        statuses: ['PurchaseOrderStatusBadge', 'PaymentsRelationshipStatusBadge'],
-        note: 'These wrap the main StatusBadge component'
       }
     ];
 
@@ -857,13 +850,6 @@ export default function DesignSystemPlayground() {
                           {renderBadge('Connected', '#007737', '#E6F4EA', '#007737')}
                           {renderBadge('Coming Soon', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
                         </>
-                      ) : component.name === 'Wrapper Components' ? (
-                        <>
-                          <div className="text-sm text-grey-600">
-                            <div className="font-mono bg-grey-100 px-3 py-2 rounded mb-2">PurchaseOrderStatusBadge</div>
-                            <div className="font-mono bg-grey-100 px-3 py-2 rounded">PaymentsRelationshipStatusBadge</div>
-                          </div>
-                        </>
                       ) : (
                         component.statuses.map((status, index) => 
                           renderBadge(
@@ -875,9 +861,6 @@ export default function DesignSystemPlayground() {
                         )
                       )}
                     </div>
-                  )}
-                  {component.note && (
-                    <p className="mt-2 text-sm text-grey-500 italic">{component.note}</p>
                   )}
                 </div>
               );
@@ -944,42 +927,6 @@ export default function DesignSystemPlayground() {
                     {['In Process', 'Validating', 'Building', 'Approved By Buyer'].map(status => 
                       showAllBorders ? renderBadge(status, '#F2AE40', '#FFF8E1', '#F2AE40') : renderBadgeNoBorder(status, '#F2AE40', '#FFF8E1')
                     )}
-                  </div>
-                </div>
-
-                {/* Original Badge Examples from the old version */}
-                <div>
-                  <h3 className="font-medium text-grey-700 mb-3">Original Status Badge Examples</h3>
-                  <div className="flex flex-wrap gap-3">
-                    <StatusBadge status="Connected" />
-                    <StatusBadge status="Validating" />
-                    <StatusBadge status="Disconnected" />
-                    <StatusBadge status="Paid" />
-                    <StatusBadge status="Approved by Buyer" />
-                    <StatusBadge status="Pending Action" />
-                    <StatusBadge status="Awaiting SC" />
-                    <StatusBadge status="Rejected by Buyer" />
-                  </div>
-                </div>
-
-                {/* Payment Relationship Status Badge Examples */}
-                <div>
-                  <h3 className="font-medium text-grey-700 mb-3">Payment Relationship Status Examples</h3>
-                  <div className="flex flex-wrap gap-3">
-                    <PaymentsRelationshipStatusBadge status="Live" />
-                    <PaymentsRelationshipStatusBadge status="In Process" />
-                    <PaymentsRelationshipStatusBadge status="Disconnected" />
-                  </div>
-                </div>
-
-                {/* Generic Badge Examples */}
-                <div>
-                  <h3 className="font-medium text-grey-700 mb-3">Generic Badge Examples</h3>
-                  <div className="flex flex-wrap gap-3">
-                    <Badge>Default</Badge>
-                    <Badge variant="secondary">Secondary</Badge>
-                    <Badge variant="outline">Outline</Badge>
-                    <Badge variant="destructive">Destructive</Badge>
                   </div>
                 </div>
               </div>
