@@ -16,6 +16,10 @@ type Filter = 'all' | 'valid' | 'error';
 export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
   const [filter, setFilter] = useState<Filter>('all');
 
+  const totalRecords = data.length;
+  const invalidRecords = data.filter(d => d._status !== 'valid').length;
+  const newRecords = data.filter(d => d._status === 'valid').length; // Assuming valid = new for now
+
   const getStatusIcon = (status: ValidatedUser['_status']) => {
     switch (status) {
       case 'valid':
@@ -45,9 +49,15 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>All ({data.length})</Button>
-              <Button variant={filter === 'valid' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('valid')}>Valid ({data.filter(d => d._status === 'valid').length})</Button>
-              <Button variant={filter === 'error' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('error')}>Errors ({data.filter(d => d._status !== 'valid').length})</Button>
+              <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>
+                All ({totalRecords} records, {invalidRecords} invalid)
+              </Button>
+              <Button variant={filter === 'valid' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('valid')}>
+                Valid ({newRecords} new records)
+              </Button>
+              <Button variant={filter === 'error' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('error')}>
+                Errors ({invalidRecords} invalid records)
+              </Button>
             </div>
           </div>
 
