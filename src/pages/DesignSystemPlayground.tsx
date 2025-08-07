@@ -53,7 +53,17 @@ import {
   ArrowLeft,
   Home,
   FileText,
-  Building
+  Building,
+  Clock,
+  ExternalLink,
+  Users,
+  TrendingUp,
+  Database,
+  Link2,
+  Hash,
+  Plug,
+  MinusCircle,
+  ArrowRight
 } from 'lucide-react';
 import { MontoLogo } from "@/components/MontoLogo";
 import MontoIcon from "@/components/MontoIcon";
@@ -570,42 +580,413 @@ export default function DesignSystemPlayground() {
     );
   };
 
-  const renderStatusBadges = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Status Badges</h2>
-        <div className="flex flex-wrap items-center gap-4">
-          <StatusBadge status="Connected" />
-          <StatusBadge status="Validating" />
-          <StatusBadge status="Disconnected" />
-          <StatusBadge status="Paid" />
-          <StatusBadge status="Approved by Buyer" />
-          <StatusBadge status="Pending Action" />
-          <StatusBadge status="Awaiting SC" />
-          <StatusBadge status="Rejected by Buyer" />
-        </div>
-      </div>
+  const renderStatusBadges = () => {
+    const [activeTab, setActiveTab] = useState('components');
+    const [showAllBorders, setShowAllBorders] = useState(true);
 
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Payments Relationship Status Badges</h2>
-        <div className="flex flex-wrap items-center gap-4">
-          <PaymentsRelationshipStatusBadge status="Live" />
-          <PaymentsRelationshipStatusBadge status="In Process" />
-          <PaymentsRelationshipStatusBadge status="Disconnected" />
-        </div>
-      </div>
+    // Badge Style Functions
+    const renderBadge = (text, color, bg, borderColor) => (
+      <span 
+        className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium border"
+        style={{ 
+          color: color, 
+          backgroundColor: bg, 
+          borderColor: borderColor || color + '33'
+        }}
+      >
+        {text}
+      </span>
+    );
 
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Generic Badges</h2>
-        <div className="flex flex-wrap items-center gap-4">
-          <Badge>Default</Badge>
-          <Badge variant="secondary">Secondary</Badge>
-          <Badge variant="outline">Outline</Badge>
-          <Badge variant="destructive">Destructive</Badge>
+    const renderBadgeNoBorder = (text, color, bg) => (
+      <span 
+        className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium"
+        style={{ 
+          color: color, 
+          backgroundColor: bg
+        }}
+      >
+        {text}
+      </span>
+    );
+
+    // Primary Color System
+    const primaryColors = [
+      { name: 'Success', hex: '#007737', usage: 'Positive states', icon: Check },
+      { name: 'Error', hex: '#DF1C41', usage: 'Error states', icon: X },
+      { name: 'Warning', hex: '#F2AE40', usage: 'Processing/Pending', icon: AlertCircle },
+      { name: 'Info', hex: '#1750FB', usage: 'Information', icon: Info },
+      { name: 'Neutral', hex: '#9CA3AF', usage: 'Inactive states', icon: Clock },
+      { name: 'Processing', hex: '#7B59FF', usage: 'Primary brand', icon: Zap },
+      { name: 'Black', hex: '#000000', usage: 'Excluded', icon: MinusCircle }
+    ];
+
+    // Custom Brand Colors
+    const brandColors = [
+      { purpose: 'Primary Brand', hex: '#7B59FF', usage: 'Purple theme color' },
+      { purpose: 'Text Primary', hex: '#38415F', usage: 'Main text color' },
+      { purpose: 'Text Secondary', hex: '#8C92A3', usage: 'Secondary text' },
+      { purpose: 'Info Background', hex: '#EBF1FF', usage: 'Light blue background' },
+      { purpose: 'Info Border', hex: '#C7D9FF', usage: 'Light blue border' },
+      { purpose: 'Info Text', hex: '#253EA7', usage: 'Dark blue text' }
+    ];
+
+    // Badge Components with their statuses
+    const badgeComponents = [
+      {
+        name: 'StatusBadge (Main)',
+        path: 'src/components/ui/status-badge.tsx',
+        count: '32+',
+        icon: Hash,
+        categories: [
+          { type: 'Success', color: '#007737', bg: '#E6F4EA', statuses: ['Paid', 'Settled', 'Partially Settled', 'Live', 'Connected', 'New', 'Fully Invoiced', 'Partially Invoiced'] },
+          { type: 'Error', color: '#DF1C41', bg: '#FFEBEE', statuses: ['Rejected By Buyer', 'Disconnected', 'Error', 'Unavailable', 'Pending Action'] },
+          { type: 'Warning', color: '#F2AE40', bg: '#FFF8E1', statuses: ['In Process', 'Validating', 'Building', 'Approved By Buyer'] },
+          { type: 'Info', color: '#1750FB', bg: '#E3F2FD', statuses: ['External Submission'] },
+          { type: 'Neutral', color: '#9CA3AF', bg: '#F3F4F6', statuses: ['Inactive'] },
+          { type: 'Processing', color: '#7B59FF', bg: '#F3E8FF', statuses: ['Rtp Prepared', 'Rtp Sent', 'Awaiting Sc', 'Rejected By Monto'] },
+          { type: 'Black', color: '#000000', bg: '#E5E7EB', statuses: ['Excluded'] }
+        ]
+      },
+      {
+        name: 'Purchase Order StatusBadge',
+        path: 'src/components/common/StatusBadge.tsx',
+        icon: Database,
+        statuses: ['New', 'Pending Approval', 'Rejected', 'Cancelled', 'Partially Invoiced', 'Fully Invoiced'],
+        customColors: true
+      },
+      {
+        name: 'AgentUserTypeBadge',
+        path: 'src/components/ui/agent-user-type-badge.tsx',
+        icon: Users,
+        statuses: ['Monto', 'Customer'],
+        customColors: true
+      },
+      {
+        name: 'PaymentHabitBadge',
+        path: 'src/components/insights/PaymentHabitBadge.tsx',
+        icon: TrendingUp,
+        statuses: ['Excellent', 'Good', 'Fair', 'Poor']
+      },
+      {
+        name: 'PortalStatusBadge',
+        path: 'src/components/portal-records/PortalStatusBadge.tsx',
+        icon: ExternalLink,
+        statuses: ['Active', 'Inactive', 'Pending', 'Error'],
+        customColors: true
+      },
+      {
+        name: 'MatchTypeBadge',
+        path: 'src/components/portal-records/MatchTypeBadge.tsx',
+        icon: Link2,
+        statuses: ['Primary', 'Alternate', 'Unmatched', 'Conflict'],
+        customColors: true
+      },
+      {
+        name: 'Integration Hub Status',
+        path: 'src/components/workspace/integration-hub/IntegrationCenterNew.tsx',
+        icon: Plug,
+        statuses: ['Connected', 'Coming Soon'],
+        customColors: true
+      },
+      {
+        name: 'Wrapper Components',
+        path: 'Various locations',
+        icon: Database,
+        statuses: ['PurchaseOrderStatusBadge', 'PaymentsRelationshipStatusBadge'],
+        note: 'These wrap the main StatusBadge component'
+      }
+    ];
+
+    return (
+      <div className="space-y-8">
+        {/* Header */}
+        <div>
+          <h1 className="text-4xl font-bold text-grey-900 mb-3">Badge System Visual Dashboard</h1>
+          <p className="text-lg text-grey-600 mb-2">Comprehensive overview of all badge components and color systems</p>
+          <p className="text-sm text-grey-500">View component definitions and live badge examples with toggle for borders</p>
         </div>
+
+        {/* Tabs */}
+        <div className="bg-white rounded-lg shadow-sm mb-8 max-w-md">
+          <nav className="flex space-x-1 p-1">
+            {['components', 'examples'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`flex-1 py-3 px-6 rounded-md font-medium text-sm capitalize transition-all ${
+                  activeTab === tab
+                    ? 'bg-primary-main text-white shadow-sm'
+                    : 'text-grey-600 hover:text-grey-800 hover:bg-grey-100'
+                }`}
+              >
+                {tab === 'components' ? 'Components & Colors' : 'Badge Examples'}
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        {/* Content */}
+        {activeTab === 'components' && (
+          <div className="space-y-8">
+            {/* Primary Colors */}
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-2xl font-semibold mb-6">Primary Color System</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {primaryColors.map((color) => {
+                  const Icon = color.icon;
+                  return (
+                    <div key={color.name} className="border border-grey-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+                      <div className="flex items-center mb-4">
+                        <div 
+                          className="w-14 h-14 rounded-xl flex items-center justify-center mr-3 shadow-sm"
+                          style={{ backgroundColor: color.hex + '20' }}
+                        >
+                          <Icon size={26} style={{ color: color.hex }} />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-lg">{color.name}</h3>
+                          <p className="text-sm text-grey-500">{color.usage}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <code className="text-sm bg-grey-50 px-3 py-1.5 rounded font-mono">{color.hex}</code>
+                        <div 
+                          className="w-28 h-10 rounded-lg border shadow-sm"
+                          style={{ backgroundColor: color.hex }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Brand Colors */}
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-2xl font-semibold mb-6">Custom Brand Colors</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {brandColors.map((color) => (
+                  <div key={color.purpose} className="border border-grey-200 rounded-xl p-5 hover:shadow-md transition-shadow flex items-center justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg">{color.purpose}</h3>
+                      <p className="text-sm text-grey-500 mb-3">{color.usage}</p>
+                      <code className="text-sm bg-grey-50 px-3 py-1.5 rounded font-mono">{color.hex}</code>
+                    </div>
+                    <div 
+                      className="w-24 h-24 rounded-xl border shadow-sm ml-4"
+                      style={{ backgroundColor: color.hex }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Badge Components */}
+            <h2 className="text-2xl font-semibold mb-6">Badge Components & Their Statuses</h2>
+            {badgeComponents.map((component) => {
+              const Icon = component.icon;
+              return (
+                <div key={component.name} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                  <div className="flex items-center mb-4">
+                    <Icon className="mr-3 text-grey-400" size={24} />
+                    <div>
+                      <h3 className="text-xl font-semibold">{component.name}</h3>
+                      <p className="text-sm text-grey-500">{component.path}</p>
+                    </div>
+                    {component.count && (
+                      <span className="ml-auto bg-primary-lighter text-primary-dark px-3 py-1 rounded-full text-sm font-medium">
+                        {component.count} statuses
+                      </span>
+                    )}
+                  </div>
+                  
+                  {component.categories ? (
+                    <div className="space-y-3">
+                      {component.categories.map((category) => (
+                        <div key={category.type} className="border border-grey-200 rounded-xl p-4">
+                          <h4 className="font-medium mb-2 flex items-center">
+                            <span 
+                              className="w-3 h-3 rounded-full mr-2"
+                              style={{ backgroundColor: category.color }}
+                            />
+                            {category.type}
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {category.statuses.map((status) => 
+                              renderBadge(status, category.color, category.bg, category.color)
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {component.name === 'AgentUserTypeBadge' ? (
+                        <>
+                          {renderBadge('Monto', '#7B59FF', '#F3E8FF', '#7B59FF')}
+                          {renderBadge('Customer', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
+                        </>
+                      ) : component.name === 'Purchase Order StatusBadge' ? (
+                        <>
+                          {renderBadge('New', '#7B59FF', '#F3E8FF', '#7B59FF')}
+                          {renderBadge('Pending Approval', '#F2AE40', '#FFF8E1', '#F2AE40')}
+                          {renderBadge('Rejected', '#DF1C41', '#FFEBEE', '#DF1C41')}
+                          {renderBadge('Cancelled', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
+                          {renderBadge('Partially Invoiced', '#007737', '#E6F4EA', '#007737')}
+                          {renderBadge('Fully Invoiced', '#007737', '#E6F4EA', '#007737')}
+                        </>
+                      ) : component.name === 'PortalStatusBadge' ? (
+                        <>
+                          {renderBadge('Active', '#007737', '#E6F4EA', '#007737')}
+                          {renderBadge('Inactive', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
+                          {renderBadge('Pending', '#F2AE40', '#FFF8E1', '#F2AE40')}
+                          {renderBadge('Error', '#DF1C41', '#FFEBEE', '#DF1C41')}
+                        </>
+                      ) : component.name === 'MatchTypeBadge' ? (
+                        <>
+                          {renderBadge('Primary', '#7B59FF', '#F3E8FF', '#7B59FF')}
+                          {renderBadge('Alternate', '#253EA7', '#EBF1FF', '#C7D9FF')}
+                          {renderBadge('Unmatched', '#253EA7', '#EBF1FF', '#C7D9FF')}
+                          {renderBadge('Conflict', '#253EA7', '#EBF1FF', '#C7D9FF')}
+                        </>
+                      ) : component.name === 'Integration Hub Status' ? (
+                        <>
+                          {renderBadge('Connected', '#007737', '#E6F4EA', '#007737')}
+                          {renderBadge('Coming Soon', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
+                        </>
+                      ) : component.name === 'Wrapper Components' ? (
+                        <>
+                          <div className="text-sm text-grey-600">
+                            <div className="font-mono bg-grey-100 px-3 py-2 rounded mb-2">PurchaseOrderStatusBadge</div>
+                            <div className="font-mono bg-grey-100 px-3 py-2 rounded">PaymentsRelationshipStatusBadge</div>
+                          </div>
+                        </>
+                      ) : (
+                        component.statuses.map((status, index) => 
+                          renderBadge(
+                            status, 
+                            primaryColors[index % primaryColors.length].hex,
+                            primaryColors[index % primaryColors.length].hex + '20',
+                            primaryColors[index % primaryColors.length].hex
+                          )
+                        )
+                      )}
+                    </div>
+                  )}
+                  {component.note && (
+                    <p className="mt-2 text-sm text-grey-500 italic">{component.note}</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {activeTab === 'examples' && (
+          <div className="space-y-10">
+            {/* Badge Border Comparison */}
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-3xl font-semibold text-grey-800">All Badge Examples</h2>
+                <label className="flex items-center cursor-pointer">
+                  <span className="mr-3 text-sm font-medium text-grey-700">Show Borders</span>
+                  <div className="relative">
+                    <input
+                      type="checkbox"
+                      checked={showAllBorders}
+                      onChange={(e) => setShowAllBorders(e.target.checked)}
+                      className="sr-only"
+                    />
+                    <div className={`block w-14 h-8 rounded-full ${showAllBorders ? 'bg-primary-main' : 'bg-grey-300'}`}></div>
+                    <div className={`absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${showAllBorders ? 'transform translate-x-6' : ''}`}></div>
+                  </div>
+                </label>
+              </div>
+              
+              <div className="space-y-6">
+                {/* Success States */}
+                <div>
+                  <h3 className="font-medium text-green-700 mb-3">Success States</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {['Paid', 'Settled', 'Live', 'Connected', 'New'].map(status => 
+                      showAllBorders ? renderBadge(status, '#007737', '#E6F4EA', '#007737') : renderBadgeNoBorder(status, '#007737', '#E6F4EA')
+                    )}
+                  </div>
+                </div>
+
+                {/* Error States */}
+                <div>
+                  <h3 className="font-medium text-red-700 mb-3">Error States</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {['Rejected By Buyer', 'Disconnected', 'Error', 'Unavailable'].map(status => 
+                      showAllBorders ? renderBadge(status, '#DF1C41', '#FFEBEE', '#DF1C41') : renderBadgeNoBorder(status, '#DF1C41', '#FFEBEE')
+                    )}
+                  </div>
+                </div>
+
+                {/* Processing States */}
+                <div>
+                  <h3 className="font-medium text-purple-700 mb-3">Processing States</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {['Rtp Prepared', 'Rtp Sent', 'Awaiting Sc', 'Rejected By Monto'].map(status => 
+                      showAllBorders ? renderBadge(status, '#7B59FF', '#F3E8FF', '#7B59FF') : renderBadgeNoBorder(status, '#7B59FF', '#F3E8FF')
+                    )}
+                  </div>
+                </div>
+
+                {/* Warning States */}
+                <div>
+                  <h3 className="font-medium text-orange-700 mb-3">Warning States</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {['In Process', 'Validating', 'Building', 'Approved By Buyer'].map(status => 
+                      showAllBorders ? renderBadge(status, '#F2AE40', '#FFF8E1', '#F2AE40') : renderBadgeNoBorder(status, '#F2AE40', '#FFF8E1')
+                    )}
+                  </div>
+                </div>
+
+                {/* Original Badge Examples from the old version */}
+                <div>
+                  <h3 className="font-medium text-grey-700 mb-3">Original Status Badge Examples</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <StatusBadge status="Connected" />
+                    <StatusBadge status="Validating" />
+                    <StatusBadge status="Disconnected" />
+                    <StatusBadge status="Paid" />
+                    <StatusBadge status="Approved by Buyer" />
+                    <StatusBadge status="Pending Action" />
+                    <StatusBadge status="Awaiting SC" />
+                    <StatusBadge status="Rejected by Buyer" />
+                  </div>
+                </div>
+
+                {/* Payment Relationship Status Badge Examples */}
+                <div>
+                  <h3 className="font-medium text-grey-700 mb-3">Payment Relationship Status Examples</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <PaymentsRelationshipStatusBadge status="Live" />
+                    <PaymentsRelationshipStatusBadge status="In Process" />
+                    <PaymentsRelationshipStatusBadge status="Disconnected" />
+                  </div>
+                </div>
+
+                {/* Generic Badge Examples */}
+                <div>
+                  <h3 className="font-medium text-grey-700 mb-3">Generic Badge Examples</h3>
+                  <div className="flex flex-wrap gap-3">
+                    <Badge>Default</Badge>
+                    <Badge variant="secondary">Secondary</Badge>
+                    <Badge variant="outline">Outline</Badge>
+                    <Badge variant="destructive">Destructive</Badge>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderTabNavigation = () => (
     <div className="space-y-8">
