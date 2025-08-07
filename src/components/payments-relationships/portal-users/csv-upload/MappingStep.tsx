@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { AlertCircle, ArrowRight } from 'lucide-react';
 import { MONTO_FIELDS } from './types';
 
@@ -73,64 +74,66 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
         )}
 
         {/* Mapping Table */}
-        <div className="border rounded-lg overflow-hidden bg-white">
-          <Table className="w-[600px]">
-            <TableHeader>
-              <TableRow className="bg-gray-50">
-                <TableHead className="font-medium text-gray-900 w-[200px] px-2 py-2 text-sm">Monto Field</TableHead>
-                <TableHead className="font-medium text-gray-900 w-[200px] px-2 py-2 text-sm">Your CSV Column</TableHead>
-                <TableHead className="font-medium text-gray-900 w-[200px] px-2 py-2 text-sm">Sample Data</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {MONTO_FIELDS.map((field) => (
-                <TableRow key={field.key} className="h-12 hover:bg-gray-50/50">
-                  <TableCell className="px-2 py-2 w-[200px]">
-                    <div className="flex items-center gap-1">
-                      <span className="font-medium text-sm truncate">
-                        {field.label}
-                        {field.required && <span className="text-red-500 ml-1">*</span>}
-                      </span>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <AlertCircle className="h-3 w-3 text-gray-400 flex-shrink-0" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-sm max-w-xs">{field.description}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
-                  </TableCell>
-                  <TableCell className="px-2 py-2 w-[200px]">
-                    <Select
-                      value={mappings[field.key] || ''}
-                      onValueChange={(value) => handleMapping(field.key, value)}
-                    >
-                      <SelectTrigger className="w-full h-8 text-sm">
-                        <SelectValue placeholder="Select column..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="skip">Skip this field</SelectItem>
-                        {headers.map((header) => (
-                          <SelectItem key={header} value={header}>
-                            {header}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell className="px-2 py-2 w-[200px]">
-                    <div className="text-sm text-gray-600 font-mono truncate">
-                      {mappings[field.key] && mappings[field.key] !== 'skip' && data[0] 
-                        ? data[0][mappings[field.key]] || '(empty)'
-                        : '—'}
-                    </div>
-                  </TableCell>
+        <ScrollArea className="w-full">
+          <div className="border rounded-lg overflow-hidden bg-white">
+            <Table className="w-full min-w-[600px]">
+              <TableHeader>
+                <TableRow className="bg-gray-50">
+                  <TableHead className="font-medium text-gray-900 w-[200px] px-2 py-2 text-sm">Monto Field</TableHead>
+                  <TableHead className="font-medium text-gray-900 w-[200px] px-2 py-2 text-sm">Your CSV Column</TableHead>
+                  <TableHead className="font-medium text-gray-900 w-[200px] px-2 py-2 text-sm">Sample Data</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+              </TableHeader>
+              <TableBody>
+                {MONTO_FIELDS.map((field) => (
+                  <TableRow key={field.key} className="h-12 hover:bg-gray-50/50">
+                    <TableCell className="px-2 py-2 w-[200px]">
+                      <div className="flex items-center gap-1">
+                        <span className="font-medium text-sm truncate">
+                          {field.label}
+                          {field.required && <span className="text-red-500 ml-1">*</span>}
+                        </span>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <AlertCircle className="h-3 w-3 text-gray-400 flex-shrink-0" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-sm max-w-xs">{field.description}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                    </TableCell>
+                    <TableCell className="px-2 py-2 w-[200px]">
+                      <Select
+                        value={mappings[field.key] || ''}
+                        onValueChange={(value) => handleMapping(field.key, value)}
+                      >
+                        <SelectTrigger className="w-full h-8 text-sm">
+                          <SelectValue placeholder="Select column..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="skip">Skip this field</SelectItem>
+                          {headers.map((header) => (
+                            <SelectItem key={header} value={header}>
+                              {header}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell className="px-2 py-2 w-[200px]">
+                      <div className="text-sm text-gray-600 font-mono truncate">
+                        {mappings[field.key] && mappings[field.key] !== 'skip' && data[0] 
+                          ? data[0][mappings[field.key]] || '(empty)'
+                          : '—'}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </ScrollArea>
 
       </div>
     </TooltipProvider>
