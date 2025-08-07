@@ -19,8 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-				mono: ['Inter', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace']
+				sans: ['Studio Feixen Sans', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				mono: ['Studio Feixen Sans', 'Inter', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace']
 			},
 			colors: {
 				'primary-lighter': '#EFEBFF',
