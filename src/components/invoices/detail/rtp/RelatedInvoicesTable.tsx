@@ -51,12 +51,16 @@ export const RelatedInvoicesTable = ({ invoices }: { invoices?: RelatedInvoicePr
                   <StatusBadge status={invoice.status as any} />
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline" className={cn(
-                    invoice.paymentStatus === "Paid" ? "border-green-300 text-green-600" :
-                    "border-yellow-300 text-yellow-600"
-                  )}>
+                  <span 
+                    className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+                    style={{ 
+                      color: invoice.paymentStatus === "Paid" ? '#007737' : '#F2AE40',
+                      backgroundColor: invoice.paymentStatus === "Paid" ? '#E6F4EA' : '#FFF8E1',
+                      fontSize: '12px'
+                    }}
+                  >
                     {invoice.paymentStatus}
-                  </Badge>
+                  </span>
                 </TableCell>
               </TableRow>
             ))}

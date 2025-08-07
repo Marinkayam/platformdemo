@@ -1,5 +1,4 @@
 
-import { Badge } from "@/components/ui/badge";
 import { Insight } from "@/types/insights";
 
 interface PaymentHabitBadgeProps {
@@ -7,29 +6,38 @@ interface PaymentHabitBadgeProps {
 }
 
 export function PaymentHabitBadge({ paymentHabit }: PaymentHabitBadgeProps) {
-  const getScoreColor = (score: string) => {
+  const getScoreConfig = (score: string) => {
     switch (score) {
       case 'Excellent':
-        return 'bg-[#E6F4EA] text-[#007737] hover:bg-[#E6F4EA]';
+        return { textColor: '#007737', bgColor: '#E6F4EA' };
       case 'Good':
-        return 'bg-[#E3F2FD] text-[#1976D2] hover:bg-[#E3F2FD]';
+        return { textColor: '#1750FB', bgColor: '#E3F2FD' };
       case 'Fair':
-        return 'bg-[#FFF8E1] text-[#F2AE40] hover:bg-[#FFF8E1]';
+        return { textColor: '#F2AE40', bgColor: '#FFF8E1' };
       case 'Poor':
-        return 'bg-[#FFEBEE] text-[#D32F2F] hover:bg-[#FFEBEE]';
+        return { textColor: '#DF1C41', bgColor: '#FFEBEE' };
       default:
-        return 'bg-gray-100 text-gray-800 hover:bg-gray-100';
+        return { textColor: '#9CA3AF', bgColor: '#F3F4F6' };
     }
   };
+
+  const config = getScoreConfig(paymentHabit.score);
 
   return (
     <div className="flex flex-col gap-2">
       <div className="text-xs text-gray-500">
         DSO: {paymentHabit.dso}d | {paymentHabit.terms}
       </div>
-      <Badge className={getScoreColor(paymentHabit.score)}>
+      <span
+        className="inline-flex items-center px-4 py-1.5 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0"
+        style={{
+          color: config.textColor,
+          backgroundColor: config.bgColor,
+          fontSize: '12px'
+        }}
+      >
         {paymentHabit.score}
-      </Badge>
+      </span>
     </div>
   );
 }

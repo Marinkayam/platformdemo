@@ -70,13 +70,44 @@ export function IntegrationCenterNew() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Connected":
-        return <Badge className="bg-green-100 text-green-800 border-green-200"><CheckCircle className="w-3 h-3 mr-1" />Connected</Badge>;
+        return (
+          <span 
+            className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+            style={{ color: '#007737', backgroundColor: '#E6F4EA', fontSize: '12px' }}
+          >
+            <CheckCircle className="w-3 h-3 mr-1" />
+            Connected
+          </span>
+        );
       case "Syncing":
-        return <Badge className="bg-blue-100 text-blue-800 border-blue-200"><Clock className="w-3 h-3 mr-1" />Syncing</Badge>;
+        return (
+          <span 
+            className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+            style={{ color: '#1750FB', backgroundColor: '#E3F2FD', fontSize: '12px' }}
+          >
+            <Clock className="w-3 h-3 mr-1" />
+            Syncing
+          </span>
+        );
       case "Coming Soon":
-        return <Badge className="bg-gray-100 text-gray-600 border-gray-200"><Lock className="w-3 h-3 mr-1" />Coming Soon</Badge>;
+        return (
+          <span 
+            className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+            style={{ color: '#9CA3AF', backgroundColor: '#F3F4F6', fontSize: '12px' }}
+          >
+            <Lock className="w-3 h-3 mr-1" />
+            Coming Soon
+          </span>
+        );
       default:
-        return <Badge variant="secondary">{status}</Badge>;
+        return (
+          <span 
+            className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+            style={{ color: '#9CA3AF', backgroundColor: '#F3F4F6', fontSize: '12px' }}
+          >
+            {status}
+          </span>
+        );
     }
   };
 

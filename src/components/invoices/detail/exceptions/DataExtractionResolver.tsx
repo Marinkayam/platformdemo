@@ -114,9 +114,16 @@ export function DataExtractionResolver({ exceptions, invoice, onResolveException
           <div className="space-y-3 mb-4">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">Resolve Exceptions</h2>
-              <Badge variant="outline" className="bg-primary/10 text-primary px-3 py-1 text-sm font-medium rounded-md">
+              <span 
+                className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+                style={{ 
+                  color: '#7B59FF', 
+                  backgroundColor: '#F3E8FF',
+                  fontSize: '12px'
+                }}
+              >
                 Invoice Data
-              </Badge>
+              </span>
             </div>
             <div className="flex items-start gap-2">
               <Sparkles className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />

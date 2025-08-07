@@ -2,27 +2,33 @@
 export const BADGE_COLORS = {
   success: {
     border: '#007737',
-    text: '#007737'
+    text: '#007737',
+    background: '#E6F4EA'
   },
   error: {
     border: '#DF1C41', 
-    text: '#DF1C41'
+    text: '#DF1C41',
+    background: '#FFEBEE'
   },
   warning: {
     border: '#F2AE40',
-    text: '#F2AE40'
+    text: '#F2AE40',
+    background: '#FFF8E1'
   },
   info: {
     border: '#1750FB',
-    text: '#1750FB'
+    text: '#1750FB',
+    background: '#E3F2FD'
   },
   neutral: {
     border: '#9CA3AF',
-    text: '#9CA3AF'
+    text: '#9CA3AF',
+    background: '#F3F4F6'
   },
   processing: {
     border: '#7B59FF',
-    text: '#7B59FF'
+    text: '#7B59FF',
+    background: '#F3E8FF'
   }
 } as const;
 

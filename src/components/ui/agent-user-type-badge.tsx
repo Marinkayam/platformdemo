@@ -1,6 +1,5 @@
 
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 
 interface AgentUserTypeBadgeProps {
   type: "Monto" | "External";
@@ -8,38 +7,44 @@ interface AgentUserTypeBadgeProps {
 }
 
 export function AgentUserTypeBadge({ type, className }: AgentUserTypeBadgeProps) {
-  const getTypeStyles = () => {
+  const getTypeConfig = () => {
     switch (type) {
       case "Monto":
-        return "bg-purple-50 text-purple-700 border-purple-200";
+        return { 
+          textColor: "#7B59FF", 
+          bgColor: "#F3E8FF", 
+          text: "Monto User" 
+        };
       case "External":
-        return "bg-gray-50 text-gray-700 border-gray-200";
+        return { 
+          textColor: "#9CA3AF", 
+          bgColor: "#F3F4F6", 
+          text: "Customer User" 
+        };
       default:
-        return "bg-gray-50 text-gray-700 border-gray-200";
+        return { 
+          textColor: "#9CA3AF", 
+          bgColor: "#F3F4F6", 
+          text: "Customer User" 
+        };
     }
   };
 
-  const getDisplayText = () => {
-    switch (type) {
-      case "Monto":
-        return "Monto User";
-      case "External":
-        return "Customer User";
-      default:
-        return "Customer User";
-    }
-  };
+  const config = getTypeConfig();
 
   return (
-    <Badge
-      variant="outline"
+    <span
       className={cn(
-        "px-2.5 py-1 text-xs font-medium rounded-full border",
-        getTypeStyles(),
+        "inline-flex items-center px-4 py-1.5 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0",
         className
       )}
+      style={{
+        color: config.textColor,
+        backgroundColor: config.bgColor,
+        fontSize: '12px'
+      }}
     >
-      {getDisplayText()}
-    </Badge>
+      {config.text}
+    </span>
   );
 }

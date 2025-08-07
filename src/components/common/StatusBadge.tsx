@@ -6,19 +6,19 @@ interface StatusBadgeProps {
   className?: string;
 }
 
-const statusConfig: Record<PurchaseOrderStatus, { label: string; color: string }> = {
-  new: { label: "New", color: "bg-blue-100 text-blue-800" },
-  pending_approval: { label: "Pending Approval", color: "bg-yellow-100 text-yellow-800" },
-  approved: { label: "Approved", color: "bg-green-100 text-green-800" },
-  rejected: { label: "Rejected", color: "bg-red-100 text-red-800" },
-  cancelled: { label: "Cancelled", color: "bg-gray-100 text-gray-800" },
-  completed: { label: "Completed", color: "bg-purple-100 text-purple-800" },
-  New: { label: "New", color: "bg-blue-50 text-blue-600" },
-  "Partially Invoiced": { label: "Partially Invoiced", color: "bg-orange-100 text-orange-800" },
-  "Fully Invoiced": { label: "Fully Invoiced", color: "bg-green-50 text-green-700" }
+const statusConfig: Record<PurchaseOrderStatus, { label: string; textColor: string; bgColor: string }> = {
+  new: { label: "New", textColor: "#7B59FF", bgColor: "#F3E8FF" },
+  pending_approval: { label: "Pending Approval", textColor: "#F2AE40", bgColor: "#FFF8E1" },
+  approved: { label: "Approved", textColor: "#007737", bgColor: "#E6F4EA" },
+  rejected: { label: "Rejected", textColor: "#DF1C41", bgColor: "#FFEBEE" },
+  cancelled: { label: "Cancelled", textColor: "#9CA3AF", bgColor: "#F3F4F6" },
+  completed: { label: "Completed", textColor: "#7B59FF", bgColor: "#F3E8FF" },
+  New: { label: "New", textColor: "#7B59FF", bgColor: "#F3E8FF" },
+  "Partially Invoiced": { label: "Partially Invoiced", textColor: "#007737", bgColor: "#E6F4EA" },
+  "Fully Invoiced": { label: "Fully Invoiced", textColor: "#007737", bgColor: "#E6F4EA" }
 };
 
-const DEFAULT_CONFIG = { label: "Unknown", color: "bg-gray-200 text-gray-600" };
+const DEFAULT_CONFIG = { label: "Unknown", textColor: "#9CA3AF", bgColor: "#F3F4F6" };
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
   const config = statusConfig[status] || DEFAULT_CONFIG;
@@ -26,12 +26,16 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-        config.color,
+        "inline-flex items-center px-4 py-1.5 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0",
         className
       )}
+      style={{
+        color: config.textColor,
+        backgroundColor: config.bgColor,
+        fontSize: '12px'
+      }}
     >
       {config.label}
     </span>
   );
-} 
+}

@@ -1,6 +1,4 @@
 
-import { Badge } from "@/components/ui/badge";
-
 interface PortalStatusBadgeProps {
   status: 'Active' | 'Inactive' | 'Pending' | 'Error';
 }
@@ -9,38 +7,30 @@ export function PortalStatusBadge({ status }: PortalStatusBadgeProps) {
   const getStatusConfig = (status: string) => {
     switch (status) {
       case 'Active':
-        return {
-          className: "bg-green-100 text-green-700 border-green-200",
-          text: "Active"
-        };
+        return { textColor: "#007737", bgColor: "#E6F4EA", text: "Active" };
       case 'Inactive':
-        return {
-          className: "bg-gray-100 text-gray-700 border-gray-200",
-          text: "Inactive"
-        };
+        return { textColor: "#9CA3AF", bgColor: "#F3F4F6", text: "Inactive" };
       case 'Pending':
-        return {
-          className: "bg-yellow-100 text-yellow-700 border-yellow-200",
-          text: "Pending"
-        };
+        return { textColor: "#F2AE40", bgColor: "#FFF8E1", text: "Pending" };
       case 'Error':
-        return {
-          className: "bg-red-100 text-red-700 border-red-200",
-          text: "Error"
-        };
+        return { textColor: "#DF1C41", bgColor: "#FFEBEE", text: "Error" };
       default:
-        return {
-          className: "bg-gray-100 text-gray-700 border-gray-200",
-          text: status
-        };
+        return { textColor: "#9CA3AF", bgColor: "#F3F4F6", text: status };
     }
   };
 
   const config = getStatusConfig(status);
 
   return (
-    <Badge variant="outline" className={config.className}>
+    <span
+      className="inline-flex items-center px-4 py-1.5 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0"
+      style={{
+        color: config.textColor,
+        backgroundColor: config.bgColor,
+        fontSize: '12px'
+      }}
+    >
       {config.text}
-    </Badge>
+    </span>
   );
 }
