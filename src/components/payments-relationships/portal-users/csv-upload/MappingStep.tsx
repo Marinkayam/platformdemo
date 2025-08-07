@@ -74,26 +74,26 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
 
         {/* Mapping Table */}
         <div className="border rounded-lg overflow-hidden bg-white">
-          <Table className="w-[800px]">
+          <Table className="w-[600px]">
             <TableHeader>
               <TableRow className="bg-gray-50">
-                <TableHead className="font-medium text-gray-900 w-[260px] px-3 py-3 text-sm">Monto Field</TableHead>
-                <TableHead className="font-medium text-gray-900 w-[280px] px-3 py-3 text-sm">Your CSV Column</TableHead>
-                <TableHead className="font-medium text-gray-900 w-[260px] px-3 py-3 text-sm">Sample Data</TableHead>
+                <TableHead className="font-medium text-gray-900 w-[200px] px-2 py-2 text-sm">Monto Field</TableHead>
+                <TableHead className="font-medium text-gray-900 w-[200px] px-2 py-2 text-sm">Your CSV Column</TableHead>
+                <TableHead className="font-medium text-gray-900 w-[200px] px-2 py-2 text-sm">Sample Data</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {MONTO_FIELDS.map((field) => (
-                <TableRow key={field.key} className="h-14 hover:bg-gray-50/50">
-                  <TableCell className="px-3 py-3 w-[260px]">
-                    <div className="flex items-center gap-2">
+                <TableRow key={field.key} className="h-12 hover:bg-gray-50/50">
+                  <TableCell className="px-2 py-2 w-[200px]">
+                    <div className="flex items-center gap-1">
                       <span className="font-medium text-sm truncate">
                         {field.label}
                         {field.required && <span className="text-red-500 ml-1">*</span>}
                       </span>
                       <Tooltip>
                         <TooltipTrigger>
-                          <AlertCircle className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                          <AlertCircle className="h-3 w-3 text-gray-400 flex-shrink-0" />
                         </TooltipTrigger>
                         <TooltipContent>
                           <p className="text-sm max-w-xs">{field.description}</p>
@@ -101,12 +101,12 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
                       </Tooltip>
                     </div>
                   </TableCell>
-                  <TableCell className="px-3 py-3 w-[280px]">
+                  <TableCell className="px-2 py-2 w-[200px]">
                     <Select
                       value={mappings[field.key] || ''}
                       onValueChange={(value) => handleMapping(field.key, value)}
                     >
-                      <SelectTrigger className="w-full h-9 text-sm">
+                      <SelectTrigger className="w-full h-8 text-sm">
                         <SelectValue placeholder="Select column..." />
                       </SelectTrigger>
                       <SelectContent>
@@ -119,7 +119,7 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
                       </SelectContent>
                     </Select>
                   </TableCell>
-                  <TableCell className="px-3 py-3 w-[260px]">
+                  <TableCell className="px-2 py-2 w-[200px]">
                     <div className="text-sm text-gray-600 font-mono truncate">
                       {mappings[field.key] && mappings[field.key] !== 'skip' && data[0] 
                         ? data[0][mappings[field.key]] || '(empty)'
