@@ -154,6 +154,10 @@ export default function DesignSystemPlayground() {
     category: ''
   });
 
+  // Badge system states
+  const [badgeActiveTab, setBadgeActiveTab] = useState('components');
+  const [showAllBorders, setShowAllBorders] = useState(true);
+
   // Filter state for demonstration - using correct property names
   const [filters, setFilters] = useState<InvoiceFiltersType>({
     status: [],
@@ -581,8 +585,6 @@ export default function DesignSystemPlayground() {
   };
 
   const renderStatusBadges = () => {
-    const [activeTab, setActiveTab] = useState('components');
-    const [showAllBorders, setShowAllBorders] = useState(true);
 
     // Badge Style Functions
     const renderBadge = (text, color, bg, borderColor) => (
@@ -713,9 +715,9 @@ export default function DesignSystemPlayground() {
             {['components', 'examples'].map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => setBadgeActiveTab(tab)}
                 className={`flex-1 py-3 px-6 rounded-md font-medium text-sm capitalize transition-all ${
-                  activeTab === tab
+                  badgeActiveTab === tab
                     ? 'bg-primary-main text-white shadow-sm'
                     : 'text-grey-600 hover:text-grey-800 hover:bg-grey-100'
                 }`}
@@ -727,7 +729,7 @@ export default function DesignSystemPlayground() {
         </div>
 
         {/* Content */}
-        {activeTab === 'components' && (
+        {badgeActiveTab === 'components' && (
           <div className="space-y-8">
             {/* Primary Colors */}
             <div className="bg-white rounded-xl shadow-lg p-8">
@@ -883,7 +885,7 @@ export default function DesignSystemPlayground() {
           </div>
         )}
 
-        {activeTab === 'examples' && (
+        {badgeActiveTab === 'examples' && (
           <div className="space-y-10">
             {/* Badge Border Comparison */}
             <div className="bg-white rounded-xl shadow-lg p-8">
