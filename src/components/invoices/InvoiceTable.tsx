@@ -68,7 +68,7 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
   return (
     <div className="rounded-xl border border-gray-200 overflow-hidden bg-white max-w-full">
       <div className="overflow-x-auto max-w-full">
-        <Table className="min-w-[2800px]">
+        <Table className="min-w-[2200px]">
           <InvoiceTableHeader 
             sortField={sortField}
             sortDirection={sortDirection}
