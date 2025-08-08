@@ -27,7 +27,7 @@ export const AutoCreatedTag: React.FC = () => {
                 >
                   <BadgePill
                     label="Auto Created"
-                    color="info"
+                    color="processing"
                     variant="secondary"
                     startIcon={<Sparkles className="h-3 w-3" />}
                   />
