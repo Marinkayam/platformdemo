@@ -589,11 +589,12 @@ export default function DesignSystemPlayground() {
     // Badge Style Functions
     const renderBadge = (text, color, bg, borderColor) => (
       <span 
-        className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium border"
+        className="inline-flex items-center px-3 py-1 rounded-full font-medium border"
         style={{ 
           color: color, 
           backgroundColor: bg, 
-          borderColor: borderColor || color + '33'
+          borderColor: borderColor || color + '33',
+          fontSize: '12px'
         }}
       >
         {text}
@@ -602,10 +603,11 @@ export default function DesignSystemPlayground() {
 
     const renderBadgeNoBorder = (text, color, bg) => (
       <span 
-        className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium"
+        className="inline-flex items-center px-3 py-1 rounded-full font-medium"
         style={{ 
           color: color, 
-          backgroundColor: bg
+          backgroundColor: bg,
+          fontSize: '12px'
         }}
       >
         {text}
