@@ -23,14 +23,12 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   const badgeContent = (
     <span
       className={cn(
-        "inline-flex items-center px-3 py-1 rounded-full border font-medium whitespace-nowrap min-w-0 flex-shrink-0",
+        "inline-flex items-center px-3 py-1 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0",
         className
       )}
       style={{
         color: colors.text,
         backgroundColor: colors.background,
-        border: '1px solid',
-        borderColor: colors.border,
         minWidth: 'fit-content',
         fontSize: '12px'
       }}

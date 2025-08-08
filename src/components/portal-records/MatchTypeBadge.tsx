@@ -23,12 +23,10 @@ export function MatchTypeBadge({ type }: MatchTypeBadgeProps) {
 
   return (
     <span
-      className="inline-flex items-center px-3 py-1 rounded-full border font-medium whitespace-nowrap min-w-0 flex-shrink-0"
+      className="inline-flex items-center px-3 py-1 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0"
       style={{
         color: config.textColor,
         backgroundColor: config.bgColor,
-        border: '1px solid',
-        borderColor: `${config.textColor}33`,
         fontSize: '12px'
       }}
     >
