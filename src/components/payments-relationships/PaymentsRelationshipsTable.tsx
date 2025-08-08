@@ -185,7 +185,8 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                         <div className="flex items-center gap-2">
                           <Badge 
                             variant="outline" 
-                            className="text-[#DF1C41] border-[#DF1C41] bg-transparent px-3 py-1 text-[12px] font-medium inline-flex items-center gap-1.5"
+                            className="text-[#DF1C41] bg-transparent px-3 py-1 text-[12px] font-medium inline-flex items-center gap-1.5 border"
+                            style={{ borderColor: '#DF1C4133' }}
                           >
                             <AlertTriangle className="h-3.5 w-3.5" />
                             {highestIssue.message}
