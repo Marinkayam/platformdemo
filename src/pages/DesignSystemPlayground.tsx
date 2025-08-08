@@ -156,7 +156,7 @@ export default function DesignSystemPlayground() {
 
   // Badge system states
   const [badgeActiveTab, setBadgeActiveTab] = useState('components');
-  const [showAllBorders, setShowAllBorders] = useState(true);
+  const [showAllBorders, setShowAllBorders] = useState(false);
 
   // Filter state for demonstration - using correct property names
   const [filters, setFilters] = useState<InvoiceFiltersType>({
@@ -760,7 +760,7 @@ export default function DesignSystemPlayground() {
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             {category.statuses.map((status) => 
-                              renderBadge(status, category.color, category.bg, category.color)
+                              renderBadgeNoBorder(status, category.color, category.bg)
                             )}
                           </div>
                         </div>
@@ -770,45 +770,43 @@ export default function DesignSystemPlayground() {
                     <div className="flex flex-wrap gap-2">
                       {component.name === 'AgentUserTypeBadge' ? (
                         <>
-                          {renderBadge('Monto', '#7B59FF', '#F3E8FF', '#7B59FF')}
-                          {renderBadge('Customer', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
+                          {renderBadgeNoBorder('Monto', '#7B59FF', '#F3E8FF')}
+                          {renderBadgeNoBorder('Customer', '#9CA3AF', '#F3F4F6')}
                         </>
                       ) : component.name === 'Purchase Order StatusBadge' ? (
-                        <>
-                          {renderBadge('New', '#7B59FF', '#F3E8FF', '#7B59FF')}
-                          {renderBadge('Pending Approval', '#D48806', '#FFF8E1', '#D48806')
-                          }
-                          {renderBadge('Rejected', '#DF1C41', '#FFEBEE', '#DF1C41')}
-                          {renderBadge('Cancelled', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
-                          {renderBadge('Partially Invoiced', '#007737', '#E6F4EA', '#007737')}
-                          {renderBadge('Fully Invoiced', '#007737', '#E6F4EA', '#007737')}
+                        <> 
+                          {renderBadgeNoBorder('New', '#7B59FF', '#F3E8FF')}
+                          {renderBadgeNoBorder('Pending Approval', '#D48806', '#FFF8E1')}
+                          {renderBadgeNoBorder('Rejected', '#DF1C41', '#FFEBEE')}
+                          {renderBadgeNoBorder('Cancelled', '#9CA3AF', '#F3F4F6')}
+                          {renderBadgeNoBorder('Partially Invoiced', '#007737', '#E6F4EA')}
+                          {renderBadgeNoBorder('Fully Invoiced', '#007737', '#E6F4EA')}
                         </>
                       ) : component.name === 'PortalStatusBadge' ? (
                         <>
-                          {renderBadge('Active', '#007737', '#E6F4EA', '#007737')}
-                          {renderBadge('Inactive', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
-                          {renderBadge('Pending', '#D48806', '#FFF8E1', '#D48806')}
-                          {renderBadge('Error', '#DF1C41', '#FFEBEE', '#DF1C41')}
+                          {renderBadgeNoBorder('Active', '#007737', '#E6F4EA')}
+                          {renderBadgeNoBorder('Inactive', '#9CA3AF', '#F3F4F6')}
+                          {renderBadgeNoBorder('Pending', '#D48806', '#FFF8E1')}
+                          {renderBadgeNoBorder('Error', '#DF1C41', '#FFEBEE')}
                         </>
                       ) : component.name === 'MatchTypeBadge' ? (
                         <>
-                          {renderBadge('Primary', '#7B59FF', '#F3E8FF', '#7B59FF')}
-                          {renderBadge('Alternate', '#253EA7', '#EBF1FF', '#C7D9FF')}
-                          {renderBadge('Unmatched', '#253EA7', '#EBF1FF', '#C7D9FF')}
-                          {renderBadge('Conflict', '#253EA7', '#EBF1FF', '#C7D9FF')}
+                          {renderBadgeNoBorder('Primary', '#7B59FF', '#F3E8FF')}
+                          {renderBadgeNoBorder('Alternate', '#253EA7', '#EBF1FF')}
+                          {renderBadgeNoBorder('Unmatched', '#253EA7', '#EBF1FF')}
+                          {renderBadgeNoBorder('Conflict', '#253EA7', '#EBF1FF')}
                         </>
                       ) : component.name === 'Integration Hub Status' ? (
                         <>
-                          {renderBadge('Connected', '#007737', '#E6F4EA', '#007737')}
-                          {renderBadge('Coming Soon', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
+                          {renderBadgeNoBorder('Connected', '#007737', '#E6F4EA')}
+                          {renderBadgeNoBorder('Coming Soon', '#9CA3AF', '#F3F4F6')}
                         </>
                       ) : (
                         component.statuses.map((status, index) => 
-                          renderBadge(
+                          renderBadgeNoBorder(
                             status, 
                             primaryColors[index % primaryColors.length].hex,
-                            primaryColors[index % primaryColors.length].hex + '20',
-                            primaryColors[index % primaryColors.length].hex
+                            primaryColors[index % primaryColors.length].hex + '20'
                           )
                         )
                       )}
@@ -847,7 +845,7 @@ export default function DesignSystemPlayground() {
                   <h3 className="font-medium text-green-700 mb-3">Success States</h3>
                   <div className="flex flex-wrap gap-3">
                     {['Paid', 'Settled', 'Live', 'Connected', 'New'].map(status => 
-                      showAllBorders ? renderBadge(status, '#007737', '#E6F4EA', '#007737') : renderBadgeNoBorder(status, '#007737', '#E6F4EA')
+                      renderBadgeNoBorder(status, '#007737', '#E6F4EA')
                     )}
                   </div>
                 </div>
@@ -857,7 +855,7 @@ export default function DesignSystemPlayground() {
                   <h3 className="font-medium text-red-700 mb-3">Error States</h3>
                   <div className="flex flex-wrap gap-3">
                     {['Rejected By Buyer', 'Disconnected', 'Error', 'Unavailable'].map(status => 
-                      showAllBorders ? renderBadge(status, '#DF1C41', '#FFEBEE', '#DF1C41') : renderBadgeNoBorder(status, '#DF1C41', '#FFEBEE')
+                      renderBadgeNoBorder(status, '#DF1C41', '#FFEBEE')
                     )}
                   </div>
                 </div>
@@ -867,7 +865,7 @@ export default function DesignSystemPlayground() {
                   <h3 className="font-medium text-purple-700 mb-3">Processing States</h3>
                   <div className="flex flex-wrap gap-3">
                     {['Rtp Prepared', 'Rtp Sent', 'Awaiting Sc', 'Rejected By Monto'].map(status => 
-                      showAllBorders ? renderBadge(status, '#7B59FF', '#F3E8FF', '#7B59FF') : renderBadgeNoBorder(status, '#7B59FF', '#F3E8FF')
+                      renderBadgeNoBorder(status, '#7B59FF', '#F3E8FF')
                     )}
                   </div>
                 </div>
@@ -877,8 +875,19 @@ export default function DesignSystemPlayground() {
                   <h3 className="font-medium text-orange-700 mb-3">Warning States</h3>
                   <div className="flex flex-wrap gap-3">
                     {['In Process', 'Validating', 'Building', 'Approved By Buyer'].map(status => 
-                      showAllBorders ? renderBadge(status, '#D48806', '#FFF8E1', '#D48806') : renderBadgeNoBorder(status, '#D48806', '#FFF8E1')
+                      renderBadgeNoBorder(status, '#D48806', '#FFF8E1')
                     )}
+                  </div>
+                </div>
+
+                {/* Secondary Statuses (Outline) */}
+                <div>
+                  <h3 className="font-medium text-grey-800 mb-3">Secondary Statuses (Outline)</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {renderBadge('Missing Credentials', '#DF1C41', 'transparent', '#DF1C4133')}
+                    {renderBadge('Authentication Failed', '#DF1C41', 'transparent', '#DF1C4133')}
+                    {renderBadge('Configuration Error', '#DF1C41', 'transparent', '#DF1C4133')}
+                    {renderBadge('Auto-created from RTP', '#7B59FF', 'transparent', '#E1D6F9')}
                   </div>
                 </div>
               </div>
