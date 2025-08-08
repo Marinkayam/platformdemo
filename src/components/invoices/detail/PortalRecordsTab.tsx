@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp, TriangleAlert } from "lucide-react";
 import { invoiceSpecificRecords } from "@/data/portalRecords/invoiceSpecificData";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "@/components/portal-records/PortalLogo";
 import { MakePrimaryConfirmModal } from "./MakePrimaryConfirmModal";
 import { toast } from "@/hooks/use-toast";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 interface PortalRecordsTabProps {
   invoiceId: string;
@@ -94,23 +94,6 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
       setExpandedId(primary.id);
     }
   }, [records]);
-
-  const getStatusBadge = (status: PortalRecord['status']) => {
-    const statusColors = {
-      'Paid': 'bg-[#E6F4EA] text-[#007737] hover:bg-[#E6F4EA]',
-      'Approved': 'bg-[#E6F4EA] text-[#007737] hover:bg-[#E6F4EA]',
-      'Pending': 'bg-[#FFF8E1] text-[#F2AE40] hover:bg-[#FFF8E1]',
-      'Rejected': 'bg-[#FFEBEE] text-[#D32F2F] hover:bg-[#FFEBEE]'
-    };
-
-    const colorClass = statusColors[status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800 hover:bg-gray-100';
-
-    return (
-      <Badge className={colorClass}>
-        {status}
-      </Badge>
-    );
-  };
 
   const getMatchTypeDisplay = (matchType: PortalRecord['matchType']) => {
     if (matchType === "Primary") {
@@ -216,7 +199,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                         <PortalLogo portalName={record.portal} className="w-4 h-4" />
                       </td>
                       <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        {getStatusBadge(record.status)}
+                        <StatusBadge status={record.portalStatus} />
                       </td>
                       <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
                         <span className="text-sm text-gray-600">

@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ExceptionBanner } from "@/components/ui/exception-banner";
 import { WandSparkles, Sparkles } from "lucide-react";
 import { Invoice } from "@/types/invoice";
@@ -13,6 +12,7 @@ import { duplicateInvoices } from "@/data/invoices/duplicates";
 import { ExcludeAllModal } from "./ExcludeAllModal";
 import { ConfirmationDialog } from "./confirmation/ConfirmationDialog";
 import { DuplicateInvoiceCardsGrid } from "./duplicate-cards";
+import BadgePill from "@/components/ui/badge-pill";
 
 interface DuplicateInvoiceHandlerProps {
   invoice: Invoice;
@@ -102,9 +102,7 @@ export function DuplicateInvoiceHandler({ invoice, exceptions, onResolveExceptio
               <h2 className="text-lg font-medium text-black">
                 Resolve Exception
               </h2>
-              <Badge variant="destructive" className="bg-red-100 text-red-800 border-red-200">
-                Duplication
-              </Badge>
+              <BadgePill label="Duplication" color="error" variant="secondary" />
             </div>
             <div className="flex items-start gap-2">
               <Sparkles className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />

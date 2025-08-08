@@ -11,6 +11,7 @@ import { Invoice } from "@/types/invoice";
 import { DuplicationResolutionModal } from "./DuplicationResolutionModal";
 import { ComparisonTable } from "./ComparisonTable";
 import { useNotes } from "@/hooks/useNotes";
+import BadgePill from "@/components/ui/badge-pill";
 
 interface DuplicationExceptionProps {
   currentInvoice: Invoice;
@@ -78,9 +79,7 @@ export function DuplicationException({
       <div className="space-y-3">
         <div className="flex items-center gap-3">
           <h2 className="text-lg font-medium text-gray-900">Resolve Exception</h2>
-          <Badge className="bg-purple-100 text-purple-700 border-purple-200">
-            Duplication
-          </Badge>
+          <BadgePill label="Duplication" color="error" variant="secondary" />
         </div>
         <div className="flex items-start gap-2">
           <Sparkles className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
