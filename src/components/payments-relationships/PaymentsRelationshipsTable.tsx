@@ -186,7 +186,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                           <AlertTriangle className="h-4 w-4 text-red-500 flex-shrink-0" />
                           <Badge 
                             variant="outline" 
-                            className="text-red-700 border-red-200 bg-red-50 font-normal"
+                            className="text-red-700 border-red-300 bg-transparent px-3 py-1 text-[12px] font-medium"
                           >
                             {highestIssue.message}
                           </Badge>
