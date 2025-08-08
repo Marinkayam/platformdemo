@@ -9,7 +9,7 @@ export function StatusLegend() {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <span 
-              className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+              className="inline-flex items-center px-3 py-1 rounded-full font-medium"
               style={{ color: '#007737', backgroundColor: '#E6F4EA', fontSize: '12px' }}
             >
               New
@@ -21,7 +21,7 @@ export function StatusLegend() {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <span 
-              className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+              className="inline-flex items-center px-3 py-1 rounded-full font-medium"
               style={{ color: '#9CA3AF', backgroundColor: '#F3F4F6', fontSize: '12px' }}
             >
               Exist
@@ -33,7 +33,7 @@ export function StatusLegend() {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <span 
-              className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+              className="inline-flex items-center px-3 py-1 rounded-full font-medium"
               style={{ color: '#1750FB', backgroundColor: '#E3F2FD', fontSize: '12px' }}
             >
               Update
@@ -45,7 +45,7 @@ export function StatusLegend() {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <span 
-              className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
+              className="inline-flex items-center px-3 py-1 rounded-full font-medium"
               style={{ color: '#DF1C41', backgroundColor: '#FFEBEE', fontSize: '12px' }}
             >
               Invalid
@@ -57,8 +57,8 @@ export function StatusLegend() {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <span 
-              className="inline-flex items-center px-4 py-1.5 rounded-full font-medium"
-              style={{ color: '#F2AE40', backgroundColor: '#FFF8E1', fontSize: '12px' }}
+              className="inline-flex items-center px-3 py-1 rounded-full font-medium"
+              style={{ color: '#D48806', backgroundColor: '#FFF8E1', fontSize: '12px' }}
             >
               Warning
             </span>

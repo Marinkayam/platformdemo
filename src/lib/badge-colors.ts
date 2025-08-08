@@ -11,8 +11,8 @@ export const BADGE_COLORS = {
     background: '#FFEBEE'
   },
   warning: {
-    border: '#F2AE40',
-    text: '#F2AE40',
+    border: '#D48806',
+    text: '#D48806',
     background: '#FFF8E1'
   },
   info: {

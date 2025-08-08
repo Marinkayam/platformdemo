@@ -8,7 +8,7 @@ interface StatusBadgeProps {
 
 const statusConfig: Record<PurchaseOrderStatus, { label: string; textColor: string; bgColor: string }> = {
   new: { label: "New", textColor: "#7B59FF", bgColor: "#F3E8FF" },
-  pending_approval: { label: "Pending Approval", textColor: "#F2AE40", bgColor: "#FFF8E1" },
+  pending_approval: { label: "Pending Approval", textColor: "#D48806", bgColor: "#FFF8E1" },
   approved: { label: "Approved", textColor: "#007737", bgColor: "#E6F4EA" },
   rejected: { label: "Rejected", textColor: "#DF1C41", bgColor: "#FFEBEE" },
   cancelled: { label: "Cancelled", textColor: "#9CA3AF", bgColor: "#F3F4F6" },
@@ -26,7 +26,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center px-4 py-1.5 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0",
+        "inline-flex items-center px-3 py-1 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0",
         className
       )}
       style={{

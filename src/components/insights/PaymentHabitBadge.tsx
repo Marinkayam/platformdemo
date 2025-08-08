@@ -13,7 +13,7 @@ export function PaymentHabitBadge({ paymentHabit }: PaymentHabitBadgeProps) {
       case 'Good':
         return { textColor: '#1750FB', bgColor: '#E3F2FD' };
       case 'Fair':
-        return { textColor: '#F2AE40', bgColor: '#FFF8E1' };
+        return { textColor: '#D48806', bgColor: '#FFF8E1' };
       case 'Poor':
         return { textColor: '#DF1C41', bgColor: '#FFEBEE' };
       default:
@@ -29,7 +29,7 @@ export function PaymentHabitBadge({ paymentHabit }: PaymentHabitBadgeProps) {
         DSO: {paymentHabit.dso}d | {paymentHabit.terms}
       </div>
       <span
-        className="inline-flex items-center px-4 py-1.5 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0"
+        className="inline-flex items-center px-3 py-1 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0"
         style={{
           color: config.textColor,
           backgroundColor: config.bgColor,

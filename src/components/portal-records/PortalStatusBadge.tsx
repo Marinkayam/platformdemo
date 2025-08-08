@@ -11,7 +11,7 @@ export function PortalStatusBadge({ status }: PortalStatusBadgeProps) {
       case 'Inactive':
         return { textColor: "#9CA3AF", bgColor: "#F3F4F6", text: "Inactive" };
       case 'Pending':
-        return { textColor: "#F2AE40", bgColor: "#FFF8E1", text: "Pending" };
+        return { textColor: "#D48806", bgColor: "#FFF8E1", text: "Pending" };
       case 'Error':
         return { textColor: "#DF1C41", bgColor: "#FFEBEE", text: "Error" };
       default:
@@ -23,7 +23,7 @@ export function PortalStatusBadge({ status }: PortalStatusBadgeProps) {
 
   return (
     <span
-      className="inline-flex items-center px-4 py-1.5 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0"
+      className="inline-flex items-center px-3 py-1 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0"
       style={{
         color: config.textColor,
         backgroundColor: config.bgColor,

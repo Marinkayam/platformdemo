@@ -618,7 +618,7 @@ export default function DesignSystemPlayground() {
     const primaryColors = [
       { name: 'Success', hex: '#007737', usage: 'Positive states', icon: Check },
       { name: 'Error', hex: '#DF1C41', usage: 'Error states', icon: X },
-      { name: 'Warning', hex: '#F2AE40', usage: 'Processing/Pending', icon: AlertCircle },
+      { name: 'Warning', hex: '#D48806', usage: 'Processing/Pending', icon: AlertCircle },
       { name: 'Info', hex: '#1750FB', usage: 'Information', icon: Info },
       { name: 'Neutral', hex: '#9CA3AF', usage: 'Inactive states', icon: Clock },
       { name: 'Processing', hex: '#7B59FF', usage: 'Primary brand', icon: Zap },
@@ -645,7 +645,7 @@ export default function DesignSystemPlayground() {
         categories: [
           { type: 'Success', color: '#007737', bg: '#E6F4EA', statuses: ['Paid', 'Settled', 'Partially Settled', 'Live', 'Connected', 'New', 'Fully Invoiced', 'Partially Invoiced'] },
           { type: 'Error', color: '#DF1C41', bg: '#FFEBEE', statuses: ['Rejected By Buyer', 'Disconnected', 'Error', 'Unavailable', 'Pending Action'] },
-          { type: 'Warning', color: '#F2AE40', bg: '#FFF8E1', statuses: ['In Process', 'Validating', 'Building', 'Approved By Buyer'] },
+          { type: 'Warning', color: '#D48806', bg: '#FFF8E1', statuses: ['In Process', 'Validating', 'Building', 'Approved By Buyer'] },
           { type: 'Info', color: '#1750FB', bg: '#E3F2FD', statuses: ['External Submission'] },
           { type: 'Neutral', color: '#9CA3AF', bg: '#F3F4F6', statuses: ['Inactive'] },
           { type: 'Processing', color: '#7B59FF', bg: '#F3E8FF', statuses: ['Rtp Prepared', 'Rtp Sent', 'Awaiting Sc', 'Rejected By Monto'] },
@@ -776,7 +776,8 @@ export default function DesignSystemPlayground() {
                       ) : component.name === 'Purchase Order StatusBadge' ? (
                         <>
                           {renderBadge('New', '#7B59FF', '#F3E8FF', '#7B59FF')}
-                          {renderBadge('Pending Approval', '#F2AE40', '#FFF8E1', '#F2AE40')}
+                          {renderBadge('Pending Approval', '#D48806', '#FFF8E1', '#D48806')
+                          }
                           {renderBadge('Rejected', '#DF1C41', '#FFEBEE', '#DF1C41')}
                           {renderBadge('Cancelled', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
                           {renderBadge('Partially Invoiced', '#007737', '#E6F4EA', '#007737')}
@@ -786,7 +787,7 @@ export default function DesignSystemPlayground() {
                         <>
                           {renderBadge('Active', '#007737', '#E6F4EA', '#007737')}
                           {renderBadge('Inactive', '#9CA3AF', '#F3F4F6', '#9CA3AF')}
-                          {renderBadge('Pending', '#F2AE40', '#FFF8E1', '#F2AE40')}
+                          {renderBadge('Pending', '#D48806', '#FFF8E1', '#D48806')}
                           {renderBadge('Error', '#DF1C41', '#FFEBEE', '#DF1C41')}
                         </>
                       ) : component.name === 'MatchTypeBadge' ? (
@@ -876,7 +877,7 @@ export default function DesignSystemPlayground() {
                   <h3 className="font-medium text-orange-700 mb-3">Warning States</h3>
                   <div className="flex flex-wrap gap-3">
                     {['In Process', 'Validating', 'Building', 'Approved By Buyer'].map(status => 
-                      showAllBorders ? renderBadge(status, '#F2AE40', '#FFF8E1', '#F2AE40') : renderBadgeNoBorder(status, '#F2AE40', '#FFF8E1')
+                      showAllBorders ? renderBadge(status, '#D48806', '#FFF8E1', '#D48806') : renderBadgeNoBorder(status, '#D48806', '#FFF8E1')
                     )}
                   </div>
                 </div>
