@@ -724,58 +724,7 @@ export default function DesignSystemPlayground() {
         {/* Content */}
         {badgeActiveTab === 'components' && (
           <div className="space-y-8">
-            {/* Primary Colors */}
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <h2 className="text-2xl font-semibold mb-6">Primary Color System</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {primaryColors.map((color) => {
-                  const Icon = color.icon;
-                  return (
-                    <div key={color.name} className="border border-grey-200 rounded-xl p-5 hover:shadow-md transition-shadow">
-                      <div className="flex items-center mb-4">
-                        <div 
-                          className="w-14 h-14 rounded-xl flex items-center justify-center mr-3 shadow-sm"
-                          style={{ backgroundColor: color.hex + '20' }}
-                        >
-                          <Icon size={26} style={{ color: color.hex }} />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-lg">{color.name}</h3>
-                          <p className="text-sm text-grey-500">{color.usage}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <code className="text-sm bg-grey-50 px-3 py-1.5 rounded font-mono">{color.hex}</code>
-                        <div 
-                          className="w-28 h-10 rounded-lg border shadow-sm"
-                          style={{ backgroundColor: color.hex }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
 
-            {/* Brand Colors */}
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <h2 className="text-2xl font-semibold mb-6">Custom Brand Colors</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {brandColors.map((color) => (
-                  <div key={color.purpose} className="border border-grey-200 rounded-xl p-5 hover:shadow-md transition-shadow flex items-center justify-between">
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg">{color.purpose}</h3>
-                      <p className="text-sm text-grey-500 mb-3">{color.usage}</p>
-                      <code className="text-sm bg-grey-50 px-3 py-1.5 rounded font-mono">{color.hex}</code>
-                    </div>
-                    <div 
-                      className="w-24 h-24 rounded-xl border shadow-sm ml-4"
-                      style={{ backgroundColor: color.hex }}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
 
             {/* Badge Components */}
             <h2 className="text-2xl font-semibold mb-6">Badge Components & Their Statuses</h2>
