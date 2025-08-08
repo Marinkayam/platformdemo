@@ -183,11 +183,11 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                     <TableCell className="py-6">
                       {highestIssue ? (
                         <div className="flex items-center gap-2">
-                          <AlertTriangle className="h-4 w-4 text-red-500 flex-shrink-0" />
                           <Badge 
                             variant="outline" 
-                            className="text-red-700 border-red-300 bg-transparent px-3 py-1 text-[12px] font-medium"
+                            className="text-[#DF1C41] border-[#DF1C41] bg-transparent px-3 py-1 text-[12px] font-medium inline-flex items-center gap-1.5"
                           >
+                            <AlertTriangle className="h-3.5 w-3.5" />
                             {highestIssue.message}
                           </Badge>
                         </div>
