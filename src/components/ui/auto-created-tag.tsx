@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
+import { SparklesText } from "@/components/common/SparklesText";
 export const AutoCreatedTag: React.FC = () => {
   const [animate, setAnimate] = useState(true);
   useEffect(() => {
@@ -26,7 +26,7 @@ export const AutoCreatedTag: React.FC = () => {
                 className="inline-flex items-center rounded-full border border-[#E1D6F9] bg-transparent px-3 py-1 text-[12px] font-medium text-[#7B59FF] select-none cursor-default whitespace-nowrap"
                 style={{ minWidth: 0 }}
               >
-                Auto-created from RTP
+                <SparklesText text="Auto Created" sparklesCount={10} duration={2200} />
               </motion.div>
             </AnimatePresence>
           </span>
