@@ -156,7 +156,6 @@ export default function DesignSystemPlayground() {
 
   // Badge system states
   const [badgeActiveTab, setBadgeActiveTab] = useState('components');
-  const [showAllBorders, setShowAllBorders] = useState(false);
 
   // Filter state for demonstration - using correct property names
   const [filters, setFilters] = useState<InvoiceFiltersType>({
@@ -701,26 +700,19 @@ export default function DesignSystemPlayground() {
         <div>
           <h1 className="text-4xl font-bold text-grey-900 mb-3">Badge System Visual Dashboard</h1>
           <p className="text-lg text-grey-600 mb-2">Comprehensive overview of all badge components and color systems</p>
-          <p className="text-sm text-grey-500">View component definitions and live badge examples with toggle for borders</p>
+          <p className="text-sm text-grey-500">View component definitions and live badge examples.</p>
         </div>
 
-        {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-sm mb-8 max-w-md">
-          <nav className="flex space-x-1 p-1">
-            {['components', 'examples'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setBadgeActiveTab(tab)}
-                className={`flex-1 py-3 px-6 rounded-md font-medium text-sm capitalize transition-all ${
-                  badgeActiveTab === tab
-                    ? 'bg-primary-main text-white shadow-sm'
-                    : 'text-grey-600 hover:text-grey-800 hover:bg-grey-100'
-                }`}
-              >
-                {tab === 'components' ? 'Components & Colors' : 'Badge Examples'}
-              </button>
-            ))}
-          </nav>
+        {/* TabsNav for Badge Dashboard */}
+        <div className="bg-white rounded-lg mb-8 max-w-md">
+          <TabsNav
+            activeTab={badgeActiveTab}
+            onTabChange={setBadgeActiveTab}
+            tabs={[
+              { id: "components", label: "Components & Colors" },
+              { id: "examples", label: "Badge Examples" },
+            ]}
+          />
         </div>
 
         {/* Content */}
@@ -733,7 +725,7 @@ export default function DesignSystemPlayground() {
             {badgeComponents.map((component) => {
               const Icon = component.icon;
               return (
-                <div key={component.name} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                <div key={component.name} className="bg-white rounded-xl p-6">
                   <div className="flex items-center mb-4">
                     <Icon className="mr-3 text-grey-400" size={24} />
                     <div>
@@ -821,22 +813,9 @@ export default function DesignSystemPlayground() {
         {badgeActiveTab === 'examples' && (
           <div className="space-y-10">
             {/* Badge Border Comparison */}
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <div className="flex items-center justify-between mb-8">
+            <div className="bg-white rounded-xl p-8">
+              <div className="mb-8">
                 <h2 className="text-3xl font-semibold text-grey-800">All Badge Examples</h2>
-                <label className="flex items-center cursor-pointer">
-                  <span className="mr-3 text-sm font-medium text-grey-700">Show Borders</span>
-                  <div className="relative">
-                    <input
-                      type="checkbox"
-                      checked={showAllBorders}
-                      onChange={(e) => setShowAllBorders(e.target.checked)}
-                      className="sr-only"
-                    />
-                    <div className={`block w-14 h-8 rounded-full ${showAllBorders ? 'bg-primary-main' : 'bg-grey-300'}`}></div>
-                    <div className={`absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${showAllBorders ? 'transform translate-x-6' : ''}`}></div>
-                  </div>
-                </label>
               </div>
               
               <div className="space-y-6">
