@@ -1,36 +1,20 @@
+import BadgePill, { BadgeColorKey } from "@/components/ui/badge-pill";
 
 interface MatchTypeBadgeProps {
   type: 'Primary' | 'Alternate' | 'Unmatched' | 'Conflict';
 }
 
 export function MatchTypeBadge({ type }: MatchTypeBadgeProps) {
-  const getTypeConfig = (type: string) => {
-    switch (type) {
-      case 'Primary':
-        return { textColor: "#7B59FF", bgColor: "#F3E8FF", text: "Primary" };
-      case 'Alternate':
-        return { textColor: "#253EA7", bgColor: "#EBF1FF", text: "Alternate" };
-      case 'Unmatched':
-        return { textColor: "#253EA7", bgColor: "#EBF1FF", text: "Unmatched" };
-      case 'Conflict':
-        return { textColor: "#253EA7", bgColor: "#EBF1FF", text: "Conflict" };
-      default:
-        return { textColor: "#9CA3AF", bgColor: "#F3F4F6", text: type };
-    }
+  const configMap: Record<MatchTypeBadgeProps['type'], { label: string; color: BadgeColorKey }> = {
+    Primary: { label: 'Primary', color: 'processing' },
+    Alternate: { label: 'Alternate', color: 'info' },
+    Unmatched: { label: 'Unmatched', color: 'neutral' },
+    Conflict: { label: 'Conflict', color: 'warning' }
   };
 
-  const config = getTypeConfig(type);
+  const { label, color } = configMap[type] ?? { label: type, color: 'neutral' };
 
   return (
-    <span
-      className="inline-flex items-center px-3 py-1 rounded-full font-medium whitespace-nowrap min-w-0 flex-shrink-0"
-      style={{
-        color: config.textColor,
-        backgroundColor: config.bgColor,
-        fontSize: '12px'
-      }}
-    >
-      {config.text}
-    </span>
+    <BadgePill label={label} color={color} variant="secondary" />
   );
 }

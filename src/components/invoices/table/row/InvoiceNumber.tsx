@@ -1,6 +1,6 @@
-
 import { AlertTriangle, SquareStack } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import BadgePill from "@/components/ui/badge-pill";
 
 interface InvoiceNumberProps {
   number: string;
@@ -31,7 +31,12 @@ export function InvoiceNumber({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <SquareStack className="h-4 w-4 text-red-500 flex-shrink-0" />
+                <BadgePill
+                  label="Duplicate"
+                  color="error"
+                  variant="secondary"
+                  startIcon={<SquareStack className="h-3.5 w-3.5" />}
+                />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Duplicated invoice</p>
