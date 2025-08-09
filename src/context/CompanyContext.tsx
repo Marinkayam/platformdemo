@@ -25,8 +25,8 @@ export const useCompany = () => {
 export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo>({
     logoUrl: null,
-    name: '',
-    timezone: 'UTC'
+    name: 'Monto LTD',
+    timezone: '🇺🇸 UTC-8 (GMT-8) Pacific Standard Time'
   });
 
   // Load company info from localStorage on mount

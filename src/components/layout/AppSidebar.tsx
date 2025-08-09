@@ -23,7 +23,7 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
         ) : (
           <div className="w-full flex items-center h-full px-6 gap-3">
             <CompanyLogo collapsed={false} />
-            <span className="text-base font-normal text-foreground">{companyInfo.name || "Monto"}</span>
+            <span className="text-base font-normal text-foreground">{companyInfo.name || "Monto LTD"}</span>
           </div>
         )}
       </SidebarHeader>

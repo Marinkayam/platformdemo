@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DesignFilterDropdown } from "@/components/ui/design-filter-dropdown";
 import { CloudUpload, Loader2, Copy } from "lucide-react";
 import { showSuccessToast } from "@/lib/toast-helpers";
 import { toast } from "sonner";
@@ -87,44 +87,50 @@ export function CompanyTab() {
             <label className="block text-[15px] mb-2 font-medium text-gray-800">Company Name</label>
             <Input 
               className="h-12 bg-gray-100 text-base font-normal" 
-              value={companyInfo.name || "Monto Technologies"} 
+              value={companyInfo.name || "Monto LTD"} 
               disabled
             />
           </div>
           <div>
             <label className="block text-[15px] mb-2 font-medium text-gray-800">Timezone</label>
-            <Select defaultValue="utc-8">
-              <SelectTrigger className="h-12 bg-white">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent side="bottom" align="start" sideOffset={4} position="popper" className="max-h-48 overflow-y-auto">
-                <SelectItem value="utc-12">🇺🇸 UTC-12 (GMT-12) Baker Island</SelectItem>
-                <SelectItem value="utc-11">🇺🇸 UTC-11 (GMT-11) Hawaii</SelectItem>
-                <SelectItem value="utc-10">🇺🇸 UTC-10 (GMT-10) Alaska</SelectItem>
-                <SelectItem value="utc-9">🇺🇸 UTC-9 (GMT-9) Alaska</SelectItem>
-                <SelectItem value="utc-8">🇺🇸 UTC-8 (GMT-8) Pacific Standard Time</SelectItem>
-                <SelectItem value="utc-7">🇺🇸 UTC-7 (GMT-7) Mountain Standard Time</SelectItem>
-                <SelectItem value="utc-6">🇺🇸 UTC-6 (GMT-6) Central Standard Time</SelectItem>
-                <SelectItem value="utc-5">🇺🇸 UTC-5 (GMT-5) Eastern Standard Time</SelectItem>
-                <SelectItem value="utc-4">🇻🇪 UTC-4 (GMT-4) Atlantic Standard Time</SelectItem>
-                <SelectItem value="utc-3">🇧🇷 UTC-3 (GMT-3) Argentina Time</SelectItem>
-                <SelectItem value="utc-2">🇧🇷 UTC-2 (GMT-2) South Georgia</SelectItem>
-                <SelectItem value="utc-1">🇨🇻 UTC-1 (GMT-1) Azores Time</SelectItem>
-                <SelectItem value="utc+0">🇬🇧 UTC+0 (GMT+0) Greenwich Mean Time</SelectItem>
-                <SelectItem value="utc+1">🇩🇪 UTC+1 (GMT+1) Central European Time</SelectItem>
-                <SelectItem value="utc+2">🇪🇪 UTC+2 (GMT+2) Eastern European Time</SelectItem>
-                <SelectItem value="utc+3">🇷🇺 UTC+3 (GMT+3) Moscow Time</SelectItem>
-                <SelectItem value="utc+4">🇦🇪 UTC+4 (GMT+4) Gulf Standard Time</SelectItem>
-                <SelectItem value="utc+5">🇵🇰 UTC+5 (GMT+5) Pakistan Standard Time</SelectItem>
-                <SelectItem value="utc+6">🇧🇩 UTC+6 (GMT+6) Bangladesh Standard Time</SelectItem>
-                <SelectItem value="utc+7">🇹🇭 UTC+7 (GMT+7) Indochina Time</SelectItem>
-                <SelectItem value="utc+8">🇨🇳 UTC+8 (GMT+8) China Standard Time</SelectItem>
-                <SelectItem value="utc+9">🇯🇵 UTC+9 (GMT+9) Japan Standard Time</SelectItem>
-                <SelectItem value="utc+10">🇦🇺 UTC+10 (GMT+10) Australian Eastern Time</SelectItem>
-                <SelectItem value="utc+11">🇸🇧 UTC+11 (GMT+11) Solomon Islands Time</SelectItem>
-                <SelectItem value="utc+12">🇳🇿 UTC+12 (GMT+12) New Zealand Standard Time</SelectItem>
-              </SelectContent>
-            </Select>
+            <DesignFilterDropdown
+              label="Select"
+              value={companyInfo.timezone && companyInfo.timezone !== '' ? companyInfo.timezone : "🇺🇸 UTC-8 (GMT-8) Pacific Standard Time"}
+              options={[
+                "🇺🇸 UTC-12 (GMT-12) Baker Island",
+                "🇺🇸 UTC-11 (GMT-11) Hawaii",
+                "🇺🇸 UTC-10 (GMT-10) Alaska",
+                "🇺🇸 UTC-9 (GMT-9) Alaska",
+                "🇺🇸 UTC-8 (GMT-8) Pacific Standard Time",
+                "🇺🇸 UTC-7 (GMT-7) Mountain Standard Time",
+                "🇺🇸 UTC-6 (GMT-6) Central Standard Time",
+                "🇺🇸 UTC-5 (GMT-5) Eastern Standard Time",
+                "🇻🇪 UTC-4 (GMT-4) Atlantic Standard Time",
+                "🇧🇷 UTC-3 (GMT-3) Argentina Time",
+                "🇧🇷 UTC-2 (GMT-2) South Georgia",
+                "🇨🇻 UTC-1 (GMT-1) Azores Time",
+                "🇬🇧 UTC+0 (GMT+0) Greenwich Mean Time",
+                "🇩🇪 UTC+1 (GMT+1) Central European Time",
+                "🇪🇪 UTC+2 (GMT+2) Eastern European Time",
+                "🇷🇺 UTC+3 (GMT+3) Moscow Time",
+                "🇦🇪 UTC+4 (GMT+4) Gulf Standard Time",
+                "🇵🇰 UTC+5 (GMT+5) Pakistan Standard Time",
+                "🇧🇩 UTC+6 (GMT+6) Bangladesh Standard Time",
+                "🇹🇭 UTC+7 (GMT+7) Indochina Time",
+                "🇨🇳 UTC+8 (GMT+8) China Standard Time",
+                "🇯🇵 UTC+9 (GMT+9) Japan Standard Time",
+                "🇦🇺 UTC+10 (GMT+10) Australian Eastern Time",
+                "🇸🇧 UTC+11 (GMT+11) Solomon Islands Time",
+                "🇳🇿 UTC+12 (GMT+12) New Zealand Standard Time"
+              ]}
+              onSelect={(val) => {
+                if (typeof val === "string") {
+                  updateCompanyInfo({ timezone: val });
+                }
+              }}
+              searchable
+              className="w-full"
+            />
             <p className="text-xs text-gray-500 mt-2">
               Used for syncing timestamps from your portals and documents.
             </p>
