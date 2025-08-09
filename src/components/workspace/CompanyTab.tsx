@@ -94,9 +94,9 @@ export function CompanyTab() {
           <div>
             <label className="block text-[15px] mb-2 font-medium text-gray-800">Timezone</label>
             <DesignFilterDropdown
-              label="Select"
-              value={companyInfo.timezone && companyInfo.timezone !== '' ? companyInfo.timezone : "🇺🇸 UTC-8 (GMT-8) Pacific Standard Time"}
+              value={companyInfo.timezone && companyInfo.timezone !== '' ? companyInfo.timezone : "🇮🇱 Israel (Asia/Jerusalem)"}
               options={[
+                "🇮🇱 Israel (Asia/Jerusalem)",
                 "🇺🇸 UTC-12 (GMT-12) Baker Island",
                 "🇺🇸 UTC-11 (GMT-11) Hawaii",
                 "🇺🇸 UTC-10 (GMT-10) Alaska",

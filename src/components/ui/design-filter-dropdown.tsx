@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface DesignFilterDropdownProps {
-  label: string;
+  label?: string;
   value: string | string[];
   options: string[];
   onSelect: (value: string | string[]) => void;
@@ -14,7 +14,7 @@ interface DesignFilterDropdownProps {
 }
 
 export function DesignFilterDropdown({ 
-  label, 
+  label = "", 
   value, 
   options, 
   onSelect, 
@@ -63,10 +63,12 @@ export function DesignFilterDropdown({
     <div className={`relative ${className}`} ref={dropdownRef}>
       <div 
         onClick={() => setIsOpen(!isOpen)} 
-        className="flex items-center gap-2 border border-grey-400 rounded-lg px-3 h-9 bg-background-paper cursor-pointer hover:bg-grey-200 transition-colors"
+        className="flex items-center gap-2 border border-grey-400 rounded-lg px-3 h-12 w-full bg-background-paper cursor-pointer hover:bg-grey-200 transition-colors"
       >
-        <span className="text-sm text-grey-500 whitespace-nowrap">{label}:</span>
-        <span className="text-sm font-medium truncate max-w-[100px]">
+        {label && (
+          <span className="text-sm text-grey-500 whitespace-nowrap">{label}</span>
+        )}
+        <span className="text-sm font-medium truncate flex-1 min-w-0">
           {Array.isArray(value) 
             ? (value.length === 0 ? "All" : displayValue) 
             : (value === "All" ? "All" : value)
@@ -81,7 +83,7 @@ export function DesignFilterDropdown({
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            className="absolute top-full left-0 mt-1 w-60 bg-background-paper border border-grey-300 rounded-lg shadow-lg py-1 z-[9999]"
+            className="absolute top-full left-0 mt-1 w-full min-w-[16rem] bg-background-paper border border-grey-300 rounded-lg shadow-lg py-1 z-[9999]"
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
