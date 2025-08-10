@@ -32,7 +32,7 @@ export function InvoiceTableFooter({ invoices, columnsCount }: InvoiceTableFoote
   return (
     <TableFooter>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableCell className="bg-[#F6F7F9] w-[250px] min-w-[250px] sticky left-0 z-30 border-r border-gray-200 px-4 py-3"></TableCell>
+        <TableCell className="bg-[#F6F7F9] w-[250px] min-w-[250px] max-w-[250px] sticky left-0 z-40 border-r border-gray-200 px-4 py-3"></TableCell>
         <TableCell className="bg-[#F6F7F9] w-[250px] min-w-[250px] px-4 py-3"></TableCell>
         <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] px-4 py-3"></TableCell>
         <TableCell className="bg-[#F6F7F9] w-[200px] min-w-[200px] px-4 py-3"></TableCell>
