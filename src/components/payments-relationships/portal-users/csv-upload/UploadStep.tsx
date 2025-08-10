@@ -72,30 +72,32 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
 
   return (
     <div className="space-y-8">
-      <div
-        className={cn(
-          "flex flex-col items-center justify-center gap-6 border border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer",
-          isDragging ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-gray-400'
-        )}
-        onDragEnter={handleDragEnter}
-        onDragLeave={handleDragLeave}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
-      >
-        <img src="/lovable-uploads/f38987db-daaa-460a-b748-137cf3e679b8.png" alt="Upload file illustration" className="h-16" />
-        <div className="space-y-2">
-          <h4 className="font-medium text-gray-900 text-sm">Drop your file here or click to upload</h4>
-          <p className="text-xs text-gray-500">Supported formats: CSV, XLSX • Up to 500 users</p>
+      {!selectedFile && (
+        <div
+          className={cn(
+            "flex flex-col items-center justify-center gap-6 border border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer",
+            isDragging ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-gray-400'
+          )}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <img src="/lovable-uploads/f38987db-daaa-460a-b748-137cf3e679b8.png" alt="Upload file illustration" className="h-16" />
+          <div className="space-y-2">
+            <h4 className="font-medium text-gray-900 text-sm">Drop your file here or click to upload</h4>
+            <p className="text-xs text-gray-500">Supported formats: CSV, XLSX • Up to 500 users</p>
+          </div>
+          <input
+            type="file"
+            accept=".csv,.xlsx"
+            className="hidden"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+          />
         </div>
-        <input
-          type="file"
-          accept=".csv,.xlsx"
-          className="hidden"
-          ref={fileInputRef}
-          onChange={handleFileSelect}
-        />
-      </div>
+      )}
 
       {error ? (
         <p className="text-sm text-red-600 text-center">
