@@ -50,7 +50,7 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>
-                All ({totalRecords} records, {invalidRecords} invalid)
+                All ({totalRecords})
               </Button>
               <Button variant={filter === 'valid' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('valid')}>
                 Valid ({newRecords} new records)
