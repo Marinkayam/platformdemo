@@ -1,8 +1,9 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { X, File as FileIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Download } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 
 interface UploadStepProps {
   onFileSelect: (file: File | null) => void;
@@ -13,6 +14,9 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const uploadIntervalRef = useRef<number | null>(null);
 
   const handleFileValidation = (file: File) => {
     const allowedTypes = ['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
@@ -30,6 +34,29 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
     
     setError(null);
     onFileSelect(file);
+
+    // start simulated upload progress
+    setIsUploading(true);
+    setUploadProgress(0);
+    if (uploadIntervalRef.current) {
+      window.clearInterval(uploadIntervalRef.current);
+      uploadIntervalRef.current = null;
+    }
+    uploadIntervalRef.current = window.setInterval(() => {
+      setUploadProgress((prev) => {
+        const next = Math.min(prev + 10, 100);
+        if (next === 100) {
+          if (uploadIntervalRef.current) {
+            window.clearInterval(uploadIntervalRef.current);
+            uploadIntervalRef.current = null;
+          }
+          // small delay for UX before marking as finished
+          setTimeout(() => setIsUploading(false), 300);
+        }
+        return next;
+      });
+    }, 150);
+
     return true;
   };
 
@@ -65,10 +92,30 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
     }
   };
 
+  const handleRemoveSelectedFile = () => {
+    onFileSelect(null);
+    setIsUploading(false);
+    setUploadProgress(0);
+    if (uploadIntervalRef.current) {
+      window.clearInterval(uploadIntervalRef.current);
+      uploadIntervalRef.current = null;
+    }
+  };
+
   const handleDownloadTemplate = (e: React.MouseEvent) => {
     e.stopPropagation();
     window.open('/templates/portal-users.csv', '_blank');
   };
+
+  useEffect(() => {
+    return () => {
+      if (uploadIntervalRef.current) {
+        window.clearInterval(uploadIntervalRef.current);
+        uploadIntervalRef.current = null;
+      }
+    };
+  }, []);
+
 
   return (
     <div className="space-y-8">
@@ -103,10 +150,16 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
         <p className="text-sm text-red-600 text-center">
           ⚠️ There was an issue with your file. Please check the format and try again.
         </p>
+      ) : isUploading ? (
+        <div className="mt-2">
+          <p className="text-sm mb-1">Uploading file...</p>
+          <Progress value={uploadProgress} className="h-2" />
+          <p className="text-xs text-right mt-1 text-gray-500">{uploadProgress}%</p>
+        </div>
       ) : selectedFile ? (
-        <p className="text-sm text-gray-600 text-center">
+        <div className="text-sm text-gray-600 text-center mt-5 px-4 py-4">
           ✅ File uploaded. Continue to map fields and preview your data.
-        </p>
+        </div>
       ) : (
         <div className="text-sm text-gray-600 text-center space-y-3 pb-6">
           <p>Upload your list of portal users. We'll guide you through mapping and validation —</p>
@@ -115,6 +168,7 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
           </p>
         </div>
       )}
+
 
       {error && (
         <div className="bg-destructive/10 border border-destructive/20 text-destructive p-3 rounded-lg text-sm flex items-center gap-2">
@@ -133,7 +187,7 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
               </p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onFileSelect(null)}>
+          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleRemoveSelectedFile}>
             <X className="h-4 w-4" />
           </Button>
         </div>
