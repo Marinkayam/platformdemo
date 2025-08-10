@@ -21,9 +21,10 @@ interface AddPortalUserWizardProps {
   onSave: (userData: Partial<PortalUser>) => void;
   mode?: 'create' | 'edit';
   portalUser?: PortalUser;
+  isEmbedded?: boolean;
 }
 
-export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', portalUser }: AddPortalUserWizardProps) {
+export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', portalUser, isEmbedded = false }: AddPortalUserWizardProps) {
   const [currentStep, setCurrentStep] = useState<WizardStep>('portal');
   const [selectedPortal, setSelectedPortal] = useState<string>('');
   const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
@@ -173,6 +174,45 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
     onClose();
   };
 
+  // When embedded, just return the content without Dialog wrapper
+  if (isEmbedded) {
+    return (
+      <div className="px-6 pb-6">
+        {showBulkUploadModal ? (
+          <BulkUploadModal
+            isOpen={true}
+            onClose={() => setShowBulkUploadModal(false)}
+            onImport={handleBulkImport}
+          />
+        ) : (
+          <div className="space-y-6">
+            <div>
+              <p className="text-sm text-gray-600">
+                Add a single scan agent by selecting a portal and configuring access credentials.
+              </p>
+            </div>
+            {renderCurrentStep()}
+            
+            {currentStep !== 'connecting' && currentStep !== 'success' && (
+              <WizardFooter
+                currentStep={currentStep}
+                selectedPortal={selectedPortal}
+                selectedUserType={selectedUserType}
+                formData={formData}
+                onBack={handleBack}
+                onNext={handleNext}
+                onClose={handleCloseAttempt}
+                onSubmit={handleSubmit}
+                isSubmitting={isSubmitting}
+                onBulkUpload={undefined}
+              />
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <>
       <Dialog
@@ -236,7 +276,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
                     onClose={handleCloseAttempt}
                     onSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
-                    onBulkUpload={() => setShowBulkUploadModal(true)}
+                    onBulkUpload={isEmbedded ? undefined : (() => setShowBulkUploadModal(true))}
                   />
                 )}
               </div>

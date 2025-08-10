@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AddPortalUserWizard } from './AddPortalUserWizard';
+import { BulkUploadModal } from './BulkUploadModal';
 import { PortalUser } from '@/types/portalUser';
+import { TabsNav } from '@/components/common/TabsNav';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { X, FileText, Upload } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface AddPortalUserModalProps {
   isOpen: boolean;
@@ -17,13 +22,62 @@ export function AddPortalUserModal({
   portalUser, 
   onSave 
 }: AddPortalUserModalProps) {
+  const [activeTab, setActiveTab] = useState<string>('bulk');
+
+  if (!isOpen) return null;
+
+  const handleBulkImport = (users: Partial<PortalUser>[]) => {
+    users.forEach(user => onSave(user));
+  };
+
+  const tabs = [
+    { 
+      id: 'bulk', 
+      label: 'Bulk Upload CSV',
+      icon: <Upload className="h-4 w-4" />
+    },
+    { 
+      id: 'manual', 
+      label: 'Manual Entry',
+      icon: <FileText className="h-4 w-4" />
+    }
+  ];
+
   return (
-    <AddPortalUserWizard
-      isOpen={isOpen}
-      onClose={onClose}
-      mode={mode}
-      portalUser={portalUser}
-      onSave={onSave}
-    />
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl p-0 max-h-[90vh] overflow-hidden">
+        <div className="px-6 py-4 border-b">
+          <h2 className="text-xl font-semibold">Add Scan Agent</h2>
+        </div>
+        
+        <div className="px-6 pt-4">
+          <TabsNav 
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            variant="horizontal"
+          />
+        </div>
+        
+        <div className="px-0 overflow-y-auto max-h-[calc(90vh-180px)]">
+          {activeTab === 'manual' ? (
+            <AddPortalUserWizard
+              isOpen={true}
+              onClose={onClose}
+              mode={mode}
+              portalUser={portalUser}
+              onSave={onSave}
+              isEmbedded={true}
+            />
+          ) : (
+            <BulkUploadModal
+              isOpen={true}
+              onClose={onClose}
+              onImport={handleBulkImport}
+            />
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

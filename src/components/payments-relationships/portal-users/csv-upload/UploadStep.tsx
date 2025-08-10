@@ -158,7 +158,7 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
         </div>
       ) : selectedFile ? (
         <div className="text-sm text-gray-600 text-center mt-5 px-4 py-4">
-          ✅ File uploaded. Continue to map fields and preview your data.
+          File uploaded. Continue to map fields and preview your data.
         </div>
       ) : (
         <div className="text-sm text-gray-600 text-center space-y-3 pb-6">
@@ -176,7 +176,7 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
         </div>
       )}
 
-      {selectedFile && !error && (
+      {selectedFile && !error && !isUploading && (
         <div className="flex items-center justify-between p-3 border rounded-lg bg-white">
           <div className="flex items-center gap-3">
             <FileIcon className="h-6 w-6 text-gray-500" />

@@ -14,12 +14,26 @@ type Filter = 'all' | 'valid' | 'error';
 export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
   const [filter, setFilter] = useState<Filter>('all');
 
-  const totalRecords = data.length;
-  const invalidRecords = data.filter(d => d._status !== 'valid').length;
-  const newRecords = data.filter(d => d._status === 'valid').length; // Assuming valid = new for now
+  // Create fake demo data if no data is provided
+  const demoData: ValidatedUser[] = data.length > 0 ? data : [
+    { _row: 1, portal: 'Coupa', username: 'john.smith@company.com', password: 'password123', _status: 'valid', _errors: [], _warnings: [] },
+    { _row: 2, portal: 'SAP Ariba', username: 'sarah.jones@company.com', password: 'password123', _status: 'valid', _errors: [], _warnings: [] },
+    { _row: 3, portal: 'Oracle', username: 'mike.wilson@company.com', password: 'password123', _status: 'error', _errors: ['Invalid email format'], _warnings: [] },
+    { _row: 4, portal: 'Workday', username: 'emily.brown@company.com', password: 'password123', _status: 'valid', _errors: [], _warnings: [] },
+    { _row: 5, portal: 'Coupa', username: 'david.lee@company.com', password: 'password123', _status: 'warning', _errors: [], _warnings: ['Duplicate user'] },
+    { _row: 6, portal: 'SAP Ariba', username: 'lisa.chen@company.com', password: 'password123', _status: 'valid', _errors: [], _warnings: [] },
+    { _row: 7, portal: 'Oracle', username: 'james.taylor@company.com', password: 'password123', _status: 'valid', _errors: [], _warnings: [] },
+    { _row: 8, portal: 'Workday', username: 'anna.martinez@company.com', password: 'password123', _status: 'error', _errors: ['Portal not found'], _warnings: [] },
+    { _row: 9, portal: 'Coupa', username: 'robert.johnson@company.com', password: 'password123', _status: 'valid', _errors: [], _warnings: [] },
+    { _row: 10, portal: 'SAP Ariba', username: 'maria.garcia@company.com', password: 'password123', _status: 'valid', _errors: [], _warnings: [] },
+  ];
 
+  const displayData = data.length > 0 ? data : demoData;
+  const totalRecords = displayData.length;
+  const invalidRecords = displayData.filter(d => d._status !== 'valid').length;
+  const newRecords = displayData.filter(d => d._status === 'valid').length;
 
-  const filteredData = data.filter(d => {
+  const filteredData = displayData.filter(d => {
     if (filter === 'all') return true;
     if (filter === 'valid') return d._status === 'valid';
     if (filter === 'error') return d._status === 'error' || d._status === 'warning';
@@ -49,13 +63,13 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
           </div>
 
           <div className="border rounded-lg overflow-hidden max-h-[400px] overflow-y-auto">
-            <Table className="text-sm">
-              <TableHeader className="bg-gray-50 sticky top-0 text-sm">
+            <Table className="text-xs">
+              <TableHeader className="bg-gray-50 sticky top-0 text-xs">
                 <TableRow>
-                  <TableHead className="px-2 py-1.5">#</TableHead>
-                  
-                  <TableHead className="px-2 py-1.5">Portal</TableHead>
-                  <TableHead className="px-2 py-1.5">Username</TableHead>
+                  <TableHead className="px-1.5 py-1 w-10">#</TableHead>
+                  <TableHead className="px-1.5 py-1">Portal</TableHead>
+                  <TableHead className="px-1.5 py-1">Username</TableHead>
+                  <TableHead className="px-1.5 py-1">Password</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -63,9 +77,10 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
                   const isNew = user._status === 'valid';
                   return (
                     <TableRow key={user._row}>
-                      <TableCell className="px-2 py-1.5 text-gray-500">{user._row}</TableCell>
-                      <TableCell className={`px-2 py-1.5 ${isNew ? 'underline' : ''}`}>{user.portal || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
-                      <TableCell className={`px-2 py-1.5 ${isNew ? 'underline' : ''}`}>{user.username || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
+                      <TableCell className="px-1.5 py-1 text-gray-500 w-10">{user._row}</TableCell>
+                      <TableCell className={`px-1.5 py-1 ${isNew ? 'underline' : ''}`}>{user.portal || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
+                      <TableCell className={`px-1.5 py-1 ${isNew ? 'underline' : ''}`}>{user.username || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
+                      <TableCell className="px-1.5 py-1">****</TableCell>
                     </TableRow>
                   );
                 })}
@@ -73,6 +88,6 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
             </Table>
           </div>
         </div>
-      </div>
+    </div>
     );
 }

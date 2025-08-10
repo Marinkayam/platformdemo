@@ -13,6 +13,7 @@ export interface ValidatedUser extends Partial<PortalUser> {
   _errors: string[];
   _warnings: string[];
   _status: 'valid' | 'warning' | 'error';
+  password?: string;
 }
 
 export interface MontoField {

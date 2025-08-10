@@ -15,14 +15,18 @@ export function BulkUploadModal({ isOpen, onClose, onImport }: BulkUploadModalPr
 
   return (
     <div className="w-full">
-      <div className="px-6 sm:px-8 lg:px-10 pt-4 pb-2 flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-grey-900">Bulk Upload Scan Agents</h2>
-      </div>
-      <div className="p-6 sm:p-8 lg:p-10 pt-0">
-        <CSVImportWizard 
-          onComplete={onClose}
-          onImport={onImport}
-        />
+      <div className="px-6 pb-6">
+        <div>
+          <p className="text-sm text-gray-600">
+            Upload a CSV file with multiple scan agents to add them all at once. We'll guide you through mapping and validation.
+          </p>
+        </div>
+        <div className="mt-6">
+          <CSVImportWizard 
+            onComplete={onClose}
+            onImport={onImport}
+          />
+        </div>
       </div>
     </div>
   );
