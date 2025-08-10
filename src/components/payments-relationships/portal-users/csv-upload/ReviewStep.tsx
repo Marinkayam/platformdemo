@@ -2,8 +2,6 @@
 import React, { useState } from 'react';
 import { ValidatedUser } from './CSVImportWizard';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface ReviewStepProps {
@@ -20,16 +18,6 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
   const invalidRecords = data.filter(d => d._status !== 'valid').length;
   const newRecords = data.filter(d => d._status === 'valid').length; // Assuming valid = new for now
 
-  const getStatusIcon = (status: ValidatedUser['_status']) => {
-    switch (status) {
-      case 'valid':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case 'warning':
-        return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
-      case 'error':
-        return <XCircle className="h-5 w-5 text-red-500" />;
-    }
-  };
 
   const filteredData = data.filter(d => {
     if (filter === 'all') return true;
@@ -39,8 +27,7 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
   });
 
   return (
-    <TooltipProvider>
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div>
           <h3 className="text-lg font-semibold">Review Data</h3>
           <p className="text-sm text-gray-600 mt-1">Review your data before importing. Rows with errors will be skipped.</p>
@@ -50,13 +37,13 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>
-                All ({totalRecords})
+                All {totalRecords} Records
               </Button>
               <Button variant={filter === 'valid' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('valid')}>
-                Valid ({newRecords} new records)
+                {newRecords} New Records
               </Button>
               <Button variant={filter === 'error' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('error')}>
-                Errors ({invalidRecords} invalid records)
+                {invalidRecords} Errors
               </Button>
             </div>
           </div>
@@ -66,7 +53,7 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
               <TableHeader className="bg-gray-50 sticky top-0">
                 <TableRow>
                   <TableHead>#</TableHead>
-                  <TableHead>Status</TableHead>
+                  
                   <TableHead>Portal</TableHead>
                   <TableHead>Username</TableHead>
                 </TableRow>
@@ -75,30 +62,6 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
                 {filteredData.map(user => (
                   <TableRow key={user._row}>
                     <TableCell className="text-gray-500">{user._row}</TableCell>
-                    <TableCell>
-                      <Tooltip>
-                        <TooltipTrigger>{getStatusIcon(user._status)}</TooltipTrigger>
-                        <TooltipContent>
-                          {user._status === 'valid' && '✅ All good! Ready to import.'}
-                          {user._status === 'warning' && (
-                            <div className="p-1">
-                              <p className="font-medium text-yellow-600">Warnings (row will be imported):</p>
-                              <ul className="list-disc list-inside text-sm">
-                                {user._warnings.map((w, i) => <li key={i}>{w}</li>)}
-                              </ul>
-                            </div>
-                          )}
-                          {user._status === 'error' && (
-                             <div className="p-1">
-                              <p className="font-medium text-red-600">Errors (row will be skipped):</p>
-                              <ul className="list-disc list-inside text-sm">
-                                {user._errors.map((e, i) => <li key={i}>{e}</li>)}
-                              </ul>
-                            </div>
-                          )}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TableCell>
                     <TableCell>{user.portal || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
                     <TableCell>{user.username || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
                   </TableRow>
@@ -108,6 +71,5 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
           </div>
         </div>
       </div>
-    </TooltipProvider>
-  );
+    );
 }
