@@ -21,7 +21,7 @@ export function BulkUploadModal({ isOpen, onClose, onImport }: BulkUploadModalPr
           </DialogTitle>
         </DialogHeader>
         
-        <div className="p-6 sm:p-8 lg:p-10 pt-4 sm:pt-6 overflow-y-auto flex-1">
+        <div className="p-6 sm:p-8 lg:p-10 pt-1 sm:pt-2 overflow-y-auto flex-1">
           <CSVImportWizard 
             onComplete={onClose}
             onImport={onImport}
