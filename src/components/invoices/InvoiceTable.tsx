@@ -29,11 +29,15 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
   } = useSortedInvoices(invoices);
 
   // Pagination logic
-  const totalPages = Math.ceil(sortedInvoices.length / pageSize);
+  const prioritizedInvoices = useMemo(() => {
+    // Always prioritize Pending Action at the top
+    return [...sortedInvoices].sort((a, b) => (a.status === "Pending Action" ? -1 : 1) - (b.status === "Pending Action" ? -1 : 1));
+  }, [sortedInvoices]);
+  const totalPages = Math.ceil(prioritizedInvoices.length / pageSize);
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;
-    return sortedInvoices.slice(startIndex, startIndex + pageSize);
-  }, [sortedInvoices, currentPage, pageSize]);
+    return prioritizedInvoices.slice(startIndex, startIndex + pageSize);
+  }, [prioritizedInvoices, currentPage, pageSize]);
 
   const handleAssign = (invoiceId: string, email: string) => {
     setLocalInvoices(prev => {

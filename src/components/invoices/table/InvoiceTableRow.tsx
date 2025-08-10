@@ -40,18 +40,20 @@ export function InvoiceTableRow({
       className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white ${isPendingAction ? 'pending-action-row' : ''}`}
       onClick={handleClick}
     >
-      <TableCell className="sticky left-0 z-10 bg-white hover:bg-gray-50 border-r border-gray-200 font-semibold px-4 py-3 w-[250px] min-w-[250px] max-w-[250px] flex-shrink-0 relative transition-colors">
+      <TableCell className="border-r border-gray-200 font-semibold px-0 py-0 w-[250px] min-w-[250px] max-w-[250px] flex-shrink-0 relative">
         {isPendingAction && (
           <div className="absolute left-0 top-0 w-0.5 h-full bg-red-500 z-30" />
         )}
-        <div className="text-left">
-          <InvoiceNumber 
-            number={invoice.number}
-            hasWarning={invoice.hasWarning}
-            status={invoice.status}
-            isCreditMemo={invoice.documentType === "Credit Memo"}
-            isDuplicate={invoice.isDuplicate}
-          />
+        <div className="sticky left-0 z-30 bg-white hover:bg-gray-50 px-4 py-3 transition-colors">
+          <div className="text-left">
+            <InvoiceNumber 
+              number={invoice.number}
+              hasWarning={invoice.hasWarning}
+              status={invoice.status}
+              isCreditMemo={invoice.documentType === "Credit Memo"}
+              isDuplicate={invoice.isDuplicate}
+            />
+          </div>
         </div>
       </TableCell>
       
