@@ -87,7 +87,7 @@ export default function Invoices() {
         />
       </div>
       
-      <div className="flex-1 min-w-0 w-full overflow-x-auto px-6">
+      <div className="flex-1 min-w-0 w-full px-6">
         <InvoiceTable 
           invoices={filteredInvoices} 
           isPendingTab={activeTab === "pending"}
