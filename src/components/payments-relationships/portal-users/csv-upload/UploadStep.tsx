@@ -151,7 +151,7 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
           ⚠️ There was an issue with your file. Please check the format and try again.
         </p>
       ) : isUploading ? (
-        <div className="mt-2">
+        <div className="mt-2" role="status" aria-live="polite">
           <p className="text-sm mb-1">Uploading file...</p>
           <Progress value={uploadProgress} className="h-2" />
           <p className="text-xs text-right mt-1 text-gray-500">{uploadProgress}%</p>
