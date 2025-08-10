@@ -34,7 +34,7 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-start">
             <div className="flex items-center gap-1">
               <Button variant="link" size="sm" className={filter === 'all' ? 'text-foreground font-semibold underline' : 'text-muted-foreground hover:underline'} onClick={() => setFilter('all')}>
                 All {totalRecords} Records
@@ -59,13 +59,16 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredData.map(user => (
-                  <TableRow key={user._row}>
-                    <TableCell className="px-2 py-1.5 text-gray-500">{user._row}</TableCell>
-                    <TableCell className="px-2 py-1.5">{user.portal || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
-                    <TableCell className="px-2 py-1.5">{user.username || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
-                  </TableRow>
-                ))}
+                {filteredData.map(user => {
+                  const isNew = user._status === 'valid';
+                  return (
+                    <TableRow key={user._row}>
+                      <TableCell className="px-2 py-1.5 text-gray-500">{user._row}</TableCell>
+                      <TableCell className={`px-2 py-1.5 ${isNew ? 'underline' : ''}`}>{user.portal || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
+                      <TableCell className={`px-2 py-1.5 ${isNew ? 'underline' : ''}`}>{user.username || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </div>
