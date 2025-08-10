@@ -35,14 +35,14 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>
+            <div className="flex items-center gap-1">
+              <Button variant="link" size="sm" className={filter === 'all' ? 'text-foreground font-semibold underline' : 'text-muted-foreground hover:underline'} onClick={() => setFilter('all')}>
                 All {totalRecords} Records
               </Button>
-              <Button variant={filter === 'valid' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('valid')}>
+              <Button variant="link" size="sm" className={filter === 'valid' ? 'text-foreground font-semibold underline' : 'text-muted-foreground hover:underline'} onClick={() => setFilter('valid')}>
                 {newRecords} New Records
               </Button>
-              <Button variant={filter === 'error' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('error')}>
+              <Button variant="link" size="sm" className={filter === 'error' ? 'text-foreground font-semibold underline' : 'text-muted-foreground hover:underline'} onClick={() => setFilter('error')}>
                 {invalidRecords} Errors
               </Button>
             </div>
