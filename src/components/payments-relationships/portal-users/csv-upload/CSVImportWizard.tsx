@@ -73,7 +73,7 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-6">
       <WizardProgress currentStep={currentStep} />
       
       <div>

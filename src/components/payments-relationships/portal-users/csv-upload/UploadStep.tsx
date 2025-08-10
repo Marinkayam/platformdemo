@@ -108,7 +108,7 @@ export function UploadStep({ onFileSelect, selectedFile }: UploadStepProps) {
           ✅ File uploaded. Continue to map fields and preview your data.
         </p>
       ) : (
-        <div className="text-sm text-gray-600 text-center space-y-3">
+        <div className="text-sm text-gray-600 text-center space-y-3 pb-6">
           <p>Upload your list of portal users. We'll guide you through mapping and validation —</p>
           <p>or{" "}
             <button type="button" onClick={handleDownloadTemplate} className="text-primary underline font-medium">download our template</button>
