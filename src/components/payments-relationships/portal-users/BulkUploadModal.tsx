@@ -17,9 +17,6 @@ export function BulkUploadModal({ isOpen, onClose, onImport }: BulkUploadModalPr
     <div className="w-full">
       <div className="px-6 sm:px-8 lg:px-10 pt-4 pb-2 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-grey-900">Bulk Upload Scan Agents</h2>
-        <Button variant="ghost" size="icon" aria-label="Close bulk upload" onClick={onClose}>
-          <X className="h-4 w-4" />
-        </Button>
       </div>
       <div className="p-6 sm:p-8 lg:p-10 pt-0">
         <CSVImportWizard 
