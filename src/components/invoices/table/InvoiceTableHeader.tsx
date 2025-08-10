@@ -35,7 +35,7 @@ export function InvoiceTableHeader({
   return (
     <TableHeader>
       <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-        <TableHead className="sticky left-0 z-20 bg-[#F6F7F9] border-r border-gray-200 w-[250px] min-w-[250px] max-w-[250px] text-left text-sm font-semibold">
+        <TableHead className="sticky left-0 z-30 bg-[#F6F7F9] border-r border-gray-200 w-[250px] min-w-[250px] max-w-[250px] text-left text-sm font-semibold">
           {renderSortButton('number', 'Invoice Number')}
         </TableHead>
         
