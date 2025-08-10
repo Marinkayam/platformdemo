@@ -1,5 +1,4 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { CSVImportWizard } from './csv-upload/CSVImportWizard';
 import { PortalUser } from '@/types/portalUser';
@@ -12,22 +11,22 @@ interface BulkUploadModalProps {
 }
 
 export function BulkUploadModal({ isOpen, onClose, onImport }: BulkUploadModalProps) {
+  if (!isOpen) return null;
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[900px] max-w-[95vw] p-0 overflow-hidden rounded-xl">
-        <DialogHeader className="px-6 sm:px-8 lg:px-10 pt-6 pb-3 flex-shrink-0">
-          <DialogTitle className="text-xl font-semibold text-grey-900">
-            Bulk Upload Scan Agents
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="p-6 sm:p-8 lg:p-10 pt-0">
-          <CSVImportWizard 
-            onComplete={onClose}
-            onImport={onImport}
-          />
-        </div>
-      </DialogContent>
-    </Dialog>
+    <div className="w-full">
+      <div className="px-6 sm:px-8 lg:px-10 pt-4 pb-2 flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-grey-900">Bulk Upload Scan Agents</h2>
+        <Button variant="ghost" size="icon" aria-label="Close bulk upload" onClick={onClose}>
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
+      <div className="p-6 sm:p-8 lg:p-10 pt-0">
+        <CSVImportWizard 
+          onComplete={onClose}
+          onImport={onImport}
+        />
+      </div>
+    </div>
   );
 }

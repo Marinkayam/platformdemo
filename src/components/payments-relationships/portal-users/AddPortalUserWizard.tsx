@@ -184,53 +184,63 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
         }}
       >
         <DialogContent className="w-[900px] p-0 overflow-hidden rounded-xl max-w-[90vw] max-h-[90vh]">
-          <DialogHeader className="p-8 pb-0">
-            <TooltipProvider>
-              <div className="flex items-center gap-2">
-                <DialogTitle className="text-xl font-semibold text-grey-900">
-                  {currentStep === 'portal' ? 'Add Scan Agent' : 
-                   currentStep === 'userType' ? 'Select User Type' : 'Fill User Details'}
-                </DialogTitle>
-                {currentStep === 'portal' && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button className="h-5 w-5 rounded-full hover:bg-gray-100 flex items-center justify-center">
-                        <Info className="h-4 w-4 text-grey-500" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" className="max-w-sm">
-                      <p className="text-xs">
-                        <strong>Scan Agents</strong> automatically connect to your supplier portals, 
-                        scan for invoices and purchase orders, and keep your records up to date 
-                        without any manual effort. They run on Monto's secure infrastructure 24/7.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                )}
-              </div>
-            </TooltipProvider>
-          </DialogHeader>
+          {!showBulkUploadModal && (
+            <DialogHeader className="p-8 pb-0">
+              <TooltipProvider>
+                <div className="flex items-center gap-2">
+                  <DialogTitle className="text-xl font-semibold text-grey-900">
+                    {currentStep === 'portal' ? 'Add Scan Agent' : 
+                     currentStep === 'userType' ? 'Select User Type' : 'Fill User Details'}
+                  </DialogTitle>
+                  {currentStep === 'portal' && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="h-5 w-5 rounded-full hover:bg-gray-100 flex items-center justify-center">
+                          <Info className="h-4 w-4 text-grey-500" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" className="max-w-sm">
+                        <p className="text-xs">
+                          <strong>Scan Agents</strong> automatically connect to your supplier portals, 
+                          scan for invoices and purchase orders, and keep your records up to date 
+                          without any manual effort. They run on Monto's secure infrastructure 24/7.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                </div>
+              </TooltipProvider>
+            </DialogHeader>
+          )}
           
           <div className="p-8 pt-4 overflow-y-auto">
-            <div className="space-y-6">
-              {renderCurrentStep()}
+            {showBulkUploadModal ? (
+              <BulkUploadModal
+                isOpen={true}
+                onClose={() => setShowBulkUploadModal(false)}
+                onImport={handleBulkImport}
+              />
+            ) : (
+              <div className="space-y-6">
+                {renderCurrentStep()}
 
-              {/* Only show footer if not in connection flow */}
-              {currentStep !== 'connecting' && currentStep !== 'success' && (
-                <WizardFooter
-                  currentStep={currentStep}
-                  selectedPortal={selectedPortal}
-                  selectedUserType={selectedUserType}
-                  formData={formData}
-                  onBack={handleBack}
-                  onNext={handleNext}
-                  onClose={handleCloseAttempt}
-                  onSubmit={handleSubmit}
-                  isSubmitting={isSubmitting}
-                  onBulkUpload={() => setShowBulkUploadModal(true)}
-                />
-              )}
-            </div>
+                {/* Only show footer if not in connection flow */}
+                {currentStep !== 'connecting' && currentStep !== 'success' && (
+                  <WizardFooter
+                    currentStep={currentStep}
+                    selectedPortal={selectedPortal}
+                    selectedUserType={selectedUserType}
+                    formData={formData}
+                    onBack={handleBack}
+                    onNext={handleNext}
+                    onClose={handleCloseAttempt}
+                    onSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
+                    onBulkUpload={() => setShowBulkUploadModal(true)}
+                  />
+                )}
+              </div>
+            )}
           </div>
       </DialogContent>
     </Dialog>
@@ -255,12 +265,6 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
       </DialogContent>
     </Dialog>
 
-    {/* Bulk Upload Modal */}
-    <BulkUploadModal
-      isOpen={showBulkUploadModal}
-      onClose={() => setShowBulkUploadModal(false)}
-      onImport={handleBulkImport}
-    />
     </>
   );
 }
