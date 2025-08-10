@@ -17,14 +17,14 @@ export function AgentUserTypeBadge({ type, className }: AgentUserTypeBadgeProps)
         };
       case "External":
         return { 
-          textColor: "#3B82F6", 
-          bgColor: "#DBEAFE", 
+          textColor: "#1750FB", 
+          bgColor: "#E3F2FD", 
           text: "Customer User" 
         };
       default:
         return { 
-          textColor: "#3B82F6", 
-          bgColor: "#DBEAFE", 
+          textColor: "#1750FB", 
+          bgColor: "#E3F2FD", 
           text: "Customer User" 
         };
     }

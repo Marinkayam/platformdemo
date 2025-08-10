@@ -763,7 +763,7 @@ export default function DesignSystemPlayground() {
                       {component.name === 'AgentUserTypeBadge' ? (
                         <>
                           {renderBadgeNoBorder('Monto', '#7B59FF', '#F3E8FF')}
-                          {renderBadgeNoBorder('Customer', '#3B82F6', '#DBEAFE')}
+                          {renderBadgeNoBorder('Customer', '#1750FB', '#E3F2FD')}
                         </>
                       ) : component.name === 'Purchase Order StatusBadge' ? (
                         <> 
