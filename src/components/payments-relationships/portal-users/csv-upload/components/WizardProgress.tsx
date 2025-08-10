@@ -17,7 +17,7 @@ export function WizardProgress({ currentStep }: WizardProgressProps) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div className="relative">
         <Progress value={progress} className="h-1 bg-gray-100" />
         <div

@@ -14,14 +14,14 @@ interface BulkUploadModalProps {
 export function BulkUploadModal({ isOpen, onClose, onImport }: BulkUploadModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[900px] max-w-[95vw] h-[65vh] md:h-[520px] max-h-[85vh] p-0 overflow-hidden rounded-xl flex flex-col">
+      <DialogContent className="w-[900px] max-w-[95vw] p-0 overflow-hidden rounded-xl">
         <DialogHeader className="p-6 sm:p-8 lg:p-10 pb-0 flex-shrink-0">
           <DialogTitle className="text-xl font-semibold text-grey-900">
             Bulk Upload Scan Agents
           </DialogTitle>
         </DialogHeader>
         
-        <div className="p-6 sm:p-8 lg:p-10 pt-1 sm:pt-2 overflow-y-auto flex-1">
+        <div className="p-6 sm:p-8 lg:p-10 pt-0">
           <CSVImportWizard 
             onComplete={onClose}
             onImport={onImport}
