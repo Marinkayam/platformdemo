@@ -49,21 +49,21 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
           </div>
 
           <div className="border rounded-lg overflow-hidden max-h-[400px] overflow-y-auto">
-            <Table>
-              <TableHeader className="bg-gray-50 sticky top-0">
+            <Table className="text-sm">
+              <TableHeader className="bg-gray-50 sticky top-0 text-sm">
                 <TableRow>
-                  <TableHead>#</TableHead>
+                  <TableHead className="px-2 py-1.5">#</TableHead>
                   
-                  <TableHead>Portal</TableHead>
-                  <TableHead>Username</TableHead>
+                  <TableHead className="px-2 py-1.5">Portal</TableHead>
+                  <TableHead className="px-2 py-1.5">Username</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.map(user => (
                   <TableRow key={user._row}>
-                    <TableCell className="text-gray-500">{user._row}</TableCell>
-                    <TableCell>{user.portal || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
-                    <TableCell>{user.username || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
+                    <TableCell className="px-2 py-1.5 text-gray-500">{user._row}</TableCell>
+                    <TableCell className="px-2 py-1.5">{user.portal || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
+                    <TableCell className="px-2 py-1.5">{user.username || <span className="text-gray-400 italic">Not provided</span>}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
