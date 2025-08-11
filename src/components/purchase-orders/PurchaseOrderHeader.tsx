@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/common/PageHeader";
+import { createBreadcrumbs } from "@/components/common/Breadcrumb";
 import { PurchaseOrderFilters } from "./PurchaseOrderFilters";
 import { PurchaseOrderFilters as PurchaseOrderFiltersType } from "./filters/types";
 import { TabsNav } from "@/components/common/TabsNav";
@@ -33,6 +34,7 @@ export function PurchaseOrderHeader({
       <PageHeader 
         title="Purchase Orders" 
         subtitle="View and manage purchase order records synced from portals" 
+        breadcrumbs={createBreadcrumbs.purchaseOrders()}
       />
       
       <TabsNav 

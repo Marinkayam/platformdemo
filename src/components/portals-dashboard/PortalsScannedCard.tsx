@@ -12,13 +12,8 @@ interface PortalsScannedCardProps {
 }
 
 export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScannedCardProps) {
-  // Mock all portals data - in real app this would come from props/API
-  const allPortals = [
-    "Walmart", "Target", "Amazon", "Costco", "Home Depot", "Best Buy", 
-    "Microsoft", "Oracle", "SAP", "Salesforce", "Google", "Apple",
-    "Meta", "Netflix", "Adobe", "IBM", "Intel", "Cisco",
-    "Tesla", "Nike", "McDonald's", "Starbucks"
-  ];
+  // Use actual portal count - show all unique portals from data
+  const allPortals = recentPortals; // In real app, this would be expanded list from API
   return (
     <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#3B82F6]/20">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -51,7 +46,7 @@ export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScann
             </DialogTrigger>
             <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle>All Scanned Portals ({allPortals.length})</DialogTitle>
+                <DialogTitle>All Scanned Portals ({portalsCount})</DialogTitle>
               </DialogHeader>
               <div className="grid grid-cols-3 gap-4 mt-4">
                 {allPortals.map((portal) => (

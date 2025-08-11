@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { Link } from "react-router-dom";
 import { SparklesText } from "@/components/common/SparklesText";
 import { calculatePortalsDashboardMetrics } from "@/utils/portalsDashboardUtils";
+import { createBreadcrumbs } from "@/components/common/Breadcrumb";
 import { BuyersFoundCard } from "@/components/portals-dashboard/BuyersFoundCard";
 import { PortalsScannedCard } from "@/components/portals-dashboard/PortalsScannedCard";
 import { Progress } from "@/components/ui/progress";
@@ -143,6 +144,7 @@ export default function PortalsDashboard() {
         <PageHeader 
           title="Portals Overview"
           subtitle="Portal information collected and cleaned by Monto's AI to save you time"
+          breadcrumbs={createBreadcrumbs.portalsDashboard()}
         />
         
         {/* AI Scan Progress Bar - Magical Version */}
@@ -400,35 +402,39 @@ export default function PortalsDashboard() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-700">85%</div>
-                    <div className="text-xs text-green-600">Auto-Match Rate</div>
+                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-700">829</div>
+                    <div className="text-xs text-blue-600">Total Records Found</div>
                   </div>
-                  <div className="text-center p-4 bg-orange-50 rounded-lg">
-                    <div className="text-2xl font-bold text-orange-700">8%</div>
-                    <div className="text-xs text-orange-600">Found Without Match Rate</div>
+                  <div className="text-center p-4 bg-green-50 rounded-lg">
+                    <div className="text-2xl font-bold text-green-700">201</div>
+                    <div className="text-xs text-green-600">New This Scan</div>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-red-50 rounded-lg">
-                    <div className="text-2xl font-bold text-red-700">2%</div>
-                    <div className="text-xs text-red-600">Rejection Rate</div>
+                  <div className="text-center p-4 bg-orange-50 rounded-lg">
+                    <div className="text-2xl font-bold text-orange-700">45</div>
+                    <div className="text-xs text-orange-600">Need Matching</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-700">5%</div>
-                    <div className="text-xs text-purple-600">Conflicts Rate</div>
+                  <div className="text-center p-4 bg-red-50 rounded-lg">
+                    <div className="text-2xl font-bold text-red-700">35</div>
+                    <div className="text-xs text-red-600">Action Required</div>
                   </div>
                 </div>
                 
                 <div className="space-y-2 pt-4 border-t border-gray-200">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-[#061237]">Total Records Processed</span>
-                    <span className="text-sm font-medium text-[#7B59FF]">2,847</span>
+                    <span className="text-sm text-[#061237]">Successfully Processed</span>
+                    <span className="text-sm font-medium text-green-600">749 (90%)</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-[#061237]">Processing Time</span>
-                    <span className="text-sm font-medium text-[#7B59FF]">12 min avg</span>
+                    <span className="text-sm text-[#061237]">Active Portals</span>
+                    <span className="text-sm font-medium text-[#7B59FF]">{displayMetrics.portalsCount} portals</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-[#061237]">Last Scan</span>
+                    <span className="text-sm font-medium text-[#586079]">2 hours ago</span>
                   </div>
                 </div>
               </CardContent>
