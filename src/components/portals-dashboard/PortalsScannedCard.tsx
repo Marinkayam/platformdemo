@@ -12,8 +12,11 @@ interface PortalsScannedCardProps {
 }
 
 export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScannedCardProps) {
-  // Use actual portal count - show all unique portals from data
-  const allPortals = recentPortals; // In real app, this would be expanded list from API
+  // Show 12 portals as requested
+  const allPortals = [
+    "Walmart", "Target", "Amazon", "Costco", "Home Depot", "Best Buy", 
+    "Microsoft", "Oracle", "SAP", "Salesforce", "Google", "Apple"
+  ];
   return (
     <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#3B82F6]/20">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -46,7 +49,7 @@ export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScann
             </DialogTrigger>
             <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle>All Scanned Portals ({portalsCount})</DialogTitle>
+                <DialogTitle>All Scanned Portals ({allPortals.length})</DialogTitle>
               </DialogHeader>
               <div className="grid grid-cols-3 gap-4 mt-4">
                 {allPortals.map((portal) => (
@@ -62,14 +65,6 @@ export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScann
                     </div>
                   </div>
                 ))}
-              </div>
-              <div className="flex justify-center mt-6">
-                <Button asChild variant="outline" className="text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white">
-                  <Link to="/payments-relationships/new" className="flex items-center gap-2">
-                    <Plus className="h-4 w-4" />
-                    Add New Portal User
-                  </Link>
-                </Button>
               </div>
             </DialogContent>
           </Dialog>

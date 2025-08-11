@@ -144,7 +144,6 @@ export default function PortalsDashboard() {
         <PageHeader 
           title="Portals Overview"
           subtitle="Portal information collected and cleaned by Monto's AI to save you time"
-          breadcrumbs={createBreadcrumbs.portalsDashboard()}
         />
         
         {/* AI Scan Progress Bar - Magical Version */}
@@ -430,7 +429,7 @@ export default function PortalsDashboard() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-[#061237]">Active Portals</span>
-                    <span className="text-sm font-medium text-[#7B59FF]">{displayMetrics.portalsCount} portals</span>
+                    <span className="text-sm font-medium text-[#7B59FF]">12 portals</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-[#061237]">Last Scan</span>
@@ -449,7 +448,7 @@ export default function PortalsDashboard() {
             topBuyersByFrequency={displayMetrics.topBuyersByFrequency}
           />
           <PortalsScannedCard 
-            portalsCount={displayMetrics.portalsCount}
+            portalsCount={12}
             recentPortals={displayMetrics.recentPortals}
           />
         </div>
