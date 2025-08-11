@@ -379,11 +379,9 @@ export default function PortalsDashboard() {
                   
                   <div className="border-t border-white/20 mt-auto pt-2"></div>
                   
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="h-3 w-3 text-green-300" />
-                      <span className="text-xs text-green-300">94% auto-processing rate</span>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="h-3 w-3 text-green-300" />
+                    <span className="text-xs text-green-300">94% auto-processing rate</span>
                   </div>
                 </div>
               </CardContent>
@@ -392,15 +390,15 @@ export default function PortalsDashboard() {
           </div>
 
           {/* Dashboard Analytics Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
             {/* Chart takes 2 columns */}
-            <Card className="bg-white border-[#E6E7EB] lg:col-span-2">
+            <Card className="bg-white border-[#E6E7EB] lg:col-span-2 h-fit">
             <CardHeader>
               <CardTitle className="text-base font-semibold text-[#061237]">Portal Performance Analytics</CardTitle>
               <p className="text-sm text-[#586079]">Monthly processing trends and cost savings</p>
             </CardHeader>
-            <CardContent>
-              <div className="h-80">
+            <CardContent className="pb-6">
+              <div className="h-80 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={[
@@ -413,7 +411,7 @@ export default function PortalsDashboard() {
                       { month: 'Jul', processed: 2420, savings: 365000, accuracy: 95 },
                       { month: 'Aug', processed: 2580, savings: 395000, accuracy: 95 }
                     ]}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                    margin={{ top: 20, right: 40, left: 20, bottom: 30 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#E6E7EB" />
                     <XAxis 
@@ -501,12 +499,12 @@ export default function PortalsDashboard() {
             </Card>
             
             {/* Portal Records Box */}
-            <Card className="bg-white border-[#E6E7EB] h-fit">
+            <Card className="bg-white border-[#E6E7EB] h-full flex flex-col">
               <CardHeader>
                 <CardTitle className="text-sm font-semibold text-[#061237]">Portal Records</CardTitle>
                 <p className="text-xs text-[#586079]">Records found in portals</p>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 flex-1 flex flex-col">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center p-3 bg-blue-50 rounded-lg">
                     <div className="text-3xl font-bold text-blue-700">{fakeData.unmatchedInvoicePortalRecords}</div>
@@ -518,7 +516,7 @@ export default function PortalsDashboard() {
                   </div>
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1">
                   <div className="text-xs font-medium text-[#061237] mb-2">Issues by Portal:</div>
                   <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
                     <span className="text-xs text-[#061237]">Walmart Portal</span>
@@ -538,9 +536,11 @@ export default function PortalsDashboard() {
                   </div>
                 </div>
                 
-                <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white mt-4" asChild>
-                  <Link to="/portal-records">View All Records</Link>
-                </Button>
+                <div className="mt-auto">
+                  <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
+                    <Link to="/portal-records">View All Records</Link>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
