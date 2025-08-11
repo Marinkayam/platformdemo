@@ -51,7 +51,7 @@ export function ReviewStep({ data, onDataChange }: ReviewStepProps) {
           <div className="flex items-center justify-start">
             <div className="flex items-center gap-1">
               <Button variant="link" size="sm" className={filter === 'all' ? 'text-foreground font-semibold underline' : 'text-muted-foreground hover:underline'} onClick={() => setFilter('all')}>
-                All {totalRecords} Records
+                {totalRecords} All Records
               </Button>
               <Button variant="link" size="sm" className={filter === 'valid' ? 'text-foreground font-semibold underline' : 'text-muted-foreground hover:underline'} onClick={() => setFilter('valid')}>
                 {newRecords} New Records
