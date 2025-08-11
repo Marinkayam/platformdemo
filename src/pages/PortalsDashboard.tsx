@@ -384,10 +384,6 @@ export default function PortalsDashboard() {
                       <TrendingUp className="h-3 w-3 text-green-300" />
                       <span className="text-xs text-green-300">94% auto-processing rate</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-3 w-3 text-white/60" />
-                      <span className="text-xs text-white/80">Avg scan time: 12 min</span>
-                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -447,9 +443,10 @@ export default function PortalsDashboard() {
                         fontSize: '12px'
                       }}
                       formatter={(value, name) => {
-                        if (name === 'savings') return [`$${(value / 1000).toFixed(0)}K`, 'Cost Savings'];
-                        if (name === 'processed') return [value, 'Records Processed'];
-                        if (name === 'accuracy') return [`${value}%`, 'Accuracy Rate'];
+                        const num = Number(value);
+                        if (name === 'savings') return [`$${(num / 1000).toFixed(0)}K`, 'Cost Savings'];
+                        if (name === 'processed') return [num, 'Records Processed'];
+                        if (name === 'accuracy') return [`${num}%`, 'Accuracy Rate'];
                         return [value, name];
                       }}
                     />
