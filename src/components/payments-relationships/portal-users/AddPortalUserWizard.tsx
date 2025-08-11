@@ -223,7 +223,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
           }
         }}
       >
-        <DialogContent className="w-[900px] p-0 overflow-hidden rounded-xl max-w-[90vw] max-h-[90vh]">
+        <DialogContent className="w-[900px] p-0 overflow-hidden rounded-xl max-w-[90vw] max-h-[80vh]">
           {!showBulkUploadModal && (
             <DialogHeader className="p-8 pb-0">
               <TooltipProvider>
@@ -253,7 +253,7 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
             </DialogHeader>
           )}
           
-          <div className="p-8 pt-4 overflow-y-auto">
+          <div className="p-8 pt-4 pb-24 overflow-y-auto">
             {showBulkUploadModal ? (
               <BulkUploadModal
                 isOpen={true}
