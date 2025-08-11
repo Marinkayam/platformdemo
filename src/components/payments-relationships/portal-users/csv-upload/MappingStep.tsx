@@ -111,7 +111,7 @@ export function MappingStep({ headers, data, onMappingChange }: MappingStepProps
                         <SelectTrigger className="w-full h-8 text-sm">
                           <SelectValue placeholder="Select column..." />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="z-[9999]" side="bottom" align="start">
                           <SelectItem value="skip">Skip this field</SelectItem>
                           {headers.map((header) => (
                             <SelectItem key={header} value={header}>
