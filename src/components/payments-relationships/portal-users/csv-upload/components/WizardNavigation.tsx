@@ -34,7 +34,7 @@ export function WizardNavigation({
   }
 
   return (
-    <div className="sticky bottom-0 z-20 bg-background flex justify-between items-center px-4 py-4 border-t">
+    <div className="sticky bottom-0 z-20 bg-background flex justify-between items-center py-4 border-t">
       <div>
         {currentStep !== 'upload' && (
           <Button variant="outline" size="lg" onClick={onBack}>
