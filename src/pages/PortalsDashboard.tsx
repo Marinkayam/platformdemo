@@ -10,7 +10,8 @@ import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, FileText, AlertCircle, X, ShoppingCart, TrendingUp, Receipt, Clock, CheckSquare, Brain, AlertTriangle } from "lucide-react";
+import { Calendar, FileText, AlertCircle, X, ShoppingCart, TrendingUp, Receipt, Clock, CheckSquare, AlertTriangle } from "lucide-react";
+import MontoIcon from "@/components/icons/MontoIcon";
 
 export default function PortalsDashboard() {
   const finalMetrics = calculatePortalsDashboardMetrics();
@@ -189,6 +190,8 @@ export default function PortalsDashboard() {
               <Calendar className="h-3.5 w-3.5 text-[#7B59FF]" />
               <span className="text-sm text-[#061237] font-medium">{formattedLastScan}</span>
             </div>
+            <div className="h-4 w-px bg-[#7B59FF]/20"></div>
+            <div className="text-sm text-[#586079]">Next scan in 4 hours</div>
           </div>
         )}
 
@@ -329,8 +332,8 @@ export default function PortalsDashboard() {
                       <span className="text-xs text-red-600">Common: PO mismatch</span>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
-                    <Link to="/invoices?status=rejected">View Rejected</Link>
+                  <Button size="sm" variant="outline" className="text-xs w-full text-red-500 border-red-500 hover:bg-red-500 hover:text-white" asChild>
+                    <Link to="/invoices?status=pending">View Pending Action Invoices</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -341,7 +344,7 @@ export default function PortalsDashboard() {
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                 <CardTitle className="text-sm font-medium text-white">Monto Portal Insights</CardTitle>
                 <div className="p-2.5 rounded-xl bg-white/20 border border-white/30">
-                  <Brain className="h-4 w-4 text-white" />
+                  <MontoIcon className="h-5 w-5 text-white" />
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -359,8 +362,8 @@ export default function PortalsDashboard() {
                   </div>
                 </div>
                 
-                <div className="space-y-3">
-                  <div className="text-xs text-white/80">AI Automation Impact:</div>
+                <div className="space-y-2 flex-1 flex flex-col">
+                  <div className="text-xs text-white/80 mb-1">AI Automation Impact:</div>
                   <div className="text-sm text-white flex justify-between items-center">
                     <span>Auto-matched records</span>
                     <span className="text-xs text-white/90">1,247</span>
@@ -369,12 +372,22 @@ export default function PortalsDashboard() {
                     <span>Portals connected</span>
                     <span className="text-xs text-white/90">47</span>
                   </div>
+                  <div className="text-sm text-white flex justify-between items-center">
+                    <span>Duplicate prevention</span>
+                    <span className="text-xs text-white/90">189</span>
+                  </div>
                   
-                  <div className="border-t border-white/20 mt-8 mb-4"></div>
+                  <div className="border-t border-white/20 mt-auto pt-2"></div>
                   
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-3 w-3 text-green-300" />
-                    <span className="text-xs text-green-300">94% auto-processing</span>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-3 w-3 text-green-300" />
+                      <span className="text-xs text-green-300">94% auto-processing rate</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-3 w-3 text-white/60" />
+                      <span className="text-xs text-white/80">Avg scan time: 12 min</span>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -382,8 +395,10 @@ export default function PortalsDashboard() {
             </div>
           </div>
 
-          {/* Dashboard Analytics Chart */}
-          <Card className="bg-white border-[#E6E7EB]">
+          {/* Dashboard Analytics Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Chart takes 2 columns */}
+            <Card className="bg-white border-[#E6E7EB] lg:col-span-2">
             <CardHeader>
               <CardTitle className="text-base font-semibold text-[#061237]">Portal Performance Analytics</CardTitle>
               <p className="text-sm text-[#586079]">Monthly processing trends and cost savings</p>
@@ -486,7 +501,52 @@ export default function PortalsDashboard() {
                 </div>
               </div>
             </CardContent>
-          </Card>
+            </Card>
+            
+            {/* Portal Records Box */}
+            <Card className="bg-white border-[#E6E7EB] h-fit">
+              <CardHeader>
+                <CardTitle className="text-sm font-semibold text-[#061237]">Portal Records</CardTitle>
+                <p className="text-xs text-[#586079]">Records found in portals</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <div className="text-3xl font-bold text-blue-700">{fakeData.unmatchedInvoicePortalRecords}</div>
+                    <div className="text-xs text-blue-600">Found Without Match</div>
+                  </div>
+                  <div className="text-center p-3 bg-red-50 rounded-lg">
+                    <div className="text-3xl font-bold text-red-700">12</div>
+                    <div className="text-xs text-red-600">Conflicts</div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="text-xs font-medium text-[#061237] mb-2">Issues by Portal:</div>
+                  <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                    <span className="text-xs text-[#061237]">Walmart Portal</span>
+                    <span className="text-xs font-medium text-[#586079]">8 unmatched</span>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                    <span className="text-xs text-[#061237]">Target B2B</span>
+                    <span className="text-xs font-medium text-[#586079]">5 unmatched</span>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                    <span className="text-xs text-[#061237]">Amazon Vendor</span>
+                    <span className="text-xs font-medium text-[#586079]">3 conflicts</span>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-red-50 rounded">
+                    <span className="text-xs text-[#061237]">Home Depot</span>
+                    <span className="text-xs font-medium text-red-600">1 rejected by buyer</span>
+                  </div>
+                </div>
+                
+                <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white mt-4" asChild>
+                  <Link to="/portal-records">View All Records</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Key Metrics */}
