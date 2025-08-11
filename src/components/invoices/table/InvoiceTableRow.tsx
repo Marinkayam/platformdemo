@@ -40,7 +40,7 @@ export function InvoiceTableRow({
       className={`hover:bg-gray-50 cursor-pointer transition-colors bg-white ${isPendingAction ? 'pending-action-row' : ''}`}
       onClick={handleClick}
     >
-      <TableCell className="sticky left-0 z-20 bg-white hover:bg-gray-50 border-r border-gray-200 font-semibold px-4 py-3 w-[250px] min-w-[250px] max-w-[250px] flex-shrink-0 relative transition-colors">
+      <TableCell className="sticky left-0 z-20 bg-white hover:bg-gray-50 border-r border-gray-200 px-4 py-3 w-[300px] min-w-[300px] max-w-[300px] flex-shrink-0 relative transition-colors">
         {isPendingAction && (
           <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-red-500 z-30" />
         )}

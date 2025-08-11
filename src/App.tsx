@@ -26,6 +26,7 @@ import NewPaymentsRelationship from "./pages/NewPaymentsRelationship";
 import { NotificationsProvider } from "./context/NotificationsContext";
 import { CompanyProvider } from "./context/CompanyContext";
 import PortalsDashboard from "./pages/PortalsDashboard";
+import PortalsDashboard2 from "./pages/PortalsDashboard2";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
             <Route element={<MainLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="/portals-dashboard" element={<PortalsDashboard />} />
+              <Route path="/portals-dashboard-2" element={<PortalsDashboard2 />} />
               <Route path="/invoices" element={<Invoices />} />
               <Route path="/invoices/:id" element={<InvoiceDetail />} />
               <Route path="/portal-records" element={<PortalRecords />} />

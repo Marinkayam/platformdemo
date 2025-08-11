@@ -93,11 +93,15 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
           <Table>
             <TableHeader>
               <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
-                {columns.map((column, index) => (
-                  <TableHead key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm ${index === 0 ? 'bg-[#F6F7F9] sticky left-0 z-10 border-r border-gray-200' : 'bg-[#F6F7F9]'} ${column.className || ''}`}>
-                    {column.label}
-                  </TableHead>
-                ))}
+                {columns.map((column, index) => {
+                  // Remove bg-white from the className for headers
+                  const headerClassName = column.className?.replace('bg-white', '') || '';
+                  return (
+                    <TableHead key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm ${index === 0 ? 'bg-[rgb(246,247,249)] sticky left-0 z-10 border-r border-gray-200' : 'bg-[#F6F7F9]'} ${headerClassName}`}>
+                      {column.label}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
             </TableHeader>
             

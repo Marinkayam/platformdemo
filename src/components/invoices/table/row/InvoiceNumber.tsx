@@ -23,7 +23,11 @@ export function InvoiceNumber({
     <div className="flex items-center gap-2 text-[14px]">
       {hasWarning && <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />}
       <div className="flex items-center gap-1.5 overflow-hidden max-w-[180px]">
-        <span className={`truncate ${isPendingAction ? "text-black font-semibold" : "font-semibold"}`}>
+        <span className={`truncate ${
+          number.toLowerCase().startsWith('inv-') || number.toLowerCase().startsWith('cp-') 
+            ? "font-semibold" 
+            : ""
+        } ${isPendingAction ? "text-black font-semibold" : ""}`}>
           {number}
         </span>
         

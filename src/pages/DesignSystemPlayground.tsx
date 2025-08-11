@@ -962,6 +962,7 @@ export default function DesignSystemPlayground() {
   };
 
   const renderTableSystem = () => {
+    // 🩷 Pink Heart Table Style - Premium table design system
     // Mock data for the table system, matching the RTP table structure
     interface InvoiceData {
       id: string;
@@ -1105,28 +1106,65 @@ export default function DesignSystemPlayground() {
     return (
       <div className="space-y-8">
         <div>
-          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Table System</h2>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-2">Table System</h2>
+          <div className="flex items-center gap-2 mb-6">
+            <span className="text-3xl">🩷</span>
+            <span className="text-sm text-[#7B59FF] font-medium">Pink Heart Premium Style</span>
+          </div>
           
           <Card>
             <CardHeader>
-              <CardTitle>Interactive Data Table</CardTitle>
-              <CardDescription>Full-featured table with sorting, hover effects, and proper styling</CardDescription>
+              <CardTitle>🩷 Premium Data Table</CardTitle>
+              <CardDescription>Full-featured table with our signature Pink Heart design system</CardDescription>
             </CardHeader>
             <CardContent>
               <TableSystem<InvoiceData> data={sampleInvoices} columns={columns} />
               
-              <div className="mt-4 text-sm text-grey-600 bg-grey-200 p-4 rounded-lg">
-                <h4 className="font-medium text-grey-800 mb-2">Table Features:</h4>
-                <ul className="space-y-1 pl-4 list-disc list-inside">
-                  <li>Sorting on Invoice Number, Buyer, Total, Owner</li>
-                  <li>Sticky first column (Invoice Number) for horizontal scrolling</li>
-                  <li>Dynamic status badges for visual clarity</li>
-                  <li>Portal icons with fallback to text/placeholder</li>
-                  <li>Tooltips for full owner names</li>
-                  <li>Hover effects for rows</li>
-                  <li>Consistent padding and typography across cells</li>
-                  <li>Adjustable column widths</li>
-                </ul>
+              <div className="mt-6 space-y-4">
+                <div className="bg-[#F6F7F9] p-4 rounded-lg border border-gray-200">
+                  <h4 className="font-semibold text-[#061237] mb-3 flex items-center gap-2">
+                    <span className="text-xl">🩷</span> Pink Heart Table Style Rules
+                  </h4>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <h5 className="font-medium text-[#7B59FF] mb-2">Structure & Layout</h5>
+                      <ul className="space-y-1 text-gray-700">
+                        <li>• Container: <code className="text-xs bg-white px-1 py-0.5 rounded">rounded-xl border overflow-hidden bg-white</code></li>
+                        <li>• Header: <code className="text-xs bg-white px-1 py-0.5 rounded">bg-[#F6F7F9]</code></li>
+                        <li>• Header cells: <code className="text-xs bg-white px-1 py-0.5 rounded">h-[50px] font-semibold text-gray-700</code></li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-[#7B59FF] mb-2">Sticky First Column</h5>
+                      <ul className="space-y-1 text-gray-700">
+                        <li>• Position: <code className="text-xs bg-white px-1 py-0.5 rounded">sticky left-0 z-10</code></li>
+                        <li>• Background: <code className="text-xs bg-white px-1 py-0.5 rounded">bg-[rgb(246,247,249)]</code> for header</li>
+                        <li>• Border: <code className="text-xs bg-white px-1 py-0.5 rounded">border-r border-gray-200</code></li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-[#7B59FF] mb-2">Typography</h5>
+                      <ul className="space-y-1 text-gray-700">
+                        <li>• Regular: <code className="text-xs bg-white px-1 py-0.5 rounded">text-sm text-gray-900</code></li>
+                        <li>• Clickable: <code className="text-xs bg-white px-1 py-0.5 rounded">cursor-pointer hover:underline</code></li>
+                        <li>• INV-/CP- prefix: <code className="text-xs bg-white px-1 py-0.5 rounded">font-semibold</code></li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h5 className="font-medium text-[#7B59FF] mb-2">Interactive Elements</h5>
+                      <ul className="space-y-1 text-gray-700">
+                        <li>• Primary color: <code className="text-xs bg-white px-1 py-0.5 rounded">#7B59FF</code></li>
+                        <li>• Hover states with underline</li>
+                        <li>• Actions right-aligned</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                  <h4 className="font-medium text-purple-900 mb-2">💡 How to Use</h4>
+                  <p className="text-sm text-purple-700">To apply this table style in any component, just mention "🩷" (pink heart) and I'll respond with "🩷🩷" to confirm I'm using this premium design system!</p>
+                </div>
               </div>
             </CardContent>
           </Card>

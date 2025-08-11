@@ -70,14 +70,15 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
   const columnsCount = isPendingTab ? 10 : 11; // Updated for new columns: Invoice Number, Buyer, Due Date, Status, Portal, Total, PO Number, Invoice Date, Net Terms, Owner/Assignee, Actions
 
   return (
-    <div className="rounded-xl border border-gray-200 overflow-hidden bg-white max-w-full">
-      <Table className="min-w-[2200px]">
-        <InvoiceTableHeader 
-          sortField={sortField}
-          sortDirection={sortDirection}
-          onSort={handleSort}
-          isPendingTab={isPendingTab}
-        />
+    <div className="rounded-xl border overflow-hidden bg-white animate-fade-in">
+      <div className="overflow-x-auto">
+        <Table className="min-w-[2200px]">
+          <InvoiceTableHeader 
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+            isPendingTab={isPendingTab}
+          />
         
         {isLoading ? (
           <TableSkeleton rows={8} columns={columnsCount} showFooter />
@@ -108,7 +109,8 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
             <InvoiceTableFooter invoices={sortedInvoices} columnsCount={columnsCount} />
           </>
         )}
-      </Table>
+        </Table>
+      </div>
       
       {!isLoading && (
         <InvoicesPagination

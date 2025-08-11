@@ -22,11 +22,19 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
        key: 'invoiceNumber',
        label: 'Portal Invoice Number',
        className: 'sticky left-0 z-10 bg-white border-r border-gray-200 w-[200px] min-w-[200px] whitespace-nowrap',
-       render: (record: PortalRecord) => (
-         <span className="text-sm text-gray-900 cursor-pointer hover:underline whitespace-nowrap" onClick={() => onViewDetails(record.id)}>
-           {record.invoiceNumber}
-         </span>
-       )
+       render: (record: PortalRecord) => {
+         const invoiceNumber = record.invoiceNumber;
+         const shouldBeSemiBold = invoiceNumber.toLowerCase().startsWith('inv-') || invoiceNumber.toLowerCase().startsWith('cp-');
+         
+         return (
+           <span 
+             className={`text-sm text-gray-900 cursor-pointer hover:underline whitespace-nowrap ${shouldBeSemiBold ? 'font-semibold' : ''}`} 
+             onClick={() => onViewDetails(record.id)}
+           >
+             {invoiceNumber}
+           </span>
+         );
+       }
      },
      {
        key: 'portal',
