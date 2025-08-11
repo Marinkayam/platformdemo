@@ -2,20 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Link } from "react-router-dom";
+import { PortalRecordsTable } from "@/components/portal-records/PortalRecordsTable";
+import { PurchaseOrderTable } from "@/components/purchase-orders/PurchaseOrderTable";
+import { allPortalRecords } from "@/data/portalRecords";
+import { purchaseOrderData } from "@/data/purchaseOrders";
 import { SparklesText } from "@/components/common/SparklesText";
 import { calculatePortalsDashboardMetrics } from "@/utils/portalsDashboardUtils";
 import { BuyersFoundCard } from "@/components/portals-dashboard/BuyersFoundCard";
 import { PortalsScannedCard } from "@/components/portals-dashboard/PortalsScannedCard";
+import { TopBuyersCard } from "@/components/portals-dashboard/TopBuyersCard";
+import { OpenPOsCard } from "@/components/portals-dashboard/OpenPOsCard";
+import { OpenInvoicesCard } from "@/components/portals-dashboard/OpenInvoicesCard";
+import { AtRiskCard } from "@/components/portals-dashboard/AtRiskCard";
+import { LoadingAnimation } from "@/components/payments-relationships/portal-users/add-portal-user-wizard/LoadingAnimation";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, FileText, AlertCircle, X } from "lucide-react";
 
 export default function PortalsDashboard2() {
   const finalMetrics = calculatePortalsDashboardMetrics();
 
-  // Format last scan time with more prominent design
+  // Format last scan time
   const lastScanTime = new Date();
   lastScanTime.setHours(lastScanTime.getHours() - 2);
   const formattedLastScan = lastScanTime.toLocaleString('en-US', {
@@ -36,30 +42,10 @@ export default function PortalsDashboard2() {
     openPOsCount: 0,
     openPOsTotal: 0,
     openInvoicesCount: 0,
-    openInvoicesTotal: 0
+    openInvoicesTotal: 0,
+    atRiskInvoicesCount: 0,
+    atRiskInvoicesTotal: 0
   });
-
-  // Fake data for new metrics
-  const fakeData = {
-    openPOsBreakdown: [
-      { name: 'Existing', value: 156, color: '#94A3B8' },
-      { name: 'New (Latest Scan)', value: 24, color: '#7B59FF' }
-    ],
-    posFoundInScan: 247,
-    invoiceRecordsFoundInScan: 582,
-    unmatchedInvoicePortalRecords: 45,
-    rejectedInvoices: 23,
-    recentPOs: [
-      { id: 'PO-2024-156', company: 'Walmart', amount: '$12,500', date: 'Aug 10, 2024' },
-      { id: 'PO-2024-157', company: 'Target', amount: '$8,900', date: 'Aug 10, 2024' },
-      { id: 'PO-2024-158', company: 'Costco', amount: '$15,200', date: 'Aug 9, 2024' }
-    ],
-    recentInvoices: [
-      { id: 'INV-2024-891', company: 'Amazon', amount: '$7,800', date: 'Aug 10, 2024' },
-      { id: 'INV-2024-892', company: 'Home Depot', amount: '$4,500', date: 'Aug 10, 2024' },
-      { id: 'INV-2024-893', company: 'Best Buy', amount: '$9,200', date: 'Aug 9, 2024' }
-    ]
-  };
 
   // Progress bar animation
   useEffect(() => {
@@ -83,7 +69,9 @@ export default function PortalsDashboard2() {
         openPOsCount: Math.min(finalMetrics.openPOsCount, Math.round((finalMetrics.openPOsCount * progress) / 100)),
         openPOsTotal: Math.min(finalMetrics.openPOsTotal, Math.round((finalMetrics.openPOsTotal * progress) / 100)),
         openInvoicesCount: Math.min(finalMetrics.openInvoicesCount, Math.round((finalMetrics.openInvoicesCount * progress) / 100)),
-        openInvoicesTotal: Math.min(finalMetrics.openInvoicesTotal, Math.round((finalMetrics.openInvoicesTotal * progress) / 100))
+        openInvoicesTotal: Math.min(finalMetrics.openInvoicesTotal, Math.round((finalMetrics.openInvoicesTotal * progress) / 100)),
+        atRiskInvoicesCount: Math.min(finalMetrics.atRiskInvoicesCount, Math.round((finalMetrics.atRiskInvoicesCount * progress) / 100)),
+        atRiskInvoicesTotal: Math.min(finalMetrics.atRiskInvoicesTotal, Math.round((finalMetrics.atRiskInvoicesTotal * progress) / 100))
       }));
     }, 250);
 
@@ -95,10 +83,12 @@ export default function PortalsDashboard2() {
         openPOsCount: finalMetrics.openPOsCount,
         openPOsTotal: finalMetrics.openPOsTotal,
         openInvoicesCount: finalMetrics.openInvoicesCount,
-        openInvoicesTotal: finalMetrics.openInvoicesTotal
+        openInvoicesTotal: finalMetrics.openInvoicesTotal,
+        atRiskInvoicesCount: finalMetrics.atRiskInvoicesCount,
+        atRiskInvoicesTotal: finalMetrics.atRiskInvoicesTotal
       });
       clearInterval(metricsInterval);
-    }, 2500);
+    }, 2500); // Complete metrics scanning when progress bar finishes
 
     return () => {
       clearInterval(metricsInterval);
@@ -106,6 +96,7 @@ export default function PortalsDashboard2() {
     };
   }, [progress, finalMetrics, metricsScanning]);
 
+  // Use current metrics during scan, final metrics after scan
   const displayMetrics = metricsScanning ? {
     ...finalMetrics,
     buyersCount: currentMetrics.buyersCount,
@@ -113,38 +104,20 @@ export default function PortalsDashboard2() {
     openPOsCount: currentMetrics.openPOsCount,
     openPOsTotal: currentMetrics.openPOsTotal,
     openInvoicesCount: currentMetrics.openInvoicesCount,
-    openInvoicesTotal: currentMetrics.openInvoicesTotal
+    openInvoicesTotal: currentMetrics.openInvoicesTotal,
+    atRiskInvoicesCount: currentMetrics.atRiskInvoicesCount,
+    atRiskInvoicesTotal: currentMetrics.atRiskInvoicesTotal
   } : finalMetrics;
-
-  const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }: any) => {
-    const RADIAN = Math.PI / 180;
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="white"
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline="central"
-        className="text-sm font-medium"
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
 
   return (
     <div className="w-full">
       <div className="px-2 sm:px-4 md:px-6 py-3 max-w-[1440px] mx-auto w-full space-y-8">
         <PageHeader 
-          title="Portals Dashboard 2" 
-          subtitle="Redesigned dashboard with enhanced metrics and visualizations"
+          title="Portals Dashboard" 
+          subtitle="Unified view of invoices and POs from all portals—track connections, syncs, and insights."
         />
         
-        {/* AI Scan Progress Bar */}
+        {/* AI Scan Progress Bar - Magical Version */}
         {!scanComplete && (
           <div className="w-96 max-w-full mt-2 mb-2 flex flex-col items-center relative">
             <AnimatePresence>
@@ -170,155 +143,82 @@ export default function PortalsDashboard2() {
                 indicatorClassName="bg-gradient-to-r from-[#7B59FF] via-[#B983FF] to-[#7B59FF] shadow-[0_0_16px_2px_rgba(123,89,255,0.25)] transition-all duration-300"
                 className="h-1 rounded-full bg-[#F0EDFF] shadow-[0_2px_16px_0_rgba(123,89,255,0.10)]"
               />
+              {/* Sparkles overlay */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <SparklesText text="✨" className="text-2xl animate-pulse" sparklesCount={6} duration={1500} />
               </div>
             </div>
           </div>
         )}
-
-        {/* Latest Scan Time - Simple and Clean */}
+        {/* Last Scan Time */}
         {scanComplete && (
-          <div className="flex items-center gap-2 text-sm text-[#7B59FF] font-semibold">
-            <span className="text-base font-semibold">Latest Scan:</span>
+          <div className="flex items-center gap-2 text-sm text-[#7B59FF] font-semibold -mt-4 min-h-[40px]">
+            <span className="text-base font-semibold">Monto's Latest Scan:</span>
             <span className="text-[#586079] font-normal ml-2">{formattedLastScan}</span>
           </div>
         )}
 
-        {/* Scan Results */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-[#061237]">Latest Scan Results</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link to="/purchase-orders">
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="text-2xl font-bold text-[#061237]">{fakeData.posFoundInScan}</div>
-                  <div className="text-sm text-[#586079] mb-3">Recent POs Found</div>
-                  <div className="space-y-1 mb-3 text-xs">
-                    {fakeData.recentPOs.slice(0, 2).map((po, index) => (
-                      <div key={index} className="flex justify-between">
-                        <span className="text-[#586079]">{po.company}</span>
-                        <span className="text-[#061237] font-medium">{po.amount}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
-                    <Link to="/purchase-orders">View POs</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
-
-            <Link to="/invoices">
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="text-2xl font-bold text-[#061237]">{fakeData.invoiceRecordsFoundInScan}</div>
-                  <div className="text-sm text-[#586079] mb-3">New Latest Invoice Records</div>
-                  <div className="space-y-1 mb-3 text-xs">
-                    {fakeData.recentInvoices.slice(0, 2).map((invoice, index) => (
-                      <div key={index} className="flex justify-between">
-                        <span className="text-[#586079]">{invoice.company}</span>
-                        <span className="text-[#061237] font-medium">{invoice.amount}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
-                    <Link to="/invoices">View Invoices</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
-
-            <Link to="/portal-records">
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="text-2xl font-bold text-[#061237]">{fakeData.unmatchedInvoicePortalRecords}</div>
-                  <div className="text-sm text-[#586079] mb-3">Unmatched Invoice Records</div>
-                  <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
-                    <Link to="/portal-records">View Records</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
-
-            <Link to="/invoices">
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="text-2xl font-bold text-[#061237]">{fakeData.rejectedInvoices}</div>
-                  <div className="text-sm text-[#586079] mb-3">Rejected Invoices</div>
-                  <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
-                    <Link to="/invoices">View Rejected</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
-        </div>
-
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Metrics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <BuyersFoundCard 
             buyersCount={displayMetrics.buyersCount}
             topBuyersByFrequency={displayMetrics.topBuyersByFrequency}
           />
+
           <PortalsScannedCard 
             portalsCount={displayMetrics.portalsCount}
             recentPortals={displayMetrics.recentPortals}
           />
-        </div>
 
-        {/* Open POs Section */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-[#061237]">Open Purchase Orders</h3>
+          <TopBuyersCard 
+            topBuyers={displayMetrics.topBuyers}
+            topOpenPO={displayMetrics.topOpenPO}
+          />
+
+          <OpenPOsCard 
+            openPOsCount={displayMetrics.openPOsCount}
+            openPOsTotal={displayMetrics.openPOsTotal}
+            topOpenPO={displayMetrics.topOpenPO}
+          />
+
+          <OpenInvoicesCard 
+            openInvoicesCount={displayMetrics.openInvoicesCount}
+            openInvoicesTotal={displayMetrics.openInvoicesTotal}
+            openInvoicesDueSoon={displayMetrics.openInvoicesDueSoon}
+          />
+
+          <AtRiskCard 
+            atRiskInvoicesCount={displayMetrics.atRiskInvoicesCount}
+            atRiskInvoicesTotal={displayMetrics.atRiskInvoicesTotal}
+          />
+        </div>
+        
+        {/* Portal Records Section */}
+        <div className="space-y-2 pb-0">
+          <div className="flex items-center justify-between pb-0">
+            <div>
+              <h2 className="text-xl font-semibold text-[#061237] tracking-tight">Portal Records</h2>
+              <p className="text-sm text-[#586079] mt-0">Recent portal record activity</p>
+            </div>
             <Button asChild variant="ghost" size="sm" className="text-[#7B59FF] hover:text-[#523BAA]">
-              <Link to="/purchase-orders">View All</Link>
+              <Link to="/portal-records">View All (showing 3 of {allPortalRecords.length})</Link>
             </Button>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={fakeData.openPOsBreakdown}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={renderCustomLabel}
-                    outerRadius={60}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {fakeData.openPOsBreakdown.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+          <PortalRecordsTable records={allPortalRecords.slice(0, 3)} />
+        </div>
+
+        {/* Purchase Orders Section */}
+        <div className="space-y-2 pb-0">
+          <div className="flex items-center justify-between pb-0">
+            <div>
+              <h2 className="text-xl font-semibold text-[#061237] tracking-tight">Purchase Orders</h2>
+              <p className="text-sm text-[#586079] mt-0">Recent purchase order activity</p>
             </div>
-            <div className="space-y-3">
-              <Link to="/purchase-orders">
-                <div className="text-2xl font-bold text-[#061237] hover:text-[#7B59FF] transition-colors cursor-pointer">
-                  {fakeData.openPOsBreakdown.reduce((sum, item) => sum + item.value, 0)}
-                </div>
-              </Link>
-              <div className="text-sm text-[#586079]">Total Open Purchase Orders</div>
-              <div className="space-y-2">
-                {fakeData.openPOsBreakdown.map((item, index) => (
-                  <Link key={index} to="/purchase-orders">
-                    <div className="flex items-center gap-2 hover:text-[#7B59FF] transition-colors cursor-pointer">
-                      <div 
-                        className="w-3 h-3 rounded-full" 
-                        style={{ backgroundColor: item.color }}
-                      />
-                      <span className="text-sm text-[#586079]">{item.name}: {item.value}</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
+            <Button asChild variant="ghost" size="sm" className="text-[#7B59FF] hover:text-[#523BAA]">
+              <Link to="/purchase-orders">View All (showing 3 of {purchaseOrderData.length})</Link>
+            </Button>
           </div>
+          <PurchaseOrderTable purchaseOrders={purchaseOrderData.slice(0, 3)} />
         </div>
       </div>
     </div>
