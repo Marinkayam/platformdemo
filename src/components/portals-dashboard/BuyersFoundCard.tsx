@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Users, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface BuyersFoundCardProps {
   buyersCount: number;
@@ -28,11 +30,9 @@ export function BuyersFoundCard({ buyersCount, topBuyersByFrequency }: BuyersFou
               </div>
             ))}
           </div>
-          {/* <div className="flex justify-end pt-1">
-            <span className="text-xs text-[#7B59FF] font-medium hover:underline cursor-pointer flex items-center gap-1">
-              View all <ArrowRight className="h-3 w-3" />
-            </span>
-          </div> */}
+          <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white mt-2" asChild>
+            <Link to="/smart-connections">View All Smart Connections</Link>
+          </Button>
         </div>
       </CardContent>
     </Card>

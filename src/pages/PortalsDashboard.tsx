@@ -198,7 +198,7 @@ export default function PortalsDashboard() {
         {/* Scan Results */}
         <div className="space-y-4">
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             <Link to="/purchase-orders" className="h-full">
               <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#E6E7EB] h-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -248,7 +248,7 @@ export default function PortalsDashboard() {
             <Link to="/invoices" className="h-full">
               <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#E6E7EB] h-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-                  <CardTitle className="text-sm font-medium text-[#586079]">Invoice Records</CardTitle>
+                  <CardTitle className="text-sm font-medium text-[#586079]">Invoice Portal Records</CardTitle>
                   <div className="p-2.5 rounded-xl bg-green-50 border border-green-200">
                     <Receipt className="h-4 w-4 text-green-500" />
                   </div>
@@ -285,7 +285,7 @@ export default function PortalsDashboard() {
                     </div>
                   </div>
                   <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
-                    <Link to="/invoices">View Invoices</Link>
+                    <Link to="/portal-records">View Portal Records</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -294,7 +294,7 @@ export default function PortalsDashboard() {
             <Link to="/invoices?status=rejected" className="h-full">
               <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#E6E7EB] h-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-                  <CardTitle className="text-sm font-medium text-[#586079]">Rejected Invoices</CardTitle>
+                  <CardTitle className="text-sm font-medium text-[#586079]">Rejected Portal Records</CardTitle>
                   <div className="p-2.5 rounded-xl bg-red-50 border border-red-200">
                     <AlertTriangle className="h-4 w-4 text-red-500" />
                   </div>
@@ -332,191 +332,45 @@ export default function PortalsDashboard() {
                       <span className="text-xs text-red-600">Common: PO mismatch</span>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="text-xs w-full text-red-500 border-red-500 hover:bg-red-500 hover:text-white" asChild>
-                    <Link to="/invoices?status=pending">View Pending Action Invoices</Link>
-                  </Button>
+                  <div className="space-y-2">
+                    <Button size="sm" variant="outline" className="text-xs w-full text-red-500 border-red-500 hover:bg-red-500 hover:text-white" asChild>
+                      <Link to="/invoices?status=pending">Pending Action RTPs</Link>
+                    </Button>
+                    <Button size="sm" variant="outline" className="text-xs w-full text-red-600 border-red-600 hover:bg-red-600 hover:text-white" asChild>
+                      <Link to="/portal-records?status=rejected">Rejected Portal Records</Link>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </Link>
 
-            <div className="h-full">
-              <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-gradient-to-br from-[#7B59FF] to-[#9D7BFF] border-[#7B59FF]/20 h-full">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-                <CardTitle className="text-sm font-medium text-white">Monto Portal Insights</CardTitle>
-                <div className="p-2.5 rounded-xl bg-white/20 border border-white/30">
-                  <MontoIcon className="h-5 w-5 text-white" />
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="text-3xl font-bold text-white">$2.4M</div>
-                      <span className="text-xs text-white/80">Saved</span>
-                    </div>
-                    <div className="text-sm text-white/90">This quarter</div>
-                  </div>
-                  
-                  <div className="text-sm text-white/90">
-                    Time saved: <span className="text-white font-medium">340 hours</span>
-                  </div>
-                </div>
-                
-                <div className="space-y-2 flex-1 flex flex-col">
-                  <div className="text-xs text-white/80 mb-1">AI Automation Impact:</div>
-                  <div className="text-sm text-white flex justify-between items-center">
-                    <span>Auto-matched records</span>
-                    <span className="text-xs text-white/90">1,247</span>
-                  </div>
-                  <div className="text-sm text-white flex justify-between items-center">
-                    <span>Portals connected</span>
-                    <span className="text-xs text-white/90">47</span>
-                  </div>
-                  <div className="text-sm text-white flex justify-between items-center">
-                    <span>Duplicate prevention</span>
-                    <span className="text-xs text-white/90">189</span>
-                  </div>
-                  
-                  <div className="border-t border-white/20 mt-auto pt-2"></div>
-                  
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-3 w-3 text-green-300" />
-                    <span className="text-xs text-green-300">94% auto-processing rate</span>
-                  </div>
-                </div>
-              </CardContent>
-              </Card>
-            </div>
           </div>
 
-          {/* Dashboard Analytics Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-            {/* Chart takes 2 columns */}
-            <Card className="bg-white border-[#E6E7EB] lg:col-span-2 h-fit">
-            <CardHeader>
-              <CardTitle className="text-base font-semibold text-[#061237]">Portal Performance Analytics</CardTitle>
-              <p className="text-sm text-[#586079]">Monthly processing trends and cost savings</p>
-            </CardHeader>
-            <CardContent className="pb-6">
-              <div className="h-80 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={[
-                      { month: 'Jan', processed: 1200, savings: 180000, accuracy: 89 },
-                      { month: 'Feb', processed: 1450, savings: 210000, accuracy: 91 },
-                      { month: 'Mar', processed: 1680, savings: 245000, accuracy: 92 },
-                      { month: 'Apr', processed: 1920, savings: 285000, accuracy: 93 },
-                      { month: 'May', processed: 2150, savings: 320000, accuracy: 94 },
-                      { month: 'Jun', processed: 2380, savings: 358000, accuracy: 94 },
-                      { month: 'Jul', processed: 2420, savings: 365000, accuracy: 95 },
-                      { month: 'Aug', processed: 2580, savings: 395000, accuracy: 95 }
-                    ]}
-                    margin={{ top: 20, right: 40, left: 20, bottom: 30 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E6E7EB" />
-                    <XAxis 
-                      dataKey="month" 
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fontSize: 12, fill: '#586079' }}
-                    />
-                    <YAxis 
-                      yAxisId="left"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fontSize: 12, fill: '#586079' }}
-                    />
-                    <YAxis 
-                      yAxisId="right"
-                      orientation="right"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fontSize: 12, fill: '#586079' }}
-                    />
-                    <Tooltip 
-                      contentStyle={{
-                        backgroundColor: 'white',
-                        border: '1px solid #E6E7EB',
-                        borderRadius: '8px',
-                        fontSize: '12px'
-                      }}
-                      formatter={(value, name) => {
-                        const num = Number(value);
-                        if (name === 'savings') return [`$${(num / 1000).toFixed(0)}K`, 'Cost Savings'];
-                        if (name === 'processed') return [num, 'Records Processed'];
-                        if (name === 'accuracy') return [`${num}%`, 'Accuracy Rate'];
-                        return [value, name];
-                      }}
-                    />
-                    <Line
-                      yAxisId="left"
-                      type="monotone"
-                      dataKey="processed"
-                      stroke="#7B59FF"
-                      strokeWidth={3}
-                      dot={{ fill: '#7B59FF', strokeWidth: 2, r: 4 }}
-                      activeDot={{ r: 6, stroke: '#7B59FF', strokeWidth: 2 }}
-                    />
-                    <Line
-                      yAxisId="right"
-                      type="monotone"
-                      dataKey="savings"
-                      stroke="#10B981"
-                      strokeWidth={3}
-                      dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }}
-                      activeDot={{ r: 6, stroke: '#10B981', strokeWidth: 2 }}
-                    />
-                    <Line
-                      yAxisId="right"
-                      type="monotone"
-                      dataKey="accuracy"
-                      stroke="#F59E0B"
-                      strokeWidth={2}
-                      strokeDasharray="5 5"
-                      dot={{ fill: '#F59E0B', strokeWidth: 2, r: 3 }}
-                      activeDot={{ r: 5, stroke: '#F59E0B', strokeWidth: 2 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              
-              {/* Chart Legend */}
-              <div className="flex justify-center gap-6 mt-4 pt-4 border-t border-gray-200">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-[#7B59FF]"></div>
-                  <span className="text-xs text-[#586079]">Records Processed</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-[#10B981]"></div>
-                  <span className="text-xs text-[#586079]">Cost Savings ($)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-[#F59E0B] opacity-70" style={{borderTop: '2px dashed #F59E0B'}}></div>
-                  <span className="text-xs text-[#586079]">Accuracy Rate (%)</span>
-                </div>
-              </div>
-            </CardContent>
-            </Card>
-            
-            {/* Portal Records Box */}
-            <Card className="bg-white border-[#E6E7EB] h-full flex flex-col">
+          {/* Portal Records Section - Main Focus */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Portal Records - Main Component */}
+            <Card className="bg-white border-[#E6E7EB] h-fit">
               <CardHeader>
-                <CardTitle className="text-sm font-semibold text-[#061237]">Portal Records</CardTitle>
-                <p className="text-xs text-[#586079]">Records found in portals</p>
+                <CardTitle className="text-base font-semibold text-[#061237]">Action Required</CardTitle>
+                <p className="text-sm text-[#586079]">Records that need your attention</p>
               </CardHeader>
-              <CardContent className="space-y-4 flex-1 flex flex-col">
+              <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <div className="text-3xl font-bold text-blue-700">{fakeData.unmatchedInvoicePortalRecords}</div>
-                    <div className="text-xs text-blue-600">Found Without Match</div>
-                  </div>
-                  <div className="text-center p-3 bg-red-50 rounded-lg">
-                    <div className="text-3xl font-bold text-red-700">12</div>
-                    <div className="text-xs text-red-600">Conflicts</div>
-                  </div>
+                  <Button asChild variant="outline" className="h-20 flex-col text-center p-3 bg-blue-50 border-blue-200 hover:bg-blue-100">
+                    <Link to="/portal-records?status=unmatched">
+                      <div className="text-3xl font-bold text-blue-700">{fakeData.unmatchedInvoicePortalRecords}</div>
+                      <div className="text-xs text-blue-600">Found Without Match</div>
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" className="h-20 flex-col text-center p-3 bg-red-50 border-red-200 hover:bg-red-100">
+                    <Link to="/portal-records?status=conflicts">
+                      <div className="text-3xl font-bold text-red-700">12</div>
+                      <div className="text-xs text-red-600">Conflicts</div>
+                    </Link>
+                  </Button>
                 </div>
                 
-                <div className="space-y-2 flex-1">
+                <div className="space-y-2">
                   <div className="text-xs font-medium text-[#061237] mb-2">Issues by Portal:</div>
                   <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
                     <span className="text-xs text-[#061237]">Walmart Portal</span>
@@ -535,11 +389,47 @@ export default function PortalsDashboard() {
                     <span className="text-xs font-medium text-red-600">1 rejected by buyer</span>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+            
+            {/* Processing Statistics */}
+            <Card className="bg-white border-[#E6E7EB] h-fit">
+              <CardHeader>
+                <CardTitle className="text-base font-semibold text-[#061237]">Processing Statistics</CardTitle>
+                <p className="text-sm text-[#586079]">Current processing rates and metrics</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center p-4 bg-green-50 rounded-lg">
+                    <div className="text-2xl font-bold text-green-700">85%</div>
+                    <div className="text-xs text-green-600">Auto-Match Rate</div>
+                  </div>
+                  <div className="text-center p-4 bg-orange-50 rounded-lg">
+                    <div className="text-2xl font-bold text-orange-700">8%</div>
+                    <div className="text-xs text-orange-600">Found Without Match Rate</div>
+                  </div>
+                </div>
                 
-                <div className="mt-auto">
-                  <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
-                    <Link to="/portal-records">View All Records</Link>
-                  </Button>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center p-4 bg-red-50 rounded-lg">
+                    <div className="text-2xl font-bold text-red-700">2%</div>
+                    <div className="text-xs text-red-600">Rejection Rate</div>
+                  </div>
+                  <div className="text-center p-4 bg-purple-50 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-700">5%</div>
+                    <div className="text-xs text-purple-600">Conflicts Rate</div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2 pt-4 border-t border-gray-200">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-[#061237]">Total Records Processed</span>
+                    <span className="text-sm font-medium text-[#7B59FF]">2,847</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-[#061237]">Processing Time</span>
+                    <span className="text-sm font-medium text-[#7B59FF]">12 min avg</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
