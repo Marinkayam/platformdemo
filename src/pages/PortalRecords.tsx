@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { PortalRecordsHeader } from "@/components/portal-records/PortalRecordsHeader";
 import { PortalRecordsFilters } from "@/components/portal-records/PortalRecordsFilters";
 import { PortalRecordsTabs } from "@/components/portal-records/PortalRecordsTabs";
@@ -8,7 +9,20 @@ import { usePortalRecordFiltering } from "@/hooks/usePortalRecordFiltering";
 import { allPortalRecords } from "@/data/portalRecords";
 
 export default function PortalRecords() {
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState("all");
+  
+  // Set active tab based on URL parameter
+  useEffect(() => {
+    const status = searchParams.get('status');
+    if (status === 'unmatched') {
+      setActiveTab('unmatched');
+    } else if (status === 'conflicts') {
+      setActiveTab('conflict');
+    } else {
+      setActiveTab('all');
+    }
+  }, [searchParams]);
   
   const {
     filteredRecords,
@@ -37,6 +51,7 @@ export default function PortalRecords() {
     <div className="space-y-6 animate-fade-in">
       <PortalRecordsHeader 
         recordCount={allPortalRecords.length}
+        activeTab={activeTab}
       />
       
       <PortalRecordsTabs

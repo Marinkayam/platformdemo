@@ -79,7 +79,6 @@ export default function PortalsDashboard() {
     } else {
       setTimeout(() => {
         setScanComplete(true);
-        setIsAnimating(true); // Start number animations when scan completes
       }, 200);
     }
     return () => clearTimeout(frame);
@@ -129,33 +128,33 @@ export default function PortalsDashboard() {
     openInvoicesTotal: currentMetrics.openInvoicesTotal
   } : finalMetrics;
   
-  // Animated counters for the main cards
+  // Animated counters for the main cards - animate DURING scan
   const animatedPOs = useCountAnimation({ 
     end: fakeData.posFoundInScan, 
-    startFrom: scanComplete ? fakeData.posFoundPrevious : 0,
-    duration: 1500,
-    isActive: scanComplete && isAnimating 
+    startFrom: fakeData.posFoundPrevious, // Always start from previous
+    duration: 2500, // Match scan duration
+    isActive: progress > 0 && progress <= 100 // Animate during scan
   });
   
   const animatedInvoices = useCountAnimation({ 
     end: fakeData.invoiceRecordsFoundInScan, 
-    startFrom: scanComplete ? fakeData.invoiceRecordsPrevious : 0,
-    duration: 1500,
-    isActive: scanComplete && isAnimating 
+    startFrom: fakeData.invoiceRecordsPrevious, // Always start from previous
+    duration: 2500, // Match scan duration
+    isActive: progress > 0 && progress <= 100 // Animate during scan
   });
   
   const animatedUnmatched = useCountAnimation({ 
     end: fakeData.unmatchedInvoicePortalRecords, 
-    startFrom: scanComplete ? fakeData.unmatchedPrevious : 0,
-    duration: 1500,
-    isActive: scanComplete && isAnimating 
+    startFrom: fakeData.unmatchedPrevious, // Always start from previous
+    duration: 2500, // Match scan duration
+    isActive: progress > 0 && progress <= 100 // Animate during scan
   });
   
   const animatedRejected = useCountAnimation({ 
     end: fakeData.rejectedInvoices, 
-    startFrom: scanComplete ? fakeData.rejectedPrevious : 0,
-    duration: 1500,
-    isActive: scanComplete && isAnimating 
+    startFrom: fakeData.rejectedPrevious, // Always start from previous
+    duration: 2500, // Match scan duration
+    isActive: progress > 0 && progress <= 100 // Animate during scan
   });
 
   const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }: any) => {
@@ -252,10 +251,10 @@ export default function PortalsDashboard() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="text-3xl font-bold text-[#061237]">{scanComplete ? animatedPOs : 0}</div>
+                        <div className="text-3xl font-bold text-[#061237]">{progress > 0 ? animatedPOs : fakeData.posFoundPrevious}</div>
                         <span className="text-xs text-[#586079]">Total</span>
                       </div>
-                      <div className="text-sm text-[#7B59FF]">{scanComplete ? (animatedPOs - fakeData.posFoundPrevious) : 0} new</div>
+                      <div className="text-sm text-[#7B59FF]">{progress > 0 ? Math.max(0, animatedPOs - fakeData.posFoundPrevious) : 0} new</div>
                     </div>
                     
                     <div className="text-sm text-[#061237]">
@@ -265,7 +264,7 @@ export default function PortalsDashboard() {
                   
                   <div className="space-y-3">
                     <div className="text-xs text-[#586079]">Open POs:</div>
-                    {fakeData.recentPOs.slice(0, 2).map((po, index) => (
+                    {fakeData.recentPOs.slice(0, 3).map((po, index) => (
                       <div key={index} className="text-sm text-[#061237] flex justify-between items-center">
                         <span>{po.company}</span>
                         <span className="text-xs text-[#586079]">{po.amount}</span>
@@ -298,10 +297,10 @@ export default function PortalsDashboard() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="text-3xl font-bold text-[#061237]">{scanComplete ? animatedInvoices : 0}</div>
+                        <div className="text-3xl font-bold text-[#061237]">{progress > 0 ? animatedInvoices : fakeData.invoiceRecordsPrevious}</div>
                         <span className="text-xs text-[#586079]">Total</span>
                       </div>
-                      <div className="text-sm text-[#7B59FF]">{scanComplete ? (animatedInvoices - fakeData.invoiceRecordsPrevious) : 0} new</div>
+                      <div className="text-sm text-[#7B59FF]">{progress > 0 ? Math.max(0, animatedInvoices - fakeData.invoiceRecordsPrevious) : 0} new</div>
                     </div>
                     
                     <div className="text-sm text-[#061237]">
@@ -311,7 +310,7 @@ export default function PortalsDashboard() {
                   
                   <div className="space-y-3">
                     <div className="text-xs text-[#586079]">Recent Invoices:</div>
-                    {fakeData.recentInvoices.slice(0, 2).map((invoice, index) => (
+                    {fakeData.recentInvoices.slice(0, 3).map((invoice, index) => (
                       <div key={index} className="text-sm text-[#061237] flex justify-between items-center">
                         <span>{invoice.company}</span>
                         <span className="text-xs text-[#586079]">{invoice.amount}</span>
@@ -344,7 +343,7 @@ export default function PortalsDashboard() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="text-3xl font-bold text-[#061237]">{scanComplete ? animatedRejected : 0}</div>
+                        <div className="text-3xl font-bold text-[#061237]">{progress > 0 ? animatedRejected : fakeData.rejectedPrevious}</div>
                         <span className="text-xs text-[#586079]">Total</span>
                       </div>
                       <div className="text-sm text-[#7B59FF]">5 this week</div>
@@ -399,7 +398,7 @@ export default function PortalsDashboard() {
                 <div className="grid grid-cols-2 gap-4">
                   <Button asChild variant="outline" className="h-20 flex-col text-center p-3 bg-blue-50 border-blue-200 hover:bg-blue-100">
                     <Link to="/portal-records?status=unmatched">
-                      <div className="text-3xl font-bold text-blue-700">{scanComplete ? animatedUnmatched : 0}</div>
+                      <div className="text-3xl font-bold text-blue-700">{progress > 0 ? animatedUnmatched : fakeData.unmatchedPrevious}</div>
                       <div className="text-xs text-blue-600">Found Without Match</div>
                     </Link>
                   </Button>

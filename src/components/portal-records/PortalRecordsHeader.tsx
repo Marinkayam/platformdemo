@@ -6,21 +6,27 @@ import { PortalRecordsActions } from "./PortalRecordsActions";
 
 interface PortalRecordsHeaderProps {
   recordCount: number;
+  activeTab: string;
 }
 
 export function PortalRecordsHeader({
-  recordCount
+  recordCount,
+  activeTab
 }: PortalRecordsHeaderProps) {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const status = searchParams.get("status");
+  // Convert activeTab to status for breadcrumb
+  let status: string | undefined;
+  if (activeTab === 'unmatched') {
+    status = 'unmatched';
+  } else if (activeTab === 'conflict') {
+    status = 'conflicts';
+  }
   
   return (
     <div className="flex justify-between items-start mb-4">
       <PageHeader 
         title="Portal Records" 
         subtitle="Monto is actively syncing documents from your portals. Use this view to monitor account connections, status, and history."
-        breadcrumbs={createBreadcrumbs.portalRecords(status || undefined)}
+        breadcrumbs={createBreadcrumbs.portalRecords(status)}
       />
       <PortalRecordsActions recordCount={recordCount} />
     </div>
