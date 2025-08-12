@@ -383,11 +383,11 @@ export default function PortalsDashboard() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Button size="sm" variant="outline" className="text-xs w-full text-red-500 border-red-500 hover:bg-red-500 hover:text-white" asChild>
-                      <Link to="/invoices?status=pending">Pending Action RTPs</Link>
-                    </Button>
                     <Button size="sm" variant="outline" className="text-xs w-full text-red-600 border-red-600 hover:bg-red-600 hover:text-white" asChild>
                       <Link to="/portal-records?status=rejected">Rejected Portal Records</Link>
+                    </Button>
+                    <Button size="sm" variant="outline" className="text-xs w-full text-red-500 border-red-500 hover:bg-red-500 hover:text-white" asChild>
+                      <Link to="/invoices?status=pending">Pending Action RTPs</Link>
                     </Button>
                   </div>
                 </CardContent>
@@ -412,10 +412,10 @@ export default function PortalsDashboard() {
                       <div className="text-xs text-blue-600">Found Without Match</div>
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" className="h-20 flex-col text-center p-3 bg-red-50 border-red-200 hover:bg-red-100">
+                  <Button asChild variant="outline" className="h-20 flex-col text-center p-3 bg-orange-50 border-orange-200 hover:bg-orange-100">
                     <Link to="/portal-records?status=conflicts">
-                      <div className="text-3xl font-bold text-red-700">12</div>
-                      <div className="text-xs text-red-600">Conflicts</div>
+                      <div className="text-3xl font-bold text-orange-700">12</div>
+                      <div className="text-xs text-orange-600">Conflicts</div>
                     </Link>
                   </Button>
                 </div>

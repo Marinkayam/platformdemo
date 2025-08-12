@@ -24,7 +24,7 @@ export function BuyersFoundCard({ buyersCount, topBuyersByFrequency }: BuyersFou
       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#7B59FF]/5 to-transparent rounded-full -mr-16 -mt-16" />
       
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-sm font-medium text-[#586079]">Smart Buyer Connections</CardTitle>
+        <CardTitle className="text-sm font-medium text-[#586079]">Buyers Found</CardTitle>
         <div className="p-2.5 rounded-xl bg-gradient-to-br from-[#7B59FF]/10 to-[#7B59FF]/20 border border-[#7B59FF]/20">
           <Building2 className="h-4 w-4 text-[#7B59FF]" />
         </div>
@@ -36,10 +36,6 @@ export function BuyersFoundCard({ buyersCount, topBuyersByFrequency }: BuyersFou
             <p className="text-xs text-[#586079] mt-1">Unique buyers identified</p>
           </div>
           <div className="flex flex-col items-end space-y-1">
-            <div className="flex items-center gap-1 text-green-600">
-              <TrendingUp className="h-3 w-3" />
-              <span className="text-xs font-medium">+{growthRate}%</span>
-            </div>
             <span className="text-xs text-[#586079]">{newBuyers} new this week</span>
           </div>
         </div>
@@ -73,7 +69,7 @@ export function BuyersFoundCard({ buyersCount, topBuyersByFrequency }: BuyersFou
           
           <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white mt-3 group" asChild>
             <Link to="/smart-connections" className="flex items-center justify-center gap-2">
-              <span>Explore All Connections</span>
+              <span>View All Smart Connections</span>
               <TrendingUp className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </Button>
