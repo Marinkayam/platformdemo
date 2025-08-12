@@ -7,6 +7,8 @@ export const filterConfig = {
   statusOptions: [
     "Pending Action", 
     "Approved by Buyer", 
+    "RTP Prepared",
+    "RTP Sent",
     "Paid", 
     "External Submission", 
     "Settled", 
