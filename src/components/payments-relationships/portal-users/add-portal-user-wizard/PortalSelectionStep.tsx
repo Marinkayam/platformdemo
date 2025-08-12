@@ -54,7 +54,7 @@ export function PortalSelectionStep({ searchQuery, setSearchQuery, selectedPorta
                 onClick={() => onPortalSelect(portal.name)}
               >
                 <CardContent className="flex flex-col items-center justify-center h-full p-2">
-                  <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mb-2 bg-white shadow-sm">
+                  <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mb-2 bg-white border border-grey-300 shadow-sm">
                     <img
                       src={getPortalLogoUrl(portal.name)}
                       alt={`${portal.name} logo`}
