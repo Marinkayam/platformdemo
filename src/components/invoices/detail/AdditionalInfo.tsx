@@ -36,16 +36,6 @@ export function AdditionalInfo({ invoice }: AdditionalInfoProps) {
             />
           </div>
           
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-600">
-              Buyer
-            </label>
-            <Input 
-              value={invoice.buyer} 
-              readOnly 
-              className="bg-gray-50"
-            />
-          </div>
           
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-600">
