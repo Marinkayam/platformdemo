@@ -85,6 +85,7 @@ export function TabContent({ tab, invoice, attachments = [] }: TabContentProps) 
     case "rtp-data":
       return <RTPDataTab invoice={localInvoice} attachments={attachments} />;
     case "portal-records":
+      if (localInvoice?.status === "RTP Prepared") return null;
       return <PortalRecordsTab invoiceId={localInvoice?.id || ""} />;
     case "activity":
       return <ActivityTab />;
