@@ -25,6 +25,8 @@ export function usePurchaseOrderFiltersState(
       newFilters.portal = newFilters.portal.filter(p => p !== value);
     } else if (key === "po-number") {
       newFilters.poNumber = "";
+    } else if (key === "due-date") {
+      newFilters.dueDate = { from: "", to: "" };
     }
     
     setFilters(newFilters);

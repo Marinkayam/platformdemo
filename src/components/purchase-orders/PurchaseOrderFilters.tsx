@@ -23,6 +23,7 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
     (Array.isArray(filters.status) && filters.status.length > 0) ||
     (Array.isArray(filters.buyer) && filters.buyer.length > 0) ||
     (Array.isArray(filters.portal) && filters.portal.length > 0) ||
+    (filters.dueDate?.from !== "" || filters.dueDate?.to !== "") ||
     filters.poNumber !== "";
 
   return (

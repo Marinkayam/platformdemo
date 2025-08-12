@@ -4,11 +4,16 @@ export interface PurchaseOrderFilters {
   buyer: string[];
   portal: string[];
   poNumber: string;
+  dueDate?: {
+    from: string;
+    to: string;
+  };
 }
 
 export const defaultPurchaseOrderFilters: PurchaseOrderFilters = {
   status: [],
   buyer: [],
   portal: [],
-  poNumber: ""
+  poNumber: "",
+  dueDate: { from: "", to: "" }
 };
