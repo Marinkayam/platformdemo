@@ -11,7 +11,7 @@ export function PageHeader({ title, subtitle, breadcrumbs }: PageHeaderProps) {
   return (
     <div className="mb-4">
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <div className="mb-3">
+        <div className="mb-4 pb-2">
           <Breadcrumb items={breadcrumbs} />
         </div>
       )}
