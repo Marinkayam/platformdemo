@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { SparklesText } from "@/components/common/SparklesText";
 import { calculatePortalsDashboardMetrics } from "@/utils/portalsDashboardUtils";
 import { createBreadcrumbs } from "@/components/common/Breadcrumb";
+import { useCountAnimation, formatNumber, formatCurrency } from "@/hooks/useCountAnimation";
 import { BuyersFoundCard } from "@/components/portals-dashboard/BuyersFoundCard";
 import { PortalsScannedCard } from "@/components/portals-dashboard/PortalsScannedCard";
 import { Progress } from "@/components/ui/progress";
@@ -16,6 +17,9 @@ import MontoIcon from "@/components/icons/MontoIcon";
 
 export default function PortalsDashboard() {
   const finalMetrics = calculatePortalsDashboardMetrics();
+  
+  // Animation states for counting
+  const [isAnimating, setIsAnimating] = useState(true);
 
   // Format last scan time with more prominent design
   const lastScanTime = new Date();
@@ -41,16 +45,20 @@ export default function PortalsDashboard() {
     openInvoicesTotal: 0
   });
 
-  // Fake data for new metrics
+  // Fake data for new metrics - with previous scan values
   const fakeData = {
     openPOsBreakdown: [
       { name: 'Existing', value: 156, color: '#94A3B8' },
       { name: 'New (Latest Scan)', value: 24, color: '#7B59FF' }
     ],
     posFoundInScan: 247,
+    posFoundPrevious: 240, // Previous scan value
     invoiceRecordsFoundInScan: 582,
+    invoiceRecordsPrevious: 575, // Previous scan value
     unmatchedInvoicePortalRecords: 45,
+    unmatchedPrevious: 42, // Previous scan value
     rejectedInvoices: 23,
+    rejectedPrevious: 21, // Previous scan value
     recentPOs: [
       { id: 'PO-2024-156', company: 'Walmart', amount: '$12,500', date: 'Aug 10, 2024' },
       { id: 'PO-2024-157', company: 'Target', amount: '$8,900', date: 'Aug 10, 2024' },
@@ -69,7 +77,10 @@ export default function PortalsDashboard() {
     if (progress < 100) {
       frame = window.setTimeout(() => setProgress(progress + 10), 250);
     } else {
-      setTimeout(() => setScanComplete(true), 200);
+      setTimeout(() => {
+        setScanComplete(true);
+        setIsAnimating(true); // Start number animations when scan completes
+      }, 200);
     }
     return () => clearTimeout(frame);
   }, [progress]);
@@ -117,6 +128,35 @@ export default function PortalsDashboard() {
     openInvoicesCount: currentMetrics.openInvoicesCount,
     openInvoicesTotal: currentMetrics.openInvoicesTotal
   } : finalMetrics;
+  
+  // Animated counters for the main cards
+  const animatedPOs = useCountAnimation({ 
+    end: fakeData.posFoundInScan, 
+    startFrom: scanComplete ? fakeData.posFoundPrevious : 0,
+    duration: 1500,
+    isActive: scanComplete && isAnimating 
+  });
+  
+  const animatedInvoices = useCountAnimation({ 
+    end: fakeData.invoiceRecordsFoundInScan, 
+    startFrom: scanComplete ? fakeData.invoiceRecordsPrevious : 0,
+    duration: 1500,
+    isActive: scanComplete && isAnimating 
+  });
+  
+  const animatedUnmatched = useCountAnimation({ 
+    end: fakeData.unmatchedInvoicePortalRecords, 
+    startFrom: scanComplete ? fakeData.unmatchedPrevious : 0,
+    duration: 1500,
+    isActive: scanComplete && isAnimating 
+  });
+  
+  const animatedRejected = useCountAnimation({ 
+    end: fakeData.rejectedInvoices, 
+    startFrom: scanComplete ? fakeData.rejectedPrevious : 0,
+    duration: 1500,
+    isActive: scanComplete && isAnimating 
+  });
 
   const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }: any) => {
     const RADIAN = Math.PI / 180;
@@ -212,10 +252,10 @@ export default function PortalsDashboard() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="text-3xl font-bold text-[#061237]">{fakeData.posFoundInScan}</div>
+                        <div className="text-3xl font-bold text-[#061237]">{scanComplete ? animatedPOs : 0}</div>
                         <span className="text-xs text-[#586079]">Total</span>
                       </div>
-                      <div className="text-sm text-[#7B59FF]">67 new</div>
+                      <div className="text-sm text-[#7B59FF]">{scanComplete ? (animatedPOs - fakeData.posFoundPrevious) : 0} new</div>
                     </div>
                     
                     <div className="text-sm text-[#061237]">
@@ -258,10 +298,10 @@ export default function PortalsDashboard() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="text-3xl font-bold text-[#061237]">{fakeData.invoiceRecordsFoundInScan}</div>
+                        <div className="text-3xl font-bold text-[#061237]">{scanComplete ? animatedInvoices : 0}</div>
                         <span className="text-xs text-[#586079]">Total</span>
                       </div>
-                      <div className="text-sm text-[#7B59FF]">134 new</div>
+                      <div className="text-sm text-[#7B59FF]">{scanComplete ? (animatedInvoices - fakeData.invoiceRecordsPrevious) : 0} new</div>
                     </div>
                     
                     <div className="text-sm text-[#061237]">
@@ -304,7 +344,7 @@ export default function PortalsDashboard() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="text-3xl font-bold text-[#061237]">{fakeData.rejectedInvoices}</div>
+                        <div className="text-3xl font-bold text-[#061237]">{scanComplete ? animatedRejected : 0}</div>
                         <span className="text-xs text-[#586079]">Total</span>
                       </div>
                       <div className="text-sm text-[#7B59FF]">5 this week</div>
@@ -359,7 +399,7 @@ export default function PortalsDashboard() {
                 <div className="grid grid-cols-2 gap-4">
                   <Button asChild variant="outline" className="h-20 flex-col text-center p-3 bg-blue-50 border-blue-200 hover:bg-blue-100">
                     <Link to="/portal-records?status=unmatched">
-                      <div className="text-3xl font-bold text-blue-700">{fakeData.unmatchedInvoicePortalRecords}</div>
+                      <div className="text-3xl font-bold text-blue-700">{scanComplete ? animatedUnmatched : 0}</div>
                       <div className="text-xs text-blue-600">Found Without Match</div>
                     </Link>
                   </Button>
