@@ -157,26 +157,6 @@ export default function PortalsDashboard() {
     isActive: progress > 0 && progress <= 100 // Animate during scan
   });
 
-  const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }: any) => {
-    const RADIAN = Math.PI / 180;
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="white"
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline="central"
-        className="text-sm font-medium"
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
-
   return (
     <div className="w-full">
       <div className="px-2 sm:px-4 md:px-6 py-3 max-w-[1440px] mx-auto w-full space-y-8">
@@ -187,7 +167,7 @@ export default function PortalsDashboard() {
         
         {/* AI Scan Progress Bar - Magical Version */}
         {!scanComplete && (
-          <div className="w-96 max-w-full mt-2 mb-2 flex flex-col items-center relative">
+          <div className="w-96 max-w-full flex flex-col items-center relative">
             <AnimatePresence>
               <motion.div
                 key="ai-magic-text"
@@ -236,11 +216,11 @@ export default function PortalsDashboard() {
         )}
 
         {/* Scan Results */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-            <Link to="/purchase-orders" className="h-full">
-              <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#E6E7EB] h-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link to="/purchase-orders">
+              <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#E6E7EB]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                   <CardTitle className="text-sm font-medium text-[#586079]">Purchase Orders</CardTitle>
                   <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200">
@@ -248,45 +228,76 @@ export default function PortalsDashboard() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="text-3xl font-bold text-[#061237]">{progress > 0 ? animatedPOs : fakeData.posFoundPrevious}</div>
-                        <span className="text-xs text-[#586079]">Total</span>
+                  {progress === 0 ? (
+                    // Skeleton loading state
+                    <div className="space-y-4 animate-pulse">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="h-8 w-16 bg-gray-200 rounded"></div>
+                            <div className="h-3 w-8 bg-gray-200 rounded"></div>
+                          </div>
+                          <div className="h-4 w-12 bg-gray-200 rounded"></div>
+                        </div>
+                        <div className="h-4 w-24 bg-gray-200 rounded"></div>
                       </div>
-                      <div className="text-sm text-[#7B59FF]">{progress > 0 ? Math.max(0, animatedPOs - fakeData.posFoundPrevious) : 0} new</div>
-                    </div>
-                    
-                    <div className="text-sm text-[#061237]">
-                      Total value: <span className="text-[#061237]">$4.2M</span>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <div className="text-xs text-[#586079]">Open POs:</div>
-                    {fakeData.recentPOs.slice(0, 3).map((po, index) => (
-                      <div key={index} className="text-sm text-[#061237] flex justify-between items-center">
-                        <span>{po.company}</span>
-                        <span className="text-xs text-[#586079]">{po.amount}</span>
+                      <div className="space-y-3">
+                        <div className="h-3 w-16 bg-gray-200 rounded"></div>
+                        {[1, 2, 3].map(i => (
+                          <div key={i} className="flex justify-between items-center">
+                            <div className="h-4 w-20 bg-gray-200 rounded"></div>
+                            <div className="h-3 w-12 bg-gray-200 rounded"></div>
+                          </div>
+                        ))}
+                        <div className="border-t border-gray-200 mt-8 mb-4"></div>
+                        <div className="h-3 w-28 bg-gray-200 rounded"></div>
                       </div>
-                    ))}
-                    
-                    <div className="border-t border-gray-200 mt-8 mb-4"></div>
-                    
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="h-3 w-3 text-green-500" />
-                      <span className="text-xs text-green-600">Average: $17K per PO</span>
+                      <div className="h-8 w-full bg-gray-200 rounded"></div>
                     </div>
-                  </div>
-                  <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
-                    <Link to="/purchase-orders">View POs</Link>
-                  </Button>
+                  ) : (
+                    // Actual content
+                    <>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="text-3xl font-bold text-[#061237]">{progress > 0 ? animatedPOs : fakeData.posFoundPrevious}</div>
+                            <span className="text-xs text-[#586079]">Total</span>
+                          </div>
+                          <div className="text-sm text-[#7B59FF]">{progress > 0 ? Math.max(0, animatedPOs - fakeData.posFoundPrevious) : 0} new</div>
+                        </div>
+                        
+                        <div className="text-sm text-[#061237]">
+                          Total value: <span className="text-[#061237]">$4.2M</span>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <div className="text-xs text-[#586079]">Open POs:</div>
+                        {fakeData.recentPOs.slice(0, 3).map((po, index) => (
+                          <div key={index} className="text-sm text-[#061237] flex justify-between items-center">
+                            <span>{po.company}</span>
+                            <span className="text-xs text-[#586079]">{po.amount}</span>
+                          </div>
+                        ))}
+                        
+                        <div className="border-t border-gray-200 mt-8 mb-4"></div>
+                        
+                        <div className="flex items-center gap-2">
+                          <TrendingUp className="h-3 w-3 text-green-500" />
+                          <span className="text-xs text-green-600">Average: $17K per PO</span>
+                        </div>
+                      </div>
+                      <Button size="sm" variant="outline" className="text-xs w-full text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" asChild>
+                        <Link to="/purchase-orders">View POs</Link>
+                      </Button>
+                    </>
+                  )}
                 </CardContent>
               </Card>
             </Link>
 
-            <Link to="/invoices" className="h-full">
-              <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#E6E7EB] h-full">
+            <Link to="/invoices">
+              <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#E6E7EB]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                   <CardTitle className="text-sm font-medium text-[#586079]">Invoice Portal Records</CardTitle>
                   <div className="p-2.5 rounded-xl bg-green-50 border border-green-200">
@@ -331,8 +342,8 @@ export default function PortalsDashboard() {
               </Card>
             </Link>
 
-            <Link to="/invoices?status=rejected" className="h-full">
-              <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#E6E7EB] h-full">
+            <Link to="/invoices?status=rejected">
+              <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#E6E7EB]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                   <CardTitle className="text-sm font-medium text-[#586079]">Rejected Portal Records</CardTitle>
                   <div className="p-2.5 rounded-xl bg-red-50 border border-red-200">
@@ -386,9 +397,9 @@ export default function PortalsDashboard() {
 
           </div>
 
-          {/* Portal Records Section - Main Focus */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Portal Records - Main Component */}
+          {/* Action Required, Buyers Found, and Portals Scanned - All in one row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+            {/* Action Required */}
             <Card className="bg-white border-[#E6E7EB] h-fit">
               <CardHeader>
                 <CardTitle className="text-base font-semibold text-[#061237]">Action Required</CardTitle>
@@ -432,64 +443,18 @@ export default function PortalsDashboard() {
               </CardContent>
             </Card>
             
-            {/* Processing Statistics */}
-            <Card className="bg-white border-[#E6E7EB] h-fit">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold text-[#061237]">Processing Statistics</CardTitle>
-                <p className="text-sm text-[#586079]">Current processing rates and metrics</p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-700">829</div>
-                    <div className="text-xs text-blue-600">Total Records Found</div>
-                  </div>
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-700">201</div>
-                    <div className="text-xs text-green-600">New This Scan</div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-orange-50 rounded-lg">
-                    <div className="text-2xl font-bold text-orange-700">45</div>
-                    <div className="text-xs text-orange-600">Need Matching</div>
-                  </div>
-                  <div className="text-center p-4 bg-red-50 rounded-lg">
-                    <div className="text-2xl font-bold text-red-700">35</div>
-                    <div className="text-xs text-red-600">Action Required</div>
-                  </div>
-                </div>
-                
-                <div className="space-y-2 pt-4 border-t border-gray-200">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-[#061237]">Successfully Processed</span>
-                    <span className="text-sm font-medium text-green-600">749 (90%)</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-[#061237]">Active Portals</span>
-                    <span className="text-sm font-medium text-[#7B59FF]">12 portals</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-[#061237]">Last Scan</span>
-                    <span className="text-sm font-medium text-[#586079]">2 hours ago</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Buyers Found */}
+            <BuyersFoundCard 
+              buyersCount={displayMetrics.buyersCount}
+              topBuyersByFrequency={displayMetrics.topBuyersByFrequency}
+            />
+            
+            {/* Portals Scanned */}
+            <PortalsScannedCard 
+              portalsCount={12}
+              recentPortals={displayMetrics.recentPortals}
+            />
           </div>
-        </div>
-
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <BuyersFoundCard 
-            buyersCount={displayMetrics.buyersCount}
-            topBuyersByFrequency={displayMetrics.topBuyersByFrequency}
-          />
-          <PortalsScannedCard 
-            portalsCount={12}
-            recentPortals={displayMetrics.recentPortals}
-          />
         </div>
 
       </div>

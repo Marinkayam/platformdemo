@@ -1,5 +1,6 @@
 
 import { cn } from "@/lib/utils";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface PortalRecordTab {
   id: string;
@@ -14,13 +15,29 @@ interface PortalRecordsTabsProps {
 }
 
 export function PortalRecordsTabs({ tabs, activeTab, onTabChange }: PortalRecordsTabsProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleTabChange = (tabId: string) => {
+    // Update URL based on tab selection
+    let newUrl = '/portal-records';
+    if (tabId === 'unmatched') {
+      newUrl = '/portal-records?status=unmatched';
+    } else if (tabId === 'conflict') {
+      newUrl = '/portal-records?status=conflicts';
+    }
+    
+    navigate(newUrl);
+    onTabChange(tabId);
+  };
+
   return (
     <div className="border-b mb-6">
       <div className="flex space-x-8">
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => onTabChange(tab.id)}
+            onClick={() => handleTabChange(tab.id)}
             className={cn(
               "py-3 px-1 relative font-medium text-sm",
               activeTab === tab.id
