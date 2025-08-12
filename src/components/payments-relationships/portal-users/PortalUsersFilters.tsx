@@ -18,9 +18,9 @@ export function PortalUsersFilters({ filters, onFilterChange, onClearFilters }: 
   const portalOptions = [
     "SAP Ariba",
      
-    "Oracle Procurement",
+    
     "Tipalti",
-    "Amazon Payee",
+    
     "Bill.com"
   ];
 

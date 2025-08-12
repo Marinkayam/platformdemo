@@ -15,7 +15,7 @@ export default function ScanAgents() {
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
   const [userToRemoveId, setUserToRemoveId] = useState<string | null>(null);
   const [portalUsers, setPortalUsers] = useState<PortalUser[]>(
-    mockPortalUsers.filter(u => u.portal !== 'Coupa')
+    mockPortalUsers.filter(u => !['Coupa','Amazon Payee','Oracle Procurement'].includes(u.portal))
   );
 
   const {
