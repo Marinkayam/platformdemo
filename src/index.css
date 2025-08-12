@@ -112,22 +112,8 @@
   }
 }
 
-@keyframes glow-once {
-  0% {
-    box-shadow: 0 0 0px 0px transparent;
-  }
-  50% {
-    box-shadow: 0 0 10px 3px #7B59FF;
-  }
-  100% {
-    box-shadow: 0 0 0px 0px transparent;
-  }
-}
-
 .auto-created-row td:first-child {
   position: relative;
-  /* Glow animation on the cell */
-  animation: glow-once 1.5s ease-out 300ms;
 }
 
 .auto-created-row td:first-child::before {

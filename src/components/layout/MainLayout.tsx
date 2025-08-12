@@ -38,13 +38,16 @@ export function MainLayout() {
     <SidebarProvider>
       <AppSidebar onChatAIOpen={handleOpenChatAIModal} />
       <SidebarInset>
-        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 bg-[#FAFAFA] border-b border-[#E4E5E9]">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
-            {/* You can add breadcrumbs or page title here if needed */}
-          </div>
-          <div className="flex items-center gap-3 ml-auto pr-4">
+        <header className="sticky top-0 z-40 h-16 bg-[#FAFAFA] border-b border-[#E4E5E9]">
+          <div className="flex h-full items-center px-4">
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+            </div>
+            <div className="flex-1">
+              {/* Space for breadcrumbs or page title if needed */}
+            </div>
+            <div className="flex items-center gap-3 flex-shrink-0">
             {/* Hidden notifications for demo */}
             <div className="relative hidden">
               <div className="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300" style={{ backgroundColor: '#E6E7EB' }}>
@@ -104,9 +107,10 @@ export function MainLayout() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            </div>
           </div>
         </header>
-        <main className="flex-1 bg-white min-h-0 overflow-x-hidden">
+        <main className="flex-1 bg-white overflow-x-hidden">
           <div className="w-full px-6 sm:px-8 md:px-12 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16">
             <Outlet />
           </div>

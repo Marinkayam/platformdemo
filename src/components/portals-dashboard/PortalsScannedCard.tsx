@@ -31,25 +31,69 @@ export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScann
     "Microsoft", "Oracle", "SAP", "Salesforce", "Google", "Apple"
   ];
 
-  // Mock scan performance data and disconnection status
+  // Mock portal data with connected agents (mix of names and emails)
   const allPortalsData = [
-    { name: "Walmart", connectedAgents: 24, disconnectedAgents: 3, hasIssues: true },
-    { name: "Target", connectedAgents: 18, disconnectedAgents: 0, hasIssues: false },
-    { name: "Amazon", connectedAgents: 0, disconnectedAgents: 5, hasIssues: true, reason: "Authentication expired" },
-    { name: "Costco", connectedAgents: 12, disconnectedAgents: 1, hasIssues: true },
-    { name: "Home Depot", connectedAgents: 15, disconnectedAgents: 0, hasIssues: false },
-    { name: "Best Buy", connectedAgents: 2, disconnectedAgents: 4, hasIssues: true, reason: "Network timeout" },
-    { name: "Microsoft", connectedAgents: 22, disconnectedAgents: 0, hasIssues: false },
-    { name: "Oracle", connectedAgents: 16, disconnectedAgents: 2, hasIssues: true },
-    { name: "SAP", connectedAgents: 0, disconnectedAgents: 8, hasIssues: true, reason: "Agent offline" },
-    { name: "Salesforce", connectedAgents: 14, disconnectedAgents: 0, hasIssues: false },
-    { name: "Google", connectedAgents: 20, disconnectedAgents: 1, hasIssues: true },
-    { name: "Apple", connectedAgents: 11, disconnectedAgents: 0, hasIssues: false }
+    { 
+      name: "Walmart", 
+      connectedAgents: 24, 
+      agentNames: ["John Smith", "sarah.johnson@walmart.com", "Mike Davis", "lisa.chen@walmart.com", "Robert Wilson"]
+    },
+    { 
+      name: "Target", 
+      connectedAgents: 18, 
+      agentNames: ["emma.taylor@target.com", "David Brown", "Jessica Martinez"]
+    },
+    { 
+      name: "Amazon", 
+      connectedAgents: 32, 
+      agentNames: ["Thomas Anderson", "maria.garcia@amazon.com", "James Wilson", "ashley.moore@amazon.com"]
+    },
+    { 
+      name: "Costco", 
+      connectedAgents: 12, 
+      agentNames: ["jennifer.davis@costco.com", "Michael Johnson"]
+    },
+    { 
+      name: "Home Depot", 
+      connectedAgents: 15, 
+      agentNames: ["Daniel Rodriguez", "nicole.thompson@homedepot.com", "Tyler Jackson", "Samantha Lee", "jordan.clark@homedepot.com"]
+    },
+    { 
+      name: "Best Buy", 
+      connectedAgents: 8, 
+      agentNames: ["alex.martinez@bestbuy.com", "Victoria Chang", "Nathan Parker", "emily.watson@bestbuy.com"]
+    },
+    { 
+      name: "Microsoft", 
+      connectedAgents: 22, 
+      agentNames: ["Isabella Rodriguez", "lucas.anderson@microsoft.com", "Sophia Williams"]
+    },
+    { 
+      name: "Oracle", 
+      connectedAgents: 16, 
+      agentNames: ["ethan.brown@oracle.com", "Ava Garcia", "Noah Martinez", "emma.wilson@oracle.com", "Jake Thompson"]
+    },
+    { 
+      name: "SAP", 
+      connectedAgents: 19, 
+      agentNames: ["Liam Thompson", "mia.rodriguez@sap.com"]
+    },
+    { 
+      name: "Salesforce", 
+      connectedAgents: 14, 
+      agentNames: ["harper.davis@salesforce.com", "Jackson Miller", "Evelyn Taylor", "logan.anderson@salesforce.com"]
+    },
+    { 
+      name: "Google", 
+      connectedAgents: 20, 
+      agentNames: ["Avery Johnson", "carter.brown@google.com", "Madison Garcia"]
+    },
+    { 
+      name: "Apple", 
+      connectedAgents: 11, 
+      agentNames: ["elijah.thompson@apple.com", "Layla Rodriguez", "Owen Davis", "zoe.chen@apple.com", "Maya Singh"]
+    }
   ];
-  
-  const portalsWithIssues = allPortalsData.filter(p => p.hasIssues).length;
-  const fullyConnectedPortals = allPortalsData.filter(p => !p.hasIssues).length;
-  const totalDisconnectedAgents = allPortalsData.reduce((sum, p) => sum + p.disconnectedAgents, 0);
   
   return (
     <Card className="relative overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white border-[#3B82F6]/20">
@@ -73,39 +117,22 @@ export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScann
         <div className="flex items-end justify-between">
           <div>
             <div className="text-3xl font-bold text-[#061237]">{portalsCount}</div>
-            <p className="text-xs text-[#586079] mt-1">Enterprise portals synced</p>
+            <p className="text-xs text-[#586079] mt-1">Enterprise portals connected</p>
           </div>
-          {portalsWithIssues > 0 && (
-            <div className="text-right">
-              <div className="flex items-center gap-1 text-red-600">
-                <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                <span className="text-xs font-medium">{totalDisconnectedAgents} agents offline</span>
-              </div>
-              <span className="text-xs text-[#586079]">{portalsWithIssues} portals need attention</span>
-            </div>
-          )}
         </div>
         
         <div className="space-y-3">
           <div className="flex items-center gap-1 flex-wrap">
-            {recentPortals.map((portal) => {
-              const portalData = allPortalsData.find(p => p.name === portal);
-              const hasIssues = portalData && portalData.hasIssues;
-              
-              return (
-                <div key={portal} className="relative">
-                  <img
-                    src={getPortalLogoUrl(portal)}
-                    alt={portal + ' logo'}
-                    className="w-6 h-6 rounded-full border border-[#E6E7EB] bg-white object-contain shadow-sm"
-                    title={portal}
-                  />
-                  {hasIssues && (
-                    <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
-                  )}
-                </div>
-              );
-            })}
+            {recentPortals.map((portal) => (
+              <div key={portal} className="relative">
+                <img
+                  src={getPortalLogoUrl(portal)}
+                  alt={portal + ' logo'}
+                  className="w-6 h-6 rounded-full border border-[#E6E7EB] bg-white object-contain shadow-sm"
+                  title={portal}
+                />
+              </div>
+            ))}
           </div>
           
           <div className="pt-3">
@@ -127,9 +154,10 @@ export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScann
                 <div className="grid grid-cols-2 gap-4">
                   {allPortalsData
                     .map((portalData) => {
-                      const { name: portal, connectedAgents, disconnectedAgents, hasIssues, reason } = portalData;
-                      const totalAgents = connectedAgents + disconnectedAgents;
+                      const { name: portal, connectedAgents, agentNames } = portalData;
                       const isExpanded = expandedPortals.has(portal);
+                      const displayAgents = agentNames.slice(0, 5); // Show max 5 agents
+                      const hasMoreAgents = agentNames.length > 5;
                       
                       return (
                         <div 
@@ -138,8 +166,8 @@ export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScann
                         >
                           {/* Main portal row */}
                           <div 
-                            className={`flex items-center gap-3 p-3 ${hasIssues ? 'cursor-pointer' : ''}`}
-                            onClick={() => hasIssues && togglePortalExpanded(portal)}
+                            className="flex items-center gap-3 p-3 cursor-pointer"
+                            onClick={() => togglePortalExpanded(portal)}
                           >
                             <div className="relative">
                               <img
@@ -147,63 +175,34 @@ export function PortalsScannedCard({ portalsCount, recentPortals }: PortalsScann
                                 alt={portal + ' logo'}
                                 className="w-8 h-8 rounded-full border border-[#E6E7EB] bg-white object-contain shadow-sm"
                               />
-                              {hasIssues && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-white"></div>
-                              )}
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="text-sm font-medium text-[#061237] truncate">{portal}</div>
-                              <div className="text-xs text-[#586079]">
-                                {totalAgents} scan agents connected
-                                {hasIssues && (
-                                  <span className="text-red-600 ml-1">
-                                    ({disconnectedAgents} offline)
-                                  </span>
-                                )}
-                              </div>
                             </div>
-                            {hasIssues && (
-                              <div className="text-gray-400">
-                                {isExpanded ? (
-                                  <ChevronDown className="h-4 w-4" />
-                                ) : (
-                                  <ChevronRight className="h-4 w-4" />
-                                )}
-                              </div>
-                            )}
+                            <div className="text-gray-400">
+                              {isExpanded ? (
+                                <ChevronDown className="h-4 w-4" />
+                              ) : (
+                                <ChevronRight className="h-4 w-4" />
+                              )}
+                            </div>
                           </div>
                           
-                          {/* Expanded details */}
-                          {hasIssues && isExpanded && (
+                          {/* Expanded details - Show connected agents */}
+                          {isExpanded && (
                             <div className="px-3 pb-3 border-t border-gray-100 bg-gray-50">
                               <div className="pt-3 space-y-2">
-                                <div className="flex items-center justify-between text-xs">
-                                  <span className="text-green-600">✓ Connected agents:</span>
-                                  <span className="font-medium text-green-600">{connectedAgents}</span>
-                                </div>
-                                <div className="flex items-center justify-between text-xs">
-                                  <span className="text-red-600">⚠ Disconnected agents:</span>
-                                  <span className="font-medium text-red-600">{disconnectedAgents}</span>
-                                </div>
-                                {reason && (
-                                  <div className="flex items-center justify-between text-xs">
-                                    <span className="text-gray-600">Issue:</span>
-                                    <span className="font-medium text-red-600">{reason}</span>
+                                <div className="text-xs font-medium text-[#586079] mb-2">Connected Agents:</div>
+                                {displayAgents.map((agentName, index) => (
+                                  <div key={index} className="text-xs text-[#061237] py-1">
+                                    {agentName}
+                                  </div>
+                                ))}
+                                {hasMoreAgents && (
+                                  <div className="text-xs text-[#586079] italic pt-1">
+                                    +{agentNames.length - displayAgents.length} more agents
                                   </div>
                                 )}
-                                <div className="pt-2">
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    className="text-xs w-full text-red-600 border-red-300 hover:bg-red-100"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      window.location.href = '/scan-agents?portal=' + encodeURIComponent(portal) + '&status=disconnected';
-                                    }}
-                                  >
-                                    Resolve Issues
-                                  </Button>
-                                </div>
                               </div>
                             </div>
                           )}

@@ -32,6 +32,17 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
     handleFilterChange("dueDate", { from: fromDate, to: toDate });
   };
 
+  // Check if any filters are active
+  const hasActiveFilters = 
+    filters.portal !== "All" ||
+    filters.buyer !== "All" ||
+    filters.status !== "All" ||
+    filters.transactionType !== "All" ||
+    (Array.isArray(filters.recordType) && filters.recordType.length > 0) ||
+    filters.dueDate.from !== "" ||
+    filters.dueDate.to !== "" ||
+    filters.search !== "";
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -62,7 +73,7 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
           />
 
           <FilterDropdown
-            label="Transaction Type"
+            label="Transaction"
             value={filters.transactionType}
             options={transactionTypeOptions}
             onSelect={(value) => handleFilterChange("transactionType", value)}
@@ -93,15 +104,17 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
           </div>
         </div>
 
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="h-9 flex items-center gap-1"
-          onClick={handleResetFilters}
-        >
-          <RefreshCw className="h-3 w-3" />
-          <span className="text-[14px]">Clear All</span>
-        </Button>
+        {hasActiveFilters && (
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-9 flex items-center gap-1"
+            onClick={handleResetFilters}
+          >
+            <RefreshCw className="h-3 w-3" />
+            <span className="text-[14px]">Reset</span>
+          </Button>
+        )}
       </div>
       
       <ActiveFiltersList 

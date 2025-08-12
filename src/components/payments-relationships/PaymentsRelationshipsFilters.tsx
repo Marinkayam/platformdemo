@@ -69,6 +69,15 @@ const portalOptions = [
 
 export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearFilters }: PaymentsRelationshipsFiltersProps) {
   
+  // Check if any filters are active
+  const hasActiveFilters = 
+    filters.status.length > 0 ||
+    filters.receivableEntity.length > 0 ||
+    filters.payable.length > 0 ||
+    filters.portal.length > 0 ||
+    filters.viewInactive ||
+    filters.search !== "";
+  
   const getActiveFilters = () => {
     const active = [];
     
@@ -117,100 +126,102 @@ export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearF
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-4">
-        {/* Search - First */}
-        <div className="relative">
-          <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            className="pl-9 pr-4 h-9 border rounded-md w-[160px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[220px] transition-all duration-300 ease-in-out text-[14px]"
-            value={filters.search}
-            onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Status */}
+          <FilterDropdown 
+            label="Status" 
+            value={filters.status} 
+            options={statusOptions.map(opt => opt.value)}
+            onSelect={(value) => onFilterChange({ 
+              ...filters, 
+              status: Array.isArray(value) ? value : [value] 
+            })}
+            multiSelect
           />
+          
+          {/* Receivable */}
+          <FilterDropdown 
+            label="Receivable" 
+            value={filters.receivableEntity} 
+            options={receivableEntityOptions.map(opt => opt.value)}
+            onSelect={(value) => onFilterChange({ 
+              ...filters, 
+              receivableEntity: Array.isArray(value) ? value : [value] 
+            })}
+            multiSelect
+            searchable
+          />
+          
+          {/* Payable */}
+          <FilterDropdown 
+            label="Payable" 
+            value={filters.payable} 
+            options={payableOptions.map(opt => opt.value)}
+            onSelect={(value) => onFilterChange({ 
+              ...filters, 
+              payable: Array.isArray(value) ? value : [value] 
+            })}
+            multiSelect
+            searchable
+          />
+          
+          {/* Portals */}
+          <FilterDropdown 
+            label="Portals" 
+            value={filters.portal} 
+            options={portalOptions.map(opt => opt.value)}
+            onSelect={(value) => onFilterChange({ 
+              ...filters, 
+              portal: Array.isArray(value) ? value : [value] 
+            })}
+            multiSelect
+            searchable
+            renderOption={(option) => (
+              <div className="flex items-center gap-2">
+                <img 
+                  src={getPortalLogoUrl(option)} 
+                  alt={`${option} logo`}
+                  className="w-5 h-5 object-contain rounded-full"
+                  width={20}
+                  height={20}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/portal-logos/placeholder.svg';
+                  }}
+                />
+                <span>{option}</span>
+              </div>
+            )}
+          />
+
+          {/* View Inactive Connections toggle */}
+          <div className="flex items-center space-x-2 h-9">
+            <Switch
+              id="view-inactive"
+              checked={filters.viewInactive}
+              onCheckedChange={(checked) => onFilterChange({ ...filters, viewInactive: checked })}
+            />
+            <label htmlFor="view-inactive" className="text-sm font-medium">
+              View Inactive Connections
+            </label>
+          </div>
+          
+          {/* Search - Moved to after filters */}
+          <div className="relative">
+            <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              className="pl-9 pr-4 h-9 border rounded-md w-[200px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[260px] transition-all duration-300 ease-in-out text-[14px]"
+              value={filters.search}
+              onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
+            />
+          </div>
         </div>
 
-        {/* Status */}
-        <FilterDropdown 
-          label="Status" 
-          value={filters.status} 
-          options={statusOptions.map(opt => opt.value)}
-          onSelect={(value) => onFilterChange({ 
-            ...filters, 
-            status: Array.isArray(value) ? value : [value] 
-          })}
-          multiSelect
-        />
-        
-        {/* Receivable */}
-        <FilterDropdown 
-          label="Receivable" 
-          value={filters.receivableEntity} 
-          options={receivableEntityOptions.map(opt => opt.value)}
-          onSelect={(value) => onFilterChange({ 
-            ...filters, 
-            receivableEntity: Array.isArray(value) ? value : [value] 
-          })}
-          multiSelect
-          searchable
-        />
-        
-        {/* Payable */}
-        <FilterDropdown 
-          label="Payable" 
-          value={filters.payable} 
-          options={payableOptions.map(opt => opt.value)}
-          onSelect={(value) => onFilterChange({ 
-            ...filters, 
-            payable: Array.isArray(value) ? value : [value] 
-          })}
-          multiSelect
-          searchable
-        />
-        
-        {/* Portals */}
-        <FilterDropdown 
-          label="Portals" 
-          value={filters.portal} 
-          options={portalOptions.map(opt => opt.value)}
-          onSelect={(value) => onFilterChange({ 
-            ...filters, 
-            portal: Array.isArray(value) ? value : [value] 
-          })}
-          multiSelect
-          searchable
-          renderOption={(option) => (
-            <div className="flex items-center gap-2">
-              <img 
-                src={getPortalLogoUrl(option)} 
-                alt={`${option} logo`}
-                className="w-5 h-5 object-contain rounded-full"
-                width={20}
-                height={20}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = '/portal-logos/placeholder.svg';
-                }}
-              />
-              <span>{option}</span>
-            </div>
-          )}
-        />
-
-        {/* View Inactive Connections toggle */}
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="view-inactive"
-            checked={filters.viewInactive}
-            onCheckedChange={(checked) => onFilterChange({ ...filters, viewInactive: checked })}
-          />
-          <label htmlFor="view-inactive" className="text-sm font-medium">
-            View Inactive Connections
-          </label>
-        </div>
-
-        {/* Reset button on the right */}
-        <div className="ml-auto">
+        {/* Reset button on the right - only show when filters are active */}
+        {hasActiveFilters && (
           <Button 
             variant="ghost" 
             size="sm" 
@@ -218,9 +229,9 @@ export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearF
             onClick={onClearFilters}
           >
             <RefreshCw className="h-3 w-3" />
-            <span className="text-[14px]">Reset All</span>
+            <span className="text-[14px]">Reset</span>
           </Button>
-        </div>
+        )}
       </div>
       
       {activeFilters.length > 0 && (

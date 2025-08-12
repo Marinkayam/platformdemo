@@ -119,10 +119,9 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
   }
 
   return (
-    <div className="rounded-xl border overflow-hidden bg-white">
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
+    <div className="rounded-xl border bg-white overflow-hidden">
+      <Table>
+        <TableHeader>
             <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9] border-b border-gray-200">
               <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[240px] py-4">
                 Smart Connection
@@ -261,7 +260,6 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
             })}
           </TableBody>
         </Table>
-      </div>
       <PaymentsRelationshipsTableFooter 
         totalConnections={connections.length} 
         currentPage={currentPage}

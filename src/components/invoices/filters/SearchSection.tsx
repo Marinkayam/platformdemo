@@ -38,7 +38,7 @@ export function SearchSection({
         onClick={onResetFilters}
       >
         <RefreshCw className="h-3 w-3" />
-        <span className="text-[14px]">Clear All</span>
+        <span className="text-[14px]">Reset</span>
       </Button>
     </motion.div>
   );

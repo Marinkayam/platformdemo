@@ -43,7 +43,7 @@ export function FilterControls({ filters, onFilterChange }: FilterControlsProps)
         searchable
       />
       <FilterDropdown 
-        label="Transaction Type" 
+        label="Transaction" 
         value={filters.transactionType} 
         options={filterConfig.transactionOptions}
         onSelect={(value) => onFilterChange("transactionType", value as string)}
