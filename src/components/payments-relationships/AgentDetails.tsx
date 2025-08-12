@@ -135,36 +135,56 @@ export function AgentDetails({
             </div>
 
             <AgentDisconnectionAlert agent={agent} />
-          </div>
 
+            <TabsNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
+          
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto px-6 bg-white">
             <div className="space-y-6 max-w-full pb-6">
-              <AgentIdentitySection 
-                agent={agent}
-                connectionInfo={connectionInfo}
-                copyToClipboard={copyToClipboard}
-                isEditMode={isEditMode}
-                editFormData={editFormData}
-                onFormChange={handleFormChange}
-              />
+              {activeTab === "details" && (
+                <>
+                  <AgentIdentitySection 
+                    agent={agent}
+                    connectionInfo={connectionInfo}
+                    copyToClipboard={copyToClipboard}
+                    isEditMode={isEditMode}
+                    editFormData={editFormData}
+                    onFormChange={handleFormChange}
+                  />
 
-              <AgentCredentialsSection
-                credentials={mockCredentials}
-                isEditMode={isEditMode}
-                editFormData={editFormData}
-                onFormChange={handleFormChange}
-                copyToClipboard={copyToClipboard}
-              />
+                  <AgentCredentialsSection
+                    credentials={mockCredentials}
+                    isEditMode={isEditMode}
+                    editFormData={editFormData}
+                    onFormChange={handleFormChange}
+                    copyToClipboard={copyToClipboard}
+                  />
 
-              <AgentTwoFactorSection
-                credentials={mockCredentials}
-                isEditMode={isEditMode}
-                editFormData={editFormData}
-                onFormChange={handleFormChange}
-                onConfigureSettings={handleEdit}
-                agentId={agent.id}
-              />
+                  <AgentTwoFactorSection
+                    credentials={mockCredentials}
+                    isEditMode={isEditMode}
+                    editFormData={editFormData}
+                    onFormChange={handleFormChange}
+                    onConfigureSettings={handleEdit}
+                    agentId={agent.id}
+                  />
+                </>
+              )}
+
+              {activeTab === "instructions" && (
+                <>
+                  <div className="mb-6">
+                    <img
+                      src="/lovable-uploads/9cc93995-38b5-4414-a59a-7c1c74a05d53.png"
+                      alt="Agent instructions layout reference"
+                      loading="lazy"
+                      className="w-full rounded-lg border object-contain"
+                    />
+                  </div>
+                  <AgentInstructionsTab agent={agent} />
+                </>
+              )}
             </div>
           </div>
 
