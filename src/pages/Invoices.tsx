@@ -89,6 +89,7 @@ export default function Invoices() {
         invoices={filteredInvoices} 
         isPendingTab={activeTab === "pending"}
         isLoading={isLoading}
+        prefixOrderStatuses={activeTab === "all" ? ["RTP Prepared","RTP Sent","Approved by Buyer","Pending Action"] : []}
       />
 
       <PaymentReportUploadWizard 

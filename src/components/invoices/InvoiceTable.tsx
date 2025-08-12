@@ -13,9 +13,10 @@ interface InvoiceTableProps {
   invoices: Invoice[];
   isPendingTab?: boolean;
   isLoading?: boolean;
+  prefixOrderStatuses?: string[];
 }
 
-export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false }: InvoiceTableProps) {
+export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false, prefixOrderStatuses = [] }: InvoiceTableProps) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 20;
@@ -30,20 +31,33 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
 
   // Pagination logic
   const prioritizedInvoices = useMemo(() => {
-    // Always prioritize Pending Action at the top, and put Paid at the bottom
+    if (prefixOrderStatuses && prefixOrderStatuses.length > 0) {
+      const used = new Set<string>();
+      const result: Invoice[] = [];
+      // Add first occurrence of each requested status in order
+      prefixOrderStatuses.forEach((status) => {
+        const found = sortedInvoices.find(inv => inv.status === status && !used.has(inv.id));
+        if (found) {
+          result.push(found);
+          used.add(found.id);
+        }
+      });
+      // Append the rest preserving current order
+      sortedInvoices.forEach(inv => {
+        if (!used.has(inv.id)) result.push(inv);
+      });
+      return result;
+    }
+
+    // Default prioritization: Pending Action top, Paid bottom
     return [...sortedInvoices].sort((a, b) => {
-      // Pending Action comes first
       if (a.status === "Pending Action" && b.status !== "Pending Action") return -1;
       if (b.status === "Pending Action" && a.status !== "Pending Action") return 1;
-      
-      // Paid comes last
       if (a.status === "Paid" && b.status !== "Paid") return 1;
       if (b.status === "Paid" && a.status !== "Paid") return -1;
-      
-      // Keep original order for everything else
       return 0;
     });
-  }, [sortedInvoices]);
+  }, [sortedInvoices, prefixOrderStatuses]);
   const totalPages = Math.ceil(prioritizedInvoices.length / pageSize);
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;
