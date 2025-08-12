@@ -26,14 +26,6 @@ export const pendingInvoices: Invoice[] = [
     netTerms: "Net 30",
     exceptions: [
       {
-        id: "exc-po-closed-001",
-        type: "PO_CLOSED",
-        message: "PO status",
-        details: "The PO is closed for invoicing",
-        createdAt: "2024-03-16T10:30:00Z",
-        resolved: false
-      },
-      {
         id: "exc-po-funds-001", 
         type: "PO_INSUFFICIENT_FUNDS",
         message: "PO funds",
