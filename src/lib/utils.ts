@@ -46,6 +46,9 @@ export const getPortalLogoUrl = (portalName: string): string => {
     "Tungsten": "tungsten.png",
     "Walmart": "walmart.png",
     "Workday": "workday.png",
+    "Meta": "meta.svg",
+    "Tradeshift": "tradeshift.svg",
+    "OpenText": "opentext.svg",
   };
   
   const fileName = logoMap[portalName];
