@@ -17,7 +17,7 @@ interface PortalUsersFiltersProps {
 export function PortalUsersFilters({ filters, onFilterChange, onClearFilters }: PortalUsersFiltersProps) {
   const portalOptions = [
     "SAP Ariba",
-    "Coupa", 
+     
     "Oracle Procurement",
     "Tipalti",
     "Amazon Payee",

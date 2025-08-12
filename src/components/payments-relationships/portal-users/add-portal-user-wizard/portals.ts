@@ -1,6 +1,6 @@
 
 export const AVAILABLE_PORTALS = [
-  { id: 'coupa', name: 'Coupa', logo: '/portal-logos/coupa.png' },
+  
   { id: 'sap-ariba', name: 'SAP Ariba', logo: '/portal-logos/ariba.png' },
   { id: 'oracle', name: 'Oracle', logo: '/portal-logos/oracle.png' },
   { id: 'workday', name: 'Workday', logo: '/portal-logos/workday.png' },
