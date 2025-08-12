@@ -26,7 +26,7 @@ export const mockSmartConnections: SmartConnection[] = [
   {
     id: "1",
     receivableEntity: "DataFlow Inc.",
-    payableEntity: "Microsoft Corp.",
+    payableEntity: "Monto Corp",
     receivableErp: "NetSuite",
     payableErp: "SAP",
     status: "Live",
@@ -37,7 +37,7 @@ export const mockSmartConnections: SmartConnection[] = [
       {
         id: "a1",
         portalName: "SAP Ariba",
-        type: "Monto",
+        type: "External",
         status: "Connected",
         portalUser: "john.doe@microsoft.com",
         role: "Submit Invoice"
@@ -45,14 +45,14 @@ export const mockSmartConnections: SmartConnection[] = [
       {
         id: "a2",
         portalName: "Coupa",
-        type: "Monto",
+        type: "External",
         status: "Connected",
         portalUser: "jane.smith@apple.com",
         role: "Monitor Invoice"
       }
     ],
     buyer: { name: "DataFlow Inc." },
-    supplier: { name: "Microsoft Corp." },
+    supplier: { name: "Monto Corp" },
     portal: { type: "SAP Ariba", user: "john.doe@microsoft.com" }
   },
   {
