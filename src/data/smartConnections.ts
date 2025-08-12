@@ -25,7 +25,7 @@ const calculateSmartConnectionStatus = (agents: any[]): "Live" | "In Process" | 
 export const mockSmartConnections: SmartConnection[] = [
   {
     id: "1",
-    receivableEntity: "Apple Inc.",
+    receivableEntity: "DataFlow Inc.",
     payableEntity: "Microsoft Corp.",
     receivableErp: "NetSuite",
     payableErp: "SAP",
@@ -51,7 +51,7 @@ export const mockSmartConnections: SmartConnection[] = [
         role: "Monitor Invoice"
       }
     ],
-    buyer: { name: "Apple Inc." },
+    buyer: { name: "DataFlow Inc." },
     supplier: { name: "Microsoft Corp." },
     portal: { type: "SAP Ariba", user: "john.doe@microsoft.com" }
   },
