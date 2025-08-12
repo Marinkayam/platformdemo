@@ -75,25 +75,21 @@ export default function Invoices() {
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="flex-shrink-0 px-3 sm:px-4 md:px-6 pt-6">
-        <InvoiceHeader 
-          tabs={tabsWithCounts}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          onFilterChange={setFilters}
-          invoiceCount={filteredInvoices.length}
-          onPaymentSync={handlePaymentSync}
-        />
-      </div>
+    <div className="flex flex-col space-y-6">
+      <InvoiceHeader 
+        tabs={tabsWithCounts}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onFilterChange={setFilters}
+        invoiceCount={filteredInvoices.length}
+        onPaymentSync={handlePaymentSync}
+      />
       
-      <div className="flex-1 min-w-0 w-full px-3 sm:px-4 md:px-6">
-        <InvoiceTable 
-          invoices={filteredInvoices} 
-          isPendingTab={activeTab === "pending"}
-          isLoading={isLoading}
-        />
-      </div>
+      <InvoiceTable 
+        invoices={filteredInvoices} 
+        isPendingTab={activeTab === "pending"}
+        isLoading={isLoading}
+      />
 
       <PaymentReportUploadWizard 
         isOpen={showPaymentReportWizard}

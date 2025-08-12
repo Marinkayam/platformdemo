@@ -158,8 +158,7 @@ export default function PortalsDashboard() {
   });
 
   return (
-    <div className="w-full">
-      <div className="px-2 sm:px-4 md:px-6 py-3 max-w-[1440px] mx-auto w-full space-y-8">
+    <div className="w-full max-w-[1440px] mx-auto space-y-8">
         <PageHeader 
           title="Portals Overview"
           subtitle="Portal information collected and cleaned by Monto's AI to save you time"
@@ -457,7 +456,6 @@ export default function PortalsDashboard() {
           </div>
         </div>
 
-      </div>
     </div>
   );
 }

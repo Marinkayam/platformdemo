@@ -106,8 +106,8 @@ export function MainLayout() {
             </DropdownMenu>
           </div>
         </header>
-        <main className="flex-1 bg-white min-h-0 py-4 overflow-x-hidden">
-          <div className="w-full px-[2%]">
+        <main className="flex-1 bg-white min-h-0 overflow-x-hidden">
+          <div className="w-full px-6 sm:px-8 md:px-12 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16">
             <Outlet />
           </div>
         </main>
