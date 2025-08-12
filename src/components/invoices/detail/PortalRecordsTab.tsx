@@ -106,23 +106,51 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     return <span className="text-sm text-gray-600">Alternate</span>;
   };
 
-  const getPromiseToPayDisplay = (record: PortalRecord) => {
-    const toTime = (s?: string) => (s ? new Date(s).getTime() : NaN);
+  const computeDueDateStr = (record: PortalRecord) => {
     const fmt = (d: Date) => format(d, "MM/dd/yyyy");
 
-    const dueT = toTime(record.dueDate);
-    const ptpT = toTime(record.promiseToPay);
-
-    if (!isNaN(dueT) && !isNaN(ptpT)) {
-      return ptpT >= dueT ? record.promiseToPay! : record.dueDate!;
+    // If dueDate exists and is valid, format and return
+    if (record.dueDate) {
+      const d = new Date(record.dueDate);
+      if (!isNaN(d.getTime())) return fmt(d);
     }
-    if (!isNaN(ptpT)) return record.promiseToPay!;
-    if (!isNaN(dueT)) return record.dueDate!;
 
-    // Fallback fake date when neither exists
+    // Try to infer from invoiceDate + net terms
+    const inv = record.invoiceDate ? new Date(record.invoiceDate) : null;
+    if (inv && !isNaN(inv.getTime())) {
+      let days = 30;
+      if (record.netTerms) {
+        const m = record.netTerms.match(/(\d+)/);
+        if (m) days = parseInt(m[1], 10);
+      }
+      const due = new Date(inv);
+      due.setDate(due.getDate() + days);
+      return fmt(due);
+    }
+
+    // Default fake due date: today + 30
     const fallback = new Date();
-    fallback.setDate(fallback.getDate() + 7);
+    fallback.setDate(fallback.getDate() + 30);
     return fmt(fallback);
+  };
+
+  const getDueDateDisplay = (record: PortalRecord) => computeDueDateStr(record);
+
+  const getPromiseToPayDisplay = (record: PortalRecord) => {
+    const fmt = (d: Date) => format(d, "MM/dd/yyyy");
+
+    // Base candidate: provided PTP or today + 7
+    let candidate = record.promiseToPay ? new Date(record.promiseToPay) : new Date();
+    if (!record.promiseToPay) candidate.setDate(candidate.getDate() + 7);
+
+    // Ensure candidate >= computed due date
+    const dueStr = computeDueDateStr(record);
+    const dueDate = new Date(dueStr);
+    if (!isNaN(dueDate.getTime()) && candidate.getTime() < dueDate.getTime()) {
+      candidate = dueDate;
+    }
+
+    return fmt(candidate);
   };
 
   const getNetTermsDisplay = (record: PortalRecord) => {
@@ -281,7 +309,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                                 <Field label="Total Amount" value={`${record.currency === 'EUR' ? '€' : record.currency === 'GBP' ? '£' : '$'}${record.total.toLocaleString()}`} />
                                 <Field label="Currency" value={record.currency || "USD"} />
                                 <Field label="PO Number" value={record.poNumber} />
-                                <Field label="Due Date" value={record.dueDate || "Not specified"} />
+                                <Field label="Due Date" value={getDueDateDisplay(record)} />
                                 <Field label="Net Terms" value={getNetTermsDisplay(record)} />
                                 <Field label="Promise to Pay" value={getPromiseToPayDisplay(record)} />
                                 <Field label="Supplier Name" value={record.supplierName} />
