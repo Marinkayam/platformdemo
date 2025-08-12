@@ -282,7 +282,7 @@ export const testInvoices = [
       isOverdue: true,
       poNumber: "SLK-998877",
       netTerms: "Net 15",
-      submitMethod: "Portal"
+      submitMethod: "Portal Upload"
     }
   ),
   

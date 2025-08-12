@@ -53,7 +53,7 @@ export const paidInvoices = [
       portal: "Coupa",
       poNumber: "NF-556677",
       netTerms: "Net 30",
-      submitMethod: "Portal"
+      submitMethod: "Portal Upload"
     }
   ),
   getBasicInvoiceData(

@@ -25,7 +25,7 @@ export const settledInvoices = [
       portal: "Oracle Procurement",
       poNumber: "LI-889900",
       netTerms: "Net 30",
-      submitMethod: "Portal"
+       submitMethod: "Portal Upload"
     }
   ),
   getBasicInvoiceData(
@@ -57,7 +57,7 @@ export const settledInvoices = [
       portal: "Coupa",
       poNumber: "UB-101122",
       netTerms: "Net 60",
-      submitMethod: "Portal"
+      submitMethod: "Portal Upload"
     }
   )
 ];

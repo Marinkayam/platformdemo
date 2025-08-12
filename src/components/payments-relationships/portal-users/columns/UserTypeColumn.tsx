@@ -14,12 +14,12 @@ export function UserTypeColumn({ userType }: UserTypeColumnProps) {
       <Tooltip>
         <TooltipTrigger asChild>
           <div>
-            <AgentUserTypeBadge type={userType} />
+            <AgentUserTypeBadge type={(userType === "Monto" || userType === "Monto User") ? "Monto" : "External"} />
           </div>
         </TooltipTrigger>
         <TooltipContent>
           <p>
-            {userType === "Monto"
+            {(userType === "Monto" || userType === "Monto User")
               ? "Monto-managed user. You can view credentials but not edit them."
               : "Customer-managed user. You can edit and remove this user."
             }

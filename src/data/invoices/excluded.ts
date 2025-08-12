@@ -51,7 +51,7 @@ export const excludedInvoices = [
       portal: "Tipalti",
       poNumber: "SL-445566",
       netTerms: "Net 15", 
-      submitMethod: "Portal"
+      submitMethod: "Portal Upload"
     }
   )
 ];

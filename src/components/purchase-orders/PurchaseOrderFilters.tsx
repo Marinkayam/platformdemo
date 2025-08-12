@@ -19,12 +19,10 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
   } = usePurchaseOrderFiltersState(onFilterChange);
 
   // Check if any filters are active
-  const hasActiveFilters = 
+  const hasActiveFilters =
     (Array.isArray(filters.status) && filters.status.length > 0) ||
     (Array.isArray(filters.buyer) && filters.buyer.length > 0) ||
-    (Array.isArray(filters.supplier) && filters.supplier.length > 0) ||
-    filters.poDate.from !== "" ||
-    filters.poDate.to !== "" ||
+    (Array.isArray(filters.portal) && filters.portal.length > 0) ||
     filters.poNumber !== "";
 
   return (

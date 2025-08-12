@@ -31,8 +31,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
     portalUrl?: string;
   }>({});
   
-  // Check if user is Monto type for view-only mode
-  const isMontoUser = portalUser.userType === "Monto";
+  const isMontoUser = portalUser.userType === "Monto" || portalUser.userType === "Monto User";
   const isViewOnly = isMontoUser;
   const [editFormData, setEditFormData] = useState({
     portal: portalUser.portal,
@@ -101,7 +100,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
     }
 
     // Validate Password (only if not hidden)
-    if (portalUser.userType !== "Monto") {
+    if (!(portalUser.userType === "Monto" || portalUser.userType === "Monto User")) {
       if (!editFormData.password || editFormData.password.length < 8) {
         newErrors.password = 'Password must be at least 8 characters long';
       }
@@ -204,7 +203,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
             <DialogTitle className="flex items-center gap-3">
               <span>Portal Agent Details</span>
               <StatusBadge status={portalUser.status} />
-              <AgentUserTypeBadge type={portalUser.userType} />
+              <AgentUserTypeBadge type={(portalUser.userType === "Monto" || portalUser.userType === "Monto User") ? "Monto" : "External"} />
             </DialogTitle>
           </DialogHeader>
 
@@ -236,7 +235,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
             isEditMode={isEditMode}
             editFormData={editFormData}
             onFormChange={handleFormChange}
-            hidePassword={portalUser.userType === "Monto"}
+            hidePassword={(portalUser.userType === "Monto" || portalUser.userType === "Monto User")}
             errors={errors}
             isViewOnly={isViewOnly}
           />

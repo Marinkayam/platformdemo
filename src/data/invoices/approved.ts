@@ -31,7 +31,7 @@ export const approvedInvoices = [
       portal: "Coupa",
       poNumber: "PO-998877",
       netTerms: "Net 45",
-      submitMethod: "Portal"
+      submitMethod: "Portal Upload"
     }
   ),
   getBasicInvoiceData(
@@ -47,7 +47,7 @@ export const approvedInvoices = [
       portal: "Oracle Procurement", 
       poNumber: "ORC-556677",
       netTerms: "Net 60",
-      submitMethod: "EDI"
+      submitMethod: "ERP"
     }
   )
 ];

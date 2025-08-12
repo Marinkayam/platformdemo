@@ -29,19 +29,19 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
   const recordTypeOptions = ["Primary", "Alternate", "Unmatched", "Conflict"];
 
   const handleDateChange = (fromDate: string, toDate: string) => {
-    handleFilterChange("dueDate", { from: fromDate, to: toDate });
+    handleFilterChange("dueDate", { from: fromDate ?? "", to: toDate ?? "" });
   };
 
   // Check if any filters are active
-  const hasActiveFilters = 
-    filters.portal !== "All" ||
-    filters.buyer !== "All" ||
-    filters.status !== "All" ||
-    filters.transactionType !== "All" ||
+  const hasActiveFilters =
+    (Array.isArray(filters.portal) && filters.portal.length > 0) ||
+    (Array.isArray(filters.buyer) && filters.buyer.length > 0) ||
+    (filters.status && filters.status !== "All") ||
+    (filters.transactionType && filters.transactionType !== "All") ||
     (Array.isArray(filters.recordType) && filters.recordType.length > 0) ||
-    filters.dueDate.from !== "" ||
-    filters.dueDate.to !== "" ||
-    filters.search !== "";
+    (filters.dueDate?.from ?? "") !== "" ||
+    (filters.dueDate?.to ?? "") !== "" ||
+    (filters.search ?? "") !== "";
 
   return (
     <div className="space-y-4">

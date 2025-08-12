@@ -45,7 +45,7 @@ export const awaitingInvoices = [
       portal: "SAP Ariba",
       poNumber: "DB-112233",
       netTerms: "Net 30",
-      submitMethod: "Portal",
+      submitMethod: "Portal Upload",
       notes: [
         {
           id: "awaiting-note-1",

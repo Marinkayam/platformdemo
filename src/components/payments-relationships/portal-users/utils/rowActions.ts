@@ -20,8 +20,7 @@ export const getRowActions = (
   portalUser: PortalUser, 
   { onEdit, onRemove, onView2FA }: GetRowActionsParams
 ): RowAction[] => {
-  // For Monto users, only show View 2FA
-  if (portalUser.userType === "Monto") {
+  if (portalUser.userType === "Monto" || portalUser.userType === "Monto User") {
     return [
       {
         label: "View 2FA",

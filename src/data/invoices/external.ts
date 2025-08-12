@@ -25,7 +25,7 @@ export const externalInvoices = [
       portal: "Bill.com",
       poNumber: "EXT-445566",
       netTerms: "Net 15",
-      submitMethod: "External Portal"
+      submitMethod: "Portal Upload"
     }
   ),
   getBasicInvoiceData(
