@@ -16,6 +16,7 @@ export interface PortalRecord {
    invoiceDate?: string;
    dueDate?: string;
    netTerms?: string;
+   promiseToPay?: string;
   
   // Legacy fields kept for compatibility
   matchStatus?: 'Matched' | 'Unmatched' | 'Conflicted' | 'Pending' | '—';

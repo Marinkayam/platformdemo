@@ -103,16 +103,37 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
        )
      },
      {
+       key: 'promiseToPay',
+       label: 'Promise to Pay',
+       className: 'w-[200px] min-w-[200px]',
+        render: (record: PortalRecord) => {
+          const toTime = (s?: string) => (s ? new Date(s).getTime() : NaN);
+          const dueT = toTime(record.dueDate);
+          const ptpT = toTime(record.promiseToPay);
+          let value: string = 'N/A';
+          if (!isNaN(dueT) && !isNaN(ptpT)) {
+            value = ptpT >= dueT ? record.promiseToPay! : record.dueDate!;
+          } else if (!isNaN(ptpT)) {
+            value = record.promiseToPay!;
+          } else if (!isNaN(dueT)) {
+            value = record.dueDate!;
+          }
+          return (
+            <span className="text-sm text-gray-900 truncate">{value}</span>
+          );
+        }
+     },
+     {
        key: 'supplierName',
        label: 'Supplier',
        className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.supplierName}</span>
        )
-     }
-   ];
-
-   // Only add Match Type column if not on the "unmatched" tab
+      }
+    ];
+ 
+    // Only add Match Type column if not on the "unmatched" tab
    if (activeTab !== 'unmatched') {
      baseColumns.push({
        key: 'matchType',
