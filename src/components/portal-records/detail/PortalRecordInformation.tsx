@@ -14,6 +14,17 @@ export function PortalRecordInformation({ portalRecord }: PortalRecordInformatio
     }).format(amount);
   };
 
+  const getPromiseToPayDisplay = () => {
+    const toTime = (s?: string) => (s ? new Date(s).getTime() : NaN);
+    const dueT = toTime(portalRecord.dueDate);
+    const ptpT = toTime(portalRecord.promiseToPay);
+    if (!isNaN(dueT) && !isNaN(ptpT)) {
+      return ptpT >= dueT ? portalRecord.promiseToPay! : portalRecord.dueDate!;
+    }
+    if (!isNaN(ptpT)) return portalRecord.promiseToPay!;
+    if (!isNaN(dueT)) return portalRecord.dueDate!;
+    return 'N/A';
+  };
   return (
     <div className="space-y-6">
       <div className="mb-4">
@@ -59,6 +70,16 @@ export function PortalRecordInformation({ portalRecord }: PortalRecordInformatio
         <div className="space-y-2">
           <label className="text-sm text-gray-500">Supplier Name</label>
           <Input value={portalRecord.supplierName} readOnly className="bg-gray-50" />
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm text-gray-500">Net Terms</label>
+          <Input value={portalRecord.netTerms || 'N/A'} readOnly className="bg-gray-50" />
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm text-gray-500">Promise to Pay</label>
+          <Input value={getPromiseToPayDisplay()} readOnly className="bg-gray-50" />
         </div>
       </div>
     </div>
