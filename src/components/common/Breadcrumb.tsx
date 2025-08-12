@@ -20,7 +20,7 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
         to="/" 
         className="text-[#586079] hover:text-[#7B59FF] transition-colors"
       >
-        Dashboard
+        Portals Dashboard
       </Link>
       
       {items.map((item, index) => (
@@ -53,18 +53,14 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
 
 // Helper function to generate common breadcrumb paths
 export const createBreadcrumbs = {
-  portalsDashboard: () => [
-    { label: "Portals Overview", isActive: true }
-  ],
+  portalsDashboard: () => [],
   
   purchaseOrders: () => [
-    { label: "Portals Overview", href: "/" },
     { label: "Purchase Orders", isActive: true }
   ],
   
   portalRecords: (status?: string) => {
     const items = [
-      { label: "Portals Overview", href: "/" },
       { label: "Portal Records", isActive: !status }
     ];
     
@@ -81,7 +77,6 @@ export const createBreadcrumbs = {
   
   invoices: (status?: string) => {
     const items = [
-      { label: "Portals Overview", href: "/" },
       { label: "Invoices", isActive: !status }
     ];
     
@@ -95,7 +90,6 @@ export const createBreadcrumbs = {
   },
   
   smartConnections: () => [
-    { label: "Portals Overview", href: "/" },
     { label: "Smart Connections", isActive: true }
   ]
 };
