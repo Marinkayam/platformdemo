@@ -181,27 +181,29 @@ export function AgentDetails({
           </div>
 
           {/* Fixed Footer */}
-          <div className="flex-shrink-0 flex justify-end gap-3 p-6 bg-white border-t">
-            {isEditMode ? (
-              <>
-                <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
-                  Cancel
-                </Button>
-                <Button onClick={handleSaveClick} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
-                  Save Changes
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button variant="ghost" onClick={onClose} className="min-w-[80px]">
-                  Close
-                </Button>
-                <Button onClick={handleEdit} className="min-w-[100px] bg-[#7b61ff] hover:bg-[#6b46ff]">
-                  Edit Agent
-                </Button>
-              </>
-            )}
-          </div>
+          {activeTab !== "instructions" && (
+            <div className="flex-shrink-0 flex justify-end gap-3 p-6 bg-white border-t">
+              {isEditMode ? (
+                <>
+                  <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleSaveClick} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
+                    Save Changes
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" onClick={onClose} className="min-w-[80px]">
+                    Close
+                  </Button>
+                  <Button onClick={handleEdit} className="min-w-[100px] bg-[#7b61ff] hover:bg-[#6b46ff]">
+                    Edit Agent
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 
