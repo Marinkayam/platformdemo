@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 export interface BreadcrumbItem {
   label: string;
@@ -18,10 +18,9 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
     <nav className={`flex items-center space-x-1 text-sm ${className}`} aria-label="Breadcrumb">
       <Link 
         to="/" 
-        className="flex items-center text-[#586079] hover:text-[#7B59FF] transition-colors"
-        aria-label="Back to Dashboard"
+        className="text-[#586079] hover:text-[#7B59FF] transition-colors"
       >
-        <ChevronLeft className="h-4 w-4" />
+        Dashboard
       </Link>
       
       {items.map((item, index) => (
