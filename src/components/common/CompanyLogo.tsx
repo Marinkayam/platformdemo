@@ -1,5 +1,5 @@
 import { useCompany } from '@/context/CompanyContext';
-import { MontoLogo } from '@/components/MontoLogo';
+import { PlaceholderLogo } from '@/components/icons/PlaceholderLogo';
 import { cn } from '@/lib/utils';
 
 interface CompanyLogoProps {
@@ -31,17 +31,16 @@ export const CompanyLogo = ({ collapsed = false, className }: CompanyLogoProps) 
     );
   }
 
-  // Fallback to MontoLogo
+  // Fallback to PlaceholderLogo
   return (
     <div className={cn(
-      "flex items-center justify-center shrink-0",
+      "flex items-center justify-center rounded-full overflow-hidden bg-muted shrink-0",
       collapsed ? "w-7 h-7" : "w-9 h-9",
       className
     )}>
-      <MontoLogo 
+      <PlaceholderLogo 
         width={collapsed ? 20 : 28} 
         height={collapsed ? 20 : 28}
-        className="text-primary"
       />
     </div>
   );
