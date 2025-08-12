@@ -70,46 +70,48 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
   const columnsCount = isPendingTab ? 10 : 11; // Updated for new columns: Invoice Number, Buyer, Due Date, Status, Portal, Total, PO Number, Invoice Date, Net Terms, Owner/Assignee, Actions
 
   return (
-    <div className="rounded-xl border overflow-hidden bg-white animate-fade-in">
-      <div className="overflow-x-auto">
-        <Table className="min-w-[2200px]">
-          <InvoiceTableHeader 
-            sortField={sortField}
-            sortDirection={sortDirection}
-            onSort={handleSort}
-            isPendingTab={isPendingTab}
-          />
-        
-        {isLoading ? (
-          <TableSkeleton rows={8} columns={columnsCount} showFooter />
-        ) : (
-          <>
-            <TableBody className="divide-y divide-gray-100">
-              {paginatedData.length === 0 ? (
-                <tr>
-                  <td colSpan={columnsCount} className="h-[65px] text-center text-sm text-gray-600 py-2 align-middle bg-white">
-                    No invoices found.
-                  </td>
-                </tr>
-              ) : (
-                paginatedData.map((invoice) => (
-                  <InvoiceTableRow
-                    key={invoice.id}
-                    invoice={invoice}
-                    isPendingTab={isPendingTab}
-                    onNavigate={(id) => navigate(`/invoices/${id}`)}
-                    onAssign={handleAssign}
-                    onRemoveAssignee={handleRemoveAssignee}
-                    onExclude={handleExcludeInvoice}
-                  />
-                ))
-              )}
-            </TableBody>
-            
-            <InvoiceTableFooter invoices={sortedInvoices} columnsCount={columnsCount} />
-          </>
-        )}
-        </Table>
+    <div className="space-y-4 w-full">
+      <div className="rounded-xl border bg-white animate-fade-in w-full" style={{ maxWidth: '100%' }}>
+        <div className="w-full" style={{ overflowX: 'auto' }}>
+          <Table className="w-full" style={{ minWidth: '2200px' }}>
+            <InvoiceTableHeader 
+              sortField={sortField}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+              isPendingTab={isPendingTab}
+            />
+          
+          {isLoading ? (
+            <TableSkeleton rows={8} columns={columnsCount} showFooter />
+          ) : (
+            <>
+              <TableBody className="divide-y divide-gray-100">
+                {paginatedData.length === 0 ? (
+                  <tr>
+                    <td colSpan={columnsCount} className="h-[65px] text-center text-sm text-gray-600 py-2 align-middle bg-white">
+                      No invoices found.
+                    </td>
+                  </tr>
+                ) : (
+                  paginatedData.map((invoice) => (
+                    <InvoiceTableRow
+                      key={invoice.id}
+                      invoice={invoice}
+                      isPendingTab={isPendingTab}
+                      onNavigate={(id) => navigate(`/invoices/${id}`)}
+                      onAssign={handleAssign}
+                      onRemoveAssignee={handleRemoveAssignee}
+                      onExclude={handleExcludeInvoice}
+                    />
+                  ))
+                )}
+              </TableBody>
+              
+              <InvoiceTableFooter invoices={sortedInvoices} columnsCount={columnsCount} />
+            </>
+          )}
+          </Table>
+        </div>
       </div>
       
       {!isLoading && (
