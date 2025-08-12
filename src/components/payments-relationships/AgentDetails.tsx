@@ -174,14 +174,6 @@ export function AgentDetails({
 
               {activeTab === "instructions" && (
                 <>
-                  <div className="mb-6">
-                    <img
-                      src="/lovable-uploads/9cc93995-38b5-4414-a59a-7c1c74a05d53.png"
-                      alt="Agent instructions layout reference"
-                      loading="lazy"
-                      className="w-full rounded-lg border object-contain"
-                    />
-                  </div>
                   <AgentInstructionsTab agent={agent} />
                 </>
               )}

@@ -140,7 +140,7 @@ export function AgentInstructionsTab({
     <div className="h-full">
       {/* Add/Edit Instruction Form */}
       {showAddForm && (
-        <div className="border rounded-lg p-6 bg-white mb-6">
+        <div className="p-6 mb-6">
           <div className="flex items-center gap-2 mb-6">
             <h3 className="text-lg font-semibold">
               {editingId ? "Update Instructions" : "Add Instructions"}
