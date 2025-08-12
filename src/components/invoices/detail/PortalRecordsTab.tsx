@@ -106,6 +106,17 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     return <span className="text-sm text-gray-600">Alternate</span>;
   };
 
+  const getPromiseToPayDisplay = (record: PortalRecord) => {
+    const toTime = (s?: string) => (s ? new Date(s).getTime() : NaN);
+    const dueT = toTime(record.dueDate);
+    const ptpT = toTime(record.promiseToPay);
+    if (!isNaN(dueT) && !isNaN(ptpT)) {
+      return ptpT >= dueT ? record.promiseToPay! : record.dueDate!;
+    }
+    if (!isNaN(ptpT)) return record.promiseToPay!;
+    if (!isNaN(dueT)) return record.dueDate!;
+    return "Not specified";
+  };
   const handleMakePrimary = (record: PortalRecord) => {
     setSelectedRecord(record);
     setShowMakePrimaryModal(true);
@@ -249,6 +260,8 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                                 <Field label="Currency" value={record.currency || "USD"} />
                                 <Field label="PO Number" value={record.poNumber} />
                                 <Field label="Due Date" value={record.dueDate || "Not specified"} />
+                                <Field label="Net Terms" value={record.netTerms || "Not specified"} />
+                                <Field label="Promise to Pay" value={getPromiseToPayDisplay(record)} />
                                 <Field label="Supplier Name" value={record.supplierName} />
                               </div>
                             </div>
