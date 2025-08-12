@@ -34,8 +34,7 @@ const mockInstructions: Instruction[] = [
     description: "How invoices should be routed through the portal system",
     items: [
       "All invoices must be submitted as PDF attachments",
-      "Include PO number in the subject line",
-      "Route to Accounts Payable queue for approval"
+      "Include PO number in the subject line"
     ],
     addedBy: "System Admin",
     addedDate: "Jun 15, 2025"
