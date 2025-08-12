@@ -122,7 +122,7 @@ export default function InvoiceDetail() {
     <div className="container mx-auto px-4 py-6">
       <InvoiceHeader invoice={invoice} />
       
-      <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} activityCount={activityCount} invoiceStatus={invoice.status} />
+      <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} activityCount={activityCount} invoiceStatus={invoice.status} exceptionCount={invoice.exceptions?.length || 0} />
 
       {activeTab === "invoice-data" ? (
         <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">

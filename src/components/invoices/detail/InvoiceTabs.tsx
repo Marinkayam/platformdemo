@@ -5,9 +5,10 @@ interface InvoiceTabsProps {
   onTabChange: (value: string) => void;
   activityCount?: number;
   invoiceStatus?: string;
+  exceptionCount?: number;
 }
 
-export function InvoiceTabsNav({ activeTab, onTabChange, activityCount = 0, invoiceStatus }: InvoiceTabsProps) {
+export function InvoiceTabsNav({ activeTab, onTabChange, activityCount = 0, invoiceStatus, exceptionCount }: InvoiceTabsProps) {
   const baseTabs = [
     { id: "invoice-data", icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>, label: "Invoice Data", tooltip: null },
     { id: "rtp-data", icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>, label: "RTP Data", 
@@ -23,6 +24,7 @@ export function InvoiceTabsNav({ activeTab, onTabChange, activityCount = 0, invo
       id: "exceptions", 
       icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>, 
       label: "Exceptions", 
+      count: exceptionCount,
       tooltip: null 
     });
   }
