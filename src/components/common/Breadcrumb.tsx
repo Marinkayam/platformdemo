@@ -17,7 +17,7 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
   return (
     <nav className={`flex items-center space-x-1 text-sm ${className}`} aria-label="Breadcrumb">
       <Link 
-        to="/" 
+        to="/portals-dashboard" 
         className="text-[#586079] hover:text-[#7B59FF] transition-colors"
       >
         Portals Dashboard
