@@ -18,7 +18,7 @@ interface InvoiceTableProps {
 export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false }: InvoiceTableProps) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 20;
   
   const { 
     sortedInvoices, 
@@ -30,8 +30,19 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
 
   // Pagination logic
   const prioritizedInvoices = useMemo(() => {
-    // Always prioritize Pending Action at the top
-    return [...sortedInvoices].sort((a, b) => (a.status === "Pending Action" ? -1 : 1) - (b.status === "Pending Action" ? -1 : 1));
+    // Always prioritize Pending Action at the top, and put Paid at the bottom
+    return [...sortedInvoices].sort((a, b) => {
+      // Pending Action comes first
+      if (a.status === "Pending Action" && b.status !== "Pending Action") return -1;
+      if (b.status === "Pending Action" && a.status !== "Pending Action") return 1;
+      
+      // Paid comes last
+      if (a.status === "Paid" && b.status !== "Paid") return 1;
+      if (b.status === "Paid" && a.status !== "Paid") return -1;
+      
+      // Keep original order for everything else
+      return 0;
+    });
   }, [sortedInvoices]);
   const totalPages = Math.ceil(prioritizedInvoices.length / pageSize);
   const paginatedData = useMemo(() => {

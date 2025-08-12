@@ -28,7 +28,10 @@ export function PortalUserRow({
       className={`grid grid-cols-[1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-6 transition-colors min-h-[90px] hover:bg-gray-50 cursor-pointer`}
       onClick={() => onRowClick(user)}
     >
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
+        {user.status === 'Disconnected' && (
+          <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0" title="Disconnected" />
+        )}
         <PortalColumn portal={user.portal} />
       </div>
       <div className="flex items-center">

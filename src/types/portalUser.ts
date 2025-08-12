@@ -5,7 +5,7 @@ export interface PortalUser {
   username: string;
   supplierName?: string;
   status: "Connected" | "Validating" | "Disconnected";
-  userType: "Monto" | "External";
+  userType: "Monto User" | "Customer User";
   linkedSmartConnections: number;
   lastUpdated: string;
   isReadOnly: boolean;

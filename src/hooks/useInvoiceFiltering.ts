@@ -37,6 +37,7 @@ export function useInvoiceFiltering(invoices: Invoice[], activeTab: string) {
       if (activeTab === "pending" && invoice.status !== "Pending Action") return false;
       if (activeTab === "overdue" && !isOverdue(invoice.dueDate)) return false;
       if (activeTab === "settled" && !["Paid", "Settled"].includes(invoice.status)) return false;
+      // For "all" tab, show all invoices (no filtering by status)
       
       // Then apply dropdown filters
       if (filters.status.length > 0 && !filters.status.includes(invoice.status)) return false;

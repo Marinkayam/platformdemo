@@ -44,7 +44,7 @@ export function PortalUsersTableHeader({
       <div className="text-sm font-semibold">
         {renderSortButton('userType', 'User Type')}
       </div>
-      <div className="text-center text-sm font-semibold">Actions</div>
+      <div className="text-center text-sm font-semibold"></div>
     </div>
   );
 }

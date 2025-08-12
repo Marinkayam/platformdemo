@@ -114,15 +114,14 @@ export function PortalUsersTable({
 
   return (
     <div className="rounded-xl border overflow-hidden bg-white">
-      <div className="border-b border-gray-200 bg-gray-50/50">
-        <PortalUsersTableHeader 
-          sortField={sortField}
-          sortDirection={sortDirection}
-          onSort={handleSort}
-        />
-      </div>
-      
       <div className="max-h-[600px] overflow-y-auto">
+        <div className="sticky top-0 z-10 border-b border-gray-200 bg-[#F6F7F9]">
+          <PortalUsersTableHeader 
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+          />
+        </div>
         {isLoading ? (
           <TableSkeleton rows={8} columns={6} />
         ) : (

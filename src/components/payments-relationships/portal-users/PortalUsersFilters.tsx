@@ -31,8 +31,8 @@ export function PortalUsersFilters({ filters, onFilterChange, onClearFilters }: 
   ];
 
   const userTypeOptions = [
-    "Monto",
-    "External"
+    "Monto User",
+    "Customer User"
   ];
 
   const getActiveFilters = () => {
@@ -77,14 +77,15 @@ export function PortalUsersFilters({ filters, onFilterChange, onClearFilters }: 
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-4">
-        <div className="flex items-center gap-4 flex-1">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <DesignFilterDropdown
             label="Portal"
             value={filters.portal}
             options={portalOptions}
             onSelect={(value) => onFilterChange("portal", value)}
             multiSelect={true}
+            searchable={true}
           />
 
           <DesignFilterDropdown
@@ -103,24 +104,29 @@ export function PortalUsersFilters({ filters, onFilterChange, onClearFilters }: 
             multiSelect={true}
           />
 
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Search by username..."
+          <div className="relative">
+            <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input 
+              type="text" 
+              placeholder="Search agents..." 
+              className="pl-9 pr-4 h-9 border rounded-md w-[200px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[260px] transition-all duration-300 ease-in-out text-[14px]"
               value={filters.search}
               onChange={(e) => onFilterChange("search", e.target.value)}
-              className="pl-10"
             />
           </div>
         </div>
 
         {hasActiveFilters && (
-          <Button
-            variant="outline"
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-9 flex items-center gap-1"
             onClick={onClearFilters}
-            className="text-sm"
           >
-            Clear Filters
+            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span className="text-[14px]">Reset</span>
           </Button>
         )}
       </div>

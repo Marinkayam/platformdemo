@@ -21,6 +21,10 @@ export function useSortedPortalUsers(portalUsers: PortalUser[]) {
   };
 
   const sortedPortalUsers = [...localPortalUsers].sort((a, b) => {
+    // Always put disconnected users at the top
+    if (a.status === 'Disconnected' && b.status !== 'Disconnected') return -1;
+    if (b.status === 'Disconnected' && a.status !== 'Disconnected') return 1;
+    
     if (!sortField) return 0;
     
     const fieldA = a[sortField];

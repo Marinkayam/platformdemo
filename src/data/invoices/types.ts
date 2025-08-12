@@ -237,5 +237,99 @@ export const testInvoices = [
         }
       ]
     }
+  ),
+  
+  // Overdue Status Invoices
+  getBasicInvoiceData(
+    "overdue-1",
+    "INV-20241110",
+    "Adobe Systems",
+    "2024-11-15",
+    "Overdue",
+    5420.50,
+    "2024-10-15",
+    "jennifer.lopez@example.com",
+    {
+      portal: "Coupa",
+      isOverdue: true,
+      poNumber: "PO-112233",
+      netTerms: "Net 30",
+      submitMethod: "Email",
+      notes: [
+        {
+          id: "overdue-note-1",
+          content: "Invoice is past due. Escalated to collections team.",
+          createdAt: "2024-11-16T09:00:00Z",
+          createdBy: "Finance Team",
+          isRead: false,
+          isNew: true
+        }
+      ]
+    }
+  ),
+
+  getBasicInvoiceData(
+    "overdue-2", 
+    "INV-20241105",
+    "Slack Technologies",
+    "2024-11-10",
+    "Overdue",
+    12800.75,
+    "2024-10-10",
+    "thomas.anderson@example.com",
+    {
+      portal: "SAP Ariba",
+      isOverdue: true,
+      poNumber: "SLK-998877",
+      netTerms: "Net 15",
+      submitMethod: "Portal"
+    }
+  ),
+  
+  // Additional Pending Action with more variety
+  getBasicInvoiceData(
+    "pending-new-1",
+    "INV-20241206",
+    "Stripe Inc",
+    "2024-12-30",
+    "Pending Action", 
+    8950.00,
+    "2024-12-06",
+    "alex.turner@example.com",
+    {
+      portal: "Tipalti",
+      poNumber: "STR-445566",
+      netTerms: "Net 45",
+      submitMethod: "API",
+      hasExceptions: true,
+      exceptions: [
+        {
+          id: "exc-pending-1",
+          type: "PO_CLOSED",
+          message: "Purchase Order Closed",
+          details: "The referenced PO has been closed and cannot accept new invoices",
+          createdAt: "2024-12-06T14:30:00Z",
+          resolved: false
+        }
+      ]
+    }
+  ),
+
+  getBasicInvoiceData(
+    "pending-new-2",
+    "INV-20241207",
+    "Zoom Video Communications",
+    "2024-12-28",
+    "Pending Action",
+    3200.25,
+    "2024-11-28", 
+    "rachel.green@example.com",
+    {
+      portal: "Bill.com",
+      poNumber: "ZM-334455", 
+      netTerms: "Net 30",
+      submitMethod: "Portal Upload",
+      assignee: "finance.team@example.com"
+    }
   )
 ];

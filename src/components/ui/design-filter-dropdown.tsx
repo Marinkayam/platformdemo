@@ -63,7 +63,7 @@ export function DesignFilterDropdown({
     <div className={`relative ${className}`} ref={dropdownRef}>
       <div 
         onClick={() => setIsOpen(!isOpen)} 
-        className="flex items-center gap-2 border border-grey-400 rounded-lg px-3 h-12 w-full bg-background-paper cursor-pointer hover:bg-grey-200 transition-colors"
+        className="flex items-center gap-2 border border-grey-400 rounded-lg px-3 h-9 w-full bg-background-paper cursor-pointer hover:bg-grey-200 transition-colors"
       >
         {label && (
           <span className="text-sm text-grey-500 whitespace-nowrap">{label}</span>
