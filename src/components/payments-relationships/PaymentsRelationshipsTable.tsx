@@ -7,6 +7,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { ExpandedAgentCard } from "./ExpandedAgentCard";
 import { PaymentsRelationshipsTableFooter } from "./PaymentsRelationshipsTableFooter";
+import { SmartConnectionsInsights } from "@/components/smart-connections/SmartConnectionsInsights";
 import { SmartConnection } from "@/types/smartConnection";
 import { useNavigate } from "react-router-dom";
 import { getConnectionIssues, getHighestSeverityIssue } from "@/utils/connectionIssues";
@@ -247,7 +248,8 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                     <TableRow>
                       <TableCell colSpan={6} className="p-0 bg-gray-50">
                         <div className="p-6">
-                          <div className="flex items-center justify-between mb-4">
+                          <SmartConnectionsInsights />
+                          <div className="flex items-center justify-between mb-4 mt-6">
                             <h3 className="text-sm font-normal text-gray-900">Agents</h3>
                           </div>
                           <ExpandedAgentCard connection={connection} />
