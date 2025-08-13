@@ -44,14 +44,14 @@ export function SmartConnectionsInsights({ isScanning = false, isComplete = fals
   const metrics = [
     {
       icon: <Calendar className="h-3 w-3" />,
-      label: "TDSO",
+      label: "Average Collection Days",
       value: "28",
       subText: "Days",
       color: "[#7B59FF]"
     },
     {
       icon: <Clock className="h-3 w-3" />,
-      label: "Avg DSO",
+      label: "TDSO",
       value: "32",
       subText: "Days",
       color: "[#7B59FF]"
