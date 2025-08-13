@@ -3,6 +3,7 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { PaymentsRelationshipsHeader } from "@/components/payments-relationships/PaymentsRelationshipsHeader";
 import { PaymentsRelationshipsFilters } from "@/components/payments-relationships/PaymentsRelationshipsFilters";
 import { PaymentsRelationshipsTable } from "@/components/payments-relationships/PaymentsRelationshipsTable";
+import { SmartConnectionsInsights } from "@/components/smart-connections/SmartConnectionsInsights";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { mockSmartConnections } from "@/data/smartConnections";
 import { useSmartConnectionFiltering } from "@/hooks/useSmartConnectionFiltering";
@@ -34,6 +35,8 @@ export default function SmartConnections() {
           onFilterChange={handleSmartConnectionFilterChange}
           onClearFilters={handleResetSmartConnectionFilters}
         />
+        
+        <SmartConnectionsInsights />
         
         <PaymentsRelationshipsTable connections={filteredConnections} />
       </div>
