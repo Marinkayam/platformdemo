@@ -37,8 +37,8 @@ export function MainLayout() {
   return (
     <SidebarProvider>
       <AppSidebar onChatAIOpen={handleOpenChatAIModal} />
-      <SidebarInset className="overflow-x-hidden flex flex-col min-h-screen">
-        <header className="sticky top-0 z-50 h-16 bg-[#FAFAFA] border-b border-[#E4E5E9]">
+      <SidebarInset className="overflow-x-hidden h-screen flex flex-col">
+        <header className="flex-shrink-0 sticky top-0 z-50 h-16 bg-[#FAFAFA] border-b border-[#E4E5E9]">
           <div className="flex h-full items-center px-4">
             <div className="flex items-center gap-2 flex-shrink-0">
               <SidebarTrigger className="-ml-1" />
@@ -47,15 +47,15 @@ export function MainLayout() {
             <div className="flex-1">
               {/* Space for breadcrumbs or page title if needed */}
             </div>
-            <div className="flex items-center gap-3 flex-shrink-0">
-            {/* Hidden notifications for demo */}
-            <div className="relative hidden">
+            <div className="flex items-center gap-3 flex-shrink-0 mr-12">
+            {/* Notifications */}
+            <div className="relative">
               <div className="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300" style={{ backgroundColor: '#E6E7EB' }}>
                 <NotificationsPopover />
               </div>
               <span className="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500 border-2 border-[#FAFAFA]" />
             </div>
-            {/* Hidden user settings for demo */}
+            {/* User Profile */}
             <DropdownMenu>
                <DropdownMenuTrigger asChild>
                  <button className="w-8 h-8 rounded-full flex items-center justify-center font-medium cursor-pointer hover:opacity-80 transition-opacity border border-gray-300" style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}>
@@ -110,7 +110,7 @@ export function MainLayout() {
             </div>
           </div>
         </header>
-        <main className="flex-1 bg-white overflow-y-auto">
+        <main className="flex-1 bg-white overflow-y-auto min-h-0">
           <div className="w-full px-6 sm:px-8 md:px-12 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16">
             <Outlet />
           </div>
