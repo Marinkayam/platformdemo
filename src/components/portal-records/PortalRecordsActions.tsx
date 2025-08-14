@@ -1,15 +1,26 @@
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
   DropdownMenuContent, 
   DropdownMenuItem 
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Download } from "lucide-react";
+import { MoreVertical, Download, Search } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-export function PortalRecordsActions({ recordCount = 0 }) {
+interface PortalRecordsActionsProps {
+  recordCount?: number;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
+}
+
+export function PortalRecordsActions({ 
+  recordCount = 0,
+  searchValue = "",
+  onSearchChange 
+}: PortalRecordsActionsProps) {
   const handleExportRecords = () => {
     // If more than 1000 records, show error toast
     if (recordCount > 1000) {
@@ -46,18 +57,32 @@ export function PortalRecordsActions({ recordCount = 0 }) {
 
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="ml-2 h-9 bg-white flex items-center">
-          <MoreVertical className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[180px] bg-white border shadow-lg z-50">
-        <DropdownMenuItem onClick={handleExportRecords}>
-          <Download className="mr-2 h-4 w-4" />
-          <span className="text-[14px]">Export All</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center gap-2">
+      {/* Search Input */}
+      <div className="relative w-64">
+        <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Search records..."
+          value={searchValue}
+          onChange={(e) => onSearchChange?.(e.target.value)}
+          className="h-8 pl-8"
+        />
+      </div>
+      
+      {/* Kebab Menu */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="h-8 bg-white flex items-center">
+            <MoreVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-[180px]">
+          <DropdownMenuItem onClick={handleExportRecords}>
+            <Download className="mr-2 h-4 w-4" />
+            <span className="text-[14px]">Export All</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }

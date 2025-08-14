@@ -1,16 +1,27 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
   DropdownMenuContent, 
   DropdownMenuItem 
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Settings, Download } from "lucide-react";
+import { MoreVertical, Settings, Download, Search } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-export function PurchaseOrderActions({ purchaseOrderCount = 0 }) {
+interface PurchaseOrderActionsProps {
+  purchaseOrderCount?: number;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
+}
+
+export function PurchaseOrderActions({ 
+  purchaseOrderCount = 0, 
+  searchValue = "",
+  onSearchChange 
+}: PurchaseOrderActionsProps) {
   const handleExportPurchaseOrders = () => {
     // If more than 1000 purchase orders, show error toast
     if (purchaseOrderCount > 1000) {
@@ -53,18 +64,32 @@ export function PurchaseOrderActions({ purchaseOrderCount = 0 }) {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="ml-2 h-9 bg-white flex items-center">
-          <MoreVertical className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[180px]">
-        <DropdownMenuItem onClick={handleExportPurchaseOrders}>
-          <Download className="mr-2 h-4 w-4" />
-          <span className="text-[14px]">Export All</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center gap-2">
+      {/* Search Input */}
+      <div className="relative w-64">
+        <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Search PO number..."
+          value={searchValue}
+          onChange={(e) => onSearchChange?.(e.target.value)}
+          className="h-8 pl-8"
+        />
+      </div>
+      
+      {/* Kebab Menu */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="h-8 bg-white flex items-center">
+            <MoreVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-[180px]">
+          <DropdownMenuItem onClick={handleExportPurchaseOrders}>
+            <Download className="mr-2 h-4 w-4" />
+            <span className="text-[14px]">Export All</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }

@@ -37,13 +37,13 @@ export const STATUS_MAPPING = {
   success: ['paid', 'settled', 'partially settled', 'live', 'connected', 'new', 'fully invoiced', 'partially invoiced'],
   
   // ERROR - Red  
-  error: ['rejected by buyer', 'disconnected', 'error', 'unavailable', 'pending action'],
+  error: ['rejected by buyer', 'disconnected', 'error', 'unavailable', 'pending action', 'needs attention'],
   
   // WARNING - Orange
   warning: ['external submission'],
   
   // INFO - Blue
-  info: ['in process', 'validating', 'building'],
+  info: ['in process', 'validating', 'building', 'connecting'],
   
   // NEUTRAL - Gray
   neutral: ['excluded', 'inactive'],

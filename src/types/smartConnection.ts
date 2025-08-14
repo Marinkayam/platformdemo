@@ -4,7 +4,7 @@ export interface SmartConnection {
   payableEntity: string;
   receivableErp: string;
   payableErp: string;
-  status: "Live" | "In Process" | "Unavailable" | "Disconnected" | "Inactive";
+  status: "Connected" | "Connecting" | "Needs Attention" | "Disconnected" | "Inactive";
   agentCount: number;
   lastUpdated: string;
   isActive: boolean;
@@ -28,6 +28,7 @@ export interface SmartConnectionFilters {
   receivableEntity: string[];
   payable: string[];
   portal: string[];
+  activeStatus: string[];
   search: string;
   viewInactive: boolean;
 }
@@ -37,6 +38,7 @@ export const defaultSmartConnectionFilters: SmartConnectionFilters = {
   receivableEntity: [],
   payable: [],
   portal: [],
+  activeStatus: [],
   search: "",
   viewInactive: false,
 };
@@ -57,8 +59,8 @@ export const getSmartConnectionStatusCategory = (connection: SmartConnection): s
     return "Needs Review";
   }
   
-  // Active: Live or In Process
-  if (connection.status === "Live" || connection.status === "In Process") {
+  // Active: Connected or Connecting
+  if (connection.status === "Connected" || connection.status === "Connecting") {
     return "Active";
   }
   

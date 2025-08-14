@@ -1,10 +1,13 @@
 
+import React, { useMemo } from "react";
 import { PurchaseOrderFilters as PurchaseOrderFiltersType } from "./filters/types";
-import { FilterControls } from "./filters/FilterControls";
-import { ActiveFiltersList } from "./filters/ActiveFiltersList";
 import { usePurchaseOrderFiltersState } from "@/hooks/usePurchaseOrderFiltersState";
-import { Search, RefreshCw } from "lucide-react";
+import { DataTableFacetedFilter, Option } from "@/components/dashboard/filters/DataTableFacetedFilter";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { X, Search } from "lucide-react";
+import { filterConfig } from "./filters/filterConfig";
+import { purchaseOrderData } from "@/data/purchaseOrders";
 
 interface PurchaseOrderFiltersProps {
   onFilterChange: (filters: PurchaseOrderFiltersType) => void;
@@ -14,56 +17,95 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
   const { 
     filters, 
     handleFilterChange,
-    handleRemoveFilter,
     handleResetFilters
   } = usePurchaseOrderFiltersState(onFilterChange);
 
+  // Create filter options with counts
+  const statusOptions: Option[] = useMemo(() => {
+    return filterConfig.statusOptions.map(status => ({
+      label: status,
+      value: status,
+      count: purchaseOrderData.filter(po => po.status === status).length
+    }));
+  }, []);
+
+  const buyerOptions: Option[] = useMemo(() => {
+    return filterConfig.buyerOptions.map(buyer => ({
+      label: buyer,
+      value: buyer,
+      count: purchaseOrderData.filter(po => po.buyerName === buyer).length
+    }));
+  }, []);
+
+  const portalOptions: Option[] = useMemo(() => {
+    return filterConfig.portalOptions.map(portal => ({
+      label: portal,
+      value: portal,
+      count: purchaseOrderData.filter(po => po.portal === portal).length
+    }));
+  }, []);
+
+  // Adapter functions for new filter system
+  const handleStatusChange = (values: Set<string>) => {
+    handleFilterChange('status', Array.from(values));
+  };
+
+  const handleBuyerChange = (values: Set<string>) => {
+    handleFilterChange('buyer', Array.from(values));
+  };
+
+  const handlePortalChange = (values: Set<string>) => {
+    handleFilterChange('portal', Array.from(values));
+  };
+
+  const handleSearchChange = (value: string) => {
+    handleFilterChange('poNumber', value);
+  };
+
   // Check if any filters are active
-  const hasActiveFilters =
+  const isFiltered = 
     (Array.isArray(filters.status) && filters.status.length > 0) ||
     (Array.isArray(filters.buyer) && filters.buyer.length > 0) ||
     (Array.isArray(filters.portal) && filters.portal.length > 0) ||
-    (filters.dueDate?.from !== "" || filters.dueDate?.to !== "") ||
     filters.poNumber !== "";
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <FilterControls 
-            filters={filters}
-            onFilterChange={handleFilterChange}
-          />
-          
-          <div className="relative">
-            <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search PO number..." 
-              className="pl-9 pr-4 h-9 border rounded-md w-[200px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[260px] transition-all duration-300 ease-in-out text-[14px]"
-              value={filters.poNumber}
-              onChange={(e) => handleFilterChange("poNumber", e.target.value)}
-            />
-          </div>
-        </div>
-        
-        {hasActiveFilters && (
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-9 flex items-center gap-1"
-            onClick={handleResetFilters}
-          >
-            <RefreshCw className="h-3 w-3" />
-            <span className="text-[14px]">Reset</span>
-          </Button>
-        )}
-      </div>
-      
-      <ActiveFiltersList 
-        filters={filters}
-        onRemoveFilter={handleRemoveFilter}
+    <div className="flex items-center gap-2">
+      {/* Status Filter */}
+      <DataTableFacetedFilter
+        title="Status"
+        options={statusOptions}
+        selectedValues={new Set(Array.isArray(filters.status) ? filters.status : [])}
+        onSelectionChange={handleStatusChange}
       />
+
+      {/* Buyer Filter */}
+      <DataTableFacetedFilter
+        title="Buyer"
+        options={buyerOptions}
+        selectedValues={new Set(Array.isArray(filters.buyer) ? filters.buyer : [])}
+        onSelectionChange={handleBuyerChange}
+      />
+
+      {/* Portal Filter */}
+      <DataTableFacetedFilter
+        title="Portal"
+        options={portalOptions}
+        selectedValues={new Set(Array.isArray(filters.portal) ? filters.portal : [])}
+        onSelectionChange={handlePortalChange}
+      />
+
+      {/* Reset Button */}
+      {isFiltered && (
+        <Button
+          variant="ghost"
+          onClick={handleResetFilters}
+          className="h-8 px-2 lg:px-3"
+        >
+          Reset
+          <X className="ml-2 h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 }

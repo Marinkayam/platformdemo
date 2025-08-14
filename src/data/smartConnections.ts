@@ -1,25 +1,25 @@
 import { SmartConnection } from "@/types/smartConnection";
 
 // Helper function to calculate Smart Connection status based on agent statuses
-const calculateSmartConnectionStatus = (agents: any[]): "Live" | "In Process" | "Unavailable" | "Disconnected" | "Inactive" => {
-  if (agents.length === 0) return "Unavailable";
+const calculateSmartConnectionStatus = (agents: any[]): "Connected" | "Connecting" | "Needs Attention" | "Disconnected" | "Inactive" => {
+  if (agents.length === 0) return "Needs Attention";
   
   // Check if any agent is disconnected/error
   if (agents.some(agent => agent.status === "Disconnected" || agent.status === "Error")) {
-    return "Unavailable";
+    return "Needs Attention";
   }
   
   // Check if any agent is in process (validating or building)
   if (agents.some(agent => agent.status === "Validating" || agent.status === "Building")) {
-    return "In Process";
+    return "Connecting";
   }
   
   // If all agents are connected
   if (agents.every(agent => agent.status === "Connected")) {
-    return "Live";
+    return "Connected";
   }
   
-  return "Unavailable";
+  return "Needs Attention";
 };
 
 export const mockSmartConnections: SmartConnection[] = [
@@ -29,7 +29,7 @@ export const mockSmartConnections: SmartConnection[] = [
     payableEntity: "Monto Corp",
     receivableErp: "NetSuite",
     payableErp: "SAP",
-    status: "Live",
+    status: "Connected",
     agentCount: 2,
     lastUpdated: "2025-05-12",
     isActive: true,
@@ -61,7 +61,7 @@ export const mockSmartConnections: SmartConnection[] = [
     payableEntity: "Amazon Inc.",
     receivableErp: "Oracle",
     payableErp: "Workday",
-    status: "In Process",
+    status: "Connecting",
     agentCount: 1,
     lastUpdated: "2025-05-10",
     isActive: true,
@@ -85,7 +85,7 @@ export const mockSmartConnections: SmartConnection[] = [
     payableEntity: "Tesla Inc.",
     receivableErp: "Sage",
     payableErp: "QuickBooks",
-    status: "Unavailable",
+    status: "Needs Attention",
     agentCount: 1,
     lastUpdated: "2025-05-08",
     isActive: true,
@@ -109,7 +109,7 @@ export const mockSmartConnections: SmartConnection[] = [
     payableEntity: "Spotify AB",
     receivableErp: "Xero",
     payableErp: "FreshBooks",
-    status: "In Process",
+    status: "Connecting",
     agentCount: 2,
     lastUpdated: "2025-05-05",
     isActive: true,
@@ -141,7 +141,7 @@ export const mockSmartConnections: SmartConnection[] = [
     payableEntity: "Target Corp",
     receivableErp: "NetSuite",
     payableErp: "SAP",
-    status: "Unavailable",
+    status: "Needs Attention",
     agentCount: 2,
     lastUpdated: "2025-05-06",
     isActive: true,
@@ -197,7 +197,7 @@ export const mockSmartConnections: SmartConnection[] = [
     payableEntity: "Best Buy Co.",
     receivableErp: "SAP",
     payableErp: "Oracle",
-    status: "Unavailable",
+    status: "Needs Attention",
     agentCount: 2,
     lastUpdated: "2025-05-03",
     isActive: true,
@@ -229,7 +229,7 @@ export const mockSmartConnections: SmartConnection[] = [
     payableEntity: "HP Inc.",
     receivableErp: "Workday",
     payableErp: "NetSuite",
-    status: "Unavailable",
+    status: "Needs Attention",
     agentCount: 1,
     lastUpdated: "2025-05-02",
     isActive: true,

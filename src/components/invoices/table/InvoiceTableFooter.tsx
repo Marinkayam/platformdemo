@@ -1,5 +1,7 @@
 
 import { TableCell, TableFooter, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { Invoice } from "@/types/invoice";
 import { formatCurrency } from "@/lib/utils";
 

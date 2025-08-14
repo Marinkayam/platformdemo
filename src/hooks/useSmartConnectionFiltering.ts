@@ -7,10 +7,9 @@ export function useSmartConnectionFiltering(connections: SmartConnection[]) {
 
   const filteredConnections = useMemo(() => {
     return connections.filter((connection) => {
-      // Status filter (using categories)
+      // Status filter (using actual status values)
       if (filters.status.length > 0) {
-        const statusCategory = getSmartConnectionStatusCategory(connection);
-        if (!filters.status.includes(statusCategory)) {
+        if (!filters.status.includes(connection.status)) {
           return false;
         }
       }
@@ -34,6 +33,14 @@ export function useSmartConnectionFiltering(connections: SmartConnection[]) {
       }
 
       // Active/Inactive filter
+      if (filters.activeStatus.length > 0) {
+        const activeStatus = connection.isActive ? 'Active' : 'Inactive';
+        if (!filters.activeStatus.includes(activeStatus)) {
+          return false;
+        }
+      }
+
+      // Legacy viewInactive support
       if (!filters.viewInactive && !connection.isActive) {
         return false;
       }

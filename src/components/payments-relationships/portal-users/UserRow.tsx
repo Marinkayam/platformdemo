@@ -19,11 +19,11 @@ interface UserRowProps {
 export function UserRow({ user, onEdit, onRemove, onView2FA, copyToClipboard, onClick }: UserRowProps) {
   return (
     <div 
-      className="user-row grid grid-cols-5 gap-4 px-6 py-3 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-50 animate-fade-in"
+      className="user-row grid grid-cols-[1fr_1fr_1fr_1fr_60px] gap-4 px-6 py-3 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-50 animate-fade-in"
       onClick={onClick}
     >
       <div className="flex items-center pl-6">
-        {/* Empty space for indentation - no connection line */}
+        {/* Empty space for portal column alignment */}
       </div>
       
       <div className="flex items-center">
@@ -38,15 +38,13 @@ export function UserRow({ user, onEdit, onRemove, onView2FA, copyToClipboard, on
         <UserTypeColumn userType={user.userType} />
       </div>
       
-      <div className="flex items-center">
-        <div className="ml-auto">
-          <ActionsColumn
-            portalUser={user}
-            onEdit={onEdit}
-            onRemove={onRemove}
-            onView2FA={onView2FA}
-          />
-        </div>
+      <div className="flex items-center justify-center">
+        <ActionsColumn
+          portalUser={user}
+          onEdit={onEdit}
+          onRemove={onRemove}
+          onView2FA={onView2FA}
+        />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { ExpandedAgentCard } from "./ExpandedAgentCard";
 import { PaymentsRelationshipsTableFooter } from "./PaymentsRelationshipsTableFooter";
 import { SmartConnectionsInsights } from "@/components/smart-connections/SmartConnectionsInsights";
+import { SmartConnectionsPagination } from "@/components/smart-connections/components/SmartConnectionsPagination";
 import { SmartConnection } from "@/types/smartConnection";
 import { useNavigate } from "react-router-dom";
 import { getConnectionIssues, getHighestSeverityIssue } from "@/utils/connectionIssues";
@@ -27,13 +28,13 @@ const getRandomCompanyName = () => {
 export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const pageSize = 10;
   const navigate = useNavigate();
 
   // Calculate pagination
-  const totalPages = Math.ceil(connections.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  const totalPages = Math.ceil(connections.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
   const paginatedConnections = useMemo(() => 
     connections.slice(startIndex, endIndex), 
     [connections, startIndex, endIndex]
@@ -86,8 +87,9 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
 
   if (connections.length === 0) {
     return (
-      <div className="rounded-xl border bg-white">
-        <Table>
+      <div className="space-y-4">
+        <div className="rounded-xl border bg-white">
+          <Table>
           <TableHeader>
             <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
               <TableHead className="sticky left-0 z-10 bg-[#F6F7F9] border-r border-gray-200 w-[240px]">
@@ -103,24 +105,32 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
             <TableRow>
               <TableCell colSpan={5} className="h-[200px] text-center">
                 <div className="flex flex-col items-center justify-center space-y-4">
-                  <div className="text-gray-400 text-4xl">📁</div>
                   <div className="space-y-2">
-                    <p className="text-gray-900 font-semibold text-lg">No payments relationships found</p>
-                    <p className="text-gray-500 text-sm">Add a new relationship to get started</p>
+                    <p className="text-gray-900 font-medium text-base">No Smart Connections found</p>
+                    <p className="text-gray-500 text-xs">Try adjusting your search or filters, or add a new Smart Connection</p>
                   </div>
-                  <Button className="mt-2">Add New Relationship</Button>
+                  <Button className="mt-2" onClick={() => navigate("/payments-relationships/new")}>Add Smart Connection</Button>
                 </div>
               </TableCell>
             </TableRow>
           </TableBody>
-        </Table>
-        <PaymentsRelationshipsTableFooter totalConnections={0} />
+          </Table>
+        </div>
+        <SmartConnectionsPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          pageSize={pageSize}
+          totalItems={connections.length}
+          smartConnections={connections}
+        />
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border bg-white overflow-hidden">
+    <div className="space-y-4">
+      <div className="rounded-xl border bg-white overflow-hidden">
       <Table>
         <TableHeader>
             <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9] border-b border-gray-200">
@@ -262,12 +272,14 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
             })}
           </TableBody>
         </Table>
-      <PaymentsRelationshipsTableFooter 
-        totalConnections={connections.length} 
+      </div>
+      <SmartConnectionsPagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
-        itemsPerPage={itemsPerPage}
+        pageSize={pageSize}
+        totalItems={connections.length}
+        smartConnections={connections}
       />
     </div>
   );

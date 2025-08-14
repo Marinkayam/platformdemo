@@ -27,6 +27,9 @@ import { NotificationsProvider } from "./context/NotificationsContext";
 import { CompanyProvider } from "./context/CompanyContext";
 import PortalsDashboard from "./pages/PortalsDashboard";
 import PortalsDashboard2 from "./pages/PortalsDashboard2";
+import SecretHomePage from "./pages/SecretHomePage";
+import SecretDashboard from "./pages/SecretDashboard";
+import SecretScanAgents from "./pages/SecretScanAgents";
 
 const queryClient = new QueryClient();
 
@@ -42,10 +45,12 @@ const App = () => (
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/secret-home" element={<SecretHomePage />} />
 
             {/* Routes requiring MainLayout */}
             <Route element={<MainLayout />}>
               <Route index element={<Dashboard />} />
+              <Route path="/secret-dashboard" element={<SecretDashboard />} />
               <Route path="/portals-dashboard" element={<PortalsDashboard />} />
               <Route path="/portals-dashboard-2" element={<PortalsDashboard2 />} />
               <Route path="/invoices" element={<Invoices />} />
@@ -61,6 +66,7 @@ const App = () => (
               <Route path="/design-system" element={<DesignSystemPlayground />} />
               <Route path="/smart-connections" element={<SmartConnections />} />
               <Route path="/scan-agents" element={<ScanAgents />} />
+              <Route path="/secret-scan-agents" element={<SecretScanAgents />} />
               <Route path="/request-to-pay-transaction/:id" element={<div>RequestToPayTransaction Page Placeholder</div>} />
               <Route path="/payments-relationships/add-agent" element={<AddAgent />} />
             </Route>

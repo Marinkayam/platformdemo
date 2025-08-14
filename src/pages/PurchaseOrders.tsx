@@ -26,6 +26,11 @@ export default function PurchaseOrders() {
   // Use custom hook for filtering
   const { filters, setFilters, filteredPurchaseOrders } = usePurchaseOrderFiltering(purchaseOrderData, activeTab);
 
+  // Handle search change
+  const handleSearchChange = (value: string) => {
+    setFilters(prevFilters => ({ ...prevFilters, poNumber: value }));
+  };
+
   // Calculate counts for tabs
   const newCount = purchaseOrderData.filter(po => po.status === "New").length;
   const lowFundsCount = purchaseOrderData.filter(po => 
@@ -40,13 +45,15 @@ export default function PurchaseOrders() {
   ];
 
   return (
-    <div>
+    <div className="space-y-6">
       <PurchaseOrderHeader 
         tabs={tabsWithCounts}
         activeTab={activeTab}
         onTabChange={setActiveTab}
         onFilterChange={setFilters}
         purchaseOrderCount={filteredPurchaseOrders.length}
+        searchValue={filters.poNumber || ""}
+        onSearchChange={handleSearchChange}
       />
       
       <PurchaseOrderTable 

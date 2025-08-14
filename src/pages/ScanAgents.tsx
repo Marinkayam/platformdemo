@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { PageHeader } from "@/components/common/PageHeader";
 import { PaymentsRelationshipsHeader } from "@/components/payments-relationships/PaymentsRelationshipsHeader";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { mockPortalUsers } from "@/data/portalUsers";
 import { PortalUser } from "@/types/portalUser";
 import { PortalUsersTable } from "@/components/payments-relationships/portal-users";
-import { PortalUsersFilters } from "@/components/payments-relationships/portal-users/PortalUsersFilters";
 import { AddPortalUserModal } from "@/components/payments-relationships/portal-users/AddPortalUserModal";
 import { ConfirmRemoveModal } from "@/components/payments-relationships/portal-users/ConfirmRemoveModal";
 import { usePortalUserFiltering } from "@/hooks/usePortalUserFiltering";
+import { DataTableFacetedFilter, Option } from "@/components/dashboard/filters/DataTableFacetedFilter";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { X, Search } from "lucide-react";
 
 export default function ScanAgents() {
   const [isAddPortalUserModalOpen, setIsAddPortalUserModalOpen] = useState(false);
@@ -18,12 +22,67 @@ export default function ScanAgents() {
     mockPortalUsers.filter(u => !['Coupa','Amazon Payee','Oracle Procurement'].includes(u.portal))
   );
 
+  // Use original filtering logic but adapt for new UI
   const {
     filters: portalUserFilters,
     filteredUsers,
     handleFilterChange: handlePortalUserFilterChange,
     handleResetFilters: handleResetPortalUserFilters
   } = usePortalUserFiltering(portalUsers);
+
+  // Generate filter options from data using original approach
+  const statusOptions: Option[] = useMemo(() => {
+    const statuses = [...new Set(portalUsers.map(user => user.status))];
+    return statuses.map(status => ({
+      label: status,
+      value: status,
+      count: portalUsers.filter(user => user.status === status).length
+    }));
+  }, [portalUsers]);
+
+  const portalOptions: Option[] = useMemo(() => {
+    const portals = [...new Set(portalUsers.map(user => user.portal))];
+    return portals.map(portal => ({
+      label: portal,
+      value: portal,
+      count: portalUsers.filter(user => user.portal === portal).length
+    }));
+  }, [portalUsers]);
+
+  const userTypeOptions: Option[] = useMemo(() => {
+    const userTypes = [...new Set(portalUsers.map(user => user.userType))];
+    return userTypes.map(userType => ({
+      label: userType,
+      value: userType,
+      count: portalUsers.filter(user => user.userType === userType).length
+    }));
+  }, [portalUsers]);
+
+  // Adapter functions to bridge old and new filter systems
+  const handleStatusChange = (values: Set<string>) => {
+    handlePortalUserFilterChange('status', Array.from(values));
+  };
+
+  const handlePortalChange = (values: Set<string>) => {
+    handlePortalUserFilterChange('portal', Array.from(values));
+  };
+
+  const handleUserTypeChange = (values: Set<string>) => {
+    handlePortalUserFilterChange('userType', Array.from(values));
+  };
+
+  const handleSearchChange = (value: string) => {
+    handlePortalUserFilterChange('search', value);
+  };
+
+  const handleReset = () => {
+    handleResetPortalUserFilters();
+  };
+
+  const isFiltered = portalUserFilters.search || 
+                   portalUserFilters.status.length > 0 || 
+                   portalUserFilters.portal.length > 0 || 
+                   portalUserFilters.userType.length > 0;
 
   const handleConfirmRemove = () => {
     if (userToRemoveId) {
@@ -67,11 +126,55 @@ export default function ScanAgents() {
           />
         </div>
         
-        <PortalUsersFilters
-          filters={portalUserFilters}
-          onFilterChange={handlePortalUserFilterChange}
-          onClearFilters={handleResetPortalUserFilters}
-        />
+        {/* New Filter System */}
+        <div className="flex flex-wrap items-center gap-2">
+            {/* Status Filter */}
+            <DataTableFacetedFilter
+              title="Status"
+              options={statusOptions}
+              selectedValues={new Set(portalUserFilters.status)}
+              onSelectionChange={handleStatusChange}
+            />
+
+            {/* Portal Filter */}
+            <DataTableFacetedFilter
+              title="Portal"
+              options={portalOptions}
+              selectedValues={new Set(portalUserFilters.portal)}
+              onSelectionChange={handlePortalChange}
+            />
+
+            {/* User Type Filter */}
+            <DataTableFacetedFilter
+              title="User Type"
+              options={userTypeOptions}
+              selectedValues={new Set(portalUserFilters.userType)}
+              onSelectionChange={handleUserTypeChange}
+            />
+
+            {/* Reset Button */}
+            {isFiltered && (
+              <Button
+                variant="ghost"
+                onClick={handleReset}
+                className="h-8 px-2 lg:px-3"
+              >
+                Reset
+                <X className="ml-2 h-4 w-4" />
+              </Button>
+            )}
+
+            {/* Search Input - moved to right end */}
+            <div className="relative w-64 ml-auto">
+              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search..."
+                value={portalUserFilters.search || ""}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="h-8 pl-8"
+              />
+            </div>
+        </div>
         
         <PortalUsersTable 
           portalUsers={filteredUsers} 

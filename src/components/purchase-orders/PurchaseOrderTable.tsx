@@ -44,7 +44,8 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
   };
 
   return (
-    <div className="rounded-xl border overflow-hidden bg-white">
+    <div className="space-y-4">
+      <div className="rounded-xl border overflow-hidden bg-white">
       <div className="overflow-x-auto">
         <Table>
           <PurchaseOrderTableHeader 
@@ -151,6 +152,7 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
           
           
         </Table>
+      </div>
       </div>
       
       {!isLoading && (

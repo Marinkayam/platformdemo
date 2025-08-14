@@ -1,56 +1,52 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { PortalRecord } from "@/types/portalRecord";
-import { formatCurrency } from "@/lib/utils";
+import { SmartConnection } from "@/types/smart-connections";
 
-interface PortalRecordsPaginationProps {
+interface SmartConnectionsPaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
   pageSize: number;
   totalItems: number;
-  records: PortalRecord[];
+  smartConnections: SmartConnection[];
 }
 
-export function PortalRecordsPagination({
+export function SmartConnectionsPagination({
   currentPage,
   totalPages,
   onPageChange,
   pageSize,
   totalItems,
-  records,
-}: PortalRecordsPaginationProps) {
+  smartConnections,
+}: SmartConnectionsPaginationProps) {
   const startItem = (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
-  // Calculate totals by currency
-  const currencyTotals = records.reduce((acc, record) => {
-    const currency = record.currency || "USD";
-    if (!acc[currency]) {
-      acc[currency] = 0;
-    }
-    acc[currency] += record.total || 0;
+  // Calculate status counts
+  const statusCounts = smartConnections.reduce((acc, connection) => {
+    const status = connection.status;
+    acc[status] = (acc[status] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
-  // Format the total amounts display
-  const formatTotalAmounts = () => {
-    const entries = Object.entries(currencyTotals);
-    if (entries.length === 0) return formatCurrency(0, "USD");
+  // Format the status counts display
+  const formatStatusCounts = () => {
+    const entries = Object.entries(statusCounts);
+    if (entries.length === 0) return "No connections";
     
     return entries
-      .map(([currency, amount]) => formatCurrency(amount, currency))
-      .join(" + ");
+      .map(([status, count]) => `${count} ${status}`)
+      .join(" • ");
   };
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200">
+    <div className="flex items-center justify-between px-6 py-4 bg-white border-t">
       <div className="flex items-center gap-4">
         <div className="text-sm text-muted-foreground">
-          Showing {startItem} to {endItem} of {totalItems} records
+          Showing {startItem} to {endItem} of {totalItems} connections
         </div>
         <div className="text-sm font-semibold text-gray-900">
-          Total: {formatTotalAmounts()}
+          {formatStatusCounts()}
         </div>
       </div>
       

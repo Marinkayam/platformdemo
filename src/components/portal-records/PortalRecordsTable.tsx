@@ -87,7 +87,7 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
   }
 
   return (
-    <div className="space-y-0">
+    <div className="space-y-4">
       <div className="rounded-xl border overflow-hidden bg-white animate-fade-in">
         <div className="overflow-x-auto">
           <Table>
@@ -121,19 +121,20 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
                    activeTab={activeTab}
                  />
                 
-                 {!isLoading && <PortalRecordsTableFooter 
-                   records={sortedRecords} 
-                   currentPage={currentPage}
-                   totalPages={totalPages}
-                   recordsPerPage={recordsPerPage}
-                   onPageChange={handlePageChange}
-                 />}
               </>
             )}
           </Table>
         </div>
       </div>
 
+      {!isLoading && <PortalRecordsPagination 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        pageSize={recordsPerPage}
+        totalItems={totalRecords}
+        records={records}
+      />}
 
       <PortalRecordsModals
         selectedRecord={selectedRecord}

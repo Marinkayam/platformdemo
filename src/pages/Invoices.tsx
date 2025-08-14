@@ -42,6 +42,11 @@ export default function Invoices() {
   // Use custom hook for filtering
   const { filters, setFilters, filteredInvoices } = useInvoiceFiltering(invoiceData, activeTab);
 
+  // Handle search change
+  const handleSearchChange = (value: string) => {
+    setFilters(prevFilters => ({ ...prevFilters, search: value }));
+  };
+
   // Calculate counts for tabs
   const isOverdue = (dateString: string) => {
     try {
@@ -75,7 +80,7 @@ export default function Invoices() {
   };
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="space-y-6">
       <InvoiceHeader 
         tabs={tabsWithCounts}
         activeTab={activeTab}
@@ -83,6 +88,8 @@ export default function Invoices() {
         onFilterChange={setFilters}
         invoiceCount={filteredInvoices.length}
         onPaymentSync={handlePaymentSync}
+        searchValue={filters.search || ""}
+        onSearchChange={handleSearchChange}
       />
       
       <InvoiceTable 

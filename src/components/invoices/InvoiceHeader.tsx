@@ -18,6 +18,8 @@ interface InvoiceHeaderProps {
   onFilterChange: (filters: InvoiceFiltersType) => void;
   invoiceCount: number;
   onPaymentSync: () => void;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
 }
 
 export function InvoiceHeader({ 
@@ -26,7 +28,9 @@ export function InvoiceHeader({
   onTabChange,
   onFilterChange,
   invoiceCount,
-  onPaymentSync
+  onPaymentSync,
+  searchValue,
+  onSearchChange
 }: InvoiceHeaderProps) {
   const getSubtitle = (activeTab: string) => {
     switch (activeTab) {
@@ -66,9 +70,13 @@ export function InvoiceHeader({
         onTabChange={onTabChange}
       />
       
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex items-center justify-between gap-4">
         <InvoiceFilters onFilterChange={onFilterChange} />
-        <InvoiceActions invoiceCount={invoiceCount} />
+        <InvoiceActions 
+          invoiceCount={invoiceCount}
+          searchValue={searchValue}
+          onSearchChange={onSearchChange}
+        />
       </div>
     </div>
   );

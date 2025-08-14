@@ -132,7 +132,10 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
                 )}
               </TableBody>
               
-              <InvoiceTableFooter invoices={sortedInvoices} columnsCount={columnsCount} />
+              <InvoiceTableFooter 
+                invoices={invoices}
+                columnsCount={columnsCount}
+              />
             </>
           )}
           </Table>
@@ -140,13 +143,83 @@ export function InvoiceTable({ invoices, isPendingTab = false, isLoading = false
       </div>
       
       {!isLoading && (
-        <InvoicesPagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-          pageSize={pageSize}
-          totalItems={sortedInvoices.length}
-        />
+        <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200 rounded-b-xl">
+          <div className="flex items-center gap-4">
+            <div className="text-sm text-muted-foreground">
+              Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, prioritizedInvoices.length)} of {prioritizedInvoices.length} requests
+            </div>
+            <div className="text-sm font-semibold text-gray-900">
+              Total: {(() => {
+                const currencyTotals = invoices.reduce((acc, invoice) => {
+                  const currency = invoice.currency || "USD";
+                  if (!acc[currency]) {
+                    acc[currency] = 0;
+                  }
+                  acc[currency] += invoice.total || 0;
+                  return acc;
+                }, {} as Record<string, number>);
+                
+                const entries = Object.entries(currencyTotals);
+                if (entries.length === 0) return "$0.00";
+                
+                return entries
+                  .map(([currency, amount]) => new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: currency
+                  }).format(amount))
+                  .join(" + ");
+              })()}
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => handlePageChange(1)}
+              disabled={currentPage === 1}
+              className="h-8 w-8 p-0 border border-gray-300 rounded bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="h-8 w-8 p-0 border border-gray-300 rounded bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <div className="flex items-center space-x-1">
+              <span className="text-sm font-medium">
+                Page {currentPage} of {totalPages}
+              </span>
+            </div>
+            
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="h-8 w-8 p-0 border border-gray-300 rounded bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            
+            <button
+              onClick={() => handlePageChange(totalPages)}
+              disabled={currentPage === totalPages}
+              className="h-8 w-8 p-0 border border-gray-300 rounded bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

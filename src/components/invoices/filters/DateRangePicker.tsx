@@ -1,7 +1,14 @@
 
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface DateRangePickerProps {
   fromDate: string;
@@ -10,46 +17,56 @@ interface DateRangePickerProps {
 }
 
 export function DateRangePicker({ fromDate, toDate, onDateChange }: DateRangePickerProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
   
-  let displayValue = "All";
-  if (fromDate && toDate) {
-    displayValue = `${fromDate} - ${toDate}`;
-  } else if (fromDate) {
-    displayValue = `From ${fromDate}`;
-  } else if (toDate) {
-    displayValue = `Until ${toDate}`;
-  }
+  const hasDateRange = fromDate || toDate;
+  
+  const handleClear = () => {
+    onDateChange("", "");
+  };
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
+  const formatDateRange = () => {
+    if (fromDate && toDate) {
+      return `${fromDate} - ${toDate}`;
+    } else if (fromDate) {
+      return `From ${fromDate}`;
+    } else if (toDate) {
+      return `Until ${toDate}`;
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+    return "";
+  };
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <div 
-        onClick={() => setIsOpen(!isOpen)} 
-        className="flex items-center gap-2 border rounded-md px-3 h-9 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
-      >
-        <span className="text-sm text-gray-500 whitespace-nowrap">Due Date:</span>
-        <span className="text-sm font-medium truncate max-w-[100px]">{displayValue}</span>
-        <ChevronDown 
-          size={16} 
-          className={`text-gray-400 transition-transform duration-300 ease-in-out ${isOpen ? 'rotate-180' : ''}`} 
-        />
-      </div>
-      
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-72 bg-white border rounded-md shadow-lg p-3 z-10 animate-fade-in">
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="outline" size="sm" className="h-8 font-normal">
+          Due Date
+          {hasDateRange && (
+            <>
+              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Badge
+                variant="secondary"
+                className="rounded-sm px-1 font-normal flex items-center gap-1 text-xs"
+                style={{ backgroundColor: '#EFEBFF' }}
+              >
+                {formatDateRange()}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClear();
+                  }}
+                  className="ml-1 rounded-full p-0.5"
+                >
+                  <X className="text-current" style={{ width: '8px', height: '8px', color: '#7B59FF' }} />
+                </button>
+              </Badge>
+            </>
+          )}
+          <ChevronDown strokeWidth={1.25} className="ml-2 h-5 w-5" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[280px] p-0" align="start">
+        <div className="p-4">
           <div className="flex flex-col gap-3">
             <div>
               <label className="text-sm font-medium block mb-1">From</label>
@@ -75,8 +92,8 @@ export function DateRangePicker({ fromDate, toDate, onDateChange }: DateRangePic
                 size="sm" 
                 className="w-1/2"
                 onClick={() => {
-                  onDateChange("", "");
-                  setIsOpen(false);
+                  handleClear();
+                  setOpen(false);
                 }}
               >
                 Clear
@@ -84,14 +101,14 @@ export function DateRangePicker({ fromDate, toDate, onDateChange }: DateRangePic
               <Button 
                 size="sm" 
                 className="w-1/2"
-                onClick={() => setIsOpen(false)}
+                onClick={() => setOpen(false)}
               >
                 Apply
               </Button>
             </div>
           </div>
         </div>
-      )}
-    </div>
+      </PopoverContent>
+    </Popover>
   );
 }

@@ -34,6 +34,11 @@ export default function PortalRecords() {
     needsAttentionCount
   } = usePortalRecordFiltering(allPortalRecords, activeTab);
 
+  // Handle search change
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+  };
+
   // Calculate tab counts with new filtering logic
   const tabCounts = {
     all: allPortalRecords.filter(r => r.matchType === "Primary" || r.matchType === "Alternate").length,
@@ -48,21 +53,16 @@ export default function PortalRecords() {
   ];
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6">
       <PortalRecordsHeader 
         recordCount={allPortalRecords.length}
         activeTab={activeTab}
-      />
-      
-      <PortalRecordsTabs
         tabs={tabs}
-        activeTab={activeTab}
         onTabChange={setActiveTab}
-      />
-      
-      <PortalRecordsFilters
         onFilterChange={setFilters}
         needsAttentionCount={needsAttentionCount}
+        searchValue={searchTerm}
+        onSearchChange={handleSearchChange}
       />
       
       <PortalRecordsTable records={filteredRecords} activeTab={activeTab} />

@@ -4,6 +4,7 @@ import { AddPortalUserModal } from './AddPortalUserModal';
 import { View2FAModal } from './View2FAModal';
 import { PortalUserDetailModal } from './PortalUserDetailModal';
 import { PortalUsersTableFooter } from './PortalUsersTableFooter';
+import { ScanAgentsPagination } from '@/components/scan-agents/components/ScanAgentsPagination';
 import { PortalUsersTableHeader } from './PortalUsersTableHeader';
 import { PortalUsersTableBody } from './PortalUsersTableBody';
 import { PortalUsersFilteredEmptyState } from './PortalUsersFilteredEmptyState';
@@ -34,6 +35,8 @@ export function PortalUsersTable({
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedPortalUser, setSelectedPortalUser] = useState<PortalUser | null>(null);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   const portalUsers = propPortalUsers || mockPortalUsersForTable;
   
@@ -45,10 +48,17 @@ export function PortalUsersTable({
     handleSort,
   } = useSortedPortalUsers(portalUsers);
 
+  // Calculate pagination
+  const totalPages = Math.ceil(sortedPortalUsers.length / pageSize);
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return sortedPortalUsers.slice(startIndex, startIndex + pageSize);
+  }, [sortedPortalUsers, currentPage, pageSize]);
+
   // Group and sort portal users - get the properly sorted allPortals array
   const { allPortals } = useMemo(() => {
-    return groupPortalUsers(sortedPortalUsers);
-  }, [sortedPortalUsers]);
+    return groupPortalUsers(paginatedUsers);
+  }, [paginatedUsers]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -138,7 +148,14 @@ export function PortalUsersTable({
         )}
       </div>
 
-      <PortalUsersTableFooter totalUsers={portalUsers.length} />
+      <ScanAgentsPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        pageSize={pageSize}
+        totalItems={sortedPortalUsers.length}
+        agents={sortedPortalUsers}
+      />
 
       <AddPortalUserModal
         isOpen={isAddModalOpen}

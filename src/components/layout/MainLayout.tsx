@@ -37,7 +37,7 @@ export function MainLayout() {
   return (
     <SidebarProvider>
       <AppSidebar onChatAIOpen={handleOpenChatAIModal} />
-      <SidebarInset className="overflow-x-hidden">
+      <SidebarInset className="overflow-x-hidden flex flex-col min-h-screen">
         <header className="sticky top-0 z-50 h-16 bg-[#FAFAFA] border-b border-[#E4E5E9]">
           <div className="flex h-full items-center px-4">
             <div className="flex items-center gap-2 flex-shrink-0">
@@ -110,8 +110,8 @@ export function MainLayout() {
             </div>
           </div>
         </header>
-        <main className="flex-1 bg-white overflow-hidden">
-          <div className="w-full h-full px-6 sm:px-8 md:px-12 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16 overflow-x-hidden">
+        <main className="flex-1 bg-white overflow-y-auto">
+          <div className="w-full px-6 sm:px-8 md:px-12 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16">
             <Outlet />
           </div>
         </main>

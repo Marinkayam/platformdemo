@@ -1,18 +1,29 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
   DropdownMenuContent, 
   DropdownMenuItem 
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, TableProperties, Download } from "lucide-react";
+import { MoreVertical, TableProperties, Download, Search } from "lucide-react";
 import { showSuccessToast, showErrorToast } from "@/lib/toast-helpers";
 import { TableCustomizationDialog } from "@/components/invoices/TableCustomizationDialog";
 import { EmailExportModal } from "@/components/invoices/EmailExportModal";
 
-export function InvoiceActions({ invoiceCount = 0 }) {
+interface InvoiceActionsProps {
+  invoiceCount?: number;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
+}
+
+export function InvoiceActions({ 
+  invoiceCount = 0,
+  searchValue = "",
+  onSearchChange 
+}: InvoiceActionsProps) {
   const [customizeTableOpen, setCustomizeTableOpen] = useState(false);
   const [emailExportOpen, setEmailExportOpen] = useState(false);
 
@@ -80,23 +91,37 @@ INV-003,Amazon Inc.,2025-01-20,Settled,$1500.00,Oracle,$Bob Johnson`;
 
   return (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="ml-2 h-9 bg-white flex items-center">
-            <MoreVertical className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[180px]">
-          <DropdownMenuItem onClick={() => setCustomizeTableOpen(true)} className="hidden">
-            <TableProperties className="mr-2 h-4 w-4" />
-            <span className="text-[14px]">Customize Table</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleExportInvoices}>
-            <Download className="mr-2 h-4 w-4" />
-            <span className="text-[14px]">Export All</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div className="flex items-center gap-2">
+        {/* Search Input */}
+        <div className="relative w-64">
+          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search invoices..."
+            value={searchValue}
+            onChange={(e) => onSearchChange?.(e.target.value)}
+            className="h-8 pl-8"
+          />
+        </div>
+        
+        {/* Kebab Menu */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="h-8 bg-white flex items-center">
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[180px]">
+            <DropdownMenuItem onClick={() => setCustomizeTableOpen(true)} className="hidden">
+              <TableProperties className="mr-2 h-4 w-4" />
+              <span className="text-[14px]">Customize Table</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleExportInvoices}>
+              <Download className="mr-2 h-4 w-4" />
+              <span className="text-[14px]">Export All</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <TableCustomizationDialog 
         open={customizeTableOpen}

@@ -20,6 +20,8 @@ interface PurchaseOrderHeaderProps {
   onTabChange: (tabId: string) => void;
   onFilterChange: (filters: PurchaseOrderFiltersType) => void;
   purchaseOrderCount: number;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
 }
 
 export function PurchaseOrderHeader({
@@ -27,7 +29,9 @@ export function PurchaseOrderHeader({
   activeTab,
   onTabChange,
   onFilterChange,
-  purchaseOrderCount
+  purchaseOrderCount,
+  searchValue,
+  onSearchChange
 }: PurchaseOrderHeaderProps) {
   return (
     <>
@@ -43,9 +47,15 @@ export function PurchaseOrderHeader({
         onTabChange={onTabChange} 
       />
 
-      <div className="flex justify-between items-center mb-6">
-        <PurchaseOrderFilters onFilterChange={onFilterChange} />
-        <PurchaseOrderActions purchaseOrderCount={purchaseOrderCount} />
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-4">
+          <PurchaseOrderFilters onFilterChange={onFilterChange} />
+          <PurchaseOrderActions 
+            purchaseOrderCount={purchaseOrderCount}
+            searchValue={searchValue}
+            onSearchChange={onSearchChange}
+          />
+        </div>
       </div>
     </>
   );

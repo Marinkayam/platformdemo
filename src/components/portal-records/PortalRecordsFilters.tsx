@@ -1,12 +1,12 @@
 
+import React, { useMemo } from "react";
 import { PortalRecordFilters } from "./filters/types";
-import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
 import { DateRangePicker } from "@/components/invoices/filters/DateRangePicker";
+import { usePortalRecordFiltersState } from "@/hooks/usePortalRecordFiltersState";
+import { DataTableFacetedFilter, Option } from "@/components/dashboard/filters/DataTableFacetedFilter";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, RefreshCw } from "lucide-react";
-import { ActiveFiltersList } from "./filters/ActiveFiltersList";
-import { usePortalRecordFiltersState } from "@/hooks/usePortalRecordFiltersState";
+import { X, Search } from "lucide-react";
 
 interface PortalRecordsFiltersProps {
   onFilterChange: (filters: PortalRecordFilters) => void;
@@ -18,22 +18,86 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
     filters, 
     handleFilterChange,
     handleSearchChange,
-    handleRemoveFilter,
     handleResetFilters
   } = usePortalRecordFiltersState(onFilterChange);
 
-  const portalOptions = ["All", "Ariba", "Coupa", "Bill", "Tipalti", "Oracle"];
-  const buyerOptions = ["All", "Acme Corporation", "Global Enterprises", "European Partners GmbH", "Tech Solutions Ltd", "Retail Chain Inc", "Manufacturing Co"];
-  const statusOptions = ["All", "Approved", "Paid", "Rejected", "Pending"];
-  const transactionTypeOptions = ["All", "Invoice", "Credit Note", "Debit Note", "Purchase Order"];
+  // Filter options (keeping original content)
+  const portalOptions = ["Ariba", "Coupa", "Bill", "Tipalti", "Oracle"];
+  const buyerOptions = ["Acme Corporation", "Global Enterprises", "European Partners GmbH", "Tech Solutions Ltd", "Retail Chain Inc", "Manufacturing Co"];
+  const statusOptions = ["Approved", "Paid", "Rejected", "Pending"];
+  const transactionTypeOptions = ["Invoice", "Credit Note", "Debit Note", "Purchase Order"];
   const recordTypeOptions = ["Primary", "Alternate", "Unmatched", "Conflict"];
+
+  // Create filter options with counts
+  const portalFilterOptions: Option[] = useMemo(() => {
+    return portalOptions.map(portal => ({
+      label: portal,
+      value: portal,
+      count: 0
+    }));
+  }, []);
+
+  const buyerFilterOptions: Option[] = useMemo(() => {
+    return buyerOptions.map(buyer => ({
+      label: buyer,
+      value: buyer,
+      count: 0
+    }));
+  }, []);
+
+  const statusFilterOptions: Option[] = useMemo(() => {
+    return statusOptions.map(status => ({
+      label: status,
+      value: status,
+      count: 0
+    }));
+  }, []);
+
+  const transactionFilterOptions: Option[] = useMemo(() => {
+    return transactionTypeOptions.map(type => ({
+      label: type,
+      value: type,
+      count: 0
+    }));
+  }, []);
+
+  const recordTypeFilterOptions: Option[] = useMemo(() => {
+    return recordTypeOptions.map(type => ({
+      label: type,
+      value: type,
+      count: 0
+    }));
+  }, []);
+
+  // Adapter functions for new filter system
+  const handlePortalChange = (values: Set<string>) => {
+    handleFilterChange('portal', Array.from(values));
+  };
+
+  const handleBuyerChange = (values: Set<string>) => {
+    handleFilterChange('buyer', Array.from(values));
+  };
+
+  const handleStatusChange = (values: Set<string>) => {
+    const value = Array.from(values)[0] || "All";
+    handleFilterChange('status', value);
+  };
+
+  const handleTransactionChange = (values: Set<string>) => {
+    const value = Array.from(values)[0] || "All";
+    handleFilterChange('transactionType', value);
+  };
+
+  const handleRecordTypeChange = (values: Set<string>) => {
+    handleFilterChange('recordType', Array.from(values));
+  };
 
   const handleDateChange = (fromDate: string, toDate: string) => {
     handleFilterChange("dueDate", { from: fromDate ?? "", to: toDate ?? "" });
   };
 
   // Check if any filters are active
-  const hasActiveFilters =
+  const isFiltered =
     (Array.isArray(filters.portal) && filters.portal.length > 0) ||
     (Array.isArray(filters.buyer) && filters.buyer.length > 0) ||
     (filters.status && filters.status !== "All") ||
@@ -44,83 +108,65 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
     (filters.search ?? "") !== "";
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <FilterDropdown
-            label="Portal"
-            value={filters.portal}
-            options={portalOptions}
-            onSelect={(value) => handleFilterChange("portal", value)}
-            multiSelect
-            searchable
-          />
-          
-          <FilterDropdown
-            label="Buyer"
-            value={filters.buyer}
-            options={buyerOptions}
-            onSelect={(value) => handleFilterChange("buyer", value)}
-            multiSelect
-            searchable
-          />
-          
-          <FilterDropdown
-            label="Status"
-            value={filters.status}
-            options={statusOptions}
-            onSelect={(value) => handleFilterChange("status", value)}
-          />
-
-          <FilterDropdown
-            label="Transaction"
-            value={filters.transactionType}
-            options={transactionTypeOptions}
-            onSelect={(value) => handleFilterChange("transactionType", value)}
-          />
-
-          <FilterDropdown
-            label="Record Type"
-            value={filters.recordType}
-            options={recordTypeOptions}
-            onSelect={(value) => handleFilterChange("recordType", value)}
-            multiSelect
-          />
-
-          <DateRangePicker
-            fromDate={filters.dueDate.from}
-            toDate={filters.dueDate.to}
-            onDateChange={handleDateChange}
-          />
-          
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Search records..."
-              value={filters.search}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              className="pl-10 w-64 h-9 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-            />
-          </div>
-        </div>
-
-        {hasActiveFilters && (
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-9 flex items-center gap-1"
-            onClick={handleResetFilters}
-          >
-            <RefreshCw className="h-3 w-3" />
-            <span className="text-[14px]">Reset</span>
-          </Button>
-        )}
-      </div>
-      
-      <ActiveFiltersList 
-        filters={filters}
-        onRemoveFilter={handleRemoveFilter}
+    <div className="flex items-center gap-2">
+      {/* Portal Filter */}
+      <DataTableFacetedFilter
+        title="Portal"
+        options={portalFilterOptions}
+        selectedValues={new Set(Array.isArray(filters.portal) ? filters.portal : [])}
+        onSelectionChange={handlePortalChange}
       />
+
+      {/* Buyer Filter */}
+      <DataTableFacetedFilter
+        title="Buyer"
+        options={buyerFilterOptions}
+        selectedValues={new Set(Array.isArray(filters.buyer) ? filters.buyer : [])}
+        onSelectionChange={handleBuyerChange}
+      />
+
+      {/* Status Filter */}
+      <DataTableFacetedFilter
+        title="Status"
+        options={statusFilterOptions}
+        selectedValues={new Set(filters.status && filters.status !== "All" ? [filters.status] : [])}
+        onSelectionChange={handleStatusChange}
+      />
+
+      {/* Transaction Filter */}
+      <DataTableFacetedFilter
+        title="Transaction"
+        options={transactionFilterOptions}
+        selectedValues={new Set(filters.transactionType && filters.transactionType !== "All" ? [filters.transactionType] : [])}
+        onSelectionChange={handleTransactionChange}
+      />
+
+      {/* Record Type Filter */}
+      <DataTableFacetedFilter
+        title="Record Type"
+        options={recordTypeFilterOptions}
+        selectedValues={new Set(Array.isArray(filters.recordType) ? filters.recordType : [])}
+        onSelectionChange={handleRecordTypeChange}
+      />
+
+      {/* Date Range Picker */}
+      <DateRangePicker
+        fromDate={filters.dueDate.from}
+        toDate={filters.dueDate.to}
+        onDateChange={handleDateChange}
+      />
+
+      {/* Reset Button */}
+      {isFiltered && (
+        <Button
+          variant="ghost"
+          onClick={handleResetFilters}
+          className="h-8 px-2 lg:px-3"
+        >
+          Reset
+          <X className="ml-2 h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 }
