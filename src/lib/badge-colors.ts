@@ -40,7 +40,7 @@ export const STATUS_MAPPING = {
   error: ['rejected by buyer', 'disconnected', 'error', 'unavailable', 'pending action', 'needs attention'],
   
   // WARNING - Orange
-  warning: ['external submission'],
+  warning: ['external submission', 'approved by buyer'],
   
   // INFO - Blue
   info: ['in process', 'validating', 'building', 'connecting'],
@@ -48,8 +48,8 @@ export const STATUS_MAPPING = {
   // NEUTRAL - Gray
   neutral: ['excluded', 'inactive'],
   
-  // PROCESSING - Purple (includes "Approved by Buyer")
-  processing: ['rtp prepared', 'rtp sent', 'awaiting sc', 'rejected by monto', 'approved by buyer']
+  // PROCESSING - Purple
+  processing: ['rtp prepared', 'rtp sent', 'awaiting sc', 'rejected by monto']
 };
 
 export const getStatusColor = (status: string): typeof BADGE_COLORS[keyof typeof BADGE_COLORS] => {
