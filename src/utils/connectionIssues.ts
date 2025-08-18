@@ -15,8 +15,8 @@ export function getConnectionIssues(connection: SmartConnection): ConnectionIssu
     return issues;
   }
   
-  // Only show issues for Unavailable connections
-  if (connection.status !== "Unavailable") {
+  // Only show issues for Needs Attention connections
+  if (connection.status !== "Needs Attention") {
     return issues;
   }
 

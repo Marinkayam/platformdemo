@@ -25,6 +25,9 @@ export interface ExceptionData {
     connectionCount: number;
     affectedInvoices: number;
   };
+  duplicateInvoices: number;
+  poMismatches: number;
+  missingData: number;
 }
 
 export function calculateAnalyticsSummary(): AnalyticsSummary {
@@ -106,7 +109,7 @@ export function calculateExceptionData(): ExceptionData {
 
   // Smart Connection Exceptions
   const scExceptions = mockSmartConnections.filter(connection => 
-    connection.status === 'Unavailable' || connection.status === 'Disconnected'
+    connection.status === 'Needs Attention' || connection.status === 'Disconnected'
   );
 
   const affectedInvoices = invoiceData.filter(invoice => 
@@ -121,7 +124,10 @@ export function calculateExceptionData(): ExceptionData {
     scExceptions: {
       connectionCount: scExceptions.length,
       affectedInvoices
-    }
+    },
+    duplicateInvoices: 5,
+    poMismatches: 3,
+    missingData: 2
   };
 }
 

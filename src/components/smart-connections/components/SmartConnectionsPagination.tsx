@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { SmartConnection } from "@/types/smart-connections";
+import { SmartConnection } from "@/types/smartConnection";
 
 interface SmartConnectionsPaginationProps {
   currentPage: number;

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { PortalUser } from "@/types/portalUsers";
+import { PortalUser } from "@/types/portalUser";
 
 interface ScanAgentsPaginationProps {
   currentPage: number;

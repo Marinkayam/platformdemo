@@ -144,13 +144,12 @@ export default function SecretScanAgents() {
       <div className="space-y-4 p-8">
         <PaymentsRelationshipsHeader 
           activeTab="scan-agents"
-          onTabChange={() => {}}
+          onAddPortalUser={() => setIsAddPortalUserModalOpen(true)}
         />
         
         <PageHeader 
           title="Scan Agents (Test Filters)"
           subtitle="Testing new filter system - Portal users configuration for automated scanning"
-          className="mt-2"
         />
 
         {/* New Filter Toolbar */}
@@ -285,21 +284,22 @@ export default function SecretScanAgents() {
         {/* Portal Users Table */}
         <PortalUsersTable 
           portalUsers={filteredUsers}
-          onAddClick={() => setIsAddPortalUserModalOpen(true)}
-          onRemoveUser={handleRemoveUser}
+          onRemovePortalUser={handleRemoveUser}
         />
 
         {/* Modals */}
         <AddPortalUserModal
           isOpen={isAddPortalUserModalOpen}
           onClose={() => setIsAddPortalUserModalOpen(false)}
-          onSubmit={handleAddModalSubmit}
+          mode="create"
+          onSave={handleAddModalSubmit}
         />
 
         <ConfirmRemoveModal
           isOpen={isConfirmRemoveModalOpen}
           onClose={() => setIsConfirmRemoveModalOpen(false)}
           onConfirm={handleConfirmRemove}
+          itemName="agent"
         />
       </div>
     </TooltipProvider>
