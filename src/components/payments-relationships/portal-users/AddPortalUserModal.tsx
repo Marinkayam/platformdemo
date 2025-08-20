@@ -23,11 +23,21 @@ export function AddPortalUserModal({
   onSave 
 }: AddPortalUserModalProps) {
   const [activeTab, setActiveTab] = useState<string>('bulk');
+  const [bulkUploadStep, setBulkUploadStep] = useState<string>('upload');
+  const [manualWizardStep, setManualWizardStep] = useState<string>('portal');
 
   if (!isOpen) return null;
 
   const handleBulkImport = (users: Partial<PortalUser>[]) => {
     users.forEach(user => onSave(user));
+  };
+
+  const handleBulkStepChange = (step: string) => {
+    setBulkUploadStep(step);
+  };
+
+  const handleManualStepChange = (step: string) => {
+    setManualWizardStep(step);
   };
 
   const tabs = [
@@ -50,14 +60,17 @@ export function AddPortalUserModal({
           <h2 className="text-xl font-semibold">Add Scan Agent</h2>
         </div>
         
-        <div className="px-6 pt-4">
-          <TabsNav 
-            tabs={tabs}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            variant="horizontal"
-          />
-        </div>
+        {/* Only show tabs when on initial steps */}
+        {((activeTab === 'manual' && manualWizardStep === 'portal') || (activeTab === 'bulk' && bulkUploadStep === 'upload')) && (
+          <div className="px-6 pt-4">
+            <TabsNav 
+              tabs={tabs}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              variant="horizontal"
+            />
+          </div>
+        )}
         
         <div className="px-0 overflow-y-auto max-h-[calc(90vh-180px)]">
           {activeTab === 'manual' ? (
@@ -68,12 +81,14 @@ export function AddPortalUserModal({
               portalUser={portalUser}
               onSave={onSave}
               isEmbedded={true}
+              onStepChange={handleManualStepChange}
             />
           ) : (
             <BulkUploadModal
               isOpen={true}
               onClose={onClose}
               onImport={handleBulkImport}
+              onStepChange={handleBulkStepChange}
             />
           )}
         </div>

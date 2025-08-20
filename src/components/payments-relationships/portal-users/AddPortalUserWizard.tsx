@@ -14,6 +14,7 @@ import { WizardStep, UserType, FormData } from './add-portal-user-wizard/types';
 import { Upload, Info } from 'lucide-react';
 import { BulkUploadModal } from './BulkUploadModal';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { WizardProgress } from '@/components/ui/wizard-progress';
 
 interface AddPortalUserWizardProps {
   isOpen: boolean;
@@ -22,9 +23,10 @@ interface AddPortalUserWizardProps {
   mode?: 'create' | 'edit';
   portalUser?: PortalUser;
   isEmbedded?: boolean;
+  onStepChange?: (step: string) => void;
 }
 
-export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', portalUser, isEmbedded = false }: AddPortalUserWizardProps) {
+export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', portalUser, isEmbedded = false, onStepChange }: AddPortalUserWizardProps) {
   const [currentStep, setCurrentStep] = useState<WizardStep>('portal');
   const [selectedPortal, setSelectedPortal] = useState<string>('');
   const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
@@ -44,6 +46,11 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showBulkUploadModal, setShowBulkUploadModal] = useState(false);
+
+  // Notify parent of step changes
+  React.useEffect(() => {
+    onStepChange?.(currentStep);
+  }, [currentStep, onStepChange]);
 
   const handleNext = () => {
     if (currentStep === 'portal' && selectedPortal) {
@@ -174,6 +181,13 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
     onClose();
   };
 
+  // Define wizard steps for progress bar
+  const wizardSteps = [
+    { id: 'portal', name: 'Select Portal' },
+    { id: 'userType', name: 'User Type' },
+    { id: 'setup', name: 'Setup' }
+  ];
+
   // When embedded, just return the content without Dialog wrapper
   if (isEmbedded) {
     return (
@@ -186,11 +200,11 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
           />
         ) : (
           <div className="space-y-6">
-            <div>
-              <p className="text-sm text-gray-600">
-                Add a single scan agent by selecting a portal and configuring access credentials.
-              </p>
-            </div>
+            {currentStep !== 'connecting' && currentStep !== 'success' && (
+              <div className="pt-2">
+                <WizardProgress steps={wizardSteps} currentStep={currentStep} />
+              </div>
+            )}
             {renderCurrentStep()}
             
             {currentStep !== 'connecting' && currentStep !== 'success' && (
@@ -262,6 +276,9 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
               />
             ) : (
               <div className="space-y-6">
+                {currentStep !== 'connecting' && currentStep !== 'success' && (
+                  <WizardProgress steps={wizardSteps} currentStep={currentStep} className="mb-6" />
+                )}
                 {renderCurrentStep()}
 
                 {/* Only show footer if not in connection flow */}

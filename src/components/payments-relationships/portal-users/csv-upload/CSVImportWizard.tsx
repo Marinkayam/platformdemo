@@ -13,13 +13,18 @@ import { WizardStepId, ValidatedUser, MONTO_FIELDS } from './types';
 
 export { MONTO_FIELDS, type ValidatedUser } from './types';
 
-export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => void; onImport: (users: Partial<PortalUser>[]) => void }) {
+export function CSVImportWizard({ onComplete, onImport, onStepChange }: { onComplete: () => void; onImport: (users: Partial<PortalUser>[]) => void; onStepChange?: (step: string) => void }) {
   const [currentStep, setCurrentStep] = useState<WizardStepId>('upload');
   const [file, setFile] = useState<File | null>(null);
   const [mappings, setMappings] = useState<{ [key: string]: string }>({});
   
   const { headers, data, parseFile } = useFileParser();
   const { validatedData, setValidatedData, validateData } = useDataValidation();
+
+  // Notify parent of step changes
+  React.useEffect(() => {
+    onStepChange?.(currentStep);
+  }, [currentStep, onStepChange]);
 
   const handleNext = async () => {
     if (currentStep === 'upload' && file) {
@@ -74,7 +79,7 @@ export function CSVImportWizard({ onComplete, onImport }: { onComplete: () => vo
 
   return (
     <div className="space-y-6 pb-6">
-      <div className="pb-4">
+      <div className="pt-4 pb-4">
         <WizardProgress currentStep={currentStep} />
       </div>
       

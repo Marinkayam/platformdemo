@@ -74,6 +74,7 @@ import { TableSystem } from "@/components/ui/TableSystem";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { formatCurrency, getPortalLogoUrl, formatOwnerName } from "@/lib/utils";
 import { TabsNav } from "@/components/common/TabsNav";
+import { WizardProgress } from "@/components/ui/wizard-progress";
 
 interface SidebarItem {
   id: string;
@@ -1403,54 +1404,137 @@ export default function DesignSystemPlayground() {
     </div>
   );
 
-  const renderProgress = () => (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Progress Indicators</h2>
-        <div className="space-y-6">
-          <div>
-            <Label className="text-sm font-medium mb-2 block">Basic Progress (Thin Style)</Label>
-            <Progress value={33} className="bg-grey-200 h-2" />
-            <p className="text-xs text-grey-600 mt-1">33% Complete</p>
-          </div>
-          <div>
-            <Label className="text-sm font-medium mb-2 block">Advanced Progress</Label>
-            <Progress value={67} className="bg-grey-200 h-2" />
-            <p className="text-xs text-grey-600 mt-1">67% Complete</p>
-          </div>
-          <div>
-            <Label className="text-sm font-medium mb-2 block">Complete</Label>
-            <Progress value={100} className="bg-grey-200 h-2" />
-            <p className="text-xs text-grey-600 mt-1">100% Complete</p>
-          </div>
-        </div>
-      </div>
+  const renderProgress = () => {
+    // Sample wizard steps for demo
+    const wizardSteps = [
+      { id: 'upload', name: 'Upload' },
+      { id: 'mapping', name: 'Mapping' },
+      { id: 'review', name: 'Review' },
+      { id: 'summary', name: 'Summary' }
+    ];
 
-      <div>
-        <h2 className="text-2xl font-semibold text-grey-900 mb-6">Step Progress with Numbered Steps</h2>
-        <div className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-main text-primary-contrast-text text-sm font-medium">
-              <Check size={16} />
+    const scanAgentSteps = [
+      { id: 'portal', name: 'Select Portal' },
+      { id: 'userType', name: 'User Type' },
+      { id: 'setup', name: 'Setup' }
+    ];
+
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Progress Indicators</h2>
+          <div className="space-y-6">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Basic Progress (Thin Style)</Label>
+              <Progress value={33} className="bg-grey-200 h-2" />
+              <p className="text-xs text-grey-600 mt-1">33% Complete</p>
             </div>
-            <div className="flex-1 h-1 bg-primary-main rounded"></div>
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-main text-primary-contrast-text text-sm font-medium">
-              2
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Advanced Progress</Label>
+              <Progress value={67} className="bg-grey-200 h-2" />
+              <p className="text-xs text-grey-600 mt-1">67% Complete</p>
             </div>
-            <div className="flex-1 h-1 bg-grey-300 rounded"></div>
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-grey-300 text-grey-600 text-sm font-medium">
-              3
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Complete</Label>
+              <Progress value={100} className="bg-grey-200 h-2" />
+              <p className="text-xs text-grey-600 mt-1">100% Complete</p>
             </div>
           </div>
-          <div className="flex justify-between text-sm text-grey-600">
-            <span>Completed</span>
-            <span>In Progress</span>
-            <span>Upcoming</span>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Step Progress with Numbered Steps</h2>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-main text-primary-contrast-text text-sm font-medium">
+                <Check size={16} />
+              </div>
+              <div className="flex-1 h-1 bg-primary-main rounded"></div>
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-main text-primary-contrast-text text-sm font-medium">
+                2
+              </div>
+              <div className="flex-1 h-1 bg-grey-300 rounded"></div>
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-grey-300 text-grey-600 text-sm font-medium">
+                3
+              </div>
+            </div>
+            <div className="flex justify-between text-sm text-grey-600">
+              <span>Completed</span>
+              <span>In Progress</span>
+              <span>Upcoming</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-6">Progress Indicators - Modals</h2>
+          <p className="text-sm text-grey-600 mb-6">
+            Reusable wizard progress component for multi-step modals. Used in "Add Scan Agent" and "Upload ERP Payment Report" modals.
+          </p>
+          
+          <div className="space-y-8">
+            <div className="p-6 bg-white border border-grey-300 rounded-lg">
+              <Label className="text-sm font-medium mb-4 block">Upload ERP Payment Report Wizard (4 steps)</Label>
+              <div className="space-y-4">
+                <div className="p-4 bg-gray-50 rounded">
+                  <p className="text-xs text-grey-600 mb-2">Step 1: Upload</p>
+                  <WizardProgress steps={wizardSteps} currentStep="upload" />
+                </div>
+                <div className="p-4 bg-gray-50 rounded">
+                  <p className="text-xs text-grey-600 mb-2">Step 2: Mapping</p>
+                  <WizardProgress steps={wizardSteps} currentStep="mapping" />
+                </div>
+                <div className="p-4 bg-gray-50 rounded">
+                  <p className="text-xs text-grey-600 mb-2">Step 3: Review</p>
+                  <WizardProgress steps={wizardSteps} currentStep="review" />
+                </div>
+                <div className="p-4 bg-gray-50 rounded">
+                  <p className="text-xs text-grey-600 mb-2">Step 4: Summary</p>
+                  <WizardProgress steps={wizardSteps} currentStep="summary" />
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 bg-white border border-grey-300 rounded-lg">
+              <Label className="text-sm font-medium mb-4 block">Add Scan Agent Wizard (3 steps)</Label>
+              <div className="space-y-4">
+                <div className="p-4 bg-gray-50 rounded">
+                  <p className="text-xs text-grey-600 mb-2">Step 1: Select Portal</p>
+                  <WizardProgress steps={scanAgentSteps} currentStep="portal" />
+                </div>
+                <div className="p-4 bg-gray-50 rounded">
+                  <p className="text-xs text-grey-600 mb-2">Step 2: User Type</p>
+                  <WizardProgress steps={scanAgentSteps} currentStep="userType" />
+                </div>
+                <div className="p-4 bg-gray-50 rounded">
+                  <p className="text-xs text-grey-600 mb-2">Step 3: Setup</p>
+                  <WizardProgress steps={scanAgentSteps} currentStep="setup" />
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h4 className="text-sm font-medium text-blue-900 mb-2">Usage</h4>
+              <pre className="text-xs text-blue-800 overflow-x-auto">
+{`import { WizardProgress } from '@/components/ui/wizard-progress';
+
+const steps = [
+  { id: 'step1', name: 'First Step' },
+  { id: 'step2', name: 'Second Step' },
+  { id: 'step3', name: 'Third Step' }
+];
+
+<WizardProgress 
+  steps={steps} 
+  currentStep="step2" 
+/>`}
+              </pre>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderBreadcrumbs = () => (
     <div className="space-y-8">
