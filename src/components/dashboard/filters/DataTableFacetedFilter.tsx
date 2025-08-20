@@ -73,17 +73,41 @@ export function DataTableFacetedFilter({
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
                 variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
+                className="rounded-sm px-1 font-normal lg:hidden flex items-center gap-1 text-xs"
+                style={{ backgroundColor: '#EFEBFF' }}
               >
                 {selectedValues.size > 3 ? `${selectedValues.size} selected` : selectedValues.size}
+                {selectedValues.size > 3 && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleClear();
+                    }}
+                    className="ml-1 rounded-full p-0.5"
+                  >
+                    <X className="text-current" style={{ width: '8px', height: '8px' }} />
+                  </button>
+                )}
               </Badge>
               <div className="hidden space-x-1 lg:flex">
                 {selectedValues.size > 3 ? (
                   <Badge
                     variant="secondary"
-                    className="rounded-sm px-1 font-normal"
+                    className="rounded-sm px-1 font-normal flex items-center gap-1 text-xs"
+                    style={{ backgroundColor: '#EFEBFF' }}
                   >
                     {selectedValues.size} selected
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleClear();
+                      }}
+                      className="ml-1 rounded-full p-0.5"
+                    >
+                      <X className="text-current" style={{ width: '8px', height: '8px' }} />
+                    </button>
                   </Badge>
                 ) : (
                   options

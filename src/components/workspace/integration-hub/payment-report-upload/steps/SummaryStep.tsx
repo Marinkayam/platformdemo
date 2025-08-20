@@ -22,38 +22,18 @@ export function SummaryStep({ validatedData }: SummaryStepProps) {
     <div className="space-y-8">
       {/* Header */}
       <div className="text-center space-y-3">
-        <div className="mx-auto w-16 h-16 bg-success-main/10 rounded-full flex items-center justify-center">
-          <CheckCircle className="w-8 h-8 text-success-main" />
-        </div>
         <div>
-          <h3 className="text-xl font-semibold text-grey-900">Ready to Import</h3>
+          <h3 className="text-lg font-semibold text-grey-900">Ready to Import</h3>
           <p className="text-grey-600">
             Your payment data has been processed and is ready for import
           </p>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-success-main/5 border border-success-main/20 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-success-main">{validRecords.length}</div>
-          <div className="text-sm text-success-main font-medium">Valid Records</div>
-        </div>
-        <div className="bg-warning-main/5 border border-warning-main/20 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-warning-main">{warningRecords.length}</div>
-          <div className="text-sm text-warning-main font-medium">Warnings</div>
-        </div>
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-red-600">{errorRecords.length}</div>
-          <div className="text-sm text-red-600 font-medium">Errors</div>
-        </div>
-      </div>
-
       {/* Details */}
       <div className="grid grid-cols-2 gap-6">
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-grey-600" />
+          <div>
             <h4 className="font-semibold text-grey-900">Import Summary</h4>
           </div>
           <div className="space-y-3 text-sm">
@@ -75,10 +55,6 @@ export function SummaryStep({ validatedData }: SummaryStepProps) {
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-grey-600" />
-            <h4 className="font-semibold text-grey-900">Status Breakdown</h4>
-          </div>
           <div className="space-y-3 text-sm">
             {Object.entries(statusBreakdown).map(([status, count]) => (
               <div key={status} className="flex justify-between py-2 border-b border-grey-200">
