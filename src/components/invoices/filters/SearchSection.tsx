@@ -33,10 +33,11 @@ export function SearchSection({
         {searchTerm && (
           <button
             onClick={() => onSearchChange("")}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full p-1 transition-colors"
+            className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center transition-all z-10"
             title="Clear search"
+            type="button"
           >
-            <X size={14} />
+            <X size={12} />
           </button>
         )}
       </div>
