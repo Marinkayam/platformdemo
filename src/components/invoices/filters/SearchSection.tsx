@@ -1,5 +1,5 @@
 
-import { Search, RefreshCw } from "lucide-react";
+import { Search, RefreshCw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -26,10 +26,18 @@ export function SearchSection({
         <input 
           type="text" 
           placeholder="Search invoices..." 
-          className="pl-9 pr-4 h-9 border rounded-md w-[160px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[220px] transition-all duration-300 ease-in-out text-[14px]"
+          className="pl-9 pr-8 h-9 border rounded-md w-[160px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[220px] transition-all duration-300 ease-in-out text-[14px]"
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
         />
+        {searchTerm && (
+          <button
+            onClick={() => onSearchChange("")}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X size={16} />
+          </button>
+        )}
       </div>
       <Button 
         variant="outline" 

@@ -1,5 +1,5 @@
 
-import { Search, RefreshCw } from "lucide-react";
+import { Search, RefreshCw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { SmartConnectionFilters } from "@/types/smartConnection";
@@ -213,10 +213,18 @@ export function PaymentsRelationshipsFilters({ filters, onFilterChange, onClearF
             <input 
               type="text" 
               placeholder="Search..." 
-              className="pl-9 pr-4 h-9 border rounded-md w-[200px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[260px] transition-all duration-300 ease-in-out text-[14px]"
+              className="pl-9 pr-8 h-9 border rounded-md w-[200px] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:w-[260px] transition-all duration-300 ease-in-out text-[14px]"
               value={filters.search}
               onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
             />
+            {filters.search && (
+              <button
+                onClick={() => onFilterChange({ ...filters, search: "" })}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={16} />
+              </button>
+            )}
           </div>
         </div>
 
