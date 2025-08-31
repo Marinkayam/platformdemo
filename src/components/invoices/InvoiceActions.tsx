@@ -8,7 +8,7 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem 
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, TableProperties, Download, Search } from "lucide-react";
+import { MoreVertical, TableProperties, Download, Search, X } from "lucide-react";
 import { showSuccessToast, showErrorToast } from "@/lib/toast-helpers";
 import { TableCustomizationDialog } from "@/components/invoices/TableCustomizationDialog";
 import { EmailExportModal } from "@/components/invoices/EmailExportModal";
@@ -99,8 +99,18 @@ INV-003,Amazon Inc.,2025-01-20,Settled,$1500.00,Oracle,$Bob Johnson`;
             placeholder="Search invoices..."
             value={searchValue}
             onChange={(e) => onSearchChange?.(e.target.value)}
-            className="h-8 pl-8"
+            className="h-8 pl-8 pr-8"
           />
+          {searchValue && (
+            <button
+              onClick={() => onSearchChange?.("")}
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center transition-all z-10"
+              title="Clear search"
+              type="button"
+            >
+              <X size={12} />
+            </button>
+          )}
         </div>
         
         {/* Kebab Menu */}
