@@ -31,7 +31,7 @@ export function TableActions({ actions, className }: TableActionsProps) {
             <MoreVertical className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
+        <DropdownMenuContent align="end" className="z-50">
           {actions.map((action, index) => (
             <DropdownMenuItem
               key={index}
