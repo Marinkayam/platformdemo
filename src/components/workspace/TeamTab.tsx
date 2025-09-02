@@ -148,8 +148,8 @@ export function TeamTab() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h6 className="text-lg font-semibold text-gray-900 mb-1">Team</h6>
-          <p className="text-base text-gray-600">
+          <h6 className="text-base font-medium text-gray-900 mb-1">Team</h6>
+          <p className="text-sm text-gray-600">
             Invite teammates to collaborate.
           </p>
         </div>
@@ -164,11 +164,11 @@ export function TeamTab() {
             <Table className="min-w-full">
               <TableHeader className="bg-gray-50/50 border-b">
                 <TableRow>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/5">Full Name</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/5">Email</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/5">Role</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 tracking-wide w-1/5">Invitation</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 tracking-wide w-1/5"></TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-medium text-gray-700 tracking-wide w-1/5">Full Name</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-medium text-gray-700 tracking-wide w-1/5">Email</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-medium text-gray-700 tracking-wide w-1/5">Role</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-center text-xs font-medium text-gray-700 tracking-wide w-1/5">Invitation</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-medium text-gray-700 tracking-wide w-1/5"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white">
@@ -179,7 +179,7 @@ export function TeamTab() {
                         <div className="w-6 h-6 rounded-full bg-[#EFEBFF] text-[#6b53e6] flex items-center justify-center text-xs font-light">
                           {getInitials(member.firstName, member.lastName)}
                         </div>
-                        <div className="text-sm font-medium text-gray-900">{member.firstName} {member.lastName}</div>
+                        <div className="text-sm font-normal text-gray-900">{member.firstName} {member.lastName}</div>
                       </div>
                     </TableCell>
                     <TableCell className="px-4 md:px-6 py-4 w-1/5">
