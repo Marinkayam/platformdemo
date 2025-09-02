@@ -4,6 +4,7 @@ import { TabsNav } from "@/components/common/TabsNav";
 import { TeamTab } from "@/components/workspace/TeamTab";
 import { CompanyTab } from "@/components/workspace/CompanyTab";
 import { LicenseTab } from "@/components/workspace/LicenseTab";
+import { EntitiesTab } from "@/components/workspace/EntitiesTab";
 import { DuplicationPolicyTab } from "@/components/workspace/DuplicationPolicyTab";
 import { PoliciesTab } from "@/components/workspace/PoliciesTab";
 import { IntegrationHub } from "@/components/workspace/integration-hub/IntegrationHub";
@@ -18,6 +19,11 @@ const headerTabs = [
     id: "team",
     label: "Team",
     icon: <Users size={16} strokeWidth={1} />,
+  },
+  {
+    id: "entities",
+    label: "Entities",
+    icon: <FolderKanban size={16} strokeWidth={1} />,
   },
   {
     id: "license",
@@ -57,6 +63,8 @@ export default function Workspace() {
         return <CompanyTab />;
       case "team":
         return <TeamTab />;
+      case "entities":
+        return <EntitiesTab />;
       case "license":
         return <LicenseTab />;
       case "integration":
