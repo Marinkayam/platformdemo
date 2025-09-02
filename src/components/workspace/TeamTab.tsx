@@ -164,16 +164,17 @@ export function TeamTab() {
             <Table className="min-w-full">
               <TableHeader className="bg-gray-50/50 border-b">
                 <TableRow>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/4">Full Name</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/4">Email</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/4">Role</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 tracking-wide w-1/4"></TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/5">Full Name</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/5">Email</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/5">Role</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-center text-xs font-semibold text-gray-700 tracking-wide w-1/5">Invitation</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 tracking-wide w-1/5"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white">
-                {members.map((member, index) => (
-                 <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
-                    <TableCell className="px-4 md:px-6 py-4 w-1/4">
+                 {members.map((member, index) => (
+                  <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
+                    <TableCell className="px-4 md:px-6 py-4 w-1/5">
                       <div className="flex items-center gap-3">
                         <div className="w-6 h-6 rounded-full bg-[#EFEBFF] text-[#6b53e6] flex items-center justify-center text-xs font-light">
                           {getInitials(member.firstName, member.lastName)}
@@ -181,13 +182,37 @@ export function TeamTab() {
                         <div className="text-sm font-medium text-gray-900">{member.firstName} {member.lastName}</div>
                       </div>
                     </TableCell>
-                    <TableCell className="px-4 md:px-6 py-4 w-1/4">
+                    <TableCell className="px-4 md:px-6 py-4 w-1/5">
                       <div className="text-sm text-gray-600">{member.email}</div>
                     </TableCell>
-                    <TableCell className="px-4 md:px-6 py-4 w-1/4">
+                    <TableCell className="px-4 md:px-6 py-4 w-1/5">
                       <Badge className={getRoleBadgeClass(member.role)}>{member.role}</Badge>
                     </TableCell>
-                    <TableCell className="px-4 md:px-6 py-4 text-right w-1/4">
+                    <TableCell className="px-4 md:px-6 py-4 text-center w-1/5">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleCopyInviteLink(member)}
+                              className="text-xs h-8 px-2"
+                            >
+                              {copiedMemberId === member.id ? (
+                                <Check size={14} className="text-green-600" />
+                              ) : (
+                                <Copy size={14} />
+                              )}
+                              {copiedMemberId === member.id ? "Copied!" : "Send Link"}
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Send invitation link</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </TableCell>
+                    <TableCell className="px-4 md:px-6 py-4 text-right w-1/5">
                        <TableActions actions={memberActions(member)} />
                     </TableCell>
                   </TableRow>
