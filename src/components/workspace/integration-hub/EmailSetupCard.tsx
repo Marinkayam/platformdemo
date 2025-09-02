@@ -188,11 +188,6 @@ export function EmailSetupCard() {
           </CollapsibleContent>
         </Collapsible>
 
-        <div className="flex justify-end pt-4 border-t">
-          <Button size="sm" className="px-4">
-            Save Configuration
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
