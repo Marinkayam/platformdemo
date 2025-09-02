@@ -45,18 +45,16 @@ import { showSuccessToast } from "@/lib/toast-helpers";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const initialTeamMembers = [
-  { id: 1, firstName: "Sarah", lastName: "Johnson", email: "sarah@monto.tech", role: "Admin" as const },
+  { id: 1, firstName: "Sarah", lastName: "Johnson", email: "sarah@monto.tech", role: "Sys-Admin" as const },
   { id: 2, firstName: "Mike", lastName: "Chen", email: "mike@monto.tech", role: "Sys-Admin" as const },
   { id: 3, firstName: "Lisa", lastName: "Rodriguez", email: "lisa@monto.tech", role: "Operator" as const },
 ];
 
 type TeamMember = typeof initialTeamMembers[number];
-type MemberRole = "Admin" | "Sys-Admin" | "Operator";
+type MemberRole = "Sys-Admin" | "Operator";
 
 const getRoleBadgeClass = (role: MemberRole) => {
   switch (role) {
-    case "Admin":
-      return "bg-[#efefff] text-[#6b53e6] hover:bg-[#e5e2ff] font-medium";
     case "Sys-Admin":
       return "bg-red-100 text-red-800 hover:bg-red-200 font-medium";
     case "Operator":
@@ -254,7 +252,6 @@ export function TeamTab() {
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Admin">Admin</SelectItem>
                   <SelectItem value="Sys-Admin">Sys-Admin</SelectItem>
                   <SelectItem value="Operator">Operator</SelectItem>
                 </SelectContent>
