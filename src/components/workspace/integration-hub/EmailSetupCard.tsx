@@ -45,7 +45,7 @@ export function EmailSetupCard() {
             </span>
           </CollapsibleTrigger>
           
-          <CollapsibleContent className="mt-3 space-y-3 border-l-2 border-muted pl-4">
+          <CollapsibleContent className="mt-3 space-y-3 pl-4">
             <div>
               <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Inbox Type (select 1):</Label>
               <div className="mt-2 space-y-1">
@@ -59,7 +59,17 @@ export function EmailSetupCard() {
                     <Checkbox 
                       id={option.key} 
                       checked={invoiceConfig[option.key as 'singleInvoice' | 'invoiceWithAttachments' | 'bulkInvoices' | 'combinedInvoices']}
-                      onCheckedChange={(checked) => setInvoiceConfig({...invoiceConfig, [option.key]: !!checked})}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setInvoiceConfig({
+                            ...invoiceConfig, 
+                            singleInvoice: option.key === 'singleInvoice',
+                            invoiceWithAttachments: option.key === 'invoiceWithAttachments',
+                            bulkInvoices: option.key === 'bulkInvoices',
+                            combinedInvoices: option.key === 'combinedInvoices'
+                          });
+                        }
+                      }}
                     />
                     <Label htmlFor={option.key} className="text-xs">{option.label}</Label>
                   </div>
