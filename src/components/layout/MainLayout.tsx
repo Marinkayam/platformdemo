@@ -58,9 +58,9 @@ export function MainLayout() {
             {/* User Profile */}
             <DropdownMenu>
                <DropdownMenuTrigger asChild>
-                 <button className="w-8 h-8 rounded-full flex items-center justify-center font-medium cursor-pointer hover:opacity-80 transition-opacity border border-gray-300" style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}>
-                   L
-                 </button>
+                  <button className="w-8 h-8 rounded-full flex items-center justify-center font-medium cursor-pointer hover:opacity-80 transition-opacity border border-gray-300" style={{ backgroundColor: '#EFEBFF', color: '#7B59FF' }}>
+                    LS
+                  </button>
                </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-2 py-1.5">
