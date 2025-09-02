@@ -18,7 +18,8 @@ export function EmailSetupCard() {
     addressesFromEmail: false,
     emailSubject: "*Invoice.*",
     replyToAddress: "sys-admin@clinet-domain.com",
-    customAddresses: ""
+    customAddresses: "",
+    toEmailAddress: "montopay@montoinvoice.com"
   });
 
   const [invoiceSectionOpen, setInvoiceSectionOpen] = useState(false);
@@ -40,9 +41,6 @@ export function EmailSetupCard() {
               {invoiceSectionOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
               <span className="text-sm font-medium">Invoice Processing Setup</span>
             </div>
-            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded font-mono">
-              montopay@montoinvoice.com
-            </span>
           </CollapsibleTrigger>
           
           <CollapsibleContent className="mt-3 space-y-3 pl-4">
@@ -78,6 +76,15 @@ export function EmailSetupCard() {
             </div>
 
             <div className="space-y-3">
+              <div>
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"To" Email Address:</Label>
+                <Input 
+                  value={invoiceConfig.toEmailAddress}
+                  onChange={(e) => setInvoiceConfig({...invoiceConfig, toEmailAddress: e.target.value})}
+                  className="mt-1 text-xs h-8"
+                />
+              </div>
+
               <div>
                 <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"From" Email Address (multiselect):</Label>
                 <div className="mt-2 space-y-1">
