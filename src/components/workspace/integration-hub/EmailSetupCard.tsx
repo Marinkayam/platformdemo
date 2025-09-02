@@ -75,7 +75,7 @@ export function EmailSetupCard() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="space-y-3">
               <div>
                 <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"From" Email Address (multiselect):</Label>
                 <div className="mt-2 space-y-1">
@@ -98,23 +98,22 @@ export function EmailSetupCard() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <div>
-                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Email Subject (regex):</Label>
-                  <Input 
-                    value={invoiceConfig.emailSubject}
-                    onChange={(e) => setInvoiceConfig({...invoiceConfig, emailSubject: e.target.value})}
-                    className="mt-1 text-xs h-8"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"Reply to" Email Address:</Label>
-                  <Input 
-                    value={invoiceConfig.replyToAddress}
-                    onChange={(e) => setInvoiceConfig({...invoiceConfig, replyToAddress: e.target.value})}
-                    className="mt-1 text-xs h-8"
-                  />
-                </div>
+              <div>
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Email Subject (regex):</Label>
+                <Input 
+                  value={invoiceConfig.emailSubject}
+                  onChange={(e) => setInvoiceConfig({...invoiceConfig, emailSubject: e.target.value})}
+                  className="mt-1 text-xs h-8"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"Reply to" Email Address:</Label>
+                <Input 
+                  value={invoiceConfig.replyToAddress}
+                  onChange={(e) => setInvoiceConfig({...invoiceConfig, replyToAddress: e.target.value})}
+                  className="mt-1 text-xs h-8"
+                />
               </div>
             </div>
           </CollapsibleContent>
@@ -144,7 +143,7 @@ export function EmailSetupCard() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="space-y-3">
               <div>
                 <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"From" Email Address (multiselect):</Label>
                 <div className="mt-2 space-y-1">
@@ -167,23 +166,22 @@ export function EmailSetupCard() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <div>
-                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Email Subject:</Label>
-                  <Input 
-                    value={reportConfig.emailSubject}
-                    onChange={(e) => setReportConfig({...reportConfig, emailSubject: e.target.value})}
-                    className="mt-1 text-xs h-8"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"Reply to" Email Address:</Label>
-                  <Input 
-                    value={reportConfig.replyToAddress}
-                    onChange={(e) => setReportConfig({...reportConfig, replyToAddress: e.target.value})}
-                    className="mt-1 text-xs h-8"
-                  />
-                </div>
+              <div>
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Email Subject:</Label>
+                <Input 
+                  value={reportConfig.emailSubject}
+                  onChange={(e) => setReportConfig({...reportConfig, emailSubject: e.target.value})}
+                  className="mt-1 text-xs h-8"
+                />
+              </div>
+
+              <div>
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"Reply to" Email Address:</Label>
+                <Input 
+                  value={reportConfig.replyToAddress}
+                  onChange={(e) => setReportConfig({...reportConfig, replyToAddress: e.target.value})}
+                  className="mt-1 text-xs h-8"
+                />
               </div>
             </div>
           </CollapsibleContent>
