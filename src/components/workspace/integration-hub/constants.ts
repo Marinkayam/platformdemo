@@ -1,4 +1,3 @@
-
 import { Database, FileText, ExternalLink, Mail, Building2, Hash } from 'lucide-react';
 import { EmailConnector, OtherIntegration, IntegrationConnector } from './types';
 
