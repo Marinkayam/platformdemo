@@ -94,7 +94,7 @@ export function EmailSetupCard() {
                           value={invoiceConfig.customAddresses}
                           onChange={(e) => setInvoiceConfig({...invoiceConfig, customAddresses: e.target.value})}
                           placeholder="Enter email addresses (comma separated)"
-                          className="text-xs h-8"
+                          className="text-[10px] h-6 px-2 py-1"
                         />
                       </div>
                     )}
