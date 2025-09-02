@@ -97,14 +97,18 @@ export function MainLayout() {
                    <span>Settings</span>
                  </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer py-2" onClick={handleLogout}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                    <path d="m16 17 5-5-5-5"/>
-                    <path d="M21 12H9"/>
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                  </svg>
-                  <span>Log out</span>
-                </DropdownMenuItem>
+                 <DropdownMenuItem className="cursor-pointer py-2" onClick={handleLogout}>
+                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                     <path d="m16 17 5-5-5-5"/>
+                     <path d="M21 12H9"/>
+                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                   </svg>
+                   <span>Log out</span>
+                 </DropdownMenuItem>
+                 <DropdownMenuSeparator />
+                 <div className="px-2 py-1.5">
+                   <p className="text-xs text-muted-foreground">Monto version 2.0</p>
+                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
             </div>
