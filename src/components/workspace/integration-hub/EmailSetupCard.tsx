@@ -82,6 +82,7 @@ export function EmailSetupCard() {
                   value={invoiceConfig.toEmailAddress}
                   onChange={(e) => setInvoiceConfig({...invoiceConfig, toEmailAddress: e.target.value})}
                   className="mt-1 text-xs h-8"
+                  disabled
                 />
               </div>
 
