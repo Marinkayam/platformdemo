@@ -20,16 +20,7 @@ export function EmailSetupCard() {
     replyToAddress: "sys-admin@clinet-domain.com"
   });
 
-  const [reportConfig, setReportConfig] = useState({
-    paymentReports: true,
-    domainFromEmail: true,
-    addressesFromEmail: false,
-    emailSubject: "*report.*",
-    replyToAddress: "sys-admin@clinet-domain.com"
-  });
-
   const [invoiceSectionOpen, setInvoiceSectionOpen] = useState(false);
-  const [reportsSectionOpen, setReportsSectionOpen] = useState(false);
 
   return (
     <Card className="border border-border rounded-lg shadow-sm">
@@ -37,7 +28,7 @@ export function EmailSetupCard() {
         <CardTitle className="text-base font-semibold text-grey-900">
           Email Integration Configuration
         </CardTitle>
-        <p className="text-sm text-grey-600">Configure email processing for invoices and payment reports</p>
+        <p className="text-sm text-grey-600">Configure email processing for invoices</p>
       </CardHeader>
       
       <CardContent className="space-y-4">
@@ -118,75 +109,6 @@ export function EmailSetupCard() {
             </div>
           </CollapsibleContent>
         </Collapsible>
-
-        {/* Payment Reports Configuration Section */}
-        <Collapsible open={reportsSectionOpen} onOpenChange={setReportsSectionOpen}>
-          <CollapsibleTrigger className="flex items-center justify-between w-full p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
-            <div className="flex items-center gap-2">
-              {reportsSectionOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-              <span className="text-sm font-medium">Payment Reports Setup</span>
-            </div>
-            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded font-mono">
-              montopay@montoreports.com
-            </span>
-          </CollapsibleTrigger>
-          
-          <CollapsibleContent className="mt-3 space-y-3 border-l-2 border-muted pl-4">
-            <div>
-              <div className="flex items-center space-x-2">
-                <Checkbox 
-                  id="payment-reports" 
-                  checked={reportConfig.paymentReports}
-                  onCheckedChange={(checked) => setReportConfig({...reportConfig, paymentReports: !!checked})}
-                />
-                <Label htmlFor="payment-reports" className="text-xs">Payment Reports (CSV/Excel)</Label>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div>
-                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"From" Email Address (multiselect):</Label>
-                <div className="mt-2 space-y-1">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox 
-                      id="domain-reports" 
-                      checked={reportConfig.domainFromEmail}
-                      onCheckedChange={(checked) => setReportConfig({...reportConfig, domainFromEmail: !!checked})}
-                    />
-                    <Label htmlFor="domain-reports" className="text-xs">Domain: montopay.com</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox 
-                      id="addresses-reports" 
-                      checked={reportConfig.addressesFromEmail}
-                      onCheckedChange={(checked) => setReportConfig({...reportConfig, addressesFromEmail: !!checked})}
-                    />
-                    <Label htmlFor="addresses-reports" className="text-xs">Addresses:</Label>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Email Subject:</Label>
-                <Input 
-                  value={reportConfig.emailSubject}
-                  onChange={(e) => setReportConfig({...reportConfig, emailSubject: e.target.value})}
-                  className="mt-1 text-xs h-8"
-                />
-              </div>
-
-              <div>
-                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"Reply to" Email Address:</Label>
-                <Input 
-                  value={reportConfig.replyToAddress}
-                  onChange={(e) => setReportConfig({...reportConfig, replyToAddress: e.target.value})}
-                  className="mt-1 text-xs h-8"
-                />
-              </div>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-
       </CardContent>
     </Card>
   );
