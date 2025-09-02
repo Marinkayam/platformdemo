@@ -34,9 +34,10 @@ export function EmailSetupCard() {
   return (
     <Card className="border border-border rounded-lg shadow-sm">
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold">
+        <CardTitle className="text-base font-semibold text-grey-900">
           Email Integration Configuration
         </CardTitle>
+        <p className="text-sm text-grey-600">Configure email processing for invoices and payment reports</p>
       </CardHeader>
       
       <CardContent className="space-y-4">
