@@ -14,9 +14,9 @@ interface LockedIntegrationCardProps {
 
 export function LockedIntegrationCard({ title, description, icon: IconComponent, onContactSupport }: LockedIntegrationCardProps) {
   return (
-    <Card className="group border-grey-300 bg-grey-50 hover:border-grey-400 transition-all duration-200 hover:scale-[1.02]">
+    <Card className="group border-grey-300 bg-grey-200 hover:border-grey-400 transition-all duration-200 hover:scale-[1.02]">
       <CardContent className="p-6 text-center space-y-4">
-        <div className="w-12 h-12 mx-auto rounded-lg bg-white border border-grey-200 flex items-center justify-center">
+        <div className="w-12 h-12 mx-auto rounded-lg bg-white border border-grey-300 flex items-center justify-center">
           <IconComponent 
             size={20} 
             className="text-grey-600" 
@@ -34,7 +34,7 @@ export function LockedIntegrationCard({ title, description, icon: IconComponent,
         </div>
         
         <div className="space-y-3">
-          <Badge variant="secondary" className="bg-white border-grey-200 text-grey-700">
+          <Badge variant="secondary" className="bg-white border-grey-300 text-grey-700">
             <Lock size={12} className="mr-1" />
             Premium Feature
           </Badge>
