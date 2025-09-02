@@ -46,46 +46,46 @@ export function EmailSetupCard() {
           <CollapsibleTrigger className="flex items-center justify-between w-full p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
             <div className="flex items-center gap-2">
               {invoiceSectionOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-              <span className="font-medium">Invoice Processing Setup</span>
+              <span className="text-sm font-medium">Invoice Processing Setup</span>
             </div>
             <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded font-mono">
               montopay@montoinvoice.com
             </span>
           </CollapsibleTrigger>
           
-          <CollapsibleContent className="mt-3 space-y-4 border-l-2 border-muted pl-4">
+          <CollapsibleContent className="mt-3 space-y-3 border-l-2 border-muted pl-4">
             <div>
-              <Label className="text-sm font-medium">Inbox Type (select 1):</Label>
-              <div className="mt-2 space-y-2">
+              <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Inbox Type (select 1):</Label>
+              <div className="mt-2 space-y-1">
                 {[
                   { key: 'singleInvoice', label: 'Single Invoice (PDF)' },
                   { key: 'invoiceWithAttachments', label: 'Invoice with Attachments (PDF + Files)' },
                   { key: 'bulkInvoices', label: 'Bulk Invoices (CSV/Excel)' },
                   { key: 'combinedInvoices', label: 'Combined Invoices (Requires Splitting)' }
                 ].map((option) => (
-                  <div key={option.key} className="flex items-center space-x-2">
+                  <div key={option.key} className="flex items-center space-x-2 py-1">
                     <Checkbox 
                       id={option.key} 
                       checked={invoiceConfig[option.key as 'singleInvoice' | 'invoiceWithAttachments' | 'bulkInvoices' | 'combinedInvoices']}
                       onCheckedChange={(checked) => setInvoiceConfig({...invoiceConfig, [option.key]: !!checked})}
                     />
-                    <Label htmlFor={option.key} className="text-sm">{option.label}</Label>
+                    <Label htmlFor={option.key} className="text-xs">{option.label}</Label>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <Label className="text-sm font-medium">"From" Email Address (multiselect):</Label>
-                <div className="mt-2 space-y-2">
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"From" Email Address (multiselect):</Label>
+                <div className="mt-2 space-y-1">
                   <div className="flex items-center space-x-2">
                     <Checkbox 
                       id="domain-from" 
                       checked={invoiceConfig.domainFromEmail}
                       onCheckedChange={(checked) => setInvoiceConfig({...invoiceConfig, domainFromEmail: !!checked})}
                     />
-                    <Label htmlFor="domain-from" className="text-sm">Domain: montopay.com</Label>
+                    <Label htmlFor="domain-from" className="text-xs">Domain: montopay.com</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox 
@@ -93,26 +93,26 @@ export function EmailSetupCard() {
                       checked={invoiceConfig.addressesFromEmail}
                       onCheckedChange={(checked) => setInvoiceConfig({...invoiceConfig, addressesFromEmail: !!checked})}
                     />
-                    <Label htmlFor="addresses-from" className="text-sm">Addresses: -</Label>
+                    <Label htmlFor="addresses-from" className="text-xs">Addresses: -</Label>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <div>
-                  <Label className="text-sm font-medium">Email Subject (regex):</Label>
+                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Email Subject (regex):</Label>
                   <Input 
                     value={invoiceConfig.emailSubject}
                     onChange={(e) => setInvoiceConfig({...invoiceConfig, emailSubject: e.target.value})}
-                    className="mt-1 text-sm"
+                    className="mt-1 text-xs h-8"
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">"Reply to" Email Address:</Label>
+                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"Reply to" Email Address:</Label>
                   <Input 
                     value={invoiceConfig.replyToAddress}
                     onChange={(e) => setInvoiceConfig({...invoiceConfig, replyToAddress: e.target.value})}
-                    className="mt-1 text-sm"
+                    className="mt-1 text-xs h-8"
                   />
                 </div>
               </div>
@@ -125,36 +125,36 @@ export function EmailSetupCard() {
           <CollapsibleTrigger className="flex items-center justify-between w-full p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
             <div className="flex items-center gap-2">
               {reportsSectionOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-              <span className="font-medium">Payment Reports Setup</span>
+              <span className="text-sm font-medium">Payment Reports Setup</span>
             </div>
             <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded font-mono">
               montopay@montoreports.com
             </span>
           </CollapsibleTrigger>
           
-          <CollapsibleContent className="mt-3 space-y-4 border-l-2 border-muted pl-4">
+          <CollapsibleContent className="mt-3 space-y-3 border-l-2 border-muted pl-4">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
+              <div className="flex items-center space-x-2">
                 <Checkbox 
                   id="payment-reports" 
                   checked={reportConfig.paymentReports}
                   onCheckedChange={(checked) => setReportConfig({...reportConfig, paymentReports: !!checked})}
                 />
-                <Label htmlFor="payment-reports" className="text-sm">Payment Reports (CSV/Excel)</Label>
+                <Label htmlFor="payment-reports" className="text-xs">Payment Reports (CSV/Excel)</Label>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <Label className="text-sm font-medium">"From" Email Address (multiselect):</Label>
-                <div className="mt-2 space-y-2">
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"From" Email Address (multiselect):</Label>
+                <div className="mt-2 space-y-1">
                   <div className="flex items-center space-x-2">
                     <Checkbox 
                       id="domain-reports" 
                       checked={reportConfig.domainFromEmail}
                       onCheckedChange={(checked) => setReportConfig({...reportConfig, domainFromEmail: !!checked})}
                     />
-                    <Label htmlFor="domain-reports" className="text-sm">Domain: montopay.com</Label>
+                    <Label htmlFor="domain-reports" className="text-xs">Domain: montopay.com</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox 
@@ -162,26 +162,26 @@ export function EmailSetupCard() {
                       checked={reportConfig.addressesFromEmail}
                       onCheckedChange={(checked) => setReportConfig({...reportConfig, addressesFromEmail: !!checked})}
                     />
-                    <Label htmlFor="addresses-reports" className="text-sm">Addresses:</Label>
+                    <Label htmlFor="addresses-reports" className="text-xs">Addresses:</Label>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <div>
-                  <Label className="text-sm font-medium">Email Subject:</Label>
+                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Email Subject:</Label>
                   <Input 
                     value={reportConfig.emailSubject}
                     onChange={(e) => setReportConfig({...reportConfig, emailSubject: e.target.value})}
-                    className="mt-1 text-sm"
+                    className="mt-1 text-xs h-8"
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">"Reply to" Email Address:</Label>
+                  <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">"Reply to" Email Address:</Label>
                   <Input 
                     value={reportConfig.replyToAddress}
                     onChange={(e) => setReportConfig({...reportConfig, replyToAddress: e.target.value})}
-                    className="mt-1 text-sm"
+                    className="mt-1 text-xs h-8"
                   />
                 </div>
               </div>
