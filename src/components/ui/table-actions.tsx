@@ -31,14 +31,14 @@ export function TableActions({ actions, className }: TableActionsProps) {
             <MoreVertical className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="z-50 bg-white border border-border shadow-md rounded-md min-w-[8rem]">
           {actions.map((action, index) => (
             <DropdownMenuItem
               key={index}
               onClick={action.onClick}
               className={cn(
-                "flex items-center gap-2 cursor-pointer",
-                action.variant === "destructive" && "text-red-600 focus:text-red-600"
+                "flex items-center gap-2 cursor-pointer px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground",
+                action.variant === "destructive" && "text-destructive hover:text-destructive"
               )}
             >
               {action.icon && <action.icon className="h-4 w-4" />}
