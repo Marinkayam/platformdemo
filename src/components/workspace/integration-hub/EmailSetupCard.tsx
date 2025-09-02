@@ -17,7 +17,8 @@ export function EmailSetupCard() {
     domainFromEmail: true,
     addressesFromEmail: false,
     emailSubject: "*Invoice.*",
-    replyToAddress: "sys-admin@clinet-domain.com"
+    replyToAddress: "sys-admin@clinet-domain.com",
+    customAddresses: ""
   });
 
   const [invoiceSectionOpen, setInvoiceSectionOpen] = useState(false);
@@ -78,13 +79,25 @@ export function EmailSetupCard() {
                     />
                     <Label htmlFor="domain-from" className="text-xs">Domain: montopay.com</Label>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox 
-                      id="addresses-from" 
-                      checked={invoiceConfig.addressesFromEmail}
-                      onCheckedChange={(checked) => setInvoiceConfig({...invoiceConfig, addressesFromEmail: !!checked})}
-                    />
-                    <Label htmlFor="addresses-from" className="text-xs">Addresses: -</Label>
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        id="addresses-from" 
+                        checked={invoiceConfig.addressesFromEmail}
+                        onCheckedChange={(checked) => setInvoiceConfig({...invoiceConfig, addressesFromEmail: !!checked})}
+                      />
+                      <Label htmlFor="addresses-from" className="text-xs">Addresses:</Label>
+                    </div>
+                    {invoiceConfig.addressesFromEmail && (
+                      <div className="ml-6">
+                        <Input 
+                          value={invoiceConfig.customAddresses}
+                          onChange={(e) => setInvoiceConfig({...invoiceConfig, customAddresses: e.target.value})}
+                          placeholder="Enter email addresses (comma separated)"
+                          className="text-xs h-8"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
