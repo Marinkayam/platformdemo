@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Building2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -194,12 +194,7 @@ export function EntitiesTab() {
                 {entities.map((entity) => (
                  <TableRow key={entity.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
                     <TableCell className="px-4 md:px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 rounded-full bg-[#EFEBFF] text-[#6b53e6] flex items-center justify-center text-xs font-light">
-                          <Building2 size={12} />
-                        </div>
-                        <div className="text-sm font-medium text-gray-900">{entity.name}</div>
-                      </div>
+                      <div className="text-sm font-medium text-gray-900">{entity.name}</div>
                     </TableCell>
                     <TableCell className="px-4 md:px-6 py-4">
                       <div className="text-sm text-gray-600">{entity.type}</div>
