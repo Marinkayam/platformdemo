@@ -164,10 +164,10 @@ export function TeamTab() {
             <Table className="min-w-full">
               <TableHeader className="bg-gray-50/50 border-b">
                 <TableRow>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/4">Full Name</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/4">Email</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/4">Role</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/4"></TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/4">Full Name</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/4">Email</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide w-1/4">Role</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 tracking-wide w-1/4"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white">

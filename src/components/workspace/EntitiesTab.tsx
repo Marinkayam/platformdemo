@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+
 import {
   Table,
   TableBody,
@@ -43,14 +43,12 @@ import { TableActions, commonActions } from "@/components/ui/table-actions";
 import { showSuccessToast } from "@/lib/toast-helpers";
 
 type EntityType = "Corporation" | "LLC" | "Partnership" | "BV" | "Limited Company" | "GmbH" | "SAS" | "Other";
-type EntityStatus = "Active" | "Inactive" | "Pending" | "Dissolved";
 
 interface Entity {
   id: number;
   name: string;
   type: EntityType;
   taxId: string;
-  status: EntityStatus;
   jurisdiction: string;
 }
 
@@ -60,7 +58,6 @@ const initialEntities: Entity[] = [
     name: "Monto Technologies Inc.", 
     type: "Corporation",
     taxId: "12-3456789",
-    status: "Active",
     jurisdiction: "Delaware, US"
   },
   { 
@@ -68,7 +65,6 @@ const initialEntities: Entity[] = [
     name: "Monto EU Holdings B.V.", 
     type: "BV",
     taxId: "NL123456789B01",
-    status: "Active",
     jurisdiction: "Netherlands"
   },
   { 
@@ -76,25 +72,9 @@ const initialEntities: Entity[] = [
     name: "Monto UK Limited", 
     type: "Limited Company",
     taxId: "GB123456789",
-    status: "Inactive",
     jurisdiction: "United Kingdom"
   },
 ];
-
-const getStatusBadgeClass = (status: EntityStatus) => {
-  switch (status) {
-    case "Active":
-      return "bg-green-100 text-green-800 hover:bg-green-200 font-medium";
-    case "Inactive":
-      return "bg-gray-100 text-gray-700 hover:bg-gray-200 font-medium";
-    case "Pending":
-      return "bg-yellow-100 text-yellow-800 hover:bg-yellow-200 font-medium";
-    case "Dissolved":
-      return "bg-red-100 text-red-800 hover:bg-red-200 font-medium";
-    default:
-      return "bg-gray-100 text-gray-700 hover:bg-gray-200 font-medium";
-  }
-};
 
 export function EntitiesTab() {
   const [entities, setEntities] = useState<Entity[]>(initialEntities);
@@ -105,7 +85,6 @@ export function EntitiesTab() {
   const [name, setName] = useState("");
   const [type, setType] = useState<EntityType>("Corporation");
   const [taxId, setTaxId] = useState("");
-  const [status, setStatus] = useState<EntityStatus>("Active");
   const [jurisdiction, setJurisdiction] = useState("");
   
   const handleAddNewEntity = () => {
@@ -113,7 +92,6 @@ export function EntitiesTab() {
     setName("");
     setType("Corporation");
     setTaxId("");
-    setStatus("Active");
     setJurisdiction("");
     setIsModalOpen(true);
   };
@@ -123,7 +101,6 @@ export function EntitiesTab() {
     setName(entity.name);
     setType(entity.type);
     setTaxId(entity.taxId);
-    setStatus(entity.status);
     setJurisdiction(entity.jurisdiction);
     setIsModalOpen(true);
   };
@@ -145,10 +122,10 @@ export function EntitiesTab() {
         return;
     }
     if (entityToEdit) {
-      setEntities(entities.map(e => e.id === entityToEdit.id ? { ...e, name, type, taxId, status, jurisdiction } : e));
+      setEntities(entities.map(e => e.id === entityToEdit.id ? { ...e, name, type, taxId, jurisdiction } : e));
       showSuccessToast("Entity updated", "The entity details have been updated.");
     } else {
-      const newEntity = { id: Date.now(), name, type, taxId, status, jurisdiction };
+      const newEntity = { id: Date.now(), name, type, taxId, jurisdiction };
       setEntities([...entities, newEntity]);
       showSuccessToast("Entity added", "The new entity has been added successfully.");
     }
@@ -182,12 +159,11 @@ export function EntitiesTab() {
             <Table className="min-w-full">
               <TableHeader className="bg-gray-50/50 border-b">
                 <TableRow>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Entity Name</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Type</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Tax ID</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Jurisdiction</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">Status</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase tracking-wide"></TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide">Entity Name</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide">Type</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide">Tax ID</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 tracking-wide">Jurisdiction</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 tracking-wide"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white">
@@ -204,9 +180,6 @@ export function EntitiesTab() {
                     </TableCell>
                     <TableCell className="px-4 md:px-6 py-4">
                       <div className="text-sm text-gray-600">{entity.jurisdiction}</div>
-                    </TableCell>
-                    <TableCell className="px-4 md:px-6 py-4">
-                      <Badge className={getStatusBadgeClass(entity.status)}>{entity.status}</Badge>
                     </TableCell>
                     <TableCell className="px-4 md:px-6 py-4 text-right">
                        <TableActions actions={entityActions(entity)} />
@@ -283,22 +256,6 @@ export function EntitiesTab() {
                 className="col-span-3"
                 placeholder="Delaware, US"
               />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="status" className="text-right">
-                Status
-              </Label>
-              <Select value={status} onValueChange={(value: EntityStatus) => setStatus(value)}>
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Active">Active</SelectItem>
-                  <SelectItem value="Inactive">Inactive</SelectItem>
-                  <SelectItem value="Pending">Pending</SelectItem>
-                  <SelectItem value="Dissolved">Dissolved</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
           <DialogFooter>
