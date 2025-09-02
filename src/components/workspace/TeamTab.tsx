@@ -45,22 +45,22 @@ import { showSuccessToast } from "@/lib/toast-helpers";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const initialTeamMembers = [
-  { id: 1, fullName: "Sarah Johnson", email: "sarah@monto.tech", role: "Admin" as const },
-  { id: 2, fullName: "Mike Chen", email: "mike@monto.tech", role: "Editor" as const },
-  { id: 3, fullName: "Lisa Rodriguez", email: "lisa@monto.tech", role: "Viewer" as const },
+  { id: 1, firstName: "Sarah", lastName: "Johnson", email: "sarah@monto.tech", role: "Admin" as const },
+  { id: 2, firstName: "Mike", lastName: "Chen", email: "mike@monto.tech", role: "Sys-Admin" as const },
+  { id: 3, firstName: "Lisa", lastName: "Rodriguez", email: "lisa@monto.tech", role: "Operator" as const },
 ];
 
 type TeamMember = typeof initialTeamMembers[number];
-type MemberRole = TeamMember['role'];
+type MemberRole = "Admin" | "Sys-Admin" | "Operator";
 
 const getRoleBadgeClass = (role: MemberRole) => {
   switch (role) {
     case "Admin":
       return "bg-[#efefff] text-[#6b53e6] hover:bg-[#e5e2ff] font-medium";
-    case "Editor":
-      return "bg-blue-100 text-blue-800 hover:bg-blue-200 font-medium";
-    case "Viewer":
-      return "bg-gray-100 text-gray-700 hover:bg-gray-200 font-medium";
+    case "Sys-Admin":
+      return "bg-red-100 text-red-800 hover:bg-red-200 font-medium";
+    case "Operator":
+      return "bg-green-100 text-green-800 hover:bg-green-200 font-medium";
     default:
       return "bg-gray-100 text-gray-700 hover:bg-gray-200 font-medium";
   }
@@ -74,19 +74,25 @@ export function TeamTab() {
   const [copiedMemberId, setCopiedMemberId] = useState<number | null>(null);
 
   const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [role, setRole] = useState<MemberRole>("Operator");
   
   const handleAddNewMember = () => {
     setMemberToEdit(null);
     setEmail("");
-    setFullName("");
+    setFirstName("");
+    setLastName("");
+    setRole("Operator");
     setIsModalOpen(true);
   };
 
   const handleEditMember = (member: TeamMember) => {
     setMemberToEdit(member);
     setEmail(member.email);
-    setFullName(member.fullName);
+    setFirstName(member.firstName);
+    setLastName(member.lastName);
+    setRole(member.role);
     setIsModalOpen(true);
   };
   
@@ -103,15 +109,15 @@ export function TeamTab() {
   };
 
   const handleSaveMember = () => {
-    if (!email || !fullName) {
+    if (!email || !firstName || !lastName) {
         // Here you could show an error toast
         return;
     }
     if (memberToEdit) {
-      setMembers(members.map(m => m.id === memberToEdit.id ? { ...m, email, fullName } : m));
+      setMembers(members.map(m => m.id === memberToEdit.id ? { ...m, email, firstName, lastName, role } : m));
       showSuccessToast("Member updated", "The team member's details have been updated.");
     } else {
-      const newMember = { id: Date.now(), fullName, email, role: "Viewer" as const };
+      const newMember = { id: Date.now(), firstName, lastName, email, role };
       setMembers([...members, newMember]);
       showSuccessToast("Member added", "An invitation has been sent to the new member.");
     }
@@ -136,13 +142,8 @@ export function TeamTab() {
     commonActions.delete(() => handleDeleteMemberRequest(member)),
   ];
 
-  const getInitials = (fullName: string) => {
-    return fullName
-      .split(' ')
-      .map(name => name.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+  const getInitials = (firstName: string, lastName: string) => {
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
   return (
@@ -165,26 +166,30 @@ export function TeamTab() {
             <Table className="min-w-full">
               <TableHeader className="bg-gray-50/50 border-b">
                 <TableRow>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3">Full Name</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3">Email</TableHead>
-                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/3"></TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/4">Full Name</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/4">Email</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/4">Role</TableHead>
+                  <TableHead className="px-4 md:px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase tracking-wide w-1/4"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white">
                 {members.map((member, index) => (
-                <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
-                    <TableCell className="px-4 md:px-6 py-4 w-1/3">
+                 <TableRow key={member.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-b-0">
+                    <TableCell className="px-4 md:px-6 py-4 w-1/4">
                       <div className="flex items-center gap-3">
                         <div className="w-6 h-6 rounded-full bg-[#EFEBFF] text-[#6b53e6] flex items-center justify-center text-xs font-light">
-                          {getInitials(member.fullName)}
+                          {getInitials(member.firstName, member.lastName)}
                         </div>
-                        <div className="text-sm font-medium text-gray-900">{member.fullName}</div>
+                        <div className="text-sm font-medium text-gray-900">{member.firstName} {member.lastName}</div>
                       </div>
                     </TableCell>
-                    <TableCell className="px-4 md:px-6 py-4 w-1/3">
+                    <TableCell className="px-4 md:px-6 py-4 w-1/4">
                       <div className="text-sm text-gray-600">{member.email}</div>
                     </TableCell>
-                    <TableCell className="px-4 md:px-6 py-4 text-right w-1/3">
+                    <TableCell className="px-4 md:px-6 py-4 w-1/4">
+                      <Badge className={getRoleBadgeClass(member.role)}>{member.role}</Badge>
+                    </TableCell>
+                    <TableCell className="px-4 md:px-6 py-4 text-right w-1/4">
                        <TableActions actions={memberActions(member)} />
                     </TableCell>
                   </TableRow>
@@ -205,15 +210,27 @@ export function TeamTab() {
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="fullName" className="text-right">
-                Full Name
+              <Label htmlFor="firstName" className="text-right">
+                First Name
               </Label>
               <Input
-                id="fullName"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 className="col-span-3"
-                placeholder="John Doe"
+                placeholder="John"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="lastName" className="text-right">
+                Last Name
+              </Label>
+              <Input
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="col-span-3"
+                placeholder="Doe"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -227,6 +244,21 @@ export function TeamTab() {
                 className="col-span-3"
                 placeholder="name@company.com"
               />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="role" className="text-right">
+                Role
+              </Label>
+              <Select value={role} onValueChange={(value: MemberRole) => setRole(value)}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Admin">Admin</SelectItem>
+                  <SelectItem value="Sys-Admin">Sys-Admin</SelectItem>
+                  <SelectItem value="Operator">Operator</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>
