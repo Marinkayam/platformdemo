@@ -34,11 +34,8 @@ export function EmailSetupCard() {
   return (
     <Card className="border border-border rounded-lg shadow-sm">
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold flex items-center gap-2">
+        <CardTitle className="text-lg font-semibold">
           Email Integration Configuration
-          <div className="bg-primary text-primary-foreground px-2 py-1 rounded text-xs font-medium">
-            montopay
-          </div>
         </CardTitle>
       </CardHeader>
       
