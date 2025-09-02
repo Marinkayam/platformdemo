@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Typography } from "@/components/ui/typography/typography";
 import { Button } from "@/components/ui/button";
 import { EmailConnectorCard } from './EmailConnectorCard';
 import { LockedIntegrationCard } from './LockedIntegrationCard';
 import { EmailConfigDialog, EmailConfig } from './EmailConfigDialog';
-import { Database, Server, FolderOpen } from 'lucide-react';
+import { Mail, FileText, Database, Globe, ExternalLink, Server } from 'lucide-react';
 
 export function IntegrationHub() {
   const [selectedEmailConnector, setSelectedEmailConnector] = useState<string | null>(null);
@@ -15,22 +15,26 @@ export function IntegrationHub() {
     {
       id: 'single-invoice',
       title: 'Single Invoice (PDF)',
-      description: 'Process individual PDF invoices via email'
+      description: 'Process individual PDF invoices from email',
+      icon: FileText
     },
     {
       id: 'invoice-attachments',
       title: 'Invoice with Attachments (PDF + Files)',
-      description: 'Handle invoices with additional file attachments'
+      description: 'Handle invoices with additional file attachments',
+      icon: Mail
     },
     {
       id: 'bulk-invoices',
       title: 'Bulk Invoices (CSV/Excel)',
-      description: 'Process multiple invoices from spreadsheet files'
+      description: 'Process multiple invoices from spreadsheet files',
+      icon: Database
     },
     {
       id: 'combined-invoices',
       title: 'Combined Invoices (Requires Splitting)',
-      description: 'Split and process combined invoice documents'
+      description: 'Split combined invoice files into individual items',
+      icon: Globe
     }
   ];
 
@@ -38,20 +42,20 @@ export function IntegrationHub() {
     {
       id: 'esker',
       title: 'Esker Integration',
-      description: 'Enterprise invoice processing platform',
-      icon: Database
+      description: 'Connect with Esker for advanced invoice processing',
+      icon: ExternalLink
     },
     {
       id: 'netsuite',
       title: 'NetSuite Integration',
-      description: 'ERP and financial management system',
-      icon: Server
+      description: 'Sync data with your NetSuite ERP system',
+      icon: Database
     },
     {
       id: 'sftp',
       title: 'SFTP Integration',
-      description: 'Secure file transfer protocol connection',
-      icon: FolderOpen
+      description: 'Secure file transfer protocol for bulk processing',
+      icon: Server
     }
   ];
 
@@ -83,18 +87,18 @@ export function IntegrationHub() {
           Integration Center
         </Typography>
         <Typography variant="body2" className="text-grey-600">
-          Manage all your data connections and integrations
+          Connect and configure your data sources and integrations.
         </Typography>
       </div>
 
       {/* Email Integration Section */}
-      <div className="mt-16">
-        <div className="text-center mb-8">
+      <div>
+        <div className="mb-6">
           <Typography variant="h6" className="text-grey-900 mb-2">
             Email Integration
           </Typography>
           <Typography variant="body2" className="text-grey-600">
-            Configure email-based invoice processing
+            Configure email connectors for automated invoice processing.
           </Typography>
         </div>
         
@@ -104,21 +108,23 @@ export function IntegrationHub() {
               key={connector.id}
               title={connector.title}
               description={connector.description}
+              icon={connector.icon}
               isConfigured={!!emailConfigs[connector.id]}
               onClick={() => handleEmailConnectorClick(connector.id)}
+              style={{ animationDelay: `${index * 100}ms` }}
             />
           ))}
         </div>
       </div>
 
-      {/* Other Integrations Section */}
+      {/* Premium Integrations Section */}
       <div className="mt-16 pt-8 border-t border-grey-300">
         <div className="text-center mb-8">
           <Typography variant="h6" className="text-grey-900 mb-2">
             Premium Integrations
           </Typography>
           <Typography variant="body2" className="text-grey-600">
-            Advanced integration options - contact support to set up
+            Enterprise-grade integrations available with premium support.
           </Typography>
         </div>
         
@@ -130,6 +136,7 @@ export function IntegrationHub() {
               description={integration.description}
               icon={integration.icon}
               onContactSupport={handleContactSupport}
+              style={{ animationDelay: `${index * 150}ms` }}
             />
           ))}
         </div>
@@ -137,13 +144,13 @@ export function IntegrationHub() {
         {/* Contact Section */}
         <div className="mt-8 pt-6 border-t border-grey-200 text-center">
           <Typography variant="body2" className="text-grey-600 mb-4">
-            Need help setting up integrations?
+            Interested in premium integrations?
           </Typography>
           <Button 
             className="bg-primary-main hover:bg-primary-dark text-white px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105"
             onClick={handleContactSupport}
           >
-            Schedule a Meeting
+            Contact Us
           </Button>
         </div>
       </div>
