@@ -115,45 +115,94 @@ export function IntegrationHub() {
             Email Integration
           </Typography>
           <Typography variant="body2" className="text-grey-600">
-            Configure email connectors for automated invoice processing.
+            Configure email connectors for automated processing.
           </Typography>
         </div>
         
-        <div className="space-y-3">
-          {emailConnectorTypes.map((connector, index) => {
-            const isConfigured = !!emailConfigs[connector.id];
-            const config = emailConfigs[connector.id];
-            
-            return (
-              <div key={connector.id} className="flex items-center justify-between bg-white border border-grey-200 rounded-lg p-4 hover:border-grey-300 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded bg-[#EFEBFF] flex items-center justify-center">
-                    <connector.icon size={16} strokeWidth={1.5} className="text-[#7B59FF]" />
+        {/* Invoices Section */}
+        <div className="mb-8">
+          <Typography variant="subtitle1" className="text-grey-900 mb-3 font-medium">
+            Invoices
+          </Typography>
+          <div className="space-y-3">
+            {emailConnectorTypes.slice(0, 4).map((connector, index) => {
+              const isConfigured = !!emailConfigs[connector.id];
+              const config = emailConfigs[connector.id];
+              
+              return (
+                <div key={connector.id} className="flex items-center justify-between bg-white border border-grey-200 rounded-lg p-4 hover:border-grey-300 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded bg-[#EFEBFF] flex items-center justify-center">
+                      <connector.icon size={16} strokeWidth={1.5} className="text-[#7B59FF]" />
+                    </div>
+                    <div className="flex-1">
+                      <Typography variant="subtitle2" className="text-grey-900">
+                        {connector.title}
+                      </Typography>
+                      <Typography variant="body2" className="text-grey-600 text-sm">
+                        {connector.description}
+                      </Typography>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <Typography variant="subtitle2" className="text-grey-900">
-                      {connector.title}
-                    </Typography>
-                    <Typography variant="body2" className="text-grey-600 text-sm">
-                      {connector.description}
-                    </Typography>
-                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEmailConnectorClick(connector.id)}
+                    className={`text-sm transition-all duration-200 ${
+                      isConfigured 
+                        ? "border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" 
+                        : "border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
+                    }`}
+                  >
+                    {isConfigured ? 'Manage' : 'Set Up'}
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleEmailConnectorClick(connector.id)}
-                  className={`text-sm transition-all duration-200 ${
-                    isConfigured 
-                      ? "border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" 
-                      : "border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
-                  }`}
-                >
-                  {isConfigured ? 'Manage' : 'Set Up'}
-                </Button>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Payment Reports Section */}
+        <div>
+          <Typography variant="subtitle1" className="text-grey-900 mb-3 font-medium">
+            Payment Reports
+          </Typography>
+          <div className="space-y-3">
+            {emailConnectorTypes.slice(4).map((connector, index) => {
+              const isConfigured = !!emailConfigs[connector.id];
+              const config = emailConfigs[connector.id];
+              
+              return (
+                <div key={connector.id} className="flex items-center justify-between bg-white border border-grey-200 rounded-lg p-4 hover:border-grey-300 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded bg-[#EFEBFF] flex items-center justify-center">
+                      <connector.icon size={16} strokeWidth={1.5} className="text-[#7B59FF]" />
+                    </div>
+                    <div className="flex-1">
+                      <Typography variant="subtitle2" className="text-grey-900">
+                        {connector.title}
+                      </Typography>
+                      <Typography variant="body2" className="text-grey-600 text-sm">
+                        {connector.description}
+                      </Typography>
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEmailConnectorClick(connector.id)}
+                    className={`text-sm transition-all duration-200 ${
+                      isConfigured 
+                        ? "border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" 
+                        : "border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
+                    }`}
+                  >
+                    {isConfigured ? 'Manage' : 'Set Up'}
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
