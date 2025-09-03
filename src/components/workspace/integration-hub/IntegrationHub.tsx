@@ -128,7 +128,7 @@ export function IntegrationHub() {
                       {connector.description}
                     </Typography>
                     {isConfigured && (
-                      <Typography variant="body2" className="text-green-600 text-xs mt-1">
+                      <Typography variant="body2" className="text-[#7B59FF] text-xs mt-1">
                         ✓ To: {config.toEmail}
                       </Typography>
                     )}
@@ -140,7 +140,7 @@ export function IntegrationHub() {
                   onClick={() => handleEmailConnectorClick(connector.id)}
                   className={`text-sm transition-all duration-200 ${
                     isConfigured 
-                      ? "border-green-200 text-green-700 hover:bg-green-50" 
+                      ? "border-[#7B59FF]/30 text-[#7B59FF] hover:bg-[#7B59FF]/5" 
                       : "border-grey-300 text-grey-600 hover:bg-grey-50"
                   }`}
                 >
