@@ -31,7 +31,7 @@ const defaultConfig: EmailConfig = {
   domain: 'montopay.com',
   fromAddresses: [],
   emailSubject: 'Invoice #',
-  replyToEmails: ['sys-admin@client-domain.com']
+  replyToEmails: []
 };
 
 export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfig }: EmailConfigDialogProps) {
