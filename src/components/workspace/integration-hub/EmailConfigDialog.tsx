@@ -430,7 +430,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
           <div className="flex justify-between pt-4 border-t">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="outline">
+                <Button variant="outline" type="button">
                   Reset
                 </Button>
               </AlertDialogTrigger>
@@ -444,7 +444,10 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction 
-                    onClick={handleReset}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleReset();
+                    }}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
                     Reset
@@ -454,6 +457,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
             </AlertDialog>
             
             <Button 
+              type="button"
               onClick={handleSave}
               disabled={!hasChanges || !isFormValid}
               className={`${hasChanges && isFormValid
