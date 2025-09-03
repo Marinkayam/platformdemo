@@ -151,7 +151,7 @@ export function IntegrationHub() {
       <div className="mt-16 pt-8 border-t border-grey-300">
         <div className="text-center mb-8">
           <Typography variant="h6" className="text-grey-900 mb-2">
-            Premium Integrations
+            Premium Feature - Locked Feature
           </Typography>
           <Typography variant="body2" className="text-grey-600">
             Enterprise-grade integrations available with premium support.
