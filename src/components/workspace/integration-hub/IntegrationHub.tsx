@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { EmailConnectorCard } from './EmailConnectorCard';
 import { LockedIntegrationCard } from './LockedIntegrationCard';
 import { EmailConfigDialog, EmailConfig } from './EmailConfigDialog';
-import { Mail, FileText, Database, Globe, ExternalLink, Server } from 'lucide-react';
+import { Mail, FileText, Database, Globe, ExternalLink, Server, FolderOpen, FileStack, Group } from 'lucide-react';
 import eskerLogo from '@/assets/esker-logo.svg';
 import netsuiteLogo from '@/assets/netsuite-logo.svg';
 
@@ -17,26 +17,26 @@ export function IntegrationHub() {
     {
       id: 'single-invoice',
       title: 'Single Invoice (PDF)',
-      description: 'Process individual PDF invoices from email',
+      description: 'Automatically process one PDF invoice per email.',
       icon: FileText
     },
     {
       id: 'invoice-attachments',
-      title: 'Invoice with Attachments (PDF + Files)',
-      description: 'Handle invoices with additional file attachments',
-      icon: Mail
+      title: 'Invoice + Attachments',
+      description: 'Handle a PDF invoice plus extra files (e.g. receipts).',
+      icon: FolderOpen
     },
     {
       id: 'bulk-invoices',
       title: 'Bulk Invoices (CSV/Excel)',
-      description: 'Process multiple invoices from spreadsheet files',
-      icon: Database
+      description: 'Process multiple invoices from one spreadsheet.',
+      icon: FileStack
     },
     {
       id: 'combined-invoices',
-      title: 'Combined Invoices (Requires Splitting)',
-      description: 'Split combined invoice files into individual items',
-      icon: Globe
+      title: 'Split Combined Invoices',
+      description: 'Extract individual invoices from a single PDF.',
+      icon: Group
     }
   ];
 
@@ -122,7 +122,7 @@ export function IntegrationHub() {
               <div key={connector.id} className="flex items-center justify-between bg-white border border-grey-200 rounded-lg p-4 hover:border-grey-300 transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded bg-[#EFEBFF] flex items-center justify-center">
-                    <connector.icon size={16} className="text-[#7B59FF]" />
+                    <connector.icon size={16} strokeWidth={1} className="text-[#7B59FF]" />
                   </div>
                   <div className="flex-1">
                     <Typography variant="subtitle2" className="text-grey-900">
@@ -143,7 +143,7 @@ export function IntegrationHub() {
                       : "border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
                   }`}
                 >
-                  {isConfigured ? 'Edit' : 'Configure'}
+                  {isConfigured ? 'Manage' : 'Set Up'}
                 </Button>
               </div>
             );
