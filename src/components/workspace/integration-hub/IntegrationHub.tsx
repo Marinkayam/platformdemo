@@ -122,7 +122,7 @@ export function IntegrationHub() {
               <div key={connector.id} className="flex items-center justify-between bg-white border border-grey-200 rounded-lg p-4 hover:border-grey-300 transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded bg-[#EFEBFF] flex items-center justify-center">
-                    <connector.icon size={16} strokeWidth={1} className="text-[#7B59FF]" />
+                    <connector.icon size={16} strokeWidth={1.5} className="text-[#7B59FF]" />
                   </div>
                   <div className="flex-1">
                     <Typography variant="subtitle2" className="text-grey-900">
