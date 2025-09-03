@@ -30,7 +30,7 @@ export function LockedIntegrationCard({ title, description, icon: IconComponent,
           ) : (
             <IconComponent 
               size={20} 
-              className="text-grey-600" 
+              className="text-[#7B59FF]" 
               strokeWidth={1.5}
             />
           )}
