@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { EmailConnectorCard } from './EmailConnectorCard';
 import { LockedIntegrationCard } from './LockedIntegrationCard';
 import { EmailConfigDialog, EmailConfig } from './EmailConfigDialog';
-import { Mail, FileText, Database, Globe, ExternalLink, Server, FolderOpen, FileStack, Group } from 'lucide-react';
+import { Mail, FileText, Database, Globe, ExternalLink, Server, FolderOpen, FileStack, Group, FileSpreadsheet } from 'lucide-react';
 import eskerLogo from '@/assets/esker-logo.svg';
 import netsuiteLogo from '@/assets/netsuite-logo.svg';
 
@@ -37,6 +37,12 @@ export function IntegrationHub() {
       title: 'Split Combined Invoices',
       description: 'Extract individual invoices from a single PDF.',
       icon: Group
+    },
+    {
+      id: 'payment-reports',
+      title: 'Payment Reports (CSV/Excel)',
+      description: 'Process payment reports from spreadsheet files.',
+      icon: FileSpreadsheet
     }
   ];
 
