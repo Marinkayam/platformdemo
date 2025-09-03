@@ -41,7 +41,7 @@ export function IntegrationHub() {
     {
       id: 'payment-reports',
       title: 'Payment Reports (CSV/Excel)',
-      description: 'Email-based processing of payment reports from spreadsheet files.',
+      description: 'Process payment reports from spreadsheet attachments.',
       icon: FileSpreadsheet
     }
   ];
