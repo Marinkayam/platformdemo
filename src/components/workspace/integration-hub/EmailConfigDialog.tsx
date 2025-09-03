@@ -161,9 +161,26 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
         <div className="space-y-6">
           {/* To Email Address */}
           <div className="space-y-2">
-            <Label htmlFor="toEmail" className="text-sm font-medium text-foreground">
-              To Email Address *
-            </Label>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="toEmail" className="text-sm font-medium text-foreground">
+                To Email Address *
+              </Label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info size={14} className="text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-xs">
+                    <div className="text-xs space-y-1">
+                      <p className="font-medium">To Email Address</p>
+                      <p>This is your unique Monto inbox address.</p>
+                      <p>Send all invoice emails here for automatic processing.</p>
+                      <p>You cannot change this address.</p>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             <Input
               id="toEmail"
               value={config.toEmail}
@@ -193,6 +210,20 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                 <Label htmlFor="domainFilter" className="text-sm font-medium cursor-pointer">
                   Allow emails from domain
                 </Label>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info size={14} className="text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <div className="text-xs space-y-1">
+                        <p className="font-medium">Allow Emails from Domain</p>
+                        <p>Monto will process emails sent from any address under this domain.</p>
+                        <p>For example, if you enter montopay.com, it will accept emails from billing@montopay.com, admin@montopay.com, etc.</p>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
               
               {useDomainFilter && (
@@ -218,6 +249,20 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                 <Label htmlFor="specificAddresses" className="text-sm font-medium cursor-pointer">
                   Allow specific email addresses
                 </Label>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info size={14} className="text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <div className="text-xs space-y-1">
+                        <p className="font-medium">Allow Specific Email Addresses</p>
+                        <p>Only emails sent from these specific addresses will be processed.</p>
+                        <p>Use this to restrict access to trusted senders (e.g. invoices@vendor.com).</p>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
               
               {useSpecificAddresses && (
@@ -277,13 +322,14 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                   </TooltipTrigger>
                   <TooltipContent side="top" className="max-w-xs">
                     <div className="text-xs space-y-1">
-                      <p>Monto looks at the subject line to detect invoice emails.</p>
-                      <p>Use a pattern that matches your actual subject lines.</p>
+                      <p className="font-medium">Email Subject Pattern</p>
+                      <p>Monto uses this to detect which emails are invoices.</p>
+                      <p>Add a regex pattern that matches your subject format.</p>
                       <div className="mt-1">
                         <p><strong>Examples:</strong></p>
                         <ul className="list-disc list-inside space-y-0.5">
-                          <li>Invoice → Matches any subject containing "Invoice"</li>
-                          <li>^Invoice → Matches subjects starting with "Invoice"</li>
+                          <li>Invoice → matches any subject containing "Invoice"</li>
+                          <li>^Invoice → matches subjects that start with "Invoice"</li>
                         </ul>
                       </div>
                     </div>
@@ -305,9 +351,26 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
 
           {/* Reply-To Email Addresses */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-foreground">
-              Reply-To Email Addresses *
-            </Label>
+            <div className="flex items-center gap-2">
+              <Label className="text-sm font-medium text-foreground">
+                Reply-To Email Addresses *
+              </Label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info size={14} className="text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-xs">
+                    <div className="text-xs space-y-1">
+                      <p className="font-medium">Reply-To Email</p>
+                      <p>Monto sends status updates and notifications to these addresses.</p>
+                      <p>You must include at least one valid email.</p>
+                      <p>You can add multiple recipients.</p>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             <div className="space-y-3">
               <Input
                 value={newReplyToEmail}
