@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Typography } from "@/components/ui/typography/typography";
-import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { X, Info } from "lucide-react";
@@ -23,21 +23,24 @@ export interface EmailConfig {
   domain: string;
   fromAddresses: string[];
   emailSubject: string;
-  replyToEmail: string;
+  replyToEmails: string[];
 }
 
 const defaultConfig: EmailConfig = {
   toEmail: 'montopay@montoinvoice.com',
   domain: 'montopay.com',
   fromAddresses: [],
-  emailSubject: '*Invoice.*',
-  replyToEmail: 'sys-admin@client-domain.com'
+  emailSubject: 'Invoice #',
+  replyToEmails: ['sys-admin@client-domain.com']
 };
 
 export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfig }: EmailConfigDialogProps) {
   const [config, setConfig] = useState<EmailConfig>(initialConfig || defaultConfig);
   const [originalConfig, setOriginalConfig] = useState<EmailConfig>(initialConfig || defaultConfig);
-  const [newAddress, setNewAddress] = useState('');
+  const [newFromAddress, setNewFromAddress] = useState('');
+  const [newReplyToEmail, setNewReplyToEmail] = useState('');
+  const [useDomainFilter, setUseDomainFilter] = useState(true);
+  const [useSpecificAddresses, setUseSpecificAddresses] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const { toast } = useToast();
 
@@ -46,12 +49,11 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
   const isValidDomain = (domain: string) => !domain.startsWith('@') && /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain);
   
   const isFormValid = config.toEmail && 
-                     config.domain && 
                      config.emailSubject && 
-                     config.replyToEmail &&
+                     config.replyToEmails.length > 0 &&
                      isValidEmail(config.toEmail) &&
-                     isValidDomain(config.domain) &&
-                     isValidEmail(config.replyToEmail);
+                     (!useDomainFilter || (useDomainFilter && config.domain && isValidDomain(config.domain))) &&
+                     config.replyToEmails.every(email => isValidEmail(email));
 
   // Reset form when dialog opens/closes or initialConfig changes
   useEffect(() => {
@@ -59,7 +61,10 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
       const configToUse = initialConfig || defaultConfig;
       setConfig(configToUse);
       setOriginalConfig(configToUse);
-      setNewAddress('');
+      setNewFromAddress('');
+      setNewReplyToEmail('');
+      setUseDomainFilter(!!configToUse.domain);
+      setUseSpecificAddresses(configToUse.fromAddresses.length > 0);
       setHasChanges(false);
     }
   }, [isOpen, initialConfig]);
@@ -70,21 +75,56 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
     setHasChanges(configChanged);
   }, [config, originalConfig]);
 
-  const handleAddAddress = () => {
-    if (newAddress.trim() && !config.fromAddresses.includes(newAddress.trim())) {
+  const handleAddFromAddress = () => {
+    if (newFromAddress.trim() && isValidEmail(newFromAddress.trim()) && !config.fromAddresses.includes(newFromAddress.trim())) {
       setConfig(prev => ({
         ...prev,
-        fromAddresses: [...prev.fromAddresses, newAddress.trim()]
+        fromAddresses: [...prev.fromAddresses, newFromAddress.trim()]
       }));
-      setNewAddress('');
+      setNewFromAddress('');
     }
   };
 
-  const handleRemoveAddress = (address: string) => {
+  const handleRemoveFromAddress = (address: string) => {
     setConfig(prev => ({
       ...prev,
       fromAddresses: prev.fromAddresses.filter(addr => addr !== address)
     }));
+  };
+
+  const handleAddReplyToEmail = () => {
+    if (newReplyToEmail.trim() && isValidEmail(newReplyToEmail.trim()) && !config.replyToEmails.includes(newReplyToEmail.trim())) {
+      setConfig(prev => ({
+        ...prev,
+        replyToEmails: [...prev.replyToEmails, newReplyToEmail.trim()]
+      }));
+      setNewReplyToEmail('');
+    }
+  };
+
+  const handleRemoveReplyToEmail = (email: string) => {
+    if (config.replyToEmails.length > 1) {
+      setConfig(prev => ({
+        ...prev,
+        replyToEmails: prev.replyToEmails.filter(addr => addr !== email)
+      }));
+    }
+  };
+
+  const handleDomainFilterChange = (checked: boolean) => {
+    setUseDomainFilter(checked);
+    if (!checked) {
+      setConfig(prev => ({ ...prev, domain: '' }));
+    } else {
+      setConfig(prev => ({ ...prev, domain: 'montopay.com' }));
+    }
+  };
+
+  const handleSpecificAddressesChange = (checked: boolean) => {
+    setUseSpecificAddresses(checked);
+    if (!checked) {
+      setConfig(prev => ({ ...prev, fromAddresses: [] }));
+    }
   };
 
   const handleSave = () => {
@@ -98,7 +138,8 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
 
   const handleCancel = () => {
     setConfig(originalConfig);
-    setNewAddress('');
+    setNewFromAddress('');
+    setNewReplyToEmail('');
     setHasChanges(false);
     onClose();
   };
@@ -115,26 +156,12 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
           </Typography>
         </DialogHeader>
         
-        <div className="space-y-8">
-          {/* Processing Email Address */}
+        <div className="space-y-6">
+          {/* To Email Address */}
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="toEmail" className="text-sm font-medium text-foreground">
-                Processing Email Address *
-              </Label>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info size={14} className="text-muted-foreground cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent side="top" className="max-w-xs">
-                    <div className="text-xs">
-                      <p>Monto will send notifications and replies to this address.</p>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
+            <Label htmlFor="toEmail" className="text-sm font-medium text-foreground">
+              To Email Address *
+            </Label>
             <Input
               id="toEmail"
               value={config.toEmail}
@@ -143,79 +170,93 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
               className="bg-muted/50 cursor-not-allowed"
             />
             <Typography variant="body2" className="text-muted-foreground text-xs">
-              Invoices should be sent to this email for automatic processing.
+              This is your dedicated email address for invoice processing.
             </Typography>
-            {config.toEmail && !isValidEmail(config.toEmail) && (
-              <Typography variant="body2" className="text-destructive text-xs">
-                Please enter a valid email address
-              </Typography>
-            )}
           </div>
 
-          {/* Allowed Sender Domain */}
-          <div className="space-y-2">
-            <Label htmlFor="domain" className="text-sm font-medium text-foreground">
-              Allowed Sender Domain *
-            </Label>
-            <Input
-              id="domain"
-              value={config.domain}
-              onChange={(e) => setConfig(prev => ({ ...prev, domain: e.target.value }))}
-              placeholder="e.g. montopay.com"
-              className={`focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
-                config.domain && !isValidDomain(config.domain) ? 'border-destructive' : ''
-              }`}
-            />
-            <Typography variant="body2" className="text-muted-foreground text-xs">
-              Only emails from this domain will be accepted for processing.
-            </Typography>
-            {config.domain && !isValidDomain(config.domain) && (
-              <Typography variant="body2" className="text-destructive text-xs">
-                Please enter a valid domain (e.g., montopay.com)
-              </Typography>
-            )}
-          </div>
-
-          {/* Allowed Sender Emails */}
-          <div className="space-y-2">
+          {/* From Email Address */}
+          <div className="space-y-4">
             <Label className="text-sm font-medium text-foreground">
-              Allowed Sender Emails (Optional)
+              From Email Address
             </Label>
+            
+            {/* Domain checkbox */}
             <div className="space-y-3">
-              <Input
-                value={newAddress}
-                onChange={(e) => setNewAddress(e.target.value)}
-                placeholder="e.g. billing@montopay.com"
-                onKeyPress={(e) => e.key === 'Enter' && handleAddAddress()}
-                className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
-              />
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="domainFilter"
+                  checked={useDomainFilter}
+                  onCheckedChange={handleDomainFilterChange}
+                />
+                <Label htmlFor="domainFilter" className="text-sm font-medium">
+                  Domain: {useDomainFilter && config.domain ? config.domain : '(not set)'}
+                </Label>
+              </div>
               
-              {config.fromAddresses.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {config.fromAddresses.map((address, index) => (
-                    <Badge 
-                      key={index} 
-                      variant="secondary" 
-                      className="flex items-center gap-1 bg-[#EFEBFF] text-[#7B59FF] border-[#7B59FF]/20"
-                    >
-                      {address}
-                      <button
-                        onClick={() => handleRemoveAddress(address)}
-                        className="ml-1 hover:text-destructive transition-colors"
-                      >
-                        <X size={12} />
-                      </button>
-                    </Badge>
-                  ))}
+              {useDomainFilter && (
+                <Input
+                  value={config.domain}
+                  onChange={(e) => setConfig(prev => ({ ...prev, domain: e.target.value }))}
+                  placeholder="e.g. montopay.com"
+                  className={`ml-6 focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
+                    config.domain && !isValidDomain(config.domain) ? 'border-destructive' : ''
+                  }`}
+                />
+              )}
+            </div>
+
+            {/* Specific addresses checkbox */}
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="specificAddresses"
+                  checked={useSpecificAddresses}
+                  onCheckedChange={handleSpecificAddressesChange}
+                />
+                <Label htmlFor="specificAddresses" className="text-sm font-medium">
+                  Addresses: {config.fromAddresses.length > 0 ? `${config.fromAddresses.length} configured` : '(allow all)'}
+                </Label>
+              </div>
+              
+              {useSpecificAddresses && (
+                <div className="ml-6 space-y-3">
+                  <Input
+                    value={newFromAddress}
+                    onChange={(e) => setNewFromAddress(e.target.value)}
+                    placeholder="e.g. billing@montopay.com"
+                    onKeyPress={(e) => e.key === 'Enter' && handleAddFromAddress()}
+                    className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
+                  />
+                  
+                  {config.fromAddresses.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {config.fromAddresses.map((address, index) => (
+                        <Badge 
+                          key={index} 
+                          variant="secondary" 
+                          className="flex items-center gap-1 bg-[#EFEBFF] text-[#7B59FF] border-[#7B59FF]/20"
+                        >
+                          {address}
+                          <button
+                            onClick={() => handleRemoveFromAddress(address)}
+                            className="ml-1 hover:text-destructive transition-colors"
+                          >
+                            <X size={12} />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
-              <Typography variant="body2" className="text-muted-foreground text-xs">
-                Only process emails from these addresses. Leave blank to allow all emails from the domain above.
-              </Typography>
             </div>
+            
+            <Typography variant="body2" className="text-muted-foreground text-xs">
+              Leave addresses empty to allow all emails from the domain above.
+            </Typography>
           </div>
 
-          {/* Email Subject Match Pattern */}
+          {/* Email Subject Pattern */}
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Label htmlFor="emailSubject" className="text-sm font-medium text-foreground">
@@ -227,14 +268,8 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                     <Info size={14} className="text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent side="top" className="max-w-xs">
-                    <div className="text-xs space-y-1">
-                      <p><strong>Monto uses the subject line to detect invoice emails.</strong></p>
-                      <p>Make sure your system sends subjects like:</p>
-                      <ul className="list-disc list-inside space-y-0.5 mt-1">
-                        <li>Invoice #123</li>
-                        <li>Invoice for PO 99821</li>
-                      </ul>
-                      <p className="mt-1">Then, use a regex pattern that matches them.</p>
+                    <div className="text-xs">
+                      <p>Make sure your invoice emails include a clear subject like "Invoice #123". Use a regex pattern that matches it.</p>
                     </div>
                   </TooltipContent>
                 </Tooltip>
@@ -254,26 +289,43 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
 
           {/* Reply-To Email */}
           <div className="space-y-2">
-            <Label htmlFor="replyToEmail" className="text-sm font-medium text-foreground">
+            <Label className="text-sm font-medium text-foreground">
               Reply-To Email *
             </Label>
-            <Input
-              id="replyToEmail"
-              value={config.replyToEmail}
-              onChange={(e) => setConfig(prev => ({ ...prev, replyToEmail: e.target.value }))}
-              placeholder="e.g. sysadmin@yourcompany.com"
-              className={`focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
-                config.replyToEmail && !isValidEmail(config.replyToEmail) ? 'border-destructive' : ''
-              }`}
-            />
+            <div className="space-y-3">
+              <Input
+                value={newReplyToEmail}
+                onChange={(e) => setNewReplyToEmail(e.target.value)}
+                placeholder="e.g. sys-admin@yourdomain.com"
+                onKeyPress={(e) => e.key === 'Enter' && handleAddReplyToEmail()}
+                className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
+              />
+              
+              {config.replyToEmails.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {config.replyToEmails.map((email, index) => (
+                    <Badge 
+                      key={index} 
+                      variant="secondary" 
+                      className="flex items-center gap-1 bg-[#EFEBFF] text-[#7B59FF] border-[#7B59FF]/20"
+                    >
+                      {email}
+                      {config.replyToEmails.length > 1 && (
+                        <button
+                          onClick={() => handleRemoveReplyToEmail(email)}
+                          className="ml-1 hover:text-destructive transition-colors"
+                        >
+                          <X size={12} />
+                        </button>
+                      )}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
             <Typography variant="body2" className="text-muted-foreground text-xs">
-              Monto will send notifications and replies to this address.
+              We'll send status updates to this address.
             </Typography>
-            {config.replyToEmail && !isValidEmail(config.replyToEmail) && (
-              <Typography variant="body2" className="text-destructive text-xs">
-                Please enter a valid email address
-              </Typography>
-            )}
           </div>
 
           {/* Action Buttons */}
@@ -288,7 +340,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                 ? 'bg-[#7B59FF] hover:bg-[#6b46ff] text-white' 
                 : 'bg-[#EFEBFF] text-[#7B59FF]/60 cursor-not-allowed border border-[#7B59FF]/20'
               }`}
-              title={!hasChanges ? "No changes to save" : !isFormValid ? "Please complete required fields to save configuration" : ""}
+              title={!hasChanges ? "No changes to save" : !isFormValid ? "Please fill in all required fields to save" : ""}
             >
               Save Configuration
             </Button>
