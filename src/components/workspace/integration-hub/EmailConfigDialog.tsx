@@ -42,6 +42,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
   const [newReplyToEmail, setNewReplyToEmail] = useState('');
   const [useDomainFilter, setUseDomainFilter] = useState(true);
   const [useSpecificAddresses, setUseSpecificAddresses] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const { toast } = useToast();
 
@@ -428,33 +429,35 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
 
           {/* Action Buttons */}
           <div className="flex justify-between pt-4 border-t">
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="outline" type="button">
-                  Reset
+            {!showResetConfirm ? (
+              <Button 
+                variant="outline" 
+                type="button"
+                onClick={() => setShowResetConfirm(true)}
+              >
+                Reset
+              </Button>
+            ) : (
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowResetConfirm(false)}
+                >
+                  Cancel
                 </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Reset Configuration</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Are you sure you want to reset all fields to their default values? This action cannot be undone.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleReset();
-                    }}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  >
-                    Reset
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+                <Button 
+                  variant="destructive" 
+                  size="sm"
+                  onClick={() => {
+                    handleReset();
+                    setShowResetConfirm(false);
+                  }}
+                >
+                  Reset All
+                </Button>
+              </div>
+            )}
             
             <Button 
               type="button"
