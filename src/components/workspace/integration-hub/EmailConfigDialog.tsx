@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Typography } from "@/components/ui/typography/typography";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { X, Info } from "lucide-react";
@@ -39,7 +39,8 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
   const [originalConfig, setOriginalConfig] = useState<EmailConfig>(initialConfig || defaultConfig);
   const [newFromAddress, setNewFromAddress] = useState('');
   const [newReplyToEmail, setNewReplyToEmail] = useState('');
-  const [senderMode, setSenderMode] = useState<'domain' | 'specific'>('domain');
+  const [useDomainFilter, setUseDomainFilter] = useState(true);
+  const [useSpecificAddresses, setUseSpecificAddresses] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const { toast } = useToast();
 
@@ -47,12 +48,15 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const isValidDomain = (domain: string) => !domain.startsWith('@') && /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain);
   
+  // At least one sender method must be configured (domain OR specific addresses)
+  const hasSenderMethod = (useDomainFilter && config.domain && isValidDomain(config.domain)) || 
+                         (useSpecificAddresses && config.fromAddresses.length > 0 && config.fromAddresses.every(email => isValidEmail(email)));
+
   const isFormValid = config.toEmail && 
                      config.emailSubject && 
                      config.replyToEmails.length > 0 &&
                      isValidEmail(config.toEmail) &&
-                     ((senderMode === 'domain' && config.domain && isValidDomain(config.domain)) ||
-                      (senderMode === 'specific' && config.fromAddresses.length > 0 && config.fromAddresses.every(email => isValidEmail(email)))) &&
+                     hasSenderMethod &&
                      config.replyToEmails.every(email => isValidEmail(email));
 
   // Reset form when dialog opens/closes or initialConfig changes
@@ -63,7 +67,8 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
       setOriginalConfig(configToUse);
       setNewFromAddress('');
       setNewReplyToEmail('');
-      setSenderMode(configToUse.fromAddresses.length > 0 ? 'specific' : 'domain');
+      setUseDomainFilter(!!configToUse.domain);
+      setUseSpecificAddresses(configToUse.fromAddresses.length > 0);
       setHasChanges(false);
     }
   }, [isOpen, initialConfig]);
@@ -110,12 +115,17 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
     }
   };
 
-  const handleSenderModeChange = (mode: 'domain' | 'specific') => {
-    setSenderMode(mode);
-    if (mode === 'domain') {
-      setConfig(prev => ({ ...prev, fromAddresses: [] }));
-    } else {
+  const handleDomainFilterChange = (checked: boolean) => {
+    setUseDomainFilter(checked);
+    if (!checked) {
       setConfig(prev => ({ ...prev, domain: '' }));
+    }
+  };
+
+  const handleSpecificAddressesChange = (checked: boolean) => {
+    setUseSpecificAddresses(checked);
+    if (!checked) {
+      setConfig(prev => ({ ...prev, fromAddresses: [] }));
     }
   };
 
@@ -172,78 +182,86 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
               Allowed Senders
             </Label>
             
-            <RadioGroup 
-              value={senderMode} 
-              onValueChange={(value: 'domain' | 'specific') => handleSenderModeChange(value)}
-              className="space-y-4"
-            >
-              {/* Domain option */}
-              <div className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="domain" id="domain" />
-                  <Label htmlFor="domain" className="text-sm font-medium cursor-pointer">
-                    Allow all from domain: e.g. montopay.com
-                  </Label>
-                </div>
-                
-                {senderMode === 'domain' && (
-                  <Input
-                    value={config.domain}
-                    onChange={(e) => setConfig(prev => ({ ...prev, domain: e.target.value }))}
-                    placeholder="e.g. montopay.com"
-                    className={`ml-6 focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
-                      config.domain && !isValidDomain(config.domain) ? 'border-destructive' : ''
-                    }`}
-                  />
-                )}
+            {/* Domain option */}
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="domainFilter"
+                  checked={useDomainFilter}
+                  onCheckedChange={handleDomainFilterChange}
+                />
+                <Label htmlFor="domainFilter" className="text-sm font-medium cursor-pointer">
+                  Allow emails from domain
+                </Label>
               </div>
+              
+              {useDomainFilter && (
+                <Input
+                  value={config.domain}
+                  onChange={(e) => setConfig(prev => ({ ...prev, domain: e.target.value }))}
+                  placeholder="e.g. montopay.com"
+                  className={`focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
+                    config.domain && !isValidDomain(config.domain) ? 'border-destructive' : ''
+                  }`}
+                />
+              )}
+            </div>
 
-              {/* Specific addresses option */}
-              <div className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="specific" id="specific" />
-                  <Label htmlFor="specific" className="text-sm font-medium cursor-pointer">
-                    Allow only specific email addresses
-                  </Label>
-                </div>
-                
-                {senderMode === 'specific' && (
-                  <div className="ml-6 space-y-3">
-                    <Input
-                      value={newFromAddress}
-                      onChange={(e) => setNewFromAddress(e.target.value)}
-                      placeholder="e.g. billing@montopay.com, invoices@montopay.com"
-                      onKeyPress={(e) => e.key === 'Enter' && handleAddFromAddress()}
-                      className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
-                    />
-                    
-                    {config.fromAddresses.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {config.fromAddresses.map((address, index) => (
-                          <Badge 
-                            key={index} 
-                            variant="secondary" 
-                            className="flex items-center gap-1 bg-[#EFEBFF] text-[#7B59FF] border-[#7B59FF]/20"
-                          >
-                            {address}
-                            <button
-                              onClick={() => handleRemoveFromAddress(address)}
-                              className="ml-1 hover:text-destructive transition-colors"
-                            >
-                              <X size={12} />
-                            </button>
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+            {/* Specific addresses option */}
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="specificAddresses"
+                  checked={useSpecificAddresses}
+                  onCheckedChange={handleSpecificAddressesChange}
+                />
+                <Label htmlFor="specificAddresses" className="text-sm font-medium cursor-pointer">
+                  Allow specific email addresses
+                </Label>
               </div>
-            </RadioGroup>
-            
+              
+              {useSpecificAddresses && (
+                <div className="space-y-3">
+                  <Input
+                    value={newFromAddress}
+                    onChange={(e) => setNewFromAddress(e.target.value)}
+                    placeholder="e.g. billing@montopay.com"
+                    onKeyPress={(e) => e.key === 'Enter' && handleAddFromAddress()}
+                    className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
+                  />
+                  
+                  {config.fromAddresses.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {config.fromAddresses.map((address, index) => (
+                        <Badge 
+                          key={index} 
+                          variant="secondary" 
+                          className="flex items-center gap-1 bg-[#EFEBFF] text-[#7B59FF] border-[#7B59FF]/20"
+                        >
+                          {address}
+                          <button
+                            onClick={() => handleRemoveFromAddress(address)}
+                            className="ml-1 hover:text-destructive transition-colors"
+                          >
+                            <X size={12} />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
             <Typography variant="body2" className="text-muted-foreground text-xs">
-              Only emails from the allowed sender(s) will be processed.
+              You can allow senders by domain, specific email addresses, or both.
             </Typography>
+            
+            {!hasSenderMethod && (useDomainFilter || useSpecificAddresses) && (
+              <Typography variant="body2" className="text-destructive text-xs">
+                At least one sender domain or email address is required.
+              </Typography>
+            )}
           </div>
 
           {/* Email Subject Pattern */}
