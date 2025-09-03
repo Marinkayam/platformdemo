@@ -139,8 +139,8 @@ export function IntegrationHub() {
                   onClick={() => handleEmailConnectorClick(connector.id)}
                   className={`text-sm transition-all duration-200 ${
                     isConfigured 
-                      ? "border-[#7B59FF]/30 text-[#7B59FF] hover:bg-[#7B59FF]/5" 
-                      : "border-grey-300 text-grey-600 hover:bg-grey-50"
+                      ? "border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white" 
+                      : "border-[#7B59FF] text-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
                   }`}
                 >
                   {isConfigured ? 'Edit' : 'Configure'}
