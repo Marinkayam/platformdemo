@@ -170,7 +170,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                   <TooltipTrigger asChild>
                     <Info size={14} className="text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent side="top" className="max-w-xs">
+                  <TooltipContent side="top" className="max-w-xs bg-[#291E55] text-white border-[#291E55]">
                     <div className="text-xs space-y-1">
                       <p className="font-medium">To Email Address</p>
                       <p>This is your unique Monto inbox address.</p>
@@ -215,7 +215,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                     <TooltipTrigger asChild>
                       <Info size={14} className="text-muted-foreground cursor-help" />
                     </TooltipTrigger>
-                    <TooltipContent side="top" className="max-w-xs">
+                    <TooltipContent side="top" className="max-w-xs bg-[#291E55] text-white border-[#291E55]">
                       <div className="text-xs space-y-1">
                         <p className="font-medium">Allow Emails from Domain</p>
                         <p>Monto will process emails sent from any address under this domain.</p>
@@ -254,7 +254,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                     <TooltipTrigger asChild>
                       <Info size={14} className="text-muted-foreground cursor-help" />
                     </TooltipTrigger>
-                    <TooltipContent side="top" className="max-w-xs">
+                    <TooltipContent side="top" className="max-w-xs bg-[#291E55] text-white border-[#291E55]">
                       <div className="text-xs space-y-1">
                         <p className="font-medium">Allow Specific Email Addresses</p>
                         <p>Only emails sent from these specific addresses will be processed.</p>
@@ -320,7 +320,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                   <TooltipTrigger asChild>
                     <Info size={14} className="text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent side="top" className="max-w-xs">
+                  <TooltipContent side="top" className="max-w-xs bg-[#291E55] text-white border-[#291E55]">
                     <div className="text-xs space-y-1">
                       <p className="font-medium">Email Subject Pattern</p>
                       <p>Monto uses this to detect which emails are invoices.</p>
@@ -360,7 +360,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                   <TooltipTrigger asChild>
                     <Info size={14} className="text-muted-foreground cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent side="top" className="max-w-xs">
+                  <TooltipContent side="top" className="max-w-xs bg-[#291E55] text-white border-[#291E55]">
                     <div className="text-xs space-y-1">
                       <p className="font-medium">Reply-To Email</p>
                       <p>Monto sends status updates and notifications to these addresses.</p>
