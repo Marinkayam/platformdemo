@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Typography } from "@/components/ui/typography/typography";
 import { Textarea } from "@/components/ui/textarea";
-import { X, Plus, Mail, Globe, AtSign, Reply } from "lucide-react";
+import { X, Plus } from "lucide-react";
 
 interface EmailConfigDialogProps {
   isOpen: boolean;
@@ -88,8 +88,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
     <Dialog open={isOpen} onOpenChange={handleCancel}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Mail className="w-5 h-5 text-[#7B59FF]" />
+          <DialogTitle>
             {title} Configuration
           </DialogTitle>
         </DialogHeader>
@@ -97,8 +96,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
         <div className="space-y-6">
           {/* To Email */}
           <div className="space-y-3">
-            <Label htmlFor="toEmail" className="flex items-center gap-2 text-sm font-medium">
-              <AtSign className="w-4 h-4 text-[#7B59FF]" />
+            <Label htmlFor="toEmail" className="text-sm font-medium">
               "To" Email Address
             </Label>
             <Input
@@ -115,8 +113,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
 
           {/* From Email Domain */}
           <div className="space-y-3">
-            <Label htmlFor="domain" className="flex items-center gap-2 text-sm font-medium">
-              <Globe className="w-4 h-4 text-[#7B59FF]" />
+            <Label htmlFor="domain" className="text-sm font-medium">
               From Email Domain
             </Label>
             <Input
@@ -133,29 +130,17 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
 
           {/* From Addresses */}
           <div className="space-y-3">
-            <Label className="flex items-center gap-2 text-sm font-medium">
-              <Mail className="w-4 h-4 text-[#7B59FF]" />
+            <Label className="text-sm font-medium">
               Specific From Email Addresses (Optional)
             </Label>
             <div className="space-y-3">
-              <div className="flex gap-2">
-                <Input
-                  value={newAddress}
-                  onChange={(e) => setNewAddress(e.target.value)}
-                  placeholder="billing@company.com"
-                  onKeyPress={(e) => e.key === 'Enter' && handleAddAddress()}
-                  className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
-                />
-                <Button 
-                  type="button" 
-                  onClick={handleAddAddress}
-                  size="sm"
-                  className="shrink-0 bg-[#7B59FF] hover:bg-[#6b46ff]"
-                  disabled={!newAddress.trim() || config.fromAddresses.includes(newAddress.trim())}
-                >
-                  <Plus size={16} />
-                </Button>
-              </div>
+              <Input
+                value={newAddress}
+                onChange={(e) => setNewAddress(e.target.value)}
+                placeholder="billing@company.com"
+                onKeyPress={(e) => e.key === 'Enter' && handleAddAddress()}
+                className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
+              />
               
               {config.fromAddresses.length > 0 && (
                 <div className="flex flex-wrap gap-2">
@@ -184,8 +169,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
 
           {/* Email Subject */}
           <div className="space-y-3">
-            <Label htmlFor="emailSubject" className="flex items-center gap-2 text-sm font-medium">
-              <Mail className="w-4 h-4 text-[#7B59FF]" />
+            <Label htmlFor="emailSubject" className="text-sm font-medium">
               Email Subject Filter (Regex)
             </Label>
             <Input
@@ -202,8 +186,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
 
           {/* Reply To */}
           <div className="space-y-3">
-            <Label htmlFor="replyToEmail" className="flex items-center gap-2 text-sm font-medium">
-              <Reply className="w-4 h-4 text-[#7B59FF]" />
+            <Label htmlFor="replyToEmail" className="text-sm font-medium">
               Reply-To Email Address
             </Label>
             <Input
@@ -228,7 +211,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
               disabled={!hasChanges}
               className={`${hasChanges 
                 ? 'bg-[#7B59FF] hover:bg-[#6b46ff] text-white' 
-                : 'bg-grey-200 text-grey-500 cursor-not-allowed'
+                : 'bg-[#EFEBFF] text-[#7B59FF]/60 cursor-not-allowed border border-[#7B59FF]/20'
               }`}
             >
               Save Configuration
