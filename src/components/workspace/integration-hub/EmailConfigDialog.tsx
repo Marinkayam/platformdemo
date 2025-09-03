@@ -182,7 +182,7 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="domain" id="domain" />
                   <Label htmlFor="domain" className="text-sm font-medium cursor-pointer">
-                    Allow all from domain: {config.domain || 'montopay.com'}
+                    Allow all from domain: e.g. montopay.com
                   </Label>
                 </div>
                 
