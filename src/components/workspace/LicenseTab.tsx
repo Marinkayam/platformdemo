@@ -131,9 +131,9 @@ export function LicenseTab() {
                       {isLocked ? (
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Badge variant="secondary" className="bg-white border-grey-200 text-grey-700 hover:bg-grey-50">
-                              <Lock size={12} className="mr-1" />
-                              Locked
+                            <Badge variant="secondary" className="bg-white border-grey-200 hover:bg-grey-50">
+                              <Lock size={12} className="mr-1 text-[#7B59FF]" />
+                              <span className="text-[#7B59FF]">Locked</span>
                             </Badge>
                           </TooltipTrigger>
                           <TooltipContent>

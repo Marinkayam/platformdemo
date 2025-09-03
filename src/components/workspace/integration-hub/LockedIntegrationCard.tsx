@@ -25,7 +25,7 @@ export function LockedIntegrationCard({ title, description, icon: IconComponent,
             <img 
               src={logo} 
               alt={`${title} logo`} 
-              className="w-8 h-8 object-contain"
+              className="w-10 h-10 object-contain"
             />
           ) : (
             <IconComponent 
@@ -45,9 +45,9 @@ export function LockedIntegrationCard({ title, description, icon: IconComponent,
           </Typography>
         </div>
         
-        <Badge variant="secondary" className="bg-white border-grey-200 text-grey-700 hover:bg-grey-50">
-          <Lock size={12} className="mr-1" />
-          Locked
+        <Badge variant="secondary" className="bg-white border-grey-200 hover:bg-grey-50">
+          <Lock size={12} className="mr-1 text-[#7B59FF]" />
+          <span className="text-[#7B59FF]">Locked</span>
         </Badge>
       </CardContent>
     </Card>
