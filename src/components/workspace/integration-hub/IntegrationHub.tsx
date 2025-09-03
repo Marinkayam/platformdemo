@@ -127,11 +127,6 @@ export function IntegrationHub() {
                     <Typography variant="body2" className="text-grey-600 text-sm">
                       {connector.description}
                     </Typography>
-                    {isConfigured && (
-                      <Typography variant="body2" className="text-[#7B59FF] text-xs mt-1">
-                        ✓ To: {config.toEmail}
-                      </Typography>
-                    )}
                   </div>
                 </div>
                 <Button
