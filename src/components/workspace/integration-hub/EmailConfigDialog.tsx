@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Typography } from "@/components/ui/typography/typography";
-import { X, Plus } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { X, Plus, Mail, Globe, AtSign, Reply } from "lucide-react";
 
 interface EmailConfigDialogProps {
   isOpen: boolean;
@@ -23,16 +24,36 @@ export interface EmailConfig {
   replyToEmail: string;
 }
 
+const defaultConfig: EmailConfig = {
+  toEmail: 'montopay@montoinvoice.com',
+  domain: 'montopay.com',
+  fromAddresses: [],
+  emailSubject: '*Invoice.*',
+  replyToEmail: 'sys-admin@client-domain.com'
+};
+
 export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfig }: EmailConfigDialogProps) {
-  const [config, setConfig] = useState<EmailConfig>(initialConfig || {
-    toEmail: 'montopay@montoinvoice.com',
-    domain: 'montopay.com',
-    fromAddresses: [],
-    emailSubject: '*Invoice.*',
-    replyToEmail: 'sys-admin@client-domain.com'
-  });
-  
+  const [config, setConfig] = useState<EmailConfig>(initialConfig || defaultConfig);
+  const [originalConfig, setOriginalConfig] = useState<EmailConfig>(initialConfig || defaultConfig);
   const [newAddress, setNewAddress] = useState('');
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Reset form when dialog opens/closes or initialConfig changes
+  useEffect(() => {
+    if (isOpen) {
+      const configToUse = initialConfig || defaultConfig;
+      setConfig(configToUse);
+      setOriginalConfig(configToUse);
+      setNewAddress('');
+      setHasChanges(false);
+    }
+  }, [isOpen, initialConfig]);
+
+  // Check for changes whenever config updates
+  useEffect(() => {
+    const configChanged = JSON.stringify(config) !== JSON.stringify(originalConfig);
+    setHasChanges(configChanged);
+  }, [config, originalConfig]);
 
   const handleAddAddress = () => {
     if (newAddress.trim() && !config.fromAddresses.includes(newAddress.trim())) {
@@ -56,107 +77,160 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
     onClose();
   };
 
+  const handleCancel = () => {
+    setConfig(originalConfig);
+    setNewAddress('');
+    setHasChanges(false);
+    onClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+    <Dialog open={isOpen} onOpenChange={handleCancel}>
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{title} Configuration</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <Mail className="w-5 h-5 text-[#7B59FF]" />
+            {title} Configuration
+          </DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="toEmail">"To" Email Address:</Label>
+          {/* To Email */}
+          <div className="space-y-3">
+            <Label htmlFor="toEmail" className="flex items-center gap-2 text-sm font-medium">
+              <AtSign className="w-4 h-4 text-[#7B59FF]" />
+              "To" Email Address
+            </Label>
             <Input
               id="toEmail"
               value={config.toEmail}
               onChange={(e) => setConfig(prev => ({ ...prev, toEmail: e.target.value }))}
               placeholder="montopay@montoinvoice.com"
+              className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
             />
+            <Typography variant="body2" className="text-grey-500 text-xs">
+              Email address where invoices will be sent for processing
+            </Typography>
           </div>
 
-          <div className="space-y-2">
-            <Label>"From" Email Address:</Label>
+          {/* From Email Domain */}
+          <div className="space-y-3">
+            <Label htmlFor="domain" className="flex items-center gap-2 text-sm font-medium">
+              <Globe className="w-4 h-4 text-[#7B59FF]" />
+              From Email Domain
+            </Label>
+            <Input
+              id="domain"
+              value={config.domain}
+              onChange={(e) => setConfig(prev => ({ ...prev, domain: e.target.value }))}
+              placeholder="company.com"
+              className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
+            />
+            <Typography variant="body2" className="text-grey-500 text-xs">
+              Domain that emails will come from (e.g., if invoices come from billing@company.com, enter company.com)
+            </Typography>
+          </div>
+
+          {/* From Addresses */}
+          <div className="space-y-3">
+            <Label className="flex items-center gap-2 text-sm font-medium">
+              <Mail className="w-4 h-4 text-[#7B59FF]" />
+              Specific From Email Addresses (Optional)
+            </Label>
             <div className="space-y-3">
-              <div>
-                <Label htmlFor="domain" className="text-sm text-grey-600">Domain:</Label>
+              <div className="flex gap-2">
                 <Input
-                  id="domain"
-                  value={config.domain}
-                  onChange={(e) => setConfig(prev => ({ ...prev, domain: e.target.value }))}
-                  placeholder="montopay.com"
-                  className="mt-1"
+                  value={newAddress}
+                  onChange={(e) => setNewAddress(e.target.value)}
+                  placeholder="billing@company.com"
+                  onKeyPress={(e) => e.key === 'Enter' && handleAddAddress()}
+                  className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
                 />
+                <Button 
+                  type="button" 
+                  onClick={handleAddAddress}
+                  size="sm"
+                  className="shrink-0 bg-[#7B59FF] hover:bg-[#6b46ff]"
+                  disabled={!newAddress.trim() || config.fromAddresses.includes(newAddress.trim())}
+                >
+                  <Plus size={16} />
+                </Button>
               </div>
               
-              <div>
-                <Label className="text-sm text-grey-600">Addresses:</Label>
-                <div className="mt-1 space-y-2">
-                  <div className="flex gap-2">
-                    <Input
-                      value={newAddress}
-                      onChange={(e) => setNewAddress(e.target.value)}
-                      placeholder="Add email address"
-                      onKeyPress={(e) => e.key === 'Enter' && handleAddAddress()}
-                    />
-                    <Button 
-                      type="button" 
-                      onClick={handleAddAddress}
-                      size="sm"
-                      className="shrink-0"
+              {config.fromAddresses.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {config.fromAddresses.map((address, index) => (
+                    <Badge 
+                      key={index} 
+                      variant="secondary" 
+                      className="flex items-center gap-1 bg-[#EFEBFF] text-[#7B59FF] border-[#7B59FF]/20"
                     >
-                      <Plus size={16} />
-                    </Button>
-                  </div>
-                  
-                  {config.fromAddresses.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {config.fromAddresses.map((address, index) => (
-                        <Badge 
-                          key={index} 
-                          variant="secondary" 
-                          className="flex items-center gap-1"
-                        >
-                          {address}
-                          <button
-                            onClick={() => handleRemoveAddress(address)}
-                            className="ml-1 hover:text-destructive"
-                          >
-                            <X size={12} />
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
+                      {address}
+                      <button
+                        onClick={() => handleRemoveAddress(address)}
+                        className="ml-1 hover:text-destructive transition-colors"
+                      >
+                        <X size={12} />
+                      </button>
+                    </Badge>
+                  ))}
                 </div>
-              </div>
+              )}
+              <Typography variant="body2" className="text-grey-500 text-xs">
+                Add specific email addresses that will send invoices. Leave empty to accept from any address in the domain.
+              </Typography>
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="emailSubject">Email Subject (regex):</Label>
+          {/* Email Subject */}
+          <div className="space-y-3">
+            <Label htmlFor="emailSubject" className="flex items-center gap-2 text-sm font-medium">
+              <Mail className="w-4 h-4 text-[#7B59FF]" />
+              Email Subject Filter (Regex)
+            </Label>
             <Input
               id="emailSubject"
               value={config.emailSubject}
               onChange={(e) => setConfig(prev => ({ ...prev, emailSubject: e.target.value }))}
-              placeholder="*Invoice.*"
+              placeholder="*Invoice*"
+              className="focus:border-[#7B59FF] focus:ring-[#7B59FF] font-mono"
             />
+            <Typography variant="body2" className="text-grey-500 text-xs">
+              Pattern to match in email subject line. Use * for wildcard (e.g., *Invoice* matches any subject containing "Invoice")
+            </Typography>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="replyToEmail">"Reply to" Email Address:</Label>
+          {/* Reply To */}
+          <div className="space-y-3">
+            <Label htmlFor="replyToEmail" className="flex items-center gap-2 text-sm font-medium">
+              <Reply className="w-4 h-4 text-[#7B59FF]" />
+              Reply-To Email Address
+            </Label>
             <Input
               id="replyToEmail"
               value={config.replyToEmail}
               onChange={(e) => setConfig(prev => ({ ...prev, replyToEmail: e.target.value }))}
-              placeholder="sys-admin@client-domain.com"
+              placeholder="support@company.com"
+              className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
             />
+            <Typography variant="body2" className="text-grey-500 text-xs">
+              Email address for replies and notifications about processing status
+            </Typography>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <Button variant="outline" onClick={onClose}>
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-3 pt-4 border-t">
+            <Button variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button onClick={handleSave}>
+            <Button 
+              onClick={handleSave}
+              disabled={!hasChanges}
+              className={`${hasChanges 
+                ? 'bg-[#7B59FF] hover:bg-[#6b46ff] text-white' 
+                : 'bg-grey-200 text-grey-500 cursor-not-allowed'
+              }`}
+            >
               Save Configuration
             </Button>
           </div>
