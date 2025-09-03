@@ -91,6 +91,13 @@ export function IntegrationHub() {
         </Typography>
       </div>
 
+      {/* Warning Banner */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+        <Typography variant="body2" className="text-amber-800">
+          ⚠️ <strong>Heads up:</strong> If an invoice doesn't follow the configurations below, it will be declined and Monto won't process it.
+        </Typography>
+      </div>
+
       {/* Email Integration Section */}
       <div>
         <div className="mb-6">
