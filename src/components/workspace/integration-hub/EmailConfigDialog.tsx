@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -136,6 +137,19 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
       description: `You can now send test invoices to ${config.toEmail}`,
     });
     onClose();
+  };
+
+  const handleReset = () => {
+    setConfig(defaultConfig);
+    setNewFromAddress('');
+    setNewReplyToEmail('');
+    setUseDomainFilter(true);
+    setUseSpecificAddresses(false);
+    setHasChanges(true);
+    toast({
+      title: "Configuration reset",
+      description: "All fields have been reset to default values",
+    });
   };
 
   const handleCancel = () => {
@@ -413,10 +427,32 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button variant="outline" onClick={handleCancel}>
-              Cancel
-            </Button>
+          <div className="flex justify-between pt-4 border-t">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline">
+                  Reset
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Reset Configuration</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to reset all fields to their default values? This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction 
+                    onClick={handleReset}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Reset
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            
             <Button 
               onClick={handleSave}
               disabled={!hasChanges || !isFormValid}
