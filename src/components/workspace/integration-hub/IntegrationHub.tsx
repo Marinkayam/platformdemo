@@ -102,48 +102,46 @@ export function IntegrationHub() {
           </Typography>
         </div>
         
-        <div className="bg-[#EFEBFF] border border-[#7B59FF]/20 rounded-lg p-4">
-          <div className="space-y-2">
-            {emailConnectorTypes.map((connector, index) => {
-              const isConfigured = !!emailConfigs[connector.id];
-              const config = emailConfigs[connector.id];
-              
-              return (
-                <div key={connector.id} className="flex items-center justify-between bg-white/60 rounded p-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded bg-[#7B59FF]/10 flex items-center justify-center">
-                      <connector.icon size={16} className="text-[#7B59FF]" />
-                    </div>
-                    <div className="flex-1">
-                      <Typography variant="subtitle2" className="text-grey-900">
-                        {connector.title}
-                      </Typography>
-                      <Typography variant="body2" className="text-grey-600 text-xs">
-                        {connector.description}
-                      </Typography>
-                      {isConfigured && (
-                        <Typography variant="body2" className="text-[#7B59FF] text-xs mt-1">
-                          ✓ To: {config.toEmail}
-                        </Typography>
-                      )}
-                    </div>
+        <div className="space-y-3">
+          {emailConnectorTypes.map((connector, index) => {
+            const isConfigured = !!emailConfigs[connector.id];
+            const config = emailConfigs[connector.id];
+            
+            return (
+              <div key={connector.id} className="flex items-center justify-between bg-white border border-grey-200 rounded-lg p-4 hover:border-grey-300 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded bg-grey-100 flex items-center justify-center">
+                    <connector.icon size={16} className="text-grey-600" />
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEmailConnectorClick(connector.id)}
-                    className={`text-xs transition-all duration-200 ${
-                      isConfigured 
-                        ? "border-[#7B59FF]/20 text-[#7B59FF] hover:bg-[#7B59FF]/5" 
-                        : "border-grey-300 text-grey-600 hover:bg-grey-50"
-                    }`}
-                  >
-                    {isConfigured ? 'Edit' : 'Configure'}
-                  </Button>
+                  <div className="flex-1">
+                    <Typography variant="subtitle2" className="text-grey-900">
+                      {connector.title}
+                    </Typography>
+                    <Typography variant="body2" className="text-grey-600 text-sm">
+                      {connector.description}
+                    </Typography>
+                    {isConfigured && (
+                      <Typography variant="body2" className="text-green-600 text-xs mt-1">
+                        ✓ To: {config.toEmail}
+                      </Typography>
+                    )}
+                  </div>
                 </div>
-              );
-            })}
-          </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleEmailConnectorClick(connector.id)}
+                  className={`text-sm transition-all duration-200 ${
+                    isConfigured 
+                      ? "border-green-200 text-green-700 hover:bg-green-50" 
+                      : "border-grey-300 text-grey-600 hover:bg-grey-50"
+                  }`}
+                >
+                  {isConfigured ? 'Edit' : 'Configure'}
+                </Button>
+              </div>
+            );
+          })}
         </div>
       </div>
 
