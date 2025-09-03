@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Typography } from "@/components/ui/typography/typography";
 import { Textarea } from "@/components/ui/textarea";
-import { X, Plus } from "lucide-react";
+import { X, Plus, Info } from "lucide-react";
 
 interface EmailConfigDialogProps {
   isOpen: boolean;
@@ -37,6 +37,18 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
   const [originalConfig, setOriginalConfig] = useState<EmailConfig>(initialConfig || defaultConfig);
   const [newAddress, setNewAddress] = useState('');
   const [hasChanges, setHasChanges] = useState(false);
+
+  // Validation for required fields
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isValidDomain = (domain: string) => /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain);
+  
+  const isFormValid = config.toEmail && 
+                     config.domain && 
+                     config.emailSubject && 
+                     config.replyToEmail &&
+                     isValidEmail(config.toEmail) &&
+                     isValidDomain(config.domain) &&
+                     isValidEmail(config.replyToEmail);
 
   // Reset form when dialog opens/closes or initialConfig changes
   useEffect(() => {
@@ -93,51 +105,65 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
           </DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-6">
-          {/* To Email */}
-          <div className="space-y-3">
-            <Label htmlFor="toEmail" className="text-sm font-medium">
-              "To" Email Address
+        <div className="space-y-8">
+          {/* Processing Email Address */}
+          <div className="space-y-2">
+            <Label htmlFor="toEmail" className="text-sm font-medium text-foreground">
+              Processing Email Address *
             </Label>
             <Input
               id="toEmail"
               value={config.toEmail}
               onChange={(e) => setConfig(prev => ({ ...prev, toEmail: e.target.value }))}
-              placeholder="montopay@montoinvoice.com"
-              className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
+              placeholder="e.g. montopay@montoinvoice.com"
+              className={`focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
+                config.toEmail && !isValidEmail(config.toEmail) ? 'border-destructive' : ''
+              }`}
             />
-            <Typography variant="body2" className="text-grey-500 text-xs">
-              Email address where invoices will be sent for processing
+            <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
+              Invoices will be sent to this address for automatic processing.
             </Typography>
+            {config.toEmail && !isValidEmail(config.toEmail) && (
+              <Typography variant="body2" className="text-destructive text-xs">
+                Please enter a valid email address
+              </Typography>
+            )}
           </div>
 
-          {/* From Email Domain */}
-          <div className="space-y-3">
-            <Label htmlFor="domain" className="text-sm font-medium">
-              From Email Domain
+          {/* Allowed Sender Domain */}
+          <div className="space-y-2">
+            <Label htmlFor="domain" className="text-sm font-medium text-foreground">
+              Allowed Sender Domain *
             </Label>
             <Input
               id="domain"
               value={config.domain}
               onChange={(e) => setConfig(prev => ({ ...prev, domain: e.target.value }))}
-              placeholder="company.com"
-              className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
+              placeholder="e.g. montopay.com"
+              className={`focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
+                config.domain && !isValidDomain(config.domain) ? 'border-destructive' : ''
+              }`}
             />
-            <Typography variant="body2" className="text-grey-500 text-xs">
-              Domain that emails will come from (e.g., if invoices come from billing@company.com, enter company.com)
+            <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
+              Only emails from this domain will be processed. Use the base domain (e.g., for billing@montopay.com, enter montopay.com).
             </Typography>
+            {config.domain && !isValidDomain(config.domain) && (
+              <Typography variant="body2" className="text-destructive text-xs">
+                Please enter a valid domain (e.g., montopay.com)
+              </Typography>
+            )}
           </div>
 
-          {/* From Addresses */}
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">
-              Specific From Email Addresses (Optional)
+          {/* Allowed Sender Emails */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-foreground">
+              Allowed Sender Emails (Optional)
             </Label>
             <div className="space-y-3">
               <Input
                 value={newAddress}
                 onChange={(e) => setNewAddress(e.target.value)}
-                placeholder="billing@company.com"
+                placeholder="e.g. billing@montopay.com"
                 onKeyPress={(e) => e.key === 'Enter' && handleAddAddress()}
                 className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
               />
@@ -161,44 +187,64 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                   ))}
                 </div>
               )}
-              <Typography variant="body2" className="text-grey-500 text-xs">
-                Add specific email addresses that will send invoices. Leave empty to accept from any address in the domain.
+              <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
+                Restrict processing to specific email addresses. Leave blank to allow any sender from the domain above.
               </Typography>
             </div>
           </div>
 
-          {/* Email Subject */}
-          <div className="space-y-3">
-            <Label htmlFor="emailSubject" className="text-sm font-medium">
-              Email Subject Filter (Regex)
-            </Label>
+          {/* Email Subject Match Pattern */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Label htmlFor="emailSubject" className="text-sm font-medium text-foreground">
+                Email Subject Match Pattern *
+              </Label>
+              <div className="group relative">
+                <Info size={14} className="text-muted-foreground cursor-help" />
+                <div className="absolute bottom-6 left-0 hidden group-hover:block bg-popover border border-border rounded-md p-3 shadow-md z-50 w-64">
+                  <Typography variant="body2" className="text-xs">
+                    <strong>Pattern Examples:</strong><br/>
+                    *Invoice* - matches "Invoice #123"<br/>
+                    Invoice* - matches "Invoice" at start<br/>
+                    *bill* - matches anything with "bill"
+                  </Typography>
+                </div>
+              </div>
+            </div>
             <Input
               id="emailSubject"
               value={config.emailSubject}
               onChange={(e) => setConfig(prev => ({ ...prev, emailSubject: e.target.value }))}
-              placeholder="*Invoice*"
+              placeholder="e.g. *Invoice*"
               className="focus:border-[#7B59FF] focus:ring-[#7B59FF] font-mono"
             />
-            <Typography variant="body2" className="text-grey-500 text-xs">
-              Pattern to match in email subject line. Use * for wildcard (e.g., *Invoice* matches any subject containing "Invoice")
+            <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
+              Use * as a wildcard to match invoice subjects (e.g., *Invoice* matches "Invoice #123"). Regex syntax is supported.
             </Typography>
           </div>
 
-          {/* Reply To */}
-          <div className="space-y-3">
-            <Label htmlFor="replyToEmail" className="text-sm font-medium">
-              Reply-To Email Address
+          {/* Reply-To Email */}
+          <div className="space-y-2">
+            <Label htmlFor="replyToEmail" className="text-sm font-medium text-foreground">
+              Reply-To Email *
             </Label>
             <Input
               id="replyToEmail"
               value={config.replyToEmail}
               onChange={(e) => setConfig(prev => ({ ...prev, replyToEmail: e.target.value }))}
-              placeholder="support@company.com"
-              className="focus:border-[#7B59FF] focus:ring-[#7B59FF]"
+              placeholder="e.g. sys-admin@yourdomain.com"
+              className={`focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
+                config.replyToEmail && !isValidEmail(config.replyToEmail) ? 'border-destructive' : ''
+              }`}
             />
-            <Typography variant="body2" className="text-grey-500 text-xs">
-              Email address for replies and notifications about processing status
+            <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
+              We'll use this address to send replies or processing status notifications.
             </Typography>
+            {config.replyToEmail && !isValidEmail(config.replyToEmail) && (
+              <Typography variant="body2" className="text-destructive text-xs">
+                Please enter a valid email address
+              </Typography>
+            )}
           </div>
 
           {/* Action Buttons */}
@@ -208,11 +254,12 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
             </Button>
             <Button 
               onClick={handleSave}
-              disabled={!hasChanges}
-              className={`${hasChanges 
+              disabled={!hasChanges || !isFormValid}
+              className={`${hasChanges && isFormValid
                 ? 'bg-[#7B59FF] hover:bg-[#6b46ff] text-white' 
                 : 'bg-[#EFEBFF] text-[#7B59FF]/60 cursor-not-allowed border border-[#7B59FF]/20'
               }`}
+              title={!hasChanges ? "No changes to save" : !isFormValid ? "Please complete required fields to save configuration" : ""}
             >
               Save Configuration
             </Button>
