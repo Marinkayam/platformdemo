@@ -8,11 +8,12 @@ interface LockedIntegrationCardProps {
   title: string;
   description: string;
   icon: LucideIcon;
+  logo?: string;
   onContactSupport: () => void;
   style?: React.CSSProperties;
 }
 
-export function LockedIntegrationCard({ title, description, icon: IconComponent, onContactSupport, style }: LockedIntegrationCardProps) {
+export function LockedIntegrationCard({ title, description, icon: IconComponent, logo, onContactSupport, style }: LockedIntegrationCardProps) {
   return (
     <Card 
       className="group border-grey-300 bg-grey-50 hover:border-grey-400 transition-all duration-200 hover:scale-[1.02]"
@@ -20,11 +21,19 @@ export function LockedIntegrationCard({ title, description, icon: IconComponent,
     >
       <CardContent className="p-6 text-center space-y-4">
         <div className="w-12 h-12 mx-auto rounded-lg bg-white border border-grey-200 flex items-center justify-center">
-          <IconComponent 
-            size={20} 
-            className="text-grey-600" 
-            strokeWidth={1.5}
-          />
+          {logo ? (
+            <img 
+              src={logo} 
+              alt={`${title} logo`} 
+              className="w-8 h-8 object-contain"
+            />
+          ) : (
+            <IconComponent 
+              size={20} 
+              className="text-grey-600" 
+              strokeWidth={1.5}
+            />
+          )}
         </div>
         
         <div>
@@ -36,22 +45,10 @@ export function LockedIntegrationCard({ title, description, icon: IconComponent,
           </Typography>
         </div>
         
-        <div className="space-y-3">
-          <Badge variant="secondary" className="bg-white border-grey-200 text-grey-700 hover:bg-grey-50">
-            <Lock size={12} className="mr-1" />
-            Premium Feature
-          </Badge>
-          
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={onContactSupport}
-            className="w-full text-xs"
-          >
-            Contact Support
-            <ExternalLink size={12} className="ml-1" />
-          </Button>
-        </div>
+        <Badge variant="secondary" className="bg-white border-grey-200 text-grey-700 hover:bg-grey-50">
+          <Lock size={12} className="mr-1" />
+          Locked
+        </Badge>
       </CardContent>
     </Card>
   );

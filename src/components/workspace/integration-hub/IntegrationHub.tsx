@@ -6,6 +6,8 @@ import { EmailConnectorCard } from './EmailConnectorCard';
 import { LockedIntegrationCard } from './LockedIntegrationCard';
 import { EmailConfigDialog, EmailConfig } from './EmailConfigDialog';
 import { Mail, FileText, Database, Globe, ExternalLink, Server } from 'lucide-react';
+import eskerLogo from '@/assets/esker-logo.svg';
+import netsuiteLogo from '@/assets/netsuite-logo.svg';
 
 export function IntegrationHub() {
   const [selectedEmailConnector, setSelectedEmailConnector] = useState<string | null>(null);
@@ -43,13 +45,15 @@ export function IntegrationHub() {
       id: 'esker',
       title: 'Esker Integration',
       description: 'Connect with Esker for advanced invoice processing',
-      icon: ExternalLink
+      icon: ExternalLink,
+      logo: eskerLogo
     },
     {
       id: 'netsuite',
       title: 'NetSuite Integration',
       description: 'Sync data with your NetSuite ERP system',
-      icon: Database
+      icon: Database,
+      logo: netsuiteLogo
     },
     {
       id: 'sftp',
@@ -151,7 +155,7 @@ export function IntegrationHub() {
       <div className="mt-16 pt-8 border-t border-grey-300">
         <div className="text-center mb-8">
           <Typography variant="h6" className="text-grey-900 mb-2">
-            Premium Feature - Locked Feature
+            Locked Feature
           </Typography>
           <Typography variant="body2" className="text-grey-600">
             Enterprise-grade integrations available with premium support.
@@ -165,6 +169,7 @@ export function IntegrationHub() {
               title={integration.title}
               description={integration.description}
               icon={integration.icon}
+              logo={integration.logo}
               onContactSupport={handleContactSupport}
               style={{ animationDelay: `${index * 150}ms` }}
             />
