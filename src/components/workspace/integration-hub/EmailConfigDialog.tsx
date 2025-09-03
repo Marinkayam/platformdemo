@@ -6,7 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Typography } from "@/components/ui/typography/typography";
 import { Textarea } from "@/components/ui/textarea";
-import { X, Plus, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useToast } from "@/hooks/use-toast";
+import { X, Info } from "lucide-react";
 
 interface EmailConfigDialogProps {
   isOpen: boolean;
@@ -37,10 +39,11 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
   const [originalConfig, setOriginalConfig] = useState<EmailConfig>(initialConfig || defaultConfig);
   const [newAddress, setNewAddress] = useState('');
   const [hasChanges, setHasChanges] = useState(false);
+  const { toast } = useToast();
 
   // Validation for required fields
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const isValidDomain = (domain: string) => /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain);
+  const isValidDomain = (domain: string) => !domain.startsWith('@') && /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain);
   
   const isFormValid = config.toEmail && 
                      config.domain && 
@@ -86,6 +89,10 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
 
   const handleSave = () => {
     onSave(config);
+    toast({
+      title: "Configuration saved successfully",
+      description: `You can now send test invoices to ${config.toEmail}`,
+    });
     onClose();
   };
 
@@ -103,6 +110,9 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
           <DialogTitle>
             {title} Configuration
           </DialogTitle>
+          <Typography variant="body2" className="text-muted-foreground text-sm mt-2">
+            Set the rules for how Monto should detect and process incoming invoice emails.
+          </Typography>
         </DialogHeader>
         
         <div className="space-y-8">
@@ -115,13 +125,13 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
               id="toEmail"
               value={config.toEmail}
               onChange={(e) => setConfig(prev => ({ ...prev, toEmail: e.target.value }))}
-              placeholder="e.g. montopay@montoinvoice.com"
+              placeholder="montopay@montoinvoice.com"
               className={`focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
                 config.toEmail && !isValidEmail(config.toEmail) ? 'border-destructive' : ''
               }`}
             />
-            <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
-              Invoices will be sent to this address for automatic processing.
+            <Typography variant="body2" className="text-muted-foreground text-xs">
+              Invoices should be sent to this email for automatic processing.
             </Typography>
             {config.toEmail && !isValidEmail(config.toEmail) && (
               <Typography variant="body2" className="text-destructive text-xs">
@@ -144,8 +154,8 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                 config.domain && !isValidDomain(config.domain) ? 'border-destructive' : ''
               }`}
             />
-            <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
-              Only emails from this domain will be processed. Use the base domain (e.g., for billing@montopay.com, enter montopay.com).
+            <Typography variant="body2" className="text-muted-foreground text-xs">
+              Only emails from this domain will be accepted for processing.
             </Typography>
             {config.domain && !isValidDomain(config.domain) && (
               <Typography variant="body2" className="text-destructive text-xs">
@@ -187,8 +197,8 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
                   ))}
                 </div>
               )}
-              <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
-                Restrict processing to specific email addresses. Leave blank to allow any sender from the domain above.
+              <Typography variant="body2" className="text-muted-foreground text-xs">
+                Only process emails from these addresses. Leave blank to allow all emails from the domain above.
               </Typography>
             </div>
           </div>
@@ -197,29 +207,36 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Label htmlFor="emailSubject" className="text-sm font-medium text-foreground">
-                Email Subject Match Pattern *
+                Email Subject Pattern *
               </Label>
-              <div className="group relative">
-                <Info size={14} className="text-muted-foreground cursor-help" />
-                <div className="absolute bottom-6 left-0 hidden group-hover:block bg-popover border border-border rounded-md p-3 shadow-md z-50 w-64">
-                  <Typography variant="body2" className="text-xs">
-                    <strong>Pattern Examples:</strong><br/>
-                    *Invoice* - matches "Invoice #123"<br/>
-                    Invoice* - matches "Invoice" at start<br/>
-                    *bill* - matches anything with "bill"
-                  </Typography>
-                </div>
-              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info size={14} className="text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-xs">
+                    <div className="text-xs space-y-1">
+                      <p><strong>Monto uses the subject line to detect invoice emails.</strong></p>
+                      <p>Make sure your system sends subjects like:</p>
+                      <ul className="list-disc list-inside space-y-0.5 mt-1">
+                        <li>Invoice #123</li>
+                        <li>Invoice for PO 99821</li>
+                      </ul>
+                      <p className="mt-1">Then, use a regex pattern that matches them.</p>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
             <Input
               id="emailSubject"
               value={config.emailSubject}
               onChange={(e) => setConfig(prev => ({ ...prev, emailSubject: e.target.value }))}
-              placeholder="e.g. *Invoice*"
+              placeholder="Invoice #"
               className="focus:border-[#7B59FF] focus:ring-[#7B59FF] font-mono"
             />
-            <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
-              Use * as a wildcard to match invoice subjects (e.g., *Invoice* matches "Invoice #123"). Regex syntax is supported.
+            <Typography variant="body2" className="text-muted-foreground text-xs">
+              Include "Invoice" in the subject so Monto knows to process it.
             </Typography>
           </div>
 
@@ -232,13 +249,13 @@ export function EmailConfigDialog({ isOpen, onClose, title, onSave, initialConfi
               id="replyToEmail"
               value={config.replyToEmail}
               onChange={(e) => setConfig(prev => ({ ...prev, replyToEmail: e.target.value }))}
-              placeholder="e.g. sys-admin@yourdomain.com"
+              placeholder="e.g. sysadmin@yourcompany.com"
               className={`focus:border-[#7B59FF] focus:ring-[#7B59FF] ${
                 config.replyToEmail && !isValidEmail(config.replyToEmail) ? 'border-destructive' : ''
               }`}
             />
-            <Typography variant="body2" className="text-muted-foreground text-xs leading-relaxed">
-              We'll use this address to send replies or processing status notifications.
+            <Typography variant="body2" className="text-muted-foreground text-xs">
+              Monto will send notifications and replies to this address.
             </Typography>
             {config.replyToEmail && !isValidEmail(config.replyToEmail) && (
               <Typography variant="body2" className="text-destructive text-xs">
