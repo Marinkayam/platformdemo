@@ -91,45 +91,6 @@ export function IntegrationHub() {
         </Typography>
       </div>
 
-      {/* Configuration Summary */}
-      {Object.keys(emailConfigs).length > 0 && (
-        <div className="bg-[#EFEBFF] border border-[#7B59FF]/20 rounded-lg p-4">
-          <Typography variant="h6" className="text-[#7B59FF] mb-3">
-            Configured Email Connectors
-          </Typography>
-          <div className="space-y-2">
-            {Object.entries(emailConfigs).map(([connectorId, config]) => {
-              const connector = emailConnectorTypes.find(c => c.id === connectorId);
-              return (
-                <div key={connectorId} className="flex items-center justify-between bg-white/60 rounded p-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded bg-[#7B59FF]/10 flex items-center justify-center">
-                      {connector?.icon && <connector.icon size={16} className="text-[#7B59FF]" />}
-                    </div>
-                    <div>
-                      <Typography variant="subtitle2" className="text-grey-900">
-                        {connector?.title}
-                      </Typography>
-                      <Typography variant="body2" className="text-grey-600 text-xs">
-                        To: {config.toEmail}
-                      </Typography>
-                    </div>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEmailConnectorClick(connectorId)}
-                    className="text-xs border-[#7B59FF]/20 text-[#7B59FF] hover:bg-[#7B59FF]/5"
-                  >
-                    Edit
-                  </Button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
       {/* Email Integration Section */}
       <div>
         <div className="mb-6">
@@ -141,18 +102,48 @@ export function IntegrationHub() {
           </Typography>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {emailConnectorTypes.map((connector, index) => (
-            <EmailConnectorCard
-              key={connector.id}
-              title={connector.title}
-              description={connector.description}
-              icon={connector.icon}
-              isConfigured={!!emailConfigs[connector.id]}
-              onClick={() => handleEmailConnectorClick(connector.id)}
-              style={{ animationDelay: `${index * 100}ms` }}
-            />
-          ))}
+        <div className="bg-[#EFEBFF] border border-[#7B59FF]/20 rounded-lg p-4">
+          <div className="space-y-2">
+            {emailConnectorTypes.map((connector, index) => {
+              const isConfigured = !!emailConfigs[connector.id];
+              const config = emailConfigs[connector.id];
+              
+              return (
+                <div key={connector.id} className="flex items-center justify-between bg-white/60 rounded p-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded bg-[#7B59FF]/10 flex items-center justify-center">
+                      <connector.icon size={16} className="text-[#7B59FF]" />
+                    </div>
+                    <div className="flex-1">
+                      <Typography variant="subtitle2" className="text-grey-900">
+                        {connector.title}
+                      </Typography>
+                      <Typography variant="body2" className="text-grey-600 text-xs">
+                        {connector.description}
+                      </Typography>
+                      {isConfigured && (
+                        <Typography variant="body2" className="text-[#7B59FF] text-xs mt-1">
+                          ✓ To: {config.toEmail}
+                        </Typography>
+                      )}
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEmailConnectorClick(connector.id)}
+                    className={`text-xs transition-all duration-200 ${
+                      isConfigured 
+                        ? "border-[#7B59FF]/20 text-[#7B59FF] hover:bg-[#7B59FF]/5" 
+                        : "border-grey-300 text-grey-600 hover:bg-grey-50"
+                    }`}
+                  >
+                    {isConfigured ? 'Edit' : 'Configure'}
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
