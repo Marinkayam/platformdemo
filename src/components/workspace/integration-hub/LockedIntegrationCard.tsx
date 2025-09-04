@@ -47,7 +47,7 @@ export function LockedIntegrationCard({ title, description, icon: IconComponent,
         
         <Badge variant="secondary" className="bg-white border-grey-200 hover:bg-grey-50">
           <Lock size={12} className="mr-1 text-[#7B59FF]" />
-          <span className="text-[#7B59FF]">Locked</span>
+          <span className="text-[#7B59FF]">Contact Us</span>
         </Badge>
       </CardContent>
     </Card>

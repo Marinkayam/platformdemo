@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { EmailConnectorCard } from './EmailConnectorCard';
 import { LockedIntegrationCard } from './LockedIntegrationCard';
 import { EmailConfigDialog, EmailConfig } from './EmailConfigDialog';
-import { Mail, FileText, Database, Globe, ExternalLink, Server, FolderOpen, FileStack, Group, FileSpreadsheet } from 'lucide-react';
+import { Mail, FileText, Database, Globe, ExternalLink, Server, FolderOpen, FileStack, Group, FileSpreadsheet, Folder } from 'lucide-react';
 import eskerLogo from '@/assets/esker-logo.svg';
 import netsuiteLogo from '@/assets/netsuite-logo.svg';
 
@@ -65,7 +65,7 @@ export function IntegrationHub() {
       id: 'sftp',
       title: 'SFTP Integration',
       description: 'Secure file transfer protocol for bulk processing',
-      icon: Server
+      icon: Folder
     }
   ];
 
