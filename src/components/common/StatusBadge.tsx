@@ -1,27 +1,43 @@
 import { cn } from "@/lib/utils";
 import { PurchaseOrderStatus } from "@/types/purchase-orders";
+import { BADGE_COLORS, getStatusColor } from "@/lib/badge-colors";
 
 interface StatusBadgeProps {
   status: PurchaseOrderStatus;
   className?: string;
 }
 
-const statusConfig: Record<PurchaseOrderStatus, { label: string; textColor: string; bgColor: string }> = {
-  new: { label: "New", textColor: "#7B59FF", bgColor: "#F3E8FF" },
-  pending_approval: { label: "Pending Approval", textColor: "#D48806", bgColor: "#FFF8E1" },
-  approved: { label: "Approved", textColor: "#007737", bgColor: "#E6F4EA" },
-  rejected: { label: "Rejected", textColor: "#DF1C41", bgColor: "#FFEBEE" },
-  cancelled: { label: "Cancelled", textColor: "#9CA3AF", bgColor: "#F3F4F6" },
-  completed: { label: "Completed", textColor: "#7B59FF", bgColor: "#F3E8FF" },
-  New: { label: "New", textColor: "#7B59FF", bgColor: "#F3E8FF" },
-  "Partially Invoiced": { label: "Partially Invoiced", textColor: "#007737", bgColor: "#E6F4EA" },
-  "Fully Invoiced": { label: "Fully Invoiced", textColor: "#007737", bgColor: "#E6F4EA" }
+const statusMapping: Record<PurchaseOrderStatus, string> = {
+  new: "new",
+  pending_approval: "pending approval", 
+  approved: "approved by buyer",
+  rejected: "rejected by buyer",
+  cancelled: "excluded",
+  completed: "settled",
+  New: "new",
+  "Partially Invoiced": "partially invoiced",
+  "Fully Invoiced": "fully invoiced"
 };
 
-const DEFAULT_CONFIG = { label: "Unknown", textColor: "#9CA3AF", bgColor: "#F3F4F6" };
-
 export function StatusBadge({ status, className }: StatusBadgeProps) {
-  const config = statusConfig[status] || DEFAULT_CONFIG;
+  const mappedStatus = statusMapping[status] || status;
+  const colors = getStatusColor(mappedStatus);
+  
+  // Get display label from original status
+  const getDisplayLabel = (status: PurchaseOrderStatus): string => {
+    const labelMap: Record<PurchaseOrderStatus, string> = {
+      new: "New",
+      pending_approval: "Pending Approval", 
+      approved: "Approved",
+      rejected: "Rejected",
+      cancelled: "Cancelled",
+      completed: "Completed",
+      New: "New",
+      "Partially Invoiced": "Partially Invoiced",
+      "Fully Invoiced": "Fully Invoiced"
+    };
+    return labelMap[status] || String(status);
+  };
 
   return (
     <span
@@ -30,12 +46,12 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         className
       )}
       style={{
-        color: config.textColor,
-        backgroundColor: config.bgColor,
+        color: colors.text,
+        backgroundColor: colors.background,
         fontSize: '12px'
       }}
     >
-      {config.label}
+      {getDisplayLabel(status)}
     </span>
   );
 }
