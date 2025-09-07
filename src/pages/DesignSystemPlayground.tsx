@@ -890,8 +890,9 @@ export default function DesignSystemPlayground() {
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Tab Navigation</h2>
         <p className="text-sm text-grey-600 mb-4">❇️ TabsNav - The standardized navigation component for tabs across the application.</p>
 
-        {/* Restored Invoice Tabs Example using TabsNav */}
-        <div>
+        {/* Basic Tabs Example */}
+        <div className="mb-8">
+          <h3 className="text-lg font-medium text-grey-800 mb-4">Basic Tab Navigation</h3>
           <TabsNav
             activeTab={activeInvoiceTab}
             onTabChange={setActiveInvoiceTab}
@@ -900,6 +901,45 @@ export default function DesignSystemPlayground() {
               { id: "pending", label: "Pending Action", count: 6 },
               { id: "overdue", label: "Overdue", count: 22 },
               { id: "settled", label: "Settled", count: 7 },
+            ]}
+          />
+        </div>
+
+        {/* Tab Navigation with Icons (Invoice Detail Example) */}
+        <div>
+          <h3 className="text-lg font-medium text-grey-800 mb-4">Tab Navigation with Icons</h3>
+          <p className="text-sm text-grey-600 mb-4">Used in invoice detail pages and other inner pages</p>
+          <TabsNav
+            activeTab={activeDetailTab}
+            onTabChange={setActiveDetailTab}
+            tabs={[
+              { 
+                id: "invoice-data", 
+                label: "Invoice Data", 
+                icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
+              },
+              { 
+                id: "exceptions", 
+                label: "Exceptions", 
+                icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+                count: 2
+              },
+              { 
+                id: "rtp-data", 
+                label: "RTP Data", 
+                icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="m7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              },
+              { 
+                id: "portal-records", 
+                label: "Portal Records", 
+                icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27,6.96 12,12.01 20.73,6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              },
+              { 
+                id: "activity", 
+                label: "Activity", 
+                icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>,
+                count: 5
+              },
             ]}
           />
         </div>

@@ -76,10 +76,10 @@ export function TabsNav({ tabs, activeTab, onTabChange, variant = "horizontal" }
                 <button
                   onClick={() => onTabChange(tab.id)}
                   className={cn(
-                    "py-3 px-1 relative font-medium text-sm flex items-center gap-2 transition-colors text-left",
+                    "py-3 px-1 relative text-sm flex items-center gap-2 transition-colors text-left",
                     activeTab === tab.id
-                      ? "text-primary border-b-2 border-primary"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "text-primary border-b-2 border-primary font-medium"
+                      : "text-gray-600 hover:text-gray-900 font-normal"
                   )}
                 >
                   {tab.icon}
