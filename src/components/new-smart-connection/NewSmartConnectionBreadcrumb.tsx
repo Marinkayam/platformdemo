@@ -15,14 +15,14 @@ export function NewSmartConnectionBreadcrumb() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/payments-relationships" className="text-grey-600 hover:text-primary-main">
+              <Link to="/payments-relationships">
                 Smart Connections
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage className="text-grey-900 font-medium">
+            <BreadcrumbPage>
               New Smart Connection
             </BreadcrumbPage>
           </BreadcrumbItem>

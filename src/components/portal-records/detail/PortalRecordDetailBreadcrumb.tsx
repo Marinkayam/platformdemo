@@ -20,14 +20,14 @@ export function PortalRecordDetailBreadcrumb({ portalRecordId }: PortalRecordDet
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/portal-records" className="text-grey-600 hover:text-primary-main">
+              <Link to="/portal-records">
                 Portal Records
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage className="text-grey-900 font-medium">
+            <BreadcrumbPage>
               {portalRecordId || "Record Not Found"}
             </BreadcrumbPage>
           </BreadcrumbItem>
