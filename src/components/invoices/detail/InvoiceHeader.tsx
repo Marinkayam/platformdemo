@@ -146,7 +146,7 @@ export function InvoiceHeader({
                   <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
                   <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
                 </svg>
-                <span className="font-semibold text-[#01173E]">Transaction Type:</span>
+                <span className="font-medium text-[#01173E]">Transaction Type:</span>
                 <span>{isCreditMemo ? "Credit Memo" : "Invoice"}</span>
               </div>
               
@@ -157,7 +157,7 @@ export function InvoiceHeader({
                     <line x1="19" x2="19" y1="8" y2="14"/>
                     <line x1="22" x2="16" y1="11" y2="11"/>
                   </svg>
-                  <span className="font-semibold text-[#01173E]">Assignee:</span>
+                  <span className="font-medium text-[#01173E]">Assignee:</span>
                   <div onClick={e => e.stopPropagation()} className="inline-block">
                     <AssigneeComponent assignee={localInvoice.assignee} onAssign={handleAssign} onRemove={handleRemoveAssignee} />
                   </div>
