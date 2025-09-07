@@ -1,4 +1,3 @@
-import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   Breadcrumb,
@@ -16,16 +15,14 @@ export function NewSmartConnectionBreadcrumb() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/payments-relationships" className="text-gray-600 hover:text-gray-900">
+              <Link to="/payments-relationships" className="text-grey-600 hover:text-primary-main">
                 Smart Connections
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator>
-            <ChevronRight className="h-4 w-4" />
-          </BreadcrumbSeparator>
+          <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage className="text-gray-900 font-medium">
+            <BreadcrumbPage className="text-grey-900 font-medium">
               New Smart Connection
             </BreadcrumbPage>
           </BreadcrumbItem>

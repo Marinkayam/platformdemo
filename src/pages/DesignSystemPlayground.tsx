@@ -1545,14 +1545,14 @@ const steps = [
           <Card>
             <CardHeader>
               <CardTitle>Two Level Breadcrumb</CardTitle>
-              <CardDescription>Basic navigation with home and current page</CardDescription>
+              <CardDescription>Basic navigation with parent page name</CardDescription>
             </CardHeader>
             <CardContent>
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                      <Home className="h-4 w-4" />
+                      Dashboard
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
@@ -1574,7 +1574,7 @@ const steps = [
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                      <Home className="h-4 w-4" />
+                      Dashboard
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
@@ -1602,7 +1602,7 @@ const steps = [
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink href="#" className="text-grey-600 hover:text-primary-main">
-                      <Home className="h-4 w-4" />
+                      Dashboard
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
