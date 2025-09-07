@@ -21,6 +21,9 @@ import { InvoiceFilters as InvoiceFiltersType } from "@/components/invoices/filt
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
+import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp";
 import { 
   Palette,
   Type,
@@ -152,7 +155,10 @@ export default function DesignSystemPlayground() {
     email: '',
     message: '',
     terms: false,
-    category: ''
+    category: '',
+    notifications: false,
+    volume: [50],
+    otpValue: ''
   });
 
   // Badge system states
@@ -1178,10 +1184,205 @@ export default function DesignSystemPlayground() {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-semibold text-grey-900 mb-6">Form Elements</h2>
+        
+        {/* Basic Input Elements */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Basic Input Elements</CardTitle>
+            <CardDescription>Standard text inputs, email, password, and textarea</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="text-input">Text Input</Label>
+                <Input 
+                  id="text-input" 
+                  placeholder="Enter text here" 
+                  className="border-grey-400 focus:border-primary-main"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email-input">Email Input</Label>
+                <Input 
+                  id="email-input" 
+                  type="email"
+                  placeholder="example@email.com" 
+                  className="border-grey-400 focus:border-primary-main"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password-input">Password Input</Label>
+                <Input 
+                  id="password-input" 
+                  type="password"
+                  placeholder="Enter password" 
+                  className="border-grey-400 focus:border-primary-main"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="disabled-input">Disabled Input</Label>
+                <Input 
+                  id="disabled-input" 
+                  placeholder="Disabled input" 
+                  disabled
+                  className="border-grey-400"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textarea-example">Textarea</Label>
+              <Textarea 
+                id="textarea-example" 
+                placeholder="Enter your message here..." 
+                className="border-grey-400 focus:border-primary-main min-h-[100px]"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Selection Elements */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Selection Elements</CardTitle>
+            <CardDescription>Dropdowns, checkboxes, radio groups, and switches</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="select-example">Select Dropdown</Label>
+                <Select>
+                  <SelectTrigger id="select-example" className="border-grey-400 focus:border-primary-main">
+                    <SelectValue placeholder="Choose an option" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="option1">Option 1</SelectItem>
+                    <SelectItem value="option2">Option 2</SelectItem>
+                    <SelectItem value="option3">Option 3</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-4">
+                <Label>Checkboxes</Label>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="checkbox1" 
+                      className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main"
+                    />
+                    <Label htmlFor="checkbox1" className="text-sm">Option 1</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="checkbox2" 
+                      className="border-grey-400 data-[state=checked]:bg-primary-main data-[state=checked]:border-primary-main"
+                    />
+                    <Label htmlFor="checkbox2" className="text-sm">Option 2</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="checkbox3" 
+                      disabled
+                      className="border-grey-400"
+                    />
+                    <Label htmlFor="checkbox3" className="text-sm">Disabled Option</Label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label>Radio Group</Label>
+                <RadioGroup value={selectedRadioOption} onValueChange={setSelectedRadioOption}>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="left" id="radio1" />
+                    <Label htmlFor="radio1">Left alignment</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="center" id="radio2" />
+                    <Label htmlFor="radio2">Center alignment</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="right" id="radio3" />
+                    <Label htmlFor="radio3">Right alignment</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+              <div className="space-y-4">
+                <Label>Switches</Label>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Switch 
+                      id="notifications" 
+                      checked={formData.notifications}
+                      onCheckedChange={(checked) => setFormData({...formData, notifications: checked})}
+                    />
+                    <Label htmlFor="notifications" className="text-sm">Enable notifications</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch id="switch-disabled" disabled />
+                    <Label htmlFor="switch-disabled" className="text-sm">Disabled switch</Label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Advanced Input Elements */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Advanced Input Elements</CardTitle>
+            <CardDescription>Sliders, OTP inputs, and specialized controls</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <Label>Volume Slider</Label>
+              <div className="px-4">
+                <Slider 
+                  value={formData.volume} 
+                  onValueChange={(value) => setFormData({...formData, volume: value})}
+                  max={100}
+                  step={1}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-sm text-grey-500 mt-1">
+                  <span>0</span>
+                  <span>{formData.volume[0]}</span>
+                  <span>100</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>OTP Input</Label>
+              <InputOTP 
+                maxLength={6} 
+                value={formData.otpValue}
+                onChange={(value) => setFormData({...formData, otpValue: value})}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+              <p className="text-sm text-grey-500">Enter the 6-digit code</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Complete Form Example */}
         <Card>
           <CardHeader>
-            <CardTitle>Contact Form</CardTitle>
-            <CardDescription>A functional form example with proper focus styles</CardDescription>
+            <CardTitle>Complete Form Example</CardTitle>
+            <CardDescription>A functional form showcasing all elements together</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
