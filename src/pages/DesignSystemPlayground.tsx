@@ -1225,7 +1225,7 @@ export default function DesignSystemPlayground() {
                   id="disabled-input" 
                   placeholder="Disabled input" 
                   disabled
-                  className="border-grey-400"
+                  className="border-grey-400 bg-grey-300"
                 />
               </div>
             </div>
