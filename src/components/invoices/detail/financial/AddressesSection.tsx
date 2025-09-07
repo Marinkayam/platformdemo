@@ -23,9 +23,9 @@ export function AddressesSection() {
         )}
       </button>
       
-      <div className={cn("grid grid-cols-1 md:grid-cols-3 gap-6 pt-4", 
+      <div className={cn("grid grid-cols-1 md:grid-cols-3 gap-8 pt-4", 
         addressesOpen ? "block" : "hidden")}>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <Label className="text-sm font-medium">Bill To / Ship To</Label>
           <div className="space-y-2">
             <Input 
@@ -46,7 +46,7 @@ export function AddressesSection() {
           </div>
         </div>
         
-        <div className="space-y-3">
+        <div className="space-y-4">
           <Label className="text-sm font-medium">Remit To</Label>
           <div className="space-y-2">
             <Input 
@@ -67,7 +67,7 @@ export function AddressesSection() {
           </div>
         </div>
         
-        <div className="space-y-3">
+        <div className="space-y-4">
           <Label className="text-sm font-medium">Bank Information</Label>
           <div className="space-y-2">
             <Input 
@@ -79,6 +79,11 @@ export function AddressesSection() {
               value="New York, NY" 
               readOnly 
               className="bg-gray-50 text-sm" 
+            />
+            <Input 
+              value="" 
+              readOnly 
+              className="bg-gray-50 text-sm opacity-0" 
             />
           </div>
         </div>
