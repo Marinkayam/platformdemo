@@ -1,5 +1,6 @@
 
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { PortalRecord } from "@/types/portalRecord";
 
 interface PortalRecordInformationProps {
@@ -33,53 +34,53 @@ export function PortalRecordInformation({ portalRecord }: PortalRecordInformatio
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Record ID</label>
-          <Input value={portalRecord.portalRecordId} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">Record ID</Label>
+          <Input value={portalRecord.portalRecordId} readOnly className="bg-grey-200" />
         </div>
         
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Portal</label>
-          <Input value={portalRecord.portal} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">Portal</Label>
+          <Input value={portalRecord.portal} readOnly className="bg-grey-200" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Buyer</label>
-          <Input value={portalRecord.buyer} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">Buyer</Label>
+          <Input value={portalRecord.buyer} readOnly className="bg-grey-200" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Invoice Number</label>
-          <Input value={portalRecord.invoiceNumber || "N/A"} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">Invoice Number</Label>
+          <Input value={portalRecord.invoiceNumber || "N/A"} readOnly className="bg-grey-200" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Total Amount</label>
-          <Input value={formatCurrency(portalRecord.total)} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">Total Amount</Label>
+          <Input value={formatCurrency(portalRecord.total)} readOnly className="bg-grey-200" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Currency</label>
-          <Input value={portalRecord.currency} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">Currency</Label>
+          <Input value={portalRecord.currency} readOnly className="bg-grey-200" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">PO Number</label>
-          <Input value={portalRecord.poNumber} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">PO Number</Label>
+          <Input value={portalRecord.poNumber} readOnly className="bg-grey-200" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Supplier Name</label>
-          <Input value={portalRecord.supplierName} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">Supplier Name</Label>
+          <Input value={portalRecord.supplierName} readOnly className="bg-grey-200" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Net Terms</label>
-          <Input value={portalRecord.netTerms || 'N/A'} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">Net Terms</Label>
+          <Input value={portalRecord.netTerms || 'N/A'} readOnly className="bg-grey-200" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Promise to Pay</label>
-          <Input value={getPromiseToPayDisplay()} readOnly className="bg-gray-50" />
+          <Label className="text-sm text-grey-600">Promise to Pay</Label>
+          <Input value={getPromiseToPayDisplay()} readOnly className="bg-grey-200" />
         </div>
       </div>
     </div>

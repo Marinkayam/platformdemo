@@ -1,4 +1,6 @@
 
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { PortalRecord } from "@/types/portalRecord";
 
 interface RecordInformationTabProps {
@@ -24,22 +26,22 @@ export function RecordInformationTab({ record }: RecordInformationTabProps) {
       {/* Portal Information */}
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Portal Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="text-sm font-medium text-gray-500">Portal Record ID</label>
-            <p className="mt-1 text-sm text-gray-900">{record.portalRecordId}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Portal Record ID</Label>
+            <Input value={record.portalRecordId} readOnly className="bg-grey-200" />
           </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Portal</label>
-            <p className="mt-1 text-sm text-gray-900">{record.portal}</p>
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Portal</Label>
+            <Input value={record.portal} readOnly className="bg-grey-200" />
           </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Buyer</label>
-            <p className="mt-1 text-sm text-gray-900">{getDisplayValue(record.buyer)}</p>
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Buyer</Label>
+            <Input value={getDisplayValue(record.buyer)} readOnly className="bg-grey-200" />
           </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Supplier Name</label>
-            <p className="mt-1 text-sm text-gray-900">{getDisplayValue(record.supplierName)}</p>
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Supplier Name</Label>
+            <Input value={getDisplayValue(record.supplierName)} readOnly className="bg-grey-200" />
           </div>
         </div>
       </div>
@@ -47,24 +49,22 @@ export function RecordInformationTab({ record }: RecordInformationTabProps) {
       {/* Financial Information */}
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Financial Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="text-sm font-medium text-gray-500">Total Amount</label>
-            <p className="mt-1 text-sm text-gray-900 font-medium">
-              {formatCurrency(record.total, record.currency)}
-            </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Total Amount</Label>
+            <Input value={formatCurrency(record.total, record.currency)} readOnly className="bg-grey-200" />
           </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Currency</label>
-            <p className="mt-1 text-sm text-gray-900">{record.currency}</p>
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Currency</Label>
+            <Input value={record.currency} readOnly className="bg-grey-200" />
           </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Invoice Number</label>
-            <p className="mt-1 text-sm text-gray-900">{getDisplayValue(record.invoiceNumber)}</p>
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Invoice Number</Label>
+            <Input value={getDisplayValue(record.invoiceNumber)} readOnly className="bg-grey-200" />
           </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">PO Number</label>
-            <p className="mt-1 text-sm text-gray-900">{getDisplayValue(record.poNumber)}</p>
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">PO Number</Label>
+            <Input value={getDisplayValue(record.poNumber)} readOnly className="bg-grey-200" />
           </div>
         </div>
       </div>
@@ -72,22 +72,22 @@ export function RecordInformationTab({ record }: RecordInformationTabProps) {
       {/* Status Information */}
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Status Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="text-sm font-medium text-gray-500">Connection Status</label>
-            <p className="mt-1 text-sm text-gray-900">{record.connectionStatus}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Connection Status</Label>
+            <Input value={record.connectionStatus} readOnly className="bg-grey-200" />
           </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Portal Status</label>
-            <p className="mt-1 text-sm text-gray-900">{record.portalStatus}</p>
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Portal Status</Label>
+            <Input value={record.portalStatus} readOnly className="bg-grey-200" />
           </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Match Type</label>
-            <p className="mt-1 text-sm text-gray-900">{record.matchType}</p>
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Match Type</Label>
+            <Input value={record.matchType} readOnly className="bg-grey-200" />
           </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Last Synced</label>
-            <p className="mt-1 text-sm text-gray-900">{record.lastSynced}</p>
+          <div className="space-y-2">
+            <Label className="text-sm text-grey-600">Last Synced</Label>
+            <Input value={record.lastSynced} readOnly className="bg-grey-200" />
           </div>
         </div>
       </div>
