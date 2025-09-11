@@ -9,6 +9,13 @@ export type PurchaseOrderStatus =
   | "Partially Invoiced"
   | "Fully Invoiced";
 
+export type PortalStatus = 
+  | "Connected"
+  | "Disconnected" 
+  | "Syncing"
+  | "Error"
+  | "Pending";
+
 export type PurchaseOrderLineItem = {
   id: string;
   description: string;
@@ -78,4 +85,5 @@ export type PurchaseOrder = {
   vatTaxId?: string;
   invoiceNumber?: string;
   invoiceDate?: string;
+  portalStatus?: PortalStatus;
 }; 

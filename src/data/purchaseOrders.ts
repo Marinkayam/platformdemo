@@ -41,7 +41,8 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: [],
-    lastUpdated: "2024-01-15"
+    lastUpdated: "2024-01-15",
+    portalStatus: "Connected"
   },
   {
     id: "po-002", 
@@ -76,7 +77,8 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: ["INV-2024-001"],
-    lastUpdated: "2024-01-25"
+    lastUpdated: "2024-01-25",
+    portalStatus: "Syncing"
   },
   {
     id: "po-003",
@@ -118,7 +120,8 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: ["INV-2024-002", "INV-2024-003"],
-    lastUpdated: "2024-02-01"
+    lastUpdated: "2024-02-01",
+    portalStatus: "Connected"
   },
   {
     id: "po-004",
@@ -153,7 +156,8 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: [],
-    lastUpdated: "2024-01-25"
+    lastUpdated: "2024-01-25",
+    portalStatus: "Error"
   },
   {
     id: "po-005",
@@ -195,7 +199,8 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: ["INV-2024-004"],
-    lastUpdated: "2024-02-05"
+    lastUpdated: "2024-02-05",
+    portalStatus: "Connected"
   },
   {
     id: "po-006",
@@ -237,7 +242,8 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: [],
-    lastUpdated: "2024-02-05"
+    lastUpdated: "2024-02-05",
+    portalStatus: "Pending"
   },
   {
     id: "po-007",
@@ -279,7 +285,8 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: ["INV-2024-005", "INV-2024-006"],
-    lastUpdated: "2024-02-10"
+    lastUpdated: "2024-02-10",
+    portalStatus: "Connected"
   },
   {
     id: "po-008",
@@ -321,7 +328,8 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: ["INV-2024-007"],
-    lastUpdated: "2024-02-12"
+    lastUpdated: "2024-02-12",
+    portalStatus: "Disconnected"
   },
   {
     id: "po-009",
@@ -363,7 +371,8 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: [],
-    lastUpdated: "2024-02-10"
+    lastUpdated: "2024-02-10",
+    portalStatus: "Syncing"
   },
   {
     id: "po-010",
@@ -405,6 +414,7 @@ export const purchaseOrderData: PurchaseOrder[] = [
       }
     ],
     relatedInvoices: ["INV-2024-008"],
-    lastUpdated: "2024-02-14"
+    lastUpdated: "2024-02-14",
+    portalStatus: "Connected"
   }
 ];
