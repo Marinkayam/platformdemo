@@ -12,13 +12,10 @@ export function SidebarNotifications() {
   const isCollapsed = sidebarState === "collapsed";
 
   const notificationButton = (
-    <div className="relative">
-      <div className="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300" 
-           style={{ backgroundColor: '#E6E7EB' }}>
-        <NotificationsPopover />
-      </div>
+    <div className="relative flex items-center justify-center">
+      <Bell className="h-4 w-4 text-muted-foreground" />
       {unreadCount > 0 && (
-        <span className="absolute -top-1 -right-1 block w-2.5 h-2.5 rounded-full bg-red-500 border-2 border-[#FAFAFA]" />
+        <span className="absolute -top-1 -right-1 block w-2 h-2 rounded-full bg-red-500" />
       )}
     </div>
   );
@@ -27,7 +24,9 @@ export function SidebarNotifications() {
     return (
       <Tooltip>
         <TooltipTrigger asChild>
-          {notificationButton}
+          <Button variant="ghost" size="icon" className="w-8 h-8 hover:bg-gray-100">
+            {notificationButton}
+          </Button>
         </TooltipTrigger>
         <TooltipContent side="right">
           <span>Notifications{unreadCount > 0 ? ` (${unreadCount})` : ''}</span>
@@ -37,13 +36,13 @@ export function SidebarNotifications() {
   }
 
   return (
-    <Button variant="ghost" className="w-full justify-start px-2 h-auto py-2 hover:bg-gray-100">
+    <Button variant="ghost" className="w-full justify-start px-2 h-10 hover:bg-gray-100">
       <div className="flex items-center gap-3 w-full">
         {notificationButton}
         <div className="flex-1 text-left">
-          <span className="text-sm font-medium">Notifications</span>
+          <span className="text-sm font-medium text-foreground">Notifications</span>
           {unreadCount > 0 && (
-            <span className="text-xs text-muted-foreground ml-1">({unreadCount} unread)</span>
+            <span className="text-xs text-muted-foreground ml-1">({unreadCount})</span>
           )}
         </div>
       </div>

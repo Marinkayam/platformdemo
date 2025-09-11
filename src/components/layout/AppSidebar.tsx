@@ -1,4 +1,4 @@
-import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter, SidebarSeparator } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter, SidebarSeparator, SidebarTrigger } from "@/components/ui/sidebar";
 import { CompanyLogo } from "@/components/common/CompanyLogo";
 import { SidebarSection } from "./SidebarSection";
 import { SidebarUserProfile } from "./sidebar/SidebarUserProfile";
@@ -18,16 +18,21 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
   const isCollapsed = sidebarState === "collapsed";
   return (
     <Sidebar variant="sidebar" collapsible="icon" className="z-40 w-64 bg-[#FAFAFA] border-r border-[#E4E5E9] transition-all duration-300">
-      <SidebarHeader className="border-b border-[#E4E5E9] h-[64px] flex items-center justify-center p-0">
-        {isCollapsed ? (
-          <div className="flex items-center justify-center">
-            <CompanyLogo collapsed={true} />
-          </div>
-        ) : (
-          <div className="w-full flex items-center h-full px-6 gap-3">
-            <CompanyLogo collapsed={false} />
-            <span className="text-base font-normal text-foreground">{companyInfo.name || "Monto LTD"}</span>
-          </div>
+      <SidebarHeader className="border-b border-[#E4E5E9] h-[64px] flex items-center justify-between p-0 px-6">
+        <div className="flex items-center gap-3">
+          {isCollapsed ? (
+            <div className="flex items-center justify-center">
+              <CompanyLogo collapsed={true} />
+            </div>
+          ) : (
+            <>
+              <CompanyLogo collapsed={false} />
+              <span className="text-base font-normal text-foreground">{companyInfo.name || "Monto LTD"}</span>
+            </>
+          )}
+        </div>
+        {!isCollapsed && (
+          <SidebarTrigger className="ml-auto p-1.5 h-8 w-8 hover:bg-gray-100 rounded-md" />
         )}
       </SidebarHeader>
       
