@@ -33,8 +33,8 @@ export function MainLayout() {
           </header>
         )}
         {!headerVisible && (
-          <div className="fixed top-4 left-4 z-50">
-            <SidebarTrigger className="bg-background border shadow-md" />
+          <div className="fixed top-4 left-4 z-[60] bg-white rounded-md shadow-lg border">
+            <SidebarTrigger className="p-2" />
           </div>
         )}
         <main className="flex-1 bg-white overflow-y-auto min-h-0">
