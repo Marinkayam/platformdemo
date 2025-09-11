@@ -1,6 +1,9 @@
-import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter, SidebarSeparator } from "@/components/ui/sidebar";
 import { CompanyLogo } from "@/components/common/CompanyLogo";
 import { SidebarSection } from "./SidebarSection";
+import { SidebarUserProfile } from "./sidebar/SidebarUserProfile";
+import { SidebarNotifications } from "./sidebar/SidebarNotifications";
+import { HeaderToggle } from "./sidebar/HeaderToggle";
 import { navMain, navUser } from "@/data/navigation";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useCompany } from "@/context/CompanyContext";
@@ -34,8 +37,14 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
         </div>
       </SidebarContent>
       
-      <SidebarFooter className="border-t border-[#E4E5E9] px-3 py-4 bg-[#FAFAFA]">
+      <SidebarFooter className="border-t border-[#E4E5E9] px-3 py-4 bg-[#FAFAFA] space-y-3">
         <SidebarSection items={navUser} onChatAIOpen={onChatAIOpen} />
+        <SidebarSeparator />
+        <div className="space-y-2">
+          <HeaderToggle />
+          <SidebarNotifications />
+          <SidebarUserProfile />
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

@@ -25,6 +25,7 @@ import ScanAgents from "./pages/ScanAgents";
 import NewPaymentsRelationship from "./pages/NewPaymentsRelationship";
 import { NotificationsProvider } from "./context/NotificationsContext";
 import { CompanyProvider } from "./context/CompanyContext";
+import { LayoutProvider } from "./context/LayoutContext";
 import PortalsDashboard from "./pages/PortalsDashboard";
 import PortalsDashboard2 from "./pages/PortalsDashboard2";
 import SecretHomePage from "./pages/SecretHomePage";
@@ -38,9 +39,10 @@ const App = () => (
     <TooltipProvider>
       <CompanyProvider>
         <NotificationsProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+          <LayoutProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
           <Routes>
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
@@ -74,7 +76,8 @@ const App = () => (
             {/* Fallback for undefined routes */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </BrowserRouter>
+            </BrowserRouter>
+          </LayoutProvider>
         </NotificationsProvider>
       </CompanyProvider>
     </TooltipProvider>
