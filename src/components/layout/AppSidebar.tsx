@@ -19,7 +19,7 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
   return (
     <Sidebar variant="sidebar" collapsible="icon" className="z-40 w-64 bg-[#FAFAFA] border-r border-[#E4E5E9] transition-all duration-300">
       <SidebarHeader className="border-b border-[#E4E5E9] h-[64px] flex items-center p-0 px-6">
-        <div className="flex items-center gap-3 flex-1 min-w-0">
+        <div className="flex items-center gap-3">
           {isCollapsed ? (
             <div className="flex items-center justify-center">
               <CompanyLogo collapsed={true} />
@@ -27,15 +27,10 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
           ) : (
             <>
               <CompanyLogo collapsed={false} />
-              <span className="text-base font-normal text-foreground truncate">{companyInfo.name || "Monto LTD"}</span>
+              <span className="text-base font-normal text-foreground">{companyInfo.name || "Monto LTD"}</span>
             </>
           )}
         </div>
-        {!isCollapsed && (
-          <div className="flex-shrink-0 ml-2">
-            <SidebarTrigger className="p-1.5 h-8 w-8 hover:bg-gray-100 rounded-md" />
-          </div>
-        )}
       </SidebarHeader>
       
       <SidebarContent className="bg-[#FAFAFA] overflow-y-auto transition-all duration-300 px-3 py-[24px]">

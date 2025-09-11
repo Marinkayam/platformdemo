@@ -1,7 +1,7 @@
 
 import { Outlet } from "react-router-dom";
 import { AppSidebar } from "./AppSidebar";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { useState } from "react";
 import { ChatAIModal } from "@/components/ui/ChatAIModal";
 import { useLayout } from "@/context/LayoutContext";
@@ -18,9 +18,16 @@ export function MainLayout() {
     <SidebarProvider>
       <AppSidebar onChatAIOpen={handleOpenChatAIModal} />
       <SidebarInset className="overflow-x-hidden h-screen flex flex-col">
+        {/* Floating sidebar trigger when header is hidden */}
+        {!headerVisible && (
+          <div className="absolute top-4 left-4 z-50">
+            <SidebarTrigger className="p-1.5 h-8 w-8 bg-white hover:bg-gray-100 rounded-md shadow-sm border" />
+          </div>
+        )}
         {headerVisible && (
           <header className="flex-shrink-0 sticky top-0 z-50 h-16 bg-[#FAFAFA] border-b border-[#E4E5E9]">
             <div className="flex h-full items-center px-4">
+              <SidebarTrigger className="p-1.5 h-8 w-8 hover:bg-gray-100 rounded-md" />
               <div className="flex-1">
                 {/* Space for breadcrumbs or page title if needed */}
               </div>
