@@ -17,17 +17,12 @@ export function HeaderToggle() {
       onClick={toggleHeader}
       className={`${isCollapsed ? 'w-8 h-8' : 'w-full justify-start px-2'} hover:bg-gray-100`}
     >
-      {headerVisible ? (
-        <EyeOff className={`${isCollapsed ? 'h-4 w-4' : 'mr-2 h-4 w-4'}`} />
-      ) : (
-        <Eye className={`${isCollapsed ? 'h-4 w-4' : 'mr-2 h-4 w-4'}`} />
-      )}
-      {!isCollapsed && (
-        <span className="text-sm font-medium">
-          {headerVisible ? 'Hide Header' : 'Show Header'}
-        </span>
-      )}
-    </Button>
+       {headerVisible ? (
+         <EyeOff className={`${isCollapsed ? 'h-4 w-4' : 'mr-2 h-4 w-4'}`} />
+       ) : (
+         <Eye className={`${isCollapsed ? 'h-4 w-4' : 'mr-2 h-4 w-4'}`} />
+       )}
+     </Button>
   );
 
   if (isCollapsed) {

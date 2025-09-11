@@ -5,10 +5,13 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/s
 import { useState } from "react";
 import { ChatAIModal } from "@/components/ui/ChatAIModal";
 import { useLayout } from "@/context/LayoutContext";
+import { useCompany } from "@/context/CompanyContext";
+import { CompanyLogo } from "@/components/common/CompanyLogo";
 
 export function MainLayout() {
   const [isChatAIModalOpen, setIsChatAIModalOpen] = useState(false);
   const { headerVisible } = useLayout();
+  const { companyInfo } = useCompany();
 
   const handleOpenChatAIModal = () => {
     setIsChatAIModalOpen(true);
@@ -18,16 +21,15 @@ export function MainLayout() {
     <SidebarProvider>
       <AppSidebar onChatAIOpen={handleOpenChatAIModal} />
       <SidebarInset className="overflow-x-hidden h-screen flex flex-col">
-        {/* Floating sidebar trigger when header is hidden */}
-        {!headerVisible && (
-          <div className="absolute top-4 left-4 z-50">
-            <SidebarTrigger className="p-1.5 h-8 w-8 bg-white hover:bg-gray-100 rounded-md shadow-sm border" />
-          </div>
-        )}
+        {/* Always show logo and trigger in header position */}
+        <div className="absolute top-4 left-4 z-50 flex items-center gap-3">
+          <SidebarTrigger className="h-8 w-8 bg-white hover:bg-gray-100 rounded-md shadow-sm border" />
+          <CompanyLogo collapsed={false} />
+          <span className="text-base font-normal text-foreground bg-white px-2 py-1 rounded shadow-sm border">{companyInfo.name || "Monto LTD"}</span>
+        </div>
         {headerVisible && (
-          <header className="flex-shrink-0 sticky top-0 z-50 h-16 bg-[#FAFAFA] border-b border-[#E4E5E9]">
+          <header className="flex-shrink-0 sticky top-0 z-40 h-16 bg-[#FAFAFA] border-b border-[#E4E5E9]">
             <div className="flex h-full items-center px-4">
-              <SidebarTrigger className="p-1.5 h-8 w-8 hover:bg-gray-100 rounded-md" />
               <div className="flex-1">
                 {/* Space for breadcrumbs or page title if needed */}
               </div>

@@ -29,9 +29,7 @@ export function SidebarUserProfile() {
   const userEmail = "lisa.smith@example.com";
 
   const profileButton = (
-    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-medium text-sm">
-      {userInitials}
-    </div>
+    <User className="h-4 w-4 text-muted-foreground" />
   );
 
   if (isCollapsed) {
@@ -77,13 +75,13 @@ export function SidebarUserProfile() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="w-full justify-start px-2 h-10 hover:bg-gray-100">
-          <div className="flex items-center gap-3 w-full">
-            {profileButton}
-            <div className="flex-1 text-left min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">{userName}</p>
-              <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+            <div className="flex items-center gap-3 w-full">
+              {profileButton}
+              <div className="flex-1 text-left min-w-0">
+                <p className="text-sm font-medium text-foreground truncate">Profile</p>
+                <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+              </div>
             </div>
-          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56" side="top">
