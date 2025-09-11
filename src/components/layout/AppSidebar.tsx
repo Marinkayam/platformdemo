@@ -18,7 +18,7 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
   const isCollapsed = sidebarState === "collapsed";
   return (
     <Sidebar variant="sidebar" collapsible="icon" className="z-40 w-64 bg-[#FAFAFA] border-r border-[#E4E5E9] transition-all duration-300">
-      <SidebarHeader className="border-b border-[#E4E5E9] h-[64px] flex items-center p-0 px-6">
+      <SidebarHeader className="border-b border-[#E4E5E9] h-[64px] flex items-center justify-between p-0 px-6">
         <div className="flex items-center gap-3">
           {isCollapsed ? (
             <div className="flex items-center justify-center">
@@ -31,6 +31,9 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
             </>
           )}
         </div>
+        {!isCollapsed && (
+          <SidebarTrigger className="ml-auto p-1.5 h-8 w-8 hover:bg-gray-100 rounded-md" />
+        )}
       </SidebarHeader>
       
       <SidebarContent className="bg-[#FAFAFA] overflow-y-auto transition-all duration-300 px-3 py-[24px]">
