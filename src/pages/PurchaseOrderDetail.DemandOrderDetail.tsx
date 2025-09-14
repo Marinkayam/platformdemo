@@ -27,7 +27,7 @@ export default function PurchaseOrderDetailDemandOrderDetail() {
   const handleZoomOut = () => setZoomLevel(z => Math.max(z - 0.1, 0.5));
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="space-y-6">
       <PurchaseOrderDetailHeader purchaseOrder={purchaseOrder} className="mb-6" />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

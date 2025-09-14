@@ -41,15 +41,13 @@ export default function Settings() {
   };
 
   return (
-    <div className="px-8 py-10">
-      <div>
-        <TabsNav
-          tabs={headerTabs}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
-        {renderContent()}
-      </div>
+    <div className="space-y-6">
+      <TabsNav
+        tabs={headerTabs}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
+      {renderContent()}
     </div>
   );
 }

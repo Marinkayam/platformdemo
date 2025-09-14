@@ -14,12 +14,14 @@ interface PortalRecordsActionsProps {
   recordCount?: number;
   searchValue?: string;
   onSearchChange?: (value: string) => void;
+  forceCompact?: boolean;
 }
 
 export function PortalRecordsActions({ 
   recordCount = 0,
   searchValue = "",
-  onSearchChange 
+  onSearchChange,
+  forceCompact = false
 }: PortalRecordsActionsProps) {
   const handleExportRecords = () => {
     // If more than 1000 records, show error toast
@@ -59,15 +61,36 @@ export function PortalRecordsActions({
   return (
     <div className="flex items-center gap-2">
       {/* Search Input */}
-      <div className="relative w-64">
-        <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search records..."
-          value={searchValue}
-          onChange={(e) => onSearchChange?.(e.target.value)}
-          className="h-8 pl-8"
-        />
-      </div>
+      {forceCompact ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="h-8 bg-white">
+              <Search className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[250px] p-2">
+            <div className="relative">
+              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search records..."
+                value={searchValue}
+                onChange={(e) => onSearchChange?.(e.target.value)}
+                className="h-8 pl-8"
+              />
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <div className="relative w-64">
+          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search records..."
+            value={searchValue}
+            onChange={(e) => onSearchChange?.(e.target.value)}
+            className="h-8 pl-8"
+          />
+        </div>
+      )}
       
       {/* Kebab Menu */}
       <DropdownMenu>

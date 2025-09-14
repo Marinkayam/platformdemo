@@ -111,7 +111,7 @@ export default function PortalsDashboard2() {
 
   return (
     <div className="w-full">
-      <div className="px-2 sm:px-4 md:px-6 py-3 max-w-[1440px] mx-auto w-full space-y-8">
+      <div className="max-w-[1440px] mx-auto w-full space-y-6">
         <PageHeader 
           title="Portals Dashboard" 
           subtitle="Unified view of invoices and POs from all portals—track connections, syncs, and insights."

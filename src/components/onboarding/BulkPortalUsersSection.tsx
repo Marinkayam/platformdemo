@@ -50,7 +50,7 @@ export function BulkPortalUsersSection() {
         
         <CollapsibleContent>
           <CardContent className="pt-0 space-y-6">
-            <div className="flex gap-2 p-1 bg-grey-100 rounded-lg">
+            <div className="flex gap-2 p-1 bg-grey-300 rounded-lg">
               <Button
                 variant={uploadMethod === 'manual' ? 'default' : 'ghost'}
                 size="sm"

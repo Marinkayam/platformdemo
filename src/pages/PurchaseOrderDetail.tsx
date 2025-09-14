@@ -85,7 +85,7 @@ export default function PurchaseOrderDetail() {
   const activityCount = 4; // Placeholder, adjust as needed or fetch dynamic count
 
   return (
-    <div className="container mx-auto py-6">
+    <div className="space-y-6">
       <PurchaseOrderDetailHeader purchaseOrder={purchaseOrder} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

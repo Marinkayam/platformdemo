@@ -57,16 +57,21 @@ export function PortalRecordsHeader({
       />
 
       <div className="space-y-4">
-        <div className="flex items-center justify-between gap-4">
-          <PortalRecordsFilters
-            onFilterChange={onFilterChange}
-            needsAttentionCount={needsAttentionCount}
-          />
-          <PortalRecordsActions 
-            recordCount={recordCount}
-            searchValue={searchValue}
-            onSearchChange={onSearchChange}
-          />
+        <div className="flex items-center gap-4">
+          <div className="flex-1 min-w-0 overflow-hidden">
+            <PortalRecordsFilters
+              onFilterChange={onFilterChange}
+              needsAttentionCount={needsAttentionCount}
+            />
+          </div>
+          <div className="flex-shrink-0">
+            <PortalRecordsActions 
+              recordCount={recordCount}
+              searchValue={searchValue}
+              onSearchChange={onSearchChange}
+              forceCompact={true}
+            />
+          </div>
         </div>
       </div>
     </>

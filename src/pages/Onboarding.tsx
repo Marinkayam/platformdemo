@@ -147,7 +147,7 @@ const Onboarding = () => {
                       id="company-name"
                       value={workspaceData.companyName}
                       disabled
-                      className="bg-grey-100 cursor-not-allowed"
+                      className="bg-grey-300 cursor-not-allowed"
                     />
                   </TooltipTrigger>
                   <TooltipContent>

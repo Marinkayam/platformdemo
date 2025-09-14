@@ -141,7 +141,7 @@ export default function SecretScanAgents() {
 
   return (
     <TooltipProvider>
-      <div className="space-y-4 p-8">
+      <div className="space-y-6">
         <PaymentsRelationshipsHeader 
           activeTab="scan-agents"
           onAddPortalUser={() => setIsAddPortalUserModalOpen(true)}

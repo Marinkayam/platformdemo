@@ -32,6 +32,7 @@ export function InvoiceHeader({
   searchValue,
   onSearchChange
 }: InvoiceHeaderProps) {
+
   const getSubtitle = (activeTab: string) => {
     switch (activeTab) {
       case "pending":
@@ -46,7 +47,7 @@ export function InvoiceHeader({
   };
 
   return (
-    <div className="w-full max-w-[1350px]">
+    <div className="w-full">
       <div className="mb-6">
         <div className="flex items-start mb-2 gap-8">
           <div className="flex-1">
@@ -70,13 +71,18 @@ export function InvoiceHeader({
         onTabChange={onTabChange}
       />
       
-      <div className="flex items-center justify-between gap-4">
-        <InvoiceFilters onFilterChange={onFilterChange} />
-        <InvoiceActions 
-          invoiceCount={invoiceCount}
-          searchValue={searchValue}
-          onSearchChange={onSearchChange}
-        />
+      <div className="flex items-center gap-4">
+        <div className="flex-1 min-w-0 overflow-hidden">
+          <InvoiceFilters onFilterChange={onFilterChange} />
+        </div>
+        <div className="flex-shrink-0">
+          <InvoiceActions 
+            invoiceCount={invoiceCount}
+            searchValue={searchValue}
+            onSearchChange={onSearchChange}
+            forceCompact={true}
+          />
+        </div>
       </div>
     </div>
   );

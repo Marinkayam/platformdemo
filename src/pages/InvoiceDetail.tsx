@@ -119,7 +119,7 @@ export default function InvoiceDetail() {
   }];
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="space-y-6">
       <InvoiceHeader invoice={invoice} />
       
       <InvoiceTabsNav activeTab={activeTab} onTabChange={setActiveTab} activityCount={activityCount} invoiceStatus={invoice.status} exceptionCount={invoice.exceptions?.length || 0} />

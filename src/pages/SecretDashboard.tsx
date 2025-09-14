@@ -136,7 +136,7 @@ const SecretDashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-8 p-6">
+      <div className="space-y-6">
         <Skeleton className="h-24 w-full rounded-xl" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Skeleton className="h-40 w-full rounded-xl" />
@@ -152,7 +152,7 @@ const SecretDashboard = () => {
   }
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-6">
       {/* 1. Personal Welcome Header */}
       <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
         <CardContent className="p-6">

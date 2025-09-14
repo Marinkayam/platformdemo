@@ -48,13 +48,18 @@ export function PurchaseOrderHeader({
       />
 
       <div className="space-y-4">
-        <div className="flex items-center justify-between gap-4">
-          <PurchaseOrderFilters onFilterChange={onFilterChange} />
-          <PurchaseOrderActions 
-            purchaseOrderCount={purchaseOrderCount}
-            searchValue={searchValue}
-            onSearchChange={onSearchChange}
-          />
+        <div className="flex items-center gap-4">
+          <div className="flex-1 min-w-0 overflow-hidden">
+            <PurchaseOrderFilters onFilterChange={onFilterChange} />
+          </div>
+          <div className="flex-shrink-0">
+            <PurchaseOrderActions 
+              purchaseOrderCount={purchaseOrderCount}
+              searchValue={searchValue}
+              onSearchChange={onSearchChange}
+              forceCompact={true}
+            />
+          </div>
         </div>
       </div>
     </>

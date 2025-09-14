@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
@@ -17,15 +17,18 @@ interface InvoiceActionsProps {
   invoiceCount?: number;
   searchValue?: string;
   onSearchChange?: (value: string) => void;
+  forceCompact?: boolean;
 }
 
 export function InvoiceActions({ 
   invoiceCount = 0,
   searchValue = "",
-  onSearchChange 
+  onSearchChange,
+  forceCompact = false
 }: InvoiceActionsProps) {
   const [customizeTableOpen, setCustomizeTableOpen] = useState(false);
   const [emailExportOpen, setEmailExportOpen] = useState(false);
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
   const handleCustomizeTable = (columns: any[]) => {
     const selectedColumns = columns.filter(c => c.selected);
@@ -92,24 +95,73 @@ INV-003,Amazon Inc.,2025-01-20,Settled,$1500.00,Oracle,$Bob Johnson`;
   return (
     <>
       <div className="flex items-center gap-2">
-        {/* Search Input */}
-        <div className="relative w-64">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search invoices..."
-            value={searchValue}
-            onChange={(e) => onSearchChange?.(e.target.value)}
-            className="h-8 pl-8 pr-8"
-          />
-          {searchValue && (
-            <button
-              onClick={() => onSearchChange?.("")}
-              className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center transition-all z-10"
-              title="Clear search"
-              type="button"
-            >
-              <X size={12} />
-            </button>
+        {/* Responsive Search */}
+        <div className="flex items-center">
+          {/* Dynamically show compact or full search based on available space */}
+          {forceCompact ? (
+            /* Compact mode: Icon that expands */
+            <div className="relative">
+              {isSearchExpanded ? (
+                <div className="relative w-48">
+                  <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search invoices..."
+                    value={searchValue}
+                    onChange={(e) => onSearchChange?.(e.target.value)}
+                    onBlur={() => !searchValue && setIsSearchExpanded(false)}
+                    className="h-8 pl-8 pr-8"
+                    autoFocus
+                  />
+                  {searchValue && (
+                    <button
+                      onClick={() => {
+                        onSearchChange?.("");
+                        setIsSearchExpanded(false);
+                      }}
+                      className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center transition-all z-10"
+                      title="Clear search"
+                      type="button"
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 bg-white"
+                  onClick={() => setIsSearchExpanded(true)}
+                  title="Search invoices"
+                >
+                  <Search className="h-4 w-4" />
+                  {searchValue && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full"></div>
+                  )}
+                </Button>
+              )}
+            </div>
+          ) : (
+            /* Full mode: Always show full input */
+            <div className="relative w-48">
+              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search invoices..."
+                value={searchValue}
+                onChange={(e) => onSearchChange?.(e.target.value)}
+                className="h-8 pl-8 pr-8"
+              />
+              {searchValue && (
+                <button
+                  onClick={() => onSearchChange?.("")}
+                  className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center transition-all z-10"
+                  title="Clear search"
+                  type="button"
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
           )}
         </div>
         

@@ -2,8 +2,8 @@ import * as React from "react";
 
 const ChatAIIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
-    width={43}
-    height={43}
+    width={35}
+    height={35}
     viewBox="0 0 39 39"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

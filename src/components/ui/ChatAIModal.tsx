@@ -107,8 +107,8 @@ export function ChatAIModal({ isOpen, onClose }: ChatAIModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[800px] max-h-[85vh]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" />
+          <DialogTitle className="flex items-center gap-2 text-base">
+            <Sparkles className="h-4 w-4 text-primary" />
             Monto AI Assistant
           </DialogTitle>
           <DialogDescription>

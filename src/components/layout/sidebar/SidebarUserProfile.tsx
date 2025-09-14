@@ -78,8 +78,7 @@ export function SidebarUserProfile() {
             <div className="flex items-center gap-3 w-full">
               {profileButton}
               <div className="flex-1 text-left min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">Profile</p>
-                <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+                <p className="font-normal leading-5 text-[rgb(63,71,88)] truncate">{userName}</p>
               </div>
             </div>
         </Button>
