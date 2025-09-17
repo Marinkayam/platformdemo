@@ -35,7 +35,7 @@ export function usePortalUserFiltering(data: PortalUser[]) {
     return filtered;
   }, [data, filters]);
 
-  const handleFilterChange = useCallback((key: keyof PortalUserFilters, value: any) => {
+  const handleFilterChange = useCallback((key: keyof PortalUserFilters, value: string | string[]) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   }, []);
 

@@ -5,7 +5,7 @@ import { ValidatedPaymentRecord, PAYMENT_REPORT_FIELDS } from '../types';
 export function useDataValidation() {
   const [validatedData, setValidatedData] = useState<ValidatedPaymentRecord[]>([]);
 
-  const validateData = (data: any[], mappings: { [key: string]: string }) => {
+  const validateData = (data: Record<string, unknown>[], mappings: { [key: string]: string }) => {
     const newValidatedData = data.map((row, index) => {
       const record: ValidatedPaymentRecord = { 
         _row: index + 2, 
@@ -19,7 +19,7 @@ export function useDataValidation() {
         const value = mappedHeader && mappedHeader !== 'skip' ? row[mappedHeader] : undefined;
 
         if (value) {
-          (record as any)[field.key] = value;
+          (record as Record<string, unknown>)[field.key] = value;
         } else {
           if (field.required) {
             record._errors.push(`Missing required field: ${field.label}`);

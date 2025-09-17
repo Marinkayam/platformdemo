@@ -24,7 +24,10 @@ interface TableActionsProps {
 
 export function TableActions({ actions, className }: TableActionsProps) {
   return (
-    <div className={cn("flex items-center justify-center w-[80px]", className)}>
+    <div
+      className={cn("flex items-center justify-center w-[80px]", className)}
+      onClick={(e) => e.stopPropagation()}
+    >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -35,7 +38,10 @@ export function TableActions({ actions, className }: TableActionsProps) {
           {actions.map((action, index) => (
             <DropdownMenuItem
               key={index}
-              onClick={action.onClick}
+              onClick={(e) => {
+                e.stopPropagation();
+                action.onClick();
+              }}
               className={cn(
                 "flex items-center gap-2 cursor-pointer px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground",
                 action.variant === "destructive" && "text-destructive hover:text-destructive"

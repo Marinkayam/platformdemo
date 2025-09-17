@@ -272,7 +272,7 @@ export default function DesignSystemPlayground() {
     }
   };
 
-  const handleFilterChange = (key: keyof InvoiceFiltersType, value: any) => {
+  const handleFilterChange = (key: keyof InvoiceFiltersType, value: string | string[]) => {
     setFilters(prev => ({
       ...prev,
       [key]: value
@@ -664,8 +664,8 @@ export default function DesignSystemPlayground() {
                 <div className="space-y-4">
                   <div className="flex items-baseline justify-between p-4 bg-grey-50 rounded-lg border">
                     <div className="flex-1">
-                      <h2 className="text-2xl font-semibold text-grey-900">Setup Complete!</h2>
-                      <p className="text-sm text-grey-500 mt-1">Section headers, completion messages</p>
+                      <h2 className="text-2xl font-semibold text-grey-900">Good morning, Nitsan!</h2>
+                      <p className="text-sm text-grey-500 mt-1">Dashboard welcome headers, main page titles</p>
                     </div>
                     <div className="text-right text-xs text-grey-500">
                       <div>24px / 1.5rem</div>
@@ -688,8 +688,8 @@ export default function DesignSystemPlayground() {
                   
                   <div className="flex items-baseline justify-between p-4 bg-grey-50 rounded-lg border">
                     <div className="flex-1">
-                      <h3 className="text-lg">Add Portal User</h3>
-                      <p className="text-sm text-grey-500 mt-1">Card titles, modal headers</p>
+                      <h3 className="text-lg">Account Receivables</h3>
+                      <p className="text-sm text-grey-500 mt-1">Component titles, section headers</p>
                     </div>
                     <div className="text-right text-xs text-grey-500">
                       <div>18px / 1.125rem</div>
@@ -700,8 +700,8 @@ export default function DesignSystemPlayground() {
                   
                   <div className="flex items-baseline justify-between p-4 bg-grey-50 rounded-lg border">
                     <div className="flex-1">
-                      <h4 className="text-base font-semibold text-[#061237]">Action Required</h4>
-                      <p className="text-sm text-grey-500 mt-1">Component headers, card sections</p>
+                      <h4 className="text-base font-semibold text-[#061237]">PO-12345</h4>
+                      <p className="text-sm text-grey-500 mt-1">Entity identifiers, action buttons</p>
                     </div>
                     <div className="text-right text-xs text-grey-500">
                       <div>16px / 1rem</div>
@@ -712,8 +712,8 @@ export default function DesignSystemPlayground() {
                   
                   <div className="flex items-baseline justify-between p-4 bg-grey-50 rounded-lg border">
                     <div className="flex-1">
-                      <h5 className="text-sm font-medium text-[#586079]">Purchase Orders</h5>
-                      <p className="text-sm text-grey-500 mt-1">Small card titles, metric labels</p>
+                      <h5 className="text-sm font-medium text-[#586079]">Recent portal record activity</h5>
+                      <p className="text-sm text-grey-500 mt-1">Descriptions, helper text, secondary info</p>
                     </div>
                     <div className="text-right text-xs text-grey-500">
                       <div>14px / 0.875rem</div>
@@ -799,12 +799,33 @@ export default function DesignSystemPlayground() {
 /* Example: Dashboard metrics, KPI numbers */
 
 /* Real Platform Examples */
-<h2 className="text-2xl font-semibold text-grey-900">Setup Complete!</h2>
+// Dashboard Welcome Headers
+<h1 className="text-2xl font-bold text-gray-900">Good morning, Nitsan!</h1>
+
+// Section Headers  
 <h2 className="text-xl font-semibold text-[#061237] tracking-tight">Portal Records</h2>
-<h3 className="text-lg">Add Portal User</h3>
-<h4 className="text-base font-semibold text-[#061237]">Action Required</h4>
-<h5 className="text-sm font-medium text-[#586079]">Purchase Orders</h5>
-<div className="text-3xl font-bold text-[#061237]">1,247</div>`} />
+<h2 className="text-xl font-semibold text-[#061237] tracking-tight">Purchase Orders</h2>
+
+// Component Titles
+<h3 className="text-lg font-semibold text-[#061237]">Account Receivables</h3>
+<h4 className="text-base font-semibold text-[#061237]">PO-12345</h4>
+
+// Form Labels & Descriptions
+<label className="text-sm font-medium text-grey-800">Portal</label>
+<p className="text-sm text-[#586079]">Recent portal record activity</p>
+
+// Helper Text & Metadata
+<p className="text-xs text-gray-500">120 portals connected</p>
+<span className="text-xs text-[#586079]">invoices</span>
+
+// Large Metrics
+<div className="text-3xl font-bold text-[#061237]">$73.5M</div>
+<div className="text-3xl font-bold text-gray-900">120</div>
+
+// Medium Metrics & Status
+<p className="text-xl font-semibold text-blue-600">185</p>
+<span className="text-sm font-medium text-green-700">All systems healthy</span>
+<span className="text-sm text-green-600">+12% from last month</span>`} />
               </div>
             )}
           </CardContent>
@@ -2238,7 +2259,7 @@ export function InvoicesPage() {
         key: 'status',
         label: 'Status',
         className: 'w-[120px] pr-4',
-        render: (item: InvoiceData) => <StatusBadge status={item.status as any} />,
+        render: (item: InvoiceData) => <StatusBadge status={item.status as 'paid' | 'pending' | 'overdue' | 'draft'} />,
       },
       {
         key: 'portal',

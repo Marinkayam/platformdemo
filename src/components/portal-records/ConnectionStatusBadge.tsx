@@ -15,102 +15,17 @@ export function ConnectionStatusBadge({ status, className }: ConnectionStatusBad
   const getTooltipContent = (status: string) => {
     switch (status.toLowerCase()) {
       case 'connected':
-        return (
-          <div className="space-y-2">
-            <p className="font-medium">Monto successfully syncing this portal</p>
-            <div className="space-y-1">
-              <p className="text-xs text-gray-300">Manage:</p>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleMockLink("Portal Settings")}
-                  className="text-blue-400 hover:text-blue-300 underline text-xs"
-                >
-                  ⚙️ Portal Settings
-                </button>
-                <button
-                  onClick={() => handleMockLink("Sync History")}
-                  className="text-blue-400 hover:text-blue-300 underline text-xs"
-                >
-                  📊 Sync History
-                </button>
-              </div>
-            </div>
-          </div>
-        );
+        return "Portal is connected and syncing successfully";
       case 'disconnected':
-        return (
-          <div className="space-y-2">
-            <p className="font-medium">Portal login failed. Please update credentials.</p>
-            <div className="space-y-1">
-              <p className="text-xs text-gray-300">Fix:</p>
-              <button
-                onClick={() => handleMockLink("Go to Portal Settings")}
-                className="text-blue-400 hover:text-blue-300 underline text-xs"
-              >
-                🔗 Go to Portal Settings
-              </button>
-            </div>
-          </div>
-        );
+        return "Portal connection failed - check credentials";
       case 'syncing':
-        return (
-          <div className="space-y-2">
-            <p className="font-medium">Currently syncing data from portal</p>
-            <div className="space-y-1">
-              <p className="text-xs text-gray-300">Monitor:</p>
-              <button
-                onClick={() => handleMockLink("View Progress")}
-                className="text-blue-400 hover:text-blue-300 underline text-xs"
-              >
-                📈 View Progress
-              </button>
-            </div>
-          </div>
-        );
+        return "Currently syncing data from portal";
       case 'in progress':
-        return (
-          <div className="space-y-2">
-            <p className="font-medium">Sync operation in progress</p>
-            <div className="space-y-1">
-              <p className="text-xs text-gray-300">Monitor:</p>
-              <button
-                onClick={() => handleMockLink("View Details")}
-                className="text-blue-400 hover:text-blue-300 underline text-xs"
-              >
-                🔍 View Details
-              </button>
-            </div>
-          </div>
-        );
+        return "Sync operation in progress";
       case 'partial':
-        return (
-          <div className="space-y-2">
-            <p className="font-medium">Only some records syncing — review details</p>
-            <div className="space-y-1">
-              <p className="text-xs text-gray-300">Actions:</p>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleMockLink("Review Issues")}
-                  className="text-blue-400 hover:text-blue-300 underline text-xs"
-                >
-                  🔍 Review Issues
-                </button>
-                <button
-                  onClick={() => handleMockLink("Retry Sync")}
-                  className="text-blue-400 hover:text-blue-300 underline text-xs"
-                >
-                  🔄 Retry Sync
-                </button>
-              </div>
-            </div>
-          </div>
-        );
+        return "Only some records syncing - review needed";
       default:
-        return (
-          <div className="text-center">
-            <p>Connection status information</p>
-          </div>
-        );
+        return "Connection status information";
     }
   };
 

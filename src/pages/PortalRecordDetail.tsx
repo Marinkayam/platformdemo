@@ -12,7 +12,7 @@ import { PortalRecordDetailModals } from "@/components/portal-records/detail/Por
 import { PortalRecordActionInstructions } from "@/components/portal-records/detail/PortalRecordActionInstructions";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export default function PortalRecordDetail() {
   const { id } = useParams<{ id: string }>();
@@ -57,10 +57,17 @@ export default function PortalRecordDetail() {
     navigate("/portal-records");
   };
 
-  const onMatchAndCreateRTP = (pdfFile: File) => {
-    console.log(`Creating RTP for record ${portalRecord.id} with PDF:`, pdfFile.name);
+  const onMatchAndCreateRTP = (pdfFile?: File) => {
+    console.log(`Creating RTP for record ${portalRecord.id}`, pdfFile ? `with PDF: ${pdfFile.name}` : '');
     setMatchModalOpen(false);
-    // TODO: Implement RTP creation logic
+
+    // Show success toast and navigate back
+    toast.success("RTP Record Created", {
+      description: `New RTP record has been created for ${portalRecord.portalRecordId}. Returning to portal records...`,
+    });
+
+    // Navigate back to portal records table
+    navigate("/portal-records");
   };
 
   const handleIgnoreRecord = () => {
@@ -68,9 +75,20 @@ export default function PortalRecordDetail() {
     setIgnoreModalOpen(true);
   };
 
-  const handleMatchInvoice = () => {
-    console.log('Opening match modal from detail page');
-    setMatchModalOpen(true);
+  const handleMatchInvoice = (invoiceId?: string) => {
+    if (invoiceId) {
+      // Direct match from inline interface
+      console.log(`Matched invoice ${invoiceId} with record ${portalRecord.id}`);
+      toast.success("Invoice Associated", {
+        description: `Portal record ${portalRecord.invoiceNumber} has been associated with invoice ${invoiceId}.`,
+      });
+      // Navigate back to the portal records table
+      navigate("/portal-records");
+    } else {
+      // Fallback to modal (for other contexts)
+      console.log('Opening match modal from detail page');
+      setMatchModalOpen(true);
+    }
   };
 
   const handleResolveConflict = () => {
@@ -80,8 +98,7 @@ export default function PortalRecordDetail() {
 
   const handleSyncRecord = () => {
     console.log('Syncing record from detail page');
-    toast({
-      title: "Record Synced",
+    toast.success("Record Synced", {
       description: `Portal record ${portalRecord.portalRecordId} has been synced successfully.`,
     });
   };
@@ -98,19 +115,15 @@ export default function PortalRecordDetail() {
         onIgnoreRecord={handleIgnoreRecord}
       />
 
-      <PortalRecordActionInstructions 
-        portalRecord={portalRecord}
-        onMatchInvoice={handleMatchInvoice}
-        onResolveConflict={handleResolveConflict}
-        onIgnoreRecord={handleIgnoreRecord}
-      />
-
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">
         <PortalRecordTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
         <TabsContent value="record-data" className="mt-6">
           <Card className="p-6">
-            <PortalRecordInformation portalRecord={portalRecord} />
+            <PortalRecordInformation
+              portalRecord={portalRecord}
+              showCollapsed={portalRecord.matchType === 'Unmatched'}
+            />
           </Card>
         </TabsContent>
 
@@ -120,6 +133,13 @@ export default function PortalRecordDetail() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <PortalRecordActionInstructions
+        portalRecord={portalRecord}
+        onMatchInvoice={handleMatchInvoice}
+        onResolveConflict={handleResolveConflict}
+        onIgnoreRecord={handleIgnoreRecord}
+      />
 
       <PortalRecordDetailModals
         portalRecord={portalRecord}

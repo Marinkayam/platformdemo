@@ -45,7 +45,7 @@ export function EnhancedMatchInvoiceModal({
         <DialogContent className={`${isCompactMode ? 'max-w-4xl' : 'max-w-6xl'} max-h-[95vh] flex flex-col p-0 overflow-hidden`}>
           <DialogHeader className="border-b border-border p-4 pb-3 flex-shrink-0 bg-gradient-to-r from-primary/5 to-primary/10">
             <DialogTitle className="text-lg font-semibold text-foreground">
-              Match Portal Record
+              Associate Invoice
             </DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground mt-1">
               Connect portal record {record.portalRecordId} to an existing invoice or upload a new one to create an RTP record

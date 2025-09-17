@@ -18,7 +18,7 @@ function toast({ variant = "default", className, ...props }: Toast) {
   const id = genId()
   const montoClassName = getMontoClassName(variant, className)
 
-  const update = (props: any) =>
+  const update = (props: Partial<Toast>) =>
     dispatch({
       type: actionTypes.UPDATE_TOAST,
       toast: { ...props, id },

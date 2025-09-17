@@ -8,7 +8,7 @@ import { PAYMENT_REPORT_FIELDS } from '../types';
 
 interface MappingStepProps {
   headers: string[];
-  data: any[];
+  data: Record<string, unknown>[];
   mappings: { [key: string]: string };
   onMappingChange: (mappings: { [key: string]: string }) => void;
 }

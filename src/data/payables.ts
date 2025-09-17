@@ -14,7 +14,7 @@ const initialPayables: PayableOption[] = [
   { id: "8", name: "Atlantic Holdings" },
 ];
 
-let payablesList: PayableOption[] = [...initialPayables];
+const payablesList: PayableOption[] = [...initialPayables];
 
 export function getAllPayables(): PayableOption[] {
   return [...payablesList];

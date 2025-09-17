@@ -26,8 +26,8 @@ export function PortalRecordDetailActions({
           </Button>
         );
         buttons.push(
-          <Button key="ignore" variant="outline" onClick={onIgnoreRecord} className="text-red-600 hover:text-red-700">
-            Ignore Record
+          <Button key="discard" variant="outline" onClick={onIgnoreRecord} className="text-red-600 hover:text-red-700">
+            Discard Record
           </Button>
         );
       } else if (portalRecord.matchType === 'Conflict') {

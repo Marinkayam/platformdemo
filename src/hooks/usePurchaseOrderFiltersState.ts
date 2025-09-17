@@ -8,7 +8,7 @@ export function usePurchaseOrderFiltersState(
 ) {
   const [filters, setFilters] = useState<PurchaseOrderFilters>(defaultPurchaseOrderFilters);
   
-  const handleFilterChange = (key: keyof PurchaseOrderFilters, value: any) => {
+  const handleFilterChange = (key: keyof PurchaseOrderFilters, value: string | string[]) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);

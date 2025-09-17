@@ -236,5 +236,28 @@ export const pendingInvoices: Invoice[] = [
         missingFields: ["additionalNotes", "projectCode"]
       }
     ]
+  },
+  {
+    ...getBasicInvoiceData(
+      "7",
+      "INV-25020154",
+      "FastBuy Corp",
+      "2024-05-20",
+      "Pending Action",
+      1234.56,
+      "2024-04-15",
+      "michael.brown@example.com"
+    ),
+    assignee: "lisa.wilson@example.com",
+    subtotal: 1050.00,
+    tax: 184.56,
+    paymentTerms: "Net 15",
+    taxId: "TAX-008",
+    requesterEmail: "invoicing@fastbuy.com",
+    portal: "Bill.com",
+    hasExceptions: false,
+    invoiceDate: "2024-04-10",
+    netTerms: "Net 15",
+    dueDate: "2024-04-25"
   }
 ];

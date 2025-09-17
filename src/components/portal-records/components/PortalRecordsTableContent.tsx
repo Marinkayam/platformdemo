@@ -47,12 +47,22 @@ export function PortalRecordsTableContent({
           <TableRow
             key={record.id}
             className="h-[60px] hover:bg-gray-50 cursor-pointer transition-colors bg-white"
-            onClick={() => onRowClick(record)}
+            onClick={(e) => {
+              // Don't navigate if clicking on actions column or its children
+              const target = e.target as HTMLElement;
+              const isActionsClick = target.closest('[data-actions-column]') ||
+                                   target.closest('button') ||
+                                   target.closest('[role="menu"]');
+              if (!isActionsClick) {
+                onRowClick(record);
+              }
+            }}
           >
             {columns.map((column, colIndex) => (
               <TableCell
                 key={colIndex}
                 className={`px-4 align-middle text-sm ${column.className || ''}`}
+                data-actions-column={column.key === 'actions' ? true : undefined}
               >
                 {column.render ? column.render(record) : record[column.key as keyof PortalRecord]}
               </TableCell>

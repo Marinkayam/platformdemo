@@ -6,6 +6,9 @@ import { PortalRecordsActions } from "./PortalRecordsActions";
 import { PortalRecordsTabs } from "./PortalRecordsTabs";
 import { PortalRecordsFilters } from "./PortalRecordsFilters";
 import { PortalRecordFilters } from "./filters/types";
+import { UnmatchedTaskCenter } from "./UnmatchedTaskCenter";
+import { PaymentReportUploadWizard } from "@/components/workspace/integration-hub/payment-report-upload/PaymentReportUploadWizard";
+import { useState } from "react";
 
 interface Tab {
   id: string;
@@ -22,6 +25,7 @@ interface PortalRecordsHeaderProps {
   needsAttentionCount: number;
   searchValue?: string;
   onSearchChange?: (value: string) => void;
+  unmatchedCount?: number;
 }
 
 export function PortalRecordsHeader({
@@ -32,8 +36,11 @@ export function PortalRecordsHeader({
   onFilterChange,
   needsAttentionCount,
   searchValue,
-  onSearchChange
+  onSearchChange,
+  unmatchedCount = 0
 }: PortalRecordsHeaderProps) {
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
   // Convert activeTab to status for breadcrumb
   let status: string | undefined;
   if (activeTab === 'unmatched') {
@@ -41,15 +48,31 @@ export function PortalRecordsHeader({
   } else if (activeTab === 'conflict') {
     status = 'conflicts';
   }
-  
+
+  const handleUploadReport = () => {
+    setIsUploadModalOpen(true);
+  };
+
   return (
     <>
-      <PageHeader 
-        title="Portal Records" 
-        subtitle="Monto is actively syncing documents from your portals. Use this view to monitor account connections, status, and history."
+      <PageHeader
+        title={activeTab === 'unmatched' ? 'Unmatched Portal Invoices' : 'Portal Records'}
+        subtitle={
+          activeTab === 'unmatched'
+            ? 'Review these records to keep your ERP in sync. Actions you take here affect Smart Connections and future matching.'
+            : 'Monto is actively syncing documents from your portals. Use this view to monitor account connections, status, and history.'
+        }
         breadcrumbs={createBreadcrumbs.portalRecords(status)}
       />
-      
+
+      {/* Show unified task center for unmatched tab */}
+      {activeTab === 'unmatched' && (
+        <UnmatchedTaskCenter
+          unmatchedCount={unmatchedCount}
+          onUploadReport={handleUploadReport}
+        />
+      )}
+
       <PortalRecordsTabs
         tabs={tabs}
         activeTab={activeTab}
@@ -57,6 +80,7 @@ export function PortalRecordsHeader({
       />
 
       <div className="space-y-4">
+
         <div className="flex items-center gap-4">
           <div className="flex-1 min-w-0 overflow-hidden">
             <PortalRecordsFilters
@@ -65,7 +89,7 @@ export function PortalRecordsHeader({
             />
           </div>
           <div className="flex-shrink-0">
-            <PortalRecordsActions 
+            <PortalRecordsActions
               recordCount={recordCount}
               searchValue={searchValue}
               onSearchChange={onSearchChange}
@@ -74,6 +98,11 @@ export function PortalRecordsHeader({
           </div>
         </div>
       </div>
+
+      <PaymentReportUploadWizard
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+      />
     </>
   );
 }

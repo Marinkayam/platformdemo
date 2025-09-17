@@ -2,29 +2,39 @@
 import { PortalRecord } from "@/types/portalRecord";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
+import { InlineMatchingInterface } from "../InlineMatchingInterface";
 
 interface PortalRecordActionInstructionsProps {
   portalRecord: PortalRecord;
-  onMatchInvoice?: () => void;
+  onMatchInvoice?: (invoiceId?: string) => void;
   onResolveConflict?: () => void;
   onIgnoreRecord?: () => void;
 }
 
-export function PortalRecordActionInstructions({ 
-  portalRecord, 
+export function PortalRecordActionInstructions({
+  portalRecord,
   onMatchInvoice,
   onResolveConflict,
   onIgnoreRecord
 }: PortalRecordActionInstructionsProps) {
-  // Only show instructions for connected records that have available actions
-  if (portalRecord.connectionStatus !== 'Connected') {
+  // Show instructions for actionable records (Connected, Syncing, Disconnected)
+  if (!['Connected', 'Syncing', 'Disconnected'].includes(portalRecord.connectionStatus)) {
     return null;
   }
 
+  // For unmatched records, use the inline matching interface
+  if (portalRecord.matchType === 'Unmatched') {
+    return (
+      <InlineMatchingInterface
+        record={portalRecord}
+        onMatchInvoice={(invoiceId) => onMatchInvoice?.(invoiceId)}
+        onIgnoreRecord={() => onIgnoreRecord?.()}
+      />
+    );
+  }
+
   const getInstructionText = () => {
-    if (portalRecord.matchType === 'Unmatched') {
-      return 'This portal record needs attention. You can match it to an existing invoice or ignore it if it\'s not relevant to your business.';
-    } else if (portalRecord.matchType === 'Conflict') {
+    if (portalRecord.matchType === 'Conflict') {
       return 'Multiple matches found for this record. Use Resolve Conflict to choose the correct match.';
     } else {
       return null; // No instructions needed for matched records
@@ -34,18 +44,7 @@ export function PortalRecordActionInstructions({
   const getActionButtons = () => {
     const buttons = [];
 
-    if (portalRecord.matchType === 'Unmatched') {
-      buttons.push(
-        <Button key="match" onClick={onMatchInvoice} size="sm" className="bg-[#7B59FF] hover:bg-[#6B46FF] text-white">
-          Match
-        </Button>
-      );
-      buttons.push(
-        <Button key="ignore" variant="outline" onClick={onIgnoreRecord} size="sm" className="text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white">
-          Ignore
-        </Button>
-      );
-    } else if (portalRecord.matchType === 'Conflict') {
+    if (portalRecord.matchType === 'Conflict') {
       buttons.push(
         <Button key="resolve" onClick={onResolveConflict} size="sm" className="bg-[#7B59FF] hover:bg-[#6B46FF] text-white">
           Resolve Conflict
@@ -64,13 +63,10 @@ export function PortalRecordActionInstructions({
     return null;
   }
 
-  // Use orange banner for conflict records and blue for unmatched records
-  const isConflict = portalRecord.matchType === 'Conflict';
-  const bannerStyle = isConflict 
-    ? "bg-orange-50 border border-orange-200" 
-    : "bg-[#EBF1FF] border border-[#C7D9FF]";
-  const iconStyle = isConflict ? "text-orange-600" : "text-[#253EA7]";
-  const textStyle = isConflict ? "text-orange-700" : "text-[#253EA7]";
+  // Use orange banner for conflict records
+  const bannerStyle = "bg-orange-50 border border-orange-200";
+  const iconStyle = "text-orange-600";
+  const textStyle = "text-orange-700";
 
   return (
     <div className={`${bannerStyle} rounded-lg p-4`}>

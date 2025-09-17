@@ -26,9 +26,11 @@ export function usePortalRecordsActions({
   };
 
   const handleIgnoreRecord = (record: PortalRecord) => {
-    console.log('Opening ignore modal for record:', record.id);
+    console.log('handleIgnoreRecord called for record:', record.id);
+    console.log('Setting selectedRecord and opening modal...');
     setSelectedRecord(record);
     setIgnoreModalOpen(true);
+    console.log('Modal should now be open');
   };
 
   const onInvoiceMatched = (invoiceId: string, selectedRecord: PortalRecord | null) => {

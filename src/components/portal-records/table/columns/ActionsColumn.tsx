@@ -18,32 +18,40 @@ export function ActionsColumn({
   onResolveConflict,
   onIgnoreRecord
 }: ActionsColumnProps) {
-  const actions = [
-    commonActions.view(() => onViewDetails(record.id))
-  ];
+  const actions = [];
 
-  if (record.connectionStatus === 'Connected') {
-    if (record.matchType === 'Unmatched') {
-      actions.push({
-        label: "Match Invoice",
-        icon: Search,
-        onClick: () => onMatchInvoice(record),
-        variant: "default" as const
-      });
-    } else if (record.matchType === 'Conflict') {
-      actions.push({
-        label: "Resolve Conflict",
-        icon: AlertTriangle,
-        onClick: () => onResolveConflict(record),
-        variant: "default" as const
-      });
-    }
-    
-    // Add ignore record option for all connected records
+  // Show appropriate action based on match type
+  if (record.matchType === 'Unmatched') {
     actions.push({
-      label: "Ignore Record",
+      label: "Associate Invoice",
+      icon: Search,
+      onClick: () => onViewDetails(record.id),
+      variant: "default" as const
+    });
+  } else if (record.matchType === 'Conflict') {
+    actions.push({
+      label: "Resolve Conflict",
+      icon: AlertTriangle,
+      onClick: () => onViewDetails(record.id),
+      variant: "default" as const
+    });
+  } else if (record.matchType === 'Primary' || record.matchType === 'Alternate') {
+    // For Primary and Alternate matches, show "View Details"
+    actions.push(commonActions.view(() => onViewDetails(record.id)));
+  } else {
+    // For any other match types, keep as "View Details"
+    actions.push(commonActions.view(() => onViewDetails(record.id)));
+  }
+
+  // Show remove invoice option for actionable records
+  if (['Connected', 'Syncing', 'Disconnected'].includes(record.connectionStatus)) {
+    actions.push({
+      label: "Remove Invoice",
       icon: Ban,
-      onClick: () => onIgnoreRecord(record),
+      onClick: () => {
+        console.log('Remove Invoice clicked for:', record.id);
+        onIgnoreRecord(record);
+      },
       variant: "destructive" as const
     });
   }

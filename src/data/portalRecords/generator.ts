@@ -4,7 +4,7 @@ import { invoiceData } from "@/data/invoices";
 import { portals, connectionStatuses, statuses } from "./types";
 
 // Generate portal records for each invoice
-export const generatePortalRecordsForInvoice = (invoice: any, index: number): PortalRecord[] => {
+export const generatePortalRecordsForInvoice = (invoice: { invoiceNumber: string; vendorName: string; portal: string; amount: number; status: string }, index: number): PortalRecord[] => {
   const records: PortalRecord[] = [];
   const numRecords = Math.floor(Math.random() * 5) + 1; // 1-5 records per invoice
   

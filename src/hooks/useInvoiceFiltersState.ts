@@ -8,7 +8,7 @@ export function useInvoiceFiltersState(
 ) {
   const [filters, setFilters] = useState<InvoiceFilters>(defaultFilters);
   
-  const handleFilterChange = (key: keyof InvoiceFilters, value: any) => {
+  const handleFilterChange = (key: keyof InvoiceFilters, value: string | string[]) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);

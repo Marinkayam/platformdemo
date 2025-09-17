@@ -28,7 +28,7 @@ export function calculatePortalsDashboardMetrics() {
   const openPOs = purchaseOrderData.filter(po => po.status === "New" || po.status === "Partially Invoiced");
   const openPOsCount = openPOs.length;
   const openPOsTotal = openPOs.reduce((sum: number, po) => {
-    const val = parseFloat(po.total as any);
+    const val = parseFloat(String(po.total));
     return sum + (isNaN(val) ? 0 : val);
   }, 0);
 
@@ -38,7 +38,7 @@ export function calculatePortalsDashboardMetrics() {
   );
   const openInvoicesCount = openInvoices.length;
   const openInvoicesTotal = openInvoices.reduce((sum: number, r) => {
-    const val = parseFloat(r.total as any);
+    const val = parseFloat(String(r.total));
     return sum + (isNaN(val) ? 0 : val);
   }, 0);
 
@@ -58,7 +58,7 @@ export function calculatePortalsDashboardMetrics() {
   });
   const atRiskInvoicesCount = atRiskInvoices.length;
   const atRiskInvoicesTotal = atRiskInvoices.reduce((sum: number, r) => {
-    const val = parseFloat(r.total as any);
+    const val = parseFloat(String(r.total));
     return sum + (isNaN(val) ? 0 : val);
   }, 0);
 
@@ -66,7 +66,7 @@ export function calculatePortalsDashboardMetrics() {
   const buyerTotals: Record<string, number> = {};
   openInvoices.forEach(r => {
     if (!r.buyer || r.buyer === "—") return;
-    const val = parseFloat(r.total as any);
+    const val = parseFloat(String(r.total));
     buyerTotals[r.buyer] = Number(buyerTotals[r.buyer] ?? 0) + (isNaN(val) ? 0 : val);
   });
   const topBuyers = Object.entries(buyerTotals)

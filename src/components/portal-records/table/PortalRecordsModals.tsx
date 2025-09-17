@@ -33,15 +33,22 @@ export function PortalRecordsModals({
   onStopTrackingBuyer,
   onMatchAndCreateRTP
 }: PortalRecordsModalsProps) {
-  console.log('PortalRecordsModals render:', { 
-    selectedRecord: selectedRecord?.id, 
+  console.log('PortalRecordsModals render:', {
+    selectedRecord: selectedRecord?.id,
+    selectedRecordFull: selectedRecord,
     ignoreModalOpen,
     matchModalOpen,
-    conflictModalOpen 
+    conflictModalOpen
   });
 
-  if (!selectedRecord) {
-    console.log('No selected record, not rendering modals');
+  console.log('About to render EnhancedIgnoreRecordModal with:', {
+    isOpen: ignoreModalOpen,
+    record: selectedRecord
+  });
+
+  // Always render modals, but they will handle null selectedRecord internally
+  if (!selectedRecord && !ignoreModalOpen && !matchModalOpen && !conflictModalOpen) {
+    console.log('No selected record and no modals open, not rendering modals');
     return null;
   }
 

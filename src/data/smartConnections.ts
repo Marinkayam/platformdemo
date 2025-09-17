@@ -1,7 +1,7 @@
 import { SmartConnection } from "@/types/smartConnection";
 
 // Helper function to calculate Smart Connection status based on agent statuses
-const calculateSmartConnectionStatus = (agents: any[]): "Connected" | "Connecting" | "Needs Attention" | "Disconnected" | "Inactive" => {
+const calculateSmartConnectionStatus = (agents: { status: string }[]): "Connected" | "Connecting" | "Needs Attention" | "Disconnected" | "Inactive" => {
   if (agents.length === 0) return "Needs Attention";
   
   // Check if any agent is disconnected/error

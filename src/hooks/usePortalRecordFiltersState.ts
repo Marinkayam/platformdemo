@@ -5,7 +5,7 @@ import { PortalRecordFilters, defaultPortalRecordFilters } from "@/components/po
 export function usePortalRecordFiltersState(onFilterChange: (filters: PortalRecordFilters) => void) {
   const [filters, setFilters] = useState<PortalRecordFilters>(defaultPortalRecordFilters);
 
-  const handleFilterChange = useCallback((key: keyof PortalRecordFilters, value: any) => {
+  const handleFilterChange = useCallback((key: keyof PortalRecordFilters, value: string | string[]) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);

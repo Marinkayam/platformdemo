@@ -213,7 +213,7 @@ const ChevronDownIcon = ({ size = 16, className }: { size?: number; className?: 
 export interface NavItem {
   title: string;
   href?: string;
-  icon?: any;
+  icon?: React.ComponentType;
   items?: NavItem[];
   id?: string;
   hidden?: boolean;

@@ -61,17 +61,20 @@ export const createBreadcrumbs = {
   
   portalRecords: (status?: string) => {
     const items = [
-      { label: "Portal Records", isActive: !status }
+      { label: "Portal Records", href: "/portal-records", isActive: !status }
     ];
-    
+
     if (status === "unmatched") {
-      items.push({ label: "Found Without Match", isActive: true });
+      items[0].isActive = false;
+      items.push({ label: "Unmatched", isActive: true });
     } else if (status === "conflicts") {
+      items[0].isActive = false;
       items.push({ label: "Conflicts", isActive: true });
     } else if (status === "rejected") {
+      items[0].isActive = false;
       items.push({ label: "Rejected", isActive: true });
     }
-    
+
     return items;
   },
   

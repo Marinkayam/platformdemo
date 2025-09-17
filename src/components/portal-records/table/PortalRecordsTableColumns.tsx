@@ -25,10 +25,10 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
        render: (record: PortalRecord) => {
          const invoiceNumber = record.invoiceNumber;
          const shouldBeSemiBold = invoiceNumber.toLowerCase().startsWith('inv-') || invoiceNumber.toLowerCase().startsWith('cp-');
-         
+
          return (
-           <span 
-             className={`text-sm text-gray-900 cursor-pointer hover:underline whitespace-nowrap ${shouldBeSemiBold ? 'font-semibold' : ''}`} 
+           <span
+             className={`text-sm text-gray-900 cursor-pointer hover:underline whitespace-nowrap ${shouldBeSemiBold ? 'font-semibold' : ''}`}
              onClick={() => onViewDetails(record.id)}
            >
              {invoiceNumber}
@@ -55,8 +55,16 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
        )
      },
      {
+       key: 'supplierName',
+       label: 'Supplier',
+       className: 'w-[200px] min-w-[200px]',
+       render: (record: PortalRecord) => (
+         <span className="text-sm text-gray-900 truncate">{record.supplierName}</span>
+       )
+     },
+     {
        key: 'portalStatus',
-       label: 'Portal Status',  
+       label: 'Portal Status',
        className: 'w-[200px] min-w-[200px] whitespace-nowrap',
        render: (record: PortalRecord) => <StatusBadge status={record.portalStatus} />
      },
@@ -122,15 +130,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
             <span className="text-sm text-gray-900 truncate">{value}</span>
           );
         }
-     },
-     {
-       key: 'supplierName',
-       label: 'Supplier',
-       className: 'w-[200px] min-w-[200px]',
-       render: (record: PortalRecord) => (
-         <span className="text-sm text-gray-900 truncate">{record.supplierName}</span>
-       )
-      }
+     }
     ];
  
     // Only add Match Type column if not on the "unmatched" tab
@@ -147,7 +147,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      ...baseColumns,
     {
       key: 'actions',
-      label: '',
+      label: 'Actions',
       className: 'text-right w-[200px] min-w-[200px]',
       render: (record: PortalRecord) => (
         <ActionsColumn

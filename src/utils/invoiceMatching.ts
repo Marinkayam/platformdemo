@@ -43,7 +43,7 @@ export function getInvoiceSuggestions(
     if (portalRecord.currency === invoice.currency) {
       matchReasons.push({
         type: 'currency-match',
-        label: 'Same Currency',
+        label: 'Amount Match',
         confidence: 'medium'
       });
       score += 10;

@@ -54,7 +54,7 @@ export default function PortalRecords() {
 
   return (
     <div className="space-y-6">
-      <PortalRecordsHeader 
+      <PortalRecordsHeader
         recordCount={allPortalRecords.length}
         activeTab={activeTab}
         tabs={tabs}
@@ -63,6 +63,7 @@ export default function PortalRecords() {
         needsAttentionCount={needsAttentionCount}
         searchValue={searchTerm}
         onSearchChange={handleSearchChange}
+        unmatchedCount={tabCounts.unmatched}
       />
       
       <PortalRecordsTable records={filteredRecords} activeTab={activeTab} />

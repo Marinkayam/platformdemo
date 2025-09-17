@@ -5,7 +5,7 @@ import Papa from 'papaparse';
 
 export function useFileParser() {
   const [headers, setHeaders] = useState<string[]>([]);
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Record<string, unknown>[]>([]);
 
   const parseFile = (file: File): Promise<void> => {
     return new Promise((resolve) => {
@@ -13,7 +13,7 @@ export function useFileParser() {
       reader.onload = (e) => {
         const fileData = e.target?.result;
         let parsedHeaders: string[] = [];
-        let parsedRows: any[] = [];
+        let parsedRows: Record<string, unknown>[] = [];
 
         if (file.name.endsWith('.csv')) {
           Papa.parse(fileData as string, {

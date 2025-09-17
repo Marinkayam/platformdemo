@@ -35,7 +35,7 @@ export function useInsightFiltering(data: Insight[]) {
     return filtered;
   }, [data, filters]);
 
-  const handleFilterChange = useCallback((key: keyof InsightFilters, value: any) => {
+  const handleFilterChange = useCallback((key: keyof InsightFilters, value: string | string[]) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   }, []);
 

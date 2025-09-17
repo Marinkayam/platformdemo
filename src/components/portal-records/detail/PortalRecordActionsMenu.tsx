@@ -40,7 +40,7 @@ export function PortalRecordActionsMenu({
       }
       
       items.push({
-        label: "Ignore Record",
+        label: "Discard Record",
         onClick: onIgnoreRecord,
         className: "text-red-600 hover:text-red-700"
       });
