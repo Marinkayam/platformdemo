@@ -64,6 +64,7 @@ export default function PortalRecords() {
         searchValue={searchTerm}
         onSearchChange={handleSearchChange}
         unmatchedCount={tabCounts.unmatched}
+        conflictCount={tabCounts.conflict}
       />
       
       <PortalRecordsTable records={filteredRecords} activeTab={activeTab} />

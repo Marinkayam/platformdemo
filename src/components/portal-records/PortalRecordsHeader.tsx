@@ -7,6 +7,7 @@ import { PortalRecordsTabs } from "./PortalRecordsTabs";
 import { PortalRecordsFilters } from "./PortalRecordsFilters";
 import { PortalRecordFilters } from "./filters/types";
 import { UnmatchedTaskCenter } from "./UnmatchedTaskCenter";
+import { ConflictTaskCenter } from "./ConflictTaskCenter";
 import { PaymentReportUploadWizard } from "@/components/workspace/integration-hub/payment-report-upload/PaymentReportUploadWizard";
 import { useState } from "react";
 
@@ -26,6 +27,7 @@ interface PortalRecordsHeaderProps {
   searchValue?: string;
   onSearchChange?: (value: string) => void;
   unmatchedCount?: number;
+  conflictCount?: number;
 }
 
 export function PortalRecordsHeader({
@@ -37,7 +39,8 @@ export function PortalRecordsHeader({
   needsAttentionCount,
   searchValue,
   onSearchChange,
-  unmatchedCount = 0
+  unmatchedCount = 0,
+  conflictCount = 0
 }: PortalRecordsHeaderProps) {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
@@ -56,11 +59,19 @@ export function PortalRecordsHeader({
   return (
     <>
       <PageHeader
-        title={activeTab === 'unmatched' ? 'Unmatched Portal Invoices' : 'Portal Records'}
+        title={
+          activeTab === 'unmatched' 
+            ? 'Unmatched Portal Invoices' 
+            : activeTab === 'conflict' 
+              ? 'Conflicts' 
+              : 'Portal Records'
+        }
         subtitle={
           activeTab === 'unmatched'
             ? 'Review these records to keep your ERP in sync. Actions you take here affect Smart Connections and future matching.'
-            : 'Monto is actively syncing documents from your portals. Use this view to monitor account connections, status, and history.'
+            : activeTab === 'conflict'
+              ? 'Conflicts occur when multiple invoices are linked together. Review and select the correct one.'
+              : 'Monto is actively syncing documents from your portals. Use this view to monitor account connections, status, and history.'
         }
         breadcrumbs={createBreadcrumbs.portalRecords(status)}
       />
@@ -71,6 +82,11 @@ export function PortalRecordsHeader({
           unmatchedCount={unmatchedCount}
           onUploadReport={handleUploadReport}
         />
+      )}
+
+      {/* Show conflict task center for conflict tab */}
+      {activeTab === 'conflict' && (
+        <ConflictTaskCenter conflictCount={conflictCount} />
       )}
 
       <PortalRecordsTabs

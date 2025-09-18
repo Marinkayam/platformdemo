@@ -15,6 +15,7 @@ export interface TableAction {
   icon?: React.ComponentType<{ className?: string }>;
   onClick: () => void;
   variant?: "default" | "destructive";
+  tooltip?: string;
 }
 
 interface TableActionsProps {

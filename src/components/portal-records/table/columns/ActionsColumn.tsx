@@ -32,8 +32,9 @@ export function ActionsColumn({
     actions.push({
       label: "Resolve Conflict",
       icon: AlertTriangle,
-      onClick: () => onViewDetails(record.id),
-      variant: "default" as const
+      onClick: () => onResolveConflict(record),
+      variant: "default" as const,
+      tooltip: "Review all linked invoices and select the correct one"
     });
   } else if (record.matchType === 'Primary' || record.matchType === 'Alternate') {
     // For Primary and Alternate matches, show "View Details"
@@ -43,8 +44,16 @@ export function ActionsColumn({
     actions.push(commonActions.view(() => onViewDetails(record.id)));
   }
 
-  // Show remove invoice option for actionable records
-  if (['Connected', 'Syncing', 'Disconnected'].includes(record.connectionStatus)) {
+  // Show discard record option for conflict records
+  if (record.matchType === 'Conflict') {
+    actions.push({
+      label: "Discard Record",
+      icon: Ban,
+      onClick: () => onIgnoreRecord(record),
+      variant: "destructive" as const
+    });
+  } else if (['Connected', 'Syncing', 'Disconnected'].includes(record.connectionStatus)) {
+    // Show remove invoice option for other actionable records
     actions.push({
       label: "Remove Invoice",
       icon: Ban,

@@ -6,6 +6,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { ConnectionStatusBadge } from "../ConnectionStatusBadge";
 import { LastSyncedCell } from "../LastSyncedCell";
 import { ActionsColumn } from "./columns/ActionsColumn";
+import { ConflictStatusBadge } from "../ConflictStatusBadge";
 import { formatCurrency } from "@/lib/utils";
 
 interface PortalRecordsTableColumnsProps {
@@ -62,12 +63,18 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
          <span className="text-sm text-gray-900 truncate">{record.supplierName}</span>
        )
      },
-     {
-       key: 'portalStatus',
-       label: 'Portal Status',
-       className: 'w-[200px] min-w-[200px] whitespace-nowrap',
-       render: (record: PortalRecord) => <StatusBadge status={record.portalStatus} />
-     },
+      {
+        key: 'portalStatus',
+        label: activeTab === 'conflict' ? 'Status' : 'Portal Status',
+        className: 'w-[200px] min-w-[200px] whitespace-nowrap',
+        render: (record: PortalRecord) => {
+          // Show conflict status badge for conflict tab
+          if (activeTab === 'conflict' && record.matchType === 'Conflict') {
+            return <ConflictStatusBadge />;
+          }
+          return <StatusBadge status={record.portalStatus} />
+        }
+      },
      {
        key: 'total',
        label: 'Total',
@@ -131,17 +138,45 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
           );
         }
      }
-    ];
- 
-    // Only add Match Type column if not on the "unmatched" tab
-   if (activeTab !== 'unmatched') {
-     baseColumns.push({
-       key: 'matchType',
-       label: 'Match Type',
-       className: 'w-[200px] min-w-[200px] whitespace-nowrap',
-       render: (record: PortalRecord) => <MatchTypeBadge type={record.matchType} />
-     });
-   }
+     ];
+
+    // Add conflict-specific columns for conflict tab
+    if (activeTab === 'conflict') {
+      baseColumns.push({
+        key: 'conflictType',
+        label: 'Conflict Type',
+        className: 'w-[250px] min-w-[250px]',
+        render: (record: PortalRecord) => (
+          <span className="text-sm text-gray-900">
+            Single portal record linked to multiple ERP invoices
+          </span>
+        )
+      });
+      baseColumns.push({
+        key: 'linkedInvoices',
+        label: 'Linked ERP Invoice(s)',
+        className: 'w-[200px] min-w-[200px]',
+        render: (record: PortalRecord) => (
+          <span className="text-sm text-gray-900">
+            {record.invoiceNumber ? `ERP-${record.invoiceNumber.slice(-3)}` : 'Multiple'}
+          </span>
+        )
+      });
+      baseColumns.push({
+        key: 'lastSynced',
+        label: 'Last Updated',
+        className: 'w-[200px] min-w-[200px]',
+        render: (record: PortalRecord) => <LastSyncedCell lastSynced={record.lastSynced} />
+      });
+    } else if (activeTab !== 'unmatched') {
+      // Only add Match Type column if not on the "unmatched" or "conflict" tabs
+      baseColumns.push({
+        key: 'matchType',
+        label: 'Match Type',
+        className: 'w-[200px] min-w-[200px] whitespace-nowrap',
+        render: (record: PortalRecord) => <MatchTypeBadge type={record.matchType} />
+      });
+    }
 
    return [
      ...baseColumns,

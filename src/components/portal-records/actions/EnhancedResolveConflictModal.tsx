@@ -107,10 +107,10 @@ export function EnhancedResolveConflictModal({
         <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl">
-              Conflict Detected - {record.portalRecordId}
+              Resolve Conflict - {record.portalRecordId}
             </DialogTitle>
             <p className="text-sm text-gray-600 mt-2">
-              Two portal records are linked to the same invoice. Select which record should be the primary match.
+              Multiple invoices are linked together. Review and select the correct one.
             </p>
           </DialogHeader>
           
@@ -136,34 +136,40 @@ export function EnhancedResolveConflictModal({
                         )}
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-3">
-                        <div>
-                          <label className="text-sm font-medium text-gray-500">Portal Record ID</label>
-                          <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                            {record.portalRecordId}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-500">Total Amount</label>
-                          <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                            {formatCurrency(record.total, record.currency)}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-500">PO Number</label>
-                          <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                            {record.poNumber}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-500">Last Synced</label>
-                          <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                            {formatDate(record.lastSynced)}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
+                     <CardContent className="space-y-4">
+                       <div className="space-y-3">
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">ERP Invoice Number</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             {record.invoiceNumber || 'N/A'}
+                           </div>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">Buyer Name</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             {record.buyer}
+                           </div>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">Total Amount</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             {formatCurrency(record.total, record.currency)}
+                           </div>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">System Source</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             Portal ({record.portal})
+                           </div>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">Current Status</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             {record.matchType}
+                           </div>
+                         </div>
+                       </div>
+                     </CardContent>
                   </Card>
                 </div>
 
@@ -182,34 +188,40 @@ export function EnhancedResolveConflictModal({
                         )}
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-3">
-                        <div>
-                          <label className="text-sm font-medium text-gray-500">Portal Record ID</label>
-                          <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                            {conflictingRecord.portalRecordId}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-500">Total Amount</label>
-                          <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                            {formatCurrency(conflictingRecord.total, conflictingRecord.currency)}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-500">PO Number</label>
-                          <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                            {conflictingRecord.poNumber}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-500">Last Synced</label>
-                          <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                            {formatDate(conflictingRecord.lastSynced)}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
+                     <CardContent className="space-y-4">
+                       <div className="space-y-3">
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">ERP Invoice Number</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             {conflictingRecord.invoiceNumber || 'N/A'}
+                           </div>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">Buyer Name</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             {conflictingRecord.buyer}
+                           </div>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">Total Amount</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             {formatCurrency(conflictingRecord.total, conflictingRecord.currency)}
+                           </div>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">System Source</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             Portal ({conflictingRecord.portal})
+                           </div>
+                         </div>
+                         <div>
+                           <label className="text-sm font-medium text-gray-500">Current Status</label>
+                           <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
+                             {conflictingRecord.matchType}
+                           </div>
+                         </div>
+                       </div>
+                     </CardContent>
                   </Card>
                 </div>
               </div>
@@ -229,11 +241,11 @@ export function EnhancedResolveConflictModal({
             </Button>
             {onIgnore && (
               <Button variant="destructive" onClick={handleIgnore}>
-                Ignore Record
+                Discard Record
               </Button>
             )}
             <Button onClick={handleResolve} disabled={!selectedRecord}>
-              Resolve Conflict
+              Confirm Resolution
             </Button>
           </DialogFooter>
         </DialogContent>
