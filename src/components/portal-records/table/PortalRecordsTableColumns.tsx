@@ -140,36 +140,8 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      }
      ];
 
-    // Add conflict-specific columns for conflict tab
-    if (activeTab === 'conflict') {
-      baseColumns.push({
-        key: 'conflictType',
-        label: 'Conflict Type',
-        className: 'w-[250px] min-w-[250px]',
-        render: (record: PortalRecord) => (
-          <span className="text-sm text-gray-900">
-            Single portal record linked to multiple ERP invoices
-          </span>
-        )
-      });
-      baseColumns.push({
-        key: 'linkedInvoices',
-        label: 'Linked ERP Invoice(s)',
-        className: 'w-[200px] min-w-[200px]',
-        render: (record: PortalRecord) => (
-          <span className="text-sm text-gray-900">
-            {record.invoiceNumber ? `ERP-${record.invoiceNumber.slice(-3)}` : 'Multiple'}
-          </span>
-        )
-      });
-      baseColumns.push({
-        key: 'lastSynced',
-        label: 'Last Updated',
-        className: 'w-[200px] min-w-[200px]',
-        render: (record: PortalRecord) => <LastSyncedCell lastSynced={record.lastSynced} />
-      });
-    } else if (activeTab !== 'unmatched') {
-      // Only add Match Type column if not on the "unmatched" or "conflict" tabs
+    // Don't add Match Type column for "unmatched" or "conflict" tabs (they should look the same)
+    if (activeTab !== 'unmatched' && activeTab !== 'conflict') {
       baseColumns.push({
         key: 'matchType',
         label: 'Match Type',

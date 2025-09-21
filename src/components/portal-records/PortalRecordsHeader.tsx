@@ -56,21 +56,26 @@ export function PortalRecordsHeader({
     setIsUploadModalOpen(true);
   };
 
+  const handleBulkReview = () => {
+    // TODO: Implement bulk conflict resolution
+    console.log('Bulk review conflicts');
+  };
+
   return (
     <>
       <PageHeader
         title={
-          activeTab === 'unmatched' 
-            ? 'Unmatched Portal Invoices' 
-            : activeTab === 'conflict' 
-              ? 'Conflicts' 
+          activeTab === 'unmatched'
+            ? 'Unmatched Portal Invoices'
+            : activeTab === 'conflict'
+              ? 'Conflicted Portal Invoices'
               : 'Portal Records'
         }
         subtitle={
           activeTab === 'unmatched'
             ? 'Review these records to keep your ERP in sync. Actions you take here affect Smart Connections and future matching.'
             : activeTab === 'conflict'
-              ? 'Conflicts occur when multiple invoices are linked together. Review and select the correct one.'
+              ? 'Review these records to keep your ERP in sync. Actions you take here affect Smart Connections and future matching.'
               : 'Monto is actively syncing documents from your portals. Use this view to monitor account connections, status, and history.'
         }
         breadcrumbs={createBreadcrumbs.portalRecords(status)}
@@ -86,7 +91,11 @@ export function PortalRecordsHeader({
 
       {/* Show conflict task center for conflict tab */}
       {activeTab === 'conflict' && (
-        <ConflictTaskCenter conflictCount={conflictCount} />
+        <ConflictTaskCenter
+          conflictCount={conflictCount}
+          onResolveAll={handleBulkReview}
+          lastReviewDays={3}
+        />
       )}
 
       <PortalRecordsTabs

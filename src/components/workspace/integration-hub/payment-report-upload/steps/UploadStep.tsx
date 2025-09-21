@@ -42,14 +42,6 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
     }
   };
 
-  const handleFileSelect = (files: File[]) => {
-    const file = files[0];
-    if (file) {
-      setUploadedFile(file);
-      onFileUpload(file);
-    }
-  };
-
   const handleRemoveFile = () => {
     setUploadedFile(null);
     onFileUpload(null);
@@ -58,7 +50,7 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
 
   return (
     <div className="space-y-6">
-      {/* Step Header */} 
+      {/* Step Header */}
       <div className="text-center space-y-2">
         <div className="text-sm font-medium text-primary mb-1">Step 1 of 4</div>
         <p className="text-base max-w-lg mx-auto" style={{ color: '#000000' }}>
@@ -69,7 +61,6 @@ export function UploadStep({ onFileUpload }: UploadStepProps) {
       {/* File Upload Component */}
       <FileUpload
         onUpload={handleUpload}
-        onFileSelect={handleFileSelect}
         accept=".csv"
         maxSize={10 * 1024 * 1024} // 10MB
         maxFiles={1}

@@ -1,50 +1,49 @@
-import { TriangleAlert } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { AlertTriangle, Clock, Users } from "lucide-react";
+import { ExceptionBanner } from "@/components/ui/exception-banner";
 
 interface ConflictTaskCenterProps {
   conflictCount: number;
+  onResolveAll?: () => void;
+  lastReviewDays?: number;
 }
 
-export function ConflictTaskCenter({ conflictCount }: ConflictTaskCenterProps) {
-  if (conflictCount === 0) {
-    return (
-      <Card className="bg-green-50 border-green-200">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-full">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-green-900">No conflicts found</h3>
-              <p className="text-sm text-green-700 mt-1">
-                All portal records are properly matched. Great work!
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+export function ConflictTaskCenter({
+  conflictCount,
+  onResolveAll,
+  lastReviewDays = 3
+}: ConflictTaskCenterProps) {
+  if (conflictCount === 0) return null;
 
   return (
-    <Card className="bg-yellow-50 border-yellow-200">
-      <CardContent className="p-6">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-full">
-            <TriangleAlert className="w-6 h-6 text-yellow-600" />
-          </div>
+    <ExceptionBanner
+      variant="warning"
+      icon="triangle-alert"
+    >
+      <div className="flex items-center justify-between">
+        <div className="space-y-4">
           <div>
-            <h3 className="text-lg font-semibold text-yellow-900">
-              You have {conflictCount} conflict{conflictCount !== 1 ? 's' : ''}
-            </h3>
-            <p className="text-sm text-yellow-700 mt-1">
-              Conflicts occur when multiple invoices are linked together. Review and select the correct one.
-            </p>
+            <span className="font-medium">Recommended Action:</span>{" "}
+            Review and resolve conflict records to maintain data accuracy
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-amber-700">
+            <Clock className="w-3 h-3" />
+            <span>Last review: {lastReviewDays} days ago</span>
           </div>
         </div>
-      </CardContent>
-    </Card>
+        {onResolveAll && (
+          <Button
+            onClick={onResolveAll}
+            size="sm"
+            variant="default"
+            className="ml-4"
+          >
+            <Users className="w-4 h-4 mr-2" />
+            Bulk Review
+          </Button>
+        )}
+      </div>
+    </ExceptionBanner>
   );
 }

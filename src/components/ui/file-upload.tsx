@@ -266,23 +266,20 @@ export function FileUpload({
         </CardContent>
       </Card>
 
-      {/* Upload Progress */}
-      {uploadingFiles.length > 0 && (
+      {/* Upload Progress - Only show files that are still uploading or have errors */}
+      {uploadingFiles.filter(f => f.status !== 'success').length > 0 && (
         <div className="space-y-2">
-          {uploadingFiles.map((upload, index) => (
+          {uploadingFiles.filter(f => f.status !== 'success').map((upload, index) => (
             <Card key={index} className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3 flex-1">
                   {upload.status === 'uploading' && (
                     <Loader2 className="w-4 h-4 text-primary animate-spin" />
                   )}
-                  {upload.status === 'success' && (
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                  )}
                   {upload.status === 'error' && (
                     <X className="w-4 h-4 text-red-600" />
                   )}
-                  
+
                   <div className="flex-1">
                     <p className="text-sm font-medium truncate">
                       {upload.file.name}
@@ -292,14 +289,14 @@ export function FileUpload({
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   {upload.status === 'uploading' && (
                     <div className="w-32">
                       <Progress value={upload.progress} className="h-2" />
                     </div>
                   )}
-                  
+
                   <Button
                     variant="ghost"
                     size="sm"
@@ -312,7 +309,7 @@ export function FileUpload({
                   </Button>
                 </div>
               </div>
-              
+
               {upload.status === 'error' && upload.error && (
                 <p className="text-xs text-red-600 mt-2">{upload.error}</p>
               )}

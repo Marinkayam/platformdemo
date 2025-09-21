@@ -66,7 +66,7 @@ export function EnhancedResolveConflictModal({
     if (!selectedRecord) {
       toast({
         title: "Selection Required",
-        description: "Please select which record should be the primary match.",
+        description: "Please select a resolution option.",
         variant: "destructive",
       });
       return;
@@ -74,10 +74,10 @@ export function EnhancedResolveConflictModal({
 
     const selectedRecordId = selectedRecord === 'current' ? record.id : conflictingRecord.id;
     onResolve(selectedRecordId, 'primary');
-    
+
     toast({
       title: "Conflict Resolved",
-      description: `${selectedRecord === 'current' ? 'Current' : 'Conflicting'} record set as primary match.`,
+      description: `Portal record ${record.portalRecordId} conflict has been resolved.`,
     });
     onClose();
   };
@@ -110,7 +110,7 @@ export function EnhancedResolveConflictModal({
               Resolve Conflict - {record.portalRecordId}
             </DialogTitle>
             <p className="text-sm text-gray-600 mt-2">
-              Multiple invoices are linked together. Review and select the correct one.
+              Conflicts occur when multiple invoices are linked together. Review and select the correct one.
             </p>
           </DialogHeader>
           
@@ -128,8 +128,8 @@ export function EnhancedResolveConflictModal({
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <RadioGroupItem value="current" id="current" />
-                          <CardTitle className="text-lg text-gray-900">Current Primary</CardTitle>
-                          <Badge variant="default">Primary</Badge>
+                          <CardTitle className="text-lg text-gray-900">ERP Invoice</CardTitle>
+                          <Badge variant="default">ERP</Badge>
                         </div>
                         {selectedRecord === 'current' && (
                           <CheckCircle className="h-5 w-5 text-green-600" />
@@ -159,13 +159,13 @@ export function EnhancedResolveConflictModal({
                          <div>
                            <label className="text-sm font-medium text-gray-500">System Source</label>
                            <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                             Portal ({record.portal})
+                             ERP
                            </div>
                          </div>
                          <div>
                            <label className="text-sm font-medium text-gray-500">Current Status</label>
                            <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                             {record.matchType}
+                             Matched
                            </div>
                          </div>
                        </div>
@@ -180,8 +180,8 @@ export function EnhancedResolveConflictModal({
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <RadioGroupItem value="conflicting" id="conflicting" />
-                          <CardTitle className="text-lg text-gray-900">Conflicting Record</CardTitle>
-                          <Badge variant="outline" className="border-gray-300">Conflicting</Badge>
+                          <CardTitle className="text-lg text-gray-900">Portal Invoice</CardTitle>
+                          <Badge variant="outline" className="border-gray-300">Portal</Badge>
                         </div>
                         {selectedRecord === 'conflicting' && (
                           <CheckCircle className="h-5 w-5 text-green-600" />
@@ -191,9 +191,9 @@ export function EnhancedResolveConflictModal({
                      <CardContent className="space-y-4">
                        <div className="space-y-3">
                          <div>
-                           <label className="text-sm font-medium text-gray-500">ERP Invoice Number</label>
+                           <label className="text-sm font-medium text-gray-500">Portal Invoice Number</label>
                            <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                             {conflictingRecord.invoiceNumber || 'N/A'}
+                             {record.portalRecordId}
                            </div>
                          </div>
                          <div>
@@ -211,13 +211,13 @@ export function EnhancedResolveConflictModal({
                          <div>
                            <label className="text-sm font-medium text-gray-500">System Source</label>
                            <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                             Portal ({conflictingRecord.portal})
+                             Portal ({record.portal})
                            </div>
                          </div>
                          <div>
                            <label className="text-sm font-medium text-gray-500">Current Status</label>
                            <div className="mt-1 p-2 bg-gray-50 rounded border text-sm">
-                             {conflictingRecord.matchType}
+                             Pending
                            </div>
                          </div>
                        </div>
@@ -229,8 +229,7 @@ export function EnhancedResolveConflictModal({
 
             <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
               <p className="text-gray-700 text-sm">
-                <strong>Note:</strong> The selected record will become the primary match and continue to be monitored. 
-                The other record will become an alternate match and monitoring will stop.
+                <strong>User Interaction:</strong> The user must pick one record as the Primary.
               </p>
             </div>
           </div>
@@ -244,7 +243,7 @@ export function EnhancedResolveConflictModal({
                 Discard Record
               </Button>
             )}
-            <Button onClick={handleResolve} disabled={!selectedRecord}>
+            <Button onClick={handleResolve} disabled={!selectedRecord} className="bg-purple-600 hover:bg-purple-700">
               Confirm Resolution
             </Button>
           </DialogFooter>

@@ -3,7 +3,7 @@ import { TriangleAlert, AlertCircle, Info, WandSparkles, FileX2 } from "lucide-r
 import { cn } from "@/lib/utils";
 
 export type ExceptionBannerVariant = "error" | "warning" | "info" | "success";
-export type ExceptionBannerIcon = "alert" | "circle" | "info" | "lightbulb" | "sparkles";
+export type ExceptionBannerIcon = "alert" | "circle" | "info" | "lightbulb" | "sparkles" | "triangle-alert";
 
 interface ExceptionBannerProps {
   variant?: ExceptionBannerVariant;
@@ -45,7 +45,8 @@ const iconComponents = {
   circle: AlertCircle,
   info: Info,
   lightbulb: WandSparkles,
-  sparkles: WandSparkles
+  sparkles: WandSparkles,
+  "triangle-alert": TriangleAlert
 };
 
 export function ExceptionBanner({ 

@@ -25,7 +25,7 @@ export function ActionsColumn({
     actions.push({
       label: "Associate Invoice",
       icon: Search,
-      onClick: () => onViewDetails(record.id),
+      onClick: () => onMatchInvoice(record),
       variant: "default" as const
     });
   } else if (record.matchType === 'Conflict') {
@@ -44,10 +44,10 @@ export function ActionsColumn({
     actions.push(commonActions.view(() => onViewDetails(record.id)));
   }
 
-  // Show discard record option for conflict records
-  if (record.matchType === 'Conflict') {
+  // Show remove invoice option for both unmatched and conflict records
+  if (record.matchType === 'Unmatched' || record.matchType === 'Conflict') {
     actions.push({
-      label: "Discard Record",
+      label: record.matchType === 'Conflict' ? "Discard Record" : "Remove Invoice",
       icon: Ban,
       onClick: () => onIgnoreRecord(record),
       variant: "destructive" as const
