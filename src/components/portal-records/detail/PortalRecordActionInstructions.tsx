@@ -34,8 +34,9 @@ export function PortalRecordActionInstructions({
   }
 
   const getInstructionText = () => {
-    if (portalRecord.matchType === 'Conflict') {
-      return 'Multiple matches found for this record. Use Resolve Conflict to choose the correct match.';
+    // No instructions for conflict records since we now have ConflictResolutionInterface
+    if (portalRecord.matchType === 'Conflict' || portalRecord.matchStatus === 'Conflicted') {
+      return null;
     } else {
       return null; // No instructions needed for matched records
     }
@@ -44,12 +45,9 @@ export function PortalRecordActionInstructions({
   const getActionButtons = () => {
     const buttons = [];
 
-    if (portalRecord.matchType === 'Conflict') {
-      buttons.push(
-        <Button key="resolve" onClick={onResolveConflict} size="sm" className="bg-[#7B59FF] hover:bg-[#6B46FF] text-white">
-          Resolve Conflict
-        </Button>
-      );
+    // No action buttons for conflict records since we now have ConflictResolutionInterface
+    if (portalRecord.matchType === 'Conflict' || portalRecord.matchStatus === 'Conflicted') {
+      return buttons;
     }
 
     return buttons;

@@ -10,6 +10,7 @@ import { PortalRecordDetailBreadcrumb } from "@/components/portal-records/detail
 import { PortalRecordDetailNotFound } from "@/components/portal-records/detail/PortalRecordDetailNotFound";
 import { PortalRecordDetailModals } from "@/components/portal-records/detail/PortalRecordDetailModals";
 import { PortalRecordActionInstructions } from "@/components/portal-records/detail/PortalRecordActionInstructions";
+import { ConflictResolutionInterface } from "@/components/portal-records/ConflictResolutionInterface";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
@@ -122,9 +123,37 @@ export default function PortalRecordDetail() {
           <Card className="p-6">
             <PortalRecordInformation
               portalRecord={portalRecord}
-              showCollapsed={portalRecord.matchType === 'Unmatched'}
+              showCollapsed={
+                portalRecord.matchType === 'Unmatched' ||
+                portalRecord.matchType === 'Conflict' ||
+                portalRecord.matchStatus === 'Unmatched' ||
+                portalRecord.matchStatus === 'Conflicted'
+              }
             />
           </Card>
+
+          {/* Show Conflict Resolution Interface for conflict records */}
+          {(portalRecord.matchType === 'Conflict' || portalRecord.matchStatus === 'Conflicted') && (
+            <Card className="p-6 mt-6">
+              <ConflictResolutionInterface
+                record={portalRecord}
+                onResolvePrimary={(selectedRecordId) => {
+                  console.log(`Setting ${selectedRecordId} as primary for conflict ${portalRecord.id}`);
+                  toast.success("Conflict Resolved", {
+                    description: `Primary record selected. Conflict has been resolved for ${portalRecord.invoiceNumber}.`,
+                  });
+                  navigate("/portal-records");
+                }}
+                onDiscardRecord={() => {
+                  console.log(`Discarding all records for conflict ${portalRecord.id}`);
+                  toast.success("Records Discarded", {
+                    description: `All conflicting records have been discarded for ${portalRecord.invoiceNumber}.`,
+                  });
+                  navigate("/portal-records");
+                }}
+              />
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="activity-log" className="mt-6">
