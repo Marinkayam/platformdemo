@@ -149,13 +149,6 @@ export function ConflictResolutionInterface({
                     </div>
                   </div>
 
-                  {/* Conflict Reason */}
-                  <div className="mt-3 pt-3 border-t border-gray-200">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-red-600 font-medium">Conflict Reason:</span>
-                      <span className="text-xs text-red-600">{conflictRecord.conflictReason}</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -265,7 +258,7 @@ export function ConflictResolutionInterface({
                 <Button variant="outline" onClick={() => setShowConfirmation(false)}>
                   Cancel
                 </Button>
-                <Button onClick={handleConfirmResolution} className="bg-green-600 hover:bg-green-700 text-white">
+                <Button onClick={handleConfirmResolution}>
                   Set as Primary
                 </Button>
               </div>
