@@ -9,7 +9,23 @@ interface PurchaseOrderInformationProps {
   purchaseOrder: PurchaseOrder;
 }
 
+const statusMap: Record<string, string> = {
+  'approved': 'Open',
+  'completed': 'Closed',
+  'cancelled': 'Cancelled',
+  'Partially Invoiced': 'Partially Invoiced',
+  'Fully Invoiced': 'Fully Invoiced',
+  'new': 'New',
+  'New': 'New',
+  'pending_approval': 'Pending Approval',
+  'rejected': 'Rejected'
+};
+
 export function PurchaseOrderInformation({ purchaseOrder }: PurchaseOrderInformationProps) {
+  // Calculate TRA (Total Remaining Amount)
+  const pendingSubmissionAmount = 0; // Assume 0 for demo
+  const tra = (purchaseOrder.total || 0) - (purchaseOrder.invoicedAmount || 0) - pendingSubmissionAmount;
+  const standardizedStatus = statusMap[purchaseOrder.status] || purchaseOrder.status;
   return (
     <>
       <h2 className="text-lg font-semibold">Purchase Order Information</h2>
@@ -23,9 +39,9 @@ export function PurchaseOrderInformation({ purchaseOrder }: PurchaseOrderInforma
           <Input value={purchaseOrder.buyerName || "N/A"} readOnly className="bg-gray-50" />
         </div>
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Status</label>
+          <label className="text-sm text-gray-500">Portal Status</label>
           <div className="flex items-center h-10 px-3 py-2 bg-gray-50 rounded-md border border-input">
-            <PurchaseOrderStatusBadge status={purchaseOrder.status} />
+            <PurchaseOrderStatusBadge status={purchaseOrder.rawStatus || purchaseOrder.status} />
           </div>
         </div>
         <div className="space-y-2">
@@ -65,14 +81,12 @@ export function PurchaseOrderInformation({ purchaseOrder }: PurchaseOrderInforma
           <Input value={purchaseOrder.currency || "N/A"} readOnly className="bg-gray-50" />
         </div>
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Portal Status</label>
-          <div className="flex items-center h-10 px-3 py-2 bg-gray-50 rounded-md border border-input">
-            {purchaseOrder.portalStatus ? (
-              <PurchaseOrderPortalStatusBadge status={purchaseOrder.portalStatus} />
-            ) : (
-              <span className="text-gray-500 text-sm">N/A</span>
-            )}
-          </div>
+          <label className="text-sm text-gray-500">Total Remaining Amount (TRA)</label>
+          <Input
+            value={formatCurrency(tra, purchaseOrder.currency || "USD")}
+            readOnly
+            className="bg-gray-50 font-semibold"
+          />
         </div>
       </div>
     </>

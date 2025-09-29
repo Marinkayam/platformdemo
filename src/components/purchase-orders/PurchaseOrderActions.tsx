@@ -2,13 +2,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { 
-  DropdownMenu, 
-  DropdownMenuTrigger, 
-  DropdownMenuContent, 
-  DropdownMenuItem 
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Settings, Download, Search } from "lucide-react";
+import { MoreVertical, Settings, Download, Search, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface PurchaseOrderActionsProps {
@@ -18,12 +18,13 @@ interface PurchaseOrderActionsProps {
   forceCompact?: boolean;
 }
 
-export function PurchaseOrderActions({ 
-  purchaseOrderCount = 0, 
+export function PurchaseOrderActions({
+  purchaseOrderCount = 0,
   searchValue = "",
   onSearchChange,
   forceCompact = false
 }: PurchaseOrderActionsProps) {
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const handleExportPurchaseOrders = () => {
     // If more than 1000 purchase orders, show error toast
     if (purchaseOrderCount > 1000) {
@@ -67,37 +68,75 @@ export function PurchaseOrderActions({
 
   return (
     <div className="flex items-center gap-2">
-      {/* Search Input */}
-      {forceCompact ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-8 bg-white">
-              <Search className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[250px] p-2">
-            <div className="relative">
-              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search PO number..."
-                value={searchValue}
-                onChange={(e) => onSearchChange?.(e.target.value)}
-                className="h-8 pl-8"
-              />
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : (
-        <div className="relative w-64">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search PO number..."
-            value={searchValue}
-            onChange={(e) => onSearchChange?.(e.target.value)}
-            className="h-8 pl-8"
-          />
-        </div>
-      )}
+      {/* Responsive Search */}
+      <div className="flex items-center">
+        {/* Dynamically show compact or full search based on available space */}
+        {forceCompact ? (
+          /* Compact mode: Icon that expands */
+          <div className="relative">
+            {isSearchExpanded ? (
+              <div className="relative w-48">
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search PO number..."
+                  value={searchValue}
+                  onChange={(e) => onSearchChange?.(e.target.value)}
+                  onBlur={() => !searchValue && setIsSearchExpanded(false)}
+                  className="h-8 pl-8 pr-8"
+                  autoFocus
+                />
+                {searchValue && (
+                  <button
+                    onClick={() => {
+                      onSearchChange?.("");
+                      setIsSearchExpanded(false);
+                    }}
+                    className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center transition-all z-10"
+                    title="Clear search"
+                    type="button"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 bg-white"
+                onClick={() => setIsSearchExpanded(true)}
+                title="Search purchase orders"
+              >
+                <Search className="h-4 w-4" />
+                {searchValue && (
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full"></div>
+                )}
+              </Button>
+            )}
+          </div>
+        ) : (
+          /* Full mode: Always show full input */
+          <div className="relative w-48">
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search PO number..."
+              value={searchValue}
+              onChange={(e) => onSearchChange?.(e.target.value)}
+              className="h-8 pl-8 pr-8"
+            />
+            {searchValue && (
+              <button
+                onClick={() => onSearchChange?.("")}
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-full w-6 h-6 flex items-center justify-center transition-all z-10"
+                title="Clear search"
+                type="button"
+              >
+                <X size={12} />
+              </button>
+            )}
+          </div>
+        )}
+      </div>
       
       {/* Kebab Menu */}
       <DropdownMenu>

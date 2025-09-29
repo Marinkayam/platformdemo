@@ -34,20 +34,20 @@ export const BADGE_COLORS = {
 
 export const STATUS_MAPPING = {
   // SUCCESS - Green
-  success: ['paid', 'settled', 'partially settled', 'live', 'connected', 'new', 'fully invoiced', 'partially invoiced'],
-  
-  // ERROR - Red  
+  success: ['paid', 'settled', 'partially settled', 'live', 'connected', 'new', 'fully invoiced', 'partially invoiced', 'completed', '100% invoiced'],
+
+  // ERROR - Red
   error: ['rejected by buyer', 'disconnected', 'error', 'unavailable', 'pending action', 'needs attention'],
-  
+
   // WARNING - Orange
-  warning: ['external submission', 'approved by buyer'],
-  
+  warning: ['external submission', 'approved by buyer', 'approved', 'partially invoiced', 'partial payment', 'part inv'],
+
   // INFO - Blue
-  info: ['in process', 'validating', 'building', 'connecting'],
-  
+  info: ['in process', 'validating', 'building', 'connecting', 'in progress', 'pending approval', 'created'],
+
   // NEUTRAL - Gray
   neutral: ['excluded', 'inactive'],
-  
+
   // PROCESSING - Purple
   processing: ['rtp prepared', 'rtp sent', 'awaiting sc', 'rejected by monto']
 };

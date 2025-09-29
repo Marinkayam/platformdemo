@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { PurchaseOrder } from '@/types/purchase-orders';
 
-type SortField = "poNumber" | "supplier" | "status" | "portal" | "totalAmount" | "invoicedAmount" | "amountLeft" | "dueDate";
+type SortField = "poNumber" | "supplier" | "status" | "portal" | "totalAmount" | "invoicedAmount" | "amountLeft" | "dueDate" | "createdDate";
 type SortDirection = 'asc' | 'desc';
 
 export function useSortedPurchaseOrders(purchaseOrders: PurchaseOrder[]) {
-  const [sortField, setSortField] = useState<SortField | null>(null);
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [sortField, setSortField] = useState<SortField | null>('createdDate');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [localPurchaseOrders, setLocalPurchaseOrders] = useState<PurchaseOrder[]>(purchaseOrders);
 
   // Update localPurchaseOrders when purchaseOrders prop changes
@@ -25,10 +25,16 @@ export function useSortedPurchaseOrders(purchaseOrders: PurchaseOrder[]) {
 
   const sortedPurchaseOrders = [...localPurchaseOrders].sort((a, b) => {
     if (!sortField) return 0;
-    
-    const fieldA = a[sortField];
-    const fieldB = b[sortField];
-    
+
+    let fieldA = a[sortField];
+    let fieldB = b[sortField];
+
+    // Handle date fields specially
+    if (sortField === 'createdDate' || sortField === 'dueDate') {
+      fieldA = new Date(fieldA as string).getTime();
+      fieldB = new Date(fieldB as string).getTime();
+    }
+
     if (fieldA === fieldB) return 0;
     return sortDirection === 'asc' ? (fieldA < fieldB ? -1 : 1) : (fieldA > fieldB ? -1 : 1);
   });

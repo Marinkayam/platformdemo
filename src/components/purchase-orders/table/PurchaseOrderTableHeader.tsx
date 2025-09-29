@@ -2,7 +2,7 @@ import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
-type SortField = "poNumber" | "supplier" | "status" | "portal" | "totalAmount" | "invoicedAmount" | "amountLeft" | "dueDate";
+type SortField = "poNumber" | "supplier" | "status" | "standardizedStatus" | "portal" | "totalAmount" | "invoicedAmount" | "amountLeft" | "tra" | "dueDate" | "createdDate";
 type SortDirection = "asc" | "desc";
 
 interface PurchaseOrderTableHeaderProps {
@@ -50,6 +50,9 @@ export function PurchaseOrderTableHeader({
            <SortButton field="status">Portal Status</SortButton>
          </TableHead>
          <TableHead className="w-[200px] min-w-[200px]">
+           <SortButton field="standardizedStatus">Monto Status</SortButton>
+         </TableHead>
+         <TableHead className="w-[200px] min-w-[200px]">
            <SortButton field="portal">Portal</SortButton>
          </TableHead>
          <TableHead className="w-[200px] min-w-[200px]">
@@ -59,10 +62,13 @@ export function PurchaseOrderTableHeader({
            <SortButton field="invoicedAmount">Amount Invoiced</SortButton>
          </TableHead>
          <TableHead className="w-[200px] min-w-[200px]">
-           <SortButton field="amountLeft">Amount Left</SortButton>
+           <SortButton field="tra">TRA</SortButton>
          </TableHead>
          <TableHead className="w-[200px] min-w-[200px]">
            <SortButton field="dueDate">Payment Terms</SortButton>
+         </TableHead>
+         <TableHead className="w-[200px] min-w-[200px]">
+           <SortButton field="createdDate">Created Date</SortButton>
          </TableHead>
       </TableRow>
     </TableHeader>

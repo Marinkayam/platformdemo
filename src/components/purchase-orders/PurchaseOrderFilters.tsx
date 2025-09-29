@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { PurchaseOrderFilters as PurchaseOrderFiltersType } from "./filters/types";
 import { usePurchaseOrderFiltersState } from "@/hooks/usePurchaseOrderFiltersState";
 import { DataTableFacetedFilter, Option } from "@/components/dashboard/filters/DataTableFacetedFilter";
+import { DateRangePicker } from "@/components/invoices/filters/DateRangePicker";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X, Search } from "lucide-react";
@@ -45,6 +46,14 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
     }));
   }, []);
 
+  const paymentTermsOptions: Option[] = useMemo(() => {
+    return filterConfig.paymentTermsOptions.map(terms => ({
+      label: terms,
+      value: terms,
+      count: purchaseOrderData.filter(po => po.paymentTerms === terms).length
+    }));
+  }, []);
+
   // Adapter functions for new filter system
   const handleStatusChange = (values: Set<string>) => {
     handleFilterChange('status', Array.from(values));
@@ -58,16 +67,26 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
     handleFilterChange('portal', Array.from(values));
   };
 
+  const handlePaymentTermsChange = (values: Set<string>) => {
+    handleFilterChange('paymentTerms', Array.from(values));
+  };
+
+  const handleCreatedDateChange = (fromDate: string, toDate: string) => {
+    handleFilterChange('createdDate', { from: fromDate, to: toDate });
+  };
+
   const handleSearchChange = (value: string) => {
     handleFilterChange('poNumber', value);
   };
 
   // Check if any filters are active
-  const isFiltered = 
-    (Array.isArray(filters.status) && filters.status.length > 0) ||
-    (Array.isArray(filters.buyer) && filters.buyer.length > 0) ||
-    (Array.isArray(filters.portal) && filters.portal.length > 0) ||
-    filters.poNumber !== "";
+  const isFiltered =
+    (Array.isArray(filters?.status) && filters.status.length > 0) ||
+    (Array.isArray(filters?.buyer) && filters.buyer.length > 0) ||
+    (Array.isArray(filters?.portal) && filters.portal.length > 0) ||
+    (Array.isArray(filters?.paymentTerms) && filters.paymentTerms.length > 0) ||
+    (filters?.createdDate && (filters.createdDate.from || filters.createdDate.to)) ||
+    (filters?.poNumber !== "");
 
   return (
     <div className="flex items-center gap-2">
@@ -75,7 +94,7 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
       <DataTableFacetedFilter
         title="Status"
         options={statusOptions}
-        selectedValues={new Set(Array.isArray(filters.status) ? filters.status : [])}
+        selectedValues={new Set(Array.isArray(filters?.status) ? filters.status : [])}
         onSelectionChange={handleStatusChange}
       />
 
@@ -83,7 +102,7 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
       <DataTableFacetedFilter
         title="Buyer"
         options={buyerOptions}
-        selectedValues={new Set(Array.isArray(filters.buyer) ? filters.buyer : [])}
+        selectedValues={new Set(Array.isArray(filters?.buyer) ? filters.buyer : [])}
         onSelectionChange={handleBuyerChange}
       />
 
@@ -91,8 +110,23 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
       <DataTableFacetedFilter
         title="Portal"
         options={portalOptions}
-        selectedValues={new Set(Array.isArray(filters.portal) ? filters.portal : [])}
+        selectedValues={new Set(Array.isArray(filters?.portal) ? filters.portal : [])}
         onSelectionChange={handlePortalChange}
+      />
+
+      {/* Payment Terms Filter */}
+      <DataTableFacetedFilter
+        title="Payment Terms"
+        options={paymentTermsOptions}
+        selectedValues={new Set(Array.isArray(filters?.paymentTerms) ? filters.paymentTerms : [])}
+        onSelectionChange={handlePaymentTermsChange}
+      />
+
+      {/* Created Date Filter */}
+      <DateRangePicker
+        fromDate={filters?.createdDate?.from || ""}
+        toDate={filters?.createdDate?.to || ""}
+        onDateChange={handleCreatedDateChange}
       />
 
       {/* Reset Button */}

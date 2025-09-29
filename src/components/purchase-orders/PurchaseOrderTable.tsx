@@ -11,6 +11,18 @@ import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { PurchaseOrdersPagination } from "./components/PurchaseOrdersPagination";
 import { useState, useMemo } from "react";
 
+const statusMap: Record<string, string> = {
+  'approved': 'Open',
+  'completed': 'Closed',
+  'cancelled': 'Cancelled',
+  'Partially Invoiced': 'Partially Invoiced',
+  'Fully Invoiced': 'Fully Invoiced',
+  'new': 'New',
+  'New': 'New',
+  'pending_approval': 'Pending Approval',
+  'rejected': 'Rejected'
+};
+
 interface PurchaseOrderTableProps {
   purchaseOrders: PurchaseOrder[];
   isLoading?: boolean;
@@ -55,17 +67,23 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
           />
           
           {isLoading ? (
-            <TableSkeleton rows={6} columns={8} showFooter />
+            <TableSkeleton rows={6} columns={9} showFooter />
           ) : (
             <TableBody className="divide-y divide-gray-100">
               {paginatedData.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center text-sm text-gray-600 align-middle bg-white">
+                  <TableCell colSpan={9} className="text-center text-sm text-gray-600 align-middle bg-white">
                     No purchase orders found.
                   </TableCell>
                 </TableRow>
               ) : (
-                paginatedData.map((po) => (
+                paginatedData.map((po) => {
+                  // Calculate TRA and standardized status for each row
+                  const pendingSubmissionAmount = 0; // Assume 0 for demo
+                  const tra = (po.total || 0) - (po.invoicedAmount || 0) - pendingSubmissionAmount;
+                  const standardizedStatus = statusMap[po.status] || po.status;
+
+                  return (
                 <TableRow
                   key={po.id}
                   className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
@@ -96,7 +114,10 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
                     </TooltipProvider>
                   </TableCell>
                   <TableCell className="whitespace-nowrap w-[200px] min-w-[200px]">
-                    <StatusBadge status={po.status} className="whitespace-nowrap flex-shrink-0" />
+                    <StatusBadge status={po.rawStatus} className="whitespace-nowrap flex-shrink-0" />
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap w-[200px] min-w-[200px]">
+                    <StatusBadge status={standardizedStatus} className="whitespace-nowrap flex-shrink-0" />
                   </TableCell>
                   <TableCell className="truncate w-[200px] min-w-[200px]">
                     <TooltipProvider>
@@ -130,7 +151,7 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
                     {formatCurrency(po.invoicedAmount, po.currency)}
                   </TableCell>
                   <TableCell className="font-medium w-[200px] min-w-[200px]">
-                    {formatCurrency(po.amountLeft, po.currency)}
+                    {formatCurrency(tra, po.currency)}
                   </TableCell>
                   <TableCell className="truncate w-[200px] min-w-[200px]">
                     <TooltipProvider>
@@ -144,8 +165,21 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
                       </Tooltip>
                     </TooltipProvider>
                   </TableCell>
+                  <TableCell className="truncate w-[200px] min-w-[200px]">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="truncate cursor-help">{po.createdDate}</span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Created: {po.createdDate}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
                 </TableRow>
-                ))
+                );
+                })
               )}
             </TableBody>
           )}

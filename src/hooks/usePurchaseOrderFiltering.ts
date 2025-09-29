@@ -8,7 +8,10 @@ export function usePurchaseOrderFiltering(purchaseOrders: PurchaseOrder[], activ
     status: [],
     buyer: [],
     portal: [],
-    poNumber: ""
+    poNumber: "",
+    paymentTerms: [],
+    createdDate: { from: "", to: "" },
+    dueDate: { from: "", to: "" }
   });
 
   const filteredPurchaseOrders = useMemo(() => {
@@ -45,9 +48,25 @@ export function usePurchaseOrderFiltering(purchaseOrders: PurchaseOrder[], activ
     }
 
     if (filters.poNumber) {
-      filtered = filtered.filter(po => 
+      filtered = filtered.filter(po =>
         po.poNumber.toLowerCase().includes(filters.poNumber.toLowerCase())
       );
+    }
+
+    if (filters.paymentTerms && filters.paymentTerms.length > 0) {
+      filtered = filtered.filter(po => filters.paymentTerms.includes(po.paymentTerms));
+    }
+
+    if (filters.createdDate && (filters.createdDate.from || filters.createdDate.to)) {
+      filtered = filtered.filter(po => {
+        const poDate = new Date(po.createdDate);
+        const fromDate = filters.createdDate.from ? new Date(filters.createdDate.from) : null;
+        const toDate = filters.createdDate.to ? new Date(filters.createdDate.to) : null;
+
+        if (fromDate && poDate < fromDate) return false;
+        if (toDate && poDate > toDate) return false;
+        return true;
+      });
     }
 
     return filtered;

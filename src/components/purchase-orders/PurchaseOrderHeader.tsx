@@ -49,7 +49,7 @@ export function PurchaseOrderHeader({
 
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          <div className="flex-1 min-w-0 overflow-hidden">
+          <div className="flex-1 min-w-0">
             <PurchaseOrderFilters onFilterChange={onFilterChange} />
           </div>
           <div className="flex-shrink-0">

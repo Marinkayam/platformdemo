@@ -21,7 +21,7 @@ export function RelatedInvoicesSection({ invoiceIds }: RelatedInvoicesSectionPro
   if (!invoiceIds || invoiceIds.length === 0) {
     return (
       <Card>
-        <CardHeader>
+        <CardHeader className="pb-3">
           <CardTitle>Related Invoices</CardTitle>
         </CardHeader>
         <CardContent>
@@ -35,7 +35,7 @@ export function RelatedInvoicesSection({ invoiceIds }: RelatedInvoicesSectionPro
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-3">
         <CardTitle>Related Invoices</CardTitle>
       </CardHeader>
       <CardContent>

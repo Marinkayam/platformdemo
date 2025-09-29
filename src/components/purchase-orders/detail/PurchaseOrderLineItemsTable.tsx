@@ -17,7 +17,7 @@ export function PurchaseOrderLineItemsTable({ lineItems }: PurchaseOrderLineItem
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-3">
         <CardTitle>Line Items</CardTitle>
       </CardHeader>
       <CardContent>

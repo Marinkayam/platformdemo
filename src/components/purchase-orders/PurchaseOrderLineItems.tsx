@@ -19,6 +19,7 @@ export function PurchaseOrderLineItems({ purchaseOrder }: PurchaseOrderLineItems
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Line #</th>
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                 <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
                 <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Price</th>
@@ -28,13 +29,14 @@ export function PurchaseOrderLineItems({ purchaseOrder }: PurchaseOrderLineItems
             <tbody className="bg-white divide-y divide-gray-200">
               {lineItems.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                  <td colSpan={5} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                     No line items found.
                   </td>
                 </tr>
               ) : (
-                lineItems.map((item) => (
+                lineItems.map((item, index) => (
                   <tr key={item.id}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-600">{index + 1}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.description}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">{item.quantity}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">{formatCurrency(item.unitPrice || 0, item.currency || "USD")}</td>

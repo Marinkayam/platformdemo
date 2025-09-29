@@ -32,6 +32,7 @@ export type PurchaseOrder = {
   id: string;
   poNumber: string;
   status: PurchaseOrderStatus;
+  rawStatus: string; // The actual raw status from the portal
   // Fields from mock data and used in table
   buyerName: string;
   portal: string;

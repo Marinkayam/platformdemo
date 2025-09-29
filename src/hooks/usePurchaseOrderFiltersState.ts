@@ -16,15 +16,19 @@ export function usePurchaseOrderFiltersState(
   
   const handleRemoveFilter = (key: string, value: string) => {
     const newFilters = { ...filters };
-    
+
     if (key.startsWith("status")) {
       newFilters.status = newFilters.status.filter(s => s !== value);
     } else if (key.startsWith("buyer")) {
       newFilters.buyer = newFilters.buyer.filter(b => b !== value);
     } else if (key.startsWith("portal")) {
       newFilters.portal = newFilters.portal.filter(p => p !== value);
+    } else if (key.startsWith("paymentTerms")) {
+      newFilters.paymentTerms = newFilters.paymentTerms.filter(p => p !== value);
     } else if (key === "po-number") {
       newFilters.poNumber = "";
+    } else if (key === "created-date") {
+      newFilters.createdDate = { from: "", to: "" };
     } else if (key === "due-date") {
       newFilters.dueDate = { from: "", to: "" };
     }

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PurchaseOrder } from "@/types/purchase-orders";
 import { PurchaseOrderLineItemsTable } from "./PurchaseOrderLineItemsTable";
 import { RelatedInvoicesSection } from "./RelatedInvoicesSection";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 interface PurchaseOrderDetailContentProps {
   purchaseOrder: PurchaseOrder;
@@ -24,13 +25,30 @@ export function PurchaseOrderDetailContent({ purchaseOrder }: PurchaseOrderDetai
     });
   };
 
+  // Status mapping for Monto Status
+  const statusMap: Record<string, string> = {
+    'approved': 'Open',
+    'completed': 'Closed',
+    'cancelled': 'Cancelled',
+    'Partially Invoiced': 'Partially Invoiced',
+    'Fully Invoiced': 'Fully Invoiced',
+    'new': 'New',
+    'New': 'New',
+    'pending_approval': 'Pending Approval',
+    'rejected': 'Rejected'
+  };
+
+  const getStandardizedStatus = (status: string) => {
+    return statusMap[status] || status;
+  };
+
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader>
+        <CardHeader className="pb-8">
           <CardTitle>Purchase Order Information</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pt-10">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium text-gray-600">PO Number</label>
@@ -39,6 +57,18 @@ export function PurchaseOrderDetailContent({ purchaseOrder }: PurchaseOrderDetai
             <div>
               <label className="text-sm font-medium text-gray-600">Buyer Name</label>
               <p className="text-sm text-gray-900">{purchaseOrder.buyerName}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">Portal Status</label>
+              <div className="mt-1">
+                <StatusBadge status={purchaseOrder.rawStatus || purchaseOrder.status} className="whitespace-nowrap flex-shrink-0" />
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">Monto Status</label>
+              <div className="mt-1">
+                <StatusBadge status={getStandardizedStatus(purchaseOrder.status)} className="whitespace-nowrap flex-shrink-0" />
+              </div>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-600">Portal</label>
@@ -57,8 +87,8 @@ export function PurchaseOrderDetailContent({ purchaseOrder }: PurchaseOrderDetai
               <p className="text-sm text-gray-900">{formatCurrency(purchaseOrder.invoicedAmount)}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-600">Amount Left</label>
-              <p className="text-sm font-semibold text-green-600">{formatCurrency(purchaseOrder.amountLeft)}</p>
+              <label className="text-sm font-medium text-gray-600">TRA</label>
+              <p className="text-sm font-semibold text-gray-900">{formatCurrency(purchaseOrder.amountLeft)}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-600">Payment Terms</label>
