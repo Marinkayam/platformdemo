@@ -17,15 +17,15 @@ export function InvoiceTabsNav({ activeTab, onTabChange, activityCount = 0, invo
     { id: "activity", icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>, label: "Activity", count: activityCount, tooltip: null },
   ];
   
-  // Build tabs based on status
+  // Build tabs based on status and exceptions
   let tabs = [...baseTabs];
-  if (invoiceStatus === "Pending Action") {
-    tabs.splice(1, 0, { 
-      id: "exceptions", 
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>, 
-      label: "Exceptions", 
+  if (invoiceStatus === "Pending Action" && exceptionCount && exceptionCount > 0) {
+    tabs.splice(1, 0, {
+      id: "exceptions",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>,
+      label: "Exceptions",
       count: exceptionCount,
-      tooltip: null 
+      tooltip: null
     });
   }
   // Remove Portal Records tab for RTP Prepared status

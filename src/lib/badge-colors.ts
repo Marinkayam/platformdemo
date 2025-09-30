@@ -34,7 +34,7 @@ export const BADGE_COLORS = {
 
 export const STATUS_MAPPING = {
   // SUCCESS - Green
-  success: ['paid', 'settled', 'partially settled', 'live', 'connected', 'new', 'fully invoiced', 'partially invoiced', 'completed', '100% invoiced'],
+  success: ['paid', 'settled', 'partially settled', 'live', 'connected', 'new', 'fully invoiced', 'partially invoiced', 'completed', '100% invoiced', 'open', 'closed'],
 
   // ERROR - Red
   error: ['rejected by buyer', 'disconnected', 'error', 'unavailable', 'pending action', 'needs attention'],

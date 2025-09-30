@@ -18,14 +18,9 @@ export function MainLayout() {
     <SidebarProvider>
       <AppSidebar onChatAIOpen={handleOpenChatAIModal} />
       <SidebarInset className="overflow-x-hidden h-screen flex flex-col">
-        <div className="flex-shrink-0 sticky top-0 z-50 h-12">
+        <div className="flex-shrink-0 sticky top-0 z-50 h-12 bg-white border-b border-gray-200">
           <div className="flex h-full items-center px-4">
             <SidebarTrigger className="p-1.5 h-8 w-8 hover:bg-gray-100 rounded-md" />
-            {headerVisible && (
-              <div className="flex-1 ml-4">
-                {/* Space for breadcrumbs or page title if needed */}
-              </div>
-            )}
           </div>
         </div>
         <main className="flex-1 bg-white overflow-y-auto min-h-0">

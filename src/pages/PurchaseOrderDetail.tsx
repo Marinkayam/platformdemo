@@ -11,7 +11,6 @@ import { useQuery } from "@tanstack/react-query";
 import { PurchaseOrderTabs } from "@/components/purchase-orders/PurchaseOrderTabs";
 import { PurchaseOrderInformation } from "@/components/purchase-orders/PurchaseOrderInformation";
 import { PurchaseOrderLineItems } from "@/components/purchase-orders/PurchaseOrderLineItems";
-import { PurchaseOrderRelatedInvoices } from "@/components/purchase-orders/PurchaseOrderRelatedInvoices";
 
 // Mock data - in a real app, this would come from an API
 const getPurchaseOrderById = async (id: string): Promise<PurchaseOrder> => {
@@ -97,8 +96,6 @@ export default function PurchaseOrderDetail() {
           </Card>
 
           <PurchaseOrderLineItems purchaseOrder={purchaseOrder} />
-
-          <PurchaseOrderRelatedInvoices purchaseOrder={purchaseOrder} />
 
         </TabsContent>
 

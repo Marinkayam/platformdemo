@@ -2,8 +2,6 @@ import { Input } from "@/components/ui/input";
 import { PurchaseOrder } from "@/types/purchase-orders";
 import { formatCurrency } from "@/lib/utils";
 import { format } from "date-fns";
-import { PurchaseOrderStatusBadge } from "./PurchaseOrderStatusBadge";
-import { PurchaseOrderPortalStatusBadge } from "./PurchaseOrderPortalStatusBadge";
 
 interface PurchaseOrderInformationProps {
   purchaseOrder: PurchaseOrder;
@@ -39,10 +37,8 @@ export function PurchaseOrderInformation({ purchaseOrder }: PurchaseOrderInforma
           <Input value={purchaseOrder.buyerName || "N/A"} readOnly className="bg-gray-50" />
         </div>
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Portal Status</label>
-          <div className="flex items-center h-10 px-3 py-2 bg-gray-50 rounded-md border border-input">
-            <PurchaseOrderStatusBadge status={purchaseOrder.rawStatus || purchaseOrder.status} />
-          </div>
+          <label className="text-sm text-gray-500">Monto Status</label>
+          <Input value={standardizedStatus} readOnly className="bg-gray-50" />
         </div>
         <div className="space-y-2">
           <label className="text-sm text-gray-500">Portal</label>

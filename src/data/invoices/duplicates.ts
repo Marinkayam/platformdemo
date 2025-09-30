@@ -19,6 +19,7 @@ export const duplicateInvoices: Invoice[] = [
     hasExceptions: true,
     isDuplicate: true,
     portal: "SAP Ariba",
+    poNumber: "MAR-554433",
     invoiceDate: "2024-04-20",
     netTerms: "Net 60",
     exceptions: [
@@ -49,6 +50,7 @@ export const duplicateInvoices: Invoice[] = [
     hasExceptions: false,
     isDuplicate: true,
     portal: "Coupa",
+    poNumber: "MAR-554433",
     invoiceDate: "2024-04-18",
     netTerms: "Net 45"
   },
@@ -69,6 +71,7 @@ export const duplicateInvoices: Invoice[] = [
     hasExceptions: true,
     isDuplicate: true,
     portal: "Bill.com",
+    poNumber: "DIS-998877",
     invoiceDate: "2024-04-19",
     netTerms: "Net 30",
     exceptions: [
@@ -107,6 +110,7 @@ export const duplicateInvoices: Invoice[] = [
     hasExceptions: true,
     isDuplicate: true,
     portal: "SAP Ariba",
+    poNumber: "WBE-667788",
     invoiceDate: "2024-04-21",
     netTerms: "Net 45",
     exceptions: [

@@ -54,7 +54,12 @@ export function FinancialFields({
 
       <div className="space-y-2">
         <label className="text-sm text-gray-500">PO #</label>
-        <Input value={poNumber} readOnly className="bg-gray-50" />
+        <Input
+          value={poNumber}
+          readOnly
+          className="bg-gray-50"
+          placeholder="No PO number"
+        />
       </div>
     </div>
   );

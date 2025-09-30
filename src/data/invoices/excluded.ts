@@ -10,7 +10,10 @@ export const excludedInvoices = [
     "Excluded",
     4500.60,
     "09/15/2024",
-    "Camila"
+    "Camila",
+    {
+      poNumber: "SPO-445678"
+    }
   ),
   getBasicInvoiceData(
     "excluded-1",

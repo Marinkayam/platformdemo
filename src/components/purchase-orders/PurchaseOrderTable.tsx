@@ -67,12 +67,12 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
           />
           
           {isLoading ? (
-            <TableSkeleton rows={6} columns={9} showFooter />
+            <TableSkeleton rows={6} columns={8} showFooter />
           ) : (
             <TableBody className="divide-y divide-gray-100">
               {paginatedData.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="text-center text-sm text-gray-600 align-middle bg-white">
+                  <TableCell colSpan={8} className="text-center text-sm text-gray-600 align-middle bg-white">
                     No purchase orders found.
                   </TableCell>
                 </TableRow>
@@ -112,9 +112,6 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap w-[200px] min-w-[200px]">
-                    <StatusBadge status={po.rawStatus} className="whitespace-nowrap flex-shrink-0" />
                   </TableCell>
                   <TableCell className="whitespace-nowrap w-[200px] min-w-[200px]">
                     <StatusBadge status={standardizedStatus} className="whitespace-nowrap flex-shrink-0" />

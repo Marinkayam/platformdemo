@@ -27,8 +27,8 @@ export function ExceptionHandler({
   const isPOLineItemsException = exceptions.some(exception => 
     exception.type === 'MISSING_INFORMATION' && exception.missingFields?.includes('poLineItems')
   );
-  const isPOException = exceptions.some(exception => exception.type === 'PO_CLOSED' || exception.type === 'PO_INSUFFICIENT_FUNDS');
-  const isValidationException = exceptions.some(exception => exception.type === 'VALIDATION_ERROR');
+  const isPOException = exceptions.some(exception => exception.type === 'PO_CLOSED' || exception.type === 'PO_INSUFFICIENT_FUNDS' || exception.type === 'PO_VALIDATION');
+  const isValidationException = exceptions.some(exception => exception.type === 'VALIDATION_ERROR' || exception.type === 'PO_VALIDATION' || exception.type === 'INVOICE_DATA');
   const isExtraDataException = exceptions.some(exception => exception.type === 'EXTRA_DATA');
 
   // Use the new DuplicateInvoiceHandler for ALL duplicate exceptions

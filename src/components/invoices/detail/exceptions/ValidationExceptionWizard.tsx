@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { AlertTriangle, Upload, ChevronDown, ChevronUp, Lightbulb, X, File, TriangleAlert, WandSparkles, Sparkles } from 'lucide-react';
+import { AlertTriangle, Upload, ChevronDown, ChevronUp, Lightbulb, X, File, TriangleAlert, WandSparkles, Sparkles, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ExceptionBanner } from '@/components/ui/exception-banner';
+import { POSuggestionsModal } from './POSuggestionsModal';
+import { Button } from '@/components/ui/button';
 
 interface ValidationExceptionWizardProps {
   onResolve?: (resolutionData: any) => void;
@@ -29,6 +31,13 @@ const ValidationExceptionWizard = ({
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [showPOSuggestions, setShowPOSuggestions] = useState(false);
+
+  // Check if we have PO-related exceptions
+  const hasPOExceptions = exceptions.some(exc =>
+    exc.title.toLowerCase().includes('po') ||
+    exc.description.toLowerCase().includes('purchase order')
+  );
   
   const handleFileUpload = (file: File) => {
     if (file) {
@@ -247,7 +256,34 @@ const ValidationExceptionWizard = ({
               </ExceptionBanner>
             ))}
           </div>
-          
+
+          {/* PO Suggestions Button - Only show if there are PO-related exceptions */}
+          {hasPOExceptions && (
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-start gap-3">
+                  <Search className="mt-0.5 flex-shrink-0 text-purple-600" size={16} />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 mb-1">
+                      Monto found alternative POs
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      We've identified valid POs from Adobe with sufficient funds that you can use instead.
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowPOSuggestions(true)}
+                  className="flex-shrink-0 border-purple-300 hover:bg-purple-100"
+                >
+                  Review PO Suggestions
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* Resolution guidance without background container */}
           <div className="flex items-start gap-3">
             <WandSparkles className="mt-0.5 flex-shrink-0" style={{ color: '#7B59FF' }} size={16} />
@@ -257,7 +293,7 @@ const ValidationExceptionWizard = ({
               </p>
             </div>
           </div>
-          
+
           {/* File Upload Section */}
           <div 
             className={`bg-white p-6 rounded-xl border border-gray-200 flex flex-col items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 ${
@@ -371,7 +407,7 @@ const ValidationExceptionWizard = ({
           {/* Other Resolution Options Section */}
           <div className="bg-white p-4 rounded-xl border border-gray-200">
             <div className="py-0">
-              <button 
+              <button
                 className="w-full flex justify-between items-center px-2 py-2 rounded-lg bg-white hover:bg-gray-50 transition-colors duration-200 ease-in-out"
                 onClick={toggleOtherOptions}
               >
@@ -476,9 +512,18 @@ const ValidationExceptionWizard = ({
           </div>
         </div>
       </div>
-      
+
       {/* Confirmation Modal */}
       <ConfirmationModal />
+
+      {/* PO Suggestions Modal */}
+      <POSuggestionsModal
+        isOpen={showPOSuggestions}
+        onClose={() => setShowPOSuggestions(false)}
+        invoiceTotal={75000}
+        invoiceCurrency="USD"
+        buyerName="Adobe"
+      />
     </div>
   );
 };

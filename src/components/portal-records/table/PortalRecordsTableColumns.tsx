@@ -2,11 +2,9 @@ import { TriangleAlert } from "lucide-react";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "../PortalLogo";
 import { MatchTypeBadge } from "../MatchTypeBadge";
-import { StatusBadge } from "@/components/ui/status-badge";
 import { ConnectionStatusBadge } from "../ConnectionStatusBadge";
 import { LastSyncedCell } from "../LastSyncedCell";
 import { ActionsColumn } from "./columns/ActionsColumn";
-import { ConflictStatusBadge } from "../ConflictStatusBadge";
 import { formatCurrency } from "@/lib/utils";
 
 interface PortalRecordsTableColumnsProps {
@@ -63,18 +61,6 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
          <span className="text-sm text-gray-900 truncate">{record.supplierName}</span>
        )
      },
-      {
-        key: 'portalStatus',
-        label: activeTab === 'conflict' ? 'Status' : 'Portal Status',
-        className: 'w-[200px] min-w-[200px] whitespace-nowrap',
-        render: (record: PortalRecord) => {
-          // Show conflict status badge for conflict tab
-          if (activeTab === 'conflict' && record.matchType === 'Conflict') {
-            return <ConflictStatusBadge />;
-          }
-          return <StatusBadge status={record.portalStatus} />
-        }
-      },
      {
        key: 'total',
        label: 'Total',

@@ -91,6 +91,7 @@ export function ExceptionsTab({ exceptions, onResolveException, invoice }: Excep
     });
   };
 
+
   if (!exceptions || exceptions.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-6">

@@ -10,7 +10,10 @@ export const awaitingInvoices = [
     "Awaiting SC",
     9400.50,
     "09/15/2024",
-    "Rihana"
+    "Rihana",
+    {
+      poNumber: "TWI-775544"
+    }
   ),
   getBasicInvoiceData(
     "11",
@@ -20,7 +23,10 @@ export const awaitingInvoices = [
     "Awaiting SC",
     12600.80,
     "09/15/2024",
-    "Madona"
+    "Madona",
+    {
+      poNumber: "LIN-889966"
+    }
   ),
   getBasicInvoiceData(
     "12",
@@ -30,7 +36,10 @@ export const awaitingInvoices = [
     "Awaiting SC",
     18900.35,
     "09/15/2024",
-    "Lady Gaga"
+    "Lady Gaga",
+    {
+      poNumber: "NET-332211"
+    }
   ),
   getBasicInvoiceData(
     "awaiting-1",

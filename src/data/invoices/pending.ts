@@ -5,6 +5,55 @@ import { getBasicInvoiceData } from "./types";
 export const pendingInvoices: Invoice[] = [
   {
     ...getBasicInvoiceData(
+      "inv-40230612",
+      "INV-40230612",
+      "Adobe",
+      "2024-12-20",
+      "Pending Action",
+      75000.00,
+      "2024-12-01",
+      "adobe.finance@adobe.com"
+    ),
+    assignee: "procurement@company.com",
+    subtotal: 75000.00,
+    tax: 0.00,
+    paymentTerms: "Net 30",
+    taxId: "TAX-ADOBE-001",
+    poNumber: "ADO-778899",
+    requesterEmail: "procurement@company.com",
+    hasExceptions: true,
+    rejectedBy: "Monto" as const,
+    invoiceDate: "01-12-2024", // Wrong format to trigger exception
+    netTerms: "Net 30",
+    exceptions: [
+      {
+        id: "exc-po-status-001",
+        type: "PO_VALIDATION",
+        message: "PO status is NOT Open",
+        details: "The purchase order status must be Open to process this invoice",
+        createdAt: "2024-12-01T10:00:00Z",
+        resolved: false
+      },
+      {
+        id: "exc-po-amount-001",
+        type: "PO_VALIDATION",
+        message: "PO total amount is NOT bigger than PO sub total",
+        details: "The purchase order amount validation failed",
+        createdAt: "2024-12-01T10:00:00Z",
+        resolved: false
+      },
+      {
+        id: "exc-date-format-001",
+        type: "INVOICE_DATA",
+        message: "Date format must be dd/mm/yyyy",
+        details: "Invoice date is in incorrect format. Expected: dd/mm/yyyy",
+        createdAt: "2024-12-01T10:00:00Z",
+        resolved: false
+      }
+    ]
+  },
+  {
+    ...getBasicInvoiceData(
       "1",
       "INV-10021301",
       "Acme Corporation",
@@ -19,6 +68,7 @@ export const pendingInvoices: Invoice[] = [
     tax: 350.25,
     paymentTerms: "Net 30",
     taxId: "TAX-001",
+    poNumber: "ACM-123456",
     requesterEmail: "requester@acme.com",
     hasExceptions: true,
     rejectedBy: "Monto" as const,
@@ -53,6 +103,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-002",
     requesterEmail: "procurement@techsolutions.com",
     portal: "Coupa",
+    poNumber: "TEC-987654",
     hasExceptions: true,
     rejectedBy: "Buyer" as const,
     invoiceDate: "2024-03-18",
@@ -87,6 +138,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-003",
     requesterEmail: "billing@globalent.com",
     portal: "Bill.com",
+    poNumber: "GLO-445566",
     hasExceptions: true,
     isDuplicate: true,
     submitMethod: "ERP",
@@ -122,6 +174,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-006",
     requesterEmail: "procurement@newco.com",
     portal: "SAP Ariba",
+    poNumber: "NEW-112233",
     hasExceptions: true,
     isDuplicate: true,
     submitMethod: "Email",
@@ -158,6 +211,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-004",
     requesterEmail: "finance@europartners.de",
     portal: "SAP Ariba",
+    poNumber: "EUR-334455",
     hasExceptions: true,
     invoiceDate: "2024-05-01",
     netTerms: "Net 30",
@@ -199,6 +253,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-005",
     requesterEmail: "accounting@espresso.com",
     portal: "SAP Ariba",
+    poNumber: "ESP-776655",
     hasExceptions: false,
     invoiceDate: "2024-03-15",
     netTerms: "Net 30"
@@ -221,6 +276,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-007",
     requesterEmail: "billing@techcorp.com",
     portal: "Oracle Procurement",
+    poNumber: "TCC-889900",
     hasExceptions: true,
     rejectedBy: "Buyer" as const,
     invoiceDate: "2024-04-05",
@@ -255,6 +311,7 @@ export const pendingInvoices: Invoice[] = [
     taxId: "TAX-008",
     requesterEmail: "invoicing@fastbuy.com",
     portal: "Bill.com",
+    poNumber: "FBC-223344",
     hasExceptions: false,
     invoiceDate: "2024-04-10",
     netTerms: "Net 15",

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { invoiceData } from "@/data/invoices";
+import { UniversalBreadcrumb } from "@/components/common/UniversalBreadcrumb";
 import { InvoiceHeader } from "@/components/invoices/detail/InvoiceHeader";
 import { InvoiceTabsNav } from "@/components/invoices/detail/InvoiceTabs";
 import { FinancialData } from "@/components/invoices/detail/FinancialData";

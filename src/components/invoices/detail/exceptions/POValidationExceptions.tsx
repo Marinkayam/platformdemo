@@ -64,17 +64,9 @@ export function POValidationExceptions({
     // Find PO in mock data
     const po = findPOByNumber(currentPO);
 
-    // 1. PO Not Found Exception (including empty PO)
+    // Skip PO not found validation - we'll handle this elsewhere
     if (!po || !currentPO) {
-      newExceptions.push({
-        id: 'po-not-found',
-        type: 'not-found',
-        title: 'PO not found in portal',
-        description: 'Monto could not locate the referenced PO in the connected buyer portal.',
-        severity: 'error',
-        suggestedAction: 'Select a different PO'
-      });
-      setExceptions(newExceptions);
+      setExceptions([]);
       return; // Stop validation if PO doesn't exist
     }
 
