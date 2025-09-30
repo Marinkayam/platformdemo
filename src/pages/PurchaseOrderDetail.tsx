@@ -11,6 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import { PurchaseOrderTabs } from "@/components/purchase-orders/PurchaseOrderTabs";
 import { PurchaseOrderInformation } from "@/components/purchase-orders/PurchaseOrderInformation";
 import { PurchaseOrderLineItems } from "@/components/purchase-orders/PurchaseOrderLineItems";
+import { POPreview } from "@/components/purchase-orders/POPreview";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 // Mock data - in a real app, this would come from an API
 const getPurchaseOrderById = async (id: string): Promise<PurchaseOrder> => {
@@ -30,6 +32,7 @@ export default function PurchaseOrderDetail() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("po-data");
   const [hasInitialized, setHasInitialized] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1.0);
 
   const { data: purchaseOrder, isLoading, isError, error } = useQuery<PurchaseOrder, Error>({
     queryKey: ['purchaseOrder', id],
@@ -58,6 +61,14 @@ export default function PurchaseOrderDetail() {
       window.removeEventListener('switchTab', handleTabChange as EventListener);
     };
   }, []);
+
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + 0.1, 2.0));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
+  };
 
   if (isLoading) {
     return (
@@ -91,12 +102,25 @@ export default function PurchaseOrderDetail() {
         <PurchaseOrderTabs activeTab={activeTab} onTabChange={setActiveTab} activityCount={activityCount} />
 
         <TabsContent value="po-data">
-          <Card className="p-6 rounded-xl shadow-sm">
-            <PurchaseOrderInformation purchaseOrder={purchaseOrder} />
-          </Card>
+          <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
+            <ResizablePanel defaultSize={55} className="p-6 bg-white">
+              <div className="space-y-6">
+                <PurchaseOrderInformation purchaseOrder={purchaseOrder} />
+                <PurchaseOrderLineItems purchaseOrder={purchaseOrder} />
+              </div>
+            </ResizablePanel>
 
-          <PurchaseOrderLineItems purchaseOrder={purchaseOrder} />
+            <ResizableHandle />
 
+            <ResizablePanel defaultSize={45} className="p-6 border-l border-[#E4E5E9] bg-white">
+              <POPreview
+                purchaseOrder={purchaseOrder}
+                zoomLevel={zoomLevel}
+                onZoomIn={handleZoomIn}
+                onZoomOut={handleZoomOut}
+              />
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </TabsContent>
 
         <TabsContent value="activity" className="">
