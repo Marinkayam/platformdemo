@@ -297,7 +297,7 @@ const ValidationExceptionWizard = ({
           {/* File Upload Section */}
           <div 
             className={`bg-white p-6 rounded-xl border border-gray-200 flex flex-col items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 ${
-              selectedOption === 'upload' ? 'ring-2 ring-purple-500 border-purple-500' : ''
+              selectedOption === 'upload' ? 'border-gray-300' : ''
             }`}
             onClick={() => !uploadedFile && !isUploading && document.getElementById('file-input')?.click()}
             onDragOver={handleDragOver}

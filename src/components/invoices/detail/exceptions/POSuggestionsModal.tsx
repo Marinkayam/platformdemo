@@ -206,36 +206,36 @@ export function POSuggestionsModal({
               <table className="w-full">
                 <thead style={{ backgroundColor: '#F0EDFF' }}>
                   <tr className="border-b border-[#E4E5E9]">
-                    <th className="w-8 p-3"></th>
+                    <th className="w-8 p-4"></th>
                     <th
-                      className="text-left p-3 font-medium text-sm cursor-pointer hover:bg-opacity-80"
+                      className="text-left p-4 font-medium text-sm cursor-pointer hover:bg-opacity-80"
                       style={{ color: '#38415F' }}
                       onClick={() => handleSort('poNumber')}
                     >
                       PO Number
                     </th>
                     <th
-                      className="text-left p-3 font-medium text-sm cursor-pointer hover:bg-opacity-80"
+                      className="text-left p-4 font-medium text-sm cursor-pointer hover:bg-opacity-80"
                       style={{ color: '#38415F' }}
                       onClick={() => handleSort('poDate')}
                     >
                       PO Date
                     </th>
                     <th
-                      className="text-left p-3 font-medium text-sm cursor-pointer hover:bg-opacity-80"
+                      className="text-left p-4 font-medium text-sm cursor-pointer hover:bg-opacity-80"
                       style={{ color: '#38415F' }}
                       onClick={() => handleSort('status')}
                     >
                       Monto's Status
                     </th>
                     <th
-                      className="text-left p-3 font-medium text-sm cursor-pointer hover:bg-opacity-80"
+                      className="text-left p-4 font-medium text-sm cursor-pointer hover:bg-opacity-80"
                       style={{ color: '#38415F' }}
                       onClick={() => handleSort('tra')}
                     >
                       TRA
                     </th>
-                    <th className="text-center p-3 font-medium text-sm" style={{ color: '#38415F' }}>
+                    <th className="text-center p-4 font-medium text-sm" style={{ color: '#38415F' }}>
                       Download
                     </th>
                   </tr>
@@ -249,7 +249,7 @@ export function POSuggestionsModal({
                         style={{ backgroundColor: index % 2 === 0 ? 'white' : '#FAFBFC' }}
                         onClick={() => toggleRowExpansion(po.id)}
                       >
-                        <td className="p-3 text-center">
+                        <td className="p-4 text-center">
                           <button
                             className="p-1"
                             style={{ color: '#8C92A3' }}
@@ -261,7 +261,7 @@ export function POSuggestionsModal({
                             )}
                           </button>
                         </td>
-                        <td className="p-3">
+                        <td className="p-4">
                           <div className="flex items-center gap-2">
                             <div className="font-medium text-sm" style={{ color: '#38415F' }}>{po.poNumber}</div>
                             <button
@@ -277,13 +277,13 @@ export function POSuggestionsModal({
                             </button>
                           </div>
                         </td>
-                        <td className="p-3 text-sm" style={{ color: '#586079' }}>
+                        <td className="p-4 text-sm" style={{ color: '#586079' }}>
                           {formatDate(po.poDate)}
                         </td>
-                        <td className="p-3">
+                        <td className="p-4">
                           <StatusBadge status={po.status} />
                         </td>
-                        <td className="p-3">
+                        <td className="p-4">
                           <div
                             className="font-medium text-sm"
                             style={{ color: po.tra >= invoiceTotal ? '#38415F' : '#DF1C41' }}
@@ -296,13 +296,13 @@ export function POSuggestionsModal({
                             </div>
                           )}
                         </td>
-                        <td className="p-3 text-center">
+                        <td className="p-4 text-center">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               handleDownloadPO(po.poNumber);
                             }}
-                            className="p-2 hover:bg-gray-100 rounded"
+                            className="p-1 hover:bg-gray-100 rounded"
                             style={{ color: '#7B59FF' }}
                             title="Download PO"
                           >
@@ -395,7 +395,7 @@ export function POSuggestionsModal({
           {/* Footer */}
           <div className="flex items-center justify-between pt-4 border-t border-[#E4E5E9]">
             <p className="text-xs" style={{ color: '#8C92A3' }}>
-              Data synced from {buyerName} portal • Updated in real-time
+              AI-powered suggestions from Monto • Showing purchase orders with available funds
             </p>
             <Button onClick={onClose} variant="outline" className="border-[#E4E5E9]" style={{ color: '#586079' }}>
               Close
