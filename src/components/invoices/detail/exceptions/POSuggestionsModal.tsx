@@ -263,7 +263,7 @@ export function POSuggestionsModal({
                         </td>
                         <td className="p-3">
                           <div className="flex items-center gap-2">
-                            <div className="font-medium" style={{ color: '#38415F' }}>{po.poNumber}</div>
+                            <div className="font-medium text-sm" style={{ color: '#38415F' }}>{po.poNumber}</div>
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -277,7 +277,7 @@ export function POSuggestionsModal({
                             </button>
                           </div>
                         </td>
-                        <td className="p-3" style={{ color: '#586079' }}>
+                        <td className="p-3 text-sm" style={{ color: '#586079' }}>
                           {formatDate(po.poDate)}
                         </td>
                         <td className="p-3">
@@ -285,7 +285,7 @@ export function POSuggestionsModal({
                         </td>
                         <td className="p-3">
                           <div
-                            className="font-medium"
+                            className="font-medium text-sm"
                             style={{ color: po.tra >= invoiceTotal ? '#38415F' : '#DF1C41' }}
                           >
                             {formatCurrency(po.tra, po.currency)}
