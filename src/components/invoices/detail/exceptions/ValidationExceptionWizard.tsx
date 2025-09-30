@@ -33,11 +33,23 @@ const ValidationExceptionWizard = ({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showPOSuggestions, setShowPOSuggestions] = useState(false);
 
-  // Check if we have PO-related exceptions
-  const hasPOExceptions = exceptions.some(exc =>
+  // Categorize exceptions
+  const poExceptions = exceptions.filter(exc =>
     exc.title.toLowerCase().includes('po') ||
-    exc.description.toLowerCase().includes('purchase order')
+    exc.description.toLowerCase().includes('purchase order') ||
+    exc.type === 'PO_VALIDATION'
   );
+
+  const invoiceDataExceptions = exceptions.filter(exc =>
+    exc.type === 'INVOICE_DATA' ||
+    (exc.title.toLowerCase().includes('date') && exc.title.toLowerCase().includes('format'))
+  );
+
+  const otherExceptions = exceptions.filter(exc =>
+    !poExceptions.includes(exc) && !invoiceDataExceptions.includes(exc)
+  );
+
+  const hasPOExceptions = poExceptions.length > 0;
   
   const handleFileUpload = (file: File) => {
     if (file) {
@@ -227,12 +239,6 @@ const ValidationExceptionWizard = ({
         <div className="space-y-3 mb-6">
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-medium">Resolve Exception</h2>
-            <span className="text-xs px-2 py-1 bg-purple-100 text-purple-600 rounded-full font-medium ml-2">
-              PO
-            </span>
-            <span className="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded-full font-medium ml-2">
-              Invoice Data
-            </span>
           </div>
           <div className="flex items-start gap-2">
             <Sparkles className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
@@ -242,44 +248,86 @@ const ValidationExceptionWizard = ({
           </div>
         </div>
 
-        <div className="space-y-4">
-          {/* Exception Alerts Section - Updated styling to match INV-10021301 */}
-          <div className="space-y-3">
-            {exceptions.map((exception, index) => (
-              <ExceptionBanner 
-                key={exception.id}
-                variant="error" 
-                icon="alert"
-                title={exception.title}
-              >
-                {exception.description}
-              </ExceptionBanner>
-            ))}
-          </div>
+        <div className="space-y-6">
+          {/* PO Exceptions Section */}
+          {poExceptions.length > 0 && (
+            <div className="space-y-4">
+              <div className="pb-2">
+                <h3 className="text-sm font-medium text-gray-900">PO Exceptions</h3>
+              </div>
+              <div className="space-y-3">
+                {poExceptions.map((exception) => (
+                  <ExceptionBanner
+                    key={exception.id}
+                    variant="error"
+                    title={exception.title}
+                  >
+                    {exception.description}
+                  </ExceptionBanner>
+                ))}
+              </div>
 
-          {/* PO Suggestions Button - Only show if there are PO-related exceptions */}
-          {hasPOExceptions && (
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-start gap-3">
-                  <Search className="mt-0.5 flex-shrink-0 text-purple-600" size={16} />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 mb-1">
-                      Monto found alternative POs
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      We've identified valid POs from Adobe with sufficient funds that you can use instead.
-                    </p>
+              {/* PO Suggestions Section */}
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-start gap-3">
+                    <Search className="mt-0.5 flex-shrink-0 text-purple-600" size={16} />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 mb-1">
+                        Monto found alternative POs
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        We've identified valid POs from Adobe with sufficient funds that you can use instead.
+                      </p>
+                    </div>
                   </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowPOSuggestions(true)}
+                    className="flex-shrink-0 border-purple-300 hover:bg-purple-100"
+                  >
+                    Review PO Suggestions
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowPOSuggestions(true)}
-                  className="flex-shrink-0 border-purple-300 hover:bg-purple-100"
-                >
-                  Review PO Suggestions
-                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Invoice Data Exceptions Section */}
+          {invoiceDataExceptions.length > 0 && (
+            <div className="space-y-4">
+              <div className="pb-2">
+                <h3 className="text-sm font-medium text-gray-900">Invoice Data</h3>
+              </div>
+              <div className="space-y-3">
+                {invoiceDataExceptions.map((exception) => (
+                  <ExceptionBanner
+                    key={exception.id}
+                    variant="error"
+                    title={exception.title}
+                  >
+                    {exception.description}
+                  </ExceptionBanner>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Other Exceptions Section */}
+          {otherExceptions.length > 0 && (
+            <div className="space-y-4">
+              <div className="space-y-3">
+                {otherExceptions.map((exception) => (
+                  <ExceptionBanner
+                    key={exception.id}
+                    variant="error"
+                    icon="alert"
+                    title={exception.title}
+                  >
+                    {exception.description}
+                  </ExceptionBanner>
+                ))}
               </div>
             </div>
           )}
