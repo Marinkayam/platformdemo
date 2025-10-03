@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { POInformationProps } from "./types";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { useNavigate } from "react-router-dom";
 
 interface POCardProps {
   po: POInformationProps;
@@ -13,11 +14,16 @@ interface POCardProps {
 
 export const POInformationCard = ({ po }: POCardProps) => {
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleViewFullDetails = () => {
+    navigate(`/purchase-orders/${po.id || po.number}`);
   };
 
   return (
@@ -136,12 +142,23 @@ export const POInformationCard = ({ po }: POCardProps) => {
 
           <div className="space-y-2">
             <label className="text-sm text-gray-500">Buyer Reference</label>
-            <Input 
-              value={po.buyerReference} 
-              readOnly 
+            <Input
+              value={po.buyerReference}
+              readOnly
               className="bg-gray-50"
             />
           </div>
+        </div>
+
+        {/* View Full Details link */}
+        <div className="pt-4">
+          <button
+            onClick={handleViewFullDetails}
+            className="text-primary-main hover:text-primary-700 text-sm font-medium flex items-center gap-1 hover:underline"
+          >
+            View Full Details
+            <ExternalLink size={14} />
+          </button>
         </div>
       </CardContent>
     </Card>

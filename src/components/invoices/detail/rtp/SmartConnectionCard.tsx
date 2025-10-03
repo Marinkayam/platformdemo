@@ -80,9 +80,9 @@ export function SmartConnectionCard({ connection }: SmartConnectionCardProps) {
           
           {/* View Full Details link */}
           <div className="pt-2">
-            <button 
+            <button
               onClick={handleViewFullDetails}
-              className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1 hover:underline"
+              className="text-primary-main hover:text-primary-700 text-sm font-medium flex items-center gap-1 hover:underline"
             >
               View Full Details
               <ExternalLink size={14} />

@@ -1,9 +1,11 @@
 
 import { useState } from "react";
+import { Sparkles } from "lucide-react";
 import { Invoice, LineItem } from "@/types/invoice";
 import { FinancialFields } from "./financial/FinancialFields";
 import { AddressesSection } from "./financial/AddressesSection";
 import { POValidationExceptions } from "./exceptions/POValidationExceptions";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface FinancialDataProps {
   invoice: Invoice;
@@ -42,9 +44,21 @@ export function FinancialData({
         }}
       />
 
-      <div className="mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-medium">Financial Data</h2>
-        <p className="text-sm text-gray-500 mt-1">Extracted with monto document AI</p>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-1 cursor-help">
+                <Sparkles className="h-3 w-3 text-primary-main" />
+                <p className="text-sm text-primary-main font-light">Extracted with monto ai</p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>This financial data was automatically extracted from the invoice using Monto's AI document processing technology</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
       <FinancialFields
