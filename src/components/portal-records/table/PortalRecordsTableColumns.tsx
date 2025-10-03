@@ -5,6 +5,7 @@ import { MatchTypeBadge } from "../MatchTypeBadge";
 import { ConnectionStatusBadge } from "../ConnectionStatusBadge";
 import { LastSyncedCell } from "../LastSyncedCell";
 import { ActionsColumn } from "./columns/ActionsColumn";
+import { PortalStatusColumn } from "./columns/PortalStatusColumn";
 import { formatCurrency } from "@/lib/utils";
 
 interface PortalRecordsTableColumnsProps {
@@ -59,6 +60,14 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
        className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.supplierName}</span>
+       )
+     },
+     {
+       key: 'portalStatus',
+       label: 'Monto Status',
+       className: 'w-[200px] min-w-[200px]',
+       render: (record: PortalRecord) => (
+         <PortalStatusColumn record={record} />
        )
      },
      {
