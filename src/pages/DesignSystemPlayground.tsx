@@ -14,6 +14,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { FormField } from "@/components/ui/form-field";
 import { PaymentsRelationshipStatusBadge } from "@/components/payments-relationships/PaymentsRelationshipStatusBadge";
 import { FilterDropdown } from "@/components/invoices/filters/FilterDropdown";
 import { ActiveFiltersList } from "@/components/invoices/filters/ActiveFiltersList";
@@ -2584,6 +2585,35 @@ export function InvoicesPage() {
                 </InputOTPGroup>
               </InputOTP>
               <p className="text-sm text-grey-500">Enter the 6-digit code</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Read-Only Form Fields */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Read-Only Form Fields</CardTitle>
+            <CardDescription>Display-only fields for showing data with consistent styling</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+              <FormField label="Invoice Number" value="INV-2024-001" />
+              <FormField label="Total Amount" value="$1,234.56 USD" />
+              <FormField label="Issue Date" value="April 25, 2025" />
+              <FormField label="Due Date" value="July 24, 2025" />
+              <FormField label="Portal Status" value="Approved by Buyer" />
+              <FormField label="PO Number" value="PO-2024-5678" />
+              <FormField label="Currency" value="USD" />
+              <FormField label="Payment Terms" value="Net 90" />
+            </div>
+            <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <p className="text-sm text-gray-700 mb-2"><strong>Usage:</strong></p>
+              <code className="text-xs bg-white px-2 py-1 rounded border border-gray-200 block">
+                {'<FormField label="Invoice Number" value="INV-2024-001" />'}
+              </code>
+              <p className="text-xs text-gray-500 mt-3">
+                Used for displaying read-only financial data, portal records, and invoice information throughout the application.
+              </p>
             </div>
           </CardContent>
         </Card>

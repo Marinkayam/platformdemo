@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PurchaseOrder } from "@/types/purchase-orders";
 import { formatCurrency } from "@/lib/utils";
 
@@ -10,20 +9,18 @@ export function PurchaseOrderLineItems({ purchaseOrder }: PurchaseOrderLineItems
   const lineItems = purchaseOrder.lineItems || [];
 
   return (
-    <Card className="p-6 rounded-xl shadow-sm mt-6">
-      <CardHeader className="pb-4">
-        <h2 className="text-lg font-semibold">Line Items</h2>
-      </CardHeader>
-      <CardContent className="p-0">
+    <>
+      <div className="border-t border-gray-200 pt-6">
+        <h2 className="text-lg font-medium mb-4">Line Items</h2>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Line #</th>
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">Line #</th>
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                 <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
                 <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Price</th>
-                <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">Total</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -47,7 +44,7 @@ export function PurchaseOrderLineItems({ purchaseOrder }: PurchaseOrderLineItems
             </tbody>
           </table>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </>
   );
 } 

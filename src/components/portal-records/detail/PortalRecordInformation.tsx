@@ -1,9 +1,8 @@
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { PortalRecord } from "@/types/portalRecord";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { FormField } from "@/components/ui/form-field";
 
 interface PortalRecordInformationProps {
   portalRecord: PortalRecord;
@@ -52,71 +51,23 @@ export function PortalRecordInformation({ portalRecord, showCollapsed = false }:
       </div>
 
       {/* Always visible key information - collapsed view shows only Issue Date, Total Amount, Portal Status, PO Number */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Issue Date (Priority 1) */}
-        <div className="space-y-2">
-          <Label className="text-sm text-grey-600">Issue Date</Label>
-          <Input value={portalRecord.issueDate || "N/A"} readOnly className="bg-grey-200" />
-        </div>
-
-        {/* Total Amount (Priority 2) */}
-        <div className="space-y-2">
-          <Label className="text-sm text-grey-600">Total Amount</Label>
-          <Input value={formatCurrency(portalRecord.total)} readOnly className="bg-grey-200" />
-        </div>
-
-        {/* Portal Status (Priority 3) */}
-        <div className="space-y-2">
-          <Label className="text-sm text-grey-600">Portal Status</Label>
-          <Input value={portalRecord.portalStatus || "N/A"} readOnly className="bg-grey-200" />
-        </div>
-
-        {/* PO Number (Priority 4) */}
-        <div className="space-y-2">
-          <Label className="text-sm text-grey-600">PO Number</Label>
-          <Input value={portalRecord.poNumber || "N/A"} readOnly className="bg-grey-200" />
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <FormField label="Issue Date" value={portalRecord.issueDate || "N/A"} />
+        <FormField label="Total Amount" value={formatCurrency(portalRecord.total)} />
+        <FormField label="Portal Status" value={portalRecord.portalStatus || "N/A"} />
+        <FormField label="PO Number" value={portalRecord.poNumber || "N/A"} />
       </div>
 
       {/* Collapsible additional details - remaining fields in priority order */}
       <div>
         {(!showCollapsed || isExpanded) && (
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Currency (Priority 5) */}
-            <div className="space-y-2">
-              <Label className="text-sm text-grey-600">Currency</Label>
-              <Input value={portalRecord.currency} readOnly className="bg-grey-200" />
-            </div>
-
-            {/* Due Date (Priority 6) */}
-            <div className="space-y-2">
-              <Label className="text-sm text-grey-600">Due Date</Label>
-              <Input value={portalRecord.dueDate || "N/A"} readOnly className="bg-grey-200" />
-            </div>
-
-            {/* Payment Terms (Priority 7) */}
-            <div className="space-y-2">
-              <Label className="text-sm text-grey-600">Payment Terms</Label>
-              <Input value={portalRecord.paymentTerms || portalRecord.netTerms || 'N/A'} readOnly className="bg-grey-200" />
-            </div>
-
-            {/* Sub-total (Priority 8) */}
-            <div className="space-y-2">
-              <Label className="text-sm text-grey-600">Sub-total</Label>
-              <Input value={formatCurrency(portalRecord.subtotal || portalRecord.total)} readOnly className="bg-grey-200" />
-            </div>
-
-            {/* Tax Total (Priority 9) */}
-            <div className="space-y-2">
-              <Label className="text-sm text-grey-600">Tax Total</Label>
-              <Input value={formatCurrency(portalRecord.taxTotal || 0)} readOnly className="bg-grey-200" />
-            </div>
-
-            {/* Portal Creation Date (Priority 10) */}
-            <div className="space-y-2">
-              <Label className="text-sm text-grey-600">Portal Creation Date</Label>
-              <Input value={portalRecord.portalCreationDate || portalRecord.createdAt || 'N/A'} readOnly className="bg-grey-200" />
-            </div>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+            <FormField label="Currency" value={portalRecord.currency} />
+            <FormField label="Due Date" value={portalRecord.dueDate || "N/A"} />
+            <FormField label="Payment Terms" value={portalRecord.paymentTerms || portalRecord.netTerms || 'N/A'} />
+            <FormField label="Sub-total" value={formatCurrency(portalRecord.subtotal || portalRecord.total)} />
+            <FormField label="Tax Total" value={formatCurrency(portalRecord.taxTotal || 0)} />
+            <FormField label="Portal Creation Date" value={portalRecord.portalCreationDate || portalRecord.createdAt || 'N/A'} />
           </div>
         )}
       </div>

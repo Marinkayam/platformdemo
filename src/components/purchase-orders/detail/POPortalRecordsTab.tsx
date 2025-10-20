@@ -2,101 +2,59 @@ import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, TriangleAlert } from "lucide-react";
-import { invoiceSpecificRecords } from "@/data/portalRecords/invoiceSpecificData";
+import { allPortalRecords } from "@/data/portalRecords";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "@/components/portal-records/PortalLogo";
-import { MakePrimaryConfirmModal } from "./MakePrimaryConfirmModal";
-import { toast } from "@/hooks/use-toast";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { FormField } from "@/components/ui/form-field";
+import { useNavigate } from "react-router-dom";
 
-interface PortalRecordsTabProps {
-  invoiceId: string;
+interface POPortalRecordsTabProps {
+  poNumber: string;
 }
 
-export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
+export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [showMakePrimaryModal, setShowMakePrimaryModal] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<PortalRecord | null>(null);
   const [records, setRecords] = useState<PortalRecord[]>([]);
+  const navigate = useNavigate();
 
-  // Filter and ensure we have at least one primary record
+  // Filter portal records by PO number
   useEffect(() => {
-    console.log('Invoice ID:', invoiceId);
-    console.log('All Invoice Specific Records:', invoiceSpecificRecords);
-    
-    let relevantRecords = invoiceSpecificRecords.filter(record => {
-      console.log('Checking record:', record.id, 'invoiceNumber:', record.invoiceNumber, 'against invoiceId:', invoiceId);
-      
-      // Direct match with invoice ID
-      if (record.invoiceNumber === invoiceId) return true;
-      
-      // Match with invoice number patterns - handle different formats
-      const cleanInvoiceId = invoiceId.replace('INV-', '').replace(/^0+/, '');
-      const cleanRecordNumber = record.invoiceNumber.replace('INV-', '').replace(/^0+/, '');
-      
+    if (!poNumber) {
+      console.log('No PO Number provided');
+      setRecords([]);
+      return;
+    }
+
+    console.log('PO Number:', poNumber);
+    console.log('All Portal Records:', allPortalRecords);
+
+    const relevantRecords = allPortalRecords.filter(record => {
+      console.log('Checking record:', record.id, 'poNumber:', record.poNumber, 'against PO:', poNumber);
+
+      // Skip records without PO numbers
+      if (!record.poNumber) return false;
+
+      // Direct match with PO number
+      if (record.poNumber === poNumber) return true;
+
       // Try various matching patterns
-      return cleanRecordNumber === cleanInvoiceId || 
-             record.invoiceNumber === cleanInvoiceId ||
-             cleanRecordNumber.padStart(8, '0') === cleanInvoiceId.padStart(8, '0') ||
-             record.invoiceNumber.padStart(8, '0') === invoiceId.replace('INV-', '').padStart(8, '0');
+      const cleanPONumber = poNumber.replace('PO-', '').replace(/^0+/, '');
+      const cleanRecordPO = record.poNumber.replace('PO-', '').replace(/^0+/, '');
+
+      return cleanRecordPO === cleanPONumber;
     });
 
     console.log('Filtered relevant records:', relevantRecords);
-
-    // If no records found, create a default primary record for this invoice
-    if (relevantRecords.length === 0) {
-      console.log('No records found, creating default record');
-      const defaultRecord: PortalRecord = {
-        id: `default-${invoiceId}`,
-        portalRecordId: `PR-2024-${Math.floor(Math.random() * 9000) + 1000}`,
-        portal: "Coupa",
-        buyer: "Acme Corporation",
-        portalStatus: "Approved by Buyer",
-        invoiceNumber: `CP-INV-2024-${Math.floor(Math.random() * 9000) + 1000}`,
-        matchType: "Primary",
-        total: 2350.20,
-        currency: "USD",
-        poNumber: `PO-${invoiceId}-001`,
-        supplierName: "Tech Solutions Inc.",
-        connectionStatus: "Connected",
-        lastSynced: new Date().toISOString(),
-        status: "Approved",
-        updated: new Date().toISOString(),
-        conflict: false
-      };
-      relevantRecords = [defaultRecord];
-    } else {
-      // Ensure at least one primary record exists
-      const hasPrimary = relevantRecords.some(r => r.matchType === "Primary");
-      if (!hasPrimary && relevantRecords.length > 0) {
-        // Make the first record primary
-        relevantRecords[0] = { ...relevantRecords[0], matchType: "Primary" };
-      }
-    }
-
-    console.log('Final records to display:', relevantRecords);
     setRecords(relevantRecords);
-  }, [invoiceId]);
+  }, [poNumber]);
 
-  // Auto-expand Primary record on mount
+  // Auto-expand first record on mount
   useEffect(() => {
-    const primary = records.find(r => r.matchType === "Primary");
-    if (primary) {
-      setExpandedId(primary.id);
+    if (records.length > 0 && !expandedId) {
+      setExpandedId(records[0].id);
     }
   }, [records]);
-
-  const getMatchTypeDisplay = (matchType: PortalRecord['matchType']) => {
-    if (matchType === "Primary") {
-      return (
-        <span className="text-sm text-[#7B59FF] font-medium">
-          Primary
-        </span>
-      );
-    }
-    return <span className="text-sm text-gray-600">Alternate</span>;
-  };
 
   const computeDueDateStr = (record: PortalRecord) => {
     const fmt = (d: Date) => format(d, "MM/dd/yyyy");
@@ -159,40 +117,20 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     // Default fake Net Terms
     return "Net 30";
   };
-  const handleMakePrimary = (record: PortalRecord) => {
-    setSelectedRecord(record);
-    setShowMakePrimaryModal(true);
-  };
-
-  const confirmMakePrimary = () => {
-    if (!selectedRecord) return;
-
-    // Update records - make selected record primary and others alternate
-    const updatedRecords = records.map(record => ({
-      ...record,
-      matchType: record.id === selectedRecord.id ? "Primary" as const : "Alternate" as const
-    }));
-
-    setRecords(updatedRecords);
-    setShowMakePrimaryModal(false);
-    setSelectedRecord(null);
-
-    toast({
-      title: "Primary Record Updated",
-      description: `Portal record ${selectedRecord.portalRecordId} is now the primary record for this invoice.`,
-      variant: "default",
-    });
-  };
 
   const toggleExpanded = (recordId: string) => {
     setExpandedId(prev => prev === recordId ? null : recordId);
+  };
+
+  const handleNavigateToRecord = (recordId: string) => {
+    navigate(`/portal-records/${recordId}`);
   };
 
   if (records.length === 0) {
     return (
       <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
         <div className="text-center text-gray-600 py-10">
-          No portal records found for this invoice.
+          No portal invoice records found for this purchase order.
         </div>
       </div>
     );
@@ -202,9 +140,9 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     <>
       <div className="space-y-6">
         <p className="text-sm text-gray-600">
-          These records were pulled from buyer portals and linked to this invoice. Each record displays key invoice attributes and its current status in the portal.
+          These are portal invoices linked to this Purchase Order. Each record displays key invoice attributes and its current status in the portal.
         </p>
-        
+
         {/* Single Table for All Records */}
         <div className="rounded-xl border border-gray-200 overflow-hidden bg-white">
           <div className="overflow-x-auto">
@@ -221,10 +159,13 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                     Portal Status
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Match Date
+                    Last Synced
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Last Updated
+                  </th>
+                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -232,7 +173,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                 {records.map((record, index) => (
                   <>
                     {/* Main Row */}
-                    <tr 
+                    <tr
                       key={record.id}
                       className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
                       onClick={() => toggleExpanded(record.id)}
@@ -264,12 +205,25 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                           {format(new Date(record.updated), "MMM d, yyyy")}
                         </span>
                       </td>
+                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleNavigateToRecord(record.id);
+                          }}
+                          className="text-[#7B59FF] hover:text-[#7B59FF] hover:bg-transparent font-medium -ml-3"
+                        >
+                          View Details
+                        </Button>
+                      </td>
                     </tr>
 
                     {/* Expanded Details Row */}
                     {expandedId === record.id && (
                       <tr>
-                        <td colSpan={5} className="bg-white border-t border-gray-100">
+                        <td colSpan={6} className="bg-white border-t border-gray-100">
                           <div className="px-6 pt-6 pb-4">
                             {record.conflict && (
                               <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4 border border-[#F2AE40]">
@@ -278,22 +232,9 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                             )}
                             <div className="space-y-6">
                               <div className="flex items-center justify-between">
-                                <h3 className="text-sm font-semibold text-gray-900">Portal Record Details</h3>
-                                {record.matchType === "Alternate" && (
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleMakePrimary(record);
-                                    }}
-                                    className="text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
-                                  >
-                                    Make as Primary
-                                  </Button>
-                                )}
+                                <h3 className="text-sm font-semibold text-gray-900">Portal Invoice Details</h3>
                               </div>
-                              
+
                               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                                 <FormField label="Portal Invoice Number" value={record.invoiceNumber} />
                                 <FormField label="Portal" value={record.portal} />
@@ -318,13 +259,6 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
           </div>
         </div>
       </div>
-
-      <MakePrimaryConfirmModal
-        isOpen={showMakePrimaryModal}
-        onClose={() => setShowMakePrimaryModal(false)}
-        onConfirm={confirmMakePrimary}
-        record={selectedRecord}
-      />
     </>
   );
 }

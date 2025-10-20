@@ -13,6 +13,8 @@ import { PurchaseOrderInformation } from "@/components/purchase-orders/PurchaseO
 import { PurchaseOrderLineItems } from "@/components/purchase-orders/PurchaseOrderLineItems";
 import { POPreview } from "@/components/purchase-orders/POPreview";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { POPortalRecordsTab } from "@/components/purchase-orders/detail/POPortalRecordsTab";
+import { POSmartConnectionCard } from "@/components/purchase-orders/detail/POSmartConnectionCard";
 
 // Mock data - in a real app, this would come from an API
 const getPurchaseOrderById = async (id: string): Promise<PurchaseOrder> => {
@@ -121,6 +123,16 @@ export default function PurchaseOrderDetail() {
               />
             </ResizablePanel>
           </ResizablePanelGroup>
+        </TabsContent>
+
+        <TabsContent value="smart-connection" className="">
+          <POSmartConnectionCard purchaseOrder={purchaseOrder} />
+        </TabsContent>
+
+        <TabsContent value="portal-invoice-records" className="">
+          <Card className="p-6 rounded-xl shadow-sm">
+            <POPortalRecordsTab poNumber={purchaseOrder.poNumber} />
+          </Card>
         </TabsContent>
 
         <TabsContent value="activity" className="">
