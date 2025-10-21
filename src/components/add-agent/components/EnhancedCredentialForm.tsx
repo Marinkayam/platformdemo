@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Copy, ChevronDown, ChevronUp, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Copy, Info, HelpCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { TwoFactorModal } from "./TwoFactorModal";
 import { ExistingUserData } from "@/context/AddAgentContext";
@@ -14,13 +15,13 @@ import { ExistingUserData } from "@/context/AddAgentContext";
 interface EnhancedCredentialFormProps {
   data: ExistingUserData;
   onUpdate: (data: Partial<ExistingUserData>) => void;
+  isMontoUser?: boolean;
 }
 
-export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFormProps) {
+export function EnhancedCredentialForm({ data, onUpdate, isMontoUser = false }: EnhancedCredentialFormProps) {
   const { toast } = useToast();
   const [showTwoFactorModal, setShowTwoFactorModal] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-  const [twoFactorExpanded, setTwoFactorExpanded] = useState(false);
 
   const handleCopyEmail = () => {
     const email = "client@montopay.com";
@@ -49,6 +50,7 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
   };
 
   return (
+    <TooltipProvider>
     <div className="space-y-8">
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-2">
@@ -59,10 +61,10 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
             value={data.email}
             onChange={(e) => onUpdate({ email: e.target.value })}
             placeholder="Enter the username for the portal"
-            className="h-12"
+            className="h-10"
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="portalLink" className="text-[#38415F] font-medium">Portal Link *</Label>
           <Input
@@ -71,10 +73,10 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
             value={data.portalLink}
             onChange={(e) => onUpdate({ portalLink: e.target.value })}
             placeholder="Paste portal login link"
-            className="h-12"
+            className="h-10"
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="password" className="text-[#38415F] font-medium">Password *</Label>
           <Input
@@ -83,10 +85,10 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
             value={data.password}
             onChange={(e) => onUpdate({ password: e.target.value })}
             placeholder="Enter the password for the portal"
-            className="h-12"
+            className="h-10"
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="confirmPassword" className="text-[#38415F] font-medium">Confirm Password *</Label>
           <Input
@@ -95,47 +97,58 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
             value={data.confirmPassword}
             onChange={(e) => onUpdate({ confirmPassword: e.target.value })}
             placeholder="Re-enter the password"
-            className="h-12"
+            className="h-10"
           />
         </div>
       </div>
-      
+
+      <div className="border-t border-b pt-6 pb-6">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-[#38415F]">External Submission</h3>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 text-[#8C92A3] cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>Enable this if invoices sent through this agent should be marked as "External Submission" and picked up during portal scans instead of direct delivery.</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <Switch
+              checked={data.externalSubmission || false}
+              onCheckedChange={(checked) => onUpdate({ externalSubmission: checked })}
+              disabled={isMontoUser}
+            />
+          </div>
+
+          {data.externalSubmission && (
+            <Alert className="border-[#7B59FF] bg-[#F8F6FF]">
+              <Info className="h-4 w-4 text-[#7B59FF]" />
+              <AlertDescription className="text-[#38415F] ml-2">
+                This agent is set as an <span className="font-semibold">External Submission Agent</span>.
+                <br />
+                That means any invoice sent to Monto through this agent will be marked as "External Submission."
+                <br />
+                Monto won't deliver the invoice to the portal directly — but don't worry, it'll be picked up automatically during the next portal scan.
+              </AlertDescription>
+            </Alert>
+          )}
+        </div>
+      </div>
+
       <div className="border-t pt-8">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-[#38415F]">Two-Factor Authentication</h3>
-            <div className="flex items-center gap-3">
-              <Switch
-                checked={twoFactorEnabled}
-                onCheckedChange={(checked) => {
-                  setTwoFactorEnabled(checked);
-                  setTwoFactorExpanded(checked);
-                }}
-              />
-              {twoFactorEnabled && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setTwoFactorExpanded(!twoFactorExpanded)}
-                  className="flex items-center gap-2 text-[#8C92A3] hover:text-[#38415F]"
-                >
-                  {twoFactorExpanded ? (
-                    <>
-                      <ChevronUp className="h-4 w-4" />
-                      Hide Details
-                    </>
-                  ) : (
-                    <>
-                      <ChevronDown className="h-4 w-4" />
-                      Show Details
-                    </>
-                  )}
-                </Button>
-              )}
-            </div>
+            <h3 className="text-sm font-semibold text-[#38415F]">Two-Factor Authentication</h3>
+            <Switch
+              checked={twoFactorEnabled}
+              onCheckedChange={(checked) => setTwoFactorEnabled(checked)}
+            />
           </div>
-          
-          {twoFactorEnabled && twoFactorExpanded && (
+
+          {twoFactorEnabled && (
             <RadioGroup
               value={data.twoFactorMethod}
               onValueChange={(value: "redirect" | "authenticator") => 
@@ -237,36 +250,12 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
         </div>
       </div>
 
-      <div className="border-t pt-8">
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-[#38415F]">External Submission</h3>
-            <Switch
-              checked={data.externalSubmission || false}
-              onCheckedChange={(checked) => onUpdate({ externalSubmission: checked })}
-            />
-          </div>
-
-          {data.externalSubmission && (
-            <Alert className="border-[#7B59FF] bg-[#F8F6FF]">
-              <Info className="h-4 w-4 text-[#7B59FF]" />
-              <AlertDescription className="text-[#38415F] ml-2">
-                This agent is set as an <span className="font-semibold">External Submission Agent</span>.
-                <br />
-                That means any invoice sent to Monto through this agent will be marked as "External Submission."
-                <br />
-                Monto won't deliver the invoice to the portal directly — but don't worry, it'll be picked up automatically during the next portal scan.
-              </AlertDescription>
-            </Alert>
-          )}
-        </div>
-      </div>
-
       <TwoFactorModal
         isOpen={showTwoFactorModal}
         onClose={() => setShowTwoFactorModal(false)}
         onConfirm={handleTwoFactorConfirm}
       />
     </div>
+    </TooltipProvider>
   );
 }

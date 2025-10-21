@@ -11,17 +11,20 @@ interface ViewDetailsModalProps {
     receivable: string;
     payable: string;
   };
+  onUpdateAgent?: (agent: Agent) => void;
 }
 
 export function ViewDetailsModal({
   isOpen,
   onClose,
   agent,
-  connectionInfo
+  connectionInfo,
+  onUpdateAgent
 }: ViewDetailsModalProps) {
   const handleEditAgent = (updatedAgent: Agent) => {
-    // TODO: Implement actual agent update logic
-    console.log('Updating agent:', updatedAgent);
+    if (onUpdateAgent) {
+      onUpdateAgent(updatedAgent);
+    }
   };
 
   return (

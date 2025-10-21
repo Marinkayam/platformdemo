@@ -7,6 +7,7 @@ import { Agent, SmartConnection } from "@/types/smartConnection";
 import { AgentIssueBanner } from "./AgentIssueBanner";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { getAgentIssueMessage } from "@/utils/connectionIssues";
+import { ExternalSubmissionTag } from "@/components/ui/external-submission-tag";
 
 interface AgentTableRowProps {
   agent: Agent;
@@ -53,11 +54,16 @@ export function AgentTableRow({ agent, connection, onViewDetails }: AgentTableRo
           <StatusBadge status={agent.status} />
         </TableCell>
         <TableCell className="px-6 py-4">
-          <Badge 
+          <Badge
             className={`rounded-full px-2.5 py-1 text-xs font-medium ${getUserTypeColor(agent.type)}`}
           >
             {agent.type === "Monto" ? "Monto User" : "Customer User"}
           </Badge>
+        </TableCell>
+        <TableCell className="px-6 py-4">
+          {agent.externalSubmission && (
+            <ExternalSubmissionTag />
+          )}
         </TableCell>
         <TableCell className="px-6 py-4">
           <div className="flex items-center justify-end gap-1">
@@ -75,7 +81,7 @@ export function AgentTableRow({ agent, connection, onViewDetails }: AgentTableRo
       
       {hasIssue && (
         <TableRow>
-          <TableCell colSpan={5} className="px-6 py-0 pb-4">
+          <TableCell colSpan={6} className="px-6 py-0 pb-4">
             <AgentIssueBanner agent={agent} />
           </TableCell>
         </TableRow>

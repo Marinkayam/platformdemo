@@ -14,16 +14,6 @@ import { AgentTwoFactorSection } from './agent-sections/AgentTwoFactorSection';
 import { AgentDisconnectionAlert } from './agent-sections/AgentDisconnectionAlert';
 import { AgentInstructionsTab } from './agent-sections/AgentInstructionsTab';
 import { useAgentDetailsForm } from './agent-sections/useAgentDetailsForm';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 interface AgentDetailsProps {
   isOpen: boolean;
@@ -36,16 +26,15 @@ interface AgentDetailsProps {
   onEditAgent: (agent: Agent) => void;
 }
 
-export function AgentDetails({ 
-  isOpen, 
-  onClose, 
-  agent, 
+export function AgentDetails({
+  isOpen,
+  onClose,
+  agent,
   connectionInfo,
-  onEditAgent 
+  onEditAgent
 }: AgentDetailsProps) {
   const [activeTab, setActiveTab] = useState("details");
-  const [showSaveConfirmation, setShowSaveConfirmation] = useState(false);
-  
+
   const {
     isEditMode,
     editFormData,
@@ -67,7 +56,8 @@ export function AgentDetails({
     portalLink: `https://${agent.portalName.toLowerCase().replace(/\s+/g, '')}.com`,
     twoFAEnabled: agent.status !== "Disconnected",
     twoFAMethod: "Google Authenticator",
-    twoFA: agent.status !== "Disconnected" ? "Enabled" : "Disabled"
+    twoFA: agent.status !== "Disconnected" ? "Enabled" : "Disabled",
+    externalSubmission: agent.externalSubmission || false
   };
 
   // Mock smart connection data
@@ -79,15 +69,6 @@ export function AgentDetails({
 
   const handleViewInstructions = () => {
     setActiveTab("instructions");
-  };
-
-  const handleSaveClick = () => {
-    setShowSaveConfirmation(true);
-  };
-
-  const handleConfirmSave = () => {
-    setShowSaveConfirmation(false);
-    handleSave();
   };
 
   const tabs = [
@@ -159,6 +140,7 @@ export function AgentDetails({
                     editFormData={editFormData}
                     onFormChange={handleFormChange}
                     copyToClipboard={copyToClipboard}
+                    agentType={agent.type}
                   />
 
                   <AgentTwoFactorSection
@@ -188,7 +170,7 @@ export function AgentDetails({
                   <Button variant="ghost" onClick={handleCancel} className="min-w-[100px]">
                     Cancel
                   </Button>
-                  <Button onClick={handleSaveClick} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
+                  <Button onClick={handleSave} className="min-w-[120px] bg-[#7b61ff] hover:bg-[#6b46ff]">
                     Save Changes
                   </Button>
                 </>
@@ -206,21 +188,6 @@ export function AgentDetails({
           )}
         </DialogContent>
       </Dialog>
-
-      <AlertDialog open={showSaveConfirmation} onOpenChange={setShowSaveConfirmation}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Save Changes</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to save the changes made to this agent? This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmSave}>Save Changes</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   );
 }

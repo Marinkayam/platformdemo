@@ -44,19 +44,19 @@ export function AgentIdentitySection({
                   type="text"
                   value={editFormData?.portalName || agent.portalName}
                   onChange={(e) => onFormChange?.('portalName', e.target.value)}
-                  className="w-full p-3 pl-10 bg-white border rounded-md text-sm"
+                  className="w-full h-10 pl-10 pr-3 bg-white border rounded-md text-sm"
                 />
               ) : (
                 <input
                   type="text"
                   value={agent.portalName}
                   readOnly
-                  className="w-full p-3 pl-10 bg-gray-50 border rounded-md text-sm"
+                  className="w-full h-10 pl-10 pr-3 bg-gray-50 border rounded-md text-sm"
                 />
               )}
               <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#7b61ff]" />
             </div>
-            <Button variant="outline" size="sm" onClick={() => copyToClipboard(agent.portalName)}>
+            <Button variant="outline" className="h-10 w-10 p-0" onClick={() => copyToClipboard(agent.portalName)}>
               <Copy className="h-4 w-4" />
             </Button>
           </div>
@@ -71,9 +71,9 @@ export function AgentIdentitySection({
               type="text"
               value={agent.portalUser}
               readOnly
-              className="flex-1 p-3 bg-gray-50 border rounded-md text-sm"
+              className="flex-1 h-10 px-3 bg-gray-50 border rounded-md text-sm"
             />
-            <Button variant="outline" size="sm" onClick={() => copyToClipboard(agent.portalUser)}>
+            <Button variant="outline" className="h-10 w-10 p-0" onClick={() => copyToClipboard(agent.portalUser)}>
               <Copy className="h-4 w-4" />
             </Button>
           </div>
@@ -88,7 +88,7 @@ export function AgentIdentitySection({
               type="text"
               value={getUserTypeDisplay()}
               readOnly
-              className="flex-1 p-3 bg-gray-50 border rounded-md text-sm"
+              className="flex-1 h-10 px-3 bg-gray-50 border rounded-md text-sm"
             />
           </div>
         </div>

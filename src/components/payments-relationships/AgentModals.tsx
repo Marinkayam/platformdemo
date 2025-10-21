@@ -7,13 +7,15 @@ interface AgentModalsProps {
   isDetailsModalOpen: boolean;
   connection: SmartConnection;
   onCloseDetailsModal: () => void;
+  onUpdateAgent?: (agent: Agent) => void;
 }
 
 export function AgentModals({
   selectedAgent,
   isDetailsModalOpen,
   connection,
-  onCloseDetailsModal
+  onCloseDetailsModal,
+  onUpdateAgent
 }: AgentModalsProps) {
   return (
     <>
@@ -26,6 +28,7 @@ export function AgentModals({
             receivable: connection.receivableEntity,
             payable: connection.payableEntity
           }}
+          onUpdateAgent={onUpdateAgent}
         />
       )}
     </>

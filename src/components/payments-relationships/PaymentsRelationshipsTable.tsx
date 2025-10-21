@@ -9,7 +9,7 @@ import { ExpandedAgentCard } from "./ExpandedAgentCard";
 import { PaymentsRelationshipsTableFooter } from "./PaymentsRelationshipsTableFooter";
 import { SmartConnectionsInsights } from "@/components/smart-connections/SmartConnectionsInsights";
 import { SmartConnectionsPagination } from "@/components/smart-connections/components/SmartConnectionsPagination";
-import { SmartConnection } from "@/types/smartConnection";
+import { SmartConnection, Agent } from "@/types/smartConnection";
 import { useNavigate } from "react-router-dom";
 import { getConnectionIssues, getHighestSeverityIssue } from "@/utils/connectionIssues";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -18,6 +18,7 @@ import { AutoCreatedTag } from "@/components/ui/auto-created-tag";
 
 interface SmartConnectionsTableProps {
   connections: SmartConnection[];
+  onUpdateAgent?: (agent: Agent) => void;
 }
 
 const getRandomCompanyName = () => {
@@ -25,7 +26,7 @@ const getRandomCompanyName = () => {
   return companies[Math.floor(Math.random() * companies.length)];
 };
 
-export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTableProps) {
+export function PaymentsRelationshipsTable({ connections, onUpdateAgent }: SmartConnectionsTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
@@ -262,7 +263,7 @@ export function PaymentsRelationshipsTable({ connections }: SmartConnectionsTabl
                           <div className="flex items-center justify-between mb-4 mt-6">
                             <h3 className="text-sm font-normal text-gray-900">Agents</h3>
                           </div>
-                          <ExpandedAgentCard connection={connection} />
+                          <ExpandedAgentCard connection={connection} onUpdateAgent={onUpdateAgent} />
                         </div>
                       </TableCell>
                     </TableRow>

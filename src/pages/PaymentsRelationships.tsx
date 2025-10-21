@@ -11,6 +11,7 @@ import { mockPortalUsers } from "@/data/portalUsers";
 import { mockInsights } from "@/data/insights";
 import { useSmartConnectionFiltering } from "@/hooks/useSmartConnectionFiltering";
 import { PortalUser, PortalUserFilters, defaultPortalUserFilters } from "@/types/portalUser";
+import { Agent } from "@/types/smartConnection";
 import { PortalUsersTable } from "@/components/payments-relationships/portal-users";
 import { PortalUsersFilters } from "@/components/payments-relationships/portal-users/PortalUsersFilters";
 import { InsightsTable } from "@/components/insights/InsightsTable";
@@ -25,6 +26,7 @@ export default function PaymentsRelationships() {
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
   const [userToRemoveId, setUserToRemoveId] = useState<string | null>(null);
   const [portalUsers, setPortalUsers] = useState<PortalUser[]>(mockPortalUsers);
+  const [connections, setConnections] = useState(mockSmartConnections);
 
   // Handle URL tab parameter
   useEffect(() => {
@@ -49,7 +51,7 @@ export default function PaymentsRelationships() {
     filteredConnections,
     handleFilterChange: handleSmartConnectionFilterChange,
     handleResetFilters: handleResetSmartConnectionFilters
-  } = useSmartConnectionFiltering(mockSmartConnections);
+  } = useSmartConnectionFiltering(connections);
 
   const {
     filters: portalUserFilters,
@@ -91,6 +93,15 @@ export default function PaymentsRelationships() {
     setIsAddPortalUserModalOpen(false);
   };
 
+  const handleUpdateAgent = (updatedAgent: Agent) => {
+    setConnections(prev => prev.map(connection => ({
+      ...connection,
+      agents: connection.agents.map(agent =>
+        agent.id === updatedAgent.id ? updatedAgent : agent
+      )
+    })));
+  };
+
   // Determine title and subtitle based on active tab
   const getPageTitle = () => {
     return activeTab === 'scan-agents' ? 'Scan Agents' : 'Smart Connections';
@@ -130,7 +141,7 @@ export default function PaymentsRelationships() {
               onClearFilters={handleResetSmartConnectionFilters}
             />
             
-            <PaymentsRelationshipsTable connections={filteredConnections} />
+            <PaymentsRelationshipsTable connections={filteredConnections} onUpdateAgent={handleUpdateAgent} />
           </>
         )}
 

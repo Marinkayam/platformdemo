@@ -45,6 +45,9 @@ export function AgentTable({ connection, onViewDetails }: AgentTableProps) {
             <TableHead className="h-10 px-6 text-left align-middle font-medium text-gray-600 text-xs">
               User Type
             </TableHead>
+            <TableHead className="h-10 px-6 text-left align-middle font-medium text-gray-600 text-xs">
+              {/* Empty header for External Submission Tag */}
+            </TableHead>
             <TableHead className="h-10 px-6 text-right align-middle font-medium text-gray-600 text-xs">
               Actions
             </TableHead>

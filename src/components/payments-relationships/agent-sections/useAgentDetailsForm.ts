@@ -12,6 +12,7 @@ interface FormData {
   twoFAMethod: string;
   phoneNumber: string;
   verificationEmail: string;
+  externalSubmission: boolean;
 }
 
 export function useAgentDetailsForm(agent: Agent, onEditAgent: (agent: Agent) => void, onClose: () => void) {
@@ -25,6 +26,7 @@ export function useAgentDetailsForm(agent: Agent, onEditAgent: (agent: Agent) =>
     twoFAMethod: "authenticator",
     phoneNumber: "",
     verificationEmail: "",
+    externalSubmission: agent.externalSubmission || false,
   });
 
   const handleEdit = () => {
@@ -43,6 +45,7 @@ export function useAgentDetailsForm(agent: Agent, onEditAgent: (agent: Agent) =>
       twoFAMethod: "authenticator",
       phoneNumber: "",
       verificationEmail: "",
+      externalSubmission: agent.externalSubmission || false,
     });
   };
 
@@ -53,14 +56,16 @@ export function useAgentDetailsForm(agent: Agent, onEditAgent: (agent: Agent) =>
       portalName: editFormData.portalName,
       portalUser: editFormData.username,
       status: "Validating", // Always set to validating after save
+      externalSubmission: editFormData.externalSubmission,
     };
-    
-    onEditAgent(updatedAgent);
+
     setIsEditMode(false);
-    onClose(); // Close modal and return to table
-    toast({ 
-      title: "Agent Updated", 
-      description: "Changes have been saved and validation has started." 
+    onEditAgent(updatedAgent);
+    onClose();
+
+    toast({
+      title: "Agent Updated",
+      description: "Changes have been saved and validation has started."
     });
   };
 

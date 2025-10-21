@@ -21,6 +21,7 @@ export interface Agent {
   status: "Connected" | "Disconnected" | "Error" | "Validating" | "Building";
   portalUser: string;
   role: "Submit Invoice" | "Monitor Invoice" | "Both";
+  externalSubmission?: boolean;
 }
 
 export interface SmartConnectionFilters {

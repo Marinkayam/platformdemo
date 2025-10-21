@@ -156,7 +156,7 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
                     Portal
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Portal Status
+                    Monto Status
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Last Synced
@@ -238,14 +238,15 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
                               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                                 <FormField label="Portal Invoice Number" value={record.invoiceNumber} />
                                 <FormField label="Portal" value={record.portal} />
+                                <FormField label="Portal Status" value={record.portalStatus} />
                                 <FormField label="Buyer" value={record.buyer} />
+                                <FormField label="Supplier Name" value={record.supplierName} />
                                 <FormField label="Total Amount" value={`${record.currency === 'EUR' ? '€' : record.currency === 'GBP' ? '£' : '$'}${record.total.toLocaleString()}`} />
                                 <FormField label="Currency" value={record.currency || "USD"} />
                                 <FormField label="PO Number" value={record.poNumber} />
                                 <FormField label="Due Date" value={getDueDateDisplay(record)} />
                                 <FormField label="Net Terms" value={getNetTermsDisplay(record)} />
                                 <FormField label="Promise to Pay" value={getPromiseToPayDisplay(record)} />
-                                <FormField label="Supplier Name" value={record.supplierName} />
                               </div>
                             </div>
                           </div>
