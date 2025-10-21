@@ -308,8 +308,8 @@ export default function DesignSystemPlayground() {
             onClick={() => setShowCode(!showCode)}
             className="text-sm font-medium"
             style={{ color: '#7B59FF' }}
-            onMouseEnter={(e) => e.target.style.color = '#5A3FCC'}
-            onMouseLeave={(e) => e.target.style.color = '#7B59FF'}
+            onMouseEnter={(e) => (e.target as HTMLButtonElement).style.color = '#5A3FCC'}
+            onMouseLeave={(e) => (e.target as HTMLButtonElement).style.color = '#7B59FF'}
           >
             {showCode ? 'Hide Code' : 'Show Code'}
           </button>
@@ -4529,8 +4529,8 @@ const steps = [
             onClick={() => setShowCode(!showCode)}
             className="text-sm font-medium"
             style={{ color: '#7B59FF' }}
-            onMouseEnter={(e) => e.target.style.color = '#5A3FCC'}
-            onMouseLeave={(e) => e.target.style.color = '#7B59FF'}
+            onMouseEnter={(e) => (e.target as HTMLButtonElement).style.color = '#5A3FCC'}
+            onMouseLeave={(e) => (e.target as HTMLButtonElement).style.color = '#7B59FF'}
           >
             {showCode ? 'Hide Code' : 'Show Code'}
           </button>
@@ -4556,14 +4556,14 @@ const steps = [
         }}
         onMouseEnter={(e) => {
           if (!isActive) {
-            e.target.style.color = '#374151';
-            e.target.style.borderBottomColor = '#E5E7EB';
+            (e.target as HTMLButtonElement).style.color = '#374151';
+            (e.target as HTMLButtonElement).style.borderBottomColor = '#E5E7EB';
           }
         }}
         onMouseLeave={(e) => {
           if (!isActive) {
-            e.target.style.color = '#6B7280';
-            e.target.style.borderBottomColor = 'transparent';
+            (e.target as HTMLButtonElement).style.color = '#6B7280';
+            (e.target as HTMLButtonElement).style.borderBottomColor = 'transparent';
           }
         }}
       >

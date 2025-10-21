@@ -215,7 +215,7 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
                           }}
                           className="text-[#7B59FF] hover:text-[#7B59FF] hover:bg-transparent font-medium -ml-3"
                         >
-                          View Details
+                          Portal Record Info
                         </Button>
                       </td>
                     </tr>

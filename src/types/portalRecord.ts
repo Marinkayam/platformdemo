@@ -4,7 +4,7 @@ export interface PortalRecord {
   portalRecordId: string;
   portal: string;
   buyer: string;
-  portalStatus: 'Approved by Buyer' | 'Rejected by Buyer' | 'Paid' | 'Settled' | 'Partially Settled';
+  portalStatus: 'Approved by Buyer' | 'Rejected by Buyer' | 'Paid' | 'Settled' | 'Partially Settled' | 'Pending Approval';
   invoiceNumber?: string; // Optional for unmatched records
   matchType: 'Primary' | 'Alternate' | 'Unmatched' | 'Conflict';
   total: number;
@@ -17,7 +17,13 @@ export interface PortalRecord {
    dueDate?: string;
    netTerms?: string;
    promiseToPay?: string;
-  
+   issueDate?: string;
+   paymentTerms?: string;
+   subtotal?: number;
+   taxTotal?: number;
+   portalCreationDate?: string;
+   createdAt?: string;
+
   // Legacy fields kept for compatibility
   matchStatus?: 'Matched' | 'Unmatched' | 'Conflicted' | 'Pending' | '—';
   status?: 'Approved' | 'Paid' | 'Rejected' | 'Pending';

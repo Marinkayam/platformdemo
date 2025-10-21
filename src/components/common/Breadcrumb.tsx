@@ -66,13 +66,13 @@ export const createBreadcrumbs = {
 
     if (status === "unmatched") {
       items[0].isActive = false;
-      items.push({ label: "Unmatched", isActive: true });
+      items.push({ label: "Unmatched", href: "/portal-records?status=unmatched", isActive: true });
     } else if (status === "conflicts") {
       items[0].isActive = false;
-      items.push({ label: "Conflicts", isActive: true });
+      items.push({ label: "Conflicts", href: "/portal-records?status=conflicts", isActive: true });
     } else if (status === "rejected") {
       items[0].isActive = false;
-      items.push({ label: "Rejected", isActive: true });
+      items.push({ label: "Rejected", href: "/portal-records?status=rejected", isActive: true });
     }
 
     return items;
