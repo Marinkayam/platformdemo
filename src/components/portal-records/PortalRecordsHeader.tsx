@@ -93,7 +93,6 @@ export function PortalRecordsHeader({
       {activeTab === 'conflict' && (
         <ConflictTaskCenter
           conflictCount={conflictCount}
-          onResolveAll={handleBulkReview}
           lastReviewDays={3}
         />
       )}
