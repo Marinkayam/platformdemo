@@ -20,6 +20,7 @@ export interface ExistingUserData {
   redirectEmail?: string;
   redirectPhone?: string;
   authSecret?: string;
+  externalSubmission?: boolean;
 }
 
 export interface DedicatedUserData {
@@ -56,6 +57,7 @@ const initialState: AddAgentState = {
     confirmPassword: "",
     portalLink: "",
     twoFactorMethod: "redirect",
+    externalSubmission: false,
   },
   dedicatedUserData: {
     confirmed: false,

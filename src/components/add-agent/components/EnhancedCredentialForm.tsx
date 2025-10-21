@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Copy, ChevronDown, ChevronUp } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Copy, ChevronDown, ChevronUp, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { TwoFactorModal } from "./TwoFactorModal";
 import { ExistingUserData } from "@/context/AddAgentContext";
@@ -232,6 +233,31 @@ export function EnhancedCredentialForm({ data, onUpdate }: EnhancedCredentialFor
                 </div>
               </div>
             </RadioGroup>
+          )}
+        </div>
+      </div>
+
+      <div className="border-t pt-8">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-[#38415F]">External Submission</h3>
+            <Switch
+              checked={data.externalSubmission || false}
+              onCheckedChange={(checked) => onUpdate({ externalSubmission: checked })}
+            />
+          </div>
+
+          {data.externalSubmission && (
+            <Alert className="border-[#7B59FF] bg-[#F8F6FF]">
+              <Info className="h-4 w-4 text-[#7B59FF]" />
+              <AlertDescription className="text-[#38415F] ml-2">
+                This agent is set as an <span className="font-semibold">External Submission Agent</span>.
+                <br />
+                That means any invoice sent to Monto through this agent will be marked as "External Submission."
+                <br />
+                Monto won't deliver the invoice to the portal directly — but don't worry, it'll be picked up automatically during the next portal scan.
+              </AlertDescription>
+            </Alert>
           )}
         </div>
       </div>
