@@ -18,6 +18,7 @@ import Settings from "./pages/Settings";
 import NotFoundPage from "./pages/NotFoundPage";
 import Login from "./pages/Login";
 import DesignSystemPlayground from "./pages/DesignSystemPlayground";
+import { DesignSystemTest } from "./test-design-system";
 import Onboarding from "./pages/Onboarding";
 import PaymentsRelationships from "./pages/PaymentsRelationships";
 import SmartConnections from "./pages/SmartConnections";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/secret-home" element={<SecretHomePage />} />
+            <Route path="/test-ds" element={<DesignSystemTest />} />
 
             {/* Routes requiring MainLayout */}
             <Route element={<MainLayout />}>
