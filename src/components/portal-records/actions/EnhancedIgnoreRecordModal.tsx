@@ -18,7 +18,7 @@ import { HelpCircle } from "lucide-react";
 interface EnhancedIgnoreRecordModalProps {
   isOpen: boolean;
   onClose: () => void;
-  record: PortalRecord;
+  record: PortalRecord | null;
   onIgnoreRecord: () => void;
   onStopTrackingBuyer: () => void;
 }

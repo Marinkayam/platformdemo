@@ -52,8 +52,9 @@ export function PortalRecordsModals({
     return null;
   }
 
-  return (
-    <>
+return (
+  <>
+    {selectedRecord && (
       <EnhancedMatchInvoiceModal
         isOpen={matchModalOpen}
         onClose={() => setMatchModalOpen(false)}
@@ -63,7 +64,9 @@ export function PortalRecordsModals({
         onMatchAndCreateRTP={onMatchAndCreateRTP}
         contextSource="table-row"
       />
-      
+    )}
+    
+    {selectedRecord && (
       <EnhancedResolveConflictModal
         isOpen={conflictModalOpen}
         onClose={() => setConflictModalOpen(false)}
@@ -71,14 +74,15 @@ export function PortalRecordsModals({
         onResolve={onConflictResolved}
         onIgnore={onRecordIgnored}
       />
-      
-      <EnhancedIgnoreRecordModal
-        isOpen={ignoreModalOpen}
-        onClose={() => setIgnoreModalOpen(false)}
-        record={selectedRecord}
-        onIgnoreRecord={onRecordIgnored}
-        onStopTrackingBuyer={onStopTrackingBuyer}
-      />
-    </>
-  );
+    )}
+    
+    <EnhancedIgnoreRecordModal
+      isOpen={ignoreModalOpen}
+      onClose={() => setIgnoreModalOpen(false)}
+      record={selectedRecord}
+      onIgnoreRecord={onRecordIgnored}
+      onStopTrackingBuyer={onStopTrackingBuyer}
+    />
+  </>
+);
 }
