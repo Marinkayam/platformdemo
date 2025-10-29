@@ -93,7 +93,7 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
   };
 
   const handleDateChange = (fromDate: string, toDate: string) => {
-    handleFilterChange("dueDate", { from: fromDate ?? "", to: toDate ?? "" });
+    handleFilterChange("dueDate", [fromDate ?? "", toDate ?? ""]);
   };
 
   // Check if any filters are active

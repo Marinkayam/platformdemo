@@ -72,7 +72,7 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
   };
 
   const handleCreatedDateChange = (fromDate: string, toDate: string) => {
-    handleFilterChange('createdDate', { from: fromDate, to: toDate });
+    handleFilterChange('createdDate', [fromDate, toDate]);
   };
 
   const handleSearchChange = (value: string) => {

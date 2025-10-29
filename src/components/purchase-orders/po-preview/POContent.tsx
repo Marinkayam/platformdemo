@@ -60,7 +60,7 @@ export function POContent({ purchaseOrder, zoomLevel }: POContentProps) {
           <div className="mb-6 grid grid-cols-2 gap-6">
             <div>
               <h3 className="font-bold mb-2">Supplier:</h3>
-              <p>{purchaseOrder.supplier || "Tech Solutions Inc"}</p>
+              <p>{typeof purchaseOrder.supplier === 'object' ? purchaseOrder.supplier?.name : purchaseOrder.supplier || "Tech Solutions Inc"}</p>
               <p className="text-sm text-gray-500">Supplier Address</p>
               <p className="text-sm text-gray-500">City, State 12345</p>
             </div>

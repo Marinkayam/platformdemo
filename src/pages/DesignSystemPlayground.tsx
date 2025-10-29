@@ -1508,9 +1508,9 @@ export default function DesignSystemPlayground() {
                 onSelectionChange={(values) => handleFilterChange('source', Array.from(values))}
               />
               <DateRangePicker
-                fromDate={filters.dueDate?.from || ""}
-                toDate={filters.dueDate?.to || ""}
-                onDateChange={(from, to) => handleFilterChange("dueDate", { from, to })}
+                fromDate={filters.dueDate?.[0] || ""}
+                toDate={filters.dueDate?.[1] || ""}
+                onDateChange={(from, to) => handleFilterChange("dueDate", [from, to])}
               />
             </div>
           </div>

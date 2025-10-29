@@ -4,7 +4,7 @@ import { invoiceData } from "@/data/invoices";
 import { portals, connectionStatuses, statuses } from "./types";
 
 // Generate portal records for each invoice
-export const generatePortalRecordsForInvoice = (invoice: { invoiceNumber: string; vendorName: string; portal: string; amount: number; status: string }, index: number): PortalRecord[] => {
+export const generatePortalRecordsForInvoice = (invoice: { id: string; number: string; buyer: string; portal: string; total: number; status: string; currency?: string }, index: number): PortalRecord[] => {
   const records: PortalRecord[] = [];
   const numRecords = Math.floor(Math.random() * 5) + 1; // 1-5 records per invoice
   
@@ -66,7 +66,7 @@ export const generatePortalRecordsForInvoice = (invoice: { invoiceNumber: string
     }
     
     // Format invoice number as INV-XXXXXXXX
-    const invoiceNumber = `INV-${String(invoice.id).padStart(8, '0')}`;
+    const invoiceNumber = invoice.number || `INV-${String(invoice.id).padStart(8, '0')}`;
     
     const record: PortalRecord = {
       id: `PR-${String(index * 10 + i + 1).padStart(3, '0')}`,
@@ -77,7 +77,7 @@ export const generatePortalRecordsForInvoice = (invoice: { invoiceNumber: string
       invoiceNumber,
       matchType: i === 0 ? "Primary" : "Alternate",
       total: Math.round(amount * 100) / 100,
-      currency: invoice.currency || "USD",
+      currency: invoice.currency as "USD" | "EUR" | "GBP" || "USD",
       poNumber: `PO-${Math.floor(Math.random() * 99999) + 10000}`,
       supplierName: invoice.buyer,
       connectionStatus,

@@ -36,7 +36,7 @@ export function POSmartConnectionCard({ purchaseOrder }: POSmartConnectionCardPr
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-medium">Smart Connection</CardTitle>
+          <CardTitle className="text-lg font-medium">Scan Agent</CardTitle>
           <StatusBadge status={scanAgent.status} />
         </div>
       </CardHeader>

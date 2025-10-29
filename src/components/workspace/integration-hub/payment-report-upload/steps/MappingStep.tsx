@@ -154,7 +154,7 @@ export function MappingStep({ headers, data, mappings, onMappingChange }: Mappin
                     <div className="max-w-[150px]">
                       {localMappings[field.key] && data.length > 0 ? (
                         data.slice(0, 2).map((row, i) => (
-                          <div key={i} className="truncate">{row[localMappings[field.key] as string]}</div>
+                          <div key={i} className="truncate">{String(row[localMappings[field.key] as string] || '')}</div>
                         ))
                       ) : 'N/A'}
                     </div>

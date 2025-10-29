@@ -36,12 +36,10 @@ const ValidationExceptionWizard = ({
   // Categorize exceptions
   const poExceptions = exceptions.filter(exc =>
     exc.title.toLowerCase().includes('po') ||
-    exc.description.toLowerCase().includes('purchase order') ||
-    exc.type === 'PO_VALIDATION'
+    exc.description.toLowerCase().includes('purchase order')
   );
 
   const invoiceDataExceptions = exceptions.filter(exc =>
-    exc.type === 'INVOICE_DATA' ||
     (exc.title.toLowerCase().includes('date') && exc.title.toLowerCase().includes('format'))
   );
 

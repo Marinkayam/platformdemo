@@ -23,7 +23,7 @@ export const POInformationCard = ({ po }: POCardProps) => {
   };
 
   const handleViewFullDetails = () => {
-    navigate(`/purchase-orders/${po.id || po.number}`);
+    navigate(`/purchase-orders/${po.number}`);
   };
 
   return (

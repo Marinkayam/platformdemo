@@ -19,7 +19,7 @@ export function useDataValidation() {
         const value = mappedHeader && mappedHeader !== 'skip' ? row[mappedHeader] : undefined;
 
         if (value) {
-          (record as Record<string, unknown>)[field.key] = value;
+          (record as any)[field.key] = value;
         } else {
           if (field.required) {
             record._errors.push(`Missing required field: ${field.label}`);
