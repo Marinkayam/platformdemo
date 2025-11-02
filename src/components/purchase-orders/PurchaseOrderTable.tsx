@@ -12,12 +12,12 @@ import { PurchaseOrdersPagination } from "./components/PurchaseOrdersPagination"
 import { useState, useMemo } from "react";
 
 const statusMap: Record<string, string> = {
-  'approved': 'Open',
+  'approved': 'Approved',
   'completed': 'Closed',
   'cancelled': 'Cancelled',
   'Partially Invoiced': 'Partially Invoiced',
   'Fully Invoiced': 'Fully Invoiced',
-  'new': 'Open',
+  'new': 'Approved',
   'pending_approval': 'Pending Approval',
   'rejected': 'Rejected'
 };

@@ -11,14 +11,7 @@ export default function PurchaseOrders() {
   
   // Set active tab based on URL search params
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const status = searchParams.get("status");
-
-    if (status === "new") {
-      setActiveTab("new");
-    } else {
-      setActiveTab("found");
-    }
+    setActiveTab("found");
   }, [location.search]);
 
   // Use custom hook for filtering
@@ -29,13 +22,9 @@ export default function PurchaseOrders() {
     setFilters(prevFilters => ({ ...prevFilters, poNumber: value }));
   };
 
-  // Calculate counts for tabs
-  const newCount = purchaseOrderData.filter(po => po.status === "new").length;
-
-  // Update tabs with counts - changed "Found by Monto" to "All POs"
+  // Update tabs with counts - only "All POs" for now
   const tabsWithCounts = [
-    { id: "found", label: "All POs", count: purchaseOrderData.length },
-    { id: "new", label: "Open POs", count: newCount },
+    { id: "found", label: "All POs", count: purchaseOrderData.length }
   ];
 
   return (
