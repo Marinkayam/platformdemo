@@ -65,7 +65,7 @@ export function PurchaseOrderTableHeader({
            <SortButton field="dueDate">Payment Terms</SortButton>
          </TableHead>
          <TableHead className="w-[200px] min-w-[200px]">
-           <SortButton field="createdDate">Created Date</SortButton>
+           <SortButton field="createdDate">Portal Created Date</SortButton>
          </TableHead>
       </TableRow>
     </TableHeader>

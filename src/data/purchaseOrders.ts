@@ -426,5 +426,181 @@ export const purchaseOrderData: PurchaseOrder[] = [
     relatedInvoices: ["INV-2024-008"],
     lastUpdated: "2024-02-14",
     portalStatus: "Connected"
+  },
+  {
+    id: "po-011",
+    poNumber: "PO-99988",
+    buyerName: "Construction Services Inc",
+    status: "completed",
+    rawStatus: "Closed",
+    portal: "SAP Ariba",
+    total: 85000.00,
+    invoicedAmount: 85000.00,
+    amountLeft: 0.00,
+    paymentTerms: "Net 30",
+    orderDate: "2023-12-15",
+    createdDate: "2023-12-15",
+    dueDate: "2024-01-15",
+    description: "Construction materials and equipment - Project completed",
+    owner: "James Thompson",
+    currency: "USD",
+    shipToAddress: {
+      line1: "500 Construction Ave",
+      city: "Denver",
+      state: "CO",
+      zipCode: "80201",
+      country: "USA"
+    },
+    lineItems: [
+      {
+        id: "li-019",
+        description: "Building materials",
+        quantity: 1,
+        unitPrice: 60000.00,
+        total: 60000.00
+      },
+      {
+        id: "li-020",
+        description: "Construction equipment rental",
+        quantity: 1,
+        unitPrice: 25000.00,
+        total: 25000.00
+      }
+    ],
+    relatedInvoices: ["INV-2024-009", "INV-2024-010"],
+    lastUpdated: "2024-01-30",
+    portalStatus: "Connected"
+  },
+  {
+    id: "po-012",
+    poNumber: "PO-88877",
+    buyerName: "Marketing Agency Ltd",
+    status: "cancelled",
+    rawStatus: "Cancelled",
+    portal: "Coupa",
+    total: 12500.00,
+    invoicedAmount: 0.00,
+    amountLeft: 0.00,
+    paymentTerms: "Net 30",
+    orderDate: "2024-02-05",
+    createdDate: "2024-02-05",
+    dueDate: "2024-03-07",
+    description: "Marketing campaign materials - Cancelled due to budget reallocation",
+    owner: "Emily White",
+    currency: "USD",
+    shipToAddress: {
+      line1: "300 Marketing Plaza",
+      city: "Los Angeles",
+      state: "CA",
+      zipCode: "90001",
+      country: "USA"
+    },
+    lineItems: [
+      {
+        id: "li-021",
+        description: "Marketing materials",
+        quantity: 1,
+        unitPrice: 8500.00,
+        total: 8500.00
+      },
+      {
+        id: "li-022",
+        description: "Promotional items",
+        quantity: 1,
+        unitPrice: 4000.00,
+        total: 4000.00
+      }
+    ],
+    relatedInvoices: [],
+    lastUpdated: "2024-02-08",
+    portalStatus: "Disconnected"
+  },
+  {
+    id: "po-013",
+    poNumber: "PO-77766",
+    buyerName: "Tech Innovations Corp",
+    status: "completed",
+    rawStatus: "Closed",
+    portal: "Jaggaer",
+    total: 95000.00,
+    invoicedAmount: 95000.00,
+    amountLeft: 0.00,
+    paymentTerms: "Net 45",
+    orderDate: "2023-11-20",
+    createdDate: "2023-11-20",
+    dueDate: "2024-01-05",
+    description: "Server infrastructure upgrade - Successfully completed",
+    owner: "Kevin Park",
+    currency: "USD",
+    shipToAddress: {
+      line1: "1200 Tech Center",
+      city: "Austin",
+      state: "TX",
+      zipCode: "78701",
+      country: "USA"
+    },
+    lineItems: [
+      {
+        id: "li-023",
+        description: "Server hardware",
+        quantity: 5,
+        unitPrice: 15000.00,
+        total: 75000.00
+      },
+      {
+        id: "li-024",
+        description: "Installation and configuration",
+        quantity: 1,
+        unitPrice: 20000.00,
+        total: 20000.00
+      }
+    ],
+    relatedInvoices: ["INV-2024-011", "INV-2024-012"],
+    lastUpdated: "2024-01-20",
+    portalStatus: "Connected"
+  },
+  {
+    id: "po-014",
+    poNumber: "PO-66655",
+    buyerName: "Retail Solutions Group",
+    status: "cancelled",
+    rawStatus: "Cancelled",
+    portal: "Oracle",
+    total: 28000.00,
+    invoicedAmount: 0.00,
+    amountLeft: 0.00,
+    paymentTerms: "Net 30",
+    orderDate: "2024-01-28",
+    createdDate: "2024-01-28",
+    dueDate: "2024-02-28",
+    description: "Point of sale systems - Cancelled due to vendor change",
+    owner: "Patricia Martinez",
+    currency: "USD",
+    shipToAddress: {
+      line1: "650 Retail Blvd",
+      city: "Miami",
+      state: "FL",
+      zipCode: "33101",
+      country: "USA"
+    },
+    lineItems: [
+      {
+        id: "li-025",
+        description: "POS terminals",
+        quantity: 10,
+        unitPrice: 2500.00,
+        total: 25000.00
+      },
+      {
+        id: "li-026",
+        description: "Software licenses",
+        quantity: 1,
+        unitPrice: 3000.00,
+        total: 3000.00
+      }
+    ],
+    relatedInvoices: [],
+    lastUpdated: "2024-02-02",
+    portalStatus: "Error"
   }
 ];

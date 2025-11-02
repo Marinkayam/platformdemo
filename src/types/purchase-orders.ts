@@ -26,6 +26,8 @@ export type PurchaseOrderLineItem = {
   taxRate?: number;
   taxAmount?: number;
   accountCode?: string;
+  invoicedAmount?: number;
+  remainingAmount?: number;
 };
 
 export type PurchaseOrder = {

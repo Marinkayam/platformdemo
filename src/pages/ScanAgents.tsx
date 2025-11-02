@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { PageHeader } from "@/components/common/PageHeader";
 import { PaymentsRelationshipsHeader } from "@/components/payments-relationships/PaymentsRelationshipsHeader";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +8,7 @@ import { PortalUser } from "@/types/portalUser";
 import { PortalUsersTable } from "@/components/payments-relationships/portal-users";
 import { AddPortalUserModal } from "@/components/payments-relationships/portal-users/AddPortalUserModal";
 import { ConfirmRemoveModal } from "@/components/payments-relationships/portal-users/ConfirmRemoveModal";
+import { PortalUserDetailModal } from "@/components/payments-relationships/portal-users/PortalUserDetailModal";
 import { usePortalUserFiltering } from "@/hooks/usePortalUserFiltering";
 import { DataTableFacetedFilter, Option } from "@/components/dashboard/filters/DataTableFacetedFilter";
 import { Input } from "@/components/ui/input";
@@ -15,9 +17,12 @@ import { Badge } from "@/components/ui/badge";
 import { X, Search } from "lucide-react";
 
 export default function ScanAgents() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isAddPortalUserModalOpen, setIsAddPortalUserModalOpen] = useState(false);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
   const [userToRemoveId, setUserToRemoveId] = useState<string | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedPortalUser, setSelectedPortalUser] = useState<PortalUser | null>(null);
   const [portalUsers, setPortalUsers] = useState<PortalUser[]>(
     mockPortalUsers.filter(u => !['Coupa','Amazon Payee','Oracle Procurement'].includes(u.portal))
   );
@@ -112,6 +117,34 @@ export default function ScanAgents() {
     setIsAddPortalUserModalOpen(false);
   };
 
+  // Handle opening modal from URL parameter
+  useEffect(() => {
+    const openAgentModal = searchParams.get('openAgentModal');
+    const portalName = searchParams.get('portal');
+
+    if (openAgentModal === 'true') {
+      // Find the first portal user for the specified portal, or just the first one
+      const userToOpen = portalName
+        ? portalUsers.find(user => user.portal === portalName)
+        : portalUsers[0];
+
+      if (userToOpen) {
+        setSelectedPortalUser(userToOpen);
+        setIsDetailModalOpen(true);
+      }
+
+      // Clear the query parameter
+      searchParams.delete('openAgentModal');
+      searchParams.delete('portal');
+      setSearchParams(searchParams);
+    }
+  }, [searchParams, portalUsers]);
+
+  const closeDetailModal = () => {
+    setIsDetailModalOpen(false);
+    setSelectedPortalUser(null);
+  };
+
   return (
     <TooltipProvider>
       <div className="space-y-6">
@@ -198,6 +231,22 @@ export default function ScanAgents() {
         onConfirm={handleConfirmRemove}
         itemName={portalUsers.find(user => user.id === userToRemoveId)?.username || "this scan agent"}
       />
+
+      {isDetailModalOpen && selectedPortalUser && (
+        <PortalUserDetailModal
+          isOpen={isDetailModalOpen}
+          onClose={closeDetailModal}
+          portalUser={selectedPortalUser}
+          onEditPortalUser={(user) => {
+            console.log('Updated user:', user);
+          }}
+          onDeletePortalUser={(userId) => {
+            closeDetailModal();
+            setUserToRemoveId(userId);
+            setIsConfirmRemoveModalOpen(true);
+          }}
+        />
+      )}
     </TooltipProvider>
   );
 }

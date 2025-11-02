@@ -1,20 +1,27 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import { allPortalRecords } from "@/data/portalRecords";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "@/components/portal-records/PortalLogo";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { FormField } from "@/components/ui/form-field";
 import { useNavigate } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface POPortalRecordsTabProps {
   poNumber: string;
 }
 
 export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<PortalRecord | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [records, setRecords] = useState<PortalRecord[]>([]);
   const navigate = useNavigate();
 
@@ -48,13 +55,6 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
     console.log('Filtered relevant records:', relevantRecords);
     setRecords(relevantRecords);
   }, [poNumber]);
-
-  // Auto-expand first record on mount
-  useEffect(() => {
-    if (records.length > 0 && !expandedId) {
-      setExpandedId(records[0].id);
-    }
-  }, [records]);
 
   const computeDueDateStr = (record: PortalRecord) => {
     const fmt = (d: Date) => format(d, "MM/dd/yyyy");
@@ -118,12 +118,18 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
     return "Net 30";
   };
 
-  const toggleExpanded = (recordId: string) => {
-    setExpandedId(prev => prev === recordId ? null : recordId);
+  const handleViewDetails = (record: PortalRecord) => {
+    setSelectedRecord(record);
+    setIsModalOpen(true);
   };
 
   const handleNavigateToRecord = (recordId: string) => {
     navigate(`/portal-records/${recordId}`);
+  };
+
+  const formatCurrency = (amount: number, currency: string) => {
+    const symbol = currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$';
+    return `${symbol}${amount.toLocaleString()}`;
   };
 
   if (records.length === 0) {
@@ -140,7 +146,7 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
     <>
       <div className="space-y-6">
         <p className="text-sm text-gray-600">
-          These are portal invoices linked to this Purchase Order. Each record displays key invoice attributes and its current status in the portal.
+          These are portal invoice records linked to this Purchase Order in the portal. Each record shows key invoice details and its current status in the portal, and may be matched to an RTP in Monto.
         </p>
 
         {/* Single Table for All Records */}
@@ -153,16 +159,16 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
                     Portal Invoice Number
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Portal
-                  </th>
-                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Monto Status
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Last Synced
+                    Total Amount
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Last Updated
+                    Due Date
+                  </th>
+                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Last Update
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Actions
@@ -170,96 +176,100 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {records.map((record, index) => (
-                  <>
-                    {/* Main Row */}
-                    <tr
-                      key={record.id}
-                      className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
-                      onClick={() => toggleExpanded(record.id)}
-                    >
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <div className="flex items-center gap-2">
-                          {expandedId === record.id ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
-                          {record.conflict && (
-                            <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
-                          )}
-                          <span className="text-sm font-medium text-black">
-                            {record.invoiceNumber}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <PortalLogo portalName={record.portal} className="w-4 h-4" />
-                      </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <StatusBadge status={record.portalStatus} />
-                      </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <span className="text-sm text-gray-600">
-                          {format(new Date(record.lastSynced || record.updated), "MMM d, yyyy")}
-                        </span>
-                      </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <span className="text-sm text-gray-600">
-                          {format(new Date(record.updated), "MMM d, yyyy")}
-                        </span>
-                      </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleNavigateToRecord(record.id);
-                          }}
-                          className="text-[#7B59FF] hover:text-[#7B59FF] hover:bg-transparent font-medium -ml-3"
+                {records.map((record) => (
+                  <tr
+                    key={record.id}
+                    className="hover:bg-gray-50 transition-colors bg-white"
+                  >
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <div className="flex items-center gap-2">
+                        {record.conflict && (
+                          <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
+                        )}
+                        <button
+                          onClick={() => handleViewDetails(record)}
+                          className="text-sm font-medium text-black hover:text-gray-700 hover:underline cursor-pointer"
                         >
-                          Portal Record Info
-                        </Button>
-                      </td>
-                    </tr>
-
-                    {/* Expanded Details Row */}
-                    {expandedId === record.id && (
-                      <tr>
-                        <td colSpan={6} className="bg-white border-t border-gray-100">
-                          <div className="px-6 pt-6 pb-4">
-                            {record.conflict && (
-                              <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4 border border-[#F2AE40]">
-                                ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
-                              </div>
-                            )}
-                            <div className="space-y-6">
-                              <div className="flex items-center justify-between">
-                                <h3 className="text-sm font-semibold text-gray-900">Portal Invoice Details</h3>
-                              </div>
-
-                              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                                <FormField label="Portal Invoice Number" value={record.invoiceNumber} />
-                                <FormField label="Portal" value={record.portal} />
-                                <FormField label="Portal Status" value={record.portalStatus} />
-                                <FormField label="Buyer" value={record.buyer} />
-                                <FormField label="Supplier Name" value={record.supplierName} />
-                                <FormField label="Total Amount" value={`${record.currency === 'EUR' ? '€' : record.currency === 'GBP' ? '£' : '$'}${record.total.toLocaleString()}`} />
-                                <FormField label="Currency" value={record.currency || "USD"} />
-                                <FormField label="PO Number" value={record.poNumber} />
-                                <FormField label="Due Date" value={getDueDateDisplay(record)} />
-                                <FormField label="Net Terms" value={getNetTermsDisplay(record)} />
-                                <FormField label="Promise to Pay" value={getPromiseToPayDisplay(record)} />
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </>
+                          {record.invoiceNumber}
+                        </button>
+                      </div>
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <StatusBadge status={record.portalStatus} />
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <span className="text-sm text-gray-600">
+                        {formatCurrency(record.total, record.currency || 'USD')}
+                      </span>
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <span className="text-sm text-gray-600">
+                        {getDueDateDisplay(record)}
+                      </span>
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <span className="text-sm text-gray-600">
+                        {format(new Date(record.updated), "MMM d, yyyy")}
+                      </span>
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNavigateToRecord(record.id);
+                        }}
+                        className="text-[#7B59FF] hover:text-[#7B59FF] hover:bg-transparent font-medium -ml-3"
+                      >
+                        Portal Record Info
+                      </Button>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
       </div>
+
+      {/* Details Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Portal Invoice Details</DialogTitle>
+          </DialogHeader>
+          {selectedRecord && (
+            <div className="space-y-6">
+              {selectedRecord.conflict && (
+                <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 border border-[#F2AE40]">
+                  ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
+                </div>
+              )}
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                <FormField label="Portal Invoice Number" value={selectedRecord.invoiceNumber} />
+                <div className="space-y-2">
+                  <label className="text-sm text-gray-500">Monto Status</label>
+                  <div className="flex items-center h-10 px-3 bg-gray-50 rounded-md border border-input">
+                    <StatusBadge status={selectedRecord.portalStatus} />
+                  </div>
+                </div>
+                <FormField label="Total Amount" value={formatCurrency(selectedRecord.total, selectedRecord.currency || 'USD')} />
+                <FormField label="Due Date" value={getDueDateDisplay(selectedRecord)} />
+                <FormField label="Last Update" value={format(new Date(selectedRecord.updated), "MMM d, yyyy")} />
+                <FormField label="Portal" value={selectedRecord.portal} />
+                <FormField label="Portal Status" value={selectedRecord.portalStatus} />
+                <FormField label="Buyer" value={selectedRecord.buyer} />
+                <FormField label="Supplier Name" value={selectedRecord.supplierName} />
+                <FormField label="Currency" value={selectedRecord.currency || "USD"} />
+                <FormField label="PO Number" value={selectedRecord.poNumber} />
+                <FormField label="Net Terms" value={getNetTermsDisplay(selectedRecord)} />
+                <FormField label="Promise to Pay" value={getPromiseToPayDisplay(selectedRecord)} />
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

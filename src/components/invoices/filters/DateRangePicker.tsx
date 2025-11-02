@@ -14,9 +14,10 @@ interface DateRangePickerProps {
   fromDate: string;
   toDate: string;
   onDateChange: (fromDate: string, toDate: string) => void;
+  label?: string;
 }
 
-export function DateRangePicker({ fromDate, toDate, onDateChange }: DateRangePickerProps) {
+export function DateRangePicker({ fromDate, toDate, onDateChange, label = "Due Date" }: DateRangePickerProps) {
   const [open, setOpen] = useState(false);
   
   const hasDateRange = fromDate || toDate;
@@ -40,7 +41,7 @@ export function DateRangePicker({ fromDate, toDate, onDateChange }: DateRangePic
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="h-8 font-normal">
-          Due Date
+          {label}
           {hasDateRange && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />

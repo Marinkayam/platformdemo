@@ -122,11 +122,12 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
         onSelectionChange={handlePaymentTermsChange}
       />
 
-      {/* Created Date Filter */}
+      {/* Portal Created Date Filter */}
       <DateRangePicker
         fromDate={filters?.createdDate?.from || ""}
         toDate={filters?.createdDate?.to || ""}
         onDateChange={handleCreatedDateChange}
+        label="Portal Created Date"
       />
 
       {/* Reset Button */}

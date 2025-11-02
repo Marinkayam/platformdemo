@@ -21,7 +21,6 @@ interface PurchaseOrderDetailHeaderProps {
 }
 
 export function PurchaseOrderDetailHeader({ purchaseOrder, className }: PurchaseOrderDetailHeaderProps) {
-  const relatedInvoicesCount = Array.isArray(purchaseOrder.relatedInvoices) ? purchaseOrder.relatedInvoices.length : 0;
   const navigate = useNavigate();
 
   // Status mapping for Monto Status
@@ -120,9 +119,17 @@ export function PurchaseOrderDetailHeader({ purchaseOrder, className }: Purchase
               )}
               <span>Portal: {purchaseOrder.portal || "N/A"}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-gray-500"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-              <span>Related invoices: {relatedInvoicesCount}</span>
+            <div className="flex items-center gap-2">
+              <span>Scan Agent: </span>
+              <Link
+                to={`/scan-agents?openAgentModal=true&portal=${encodeURIComponent(purchaseOrder.portal)}`}
+                className="text-black hover:text-gray-700 hover:underline font-medium"
+              >
+                {purchaseOrder.portal === "SAP Ariba" ? "supplier@acmecorp.com" :
+                 purchaseOrder.portal === "Coupa" ? "vendor@techsolutions.com" :
+                 purchaseOrder.portal === "Jaggaer" ? "global@enterprise.com" :
+                 "supplier@portal.com"}
+              </Link>
             </div>
           </div>
         </div>

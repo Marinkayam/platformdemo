@@ -4,7 +4,6 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { purchaseOrderData } from "@/data/purchaseOrders";
 import { PurchaseOrder } from "@/types/purchase-orders";
 import { PurchaseOrderDetailHeader } from "@/components/purchase-orders/PurchaseOrderDetailHeader";
-import { ActivityLog } from "@/components/common/ActivityLog";
 import { TabsContent, Tabs } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
@@ -14,6 +13,8 @@ import { PurchaseOrderLineItems } from "@/components/purchase-orders/PurchaseOrd
 import { POPreview } from "@/components/purchase-orders/POPreview";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { POPortalRecordsTab } from "@/components/purchase-orders/detail/POPortalRecordsTab";
+import { NotesThread } from "@/components/invoices/detail/NotesThread";
+import { useNotes } from "@/hooks/useNotes";
 import { POSmartConnectionCard } from "@/components/purchase-orders/detail/POSmartConnectionCard";
 
 // Mock data - in a real app, this would come from an API
@@ -35,6 +36,7 @@ export default function PurchaseOrderDetail() {
   const [activeTab, setActiveTab] = useState("po-data");
   const [hasInitialized, setHasInitialized] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1.0);
+  const { notes, addNote, removeNoteAttachment, scrollRef } = useNotes();
 
   const { data: purchaseOrder, isLoading, isError, error } = useQuery<PurchaseOrder, Error>({
     queryKey: ['purchaseOrder', id],
@@ -94,7 +96,8 @@ export default function PurchaseOrderDetail() {
   }
 
   const lineItems = purchaseOrder.lineItems || [];
-  const activityCount = 4; // Placeholder, adjust as needed or fetch dynamic count
+  // Activity count - 4 activity items (hardcoded) + notes count
+  const activityCount = 4 + notes.length;
 
   return (
     <div className="space-y-6">
@@ -125,10 +128,6 @@ export default function PurchaseOrderDetail() {
           </ResizablePanelGroup>
         </TabsContent>
 
-        <TabsContent value="smart-connection" className="">
-          <POSmartConnectionCard purchaseOrder={purchaseOrder} />
-        </TabsContent>
-
         <TabsContent value="portal-invoice-records" className="">
           <Card className="p-6 rounded-xl shadow-sm">
             <POPortalRecordsTab poNumber={purchaseOrder.poNumber} />
@@ -136,9 +135,32 @@ export default function PurchaseOrderDetail() {
         </TabsContent>
 
         <TabsContent value="activity" className="">
-          <Card className="p-6 rounded-xl shadow-sm">
-            <ActivityLog entityId={purchaseOrder.id} entityType="purchase_order" />
-          </Card>
+          <div className="bg-white rounded-lg">
+            <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-lg border">
+              {/* Timeline Panel */}
+              <ResizablePanel defaultSize={60} minSize={30}>
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Activity Timeline</h3>
+                  <div className="text-center py-12 text-gray-500">
+                    <p className="text-lg">Coming Soon</p>
+                  </div>
+                </div>
+              </ResizablePanel>
+
+              {/* Resizable Handle */}
+              <ResizableHandle withHandle />
+
+              {/* Notes Panel */}
+              <ResizablePanel defaultSize={40} minSize={30}>
+                <NotesThread
+                  notes={notes}
+                  addNote={addNote}
+                  removeNoteAttachment={removeNoteAttachment}
+                  scrollRef={scrollRef}
+                />
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
