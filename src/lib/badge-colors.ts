@@ -40,7 +40,7 @@ export const STATUS_MAPPING = {
   error: ['rejected by buyer', 'disconnected', 'error', 'unavailable', 'pending action', 'needs attention', 'closed', 'cancelled'],
 
   // WARNING - Orange (Active PO statuses)
-  warning: ['external submission', 'approved by buyer', 'approved', 'fully invoiced', 'partially invoiced', 'partial payment', 'part inv', 'new', 'open'],
+  warning: ['external submission', 'approved by buyer', 'approved', 'fully invoiced', 'partially invoiced', 'partial payment', 'part inv', 'open'],
 
   // INFO - Blue
   info: ['in process', 'validating', 'building', 'connecting', 'in progress', 'pending approval', 'created'],
