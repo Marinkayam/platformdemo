@@ -16,7 +16,6 @@ const statusMap: Record<string, string> = {
   'Partially Invoiced': 'Partially Invoiced',
   'Fully Invoiced': 'Fully Invoiced',
   'new': 'New',
-  'New': 'New',
   'pending_approval': 'Pending Approval',
   'rejected': 'Rejected'
 };

@@ -14,7 +14,6 @@ const statusMapping: Record<PurchaseOrderStatus, string> = {
   rejected: "rejected by buyer",
   cancelled: "excluded",
   completed: "settled",
-  New: "new",
   "Partially Invoiced": "partially invoiced",
   "Fully Invoiced": "fully invoiced"
 };
@@ -32,7 +31,6 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
       rejected: "Rejected",
       cancelled: "Cancelled",
       completed: "Completed",
-      New: "New",
       "Partially Invoiced": "Partially Invoiced",
       "Fully Invoiced": "Fully Invoiced"
     };

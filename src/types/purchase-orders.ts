@@ -5,7 +5,6 @@ export type PurchaseOrderStatus =
   | "rejected"
   | "cancelled"
   | "completed"
-  | "New"
   | "Partially Invoiced"
   | "Fully Invoiced";
 

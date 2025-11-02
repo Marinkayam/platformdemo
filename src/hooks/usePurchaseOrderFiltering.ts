@@ -20,7 +20,7 @@ export function usePurchaseOrderFiltering(purchaseOrders: PurchaseOrder[], activ
     // Apply tab-based filtering first
     switch (activeTab) {
       case "new":
-        filtered = filtered.filter(po => po.status === "New");
+        filtered = filtered.filter(po => po.status === "new");
         break;
       case "low-funds":
         filtered = filtered.filter(po => 

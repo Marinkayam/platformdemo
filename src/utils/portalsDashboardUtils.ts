@@ -25,7 +25,7 @@ export function calculatePortalsDashboardMetrics() {
   const portalsCount = portalsSet.size;
 
   // Open POs
-  const openPOs = purchaseOrderData.filter(po => po.status === "New" || po.status === "Partially Invoiced");
+  const openPOs = purchaseOrderData.filter(po => po.status === "new" || po.status === "Partially Invoiced");
   const openPOsCount = openPOs.length;
   const openPOsTotal = openPOs.reduce((sum: number, po) => {
     const val = parseFloat(String(po.total));

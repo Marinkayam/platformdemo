@@ -30,7 +30,7 @@ export default function PurchaseOrders() {
   };
 
   // Calculate counts for tabs
-  const newCount = purchaseOrderData.filter(po => po.status === "New").length;
+  const newCount = purchaseOrderData.filter(po => po.status === "new").length;
 
   // Update tabs with counts - changed "Found by Monto" to "All POs"
   const tabsWithCounts = [
