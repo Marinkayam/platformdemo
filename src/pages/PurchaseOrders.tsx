@@ -35,7 +35,7 @@ export default function PurchaseOrders() {
   // Update tabs with counts - changed "Found by Monto" to "All POs"
   const tabsWithCounts = [
     { id: "found", label: "All POs", count: purchaseOrderData.length },
-    { id: "new", label: "New POs", count: newCount },
+    { id: "new", label: "Open POs", count: newCount },
   ];
 
   return (
