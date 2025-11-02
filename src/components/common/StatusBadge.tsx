@@ -8,7 +8,7 @@ interface StatusBadgeProps {
 }
 
 const statusMapping: Record<PurchaseOrderStatus, string> = {
-  new: "new",
+  new: "open",
   pending_approval: "pending approval", 
   approved: "approved by buyer",
   rejected: "rejected by buyer",
@@ -25,7 +25,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   // Get display label from original status
   const getDisplayLabel = (status: PurchaseOrderStatus): string => {
     const labelMap: Record<PurchaseOrderStatus, string> = {
-      new: "New",
+      new: "Open",
       pending_approval: "Pending Approval", 
       approved: "Approved",
       rejected: "Rejected",
