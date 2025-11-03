@@ -9,23 +9,11 @@ interface PurchaseOrderInformationProps {
   purchaseOrder: PurchaseOrder;
 }
 
-const statusMap: Record<string, string> = {
-  'approved': 'Approved',
-  'completed': 'Closed',
-  'cancelled': 'Cancelled',
-  'Partially Invoiced': 'Partially Invoiced',
-  'Fully Invoiced': 'Fully Invoiced',
-  'new': 'Approved',
-  'pending_approval': 'Pending Approval',
-  'rejected': 'Rejected'
-};
-
 export function PurchaseOrderInformation({ purchaseOrder }: PurchaseOrderInformationProps) {
   // Calculate Remaining Amount
   const pendingSubmissionAmount = 0; // Assume 0 for demo
   const remainingAmount = (purchaseOrder.total || 0) - (purchaseOrder.invoicedAmount || 0) - pendingSubmissionAmount;
-  const standardizedStatus = statusMap[purchaseOrder.status] || purchaseOrder.status;
-  const isCancelled = standardizedStatus === 'Cancelled';
+  const isCancelled = purchaseOrder.rawStatus === 'Cancelled';
 
   // Mock cancellation reason - in a real app, this would come from the PO data
   const cancellationReason = "Duplicate order created in error";
@@ -54,7 +42,7 @@ export function PurchaseOrderInformation({ purchaseOrder }: PurchaseOrderInforma
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div>
-                      <StatusBadge status={standardizedStatus} />
+                      <StatusBadge status={purchaseOrder.rawStatus} />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -63,7 +51,7 @@ export function PurchaseOrderInformation({ purchaseOrder }: PurchaseOrderInforma
                   </TooltipContent>
                 </Tooltip>
               ) : (
-                <StatusBadge status={standardizedStatus} />
+                <StatusBadge status={purchaseOrder.rawStatus} />
               )}
             </TooltipProvider>
           </div>

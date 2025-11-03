@@ -11,17 +11,6 @@ import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { PurchaseOrdersPagination } from "./components/PurchaseOrdersPagination";
 import { useState, useMemo } from "react";
 
-const statusMap: Record<string, string> = {
-  'approved': 'Approved',
-  'completed': 'Closed',
-  'cancelled': 'Cancelled',
-  'Partially Invoiced': 'Partially Invoiced',
-  'Fully Invoiced': 'Fully Invoiced',
-  'new': 'Approved',
-  'pending_approval': 'Pending Approval',
-  'rejected': 'Rejected'
-};
-
 interface PurchaseOrderTableProps {
   purchaseOrders: PurchaseOrder[];
   isLoading?: boolean;
@@ -77,10 +66,9 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
                 </TableRow>
               ) : (
                 paginatedData.map((po) => {
-                  // Calculate TRA and standardized status for each row
+                  // Calculate TRA for each row
                   const pendingSubmissionAmount = 0; // Assume 0 for demo
                   const tra = (po.total || 0) - (po.invoicedAmount || 0) - pendingSubmissionAmount;
-                  const standardizedStatus = statusMap[po.status] || po.status;
 
                   return (
                 <TableRow
@@ -113,7 +101,7 @@ export function PurchaseOrderTable({ purchaseOrders, isLoading = false }: Purcha
                     </TooltipProvider>
                   </TableCell>
                   <TableCell className="whitespace-nowrap w-[200px] min-w-[200px]">
-                    <StatusBadge status={standardizedStatus} className="whitespace-nowrap flex-shrink-0" />
+                    <StatusBadge status={po.rawStatus} className="whitespace-nowrap flex-shrink-0" />
                   </TableCell>
                   <TableCell className="truncate w-[200px] min-w-[200px]">
                     <TooltipProvider>

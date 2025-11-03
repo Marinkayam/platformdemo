@@ -22,9 +22,13 @@ export default function PurchaseOrders() {
     setFilters(prevFilters => ({ ...prevFilters, poNumber: value }));
   };
 
-  // Update tabs with counts - only "All POs" for now
+  // Calculate counts for tabs
+  const newPOsCount = purchaseOrderData.filter(po => po.status === "approved").length;
+
+  // Update tabs with counts
   const tabsWithCounts = [
-    { id: "found", label: "All POs", count: purchaseOrderData.length }
+    { id: "found", label: "All POs", count: purchaseOrderData.length },
+    { id: "new", label: "New POs", count: newPOsCount }
   ];
 
   return (

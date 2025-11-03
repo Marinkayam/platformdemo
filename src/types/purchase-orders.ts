@@ -1,4 +1,4 @@
-export type PurchaseOrderStatus = 
+export type PurchaseOrderStatus =
   | "new"
   | "pending_approval"
   | "approved"
@@ -6,7 +6,8 @@ export type PurchaseOrderStatus =
   | "cancelled"
   | "completed"
   | "Partially Invoiced"
-  | "Fully Invoiced";
+  | "Fully Invoiced"
+  | "open";
 
 export type PortalStatus = 
   | "Connected"
@@ -88,4 +89,5 @@ export type PurchaseOrder = {
   invoiceNumber?: string;
   invoiceDate?: string;
   portalStatus?: PortalStatus;
+  hasPdfPreview?: boolean;
 }; 

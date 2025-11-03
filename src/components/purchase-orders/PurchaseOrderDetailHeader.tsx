@@ -23,21 +23,6 @@ interface PurchaseOrderDetailHeaderProps {
 export function PurchaseOrderDetailHeader({ purchaseOrder, className }: PurchaseOrderDetailHeaderProps) {
   const navigate = useNavigate();
 
-  // Status mapping for Monto Status
-  const statusMap: Record<string, string> = {
-    'approved': 'Approved',
-    'completed': 'Closed',
-    'cancelled': 'Cancelled',
-    'Partially Invoiced': 'Partially Invoiced',
-    'Fully Invoiced': 'Fully Invoiced',
-    'new': 'Approved',
-    'pending_approval': 'Pending Approval',
-    'rejected': 'Rejected'
-  };
-
-  const getStandardizedStatus = (status: string) => {
-    return statusMap[status] || status;
-  };
 
   return (
     <div className={`mb-8 ${className}`}>
@@ -72,7 +57,7 @@ export function PurchaseOrderDetailHeader({ purchaseOrder, className }: Purchase
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div>
-                        <StatusBadge status={getStandardizedStatus(purchaseOrder.status)} />
+                        <StatusBadge status={purchaseOrder.rawStatus} />
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>

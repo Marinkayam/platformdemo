@@ -46,14 +46,6 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
     }));
   }, []);
 
-  const paymentTermsOptions: Option[] = useMemo(() => {
-    return filterConfig.paymentTermsOptions.map(terms => ({
-      label: terms,
-      value: terms,
-      count: purchaseOrderData.filter(po => po.paymentTerms === terms).length
-    }));
-  }, []);
-
   // Adapter functions for new filter system
   const handleStatusChange = (values: Set<string>) => {
     handleFilterChange('status', Array.from(values));
@@ -65,10 +57,6 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
 
   const handlePortalChange = (values: Set<string>) => {
     handleFilterChange('portal', Array.from(values));
-  };
-
-  const handlePaymentTermsChange = (values: Set<string>) => {
-    handleFilterChange('paymentTerms', Array.from(values));
   };
 
   const handleCreatedDateChange = (fromDate: string, toDate: string) => {
@@ -112,14 +100,6 @@ export function PurchaseOrderFilters({ onFilterChange }: PurchaseOrderFiltersPro
         options={portalOptions}
         selectedValues={new Set(Array.isArray(filters?.portal) ? filters.portal : [])}
         onSelectionChange={handlePortalChange}
-      />
-
-      {/* Payment Terms Filter */}
-      <DataTableFacetedFilter
-        title="Payment Terms"
-        options={paymentTermsOptions}
-        selectedValues={new Set(Array.isArray(filters?.paymentTerms) ? filters.paymentTerms : [])}
-        onSelectionChange={handlePaymentTermsChange}
       />
 
       {/* Portal Created Date Filter */}

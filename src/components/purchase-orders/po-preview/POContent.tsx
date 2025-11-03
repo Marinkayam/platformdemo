@@ -2,6 +2,7 @@ import { PurchaseOrder } from "@/types/purchase-orders";
 import { formatCurrency } from "@/lib/utils";
 import { useRef, useEffect, useState } from "react";
 import { format } from "date-fns";
+import { FileText } from "lucide-react";
 
 interface POContentProps {
   purchaseOrder: PurchaseOrder;
@@ -29,6 +30,29 @@ export function POContent({ purchaseOrder, zoomLevel }: POContentProps) {
   // Calculate TRA
   const pendingSubmissionAmount = 0;
   const tra = (purchaseOrder.total || 0) - (purchaseOrder.invoicedAmount || 0) - pendingSubmissionAmount;
+
+  // Check if PDF preview is available
+  const hasPdfPreview = purchaseOrder.hasPdfPreview !== false;
+
+  // Show placeholder if no PDF preview
+  if (!hasPdfPreview) {
+    return (
+      <div
+        ref={containerRef}
+        className="bg-white border rounded-md flex-1 overflow-auto p-6"
+      >
+        <div className="flex flex-col items-center justify-center h-full text-center">
+          <div className="bg-gray-100 rounded-full p-6 mb-4">
+            <FileText className="h-16 w-16 text-gray-400" />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">No PDF Preview Available</h3>
+          <p className="text-sm text-gray-500 max-w-md">
+            This purchase order doesn't have a PDF preview. The PO data can be viewed in the "PO Data" tab.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

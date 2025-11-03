@@ -33,14 +33,14 @@ export const BADGE_COLORS = {
 } as const;
 
 export const STATUS_MAPPING = {
-  // SUCCESS - Green
-  success: ['paid', 'settled', 'partially settled', 'live', 'connected', 'completed', '100% invoiced', 'closed'],
+  // SUCCESS - Green (Open status)
+  success: ['paid', 'settled', 'partially settled', 'live', 'connected', 'open'],
 
-  // ERROR - Red
-  error: ['rejected by buyer', 'disconnected', 'error', 'unavailable', 'pending action', 'needs attention', 'cancelled'],
+  // ERROR - Red (Closed and Cancelled statuses)
+  error: ['rejected by buyer', 'disconnected', 'error', 'unavailable', 'pending action', 'needs attention', 'cancelled', 'closed'],
 
-  // WARNING - Orange (Active PO statuses)
-  warning: ['external submission', 'approved by buyer', 'approved', 'fully invoiced', 'partially invoiced', 'partial payment', 'part inv', 'open'],
+  // WARNING - Orange (Fully Invoiced status)
+  warning: ['external submission', 'approved by buyer', 'approved', 'fully invoiced', 'partially invoiced', 'partial payment', 'part inv', 'completed', '100% invoiced'],
 
   // INFO - Blue
   info: ['in process', 'validating', 'building', 'connecting', 'in progress', 'pending approval', 'created'],
