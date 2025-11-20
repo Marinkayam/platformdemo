@@ -25,7 +25,7 @@ export const pendingInvoices: Invoice[] = [
     rejectedBy: "Monto" as const,
     invoiceDate: "2024-12-10",
     netTerms: "Net 30",
-    portal: "Walmart Portal",
+    portal: "Coupa",
     exceptions: [
       {
         id: "exc-smart-conn-001",
