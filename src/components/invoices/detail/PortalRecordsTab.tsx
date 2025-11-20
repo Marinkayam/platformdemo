@@ -1,23 +1,40 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, TriangleAlert } from "lucide-react";
+import { TriangleAlert, MoreVertical, Unlink } from "lucide-react";
 import { invoiceSpecificRecords } from "@/data/portalRecords/invoiceSpecificData";
 import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "@/components/portal-records/PortalLogo";
+import { MatchTypeBadge } from "@/components/portal-records/MatchTypeBadge";
 import { MakePrimaryConfirmModal } from "./MakePrimaryConfirmModal";
 import { toast } from "@/hooks/use-toast";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { FormField } from "@/components/ui/form-field";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface PortalRecordsTabProps {
   invoiceId: string;
 }
 
 export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMakePrimaryModal, setShowMakePrimaryModal] = useState(false);
+  const [showUnmatchConfirmModal, setShowUnmatchConfirmModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<PortalRecord | null>(null);
+  const [recordToUnmatch, setRecordToUnmatch] = useState<PortalRecord | null>(null);
   const [records, setRecords] = useState<PortalRecord[]>([]);
 
   // Filter and ensure we have at least one primary record
@@ -79,23 +96,17 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     setRecords(relevantRecords);
   }, [invoiceId]);
 
-  // Auto-expand Primary record on mount
-  useEffect(() => {
-    const primary = records.find(r => r.matchType === "Primary");
-    if (primary) {
-      setExpandedId(primary.id);
-    }
-  }, [records]);
 
-  const getMatchTypeDisplay = (matchType: PortalRecord['matchType']) => {
-    if (matchType === "Primary") {
-      return (
-        <span className="text-sm text-[#7B59FF] font-medium">
-          Primary
-        </span>
-      );
-    }
-    return <span className="text-sm text-gray-600">Alternate</span>;
+  const getStatusTooltip = (status: PortalRecord['portalStatus']): string => {
+    const tooltips: Record<PortalRecord['portalStatus'], string> = {
+      'Approved by Buyer': 'The invoice has been reviewed and approved by the buyer in the portal',
+      'Rejected by Buyer': 'The invoice has been rejected by the buyer and requires attention',
+      'Paid': 'The invoice has been marked as paid in the buyer portal',
+      'Settled': 'The payment has been completed and settled',
+      'Partially Settled': 'The invoice has been partially paid, with remaining balance due',
+      'Pending Approval': 'The invoice is awaiting buyer approval in the portal'
+    };
+    return tooltips[status] || 'Portal status of the invoice';
   };
 
   const computeDueDateStr = (record: PortalRecord) => {
@@ -184,8 +195,55 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
     });
   };
 
-  const toggleExpanded = (recordId: string) => {
-    setExpandedId(prev => prev === recordId ? null : recordId);
+  const handleViewDetails = (record: PortalRecord) => {
+    setSelectedRecord(record);
+    setIsModalOpen(true);
+  };
+
+  const handleUnmatchRecord = (record: PortalRecord) => {
+    setRecordToUnmatch(record);
+    setShowUnmatchConfirmModal(true);
+  };
+
+  const confirmUnmatchRecord = () => {
+    if (!recordToUnmatch) return;
+
+    console.log(`Unmatching record ${recordToUnmatch.id}`);
+
+    const wasPrimary = recordToUnmatch.matchType === "Primary";
+
+    // Remove the record from the list and potentially promote another
+    setRecords(prevRecords => {
+      const remainingRecords = prevRecords.filter(r => r.id !== recordToUnmatch.id);
+
+      // If we removed the primary record and there are still records left
+      if (wasPrimary && remainingRecords.length > 0) {
+        // Promote the first record to Primary
+        remainingRecords[0] = { ...remainingRecords[0], matchType: "Primary" };
+      }
+
+      return remainingRecords;
+    });
+
+    // Close modals
+    setIsModalOpen(false);
+    setShowUnmatchConfirmModal(false);
+    setRecordToUnmatch(null);
+
+    // Show success toast
+    if (wasPrimary && records.length > 1) {
+      toast({
+        title: "Record Unmatched",
+        description: `Portal record ${recordToUnmatch.invoiceNumber} has been unmatched. The next record has been promoted to Primary.`,
+        variant: "default",
+      });
+    } else {
+      toast({
+        title: "Record Unmatched",
+        description: `Portal record ${recordToUnmatch.invoiceNumber} has been unmatched from this invoice.`,
+        variant: "default",
+      });
+    }
   };
 
   if (records.length === 0) {
@@ -221,97 +279,97 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                     Portal Status
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Match Type
+                  </th>
+                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Match Date
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Last Updated
                   </th>
+                  <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {records.map((record, index) => (
-                  <>
-                    {/* Main Row */}
-                    <tr 
-                      key={record.id}
-                      className="hover:bg-gray-50 cursor-pointer transition-colors bg-white"
-                      onClick={() => toggleExpanded(record.id)}
-                    >
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <div className="flex items-center gap-2">
-                          {expandedId === record.id ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
-                          {record.conflict && (
-                            <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
-                          )}
-                          <span className="text-sm font-medium text-black">
-                            {record.invoiceNumber}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <PortalLogo portalName={record.portal} className="w-4 h-4" />
-                      </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <StatusBadge status={record.portalStatus} />
-                      </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <span className="text-sm text-gray-600">
-                          {format(new Date(record.lastSynced || record.updated), "MMM d, yyyy")}
+                {records.map((record) => (
+                  <tr
+                    key={record.id}
+                    onClick={() => handleViewDetails(record)}
+                    className="hover:bg-gray-50 transition-colors bg-white cursor-pointer"
+                  >
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <div className="flex items-center gap-2">
+                        {record.conflict && (
+                          <TriangleAlert className="w-4 h-4 text-[#FF9800]" />
+                        )}
+                        <span className="text-sm font-medium text-black hover:text-gray-700 hover:underline">
+                          {record.invoiceNumber}
                         </span>
-                      </td>
-                      <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
-                        <span className="text-sm text-gray-600">
-                          {format(new Date(record.updated), "MMM d, yyyy")}
-                        </span>
-                      </td>
-                    </tr>
-
-                    {/* Expanded Details Row */}
-                    {expandedId === record.id && (
-                      <tr>
-                        <td colSpan={5} className="bg-white border-t border-gray-100">
-                          <div className="px-6 pt-6 pb-4">
-                            {record.conflict && (
-                              <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 mb-4 border border-[#F2AE40]">
-                                ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
-                              </div>
-                            )}
-                            <div className="space-y-6">
-                              <div className="flex items-center justify-between">
-                                <h3 className="text-sm font-semibold text-gray-900">Portal Record Details</h3>
-                                {record.matchType === "Alternate" && (
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleMakePrimary(record);
-                                    }}
-                                    className="text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
-                                  >
-                                    Make as Primary
-                                  </Button>
-                                )}
-                              </div>
-                              
-                              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                                <FormField label="Portal Invoice Number" value={record.invoiceNumber} />
-                                <FormField label="Portal" value={record.portal} />
-                                <FormField label="Buyer" value={record.buyer} />
-                                <FormField label="Total Amount" value={`${record.currency === 'EUR' ? '€' : record.currency === 'GBP' ? '£' : '$'}${record.total.toLocaleString()}`} />
-                                <FormField label="Currency" value={record.currency || "USD"} />
-                                <FormField label="PO Number" value={record.poNumber} />
-                                <FormField label="Due Date" value={getDueDateDisplay(record)} />
-                                <FormField label="Net Terms" value={getNetTermsDisplay(record)} />
-                                <FormField label="Promise to Pay" value={getPromiseToPayDisplay(record)} />
-                                <FormField label="Supplier Name" value={record.supplierName} />
-                              </div>
+                      </div>
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <PortalLogo portalName={record.portal} className="w-4 h-4" />
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div>
+                              <StatusBadge status={record.portalStatus} />
                             </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{getStatusTooltip(record.portalStatus)}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <MatchTypeBadge type={record.matchType} />
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <span className="text-sm text-gray-600">
+                        {format(new Date(record.lastSynced || record.updated), "MMM d, yyyy")}
+                      </span>
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <span className="text-sm text-gray-600">
+                        {format(new Date(record.updated), "MMM d, yyyy")}
+                      </span>
+                    </td>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans" onClick={(e) => e.stopPropagation()}>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <DropdownMenuItem
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleUnmatchRecord(record);
+                                  }}
+                                  className="text-red-600 focus:text-red-600"
+                                >
+                                  <Unlink className="mr-2 h-4 w-4" />
+                                  Unmatch Record
+                                </DropdownMenuItem>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Remove this portal record from the invoice</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>
@@ -319,12 +377,154 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
         </div>
       </div>
 
+      {/* Details Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Portal Record Details</DialogTitle>
+          </DialogHeader>
+          {selectedRecord && (
+            <div className="space-y-6">
+              {selectedRecord.conflict && (
+                <div className="bg-[#FFF8E1] text-[#7B5915] text-sm rounded-md p-4 border border-[#F2AE40]">
+                  ⚠️ This Portal Record contains conflicting data. Please review the details to understand discrepancies.
+                </div>
+              )}
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">Match Type:</span>
+                  <MatchTypeBadge type={selectedRecord.matchType} />
+                </div>
+                {selectedRecord.matchType === "Alternate" && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsModalOpen(false);
+                      handleMakePrimary(selectedRecord);
+                    }}
+                    className="text-[#7B59FF] border-[#7B59FF] hover:bg-[#7B59FF] hover:text-white"
+                  >
+                    Make as Primary
+                  </Button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                <FormField label="Portal Invoice Number" value={selectedRecord.invoiceNumber} />
+                <FormField label="Portal" value={selectedRecord.portal} />
+                <div className="space-y-2">
+                  <label className="text-sm text-gray-500">Portal Status</label>
+                  <div className="flex items-center h-10 px-3 bg-gray-50 rounded-md border border-input">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <StatusBadge status={selectedRecord.portalStatus} />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{getStatusTooltip(selectedRecord.portalStatus)}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </div>
+                <FormField label="Buyer" value={selectedRecord.buyer} />
+                <FormField label="Total Amount" value={`${selectedRecord.currency === 'EUR' ? '€' : selectedRecord.currency === 'GBP' ? '£' : '$'}${selectedRecord.total.toLocaleString()}`} />
+                <FormField label="Currency" value={selectedRecord.currency || "USD"} />
+                <FormField label="PO Number" value={selectedRecord.poNumber} />
+                <FormField label="Supplier Name" value={selectedRecord.supplierName} />
+                <FormField label="Due Date" value={getDueDateDisplay(selectedRecord)} />
+                <FormField label="Net Terms" value={getNetTermsDisplay(selectedRecord)} />
+                <FormField label="Promise to Pay" value={getPromiseToPayDisplay(selectedRecord)} />
+                <FormField label="Last Updated" value={format(new Date(selectedRecord.updated), "MMM d, yyyy")} />
+              </div>
+            </div>
+          )}
+          {selectedRecord && (
+            <DialogFooter className="flex justify-end gap-2">
+              <Button
+                variant="destructive"
+                onClick={() => handleUnmatchRecord(selectedRecord)}
+                className="flex items-center gap-2"
+              >
+                <Unlink className="h-4 w-4" />
+                Unmatch Record
+              </Button>
+            </DialogFooter>
+          )}
+        </DialogContent>
+      </Dialog>
+
       <MakePrimaryConfirmModal
         isOpen={showMakePrimaryModal}
         onClose={() => setShowMakePrimaryModal(false)}
         onConfirm={confirmMakePrimary}
         record={selectedRecord}
       />
+
+      {/* Unmatch Confirmation Dialog */}
+      <Dialog open={showUnmatchConfirmModal} onOpenChange={setShowUnmatchConfirmModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Unmatch Portal Record</DialogTitle>
+          </DialogHeader>
+          <div className="py-4 space-y-4">
+            <p className="text-sm text-gray-600">
+              Are you sure you want to unmatch this portal record from the invoice?
+            </p>
+
+            {recordToUnmatch && (
+              <>
+                <div className="p-3 bg-gray-50 rounded-md border border-gray-200">
+                  <p className="text-sm font-medium text-gray-900">
+                    {recordToUnmatch.invoiceNumber}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Portal: {recordToUnmatch.portal}
+                  </p>
+                </div>
+
+                <div className="p-4 bg-amber-50 border border-amber-200 rounded-md">
+                  <p className="text-sm font-medium text-amber-900 mb-2">What will happen:</p>
+                  <ul className="text-sm text-amber-800 space-y-1.5 list-disc list-inside">
+                    <li>This portal record will be removed from the invoice</li>
+                    {recordToUnmatch.matchType === "Primary" && records.length > 1 && (
+                      <li className="font-medium">The next alternate record will be automatically promoted to Primary</li>
+                    )}
+                    {recordToUnmatch.matchType === "Primary" && records.length === 1 && (
+                      <li className="font-medium">This invoice will no longer have any matched portal records</li>
+                    )}
+                    <li>You can re-match this record later if needed</li>
+                  </ul>
+                </div>
+              </>
+            )}
+          </div>
+          <DialogFooter className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowUnmatchConfirmModal(false);
+                setRecordToUnmatch(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmUnmatchRecord}
+              className="flex items-center gap-2"
+            >
+              <Unlink className="h-4 w-4" />
+              Yes, Unmatch
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

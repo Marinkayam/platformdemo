@@ -31,6 +31,7 @@ import PortalsDashboard2 from "./pages/PortalsDashboard2";
 import SecretHomePage from "./pages/SecretHomePage";
 import SecretDashboard from "./pages/SecretDashboard";
 import SecretScanAgents from "./pages/SecretScanAgents";
+import EmailTemplatePreview from "./pages/EmailTemplatePreview";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/secret-home" element={<SecretHomePage />} />
+            <Route path="/email-template" element={<EmailTemplatePreview />} />
 
             {/* Routes requiring MainLayout */}
             <Route element={<MainLayout />}>

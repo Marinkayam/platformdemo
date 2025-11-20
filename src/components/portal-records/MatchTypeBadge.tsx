@@ -21,7 +21,7 @@ export function MatchTypeBadge({ type }: MatchTypeBadgeProps) {
         <Tooltip>
           <TooltipTrigger asChild>
             <div className="inline-block">
-              <BadgePill label={label} color={color} variant="secondary" />
+              <BadgePill label={label} color={color} variant="primary" />
             </div>
           </TooltipTrigger>
           <TooltipContent>
@@ -33,6 +33,6 @@ export function MatchTypeBadge({ type }: MatchTypeBadgeProps) {
   }
 
   return (
-    <BadgePill label={label} color={color} variant="secondary" />
+    <BadgePill label={label} color={color} variant="primary" />
   );
 }

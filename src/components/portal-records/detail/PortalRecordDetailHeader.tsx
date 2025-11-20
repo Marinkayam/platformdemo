@@ -1,7 +1,6 @@
 
 import { PortalRecord } from "@/types/portalRecord";
-import { MatchTypeBadge } from "../MatchTypeBadge";
-import { ConnectionStatusBadge } from "../ConnectionStatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { PortalRecordActionsMenu } from "./PortalRecordActionsMenu";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
@@ -42,8 +41,7 @@ export function PortalRecordDetailHeader({
                 <div className="text-lg font-semibold text-[#01173E]">
                   {portalRecord.invoiceNumber || portalRecord.portalRecordId}
                 </div>
-                <ConnectionStatusBadge status={portalRecord.connectionStatus} />
-                <MatchTypeBadge type={portalRecord.matchType} />
+                <StatusBadge status={portalRecord.portalStatus} />
               </div>
 
               <PortalRecordActionsMenu
