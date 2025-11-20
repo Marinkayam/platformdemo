@@ -5,6 +5,40 @@ import { getBasicInvoiceData } from "./types";
 export const pendingInvoices: Invoice[] = [
   {
     ...getBasicInvoiceData(
+      "inv-sc-exception-001",
+      "INV-100121309",
+      "Walmart",
+      "2024-12-25",
+      "Pending Action",
+      12500.00,
+      "2024-12-15",
+      "ap@walmart.com"
+    ),
+    assignee: "finance@company.com",
+    subtotal: 12000.00,
+    tax: 500.00,
+    paymentTerms: "Net 30",
+    taxId: "TAX-WALMART-001",
+    poNumber: "PO-2024-001",
+    requesterEmail: "procurement@company.com",
+    hasExceptions: true,
+    rejectedBy: "Monto" as const,
+    invoiceDate: "2024-12-10",
+    netTerms: "Net 30",
+    portal: "Walmart Portal",
+    exceptions: [
+      {
+        id: "exc-smart-conn-001",
+        type: "SMART_CONNECTION_EXCEPTION",
+        message: "User Credentials Exception",
+        details: "Monto cant locate the invitation link in the dedicated email",
+        createdAt: "2024-12-15T09:00:00Z",
+        resolved: false
+      }
+    ]
+  },
+  {
+    ...getBasicInvoiceData(
       "inv-40230612",
       "INV-40230612",
       "Adobe",

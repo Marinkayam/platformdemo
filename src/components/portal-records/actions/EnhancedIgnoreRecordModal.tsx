@@ -157,14 +157,14 @@ export function EnhancedIgnoreRecordModal({
             )}
             <div className="space-y-2">
               <label className="text-sm font-medium text-[#01173E]">Status</label>
-              <div className="flex items-center pt-2">
-                <StatusBadge status={record.portalStatus} />
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-sm text-[#586079]">
+                {record.portalStatus}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 mt-8">
             <Card
               className={`cursor-pointer transition-all ${
                 selectedOption === 'record'

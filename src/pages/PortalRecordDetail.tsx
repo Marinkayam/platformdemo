@@ -13,13 +13,17 @@ import { PortalRecordActionInstructions } from "@/components/portal-records/deta
 import { ConflictResolutionInterface } from "@/components/portal-records/ConflictResolutionInterface";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { NotesThread } from "@/components/invoices/detail/NotesThread";
+import { useNotes } from "@/hooks/useNotes";
 import { toast } from "sonner";
 
 export default function PortalRecordDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("record-data");
-  
+  const { notes, addNote, removeNoteAttachment, scrollRef } = useNotes();
+
   // Modal states
   const [matchModalOpen, setMatchModalOpen] = useState(false);
   const [conflictModalOpen, setConflictModalOpen] = useState(false);
@@ -156,10 +160,33 @@ export default function PortalRecordDetail() {
           )}
         </TabsContent>
 
-        <TabsContent value="activity-log" className="mt-6">
-          <Card className="p-6">
-            <PortalRecordActivityLog portalRecord={portalRecord} />
-          </Card>
+        <TabsContent value="activity" className="">
+          <div className="bg-white rounded-lg">
+            <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-lg border">
+              {/* Timeline Panel */}
+              <ResizablePanel defaultSize={60} minSize={30}>
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Activity Timeline</h3>
+                  <div className="text-center py-12 text-gray-500">
+                    <p className="text-lg">Coming Soon</p>
+                  </div>
+                </div>
+              </ResizablePanel>
+
+              {/* Resizable Handle */}
+              <ResizableHandle withHandle />
+
+              {/* Notes Panel */}
+              <ResizablePanel defaultSize={40} minSize={30}>
+                <NotesThread
+                  notes={notes}
+                  addNote={addNote}
+                  removeNoteAttachment={removeNoteAttachment}
+                  scrollRef={scrollRef}
+                />
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </div>
         </TabsContent>
       </Tabs>
 

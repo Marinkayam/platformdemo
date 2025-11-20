@@ -7,6 +7,7 @@ import { POLineItemsExceptionHandler } from "./POLineItemsExceptionHandler";
 import ExceptionResolutionWizard from "./ExceptionResolutionWizard";
 import ValidationExceptionWizard from "./ValidationExceptionWizard";
 import { ExtraDataExceptionWizard } from "./ExtraDataExceptionWizard";
+import { SmartConnectionException } from "./SmartConnectionException";
 
 interface ExceptionHandlerProps {
   exceptions: Exception[];
@@ -15,21 +16,35 @@ interface ExceptionHandlerProps {
   onWizardResolve: (resolutionData: any) => void;
 }
 
-export function ExceptionHandler({ 
-  exceptions, 
-  onResolveException, 
-  invoice, 
-  onWizardResolve 
+export function ExceptionHandler({
+  exceptions,
+  onResolveException,
+  invoice,
+  onWizardResolve
 }: ExceptionHandlerProps) {
   // Check exception types
+  const isSmartConnectionException = exceptions.some(exception => exception.type === 'SMART_CONNECTION_EXCEPTION');
   const isDuplicateException = exceptions.some(exception => exception.type === 'DUPLICATE_INVOICE');
   const isDataExtractionException = exceptions.some(exception => exception.type === 'MISSING_INFORMATION');
-  const isPOLineItemsException = exceptions.some(exception => 
+  const isPOLineItemsException = exceptions.some(exception =>
     exception.type === 'MISSING_INFORMATION' && exception.missingFields?.includes('poLineItems')
   );
   const isPOException = exceptions.some(exception => exception.type === 'PO_CLOSED' || exception.type === 'PO_INSUFFICIENT_FUNDS' || exception.type === 'PO_VALIDATION');
   const isValidationException = exceptions.some(exception => exception.type === 'VALIDATION_ERROR' || exception.type === 'PO_VALIDATION' || exception.type === 'INVOICE_DATA');
   const isExtraDataException = exceptions.some(exception => exception.type === 'EXTRA_DATA');
+
+  // Use SmartConnectionException for SMART_CONNECTION_EXCEPTION
+  if (isSmartConnectionException && invoice) {
+    const smartConnectionException = exceptions.find(exc => exc.type === 'SMART_CONNECTION_EXCEPTION');
+    if (smartConnectionException) {
+      return (
+        <SmartConnectionException
+          exception={smartConnectionException}
+          portal={invoice.portal}
+        />
+      );
+    }
+  }
 
   // Use the new DuplicateInvoiceHandler for ALL duplicate exceptions
   if (isDuplicateException && invoice) {

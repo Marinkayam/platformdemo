@@ -5,6 +5,7 @@ import { Invoice, LineItem } from "@/types/invoice";
 import { FinancialFields } from "./financial/FinancialFields";
 import { AddressesSection } from "./financial/AddressesSection";
 import { POValidationExceptions } from "./exceptions/POValidationExceptions";
+import { SmartConnectionException } from "./exceptions/SmartConnectionException";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface FinancialDataProps {
@@ -30,8 +31,21 @@ export function FinancialData({
   // "PO-2024-004" - Insufficient funds (TRA too low)
   // "PO-2024-001" - Valid PO (no exceptions)
 
+  // Check for smart connection exception
+  const smartConnectionException = invoice.exceptions?.find(
+    exc => exc.type === 'SMART_CONNECTION_EXCEPTION'
+  );
+
   return (
     <div className="space-y-6">
+      {/* Smart Connection Exception - Display at top */}
+      {smartConnectionException && (
+        <SmartConnectionException
+          exception={smartConnectionException}
+          portal={invoice.portal}
+        />
+      )}
+
       {/* PO Validation Exceptions - Display at top */}
       <POValidationExceptions
         poNumber={poNumber}
