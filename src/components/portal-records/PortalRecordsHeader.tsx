@@ -106,13 +106,16 @@ export function PortalRecordsHeader({
       <div className="space-y-4">
 
         <div className="flex items-center gap-4">
-          <div className="flex-1 min-w-0 overflow-hidden">
-            <PortalRecordsFilters
-              onFilterChange={onFilterChange}
-              needsAttentionCount={needsAttentionCount}
-            />
-          </div>
-          <div className="flex-shrink-0">
+          {/* Show filters only when not searching */}
+          {(!searchValue || searchValue.trim() === "") && (
+            <div className="flex-1 min-w-0 overflow-hidden">
+              <PortalRecordsFilters
+                onFilterChange={onFilterChange}
+                needsAttentionCount={needsAttentionCount}
+              />
+            </div>
+          )}
+          <div className={(!searchValue || searchValue.trim() === "") ? "flex-shrink-0" : "flex-1 flex justify-end"}>
             <PortalRecordsActions
               recordCount={recordCount}
               searchValue={searchValue}

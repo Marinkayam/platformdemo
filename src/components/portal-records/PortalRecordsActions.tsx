@@ -60,37 +60,16 @@ export function PortalRecordsActions({
 
   return (
     <div className="flex items-center gap-2">
-      {/* Search Input */}
-      {forceCompact ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-8 bg-white">
-              <Search className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[250px] p-2">
-            <div className="relative">
-              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search records..."
-                value={searchValue}
-                onChange={(e) => onSearchChange?.(e.target.value)}
-                className="h-8 pl-8"
-              />
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : (
-        <div className="relative w-64">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search records..."
-            value={searchValue}
-            onChange={(e) => onSearchChange?.(e.target.value)}
-            className="h-8 pl-8"
-          />
-        </div>
-      )}
+      {/* Search Input - Visually distinct from filters */}
+      <div className="relative w-64">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <Input
+          placeholder="Search records..."
+          value={searchValue}
+          onChange={(e) => onSearchChange?.(e.target.value)}
+          className="h-9 pl-10 pr-4 bg-gray-50 border-gray-200 focus:bg-white focus:border-primary-main rounded-lg"
+        />
+      </div>
       
       {/* Kebab Menu */}
       <DropdownMenu>

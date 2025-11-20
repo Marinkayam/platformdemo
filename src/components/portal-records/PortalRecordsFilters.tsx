@@ -22,7 +22,7 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
   } = usePortalRecordFiltersState(onFilterChange);
 
   // Filter options (keeping original content)
-  const portalOptions = ["Ariba", "Coupa", "Bill", "Tipalti", "Oracle"];
+  const portalOptions = ["SAP Ariba", "Coupa", "Bill.com", "Tipalti", "Oracle Procurement"];
   const buyerOptions = ["Acme Corporation", "Global Enterprises", "European Partners GmbH", "Tech Solutions Ltd", "Retail Chain Inc", "Manufacturing Co"];
   const statusOptions = ["Approved", "Paid", "Rejected", "Pending"];
   const transactionTypeOptions = ["Invoice", "Credit Note", "Debit Note", "Purchase Order"];

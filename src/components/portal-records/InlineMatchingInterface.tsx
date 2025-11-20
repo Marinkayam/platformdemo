@@ -88,7 +88,12 @@ export function InlineMatchingInterface({
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
-    setHasManualSearch(true);
+    // If user clears the search manually, reset to show suggestions
+    if (value.trim() === "") {
+      setHasManualSearch(false);
+    } else {
+      setHasManualSearch(true);
+    }
   };
 
   const handleClearSearch = () => {
@@ -141,11 +146,11 @@ export function InlineMatchingInterface({
               {/* Portal Filter */}
               <Select value={selectedPortal} onValueChange={setSelectedPortal}>
                 <SelectTrigger className="h-10">
-                  <SelectValue placeholder="Select portal" />
+                  <SelectValue placeholder="All Portals" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="all_portals">All Portals</SelectItem>
                   <SelectItem value={record.portal}>{record.portal}</SelectItem>
-                  <SelectItem value="All Portals">All Portals</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -167,7 +172,7 @@ export function InlineMatchingInterface({
               </Button>
             </div>
 
-            {searchTerm && (
+            {searchTerm && hasManualSearch && (
               <p className="text-xs text-muted-foreground">
                 {filteredInvoices.length > 0
                   ? `Showing ${filteredInvoices.length} invoices from ${selectedPortal} • ${selectedBuyer === "all_buyers" ? "All Buyers" : selectedBuyer}`
