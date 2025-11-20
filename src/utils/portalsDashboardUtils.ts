@@ -34,7 +34,7 @@ export function calculatePortalsDashboardMetrics() {
 
   // Open Invoices
   const openInvoices = allPortalRecords.filter(
-    r => (r.status === "Pending" || r.portalStatus === "Approved by Buyer" || r.portalStatus === "Partially Settled")
+    r => (r.status === "Pending" || r.portalStatus === "Approved by Buyer")
   );
   const openInvoicesCount = openInvoices.length;
   const openInvoicesTotal = openInvoices.reduce((sum: number, r) => {
@@ -49,7 +49,7 @@ export function calculatePortalsDashboardMetrics() {
     if (r.portalStatus === "Rejected by Buyer") return true;
     // Open & past due (if updated or lastSynced is in the past)
     if (
-      (r.status === "Pending" || r.portalStatus === "Approved by Buyer" || r.portalStatus === "Partially Settled") &&
+      (r.status === "Pending" || r.portalStatus === "Approved by Buyer") &&
       r.updated && !isNaN(Date.parse(r.updated)) && new Date(r.updated) < now
     ) {
       return true;

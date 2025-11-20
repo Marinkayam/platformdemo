@@ -38,9 +38,9 @@ export function UploadSection({
   };
 
   return (
-    <div 
-      className={`bg-white p-6 rounded-xl border border-gray-200 flex flex-col items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200 ${
-        selectedAction === 'upload' ? 'ring-2 ring-purple-500 border-purple-500' : ''
+    <div
+      className={`bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col items-center cursor-pointer hover:bg-gray-50 hover:shadow-md transition-all ${
+        selectedAction === 'upload' ? '' : ''
       }`}
       onClick={() => !uploadedFile && !isUploading && document.getElementById('file-input')?.click()}
       onDragOver={handleDragOver}

@@ -31,7 +31,7 @@ export const generatePortalRecordsForInvoice = (invoice: { id: string; number: s
       portalStatus = 'Approved by Buyer';
     } else {
       // Use new portal status values
-      const newStatuses: PortalRecord['portalStatus'][] = ['Approved by Buyer', 'Rejected by Buyer', 'Paid', 'Settled', 'Partially Settled'];
+      const newStatuses: PortalRecord['portalStatus'][] = ['Approved by Buyer', 'Rejected by Buyer', 'Paid'];
       portalStatus = newStatuses[Math.floor(Math.random() * newStatuses.length)];
     }
     

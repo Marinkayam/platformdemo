@@ -35,7 +35,7 @@ export function PurchaseOrderInformation({ purchaseOrder }: PurchaseOrderInforma
           <Input value={purchaseOrder.buyerName || "N/A"} readOnly className="bg-gray-50" />
         </div>
         <div className="space-y-2">
-          <label className="text-sm text-gray-500">Monto Status</label>
+          <label className="text-sm text-gray-500">Status</label>
           <div className="flex items-center h-10 px-3 bg-gray-50 rounded-md border border-input">
             <TooltipProvider>
               {isCancelled ? (

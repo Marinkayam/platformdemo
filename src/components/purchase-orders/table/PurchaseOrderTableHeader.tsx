@@ -47,7 +47,7 @@ export function PurchaseOrderTableHeader({
            <SortButton field="supplier">Buyer Name</SortButton>
          </TableHead>
          <TableHead className="w-[200px] min-w-[200px]">
-           <SortButton field="standardizedStatus">Monto Status</SortButton>
+           <SortButton field="standardizedStatus">Status</SortButton>
          </TableHead>
          <TableHead className="w-[200px] min-w-[200px]">
            <SortButton field="portal">Portal</SortButton>

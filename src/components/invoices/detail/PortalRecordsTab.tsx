@@ -276,7 +276,7 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
                     Portal
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Portal Status
+                    Status
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Match Type
@@ -415,6 +415,23 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                 <FormField label="Portal Invoice Number" value={selectedRecord.invoiceNumber} />
                 <FormField label="Portal" value={selectedRecord.portal} />
+                <div className="space-y-2">
+                  <label className="text-sm text-gray-500">Status</label>
+                  <div className="flex items-center h-10 px-3 bg-gray-50 rounded-md border border-input">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <StatusBadge status={selectedRecord.portalStatus} />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{getStatusTooltip(selectedRecord.portalStatus)}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </div>
                 <div className="space-y-2">
                   <label className="text-sm text-gray-500">Portal Status</label>
                   <div className="flex items-center h-10 px-3 bg-gray-50 rounded-md border border-input">

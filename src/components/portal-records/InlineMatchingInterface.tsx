@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { PortalRecord } from "@/types/portalRecord";
 import { invoiceData } from "@/data/invoices";
 import { InvoiceFilters } from "./actions/match-modal/components/InvoiceFilters";
@@ -13,6 +14,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { UploadSection } from "@/components/invoices/detail/exceptions/extra-data/UploadSection";
+import { toast } from "@/hooks/use-toast";
+import { SelectableCard, SelectableCardContent, SelectableCardField, SelectableCardLabel, SelectableCardValue } from "@/components/ui/selectable-card";
 
 interface InlineMatchingInterfaceProps {
   record: PortalRecord;
@@ -25,6 +29,7 @@ export function InlineMatchingInterface({
   onMatchInvoice,
   onIgnoreRecord
 }: InlineMatchingInterfaceProps) {
+  const navigate = useNavigate();
   const [selectedInvoiceId, setSelectedInvoiceId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPortal, setSelectedPortal] = useState("all_portals");
@@ -35,6 +40,9 @@ export function InlineMatchingInterface({
   const [showMakePrimaryConfirm, setShowMakePrimaryConfirm] = useState(false);
   const [suggestions, setSuggestions] = useState<InvoiceMatch[]>([]);
   const [hasManualSearch, setHasManualSearch] = useState(false);
+  const [showUploadZone, setShowUploadZone] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Generate suggestions when component mounts
   useEffect(() => {
@@ -77,6 +85,50 @@ export function InlineMatchingInterface({
     }
   };
 
+  const handleCreateRTPClick = () => {
+    // Directly trigger file input
+    const fileInput = document.getElementById('rtp-file-upload');
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
+  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      handleFileUpload(file);
+    }
+  };
+
+  const handleFileUpload = (file: File) => {
+    setUploadedFile(file);
+    setIsUploading(true);
+    setUploadProgress(0);
+    setShowUploadZone(true); // Show the upload widget after file is selected
+
+    // Simulate upload progress
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsUploading(false);
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 200);
+
+    console.log('PDF uploaded for RTP creation:', file.name);
+    // Create RTP immediately upon file upload
+    // TODO: Integrate with actual RTP creation logic
+  };
+
+  const handleFileRemoval = () => {
+    setUploadedFile(null);
+    setUploadProgress(0);
+    setIsUploading(false);
+  };
+
   const handleSuggestionSelect = (invoiceId: string) => {
     // Toggle selection - if already selected, unselect
     if (selectedInvoiceId === invoiceId) {
@@ -111,6 +163,15 @@ export function InlineMatchingInterface({
 
   return (
     <>
+      {/* Hidden file input for RTP creation */}
+      <input
+        id="rtp-file-upload"
+        type="file"
+        accept=".pdf"
+        className="hidden"
+        onChange={handleFileInputChange}
+      />
+
       <div className="space-y-6">
         {/* Main Container */}
         <div className="border border-border rounded-lg p-6 bg-background">
@@ -193,43 +254,37 @@ export function InlineMatchingInterface({
                     {suggestions.slice(0, 2).map((match) => {
                       const isSelected = selectedInvoiceId === match.invoice.id;
                       return (
-                        <div key={match.invoice.id} className="space-y-0">
-                          <div
-                            className={`relative p-4 rounded-lg border transition-all shadow-sm cursor-pointer ${
-                              isSelected
-                                ? 'border-primary border-2 bg-white'
-                                : 'border-gray-200 hover:border-primary/30 hover:shadow-md bg-white'
-                            }`}
-                            onClick={() => handleSuggestionSelect(match.invoice.id)}
-                          >
-                            <div className="space-y-3">
-                              {/* Invoice details */}
-                              <div className="space-y-2">
-                                <div>
-                                  <span className="text-xs text-gray-500 font-medium">Invoice Number</span>
-                                  <p className="text-sm font-bold text-gray-900">{match.invoice.number}</p>
-                                </div>
-                                <div>
-                                  <span className="text-xs text-gray-500 font-medium">Buyer</span>
-                                  <p className="text-sm text-gray-700">{match.invoice.buyer}</p>
-                                </div>
-                                <div>
-                                  <span className="text-xs text-gray-500 font-medium">Total Amount</span>
-                                  <p className="text-sm text-gray-700">
-                                    {new Intl.NumberFormat('en-US', {
-                                      style: 'currency',
-                                      currency: match.invoice.currency || 'USD',
-                                    }).format(match.invoice.total)}
-                                  </p>
-                                </div>
-                                <div>
-                                  <span className="text-xs text-gray-500 font-medium">Currency</span>
-                                  <p className="text-sm text-gray-700">{match.invoice.currency || 'USD'}</p>
-                                </div>
-                              </div>
+                        <SelectableCard
+                          key={match.invoice.id}
+                          selected={isSelected}
+                          onSelect={() => handleSuggestionSelect(match.invoice.id)}
+                        >
+                          <SelectableCardContent>
+                            <div className="space-y-2">
+                              <SelectableCardField>
+                                <SelectableCardLabel>Invoice Number</SelectableCardLabel>
+                                <p className="text-sm font-bold text-gray-900">{match.invoice.number}</p>
+                              </SelectableCardField>
+                              <SelectableCardField>
+                                <SelectableCardLabel>Buyer</SelectableCardLabel>
+                                <SelectableCardValue>{match.invoice.buyer}</SelectableCardValue>
+                              </SelectableCardField>
+                              <SelectableCardField>
+                                <SelectableCardLabel>Total Amount</SelectableCardLabel>
+                                <SelectableCardValue>
+                                  {new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: match.invoice.currency || 'USD',
+                                  }).format(match.invoice.total)}
+                                </SelectableCardValue>
+                              </SelectableCardField>
+                              <SelectableCardField>
+                                <SelectableCardLabel>Currency</SelectableCardLabel>
+                                <SelectableCardValue>{match.invoice.currency || 'USD'}</SelectableCardValue>
+                              </SelectableCardField>
                             </div>
-                          </div>
-                        </div>
+                          </SelectableCardContent>
+                        </SelectableCard>
                       );
                     })}
                   </div>
@@ -239,18 +294,31 @@ export function InlineMatchingInterface({
                   </p>
                 )}
 
-                {/* Didn't find an invoice section for suggestions */}
-                <div className="text-center py-6 mt-4">
-                  <p className="text-sm text-muted-foreground">
-                    Didn't find an invoice? Upload an invoice PDF to{" "}
-                    <span
-                      className="text-primary cursor-pointer hover:underline font-medium"
-                      onClick={handleMatchAndCreateRTP}
-                    >
-                      create a new RTP record
-                    </span>
-                  </p>
-                </div>
+                {/* Upload section for creating new RTP */}
+                {!showUploadZone ? (
+                  <div className="text-center py-6 mt-4">
+                    <p className="text-sm text-muted-foreground">
+                      Didn't find an invoice? Upload an invoice PDF to{" "}
+                      <span
+                        className="text-primary cursor-pointer hover:underline font-medium"
+                        onClick={handleCreateRTPClick}
+                      >
+                        create a new RTP record
+                      </span>
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mt-4">
+                    <UploadSection
+                      uploadedFile={uploadedFile}
+                      isUploading={isUploading}
+                      uploadProgress={uploadProgress}
+                      selectedAction="upload"
+                      onFileUpload={handleFileUpload}
+                      onFileRemoval={handleFileRemoval}
+                    />
+                  </div>
+                )}
               </div>
             )}
 
@@ -265,43 +333,37 @@ export function InlineMatchingInterface({
                   {filteredInvoices.slice(0, 2).map((invoice) => {
                     const isSelected = selectedInvoiceId === invoice.id;
                     return (
-                      <div key={invoice.id} className="space-y-0">
-                        <div
-                          className={`relative p-4 rounded-lg border transition-all shadow-sm cursor-pointer ${
-                            isSelected
-                              ? 'border-primary border-2 bg-white'
-                              : 'border-gray-200 hover:border-primary/30 hover:shadow-md bg-white'
-                          }`}
-                          onClick={() => setSelectedInvoiceId(invoice.id)}
-                        >
-                          <div className="space-y-3">
-                            {/* Invoice details */}
-                            <div className="space-y-2">
-                              <div>
-                                <span className="text-xs text-gray-500 font-medium">Invoice Number</span>
-                                <p className="text-sm font-bold text-gray-900">{invoice.number}</p>
-                              </div>
-                              <div>
-                                <span className="text-xs text-gray-500 font-medium">Buyer</span>
-                                <p className="text-sm text-gray-700">{invoice.buyer}</p>
-                              </div>
-                              <div>
-                                <span className="text-xs text-gray-500 font-medium">Total Amount</span>
-                                <p className="text-sm text-gray-700">
-                                  {new Intl.NumberFormat('en-US', {
-                                    style: 'currency',
-                                    currency: invoice.currency || 'USD',
-                                  }).format(invoice.total)}
-                                </p>
-                              </div>
-                              <div>
-                                <span className="text-xs text-gray-500 font-medium">Currency</span>
-                                <p className="text-sm text-gray-700">{invoice.currency || 'USD'}</p>
-                              </div>
-                            </div>
+                      <SelectableCard
+                        key={invoice.id}
+                        selected={isSelected}
+                        onSelect={() => setSelectedInvoiceId(invoice.id)}
+                      >
+                        <SelectableCardContent>
+                          <div className="space-y-2">
+                            <SelectableCardField>
+                              <SelectableCardLabel>Invoice Number</SelectableCardLabel>
+                              <p className="text-sm font-bold text-gray-900">{invoice.number}</p>
+                            </SelectableCardField>
+                            <SelectableCardField>
+                              <SelectableCardLabel>Buyer</SelectableCardLabel>
+                              <SelectableCardValue>{invoice.buyer}</SelectableCardValue>
+                            </SelectableCardField>
+                            <SelectableCardField>
+                              <SelectableCardLabel>Total Amount</SelectableCardLabel>
+                              <SelectableCardValue>
+                                {new Intl.NumberFormat('en-US', {
+                                  style: 'currency',
+                                  currency: invoice.currency || 'USD',
+                                }).format(invoice.total)}
+                              </SelectableCardValue>
+                            </SelectableCardField>
+                            <SelectableCardField>
+                              <SelectableCardLabel>Currency</SelectableCardLabel>
+                              <SelectableCardValue>{invoice.currency || 'USD'}</SelectableCardValue>
+                            </SelectableCardField>
                           </div>
-                        </div>
-                      </div>
+                        </SelectableCardContent>
+                      </SelectableCard>
                     );
                   })}
                 </div>
@@ -310,20 +372,30 @@ export function InlineMatchingInterface({
 
             {/* Show upload section when search has no results */}
             {showUploadSection && (
-              <div className="text-center py-6 mt-4">
-                <p className="text-sm text-muted-foreground">
-                  Didn't find an invoice? Upload an invoice PDF to{" "}
-                  <span
-                    className="text-primary cursor-pointer hover:underline font-medium"
-                    onClick={() => {
-                      // You can add RTP creation logic here or navigate to RTP creation
-                      console.log('Create RTP clicked');
-                    }}
-                  >
-                    create a new RTP record
-                  </span>
-                </p>
-              </div>
+              !showUploadZone ? (
+                <div className="text-center py-6 mt-4">
+                  <p className="text-sm text-muted-foreground">
+                    Didn't find an invoice? Upload an invoice PDF to{" "}
+                    <span
+                      className="text-primary cursor-pointer hover:underline font-medium"
+                      onClick={handleCreateRTPClick}
+                    >
+                      create a new RTP record
+                    </span>
+                  </p>
+                </div>
+              ) : (
+                <div className="mt-4">
+                  <UploadSection
+                    uploadedFile={uploadedFile}
+                    isUploading={isUploading}
+                    uploadProgress={uploadProgress}
+                    selectedAction="upload"
+                    onFileUpload={handleFileUpload}
+                    onFileRemoval={handleFileRemoval}
+                  />
+                </div>
+              )
             )}
 
 
@@ -340,28 +412,38 @@ export function InlineMatchingInterface({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        onClick={() => setConfirmationModalOpen(true)}
-                        disabled={!selectedInvoiceId}
+                        onClick={() => {
+                          if (uploadedFile) {
+                            // Show toast for RTP creation
+                            toast({
+                              title: "RTP Created Successfully",
+                              description: `New RTP record has been created from ${uploadedFile.name}`,
+                            });
+                            // Navigate to Portal Records after a short delay
+                            setTimeout(() => {
+                              navigate("/portal-records");
+                            }, 1500);
+                          } else {
+                            // Show confirmation modal for invoice association
+                            setConfirmationModalOpen(true);
+                          }
+                        }}
+                        disabled={!selectedInvoiceId && !uploadedFile}
                         className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        Associate Invoice
+                        {uploadedFile ? "Confirm RTP" : "Associate Invoice"}
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-sm p-3">
                       <p className="text-sm">
-                        Portal records need to be associated with invoices to enable automatic matching, proper payment processing, and complete audit trails in your ERP system.
+                        {uploadedFile
+                          ? "Create a new RTP record from the uploaded PDF file."
+                          : "Portal records need to be associated with invoices to enable automatic matching, proper payment processing, and complete audit trails in your ERP system."
+                        }
                       </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                {uploadedFile && (
-                  <Button
-                    onClick={handleMatchAndCreateRTP}
-                    className="bg-primary hover:bg-primary/90"
-                  >
-                    Create RTP Record
-                  </Button>
-                )}
               </div>
             </div>
           </div>

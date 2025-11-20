@@ -39,8 +39,8 @@ export function SmartConnectionException({ exception, portal }: SmartConnectionE
 
         <div className="space-y-6">
           {/* Smart Connection Exceptions Section */}
-          <div className="space-y-4">
-            <div className="pb-2">
+          <div className="space-y-6">
+            <div>
               <h3 className="text-sm font-medium text-gray-900">Smart connection Exception</h3>
             </div>
             <div className="space-y-3">
@@ -54,25 +54,23 @@ export function SmartConnectionException({ exception, portal }: SmartConnectionE
             </div>
 
             {/* Action Section */}
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-start gap-3">
-                  <WandSparkles className="mt-0.5 flex-shrink-0 text-purple-600" size={16} />
-                  <div>
-                    <p className="text-sm text-gray-600">
-                      To resolve this exception, edit the details on the Smart Connections page. The RTP exception will be cleared automatically.
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleNavigateToSmartConnections}
-                  className="flex-shrink-0 border-purple-300 hover:bg-purple-100"
-                >
-                  Resolve by Editing SC
-                </Button>
+            <div className="flex items-start gap-3">
+              <WandSparkles className="mt-0.5 flex-shrink-0 text-purple-600" size={16} />
+              <div>
+                <p className="text-sm text-gray-600">
+                  To resolve this exception, edit the details on the Smart Connections page. The RTP exception will be cleared automatically.
+                </p>
               </div>
+            </div>
+
+            <div className="flex justify-end">
+              <Button
+                size="sm"
+                onClick={handleNavigateToSmartConnections}
+                className="bg-primary hover:bg-primary/90 text-white"
+              >
+                Resolve by Editing Agent
+              </Button>
             </div>
           </div>
         </div>
