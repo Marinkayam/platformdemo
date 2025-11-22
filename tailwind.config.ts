@@ -97,8 +97,7 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
-				// Status Colors for Badges
+				},
 				'status-success': 'hsl(var(--status-success))',
 				'status-success-bg': 'hsl(var(--status-success-bg))',
 				'status-error': 'hsl(var(--status-error))',
