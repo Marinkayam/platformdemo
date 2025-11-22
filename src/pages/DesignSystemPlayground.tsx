@@ -30,6 +30,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp";
+import { ThemeExportDialog } from "@/components/theme/ThemeExportDialog";
 import { 
   Palette,
   Type,
@@ -98,7 +99,8 @@ import {
   Link,
   Key,
   Edit,
-  EyeOff
+  EyeOff,
+  Download
 } from 'lucide-react';
 import { MontoLogo } from "@/components/MontoLogo";
 import MontoIcon from "@/components/MontoIcon";
@@ -185,6 +187,7 @@ const TypographyExample = ({ variant, example, className }: { variant: string; e
 
 export default function DesignSystemPlayground() {
   const [activeSection, setActiveSection] = useState("home");
+  const [themeExportOpen, setThemeExportOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -5130,11 +5133,23 @@ function AddPortal() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <div className="w-64 flex-shrink-0 border-r bg-white">
-        <div className="p-4 flex items-center">
-          <MontoLogo className="h-6" />
-        </div>
+    <>
+      <ThemeExportDialog open={themeExportOpen} onOpenChange={setThemeExportOpen} />
+      
+      <div className="flex h-screen bg-gray-50">
+        <div className="w-64 flex-shrink-0 border-r bg-white">
+          <div className="p-4 flex items-center justify-between">
+            <MontoLogo className="h-6" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setThemeExportOpen(true)}
+              className="gap-2"
+            >
+              <Download size={14} />
+              Export
+            </Button>
+          </div>
         <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100%-72px)]">
           {sidebarItems.map((item) => (
             <button
@@ -5173,6 +5188,7 @@ function AddPortal() {
           {renderSection()}
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
