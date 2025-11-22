@@ -19,8 +19,9 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Studio Feixen Sans', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-				mono: ['Studio Feixen Sans', 'Inter', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace']
+				sans: ['var(--font-body)', 'Studio Feixen Sans', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				mono: ['var(--font-mono)', 'Studio Feixen Sans', 'Inter', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace'],
+				heading: ['var(--font-heading)', 'Studio Feixen Sans', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
 			},
 			colors: {
 				'primary-lighter': '#EFEBFF',
@@ -97,38 +98,90 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+				// Status Colors for Badges
+				'status-success': 'hsl(var(--status-success))',
+				'status-success-bg': 'hsl(var(--status-success-bg))',
+				'status-error': 'hsl(var(--status-error))',
+				'status-error-bg': 'hsl(var(--status-error-bg))',
+				'status-warning': 'hsl(var(--status-warning))',
+				'status-warning-bg': 'hsl(var(--status-warning-bg))',
+				'status-info': 'hsl(var(--status-info))',
+				'status-info-bg': 'hsl(var(--status-info-bg))',
+				'status-neutral': 'hsl(var(--status-neutral))',
+				'status-neutral-bg': 'hsl(var(--status-neutral-bg))',
+				'status-processing': 'hsl(var(--status-processing))',
+				'status-processing-bg': 'hsl(var(--status-processing-bg))'
 			},
 			fontSize: {
-				'overline': ['0.625rem', { 'lineHeight': '1.2' }],
-				'small-text': ['0.6875rem', { 'lineHeight': '1.25' }]
+				'xs': ['var(--text-xs)', { lineHeight: '1.5' }],
+				'sm': ['var(--text-sm)', { lineHeight: '1.5' }],
+				'base': ['var(--text-base)', { lineHeight: '1.5' }],
+				'lg': ['var(--text-lg)', { lineHeight: '1.5' }],
+				'xl': ['var(--text-xl)', { lineHeight: '1.5' }],
+				'2xl': ['var(--text-2xl)', { lineHeight: '1.3' }],
+				'3xl': ['var(--text-3xl)', { lineHeight: '1.3' }],
+				'4xl': ['var(--text-4xl)', { lineHeight: '1.2' }],
+				'5xl': ['var(--text-5xl)', { lineHeight: '1.2' }],
+				'6xl': ['var(--text-6xl)', { lineHeight: '1.1' }],
+				'overline': ['0.625rem', { lineHeight: '1.2' }],
+				'small-text': ['0.6875rem', { lineHeight: '1.25' }]
+			},
+			fontWeight: {
+				light: 'var(--font-light)',
+				normal: 'var(--font-normal)',
+				medium: 'var(--font-medium)',
+				semibold: 'var(--font-semibold)',
+				bold: 'var(--font-bold)'
+			},
+			lineHeight: {
+				tight: 'var(--leading-tight)',
+				normal: 'var(--leading-normal)',
+				relaxed: 'var(--leading-relaxed)'
 			},
 			borderRadius: {
-				'xs': '0.125rem',
-				'sm': '0.25rem',
-				'DEFAULT': '0.375rem',
-				'lg': '0.5rem',
-				'xl': '0.75rem',
-				'2xl': '1rem',
+				'xs': 'var(--radius-xs)',
+				'sm': 'var(--radius-sm)',
+				'DEFAULT': 'var(--radius)',
+				'md': 'var(--radius-md)',
+				'lg': 'var(--radius-lg)',
+				'xl': 'var(--radius-xl)',
+				'2xl': 'var(--radius-2xl)',
 				'3xl': '1.5rem',
-				'full': '9999px',
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				'full': 'var(--radius-full)'
 			},
 			spacing: {
-				'1': '0.25rem',
-				'2': '0.5rem',
-				'4': '1rem',
-				'6': '1.5rem',
-				'8': '2rem',
-				'10': '2.5rem',
-				'12': '3rem',
-				'16': '4rem',
-				'20': '5rem',
-				'24': '6rem'
+				'0': 'var(--space-0)',
+				'1': 'var(--space-1)',
+				'2': 'var(--space-2)',
+				'3': 'var(--space-3)',
+				'4': 'var(--space-4)',
+				'5': 'var(--space-5)',
+				'6': 'var(--space-6)',
+				'8': 'var(--space-8)',
+				'10': 'var(--space-10)',
+				'12': 'var(--space-12)',
+				'16': 'var(--space-16)',
+				'20': 'var(--space-20)',
+				'24': 'var(--space-24)'
 			},
 			boxShadow: {
-				'none': 'none'
+				'none': 'none',
+				'sm': 'var(--shadow-sm)',
+				'DEFAULT': 'var(--shadow)',
+				'md': 'var(--shadow-md)',
+				'lg': 'var(--shadow-lg)',
+				'xl': 'var(--shadow-xl)',
+				'2xl': 'var(--shadow-2xl)'
+			},
+			transitionTimingFunction: {
+				'in': 'var(--ease-in)',
+				'out': 'var(--ease-out)',
+				'in-out': 'var(--ease-in-out)'
+			},
+			transitionDuration: {
+				'fast': 'var(--duration-fast)',
+				'normal': 'var(--duration-normal)',
+				'slow': 'var(--duration-slow)'
 			},
 			keyframes: {
 				'accordion-down': {
