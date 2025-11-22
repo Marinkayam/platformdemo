@@ -102,8 +102,6 @@ export function PortalRecordsTab({ invoiceId }: PortalRecordsTabProps) {
       'Approved by Buyer': 'The invoice has been reviewed and approved by the buyer in the portal',
       'Rejected by Buyer': 'The invoice has been rejected by the buyer and requires attention',
       'Paid': 'The invoice has been marked as paid in the buyer portal',
-      'Settled': 'The payment has been completed and settled',
-      'Partially Settled': 'The invoice has been partially paid, with remaining balance due',
       'Pending Approval': 'The invoice is awaiting buyer approval in the portal'
     };
     return tooltips[status] || 'Portal status of the invoice';
