@@ -60,16 +60,39 @@ export function ExceptionBanners() {
     );
   }
 
-  // For other invoices, show only Missing Data exception
+  // For other invoices, show both Smart Connection and Missing Data exceptions
   return (
     <>
-      <ExceptionBanner
-        variant="error"
+      <ExceptionBanner 
+        variant="error" 
+        icon="alert"
+        title="Smart Connection"
+      >
+        Portal scan agent credentials are missing: Resolve the exception by updating the scan agent details{" "}
+        <button 
+          onClick={handleConnectionHubClick}
+          className="text-primary underline hover:text-primary/80 cursor-pointer"
+        >
+          here
+        </button>
+      </ExceptionBanner>
+
+      <ExceptionBanner 
+        variant="error" 
         icon="alert"
         title="Missing Data"
       >
         Required information is missing from the invoice's additional data: Invoice Date, Customer Name
       </ExceptionBanner>
+
+      <PortalUser
+        isOpen={showAgentModal}
+        onClose={() => setShowAgentModal(false)}
+        portalUser={mockPortalUser}
+        onEditPortalUser={() => {
+          // Handle edit logic here
+        }}
+      />
     </>
   );
 }

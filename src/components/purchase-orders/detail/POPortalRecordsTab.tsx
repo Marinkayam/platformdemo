@@ -159,7 +159,7 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
                     Portal Invoice Number
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Status
+                    Monto Status
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
                     Total Amount
@@ -249,7 +249,7 @@ export function POPortalRecordsTab({ poNumber }: POPortalRecordsTabProps) {
               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                 <FormField label="Portal Invoice Number" value={selectedRecord.invoiceNumber} />
                 <div className="space-y-2">
-                  <label className="text-sm text-gray-500">Status</label>
+                  <label className="text-sm text-gray-500">Monto Status</label>
                   <div className="flex items-center h-10 px-3 bg-gray-50 rounded-md border border-input">
                     <StatusBadge status={selectedRecord.portalStatus} />
                   </div>

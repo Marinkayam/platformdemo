@@ -95,10 +95,10 @@ export function PortalRecordsTable({ records, isLoading = false, activeTab }: Po
             <TableHeader>
               <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
                 {columns.map((column, index) => {
-                  // Remove bg-white from the className for headers and get only necessary classes
-                  const headerClassName = column.className?.replace('bg-white', '').replace('sticky', '').replace('left-0', '').replace('z-10', '') || '';
+                  // Remove bg-white from the className for headers
+                  const headerClassName = column.className?.replace('bg-white', '') || '';
                   return (
-                    <TableHead key={index} className={`h-[50px] px-4 align-middle font-semibold text-gray-700 text-sm ${index === 0 ? '!bg-[rgb(246,247,249)] sticky left-0 z-10 border-r border-gray-200 text-left' : '!bg-[#F6F7F9]'} ${headerClassName}`}>
+                    <TableHead key={index} className={`h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm ${index === 0 ? 'bg-[rgb(246,247,249)] sticky left-0 z-10 border-r border-gray-200' : 'bg-[#F6F7F9]'} ${headerClassName}`}>
                       {column.label}
                     </TableHead>
                   );

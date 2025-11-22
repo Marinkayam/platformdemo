@@ -64,7 +64,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      },
      {
        key: 'portalStatus',
-       label: 'Status',
+       label: 'Monto Status',
        className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <PortalStatusColumn record={record} />
@@ -150,7 +150,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
     {
       key: 'actions',
       label: 'Actions',
-      className: 'text-right w-auto',
+      className: 'text-right w-[200px] min-w-[200px]',
       render: (record: PortalRecord) => (
         <ActionsColumn
           record={record}

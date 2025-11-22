@@ -71,13 +71,13 @@ export function ExceptionBanner({
           className={cn("mt-0.5 flex-shrink-0", styles.icon)} 
           size={14} 
         />
-        <div className="flex-1 space-y-1">
+        <div className="flex-1">
           {title && (
-            <div className={cn("font-medium", styles.title)} style={variant === 'error' ? { color: styles.textColor } : undefined}>
-              {title}
-            </div>
+            <span className={cn("font-medium", styles.title)} style={variant === 'error' ? { color: styles.textColor } : undefined}>
+              {title}:{" "}
+            </span>
           )}
-          {children && <div>{children}</div>}
+          <span>{children}</span>
         </div>
       </div>
     </div>

@@ -249,8 +249,8 @@ const ValidationExceptionWizard = ({
         <div className="space-y-6">
           {/* PO Exceptions Section */}
           {poExceptions.length > 0 && (
-            <div className="space-y-6">
-              <div>
+            <div className="space-y-4">
+              <div className="pb-2">
                 <h3 className="text-sm font-medium text-gray-900">PO Exceptions</h3>
               </div>
               <div className="space-y-3">
@@ -294,8 +294,8 @@ const ValidationExceptionWizard = ({
 
           {/* Invoice Data Exceptions Section */}
           {invoiceDataExceptions.length > 0 && (
-            <div className="space-y-6">
-              <div>
+            <div className="space-y-4">
+              <div className="pb-2">
                 <h3 className="text-sm font-medium text-gray-900">Invoice Data</h3>
               </div>
               <div className="space-y-3">
@@ -314,7 +314,7 @@ const ValidationExceptionWizard = ({
 
           {/* Other Exceptions Section */}
           {otherExceptions.length > 0 && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="space-y-3">
                 {otherExceptions.map((exception) => (
                   <ExceptionBanner

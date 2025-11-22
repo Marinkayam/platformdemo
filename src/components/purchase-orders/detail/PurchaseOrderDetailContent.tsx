@@ -25,7 +25,7 @@ export function PurchaseOrderDetailContent({ purchaseOrder }: PurchaseOrderDetai
     });
   };
 
-  // Status mapping for Status
+  // Status mapping for Monto Status
   const statusMap: Record<string, string> = {
     'approved': 'Open',
     'completed': 'Closed',
@@ -65,7 +65,7 @@ export function PurchaseOrderDetailContent({ purchaseOrder }: PurchaseOrderDetai
               </div>
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-600">Status</label>
+              <label className="text-sm font-medium text-gray-600">Monto Status</label>
               <div className="mt-1">
                 <StatusBadge status={getStandardizedStatus(purchaseOrder.status)} className="whitespace-nowrap flex-shrink-0" />
               </div>
