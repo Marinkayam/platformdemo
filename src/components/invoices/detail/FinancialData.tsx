@@ -76,13 +76,16 @@ export function FinancialData({
       </div>
 
       <FinancialFields
-        vatId="77-0105228"
-        invoiceNumber="26-INV-2000-1479"
-        invoiceDate="April 25, 2025"
-        amountDue="$738,313.77 USD"
-        terms="Net 90"
-        dueDate="July 24, 2025"
+        invoiceNumber={invoice.number}
         poNumber={poNumber}
+        invoiceDate={invoice.invoiceDate || "2024-01-22"}
+        dueDate={invoice.dueDate || "2024-01-29"}
+        paymentTerms={invoice.netTerms || "Net 7"}
+        currency={invoice.currency || "USD"}
+        taxTotal={invoice.taxTotal ? `$${invoice.taxTotal.toLocaleString()}` : "$1,320.00"}
+        subTotal={invoice.subtotal ? `$${invoice.subtotal.toLocaleString()}` : "$203,691.64"}
+        totalAmount={`$${invoice.total.toLocaleString()}`}
+        amountPaid={invoice.amountPaid ? `$${invoice.amountPaid.toLocaleString()}` : "$205,011.64"}
       />
 
       <AddressesSection />
