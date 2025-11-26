@@ -84,10 +84,10 @@ export function FinancialData({
         dueDate={invoice.dueDate || "2024-01-29"}
         paymentTerms={invoice.netTerms || "Net 7"}
         currency={invoice.currency || "USD"}
-        taxTotal={invoice.taxTotal ? `$${invoice.taxTotal.toLocaleString()}` : "$1,320.00"}
+        taxTotal={invoice.tax ? `$${invoice.tax.toLocaleString()}` : "$1,320.00"}
         subTotal={invoice.subtotal ? `$${invoice.subtotal.toLocaleString()}` : "$203,691.64"}
         totalAmount={`$${invoice.total.toLocaleString()}`}
-        amountPaid={invoice.amountPaid ? `$${invoice.amountPaid.toLocaleString()}` : "$205,011.64"}
+        amountPaid="$205,011.64"
       />
 
       <AddressesSection />
