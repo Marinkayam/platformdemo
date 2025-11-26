@@ -28,24 +28,24 @@ export function LineItemsSection({ lineItems }: LineItemsSectionProps) {
       <div className={lineItemsOpen ? "block pt-4" : "hidden"}>
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Description</TableHead>
-              <TableHead className="text-right">Quantity</TableHead>
-              <TableHead className="text-right">Unit Price</TableHead>
-              <TableHead className="text-right">Total</TableHead>
+            <TableRow className="h-10">
+              <TableHead className="h-10">Description</TableHead>
+              <TableHead className="text-right h-10">Quantity</TableHead>
+              <TableHead className="text-right h-10">Unit Price</TableHead>
+              <TableHead className="text-right h-10">Total</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {lineItems.map(item => (
-              <TableRow key={item.id}>
-                <TableCell>{item.description}</TableCell>
-                <TableCell className="text-right">{item.quantity}</TableCell>
-                <TableCell className="text-right">
+              <TableRow key={item.id} className="h-12">
+                <TableCell className="h-12 py-2">{item.description}</TableCell>
+                <TableCell className="text-right h-12 py-2">{item.quantity}</TableCell>
+                <TableCell className="text-right h-12 py-2">
                   ${item.unitPrice.toLocaleString('en-US', {
                     minimumFractionDigits: 2
                   })}
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right h-12 py-2">
                   ${item.total.toLocaleString('en-US', {
                     minimumFractionDigits: 2
                   })}
