@@ -67,7 +67,7 @@ export function FinancialData({
             <TooltipTrigger asChild>
               <div className="flex items-center gap-1 cursor-help">
                 <Sparkles className="h-3 w-3 text-primary-main" />
-                <p className="text-sm text-primary-main font-light">Extracted with monto ai</p>
+                <p className="text-sm text-primary-main font-light">Ai</p>
               </div>
             </TooltipTrigger>
             <TooltipContent>
