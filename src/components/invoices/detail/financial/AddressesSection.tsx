@@ -8,10 +8,10 @@ import { cn } from "@/lib/utils";
 
 export function AddressesSection() {
   const [addressesOpen, setAddressesOpen] = useState(false);
-  
+
   return (
     <div className="border-t pt-4">
-      <button 
+      <button
         onClick={() => setAddressesOpen(!addressesOpen)}
         className="w-full flex items-center justify-between py-2 text-left font-medium"
       >
@@ -22,12 +22,12 @@ export function AddressesSection() {
           <ChevronDown className="h-4 w-4" />
         )}
       </button>
-      
+
       <div className={cn("pt-8 space-y-8",
         addressesOpen ? "block" : "hidden")}>
 
         <div className="space-y-4">
-          <Label className="text-sm font-medium text-gray-700">Bill To / Ship To</Label>
+          <Label className="text-sm font-medium text-gray-700">Bill to:</Label>
           <div className="space-y-3">
             <Input
               value="Bristol Myers Squibb Co"
@@ -43,48 +43,6 @@ export function AddressesSection() {
               value="Lawrence Township, NJ 08540, USA"
               readOnly
               className="bg-gray-50 text-sm"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <Label className="text-sm font-medium text-gray-700">Remit To</Label>
-          <div className="space-y-3">
-            <Input
-              value="Lockbox 15979"
-              readOnly
-              className="bg-gray-50 text-sm"
-            />
-            <Input
-              value="Collection Center Dr."
-              readOnly
-              className="bg-gray-50 text-sm"
-            />
-            <Input
-              value="Chicago, IL 60693, USA"
-              readOnly
-              className="bg-gray-50 text-sm"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <Label className="text-sm font-medium text-gray-700">Bank Information</Label>
-          <div className="space-y-3">
-            <Input
-              value="Bank of America"
-              readOnly
-              className="bg-gray-50 text-sm"
-            />
-            <Input
-              value="New York, NY"
-              readOnly
-              className="bg-gray-50 text-sm"
-            />
-            <Input
-              value=""
-              readOnly
-              className="bg-gray-50 text-sm opacity-0"
             />
           </div>
         </div>

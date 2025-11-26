@@ -4,6 +4,7 @@ import { Sparkles } from "lucide-react";
 import { Invoice, LineItem } from "@/types/invoice";
 import { FinancialFields } from "./financial/FinancialFields";
 import { AddressesSection } from "./financial/AddressesSection";
+import { LineItemsSection } from "./financial/LineItemsSection";
 import { POValidationExceptions } from "./exceptions/POValidationExceptions";
 import { SmartConnectionException } from "./exceptions/SmartConnectionException";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -14,7 +15,8 @@ interface FinancialDataProps {
 }
 
 export function FinancialData({
-  invoice
+  invoice,
+  lineItems
 }: FinancialDataProps) {
   // State for PO number - use invoice's actual PO number
   const [poNumber, setPONumber] = useState(invoice.poNumber || "");
@@ -89,6 +91,8 @@ export function FinancialData({
       />
 
       <AddressesSection />
+
+      <LineItemsSection lineItems={lineItems} />
     </div>
   );
 }
