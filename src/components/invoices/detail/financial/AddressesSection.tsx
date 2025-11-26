@@ -15,7 +15,7 @@ export function AddressesSection() {
         onClick={() => setAddressesOpen(!addressesOpen)}
         className="w-full flex items-center justify-between py-2 text-left font-medium"
       >
-        <span>Addresses & Banking Information</span>
+        <span>Buyer Address</span>
         {addressesOpen ? (
           <ChevronUp className="h-4 w-4" />
         ) : (
@@ -27,13 +27,14 @@ export function AddressesSection() {
         addressesOpen ? "block" : "hidden")}>
 
         <div className="space-y-4">
-          <Label className="text-sm font-medium text-gray-700">Bill to:</Label>
+          <Label className="text-sm font-medium text-gray-700">Buyer Name:</Label>
+          <Input
+            value="Bristol Myers Squibb Co"
+            readOnly
+            className="bg-gray-50 text-sm"
+          />
+          <Label className="text-sm font-medium text-gray-700 mt-4 block">Address:</Label>
           <div className="space-y-3">
-            <Input
-              value="Bristol Myers Squibb Co"
-              readOnly
-              className="bg-gray-50 text-sm"
-            />
             <Input
               value="Route 206 & Province Line Road"
               readOnly
