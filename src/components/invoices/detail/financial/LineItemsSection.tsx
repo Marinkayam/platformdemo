@@ -26,6 +26,7 @@ export function LineItemsSection({ lineItems }: LineItemsSectionProps) {
       </button>
       
       <div className={lineItemsOpen ? "block pt-4" : "hidden"}>
+        <p className="text-xs text-muted-foreground mb-3">Extracted with monto ai - Write Ai</p>
         <Table>
           <TableHeader>
             <TableRow className="h-10">
