@@ -51,19 +51,19 @@ export function PortalRecordInformation({ portalRecord, showCollapsed = false }:
       </div>
 
       {/* Always visible key information - collapsed view shows only Issue Date, Total Amount, Portal Status, PO Number */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
         <FormField label="Issue Date" value={portalRecord.issueDate || "N/A"} />
         <FormField label="Total Amount" value={formatCurrency(portalRecord.total)} />
         <FormField label="Portal Status" value={portalRecord.portalStatus || "N/A"} />
         <FormField label="PO Number" value={portalRecord.poNumber || "N/A"} />
+        <FormField label="Currency" value={portalRecord.currency} />
+        <FormField label="Due Date" value={portalRecord.dueDate || "N/A"} />
       </div>
 
       {/* Collapsible additional details - remaining fields in priority order */}
       <div>
         {(!showCollapsed || isExpanded) && (
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-            <FormField label="Currency" value={portalRecord.currency} />
-            <FormField label="Due Date" value={portalRecord.dueDate || "N/A"} />
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
             <FormField label="Payment Terms" value={portalRecord.paymentTerms || portalRecord.netTerms || 'N/A'} />
             <FormField label="Sub-total" value={formatCurrency(portalRecord.subtotal || portalRecord.total)} />
             <FormField label="Tax Total" value={formatCurrency(portalRecord.taxTotal || 0)} />

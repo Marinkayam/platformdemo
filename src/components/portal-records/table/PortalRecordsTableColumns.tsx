@@ -48,23 +48,15 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
      },
      {
        key: 'buyer',
-       label: 'Buyer',
+       label: 'Portal Buyer Name',
        className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.buyer}</span>
        )
      },
      {
-       key: 'supplierName',
-       label: 'Supplier',
-       className: 'w-[200px] min-w-[200px]',
-       render: (record: PortalRecord) => (
-         <span className="text-sm text-gray-900 truncate">{record.supplierName}</span>
-       )
-     },
-     {
        key: 'portalStatus',
-       label: 'Monto Status',
+       label: 'Status',
        className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
          <PortalStatusColumn record={record} />
@@ -78,6 +70,14 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
          <span className="text-sm font-medium text-gray-900">
            {formatCurrency(record.total, record.currency)}
          </span>
+       )
+     },
+     {
+       key: 'currency',
+       label: 'Currency',
+       className: 'w-[120px] min-w-[120px]',
+       render: (record: PortalRecord) => (
+         <span className="text-sm text-gray-900">{record.currency}</span>
        )
      },
      {
@@ -97,11 +97,11 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
        )
      },
      {
-       key: 'dueDate',
-       label: 'Due Date',
+       key: 'paymentTerms',
+       label: 'PO Payment Terms',
        className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
-         <span className="text-sm text-gray-900 truncate">{record.dueDate || 'N/A'}</span>
+         <span className="text-sm text-gray-900 truncate">{record.paymentTerms || 'N/A'}</span>
        )
      },
      {
@@ -111,27 +111,6 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
        render: (record: PortalRecord) => (
          <span className="text-sm text-gray-900 truncate">{record.netTerms || 'N/A'}</span>
        )
-     },
-     {
-       key: 'promiseToPay',
-       label: 'Promise to Pay',
-       className: 'w-[200px] min-w-[200px]',
-        render: (record: PortalRecord) => {
-          const toTime = (s?: string) => (s ? new Date(s).getTime() : NaN);
-          const dueT = toTime(record.dueDate);
-          const ptpT = toTime(record.promiseToPay);
-          let value: string = 'N/A';
-          if (!isNaN(dueT) && !isNaN(ptpT)) {
-            value = ptpT >= dueT ? record.promiseToPay! : record.dueDate!;
-          } else if (!isNaN(ptpT)) {
-            value = record.promiseToPay!;
-          } else if (!isNaN(dueT)) {
-            value = record.dueDate!;
-          }
-          return (
-            <span className="text-sm text-gray-900 truncate">{value}</span>
-          );
-        }
      }
      ];
 

@@ -110,6 +110,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { formatCurrency, getPortalLogoUrl, formatOwnerName } from "@/lib/utils";
 import { TabsNav } from "@/components/common/TabsNav";
 import { WizardProgress } from "@/components/ui/wizard-progress";
+import { ExceptionPatternsShowcase } from "@/components/design-system/ExceptionPatternsShowcase";
+import { TableSystemShowcase } from "@/components/design-system/TableSystemShowcase";
 
 interface SidebarItem {
   id: string;
@@ -130,6 +132,7 @@ const sidebarItems: SidebarItem[] = [
   { id: "form-elements", label: "Form Elements", icon: <Settings size={18} /> },
   { id: "layout-components", label: "Layout Components", icon: <Layout size={18} /> },
   { id: "alerts", label: "Alerts", icon: <AlertCircle size={18} /> },
+  { id: "exception-patterns", label: "Exception Patterns", icon: <TriangleAlert size={18} /> },
   { id: "progress", label: "Progress", icon: <BarChart3 size={18} /> },
   { id: "modals", label: "Modals", icon: <Layers size={18} /> },
   { id: "toast-notifications", label: "Toast Notifications", icon: <Bell size={18} /> },
@@ -5099,13 +5102,15 @@ function AddPortal() {
       case "layout-patterns":
         return renderLayoutPatterns();
       case "table-system":
-        return renderTableSystem();
+        return <TableSystemShowcase />;
       case "form-elements":
         return renderFormElements();
       case "layout-components":
         return renderLayoutComponents();
       case "alerts":
         return renderAlerts();
+      case "exception-patterns":
+        return <ExceptionPatternsShowcase />;
       case "progress":
         return renderProgress();
       case "modals":

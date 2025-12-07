@@ -53,30 +53,30 @@ export function Sidebar({
       
       <div className="flex-1 py-4 overflow-y-auto bg-[F8FAFC] bg-white rounded-none">
         <nav className="px-2 space-y-1">
-          <SidebarItem href="/dashboard" icon={<LayoutDashboard size={18} />} label="Dashboard" active={pathname === "/dashboard"} />
-          
+          <SidebarItem href="/dashboard" icon={<LayoutDashboard className="w-5 h-5" />} label="Dashboard" active={pathname === "/dashboard"} />
+
           <div className="pt-2">
-            <SidebarItem href="/invoices" icon={<FileText size={18} />} label="Request-to-Pay" active={pathname.includes("/invoices")} />
+            <SidebarItem href="/invoices" icon={<FileText className="w-5 h-5" />} label="Request-to-Pay" active={pathname.includes("/invoices")} />
             <div className="mt-1 space-y-1">
               <SidebarSubItem href="/invoices?status=pending" label="Pending Actions" active={pathname === "/invoices" && window.location.search.includes("pending")} />
               <SidebarSubItem href="/invoices?status=overdue" label="Overdue" active={pathname === "/invoices" && window.location.search.includes("overdue")} />
               <SidebarSubItem href="/invoices?status=settled" label="Settled" active={pathname === "/invoices" && window.location.search.includes("settled")} />
             </div>
           </div>
-          
-          <SidebarItem href="/portal-management" icon={<Globe size={18} />} label="Portal Management" active={pathname === "/portal-management"} />
-          
+
+          <SidebarItem href="/portal-management" icon={<Globe className="w-5 h-5" />} label="Portal Management" active={pathname === "/portal-management"} />
+
           <div className="pt-2">
-            <SidebarItem href="/payments-relationships" icon={<Brain size={18} />} label="Connection Hub" active={pathname === "/payments-relationships"} />
+            <SidebarItem href="/payments-relationships" icon={<Brain className="w-5 h-5" />} label="Connection Hub" active={pathname === "/payments-relationships"} />
             <div className="mt-1 space-y-1">
               <SidebarSubItem href="/payments-relationships" label="Smart Connections" active={pathname === "/payments-relationships" && (!activeTab || activeTab === "smart-connections")} />
               <SidebarSubItem href="/payments-relationships?tab=scan-agents" label="Scan Agents" active={pathname === "/payments-relationships" && activeTab === "scan-agents"} />
             </div>
           </div>
-          
-          <SidebarItem href="/purchase-orders" icon={<ShoppingCart size={18} />} label="Purchase Orders" active={pathname.includes("/purchase-orders")} />
-          
-          <SidebarItem href="/portal-records" icon={<FileBox size={18} />} label="Portal Records" active={pathname === "/portal-records"} />
+
+          <SidebarItem href="/purchase-orders" icon={<ShoppingCart className="w-5 h-5" />} label="Purchase Orders" active={pathname.includes("/purchase-orders")} />
+
+          <SidebarItem href="/portal-records" icon={<FileBox className="w-5 h-5" />} label="Portal Records" active={pathname === "/portal-records"} />
         </nav>
       </div>
       

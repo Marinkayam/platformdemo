@@ -1,12 +1,10 @@
 
 import React, { useMemo } from "react";
 import { PortalRecordFilters } from "./filters/types";
-import { DateRangePicker } from "@/components/invoices/filters/DateRangePicker";
 import { usePortalRecordFiltersState } from "@/hooks/usePortalRecordFiltersState";
 import { DataTableFacetedFilter, Option } from "@/components/dashboard/filters/DataTableFacetedFilter";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { X, Search } from "lucide-react";
+import { X } from "lucide-react";
 
 interface PortalRecordsFiltersProps {
   onFilterChange: (filters: PortalRecordFilters) => void;
@@ -92,10 +90,6 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
     handleFilterChange('recordType', Array.from(values));
   };
 
-  const handleDateChange = (fromDate: string, toDate: string) => {
-    handleFilterChange("dueDate", [fromDate ?? "", toDate ?? ""]);
-  };
-
   // Check if any filters are active
   const isFiltered =
     (Array.isArray(filters.portal) && filters.portal.length > 0) ||
@@ -103,8 +97,6 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
     (filters.status && filters.status !== "All") ||
     (filters.transactionType && filters.transactionType !== "All") ||
     (Array.isArray(filters.recordType) && filters.recordType.length > 0) ||
-    (filters.dueDate?.from ?? "") !== "" ||
-    (filters.dueDate?.to ?? "") !== "" ||
     (filters.search ?? "") !== "";
 
   return (
@@ -147,13 +139,6 @@ export function PortalRecordsFilters({ onFilterChange }: PortalRecordsFiltersPro
         options={recordTypeFilterOptions}
         selectedValues={new Set(Array.isArray(filters.recordType) ? filters.recordType : [])}
         onSelectionChange={handleRecordTypeChange}
-      />
-
-      {/* Date Range Picker */}
-      <DateRangePicker
-        fromDate={filters.dueDate.from}
-        toDate={filters.dueDate.to}
-        onDateChange={handleDateChange}
       />
 
       {/* Reset Button */}
