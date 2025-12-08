@@ -4,16 +4,9 @@ import { PortalRecord } from "@/types/portalRecord";
 import { PortalLogo } from "../PortalLogo";
 import { MatchTypeBadge } from "../MatchTypeBadge";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { MoreVertical, TriangleAlert } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { TriangleAlert } from "lucide-react";
 import { FormField } from "@/components/ui/form-field";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -100,12 +93,31 @@ export function RelatedPortalRecordsTable({
     }
   };
 
+  const formatTimestamp = (dateString?: string) => {
+    if (!dateString) return 'N/A';
+    try {
+      return format(new Date(dateString), "MMM d, yyyy HH:mm");
+    } catch {
+      return dateString;
+    }
+  };
+
+  const formatCurrency = (amount: number, currency: string): string => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency || 'USD',
+    }).format(amount);
+  };
+
   return (
     <>
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
-          These records were pulled from buyer portals and linked to this invoice. Each record displays key invoice attributes and its current status in the portal.
-        </p>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Related Portal Records</h3>
+          <p className="text-sm text-gray-600">
+            These records were pulled from buyer portals and linked to this invoice.
+          </p>
+        </div>
 
         {/* Table */}
         <div className="rounded-xl border border-gray-200 overflow-hidden bg-white">
@@ -126,13 +138,13 @@ export function RelatedPortalRecordsTable({
                     Match Type
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Match Date
+                    Currency
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Last Updated
+                    Total
                   </th>
                   <th className="h-[65px] px-4 text-left align-middle font-semibold text-gray-700 text-sm font-sans">
-                    Actions
+                    Updated At
                   </th>
                 </tr>
               </thead>
@@ -178,27 +190,18 @@ export function RelatedPortalRecordsTable({
                     </td>
                     <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
                       <span className="text-sm text-gray-600">
-                        {formatDate(record.lastSynced || record.updated)}
+                        {record.currency || 'USD'}
                       </span>
                     </td>
                     <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
                       <span className="text-sm text-gray-600">
-                        {formatDate(record.updated)}
+                        {formatCurrency(record.total, record.currency || 'USD')}
                       </span>
                     </td>
-                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans" onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => handleViewDetails(record)}>
-                            View Details
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                    <td className="h-[65px] px-4 align-middle text-sm font-normal font-sans">
+                      <span className="text-sm text-gray-600">
+                        {formatTimestamp(record.updated)}
+                      </span>
                     </td>
                   </tr>
                 ))}

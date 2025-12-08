@@ -50,8 +50,9 @@ export function PurchaseOrderDetailHeader({ purchaseOrder, className }: Purchase
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3 px-2 py-1">
-                <div className="text-lg font-semibold text-[#01173E]">
-                  {purchaseOrder.poNumber || "N/A"}
+                <div className="flex items-baseline gap-2">
+                  <span className="text-sm text-muted-foreground font-medium">PO:</span>
+                  <span className="text-lg font-semibold text-[#01173E]">{purchaseOrder.poNumber ? purchaseOrder.poNumber.replace(/^PO-/i, '').padStart(8, '0') : "N/A"}</span>
                 </div>
                 <TooltipProvider>
                   <Tooltip>
@@ -81,15 +82,16 @@ export function PurchaseOrderDetailHeader({ purchaseOrder, className }: Purchase
               </div>
             </div>
 
-            <div className="text-sm text-muted-foreground font-normal px-2 py-1">
-              Buyer: {purchaseOrder.buyerName || "N/A"}
+            <div className="text-sm text-muted-foreground px-2 py-1">
+              <span className="font-medium">Buyer:</span> {purchaseOrder.buyerName || "N/A"}
             </div>
           </div>
 
           <div className="border-t border-[#E4E5E9] my-0"></div>
 
-          <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
+          <div className="flex items-center gap-6 text-sm text-muted-foreground font-normal px-2 py-1">
             <div className="flex items-center gap-2">
+              <span className="font-medium">Portal:</span>
               {purchaseOrder.portal && (
                 <img
                   src={getPortalLogoUrl(purchaseOrder.portal)}
@@ -101,13 +103,13 @@ export function PurchaseOrderDetailHeader({ purchaseOrder, className }: Purchase
                   }}
                 />
               )}
-              <span>Portal: {purchaseOrder.portal || "N/A"}</span>
+              <span>{purchaseOrder.portal || "N/A"}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span>Scan Agent: </span>
+              <span className="font-medium">Scan Agent:</span>
               <Link
                 to={`/scan-agents?openAgentModal=true&portal=${encodeURIComponent(purchaseOrder.portal)}`}
-                className="text-black hover:text-gray-700 hover:underline font-medium"
+                className="hover:underline"
               >
                 {purchaseOrder.portal === "SAP Ariba" ? "supplier@acmecorp.com" :
                  purchaseOrder.portal === "Coupa" ? "vendor@techsolutions.com" :

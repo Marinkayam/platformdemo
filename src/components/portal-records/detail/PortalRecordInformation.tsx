@@ -1,16 +1,12 @@
 
 import { PortalRecord } from "@/types/portalRecord";
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { FormField } from "@/components/ui/form-field";
 
 interface PortalRecordInformationProps {
   portalRecord: PortalRecord;
-  showCollapsed?: boolean;
 }
 
-export function PortalRecordInformation({ portalRecord, showCollapsed = false }: PortalRecordInformationProps) {
-  const [isExpanded, setIsExpanded] = useState(!showCollapsed);
+export function PortalRecordInformation({ portalRecord }: PortalRecordInformationProps) {
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -33,24 +29,11 @@ export function PortalRecordInformation({ portalRecord, showCollapsed = false }:
 
   return (
     <div className="space-y-6">
-      <div className={`mb-4 ${showCollapsed ? 'flex items-center justify-between' : ''}`}>
+      <div className="mb-4">
         <h2 className="text-lg font-semibold">Portal Record Information</h2>
-        {showCollapsed && (
-          <div
-            className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            <span className="text-sm font-medium text-gray-700">More Details</span>
-            {isExpanded ? (
-              <ChevronUp className="h-4 w-4 text-gray-500" />
-            ) : (
-              <ChevronDown className="h-4 w-4 text-gray-500" />
-            )}
-          </div>
-        )}
       </div>
 
-      {/* Always visible key information - collapsed view shows only Issue Date, Total Amount, Portal Status, PO Number */}
+      {/* Key information */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
         <FormField label="Issue Date" value={portalRecord.issueDate || "N/A"} />
         <FormField label="Total Amount" value={formatCurrency(portalRecord.total)} />
@@ -60,16 +43,12 @@ export function PortalRecordInformation({ portalRecord, showCollapsed = false }:
         <FormField label="Due Date" value={portalRecord.dueDate || "N/A"} />
       </div>
 
-      {/* Collapsible additional details - remaining fields in priority order */}
-      <div>
-        {(!showCollapsed || isExpanded) && (
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
-            <FormField label="Payment Terms" value={portalRecord.paymentTerms || portalRecord.netTerms || 'N/A'} />
-            <FormField label="Sub-total" value={formatCurrency(portalRecord.subtotal || portalRecord.total)} />
-            <FormField label="Tax Total" value={formatCurrency(portalRecord.taxTotal || 0)} />
-            <FormField label="Portal Creation Date" value={portalRecord.portalCreationDate || portalRecord.createdAt || 'N/A'} />
-          </div>
-        )}
+      {/* Additional details */}
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+        <FormField label="Payment Terms" value={portalRecord.paymentTerms || portalRecord.netTerms || 'N/A'} />
+        <FormField label="Sub-total" value={formatCurrency(portalRecord.subtotal || portalRecord.total)} />
+        <FormField label="Tax Total" value={formatCurrency(portalRecord.taxTotal || 0)} />
+        <FormField label="Portal Creation Date" value={portalRecord.portalCreationDate || portalRecord.createdAt || 'N/A'} />
       </div>
     </div>
   );

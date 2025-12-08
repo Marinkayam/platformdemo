@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { PageHeader } from "@/components/common/PageHeader";
 import { PaymentsRelationshipsHeader } from "@/components/payments-relationships/PaymentsRelationshipsHeader";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,9 +14,11 @@ import { DataTableFacetedFilter, Option } from "@/components/dashboard/filters/D
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { X, Search } from "lucide-react";
+import { X, Search, ArrowLeft } from "lucide-react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 export default function ScanAgents() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isAddPortalUserModalOpen, setIsAddPortalUserModalOpen] = useState(false);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
@@ -148,12 +150,34 @@ export default function ScanAgents() {
   return (
     <TooltipProvider>
       <div className="space-y-6">
+        <div className="flex items-center mb-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="mr-3 p-1 hover:bg-gray-100 rounded-md transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4 text-gray-600" />
+          </button>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/">Home</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Scan Agents</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+
         <div className="flex items-center justify-between">
-          <PageHeader 
-            title="Scan Agents" 
-            subtitle="Portal Agents automatically scan portals, sync invoice and PO data, and keep your records up to date—no manual effort needed." 
+          <PageHeader
+            title="Scan Agents"
+            subtitle="Portal Agents automatically scan portals, sync invoice and PO data, and keep your records up to date—no manual effort needed."
           />
-          <PaymentsRelationshipsHeader 
+          <PaymentsRelationshipsHeader
             activeTab="scan-agents"
             onAddPortalUser={() => setIsAddPortalUserModalOpen(true)}
           />

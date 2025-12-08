@@ -103,8 +103,9 @@ export function InvoiceHeader({
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3 px-2 py-1">
-                  <div className="text-lg font-semibold text-[#01173E]">
-                    {localInvoice.number}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-sm text-muted-foreground font-medium">Invoice:</span>
+                    <span className="text-lg font-semibold text-[#01173E]">{localInvoice.number.replace(/^INV-/i, '')}</span>
                   </div>
                   <StatusBadge status={localInvoice.status} />
                   {localInvoice.isDuplicate && (
@@ -133,31 +134,21 @@ export function InvoiceHeader({
                 </DropdownMenu>
               </div>
               
-              <div className="text-sm text-muted-foreground font-normal px-2 py-1">
-                Buyer: {localInvoice.buyer}
+              <div className="text-sm text-muted-foreground px-2 py-1">
+                <span className="font-medium">Buyer:</span> {localInvoice.buyer}
               </div>
             </div>
             
             <div className="border-t border-[#E4E5E9] my-0"></div>
             
-            <div className="flex items-center gap-6 text-[14px] text-[#01173E] font-normal">
+            <div className="flex items-center gap-6 text-sm text-muted-foreground font-normal px-2 py-1">
               <div className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#01173E" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                  <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                </svg>
-                <span className="font-medium text-[#01173E]">Transaction Type:</span>
+                <span className="font-medium">Transaction Type:</span>
                 <span>{isCreditMemo ? "Credit Memo" : "Invoice"}</span>
               </div>
               
               {isPendingAction && <div className="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#01173E" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
-                    <line x1="19" x2="19" y1="8" y2="14"/>
-                    <line x1="22" x2="16" y1="11" y2="11"/>
-                  </svg>
-                  <span className="font-medium text-[#01173E]">Assignee:</span>
+                  <span className="font-medium">Assignee:</span>
                   <div onClick={e => e.stopPropagation()} className="inline-block">
                     <AssigneeComponent assignee={localInvoice.assignee} onAssign={handleAssign} onRemove={handleRemoveAssignee} />
                   </div>

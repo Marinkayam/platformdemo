@@ -101,15 +101,7 @@ export function usePortalRecordsTableColumns({ onViewDetails, onMatchInvoice, on
        label: 'PO Payment Terms',
        className: 'w-[200px] min-w-[200px]',
        render: (record: PortalRecord) => (
-         <span className="text-sm text-gray-900 truncate">{record.paymentTerms || 'N/A'}</span>
-       )
-     },
-     {
-       key: 'netTerms',
-       label: 'Net Terms',
-       className: 'w-[200px] min-w-[200px]',
-       render: (record: PortalRecord) => (
-         <span className="text-sm text-gray-900 truncate">{record.netTerms || 'N/A'}</span>
+         <span className="text-sm text-gray-900 truncate">{record.netTerms || record.paymentTerms || 'Net 30'}</span>
        )
      }
      ];
