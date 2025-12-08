@@ -8,7 +8,6 @@ import { PortalRecordTabs } from "@/components/portal-records/detail/PortalRecor
 import { PortalRecordDetailBreadcrumb } from "@/components/portal-records/detail/PortalRecordDetailBreadcrumb";
 import { PortalRecordDetailNotFound } from "@/components/portal-records/detail/PortalRecordDetailNotFound";
 import { PortalRecordDetailModals } from "@/components/portal-records/detail/PortalRecordDetailModals";
-import { PortalRecordActionInstructions } from "@/components/portal-records/detail/PortalRecordActionInstructions";
 import { ConflictResolutionInterface } from "@/components/portal-records/ConflictResolutionInterface";
 import { RelatedPortalRecordsTable } from "@/components/portal-records/detail/RelatedPortalRecordsTable";
 import { InlineMatchingInterface } from "@/components/portal-records/InlineMatchingInterface";
@@ -198,13 +197,6 @@ export default function PortalRecordDetail() {
           </div>
         </TabsContent>
       </Tabs>
-
-      <PortalRecordActionInstructions
-        portalRecord={portalRecord}
-        onMatchInvoice={handleMatchInvoice}
-        onResolveConflict={handleResolveConflict}
-        onIgnoreRecord={handleIgnoreRecord}
-      />
 
       <PortalRecordDetailModals
         portalRecord={portalRecord}
