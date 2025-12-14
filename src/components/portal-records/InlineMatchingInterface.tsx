@@ -5,7 +5,7 @@ import { InvoiceFilters } from "./actions/match-modal/components/InvoiceFilters"
 import { InvoiceSearchSection } from "./actions/match-modal/components/InvoiceSearchSection";
 import { InvoiceList } from "./actions/match-modal/components/InvoiceList";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { AlertTriangle, FileText, CalendarIcon, Search, X, Sparkles } from "lucide-react";
+import { AlertTriangle, FileText, CalendarIcon, Search, X, Sparkles, Download } from "lucide-react";
 import { ExceptionBanner } from "@/components/ui/exception-banner";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { InvoiceModals } from "./actions/match-modal/components/InvoiceModals";
@@ -15,6 +15,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DataTableFacetedFilter, Option } from "@/components/dashboard/filters/DataTableFacetedFilter";
+import { DateRangePicker } from "@/components/invoices/filters/DateRangePicker";
+import { SectionHeaderCard } from "@/components/ui/section-header";
 
 // Toggle between card view (false) and table view (true) for Monto's Suggestions
 const USE_TABLE_SUGGESTIONS = true;
@@ -124,37 +127,69 @@ export function InlineMatchingInterface({
           </ExceptionBanner>
         )}
 
-        {/* Main Container */}
-        <div className="border border-border rounded-lg p-6 bg-background">
-          <div className="space-y-6">
-            {/* Title Section */}
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">Associate Portal Records</h2>
-            </div>
-
-            {/* Filters and Search in one row */}
-            <div className="grid grid-cols-4 gap-4">
-              {/* Search Invoices */}
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search invoices..."
-                  value={searchTerm}
-                  onChange={(e) => handleSearchChange(e.target.value)}
-                  className="pl-10 h-10 bg-white"
-                />
-                {searchTerm && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleClearSearch}
-                    className="absolute right-2 top-2 h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                )}
-              </div>
-
+        {/* Main Container - Using SectionHeaderCard pattern */}
+        <SectionHeaderCard
+          title="Associate Portal Records"
+          subtitle="Select an RTP from the suggestions below or search for a specific invoice to associate with this portal record."
+          showSearch
+          searchValue={searchTerm}
+          onSearchChange={handleSearchChange}
+          searchPlaceholder="Search invoices..."
+          filters={
+            <>
+              <DataTableFacetedFilter
+                title="Status"
+                options={[
+                  { label: "Approved", value: "Approved", count: 0 },
+                  { label: "Pending Action", value: "Pending Action", count: 0 },
+                  { label: "RTP Sent", value: "RTP Sent", count: 0 },
+                  { label: "RTP Prepared", value: "RTP Prepared", count: 0 },
+                ]}
+                selectedValues={new Set()}
+                onSelectionChange={() => {}}
+              />
+              <DataTableFacetedFilter
+                title="Buyer"
+                options={[
+                  { label: "Apple Inc.", value: "Apple Inc.", count: 0 },
+                  { label: "Microsoft Corp", value: "Microsoft Corp", count: 0 },
+                  { label: "Google LLC", value: "Google LLC", count: 0 },
+                  { label: "Amazon.com Inc", value: "Amazon.com Inc", count: 0 },
+                ]}
+                selectedValues={new Set()}
+                onSelectionChange={() => {}}
+              />
+              <DataTableFacetedFilter
+                title="Portal"
+                options={[
+                  { label: "SAP Ariba", value: "SAP Ariba", count: 0 },
+                  { label: "Coupa", value: "Coupa", count: 0 },
+                  { label: "Oracle", value: "Oracle", count: 0 },
+                  { label: "Taulia", value: "Taulia", count: 0 },
+                ]}
+                selectedValues={new Set()}
+                onSelectionChange={() => {}}
+              />
+              <DataTableFacetedFilter
+                title="Owner"
+                options={[
+                  { label: "John Smith", value: "John Smith", count: 0 },
+                  { label: "Sarah Johnson", value: "Sarah Johnson", count: 0 },
+                  { label: "Mike Williams", value: "Mike Williams", count: 0 },
+                ]}
+                selectedValues={new Set()}
+                onSelectionChange={() => {}}
+              />
+              <DateRangePicker
+                fromDate=""
+                toDate=""
+                onDateChange={() => {}}
+              />
+            </>
+          }
+        >
+            {/* Hidden old filters - keeping for reference */}
+            <div className="hidden grid-cols-4 gap-4">
               {/* Portal Filter */}
               <Select value={selectedPortal} onValueChange={setSelectedPortal}>
                 <SelectTrigger className="h-10">
@@ -217,6 +252,7 @@ export function InlineMatchingInterface({
                           <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[120px] min-w-[120px]">Notes</TableHead>
                           <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[120px] min-w-[120px]">Source</TableHead>
                           <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[180px] min-w-[180px]">Owner</TableHead>
+                          <TableHead className="h-[56px] px-4 text-center align-middle font-semibold text-gray-700 text-sm w-[80px] min-w-[80px]"></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -259,6 +295,26 @@ export function InlineMatchingInterface({
                               <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.notes?.length ? `${match.invoice.notes.length} notes` : '-'}</TableCell>
                               <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.submitMethod || '-'}</TableCell>
                               <TableCell className="px-6 py-4 w-[180px] min-w-[180px] text-sm truncate">{match.invoice.owner}</TableCell>
+                              <TableCell className="px-4 py-4 w-[80px] min-w-[80px] text-center">
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          console.log('Download PDF for invoice:', match.invoice.number);
+                                        }}
+                                        className="p-2 hover:bg-gray-100 rounded-md transition-colors text-gray-500 hover:text-primary"
+                                      >
+                                        <Download className="h-4 w-4" />
+                                      </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>Download Invoice PDF</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              </TableCell>
                             </TableRow>
                           );
                         })}
@@ -469,8 +525,7 @@ export function InlineMatchingInterface({
                 )}
               </div>
             </div>
-          </div>
-        </div>
+        </SectionHeaderCard>
       </div>
 
       {/* Modals */}

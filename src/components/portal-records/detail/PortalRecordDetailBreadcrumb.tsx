@@ -12,10 +12,26 @@ import {
 
 interface PortalRecordDetailBreadcrumbProps {
   portalRecordId?: string;
+  matchType?: string;
+  matchStatus?: string;
 }
 
-export function PortalRecordDetailBreadcrumb({ portalRecordId }: PortalRecordDetailBreadcrumbProps) {
+export function PortalRecordDetailBreadcrumb({ portalRecordId, matchType, matchStatus }: PortalRecordDetailBreadcrumbProps) {
   const navigate = useNavigate();
+
+  // Determine the category based on match type/status
+  const getCategoryInfo = () => {
+    if (matchType === 'Unmatched' || matchStatus === 'Unmatched') {
+      return { label: 'Found Without Match', href: '/portal-records?tab=unmatched' };
+    }
+    if (matchType === 'Conflict' || matchStatus === 'Conflicted') {
+      return { label: 'Conflicts', href: '/portal-records?tab=conflict' };
+    }
+    // Default to Matched Records
+    return { label: 'Matched Records', href: '/portal-records' };
+  };
+
+  const category = getCategoryInfo();
 
   return (
     <div className="mb-6">
@@ -32,6 +48,14 @@ export function PortalRecordDetailBreadcrumb({ portalRecordId }: PortalRecordDet
               <BreadcrumbLink asChild>
                 <Link to="/portal-records">
                   Portal Records
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to={category.href}>
+                  {category.label}
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>

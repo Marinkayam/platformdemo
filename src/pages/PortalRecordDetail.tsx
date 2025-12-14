@@ -11,6 +11,8 @@ import { PortalRecordDetailModals } from "@/components/portal-records/detail/Por
 import { ConflictResolutionInterface } from "@/components/portal-records/ConflictResolutionInterface";
 import { RelatedPortalRecordsTable } from "@/components/portal-records/detail/RelatedPortalRecordsTable";
 import { InlineMatchingInterface } from "@/components/portal-records/InlineMatchingInterface";
+import { FinancialData } from "@/components/invoices/detail/FinancialData";
+import { PdfViewer } from "@/components/invoices/detail/PdfViewer";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
@@ -22,6 +24,7 @@ export default function PortalRecordDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("record-data");
+  const [zoomLevel, setZoomLevel] = useState(1.0);
   const { notes, addNote, removeNoteAttachment, scrollRef } = useNotes();
 
   // Modal states
@@ -31,6 +34,37 @@ export default function PortalRecordDetail() {
 
   // Find the portal record by ID
   const portalRecord = allPortalRecords.find(record => record.id === id);
+
+  // Mock invoice data for the matched RTP Data tab (demo purposes)
+  const mockMatchedInvoice = {
+    id: portalRecord?.id || "INV-001",
+    number: portalRecord?.invoiceNumber || "INV-2024-0847",
+    buyer: portalRecord?.buyer || "Acme Corp",
+    invoiceDate: "2024-01-15",
+    dueDate: "2024-02-15",
+    netTerms: "Net 30",
+    currency: portalRecord?.currency || "USD",
+    total: portalRecord?.total || 45000,
+    subtotal: (portalRecord?.total || 45000) * 0.9,
+    tax: (portalRecord?.total || 45000) * 0.1,
+    poNumber: portalRecord?.poNumber || "PO-2024-001",
+    portal: portalRecord?.portal || "SAP Ariba",
+    status: "Approved" as const,
+    owner: "John Smith",
+    hasWarning: false,
+    hasExceptions: false,
+  };
+
+  // Mock line items for demo
+  const mockLineItems = [
+    { id: "1", description: "Software License - Enterprise Edition", quantity: 10, unitPrice: 2500, total: 25000 },
+    { id: "2", description: "Implementation Services", quantity: 40, unitPrice: 250, total: 10000 },
+    { id: "3", description: "Training Package - 5 Users", quantity: 1, unitPrice: 5000, total: 5000 },
+    { id: "4", description: "Annual Support & Maintenance", quantity: 1, unitPrice: 5000, total: 5000 },
+  ];
+
+  const handleZoomIn = () => setZoomLevel(prev => Math.min(prev + 0.1, 2.0));
+  const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
 
   if (!portalRecord) {
     return <PortalRecordDetailNotFound />;
@@ -110,7 +144,11 @@ export default function PortalRecordDetail() {
 
   return (
     <div className="space-y-6">
-      <PortalRecordDetailBreadcrumb portalRecordId={portalRecord.invoiceNumber || portalRecord.portalRecordId} />
+      <PortalRecordDetailBreadcrumb
+        portalRecordId={portalRecord.invoiceNumber || portalRecord.portalRecordId}
+        matchType={portalRecord.matchType}
+        matchStatus={portalRecord.matchStatus}
+      />
 
       <PortalRecordDetailHeader 
         portalRecord={portalRecord} 
@@ -161,11 +199,33 @@ export default function PortalRecordDetail() {
         </TabsContent>
 
         <TabsContent value="invoice-data" className="mt-6">
-          <InlineMatchingInterface
-            record={portalRecord}
-            onMatchInvoice={(invoiceId) => handleMatchInvoice(invoiceId)}
-            onIgnoreRecord={handleIgnoreRecord}
-          />
+          {/* Show InlineMatchingInterface for unmatched records */}
+          {(portalRecord.matchType === 'Unmatched' || portalRecord.matchStatus === 'Unmatched') ? (
+            <InlineMatchingInterface
+              record={portalRecord}
+              onMatchInvoice={(invoiceId) => handleMatchInvoice(invoiceId)}
+              onIgnoreRecord={handleIgnoreRecord}
+            />
+          ) : (
+            /* Show Financial Data + PDF Viewer for matched records */
+            <ResizablePanelGroup direction="horizontal" className="min-h-[600px] rounded-xl border border-[#E4E5E9]">
+              <ResizablePanel defaultSize={55} className="p-6 bg-white">
+                <FinancialData invoice={mockMatchedInvoice as any} lineItems={mockLineItems} />
+              </ResizablePanel>
+
+              <ResizableHandle />
+
+              <ResizablePanel defaultSize={45} className="p-6 border-l border-[#E4E5E9] bg-white">
+                <PdfViewer
+                  invoice={mockMatchedInvoice as any}
+                  lineItems={mockLineItems}
+                  zoomLevel={zoomLevel}
+                  onZoomIn={handleZoomIn}
+                  onZoomOut={handleZoomOut}
+                />
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          )}
         </TabsContent>
 
         <TabsContent value="activity" className="">

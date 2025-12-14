@@ -112,6 +112,8 @@ import { TabsNav } from "@/components/common/TabsNav";
 import { WizardProgress } from "@/components/ui/wizard-progress";
 import { ExceptionPatternsShowcase } from "@/components/design-system/ExceptionPatternsShowcase";
 import { TableSystemShowcase } from "@/components/design-system/TableSystemShowcase";
+import { SectionHeader, SectionHeaderCard } from "@/components/ui/section-header";
+import { PortalRecordDetailHeader } from "@/components/portal-records/detail/PortalRecordDetailHeader";
 
 interface SidebarItem {
   id: string;
@@ -128,6 +130,8 @@ const sidebarItems: SidebarItem[] = [
   { id: "tab-navigation", label: "Tab Navigation", icon: <Navigation size={18} /> },
   { id: "filter-components", label: "Filter Components", icon: <Filter size={18} /> },
   { id: "layout-patterns", label: "Layout Patterns", icon: <Layout size={18} /> },
+  { id: "section-header", label: "Section Header", icon: <Layers size={18} /> },
+  { id: "record-detail-header", label: "Record Detail Header", icon: <FileText size={18} /> },
   { id: "table-system", label: "Table System", icon: <TableIcon size={18} /> },
   { id: "form-elements", label: "Form Elements", icon: <Settings size={18} /> },
   { id: "layout-components", label: "Layout Components", icon: <Layout size={18} /> },
@@ -2390,6 +2394,549 @@ export function InvoicesPage() {
             </CardContent>
           </Card>
         </div>
+      </div>
+    );
+  };
+
+  // Section Header showcase state
+  const [sectionHeaderSearch, setSectionHeaderSearch] = useState("");
+  const [sectionHeaderVisibleCode, setSectionHeaderVisibleCode] = useState('');
+
+  const renderSectionHeader = () => {
+    const toggleCode = (codeId: string) => {
+      setSectionHeaderVisibleCode(sectionHeaderVisibleCode === codeId ? '' : codeId);
+    };
+
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-2">Section Header</h2>
+          <p className="text-sm text-grey-600 mb-6">
+            A reusable header component for content sections with title, subtitle, filters, and search.
+            Located at <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">src/components/ui/section-header.tsx</code>
+          </p>
+        </div>
+
+        {/* SectionHeader Basic */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-lg">SectionHeader - Basic</CardTitle>
+                <CardDescription>
+                  Basic inline header with title and optional subtitle. Use for simple section headings.
+                </CardDescription>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => toggleCode('section-header-basic')}
+              >
+                <Code className="w-4 h-4 mr-2 opacity-60" />
+                {sectionHeaderVisibleCode === 'section-header-basic' ? 'Hide Code' : 'Show Code'}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Live Example */}
+            <div className="border rounded-lg p-6 bg-gray-50">
+              <SectionHeader
+                title="Section Title"
+                subtitle="Optional description text for this section."
+              />
+            </div>
+
+            {/* Code Example */}
+            {sectionHeaderVisibleCode === 'section-header-basic' && (
+              <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                <pre className="text-sm">
+{`import { SectionHeader } from "@/components/ui/section-header";
+
+<SectionHeader
+  title="Section Title"
+  subtitle="Optional description text for this section."
+/>`}
+                </pre>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* SectionHeader with Search */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-lg">SectionHeader - With Search</CardTitle>
+                <CardDescription>
+                  Header with built-in search field. Search includes a clear button when there's a value.
+                </CardDescription>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => toggleCode('section-header-search')}
+              >
+                <Code className="w-4 h-4 mr-2 opacity-60" />
+                {sectionHeaderVisibleCode === 'section-header-search' ? 'Hide Code' : 'Show Code'}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Live Example */}
+            <div className="border rounded-lg p-6 bg-gray-50">
+              <SectionHeader
+                title="Search Example"
+                subtitle="Try typing in the search field."
+                showSearch
+                searchValue={sectionHeaderSearch}
+                onSearchChange={setSectionHeaderSearch}
+                searchPlaceholder="Search items..."
+              />
+            </div>
+
+            {/* Code Example */}
+            {sectionHeaderVisibleCode === 'section-header-search' && (
+              <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                <pre className="text-sm">
+{`<SectionHeader
+  title="Search Example"
+  subtitle="Try typing in the search field."
+  showSearch
+  searchValue={searchValue}
+  onSearchChange={setSearchValue}
+  searchPlaceholder="Search items..."
+/>`}
+                </pre>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* SectionHeader with Filters */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-lg">SectionHeader - With Filters & Search</CardTitle>
+                <CardDescription>
+                  Full-featured header with filters slot and search. Filters render on the left, search on the right.
+                </CardDescription>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => toggleCode('section-header-filters')}
+              >
+                <Code className="w-4 h-4 mr-2 opacity-60" />
+                {sectionHeaderVisibleCode === 'section-header-filters' ? 'Hide Code' : 'Show Code'}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Live Example */}
+            <div className="border rounded-lg p-6 bg-gray-50">
+              <SectionHeader
+                title="Filtered Content"
+                subtitle="Use filters to narrow down results."
+                showSearch
+                searchValue={sectionHeaderSearch}
+                onSearchChange={setSectionHeaderSearch}
+                filters={
+                  <>
+                    <DataTableFacetedFilter
+                      title="Status"
+                      options={[
+                        { label: "Active", value: "active", count: 0 },
+                        { label: "Pending", value: "pending", count: 0 },
+                      ]}
+                      selectedValues={new Set()}
+                      onSelectionChange={() => {}}
+                    />
+                    <DataTableFacetedFilter
+                      title="Type"
+                      options={[
+                        { label: "Invoice", value: "invoice", count: 0 },
+                        { label: "Credit", value: "credit", count: 0 },
+                      ]}
+                      selectedValues={new Set()}
+                      onSelectionChange={() => {}}
+                    />
+                  </>
+                }
+              />
+            </div>
+
+            {/* Code Example */}
+            {sectionHeaderVisibleCode === 'section-header-filters' && (
+              <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                <pre className="text-sm">
+{`<SectionHeader
+  title="Filtered Content"
+  subtitle="Use filters to narrow down results."
+  showSearch
+  searchValue={searchValue}
+  onSearchChange={setSearchValue}
+  filters={
+    <>
+      <DataTableFacetedFilter title="Status" options={...} />
+      <DataTableFacetedFilter title="Type" options={...} />
+    </>
+  }
+/>`}
+                </pre>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* SectionHeaderCard */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-lg">SectionHeaderCard</CardTitle>
+                <CardDescription>
+                  Wraps the header in a card container with border and background. Use when the section needs visual separation. Accepts children for content below the header.
+                </CardDescription>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => toggleCode('section-header-card')}
+              >
+                <Code className="w-4 h-4 mr-2 opacity-60" />
+                {sectionHeaderVisibleCode === 'section-header-card' ? 'Hide Code' : 'Show Code'}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Live Example */}
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <SectionHeaderCard
+                title="Card Section"
+                subtitle="This section has a border and background for visual separation."
+                showSearch
+                searchValue={sectionHeaderSearch}
+                onSearchChange={setSectionHeaderSearch}
+              >
+                <div className="bg-white border border-dashed border-gray-300 rounded-lg p-8 text-center text-gray-500">
+                  Content goes here as children
+                </div>
+              </SectionHeaderCard>
+            </div>
+
+            {/* Code Example */}
+            {sectionHeaderVisibleCode === 'section-header-card' && (
+              <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                <pre className="text-sm">
+{`import { SectionHeaderCard } from "@/components/ui/section-header";
+
+<SectionHeaderCard
+  title="Card Section"
+  subtitle="This section has a border and background."
+  showSearch
+  searchValue={searchValue}
+  onSearchChange={setSearchValue}
+>
+  {/* Content goes here as children */}
+  <YourContent />
+</SectionHeaderCard>`}
+                </pre>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Props Reference */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Props Reference</CardTitle>
+            <CardDescription>
+              All available props for SectionHeader and SectionHeaderCard components.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
+                  <TableHead className="font-semibold">Prop</TableHead>
+                  <TableHead className="font-semibold">Type</TableHead>
+                  <TableHead className="font-semibold">Default</TableHead>
+                  <TableHead className="font-semibold">Description</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">title</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">string</TableCell>
+                  <TableCell className="text-gray-500">required</TableCell>
+                  <TableCell>Main title of the section</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">subtitle</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">string</TableCell>
+                  <TableCell className="text-gray-500">-</TableCell>
+                  <TableCell>Optional subtitle/description text</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">filters</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">ReactNode</TableCell>
+                  <TableCell className="text-gray-500">-</TableCell>
+                  <TableCell>Filter components to render in the filters row</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">showSearch</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">boolean</TableCell>
+                  <TableCell className="text-gray-500">false</TableCell>
+                  <TableCell>Show search field</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">searchValue</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">string</TableCell>
+                  <TableCell className="text-gray-500">""</TableCell>
+                  <TableCell>Controlled search value</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">onSearchChange</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">(value: string) =&gt; void</TableCell>
+                  <TableCell className="text-gray-500">-</TableCell>
+                  <TableCell>Search change handler</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">searchPlaceholder</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">string</TableCell>
+                  <TableCell className="text-gray-500">"Search..."</TableCell>
+                  <TableCell>Placeholder text for search input</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">actions</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">ReactNode</TableCell>
+                  <TableCell className="text-gray-500">-</TableCell>
+                  <TableCell>Action button(s) on the right side of title</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">size</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">"default" | "compact"</TableCell>
+                  <TableCell className="text-gray-500">"default"</TableCell>
+                  <TableCell>Size variant for spacing and typography</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">children</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">ReactNode</TableCell>
+                  <TableCell className="text-gray-500">-</TableCell>
+                  <TableCell>Content below header (SectionHeaderCard only)</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  // Mock portal record data for design system showcase
+  const mockPortalRecord = {
+    id: "pr-001",
+    portalRecordId: "PR-2024-0847",
+    invoiceNumber: "INV-2024-0847",
+    buyer: "BuyerCo",
+    portal: "Coupa",
+    total: 2350.00,
+    currency: "USD",
+    portalStatus: "Approved by Buyer",
+    matchType: "Matched" as const,
+    matchStatus: "Matched" as const,
+    lastSynced: "06/15/2025 2:23 PM",
+    poNumber: "PO-2024-001",
+    invoiceDate: "2024-01-15",
+    dueDate: "2024-02-15",
+  };
+
+  const [recordDetailVisibleCode, setRecordDetailVisibleCode] = useState('');
+
+  const renderRecordDetailHeader = () => {
+    const toggleCode = (codeId: string) => {
+      setRecordDetailVisibleCode(recordDetailVisibleCode === codeId ? '' : codeId);
+    };
+
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-semibold text-grey-900 mb-2">Record Detail Header</h2>
+          <p className="text-sm text-grey-600 mb-6">
+            A header component for record detail pages displaying key information like Record ID, status, and metadata.
+            Located at <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">src/components/portal-records/detail/PortalRecordDetailHeader.tsx</code>
+          </p>
+        </div>
+
+        {/* Live Example */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-lg">PortalRecordDetailHeader</CardTitle>
+                <CardDescription>
+                  Displays record ID (clickable to copy), status badge, last synced time, and metadata row with Total Amount, Buyer, Portal (with logo), and Agent.
+                </CardDescription>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => toggleCode('record-detail-header')}
+              >
+                <Code className="w-4 h-4 mr-2 opacity-60" />
+                {recordDetailVisibleCode === 'record-detail-header' ? 'Hide Code' : 'Show Code'}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Live Example */}
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <PortalRecordDetailHeader
+                portalRecord={mockPortalRecord as any}
+                className="mb-0"
+              />
+            </div>
+
+            {/* Code Example */}
+            {recordDetailVisibleCode === 'record-detail-header' && (
+              <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                <pre className="text-sm">
+{`import { PortalRecordDetailHeader } from "@/components/portal-records/detail/PortalRecordDetailHeader";
+
+<PortalRecordDetailHeader
+  portalRecord={portalRecord}
+  onMatchInvoice={() => console.log('Match invoice')}
+  onResolveConflict={() => console.log('Resolve conflict')}
+  onIgnoreRecord={() => console.log('Ignore record')}
+/>`}
+                </pre>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Structure Breakdown */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Component Structure</CardTitle>
+            <CardDescription>
+              The header is divided into two tiers with a separator in between.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-gray-50 p-4 rounded-lg border space-y-4 font-mono text-xs">
+              {/* Top Tier */}
+              <div className="bg-white p-3 rounded border">
+                <div className="font-semibold mb-2 text-blue-600">Top Tier (flex justify-between)</div>
+                <div className="pl-4 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded">Left</span>
+                    <span className="text-grey-600">Record ID (label + large clickable number)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded">Right</span>
+                    <span className="text-grey-600">Status Badge + Last Synced + Actions Menu</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Separator */}
+              <div className="bg-white p-2 rounded border text-center text-grey-500">
+                {'<Separator />'}
+              </div>
+
+              {/* Bottom Tier */}
+              <div className="bg-white p-3 rounded border">
+                <div className="font-semibold mb-2 text-blue-600">Bottom Tier (flex gap-16)</div>
+                <div className="pl-4 flex flex-wrap gap-4">
+                  <span className="bg-gray-100 px-2 py-0.5 rounded">Total Amount</span>
+                  <span className="bg-gray-100 px-2 py-0.5 rounded">Buyer</span>
+                  <span className="bg-gray-100 px-2 py-0.5 rounded">Portal (with logo)</span>
+                  <span className="bg-gray-100 px-2 py-0.5 rounded">Agent (link)</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Props Reference */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Props Reference</CardTitle>
+            <CardDescription>
+              All available props for PortalRecordDetailHeader.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
+                  <TableHead className="font-semibold">Prop</TableHead>
+                  <TableHead className="font-semibold">Type</TableHead>
+                  <TableHead className="font-semibold">Description</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">portalRecord</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">PortalRecord</TableCell>
+                  <TableCell>The portal record data object (required)</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">className</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">string</TableCell>
+                  <TableCell>Optional className for the container</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">onMatchInvoice</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">() =&gt; void</TableCell>
+                  <TableCell>Callback when "Match Invoice" action is clicked</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">onResolveConflict</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">() =&gt; void</TableCell>
+                  <TableCell>Callback when "Resolve Conflict" action is clicked</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-mono text-sm">onIgnoreRecord</TableCell>
+                  <TableCell className="font-mono text-sm text-gray-600">() =&gt; void</TableCell>
+                  <TableCell>Callback when "Ignore Record" action is clicked</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Design Guidelines */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Design Guidelines</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <h4 className="font-medium text-sm">Record ID</h4>
+                <ul className="text-sm text-grey-600 space-y-1 list-disc list-inside">
+                  <li>Label: <code className="bg-gray-100 px-1 rounded text-xs">text-xs text-muted-foreground font-light</code></li>
+                  <li>Number: <code className="bg-gray-100 px-1 rounded text-xs">text-xl font-bold text-[#01173E]</code></li>
+                  <li>Click to copy functionality</li>
+                  <li>Hover state: <code className="bg-gray-100 px-1 rounded text-xs">hover:text-[#7B59FF]</code></li>
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <h4 className="font-medium text-sm">Metadata Row</h4>
+                <ul className="text-sm text-grey-600 space-y-1 list-disc list-inside">
+                  <li>Labels: <code className="bg-gray-100 px-1 rounded text-xs">text-sm text-muted-foreground font-light</code></li>
+                  <li>Values: <code className="bg-gray-100 px-1 rounded text-xs">text-sm font-medium text-[#01173E]</code></li>
+                  <li>Gap between items: <code className="bg-gray-100 px-1 rounded text-xs">gap-16</code></li>
+                  <li>Portal includes logo image (16x16)</li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   };
@@ -5101,6 +5648,10 @@ function AddPortal() {
         return renderFilterComponents();
       case "layout-patterns":
         return renderLayoutPatterns();
+      case "section-header":
+        return renderSectionHeader();
+      case "record-detail-header":
+        return renderRecordDetailHeader();
       case "table-system":
         return <TableSystemShowcase />;
       case "form-elements":

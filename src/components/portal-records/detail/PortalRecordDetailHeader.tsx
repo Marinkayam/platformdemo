@@ -106,7 +106,7 @@ export function PortalRecordDetailHeader({
           <Separator className="border-[#E4E5E9]" />
 
           {/* Bottom Tier: Metadata Grid */}
-          <div className="flex gap-16">
+          <div className="flex gap-8">
               {/* Total Amount */}
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground font-light">Total Amount:</span>

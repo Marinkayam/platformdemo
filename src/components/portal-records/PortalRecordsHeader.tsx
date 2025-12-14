@@ -46,7 +46,9 @@ export function PortalRecordsHeader({
 
   // Convert activeTab to status for breadcrumb
   let status: string | undefined;
-  if (activeTab === 'unmatched') {
+  if (activeTab === 'all') {
+    status = 'matched';
+  } else if (activeTab === 'unmatched') {
     status = 'unmatched';
   } else if (activeTab === 'conflict') {
     status = 'conflicts';

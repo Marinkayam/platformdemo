@@ -437,6 +437,66 @@ toast({
 - Align left to table (no left padding)
 - Show "Showing X to Y of Z records" + "Total: Amount"
 
+## Section Header Component
+
+A reusable header component for content sections with title, subtitle, filters, and search. Located at `src/components/ui/section-header.tsx`.
+
+### SectionHeader Usage
+
+```tsx
+import { SectionHeader } from "@/components/ui/section-header";
+
+<SectionHeader
+  title="Associate Portal Records"
+  subtitle="Select an RTP from the suggestions below."
+  showSearch
+  searchValue={searchValue}
+  onSearchChange={setSearchValue}
+  searchPlaceholder="Search invoices..."
+  filters={
+    <>
+      <DataTableFacetedFilter title="Status" options={statusOptions} ... />
+      <DataTableFacetedFilter title="Buyer" options={buyerOptions} ... />
+      <DateRangePicker fromDate="" toDate="" onDateChange={() => {}} />
+    </>
+  }
+/>
+```
+
+### SectionHeaderCard Usage
+
+Wraps the section header in a card container with border and background. Use when the section needs visual separation.
+
+```tsx
+import { SectionHeaderCard } from "@/components/ui/section-header";
+
+<SectionHeaderCard
+  title="Section Title"
+  subtitle="Description text for this section."
+  showSearch
+  searchValue={search}
+  onSearchChange={setSearch}
+  filters={<FilterComponents />}
+>
+  {/* Content goes here as children */}
+  <YourContent />
+</SectionHeaderCard>
+```
+
+### Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `title` | string | Main title of the section |
+| `subtitle` | string | Optional subtitle/description |
+| `filters` | ReactNode | Filter components to render |
+| `showSearch` | boolean | Show search field |
+| `searchValue` | string | Controlled search value |
+| `onSearchChange` | (value: string) => void | Search change handler |
+| `searchPlaceholder` | string | Search placeholder text |
+| `actions` | ReactNode | Action buttons on the right side |
+| `size` | "default" \| "compact" | Size variant |
+
 ## File Upload Components
 
 **UploadSection pattern**:

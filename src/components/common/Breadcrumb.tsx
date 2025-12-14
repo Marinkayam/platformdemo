@@ -64,7 +64,10 @@ export const createBreadcrumbs = {
       { label: "Portal Records", href: "/portal-records", isActive: !status }
     ];
 
-    if (status === "unmatched") {
+    if (status === "matched") {
+      items[0].isActive = false;
+      items.push({ label: "Matched Records", href: "/portal-records", isActive: true });
+    } else if (status === "unmatched") {
       items[0].isActive = false;
       items.push({ label: "Unmatched", href: "/portal-records?status=unmatched", isActive: true });
     } else if (status === "conflicts") {

@@ -1,19 +1,18 @@
 import { PurchaseOrder } from "@/types/purchase-orders";
-import { format } from "date-fns";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { Button } from "@/components/ui/button";
-import { Download, Edit, MoreVertical, ArrowLeft } from "lucide-react";
+import { MoreVertical, ArrowLeft } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { formatCurrency, getPortalLogoUrl } from "@/lib/utils";
+import { getPortalLogoUrl } from "@/lib/utils";
 import { useNavigate, Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbList } from "@/components/ui/breadcrumb";
 import { Card } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Separator } from "@/components/ui/separator";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface PurchaseOrderDetailHeaderProps {
   purchaseOrder: PurchaseOrder;
@@ -23,75 +22,113 @@ interface PurchaseOrderDetailHeaderProps {
 export function PurchaseOrderDetailHeader({ purchaseOrder, className }: PurchaseOrderDetailHeaderProps) {
   const navigate = useNavigate();
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  // Format PO number for display
+  const displayPoNumber = purchaseOrder.poNumber
+    ? purchaseOrder.poNumber.replace(/^PO-/i, '').padStart(8, '0')
+    : "N/A";
+
+  // Get agent email based on portal
+  const agentEmail = purchaseOrder.portal === "SAP Ariba" ? "supplier@acmecorp.com" :
+    purchaseOrder.portal === "Coupa" ? "vendor@techsolutions.com" :
+    purchaseOrder.portal === "Jaggaer" ? "global@enterprise.com" :
+    "supplier@portal.com";
 
   return (
-    <div className={`mb-8 ${className}`}>
-      <div className="flex items-center gap-2 mb-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="h-8 w-8">
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/purchase-orders">Purchase Orders</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>All POs</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+    <div className={className}>
+      {/* Breadcrumb */}
+      <div className="mb-6">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate(-1)}
+            className="p-1 hover:bg-gray-100 rounded-md transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4 text-gray-600" />
+          </button>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/purchase-orders">Purchase Orders</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/purchase-orders">All POs</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{purchaseOrder.poNumber || "PO"}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
       </div>
 
-      <Card className="p-6 rounded-xl">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 px-2 py-1">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-sm text-muted-foreground font-medium">PO:</span>
-                  <span className="text-lg font-semibold text-[#01173E]">{purchaseOrder.poNumber ? purchaseOrder.poNumber.replace(/^PO-/i, '').padStart(8, '0') : "N/A"}</span>
-                </div>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div>
-                        <StatusBadge status={purchaseOrder.rawStatus} />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Monto's standardized status</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem className="text-red-600">Cancel PO</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+      {/* Header Card */}
+      <Card className="p-6 rounded-xl mb-6">
+        <div className="flex flex-col gap-6">
+          {/* Top Tier: PO Number (left) and Status + Actions (right) */}
+          <div className="flex items-start justify-between">
+            {/* Primary Focus: PO Number */}
+            <div className="flex flex-col gap-0.5">
+              <span className="text-xs text-muted-foreground font-light">PO:</span>
+              <span
+                className="text-xl font-bold text-[#01173E] cursor-pointer select-all hover:text-[#7B59FF] transition-colors"
+                onClick={() => copyToClipboard(displayPoNumber)}
+                title="Click to copy"
+              >
+                {displayPoNumber}
+              </span>
             </div>
 
-            <div className="text-sm text-muted-foreground px-2 py-1">
-              <span className="font-medium">Buyer:</span> {purchaseOrder.buyerName || "N/A"}
+            <div className="flex items-center gap-6">
+              {/* Status */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="cursor-help">
+                    <StatusBadge status={purchaseOrder.rawStatus} />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Monto's standardized status</p>
+                </TooltipContent>
+              </Tooltip>
+
+              {/* Actions Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="hover:bg-muted p-1.5 rounded-md transition-colors">
+                    <MoreVertical className="w-4 h-4 text-[#01173E]" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 rounded-md">
+                  <DropdownMenuItem className="text-red-600 hover:text-red-700 cursor-pointer rounded-md">
+                    Cancel PO
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
-          <div className="border-t border-[#E4E5E9] my-0"></div>
+          <Separator className="border-[#E4E5E9]" />
 
-          <div className="flex items-center gap-6 text-sm text-muted-foreground font-normal px-2 py-1">
+          {/* Bottom Tier: Metadata Grid - Original Data */}
+          <div className="flex gap-8 flex-wrap">
+            {/* Buyer */}
             <div className="flex items-center gap-2">
-              <span className="font-medium">Portal:</span>
+              <span className="text-sm text-muted-foreground font-light">Buyer:</span>
+              <span className="text-sm font-medium text-[#01173E]">{purchaseOrder.buyerName || "N/A"}</span>
+            </div>
+
+            {/* Portal */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground font-light">Portal:</span>
               {purchaseOrder.portal && (
                 <img
                   src={getPortalLogoUrl(purchaseOrder.portal)}
@@ -103,18 +140,17 @@ export function PurchaseOrderDetailHeader({ purchaseOrder, className }: Purchase
                   }}
                 />
               )}
-              <span>{purchaseOrder.portal || "N/A"}</span>
+              <span className="text-sm font-medium text-[#01173E]">{purchaseOrder.portal || "N/A"}</span>
             </div>
+
+            {/* Scan Agent */}
             <div className="flex items-center gap-2">
-              <span className="font-medium">Scan Agent:</span>
+              <span className="text-sm text-muted-foreground font-light">Scan Agent:</span>
               <Link
                 to={`/scan-agents?openAgentModal=true&portal=${encodeURIComponent(purchaseOrder.portal)}`}
-                className="hover:underline"
+                className="text-sm font-medium text-[#01173E] hover:underline"
               >
-                {purchaseOrder.portal === "SAP Ariba" ? "supplier@acmecorp.com" :
-                 purchaseOrder.portal === "Coupa" ? "vendor@techsolutions.com" :
-                 purchaseOrder.portal === "Jaggaer" ? "global@enterprise.com" :
-                 "supplier@portal.com"}
+                {agentEmail}
               </Link>
             </div>
           </div>

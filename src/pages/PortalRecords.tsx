@@ -47,7 +47,7 @@ export default function PortalRecords() {
   };
 
   const tabs = [
-    { id: "all", label: "All Records", count: tabCounts.all },
+    { id: "all", label: "Matched Records", count: tabCounts.all },
     { id: "unmatched", label: "Found Without Match", count: tabCounts.unmatched },
     { id: "conflict", label: "Conflicts", count: tabCounts.conflict },
   ];
