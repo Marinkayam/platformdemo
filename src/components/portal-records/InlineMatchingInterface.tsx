@@ -239,7 +239,7 @@ export function InlineMatchingInterface({
                                 <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                                   match.invoice.status === 'Pending Action'
                                     ? 'bg-warning-main/20 text-warning-main'
-                                    : match.invoice.status === 'Approved'
+                                    : match.invoice.status === 'Approved by Buyer'
                                     ? 'bg-success-main/20 text-success-main'
                                     : 'bg-grey-200 text-grey-700'
                                 }`}>
@@ -256,8 +256,8 @@ export function InlineMatchingInterface({
                               <TableCell className="px-6 py-4 w-[140px] min-w-[140px] text-sm">{match.invoice.poNumber || '-'}</TableCell>
                               <TableCell className="px-6 py-4 w-[140px] min-w-[140px] text-sm">{match.invoice.dueDate}</TableCell>
                               <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.paymentTerms || '-'}</TableCell>
-                              <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.notes || '-'}</TableCell>
-                              <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.source || '-'}</TableCell>
+                              <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.notes?.length ? `${match.invoice.notes.length} notes` : '-'}</TableCell>
+                              <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.submitMethod || '-'}</TableCell>
                               <TableCell className="px-6 py-4 w-[180px] min-w-[180px] text-sm truncate">{match.invoice.owner}</TableCell>
                             </TableRow>
                           );
