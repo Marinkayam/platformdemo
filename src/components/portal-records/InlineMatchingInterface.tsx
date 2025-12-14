@@ -6,6 +6,7 @@ import { InvoiceSearchSection } from "./actions/match-modal/components/InvoiceSe
 import { InvoiceList } from "./actions/match-modal/components/InvoiceList";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { AlertTriangle, FileText, CalendarIcon, Search, X, Sparkles } from "lucide-react";
+import { ExceptionBanner } from "@/components/ui/exception-banner";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { InvoiceModals } from "./actions/match-modal/components/InvoiceModals";
 import { getInvoiceSuggestions, InvoiceMatch } from "@/utils/invoiceMatching";
@@ -13,6 +14,10 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
+// Toggle between card view (false) and table view (true) for Monto's Suggestions
+const USE_TABLE_SUGGESTIONS = true;
 
 interface InlineMatchingInterfaceProps {
   record: PortalRecord;
@@ -112,6 +117,13 @@ export function InlineMatchingInterface({
   return (
     <>
       <div className="space-y-6">
+        {/* No Match Found Banner - only show for unmatched records */}
+        {(record.matchType === 'Unmatched' || record.matchStatus === 'Unmatched') && (
+          <ExceptionBanner variant="error" icon="circle">
+            No RTP match was found for this portal record. Please select or search for an invoice to associate.
+          </ExceptionBanner>
+        )}
+
         {/* Main Container */}
         <div className="border border-border rounded-lg p-6 bg-background">
           <div className="space-y-6">
@@ -129,7 +141,7 @@ export function InlineMatchingInterface({
                   placeholder="Search invoices..."
                   value={searchTerm}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  className="pl-10 h-10"
+                  className="pl-10 h-10 bg-white"
                 />
                 {searchTerm && (
                   <Button
@@ -181,8 +193,101 @@ export function InlineMatchingInterface({
               </p>
             )}
 
-            {/* Monto's Suggestions - show directly here */}
-            {showSuggestions && (
+            {/* Monto's Suggestions - Table Version */}
+            {showSuggestions && USE_TABLE_SUGGESTIONS && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <Label className="text-sm font-medium text-primary">Monto's Suggestions</Label>
+                </div>
+                {suggestions.length > 0 ? (
+                  <div className="border rounded-lg overflow-x-auto bg-white">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-[#F6F7F9] hover:bg-[#F6F7F9]">
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[200px] min-w-[200px]">Invoice Number</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[200px] min-w-[200px]">Buyer</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[140px] min-w-[140px]">Invoice Date</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[160px] min-w-[160px]">Monto Status</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[180px] min-w-[180px]">Portal</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[140px] min-w-[140px]">Total</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[140px] min-w-[140px]">PO Number</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[140px] min-w-[140px]">Due Date</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[120px] min-w-[120px]">Net Terms</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[120px] min-w-[120px]">Notes</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[120px] min-w-[120px]">Source</TableHead>
+                          <TableHead className="h-[56px] px-6 text-left align-middle font-semibold text-gray-700 text-sm w-[180px] min-w-[180px]">Owner</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {suggestions.slice(0, 5).map((match) => {
+                          const isSelected = selectedInvoiceId === match.invoice.id;
+                          return (
+                            <TableRow
+                              key={match.invoice.id}
+                              className={`cursor-pointer transition-colors h-[56px] ${
+                                isSelected
+                                  ? 'bg-primary-lighter'
+                                  : 'bg-white hover:bg-gray-50'
+                              }`}
+                              onClick={() => handleSuggestionSelect(match.invoice.id)}
+                            >
+                              <TableCell className="px-6 py-4 w-[200px] min-w-[200px] text-sm font-medium">{match.invoice.number}</TableCell>
+                              <TableCell className="px-6 py-4 w-[200px] min-w-[200px] text-sm truncate">{match.invoice.buyer}</TableCell>
+                              <TableCell className="px-6 py-4 w-[140px] min-w-[140px] text-sm">{match.invoice.invoiceDate || '-'}</TableCell>
+                              <TableCell className="px-6 py-4 w-[160px] min-w-[160px]">
+                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                  match.invoice.status === 'Pending Action'
+                                    ? 'bg-warning-main/20 text-warning-main'
+                                    : match.invoice.status === 'Approved'
+                                    ? 'bg-success-main/20 text-success-main'
+                                    : 'bg-grey-200 text-grey-700'
+                                }`}>
+                                  {match.invoice.status}
+                                </span>
+                              </TableCell>
+                              <TableCell className="px-6 py-4 w-[180px] min-w-[180px] text-sm">{match.invoice.portal || '-'}</TableCell>
+                              <TableCell className="px-6 py-4 w-[140px] min-w-[140px] text-sm font-medium">
+                                {new Intl.NumberFormat('en-US', {
+                                  style: 'currency',
+                                  currency: match.invoice.currency || 'USD',
+                                }).format(match.invoice.total)}
+                              </TableCell>
+                              <TableCell className="px-6 py-4 w-[140px] min-w-[140px] text-sm">{match.invoice.poNumber || '-'}</TableCell>
+                              <TableCell className="px-6 py-4 w-[140px] min-w-[140px] text-sm">{match.invoice.dueDate}</TableCell>
+                              <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.paymentTerms || '-'}</TableCell>
+                              <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.notes || '-'}</TableCell>
+                              <TableCell className="px-6 py-4 w-[120px] min-w-[120px] text-sm">{match.invoice.source || '-'}</TableCell>
+                              <TableCell className="px-6 py-4 w-[180px] min-w-[180px] text-sm truncate">{match.invoice.owner}</TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    No suggestions available for this record
+                  </p>
+                )}
+
+                {/* Didn't find an invoice section for suggestions */}
+                <div className="text-center py-8 mt-4">
+                  <p className="text-base text-muted-foreground">
+                    Didn't find an invoice? Upload an invoice PDF to{" "}
+                    <span
+                      className="text-primary cursor-pointer hover:underline font-semibold"
+                      onClick={handleMatchAndCreateRTP}
+                    >
+                      create a new RTP record
+                    </span>
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Monto's Suggestions - Card Version (Original) */}
+            {showSuggestions && !USE_TABLE_SUGGESTIONS && (
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-primary" />

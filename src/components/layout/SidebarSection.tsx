@@ -59,7 +59,8 @@ export function SidebarSection({
   const isItemActive = (item: NavItem) => {
     if (item.href) {
       const basePath = item.href.split('?')[0];
-      return pathname === item.href || pathname === basePath;
+      // Check exact match or if current path starts with the href (for detail pages)
+      return pathname === item.href || pathname === basePath || pathname.startsWith(basePath + '/');
     }
     return false;
   };
@@ -67,16 +68,18 @@ export function SidebarSection({
   const getSubItemActiveState = (parentItem: NavItem, subItem: NavItem) => {
     const basePath = subItem.href?.split('?')[0] || '';
     const query = subItem.href?.split('?')[1] || '';
-    
+
     if (parentItem.title === "Request-to-Pay") {
       if (subItem.href === "/invoices" && pathname === "/invoices" && !search) return true;
+      if (subItem.href === "/invoices" && pathname.startsWith("/invoices/")) return true;
       if (query && search.includes(query.split('=')[1])) return true;
     } else if (parentItem.title === "Portals Dashboard") {
-      if (pathname === basePath) return true;
+      // Check exact match or if on a detail page
+      if (pathname === basePath || pathname.startsWith(basePath + '/')) return true;
     } else if (parentItem.title === "Connection Hub") {
-      if (pathname === basePath) return true;
+      if (pathname === basePath || pathname.startsWith(basePath + '/')) return true;
     }
-    
+
     return false;
   };
 
@@ -103,7 +106,7 @@ export function SidebarSection({
                   className={cn(
                     "flex items-center justify-between gap-2 px-3 py-2 text-sm font-normal rounded-md transition-colors w-full text-left",
                     "text-[#3F4758] hover:bg-[#F4F4F7]",
-                    isSubActive && "text-[#7B59FF] font-normal bg-[#F0EDFF]"
+                    isSubActive && "text-[#7B59FF] font-normal bg-[#EFEBFF]"
                   )}
                 >
                   <div className="flex items-center gap-2">
@@ -135,7 +138,7 @@ export function SidebarSection({
               className={cn(
                 "block px-3 py-2 text-sm font-normal rounded-md transition-colors text-left",
                 "text-[#3F4758] hover:bg-[#F4F4F7]",
-                isSubActive && "text-[#7B59FF] font-normal bg-[#F0EDFF]"
+                isSubActive && "text-[#7B59FF] font-normal bg-[#EFEBFF]"
               )}
             >
               {subItem.title}
@@ -168,7 +171,7 @@ export function SidebarSection({
                     }}
                     className={cn(
                       "flex items-center justify-center w-10 h-10 rounded-lg transition-colors",
-                      isActive ? "bg-[#F0EDFF] text-[#7B59FF]" : "text-[#3F4758] hover:bg-[#F4F4F7]"
+                      isActive ? "bg-[#EFEBFF] text-[#7B59FF]" : "text-[#3F4758] hover:bg-[#F4F4F7]"
                     )}
                   >
                     {item.icon && React.createElement(item.icon, {
@@ -193,7 +196,7 @@ export function SidebarSection({
                   className={cn(
                     "flex items-center justify-between gap-3 px-3 py-3 text-sm font-normal rounded-md transition-colors w-full text-left",
                     "text-[#3F4758] hover:bg-[#F4F4F7]",
-                    isActive && "bg-[#F0EDFF] text-[#7B59FF] font-normal"
+                    isActive && "bg-[#EFEBFF] text-[#7B59FF] font-normal"
                   )}
                   aria-expanded={isExpanded}
                 >
@@ -227,7 +230,7 @@ export function SidebarSection({
               className={cn(
                 "flex items-center gap-3 px-3 py-3 text-sm font-normal rounded-md transition-colors w-full text-left",
                 "text-[#3F4758] hover:bg-[#F4F4F7]",
-                isActive && "bg-[#F0EDFF] text-[#7B59FF] font-normal",
+                isActive && "bg-[#EFEBFF] text-[#7B59FF] font-normal",
                 item.hidden && "opacity-0"
               )}
               onClick={item.id === "chat-ai-nav" && onChatAIOpen ? onChatAIOpen : undefined}

@@ -69,9 +69,9 @@ export function InvoiceTableRow({
       </TableCell>
       
       <TableCell className="px-4 py-3 w-[200px] min-w-[200px] text-sm">
-        {invoice.dueDate}
+        {invoice.invoiceDate}
       </TableCell>
-      
+
       <TableCell className="px-4 py-3 w-[200px] min-w-[200px]">
         <StatusBadge status={invoice.status} showTooltip={true} />
       </TableCell>
@@ -131,7 +131,7 @@ export function InvoiceTableRow({
       </TableCell>
 
       <TableCell className="px-4 py-3 w-[200px] min-w-[200px] text-sm">
-        {invoice.invoiceDate}
+        {invoice.dueDate}
       </TableCell>
 
       <TableCell className="px-4 py-3 w-[200px] min-w-[200px] text-sm">

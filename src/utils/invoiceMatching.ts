@@ -74,9 +74,25 @@ export function getInvoiceSuggestions(
   });
 
   // Sort by score (descending) and return top matches
-  return matches
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit);
+  const sortedMatches = matches.sort((a, b) => b.score - a.score);
+
+  // If we don't have enough matches, fill with other invoices (for demo purposes)
+  if (sortedMatches.length < limit) {
+    const matchedIds = new Set(sortedMatches.map(m => m.invoice.id));
+    const remainingInvoices = invoices
+      .filter(inv => !matchedIds.has(inv.id))
+      .slice(0, limit - sortedMatches.length);
+
+    remainingInvoices.forEach(invoice => {
+      sortedMatches.push({
+        invoice,
+        score: 0,
+        matchReasons: []
+      });
+    });
+  }
+
+  return sortedMatches.slice(0, limit);
 }
 
 function checkPartialIdMatch(portalRecordId: string, invoice: Invoice): MatchReason | null {

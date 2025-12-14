@@ -16,7 +16,7 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
   const { companyInfo } = useCompany();
   const isCollapsed = sidebarState === "collapsed";
   return (
-    <Sidebar variant="sidebar" collapsible="icon" className="z-40 w-64 bg-[#FAFAFA] border-r border-[#E4E5E9] transition-all duration-300">
+    <Sidebar variant="sidebar" collapsible="icon" className="z-40 w-64 bg-white border-r border-[#E4E5E9] transition-all duration-300">
       <SidebarHeader className="border-b border-[#E4E5E9] h-[64px] flex items-center justify-start p-0">
         <div className={`flex items-center gap-3 mt-[10px] ${isCollapsed ? 'justify-center w-full' : '-ml-[100px]'}`}>
           {isCollapsed ? (
@@ -30,7 +30,7 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="bg-[#FAFAFA] overflow-y-auto transition-all duration-300 px-3 py-[24px]">
+      <SidebarContent className="bg-white overflow-y-auto transition-all duration-300 px-3 py-[24px]">
         <div className="space-y-6">
           <SidebarSection items={navMain} />
         </div>
@@ -40,7 +40,7 @@ export function AppSidebar({ onChatAIOpen }: AppSidebarProps) {
         </div>
       </SidebarContent>
       
-      <SidebarFooter className="border-t border-[#E4E5E9] px-3 py-4 bg-[#FAFAFA] space-y-3">
+      <SidebarFooter className="border-t border-[#E4E5E9] px-3 py-4 bg-white space-y-3">
         <SidebarSection items={navUser} onChatAIOpen={onChatAIOpen} />
       </SidebarFooter>
     </Sidebar>

@@ -44,7 +44,7 @@ export function InvoiceTableHeader({
         </TableHead>
 
         <TableHead className="h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm bg-[#F6F7F9] w-[200px] min-w-[200px]">
-          {renderSortButton('dueDate', 'Due Date')}
+          {renderSortButton('invoiceDate', 'Invoice Date')}
         </TableHead>
 
         <TableHead className="h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm bg-[#F6F7F9] w-[200px] min-w-[200px]">
@@ -64,7 +64,7 @@ export function InvoiceTableHeader({
         </TableHead>
 
         <TableHead className="h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm bg-[#F6F7F9] w-[200px] min-w-[200px]">
-          {renderSortButton('invoiceDate', 'Invoice Date')}
+          {renderSortButton('dueDate', 'Due Date')}
         </TableHead>
 
         <TableHead className="h-[50px] px-4 text-left align-middle font-semibold text-gray-700 text-sm bg-[#F6F7F9] w-[200px] min-w-[200px]">

@@ -18,12 +18,12 @@ export function MainLayout() {
     <SidebarProvider>
       <AppSidebar onChatAIOpen={handleOpenChatAIModal} />
       <SidebarInset className="overflow-x-hidden h-screen flex flex-col">
-        <div className="flex-shrink-0 sticky top-0 z-50 h-8 bg-white">
+        <div className="flex-shrink-0 sticky top-0 z-50 h-8 bg-[#FCFCFD]">
           <div className="flex h-full items-center px-4">
             <SidebarTrigger className="p-1.5 h-8 w-8 hover:bg-transparent rounded-md opacity-20 bg-transparent" />
           </div>
         </div>
-        <main className="flex-1 bg-white overflow-y-auto min-h-0">
+        <main className="flex-1 bg-[#FCFCFD] overflow-y-auto min-h-0">
           <div className="w-full px-8 py-6">
             <Outlet />
           </div>
