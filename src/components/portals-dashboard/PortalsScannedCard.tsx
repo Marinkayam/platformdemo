@@ -41,8 +41,9 @@ export function PortalsScannedCard({ portalsCount, recentPortals, isLoading = fa
     "Microsoft", "Oracle", "SAP", "Salesforce", "Google", "Apple"
   ];
 
-  // Display portals for the icon row
-  const displayPortals = ["Walmart", "Amazon", "Home Depot", "Target", "Best Buy"];
+  // Display portals for the icon rows (2 rows of 6)
+  const displayPortalsRow1 = ["Walmart", "Amazon", "Home Depot", "Target", "Best Buy", "Costco"];
+  const displayPortalsRow2 = ["Microsoft", "Oracle", "SAP", "Salesforce", "Google", "Apple"];
 
   // Mock portal data with connected agents
   const allPortalsData = [
@@ -162,31 +163,46 @@ export function PortalsScannedCard({ portalsCount, recentPortals, isLoading = fa
         </div>
       </div>
 
-      {/* Portal Icons */}
-      <div className="flex items-center justify-center gap-4 mb-6">
-        {displayPortals.map((portal, idx) => {
-          const colorInfo = portalColors[portal] || { bg: "bg-gray-500", letter: portal[0] };
-          return (
+      {/* Portal Icons - 2 Rows */}
+      <div className="space-y-3 mb-6">
+        {/* Row 1 */}
+        <div className="flex items-center justify-center gap-3">
+          {displayPortalsRow1.map((portal, idx) => (
             <motion.div
               key={portal}
-              className={`w-9 h-9 rounded-full ${colorInfo.bg} flex items-center justify-center`}
+              className="w-8 h-8 rounded-full border border-gray-200 bg-white overflow-hidden shadow-sm"
               title={portal}
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: isLoading ? 0 : 1, scale: isLoading ? 0 : 1 }}
               transition={{ duration: 0.3, delay: 0.8 + 0.05 * idx }}
             >
-              <span className="text-white font-bold text-sm">{colorInfo.letter}</span>
+              <img
+                src={getPortalLogoUrl(portal)}
+                alt={portal}
+                className="w-full h-full object-contain p-1"
+              />
             </motion.div>
-          );
-        })}
-        <motion.div
-          className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center"
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: isLoading ? 0 : 1, scale: isLoading ? 0 : 1 }}
-          transition={{ duration: 0.3, delay: 1.1 }}
-        >
-          <span className="text-gray-600 font-bold text-sm">+</span>
-        </motion.div>
+          ))}
+        </div>
+        {/* Row 2 */}
+        <div className="flex items-center justify-center gap-3">
+          {displayPortalsRow2.map((portal, idx) => (
+            <motion.div
+              key={portal}
+              className="w-8 h-8 rounded-full border border-gray-200 bg-white overflow-hidden shadow-sm"
+              title={portal}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: isLoading ? 0 : 1, scale: isLoading ? 0 : 1 }}
+              transition={{ duration: 0.3, delay: 0.9 + 0.05 * idx }}
+            >
+              <img
+                src={getPortalLogoUrl(portal)}
+                alt={portal}
+                className="w-full h-full object-contain p-1"
+              />
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       <Dialog>
