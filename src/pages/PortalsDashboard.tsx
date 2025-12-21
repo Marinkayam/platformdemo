@@ -260,7 +260,7 @@ export default function PortalsDashboard() {
 
         {/* Purchase Orders Card */}
         <motion.div
-          className="bg-white rounded-2xl border border-gray-200 p-6"
+          className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
@@ -336,48 +336,48 @@ export default function PortalsDashboard() {
 
           {/* Growth Chart */}
           {!isLoading && (
-            <div className="mb-5">
-              <div className="flex items-center justify-between mb-3">
+            <div className="mb-6 py-4 px-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between mb-4">
                 <span className="text-[10px] font-medium text-gray-500">Value Growth (6 months)</span>
                 <span className="text-[10px] font-semibold text-emerald-600">+100%</span>
               </div>
-              <div className="flex items-end gap-3">
-                <span className="text-[10px] text-gray-400">$2.1M</span>
-                <svg width="100%" height="24" className="flex-1" viewBox="0 0 200 24" preserveAspectRatio="none">
+              <div className="flex items-end gap-4">
+                <span className="text-xs text-gray-400">$2.1M</span>
+                <svg width="100%" height="36" className="flex-1" viewBox="0 0 200 36" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="poGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#7B59FF" stopOpacity="0.2" />
+                      <stop offset="0%" stopColor="#7B59FF" stopOpacity="0.25" />
                       <stop offset="100%" stopColor="#7B59FF" stopOpacity="0" />
                     </linearGradient>
                   </defs>
                   <motion.path
-                    d="M0 20 L25 17 L50 14 L75 11 L100 8 L125 6 L150 4 L175 3 L200 2 L200 24 L0 24 Z"
+                    d="M0 32 L25 27 L50 22 L75 17 L100 12 L125 8 L150 5 L175 4 L200 2 L200 36 L0 36 Z"
                     fill="url(#poGradient)"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
                   />
                   <motion.path
-                    d="M0 20 L25 17 L50 14 L75 11 L100 8 L125 6 L150 4 L175 3 L200 2"
+                    d="M0 32 L25 27 L50 22 L75 17 L100 12 L125 8 L150 5 L175 4 L200 2"
                     fill="none"
                     stroke="#7B59FF"
-                    strokeWidth="1.5"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
                   />
                 </svg>
-                <span className="text-[10px] font-semibold text-primary">$4.2M</span>
+                <span className="text-xs font-semibold text-primary">$4.2M</span>
               </div>
             </div>
           )}
 
-          {/* Top 4 Open POs */}
+          {/* Top 3 Open POs */}
           <div>
-            <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-3">Top 4 Open POs</div>
+            <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-3">Top 3 Open POs</div>
             <div className="space-y-3">
-              {fakeData.openPOs.slice(0, 4).map((po, index) => (
+              {fakeData.openPOs.slice(0, 3).map((po, index) => (
                 <motion.div
                   key={index}
                   className="flex justify-between text-xs"
@@ -393,19 +393,21 @@ export default function PortalsDashboard() {
             </div>
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full mt-4 py-2.5 text-xs font-medium text-gray-600 border-gray-200 hover:bg-gray-50"
-            asChild
-          >
-            <Link to="/purchase-orders">View POs</Link>
-          </Button>
+          <div className="mt-auto pt-4">
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full py-2.5 text-xs font-medium text-gray-600 border-gray-200 hover:bg-gray-50"
+              asChild
+            >
+              <Link to="/purchase-orders">View Purchase Orders</Link>
+            </Button>
+          </div>
         </motion.div>
 
         {/* Invoice Portal Records Card */}
         <motion.div
-          className="bg-white rounded-2xl border border-gray-200 p-6"
+          className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
@@ -481,48 +483,48 @@ export default function PortalsDashboard() {
 
           {/* Growth Chart */}
           {!isLoading && (
-            <div className="mb-5">
-              <div className="flex items-center justify-between mb-3">
+            <div className="mb-6 py-4 px-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between mb-4">
                 <span className="text-[10px] font-medium text-gray-500">Value Growth (6 months)</span>
                 <span className="text-[10px] font-semibold text-emerald-600">+107%</span>
               </div>
-              <div className="flex items-end gap-3">
-                <span className="text-[10px] text-gray-400">$4.2M</span>
-                <svg width="100%" height="24" className="flex-1" viewBox="0 0 200 24" preserveAspectRatio="none">
+              <div className="flex items-end gap-4">
+                <span className="text-xs text-gray-400">$4.2M</span>
+                <svg width="100%" height="36" className="flex-1" viewBox="0 0 200 36" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="invoiceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#7B59FF" stopOpacity="0.2" />
+                      <stop offset="0%" stopColor="#7B59FF" stopOpacity="0.25" />
                       <stop offset="100%" stopColor="#7B59FF" stopOpacity="0" />
                     </linearGradient>
                   </defs>
                   <motion.path
-                    d="M0 20 L25 17 L50 14 L75 10 L100 7 L125 5 L150 4 L175 3 L200 2 L200 24 L0 24 Z"
+                    d="M0 32 L25 28 L50 22 L75 16 L100 11 L125 7 L150 5 L175 4 L200 2 L200 36 L0 36 Z"
                     fill="url(#invoiceGradient)"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
                   />
                   <motion.path
-                    d="M0 20 L25 17 L50 14 L75 10 L100 7 L125 5 L150 4 L175 3 L200 2"
+                    d="M0 32 L25 28 L50 22 L75 16 L100 11 L125 7 L150 5 L175 4 L200 2"
                     fill="none"
                     stroke="#7B59FF"
-                    strokeWidth="1.5"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
                   />
                 </svg>
-                <span className="text-[10px] font-semibold text-primary">$8.7M</span>
+                <span className="text-xs font-semibold text-primary">$8.7M</span>
               </div>
             </div>
           )}
 
-          {/* Top 4 Recent Invoices */}
+          {/* Top 3 Recent Invoices */}
           <div>
-            <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-3">Top 4 Recent Invoices</div>
+            <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-3">Top 3 Recent Invoices</div>
             <div className="space-y-3">
-              {fakeData.recentInvoices.slice(0, 4).map((invoice, index) => (
+              {fakeData.recentInvoices.slice(0, 3).map((invoice, index) => (
                 <motion.div
                   key={index}
                   className="flex justify-between text-xs"
@@ -538,19 +540,21 @@ export default function PortalsDashboard() {
             </div>
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full mt-4 py-2.5 text-xs font-medium text-gray-600 border-gray-200 hover:bg-gray-50"
-            asChild
-          >
-            <Link to="/portal-records">View Portal Records</Link>
-          </Button>
+          <div className="mt-auto pt-4">
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full py-2.5 text-xs font-medium text-gray-600 border-gray-200 hover:bg-gray-50"
+              asChild
+            >
+              <Link to="/portal-records">View Portal Records</Link>
+            </Button>
+          </div>
         </motion.div>
 
         {/* Rejected Portal Records Card */}
         <motion.div
-          className="bg-white rounded-2xl border border-gray-200 p-6"
+          className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
@@ -717,23 +721,25 @@ export default function PortalsDashboard() {
           </div>
 
           {/* Two Buttons */}
-          <div className="grid grid-cols-2 gap-3 mt-4">
-            <Button
-              variant="outline"
-              size="sm"
-              className="py-2 text-xs font-medium text-error-main bg-red-50 border-red-100 hover:bg-red-100"
-              asChild
-            >
-              <Link to="/portal-records?status=rejected">Rejected Records</Link>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="py-2 text-xs font-medium text-amber-700 bg-amber-50 border-amber-100 hover:bg-amber-100"
-              asChild
-            >
-              <Link to="/invoices?status=pending">Pending RTPs</Link>
-            </Button>
+          <div className="mt-auto pt-4">
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="py-2.5 text-xs font-medium text-error-main bg-red-50 border-red-100 hover:bg-red-100"
+                asChild
+              >
+                <Link to="/portal-records?status=rejected">Rejected Records</Link>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="py-2.5 text-xs font-medium text-amber-700 bg-amber-50 border-amber-100 hover:bg-amber-100"
+                asChild
+              >
+                <Link to="/invoices?status=pending">Pending RTPs</Link>
+              </Button>
+            </div>
           </div>
         </motion.div>
       </div>
