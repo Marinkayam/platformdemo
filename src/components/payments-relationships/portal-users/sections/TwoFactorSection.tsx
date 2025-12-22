@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { View2FAModal } from "../View2FAModal";
-import { ConfirmRemoveModal } from "../ConfirmRemoveModal";
 import { TwoFactorMethodDetails } from "./TwoFactorMethodDetails";
 import { TwoFactorStatusField } from "./two-factor/TwoFactorStatusField";
 import { TwoFactorMethodSelector } from "./two-factor/TwoFactorMethodSelector";
@@ -36,23 +35,13 @@ export function TwoFactorSection({
   isViewOnly = false
 }: TwoFactorSectionProps) {
   const [isView2FAModalOpen, setIsView2FAModalOpen] = useState(false);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const currentTwoFAEnabled = isEditMode ? editFormData?.twoFAEnabled ?? mockCredentials.twoFAEnabled : mockCredentials.twoFAEnabled;
   const currentTwoFAMethod = isEditMode ? editFormData?.twoFAMethod ?? 'authenticator' : 'authenticator';
 
   const handleToggle2FA = (enabled: boolean) => {
     if (isEditMode) {
-      if (!enabled && currentTwoFAEnabled) {
-        setIsConfirmModalOpen(true);
-      } else {
-        onFormChange?.('twoFAEnabled', enabled);
-      }
+      onFormChange?.('twoFAEnabled', enabled);
     }
-  };
-
-  const handleConfirmDisable = () => {
-    onFormChange?.('twoFAEnabled', false);
-    setIsConfirmModalOpen(false);
   };
 
   const handleMethodChange = (method: string) => {
@@ -116,17 +105,10 @@ export function TwoFactorSection({
         />
       )}
 
-      <View2FAModal 
+      <View2FAModal
         isOpen={isView2FAModalOpen}
         onClose={() => setIsView2FAModalOpen(false)}
         portalUserId={portalUserId}
-      />
-
-      <ConfirmRemoveModal
-        isOpen={isConfirmModalOpen}
-        onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={handleConfirmDisable}
-        itemName="Two-Factor Authentication"
       />
     </>
   );

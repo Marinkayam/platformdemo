@@ -13,8 +13,19 @@ import { WizardFooter } from './add-portal-user-wizard/WizardFooter';
 import { WizardStep, UserType, FormData } from './add-portal-user-wizard/types';
 import { Upload, Info } from 'lucide-react';
 import { BulkUploadModal } from './BulkUploadModal';
+import { DuplicateScanAgentContent, ExistingAgentData } from './DuplicateScanAgentModal';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { WizardProgress } from '@/components/ui/wizard-progress';
+
+// Mock duplicate agent data for demo
+const DUPLICATE_AGENT_DATA = {
+  username: 'maya@montopay.com',
+  userType: 'Customer User',
+  portal: 'Amazon',
+  portalLink: 'https://vendorcentral.amazon.com',
+  password: '••••••••',
+  status: 'Connected'
+};
 
 interface AddPortalUserWizardProps {
   isOpen: boolean;
@@ -24,9 +35,10 @@ interface AddPortalUserWizardProps {
   portalUser?: PortalUser;
   isEmbedded?: boolean;
   onStepChange?: (step: string) => void;
+  onOpenExistingAgent?: (username: string, portal: string) => void;
 }
 
-export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', portalUser, isEmbedded = false, onStepChange }: AddPortalUserWizardProps) {
+export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', portalUser, isEmbedded = false, onStepChange, onOpenExistingAgent }: AddPortalUserWizardProps) {
   const [currentStep, setCurrentStep] = useState<WizardStep>('portal');
   const [selectedPortal, setSelectedPortal] = useState<string>('');
   const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
@@ -78,9 +90,36 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
       return;
     }
 
+    // Check for duplicate scan agent (demo case: Amazon + maya@montopay.com)
+    const isDuplicate =
+      selectedPortal.toLowerCase() === 'amazon' &&
+      formData.username.toLowerCase() === 'maya@montopay.com';
+
+    if (isDuplicate) {
+      setCurrentStep('duplicate' as WizardStep);
+      return;
+    }
+
     // Start the connection flow
     setIsSubmitting(true);
     setCurrentStep('connecting');
+  };
+
+  const handleCreateAnyway = () => {
+    setIsSubmitting(true);
+    setCurrentStep('connecting');
+  };
+
+  const handleUpdateExistingAgent = (data: ExistingAgentData) => {
+    // Close the wizard and open the existing agent's detail modal
+    onClose();
+    if (onOpenExistingAgent) {
+      onOpenExistingAgent(data.username, data.portal);
+    }
+  };
+
+  const handleBackFromDuplicate = () => {
+    setCurrentStep('setup');
   };
 
   const handleConnectionComplete = () => {
@@ -130,20 +169,20 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 'portal':
-        return <PortalSelectionStep 
+        return <PortalSelectionStep
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           selectedPortal={selectedPortal}
           onPortalSelect={setSelectedPortal}
         />;
       case 'userType':
-        return <UserTypeStep 
+        return <UserTypeStep
           selectedUserType={selectedUserType}
           onUserTypeSelect={setSelectedUserType}
         />;
       case 'setup':
-        return selectedUserType === 'existing' 
-          ? <ExistingUserSetupStep 
+        return selectedUserType === 'existing'
+          ? <ExistingUserSetupStep
               selectedPortal={selectedPortal}
               formData={formData}
               setFormData={setFormData}
@@ -151,15 +190,22 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
               setShowPassword={setShowPassword}
               showConfirmPassword={showConfirmPassword}
               setShowConfirmPassword={setShowConfirmPassword}
-            /> 
-          : <DedicatedUserSetupStep 
+            />
+          : <DedicatedUserSetupStep
               selectedPortal={selectedPortal}
               isDedicatedUserConfirmed={isDedicatedUserConfirmed}
               setIsDedicatedUserConfirmed={setIsDedicatedUserConfirmed}
             />;
+      case 'duplicate' as WizardStep:
+        return <DuplicateScanAgentContent
+          existingAgent={DUPLICATE_AGENT_DATA}
+          onUpdateExisting={handleUpdateExistingAgent}
+          onCreateAnyway={handleCreateAnyway}
+          onBack={handleBackFromDuplicate}
+        />;
       case 'connecting':
       case 'success':
-        return <ConnectionProgressStep 
+        return <ConnectionProgressStep
           selectedPortal={selectedPortal}
           onConnectionComplete={handleConnectionComplete}
         />;
@@ -191,39 +237,41 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
   // When embedded, just return the content without Dialog wrapper
   if (isEmbedded) {
     return (
-      <div className="px-6 pb-6">
-        {showBulkUploadModal ? (
-          <BulkUploadModal
-            isOpen={true}
-            onClose={() => setShowBulkUploadModal(false)}
-            onImport={handleBulkImport}
-          />
-        ) : (
-          <div className="space-y-6">
-            {currentStep !== 'connecting' && currentStep !== 'success' && (
-              <div className="pt-2">
-                <WizardProgress steps={wizardSteps} currentStep={currentStep} />
-              </div>
-            )}
-            {renderCurrentStep()}
-            
-            {currentStep !== 'connecting' && currentStep !== 'success' && (
-              <WizardFooter
-                currentStep={currentStep}
-                selectedPortal={selectedPortal}
-                selectedUserType={selectedUserType}
-                formData={formData}
-                onBack={handleBack}
-                onNext={handleNext}
-                onClose={handleCloseAttempt}
-                onSubmit={handleSubmit}
-                isSubmitting={isSubmitting}
-                onBulkUpload={undefined}
-              />
-            )}
-          </div>
-        )}
-      </div>
+      <>
+        <div className="px-6 pb-6">
+          {showBulkUploadModal ? (
+            <BulkUploadModal
+              isOpen={true}
+              onClose={() => setShowBulkUploadModal(false)}
+              onImport={handleBulkImport}
+            />
+          ) : (
+            <div className="space-y-6">
+              {currentStep !== 'connecting' && currentStep !== 'success' && currentStep !== ('duplicate' as WizardStep) && (
+                <div className="pt-2">
+                  <WizardProgress steps={wizardSteps} currentStep={currentStep} />
+                </div>
+              )}
+              {renderCurrentStep()}
+
+              {currentStep !== 'connecting' && currentStep !== 'success' && currentStep !== ('duplicate' as WizardStep) && (
+                <WizardFooter
+                  currentStep={currentStep}
+                  selectedPortal={selectedPortal}
+                  selectedUserType={selectedUserType}
+                  formData={formData}
+                  onBack={handleBack}
+                  onNext={handleNext}
+                  onClose={handleCloseAttempt}
+                  onSubmit={handleSubmit}
+                  isSubmitting={isSubmitting}
+                  onBulkUpload={undefined}
+                />
+              )}
+            </div>
+          )}
+        </div>
+      </>
     );
   }
 
@@ -276,13 +324,13 @@ export function AddPortalUserWizard({ isOpen, onClose, onSave, mode = 'create', 
               />
             ) : (
               <div className="space-y-6">
-                {currentStep !== 'connecting' && currentStep !== 'success' && (
+                {currentStep !== 'connecting' && currentStep !== 'success' && currentStep !== ('duplicate' as WizardStep) && (
                   <WizardProgress steps={wizardSteps} currentStep={currentStep} className="mb-6" />
                 )}
                 {renderCurrentStep()}
 
-                {/* Only show footer if not in connection flow */}
-                {currentStep !== 'connecting' && currentStep !== 'success' && (
+                {/* Only show footer if not in connection flow or duplicate step */}
+                {currentStep !== 'connecting' && currentStep !== 'success' && currentStep !== ('duplicate' as WizardStep) && (
                   <WizardFooter
                     currentStep={currentStep}
                     selectedPortal={selectedPortal}

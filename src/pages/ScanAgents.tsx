@@ -119,6 +119,18 @@ export default function ScanAgents() {
     setIsAddPortalUserModalOpen(false);
   };
 
+  const handleOpenExistingAgent = (username: string, portal: string) => {
+    // Find the existing agent by username and portal
+    const existingAgent = portalUsers.find(
+      u => u.username.toLowerCase() === username.toLowerCase() &&
+           u.portal.toLowerCase() === portal.toLowerCase()
+    );
+    if (existingAgent) {
+      setSelectedPortalUser(existingAgent);
+      setIsDetailModalOpen(true);
+    }
+  };
+
   // Handle opening modal from URL parameter
   useEffect(() => {
     const openAgentModal = searchParams.get('openAgentModal');
@@ -247,6 +259,7 @@ export default function ScanAgents() {
         onClose={() => setIsAddPortalUserModalOpen(false)}
         mode="create"
         onSave={handleAddModalSubmit}
+        onOpenExistingAgent={handleOpenExistingAgent}
       />
 
       <ConfirmRemoveModal

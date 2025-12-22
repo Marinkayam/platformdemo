@@ -25,35 +25,28 @@ export function TwoFactorMethodSelector({
         <p className="text-xs text-gray-500 mt-1">Select how you want to receive verification codes</p>
       </div>
       
-      <div className="grid gap-3">
+      <div className="grid grid-cols-3 gap-3">
         {methodOptions.map((option) => {
           const IconComponent = option.icon;
           const isSelected = currentTwoFAMethod === option.value;
-          
+
           return (
             <div
               key={option.value}
               className={`relative p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                isSelected 
-                  ? 'border-primary bg-primary/5' 
+                isSelected
+                  ? 'border-primary bg-primary/5'
                   : 'border-gray-200 hover:border-gray-300 bg-white'
               }`}
               onClick={() => onMethodChange(option.value)}
             >
-              <div className="flex items-start gap-3">
+              <div className="flex flex-col items-center text-center gap-2">
                 <div className={`p-2 rounded-md ${isSelected ? 'bg-primary/10' : 'bg-gray-100'}`}>
                   <IconComponent className={`h-4 w-4 ${isSelected ? 'text-primary' : 'text-gray-600'}`} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-gray-900'}`}>
-                      {option.label}
-                    </span>
-                  </div>
-                  <p className={`text-xs mt-1 ${isSelected ? 'text-primary/70' : 'text-gray-500'}`}>
-                    {option.description}
-                  </p>
-                </div>
+                <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-gray-900'}`}>
+                  {option.label}
+                </span>
               </div>
             </div>
           );

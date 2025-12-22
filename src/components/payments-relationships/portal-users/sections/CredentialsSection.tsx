@@ -49,6 +49,7 @@ export function CredentialsSection({
 
   return (
     <div className="space-y-4">
+      {/* Portal URL - Full width */}
       <div className="space-y-2">
         <Label htmlFor="portal-url" className="text-sm">Portal URL</Label>
         <div className="flex gap-2">
@@ -73,70 +74,75 @@ export function CredentialsSection({
           )}
         </div>
       </div>
-      
+
+      {/* Password fields - 2 columns when in edit mode */}
       {!hidePassword && (
-        <div className="space-y-2">
-          <Label htmlFor="password" className="text-sm">Password</Label>
-          <div className="space-y-1">
-            <div className="flex gap-2">
-              <Input 
-                id="password" 
-                type={showPassword ? "text" : "password"}
-                value={showPassword ? currentPassword : "••••••••••••"} 
-                readOnly={!isEditMode}
-                onChange={(e) => isEditMode && showPassword && onFormChange?.('password', e.target.value)}
-                className={`${isEditMode ? 'bg-white' : 'bg-gray-50'} font-mono h-10 text-sm ${errors.password ? 'border-red-500' : ''}`} 
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowPassword(!showPassword)}
-                className="h-10"
-              >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => copyToClipboard(currentPassword)}
-                className="h-10"
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
+        <div className={isEditMode ? "grid grid-cols-2 gap-4" : "space-y-4"}>
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-sm">Password</Label>
+            <div className="space-y-1">
+              <div className="flex gap-2">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={showPassword ? currentPassword : "••••••••••••"}
+                  readOnly={!isEditMode}
+                  onChange={(e) => isEditMode && showPassword && onFormChange?.('password', e.target.value)}
+                  className={`${isEditMode ? 'bg-white' : 'bg-gray-50'} font-mono h-10 text-sm ${errors.password ? 'border-red-500' : ''}`}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="h-10"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </Button>
+                {!isEditMode && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => copyToClipboard(currentPassword)}
+                    className="h-10"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+              {errors.password && (
+                <p className="text-xs text-red-500">{errors.password}</p>
+              )}
             </div>
-            {errors.password && (
-              <p className="text-xs text-red-500">{errors.password}</p>
-            )}
           </div>
-        </div>
-      )}
-      
-      {isEditMode && !hidePassword && (
-        <div className="space-y-2">
-          <Label htmlFor="confirm-password" className="text-sm">Confirm Password</Label>
-          <div className="space-y-1">
-            <div className="flex gap-2">
-              <Input 
-                id="confirm-password" 
-                type={showPassword ? "text" : "password"}
-                value={editFormData?.confirmPassword || ""}
-                onChange={(e) => onFormChange?.('confirmPassword', e.target.value)}
-                placeholder="Confirm your password"
-                className={`bg-white font-mono h-10 text-sm ${errors.confirmPassword ? 'border-red-500' : ''}`} 
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowPassword(!showPassword)}
-                className="h-10"
-              >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </Button>
+
+          {isEditMode && (
+            <div className="space-y-2">
+              <Label htmlFor="confirm-password" className="text-sm">Confirm Password</Label>
+              <div className="space-y-1">
+                <div className="flex gap-2">
+                  <Input
+                    id="confirm-password"
+                    type={showPassword ? "text" : "password"}
+                    value={editFormData?.confirmPassword || ""}
+                    onChange={(e) => onFormChange?.('confirmPassword', e.target.value)}
+                    placeholder="Confirm your password"
+                    className={`bg-white font-mono h-10 text-sm ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="h-10"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </Button>
+                </div>
+                {errors.confirmPassword && (
+                  <p className="text-xs text-red-500">{errors.confirmPassword}</p>
+                )}
+              </div>
             </div>
-            {errors.confirmPassword && (
-              <p className="text-xs text-red-500">{errors.confirmPassword}</p>
-            )}
-          </div>
+          )}
         </div>
       )}
     </div>

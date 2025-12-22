@@ -31,15 +31,28 @@ export function TwoFactorStatusField({
         Two-Factor Authentication
       </Label>
       <div className="flex items-center gap-2">
-        <Input
-          id="2fa-status"
-          type="text"
-          readOnly
-          value={currentTwoFAEnabled ? `Verification Method: ${getMethodDisplayName(currentTwoFAMethod)}` : 'Disabled'}
-          className={`flex-1 ${currentTwoFAEnabled ? 'text-gray-900' : 'text-gray-500'}`}
-        />
+        <div className="relative flex-1">
+          <Input
+            id="2fa-status"
+            type="text"
+            readOnly
+            value={currentTwoFAEnabled ? `Verification Method: ${getMethodDisplayName(currentTwoFAMethod)}` : 'Disabled'}
+            className={`w-full pr-14 ${currentTwoFAEnabled ? 'text-gray-900' : 'text-gray-500'}`}
+          />
+          {isEditMode && !isViewOnly && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 z-10">
+              <Switch
+                id="2fa-toggle"
+                checked={currentTwoFAEnabled}
+                onCheckedChange={(checked) => {
+                  onToggle2FA(checked);
+                }}
+              />
+            </div>
+          )}
+        </div>
         {!isEditMode && currentTwoFAEnabled && (
-          <Button 
+          <Button
             onClick={onView2FACode}
             variant="outline"
             size="sm"
@@ -47,13 +60,6 @@ export function TwoFactorStatusField({
           >
             <Eye className="h-4 w-4" />
           </Button>
-        )}
-        {isEditMode && !isViewOnly && (
-          <Switch 
-            id="2fa-toggle"
-            checked={currentTwoFAEnabled}
-            onCheckedChange={onToggle2FA}
-          />
         )}
       </div>
     </div>

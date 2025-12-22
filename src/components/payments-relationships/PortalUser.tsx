@@ -198,7 +198,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[600px] p-6 max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[800px] p-6 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
               <span>Portal Agent Details</span>
@@ -252,7 +252,7 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
         </div>
 
         {!isViewOnly && (
-          <div className="flex justify-between pt-4 border-t">
+          <div className="flex justify-between pt-4">
             <div>
               {isEditMode && onDeletePortalUser && (
                 <Button variant="destructive" onClick={handleDelete}>
@@ -263,10 +263,10 @@ export function PortalUser({ isOpen, onClose, portalUser, onEditPortalUser, onDe
             <div className="flex gap-2">
               {isEditMode ? (
                 <>
-                  <Button variant="ghost" onClick={handleCancel}>
+                  <Button variant="outline" onClick={handleCancel} className="border-primary text-primary hover:bg-primary/5">
                     Cancel
                   </Button>
-                  <Button onClick={handleSave}>
+                  <Button onClick={handleSave} className="bg-primary hover:bg-primary/90">
                     Save Changes
                   </Button>
                 </>

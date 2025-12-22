@@ -2,6 +2,17 @@ import { PortalUser } from "@/types/portalUser";
 
 export const mockPortalUsers: PortalUser[] = [
   {
+    id: "pu-amazon-maya",
+    portal: "Amazon",
+    username: "maya@montopay.com",
+    supplierName: "Monto Pay Inc",
+    status: "Connected",
+    userType: "Customer User",
+    linkedSmartConnections: 5,
+    lastUpdated: "2025-01-15",
+    isReadOnly: false,
+  },
+  {
     id: "pu1",
     portal: "SAP Ariba",
     username: "john.doe@acme.com",

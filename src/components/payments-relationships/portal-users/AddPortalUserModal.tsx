@@ -13,14 +13,16 @@ interface AddPortalUserModalProps {
   mode: 'create' | 'edit';
   portalUser?: PortalUser;
   onSave: (portalUser: Partial<PortalUser>) => void;
+  onOpenExistingAgent?: (username: string, portal: string) => void;
 }
 
-export function AddPortalUserModal({ 
-  isOpen, 
-  onClose, 
-  mode, 
-  portalUser, 
-  onSave 
+export function AddPortalUserModal({
+  isOpen,
+  onClose,
+  mode,
+  portalUser,
+  onSave,
+  onOpenExistingAgent
 }: AddPortalUserModalProps) {
   const [activeTab, setActiveTab] = useState<string>('bulk');
   const [bulkUploadStep, setBulkUploadStep] = useState<string>('upload');
@@ -82,6 +84,7 @@ export function AddPortalUserModal({
               onSave={onSave}
               isEmbedded={true}
               onStepChange={handleManualStepChange}
+              onOpenExistingAgent={onOpenExistingAgent}
             />
           ) : (
             <BulkUploadModal

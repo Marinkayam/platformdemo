@@ -38,8 +38,8 @@ export function ConfirmRemoveModal({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel asChild>
-            <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <AlertDialogCancel className="border-primary text-primary hover:bg-primary/5">
+            Cancel
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
