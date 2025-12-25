@@ -33,12 +33,6 @@ export function PortalRecordDetailHeader({
     }).format(amount);
   };
 
-  // Generate consistent 8-digit record number
-  const recordNumber = (() => {
-    const seed = portalRecord.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return String(10000000 + (seed * 7919) % 90000000);
-  })();
-
   // Get agent email based on portal
   const agentEmail = portalRecord.portal === "SAP Ariba" ? "supplier@acmecorp.com" :
     portalRecord.portal === "Coupa" ? "vendor@techsolutions.com" :
@@ -49,19 +43,19 @@ export function PortalRecordDetailHeader({
     <div className={cn("mb-8", className)}>
       <Card className="p-6 rounded-xl">
         <div className="flex flex-col gap-6">
-          {/* Top Tier: Record ID (left) and Status + Total Amount (right) */}
+          {/* Top Tier: Portal Invoice Number (left) and Status + Total Amount (right) */}
           <div className="flex items-start justify-between">
-            {/* Primary Focus: Record ID */}
+            {/* Primary Focus: Portal Invoice Number */}
             <div className="flex flex-col gap-0.5">
-              <span className="text-xs text-muted-foreground font-light">Record ID:</span>
+              <span className="text-xs text-muted-foreground font-light">Portal Invoice Number:</span>
               <span
                 className="text-xl font-bold text-[#01173E] cursor-pointer select-all hover:text-[#7B59FF] transition-colors"
                 onClick={() => {
-                  navigator.clipboard.writeText(recordNumber);
+                  navigator.clipboard.writeText(portalRecord.portalRecordId);
                 }}
                 title="Click to copy"
               >
-                {recordNumber}
+                {portalRecord.portalRecordId}
               </span>
             </div>
 
